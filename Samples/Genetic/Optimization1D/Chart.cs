@@ -113,76 +113,79 @@ namespace Optimization1D
 			int			clientWidth = ClientRectangle.Width;
 			int			clientHeight = ClientRectangle.Height;
 
-			double		xFactor = (double)( clientWidth - 10 ) / ( rangeX.Length );
-			double		yFactor = (double)( clientHeight - 10 ) / ( rangeY.Length );
-
 			// fill with white background
 			g.FillRectangle( whiteBrush, 0, 0, clientWidth - 1, clientHeight - 1 );
 
 			// draw a black rectangle
 			g.DrawRectangle( blackPen, 0, 0, clientWidth - 1, clientHeight - 1 );
 
-			// walk through all data series
-			IDictionaryEnumerator en = seriesTable.GetEnumerator( );
-			while ( en.MoveNext( ) )
+			// check if there are any series
+			if ( rangeY != null )
 			{
-				DataSeries series = (DataSeries) en.Value;
-				// get data of the series
-				double[,] data = series.data;
+				double xFactor = (double)( clientWidth - 10 ) / ( rangeX.Length );
+				double yFactor = (double)( clientHeight - 10 ) / ( rangeY.Length );
 
-				// check for available data
-				if ( data == null )
-					continue;
-
-				// check series type
-				if ( series.type == SeriesType.Dots )
+				// walk through all data series
+				IDictionaryEnumerator en = seriesTable.GetEnumerator( );
+				while ( en.MoveNext( ) )
 				{
-					// draw dots
-					Brush	brush = new SolidBrush( series.color );
-					int		width = series.width;
-					int		r = width >> 1;
+					DataSeries series = (DataSeries) en.Value;
+					// get data of the series
+					double[,] data = series.data;
 
-					// draw all points
-					for ( int i = 0, n = data.GetLength( 0 ); i < n; i++ )
+					// check for available data
+					if ( data == null )
+						continue;
+
+					// check series type
+					if ( series.type == SeriesType.Dots )
 					{
-						int x = (int) ( ( data[i, 0] - rangeX.Min ) * xFactor );
-						int y = (int) ( ( data[i, 1] - rangeY.Min ) * yFactor );
+						// draw dots
+						Brush	brush = new SolidBrush( series.color );
+						int		width = series.width;
+						int		r = width >> 1;
 
-						x += 5;
-						y = clientHeight - 6 - y;
+						// draw all points
+						for ( int i = 0, n = data.GetLength( 0 ); i < n; i++ )
+						{
+							int x = (int) ( ( data[i, 0] - rangeX.Min ) * xFactor );
+							int y = (int) ( ( data[i, 1] - rangeY.Min ) * yFactor );
 
-						g.FillRectangle( brush, x - r, y - r, width, width );
+							x += 5;
+							y = clientHeight - 6 - y;
+
+							g.FillRectangle( brush, x - r, y - r, width, width );
+						}
+						brush.Dispose( );
 					}
-					brush.Dispose( );
-				}
-				else
-				{
-					// draw line
-					Pen pen = new Pen( series.color, series.width );
-
-					int x1 = (int) ( ( data[0, 0] - rangeX.Min ) * xFactor );
-					int y1 = (int) ( ( data[0, 1] - rangeY.Min ) * yFactor );
-
-					x1 += 5;
-					y1 = clientHeight - 6 - y1;
-
-					// draw all lines
-					for ( int i = 1, n = data.GetLength( 0 ); i < n; i++ )
+					else
 					{
-						int x2 = (int) ( ( data[i, 0] - rangeX.Min ) * xFactor );
-						int y2 = (int) ( ( data[i, 1] - rangeY.Min ) * yFactor );
+						// draw line
+						Pen pen = new Pen( series.color, series.width );
 
-						x2 += 5;
-						y2 = clientHeight - 6 - y2;
+						int x1 = (int) ( ( data[0, 0] - rangeX.Min ) * xFactor );
+						int y1 = (int) ( ( data[0, 1] - rangeY.Min ) * yFactor );
 
-						g.DrawLine( pen, x1, y1, x2, y2 );
+						x1 += 5;
+						y1 = clientHeight - 6 - y1;
 
-						x1 = x2;
-						y1 = y2;
+						// draw all lines
+						for ( int i = 1, n = data.GetLength( 0 ); i < n; i++ )
+						{
+							int x2 = (int) ( ( data[i, 0] - rangeX.Min ) * xFactor );
+							int y2 = (int) ( ( data[i, 1] - rangeY.Min ) * yFactor );
+
+							x2 += 5;
+							y2 = clientHeight - 6 - y2;
+
+							g.DrawLine( pen, x1, y1, x2, y2 );
+
+							x1 = x2;
+							y1 = y2;
+						}
+						pen.Dispose( );
 					}
-					pen.Dispose( );
 				}
-
 			}
 
 			// Calling the base class OnPaint
@@ -214,27 +217,45 @@ namespace Optimization1D
 			// update data
 			series.data = data;
 
-			if ( data != null )
-			{
-				// walk trough the series to update MIN and MAX values
-				double	minY = double.MaxValue;
-				double	maxY = double.MinValue;
-
-				for ( int i = 0, n = data.GetLength( 0 ); i < n; i++ )
-				{
-					double v = data[i, 1];
-					// check for max
-					if ( v > maxY )
-						maxY = v;
-					// check for min
-					if ( v < minY )
-						minY = v;
-				}
-				rangeY = new DoubleRange( minY, maxY );
-			}
+			// update Y range
+			UpdateYRange( );
 			// invalidate the control
 			Invalidate( );
 		}
 
+		// Recalculate Y range
+		private void UpdateYRange( )
+		{
+			double	minY = double.MaxValue;
+			double	maxY = double.MinValue;
+
+			// walk through all data series
+			IDictionaryEnumerator en = seriesTable.GetEnumerator( );
+			while ( en.MoveNext( ) )
+			{
+				DataSeries series = (DataSeries) en.Value;
+				// get data of the series
+				double[,] data = series.data;
+
+				if ( data != null )
+				{
+					for ( int i = 0, n = data.GetLength( 0 ); i < n; i++ )
+					{
+						double v = data[i, 1];
+						// check for max
+						if ( v > maxY )
+							maxY = v;
+						// check for min
+						if ( v < minY )
+							minY = v;
+					}
+				}
+			}
+
+			if ( ( minY != double.MaxValue) || ( maxY != double.MinValue ) )
+			{
+				rangeY = new DoubleRange( minY, maxY );
+			}
+		}
 	}
 }
