@@ -15,8 +15,19 @@ namespace AForge.Genetic
 	/// </summary>
 	public abstract class OptimizationFunction1D : IFitnessFunction
 	{
+		/// <summary>
+		/// Optimization modes
+		/// </summary>
+		public enum Modes
+		{
+			Maximization,
+			Minimization
+		}
+		
 		// optimization range
 		private DoubleRange	range = new DoubleRange( 0, 1 );
+		// optimization mode
+		private Modes mode = Modes.Maximization;
 
 		/// <summary>
 		/// Optimization range
@@ -25,6 +36,15 @@ namespace AForge.Genetic
 		{
 			get { return range; }
 			set { range = value; }
+		}
+
+		/// <summary>
+		/// Optimization mode
+		/// </summary>
+		public Modes Mode
+		{
+			get { return mode; }
+			set { mode = value; }
 		}
 
 		/// <summary>
@@ -40,8 +60,9 @@ namespace AForge.Genetic
 		/// </summary>
 		public double Evaluate( IChromosome chromosome )
 		{
-			// return optimization function value
-			return OptimizationFunction( TranslateNative( chromosome ) );
+			double functionValue = OptimizationFunction( TranslateNative( chromosome ) );
+			// fitness value
+			return ( mode == Modes.Maximization ) ? functionValue : 1 / functionValue;
 		}
 
 		/// <summary>

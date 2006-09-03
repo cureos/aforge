@@ -64,6 +64,22 @@ namespace AForge.Genetic
 			get { return bestChromosome; }
 		}
 
+		/// <sumary>
+		/// Size of the population
+		/// </sumary>
+		public int Size
+		{
+			get { return size; }
+		}
+
+		/// <sumary>
+		/// Get chromosome with specified index
+		/// </sumary>
+		public IChromosome this[int index]
+		{
+			get { return (IChromosome) population[index]; }
+		}
+
 
 		/// <summary>
 		/// Constructor
