@@ -37,6 +37,15 @@ namespace Optimization1D
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.Button startButton;
 		private System.Windows.Forms.Button stopButton;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.ComboBox selectionBox;
+		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.ComboBox modeBox;
+		private System.Windows.Forms.GroupBox groupBox3;
+		private System.Windows.Forms.Label label9;
+		private System.Windows.Forms.TextBox currentIterationBox;
+		private System.Windows.Forms.Label label10;
+		private System.Windows.Forms.TextBox currentValueBox;
 
 		private UserFunction userFunction = new UserFunction( );
 		private int populationSize = 40;
@@ -47,15 +56,6 @@ namespace Optimization1D
 		private bool showOnlyBest = false;
 
 		private Thread	workerThread = null;
-		private System.Windows.Forms.Label label7;
-		private System.Windows.Forms.ComboBox selectionBox;
-		private System.Windows.Forms.Label label8;
-		private System.Windows.Forms.ComboBox modeBox;
-		private System.Windows.Forms.GroupBox groupBox3;
-		private System.Windows.Forms.Label label9;
-		private System.Windows.Forms.TextBox currentIterationBox;
-		private System.Windows.Forms.Label label10;
-		private System.Windows.Forms.TextBox currentValueBox;
 		private bool	needToStop = false;
 
 		// Constructor
@@ -108,6 +108,8 @@ namespace Optimization1D
 			this.maxXBox = new System.Windows.Forms.TextBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.modeBox = new System.Windows.Forms.ComboBox();
+			this.label8 = new System.Windows.Forms.Label();
 			this.selectionBox = new System.Windows.Forms.ComboBox();
 			this.label7 = new System.Windows.Forms.Label();
 			this.label6 = new System.Windows.Forms.Label();
@@ -120,13 +122,11 @@ namespace Optimization1D
 			this.label3 = new System.Windows.Forms.Label();
 			this.startButton = new System.Windows.Forms.Button();
 			this.stopButton = new System.Windows.Forms.Button();
-			this.label8 = new System.Windows.Forms.Label();
-			this.modeBox = new System.Windows.Forms.ComboBox();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
-			this.label9 = new System.Windows.Forms.Label();
-			this.currentIterationBox = new System.Windows.Forms.TextBox();
-			this.label10 = new System.Windows.Forms.Label();
 			this.currentValueBox = new System.Windows.Forms.TextBox();
+			this.label10 = new System.Windows.Forms.Label();
+			this.currentIterationBox = new System.Windows.Forms.TextBox();
+			this.label9 = new System.Windows.Forms.Label();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.groupBox3.SuspendLayout();
@@ -141,11 +141,12 @@ namespace Optimization1D
 			// 
 			// groupBox1
 			// 
-			this.groupBox1.Controls.Add(this.chart);
-			this.groupBox1.Controls.Add(this.label1);
-			this.groupBox1.Controls.Add(this.minXBox);
-			this.groupBox1.Controls.Add(this.maxXBox);
-			this.groupBox1.Controls.Add(this.label2);
+			this.groupBox1.Controls.AddRange(new System.Windows.Forms.Control[] {
+																					this.chart,
+																					this.label1,
+																					this.minXBox,
+																					this.maxXBox,
+																					this.label2});
 			this.groupBox1.Location = new System.Drawing.Point(10, 10);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Size = new System.Drawing.Size(300, 330);
@@ -189,18 +190,19 @@ namespace Optimization1D
 			// 
 			// groupBox2
 			// 
-			this.groupBox2.Controls.Add(this.modeBox);
-			this.groupBox2.Controls.Add(this.label8);
-			this.groupBox2.Controls.Add(this.selectionBox);
-			this.groupBox2.Controls.Add(this.label7);
-			this.groupBox2.Controls.Add(this.label6);
-			this.groupBox2.Controls.Add(this.iterationsBox);
-			this.groupBox2.Controls.Add(this.label5);
-			this.groupBox2.Controls.Add(this.onlyBestCheck);
-			this.groupBox2.Controls.Add(this.chromosomeLengthBox);
-			this.groupBox2.Controls.Add(this.label4);
-			this.groupBox2.Controls.Add(this.populationSizeBox);
-			this.groupBox2.Controls.Add(this.label3);
+			this.groupBox2.Controls.AddRange(new System.Windows.Forms.Control[] {
+																					this.modeBox,
+																					this.label8,
+																					this.selectionBox,
+																					this.label7,
+																					this.label6,
+																					this.iterationsBox,
+																					this.label5,
+																					this.onlyBestCheck,
+																					this.chromosomeLengthBox,
+																					this.label4,
+																					this.populationSizeBox,
+																					this.label3});
 			this.groupBox2.Location = new System.Drawing.Point(320, 10);
 			this.groupBox2.Name = "groupBox2";
 			this.groupBox2.Size = new System.Drawing.Size(185, 222);
@@ -208,13 +210,32 @@ namespace Optimization1D
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Settings";
 			// 
+			// modeBox
+			// 
+			this.modeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.modeBox.Items.AddRange(new object[] {
+														 "Maximize",
+														 "Minimize"});
+			this.modeBox.Location = new System.Drawing.Point(110, 95);
+			this.modeBox.Name = "modeBox";
+			this.modeBox.Size = new System.Drawing.Size(65, 21);
+			this.modeBox.TabIndex = 7;
+			// 
+			// label8
+			// 
+			this.label8.Location = new System.Drawing.Point(10, 97);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(110, 17);
+			this.label8.TabIndex = 6;
+			this.label8.Text = "Optimization mode:";
+			// 
 			// selectionBox
 			// 
 			this.selectionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.selectionBox.Items.AddRange(new object[] {
 															  "Elite",
 															  "Rank",
-															  "Roulette Wheel"});
+															  "Roulette"});
 			this.selectionBox.Location = new System.Drawing.Point(110, 70);
 			this.selectionBox.Name = "selectionBox";
 			this.selectionBox.Size = new System.Drawing.Size(65, 21);
@@ -310,62 +331,19 @@ namespace Optimization1D
 			this.stopButton.Text = "S&top";
 			this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
 			// 
-			// label8
-			// 
-			this.label8.Location = new System.Drawing.Point(10, 97);
-			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(110, 17);
-			this.label8.TabIndex = 6;
-			this.label8.Text = "Optimization mode:";
-			// 
-			// modeBox
-			// 
-			this.modeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.modeBox.Items.AddRange(new object[] {
-														 "Maximize",
-														 "Minimize"});
-			this.modeBox.Location = new System.Drawing.Point(110, 95);
-			this.modeBox.Name = "modeBox";
-			this.modeBox.Size = new System.Drawing.Size(65, 21);
-			this.modeBox.TabIndex = 7;
-			// 
 			// groupBox3
 			// 
-			this.groupBox3.Controls.Add(this.currentValueBox);
-			this.groupBox3.Controls.Add(this.label10);
-			this.groupBox3.Controls.Add(this.currentIterationBox);
-			this.groupBox3.Controls.Add(this.label9);
+			this.groupBox3.Controls.AddRange(new System.Windows.Forms.Control[] {
+																					this.currentValueBox,
+																					this.label10,
+																					this.currentIterationBox,
+																					this.label9});
 			this.groupBox3.Location = new System.Drawing.Point(320, 235);
 			this.groupBox3.Name = "groupBox3";
 			this.groupBox3.Size = new System.Drawing.Size(185, 75);
 			this.groupBox3.TabIndex = 2;
 			this.groupBox3.TabStop = false;
 			this.groupBox3.Text = "Current iteration";
-			// 
-			// label9
-			// 
-			this.label9.Location = new System.Drawing.Point(10, 22);
-			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(60, 16);
-			this.label9.TabIndex = 0;
-			this.label9.Text = "Iteration:";
-			// 
-			// currentIterationBox
-			// 
-			this.currentIterationBox.Location = new System.Drawing.Point(125, 20);
-			this.currentIterationBox.Name = "currentIterationBox";
-			this.currentIterationBox.ReadOnly = true;
-			this.currentIterationBox.Size = new System.Drawing.Size(50, 20);
-			this.currentIterationBox.TabIndex = 1;
-			this.currentIterationBox.Text = "";
-			// 
-			// label10
-			// 
-			this.label10.Location = new System.Drawing.Point(10, 47);
-			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(60, 15);
-			this.label10.TabIndex = 2;
-			this.label10.Text = "Value:";
 			// 
 			// currentValueBox
 			// 
@@ -376,15 +354,41 @@ namespace Optimization1D
 			this.currentValueBox.TabIndex = 3;
 			this.currentValueBox.Text = "";
 			// 
+			// label10
+			// 
+			this.label10.Location = new System.Drawing.Point(10, 47);
+			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(60, 15);
+			this.label10.TabIndex = 2;
+			this.label10.Text = "Value:";
+			// 
+			// currentIterationBox
+			// 
+			this.currentIterationBox.Location = new System.Drawing.Point(125, 20);
+			this.currentIterationBox.Name = "currentIterationBox";
+			this.currentIterationBox.ReadOnly = true;
+			this.currentIterationBox.Size = new System.Drawing.Size(50, 20);
+			this.currentIterationBox.TabIndex = 1;
+			this.currentIterationBox.Text = "";
+			// 
+			// label9
+			// 
+			this.label9.Location = new System.Drawing.Point(10, 22);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(60, 16);
+			this.label9.TabIndex = 0;
+			this.label9.Text = "Iteration:";
+			// 
 			// MainForm
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(514, 350);
-			this.Controls.Add(this.groupBox3);
-			this.Controls.Add(this.stopButton);
-			this.Controls.Add(this.startButton);
-			this.Controls.Add(this.groupBox2);
-			this.Controls.Add(this.groupBox1);
+			this.Controls.AddRange(new System.Windows.Forms.Control[] {
+																		  this.groupBox3,
+																		  this.stopButton,
+																		  this.startButton,
+																		  this.groupBox2,
+																		  this.groupBox1});
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
 			this.Name = "MainForm";
