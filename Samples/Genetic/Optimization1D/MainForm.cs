@@ -603,8 +603,11 @@ namespace Optimization1D
 				currentIterationBox.Text = i.ToString( );
 				currentValueBox.Text = userFunction.TranslateNative( population.BestChromosome ).ToString( "F3" );
 
+				// increase current iteration
+				i++;
+
 				//
-				if ( ( iterations != 0 ) && ( ++i > iterations ) )
+				if ( ( iterations != 0 ) && ( i > iterations ) )
 					break;
 			}
 
