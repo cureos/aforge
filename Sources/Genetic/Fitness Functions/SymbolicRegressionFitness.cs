@@ -18,6 +18,16 @@ namespace AForge.Genetic
 		private double[,]	data;
 		// varibles
 		private double[]	variables;
+		// last evaluation error
+		private double		error = 0;
+
+		/// <summary>
+		/// Last evaluation error
+		/// </summary>
+		public double Error
+		{
+			get { return error; }
+		}
 
 		/// <summary>
 		/// Constructor
@@ -37,11 +47,10 @@ namespace AForge.Genetic
 		{
 			// get function in polish notation
 			string function = chromosome.ToString( );
-			// error sum
-			double e = 0;
 
 			// go through all the data
-			for ( int i = 0, n = variables.Length; i < n; i++ )
+			error = 0.0;
+			for ( int i = 0, n = data.GetLength( 0 ); i < n; i++ )
 			{
 				// put next X value to variables list
 				variables[0] = data[i, 0];
@@ -56,16 +65,17 @@ namespace AForge.Genetic
 					// get the difference between evaluated Y and real Y
 					double d = y - data[i, 1];
 					// sum the error
-					e += d * d;
+					error += d * d;
 				}
 				catch
 				{
 					return 0;
 				}
 			}
+			error = Math.Sqrt( error );
 
 			// return optimization function value
-			return 100.0 / ( Math.Sqrt( e ) + 1 );
+			return 100.0 / ( error + 1 );
 		}
 
 		/// <summary>
