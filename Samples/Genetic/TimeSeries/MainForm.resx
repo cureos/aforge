@@ -102,4 +102,7 @@
   <data name="$this.Name">
     <value>MainForm</value>
   </data>
+  <data name="$this.SnapToGrid" type="System.Boolean, mscorlib, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>False</value>
+  </data>
 </root>

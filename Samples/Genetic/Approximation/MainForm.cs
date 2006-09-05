@@ -48,6 +48,8 @@ namespace Approximation
 		private System.Windows.Forms.ComboBox functionsSetBox;
 		private System.Windows.Forms.Label label8;
 		private System.Windows.Forms.ComboBox geneticMethodBox;
+		private System.Windows.Forms.GroupBox groupBox5;
+		private System.Windows.Forms.TextBox solutionBox;
 
 		private double[,] data = null;
 
@@ -58,8 +60,6 @@ namespace Approximation
 		private int geneticMethod = 0;
 
 		private Thread	workerThread = null;
-		private System.Windows.Forms.GroupBox groupBox5;
-		private System.Windows.Forms.TextBox solutionBox;
 		private bool	needToStop = false;
 
 		// Constructor
@@ -111,6 +111,10 @@ namespace Approximation
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.chart = new Approximation.Chart();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
+			this.geneticMethodBox = new System.Windows.Forms.ComboBox();
+			this.label8 = new System.Windows.Forms.Label();
+			this.functionsSetBox = new System.Windows.Forms.ComboBox();
+			this.label7 = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
 			this.iterationsBox = new System.Windows.Forms.TextBox();
 			this.label3 = new System.Windows.Forms.Label();
@@ -121,14 +125,10 @@ namespace Approximation
 			this.startButton = new System.Windows.Forms.Button();
 			this.stopButton = new System.Windows.Forms.Button();
 			this.groupBox4 = new System.Windows.Forms.GroupBox();
-			this.label5 = new System.Windows.Forms.Label();
-			this.currentIterationBox = new System.Windows.Forms.TextBox();
-			this.label6 = new System.Windows.Forms.Label();
 			this.currentErrorBox = new System.Windows.Forms.TextBox();
-			this.label7 = new System.Windows.Forms.Label();
-			this.functionsSetBox = new System.Windows.Forms.ComboBox();
-			this.label8 = new System.Windows.Forms.Label();
-			this.geneticMethodBox = new System.Windows.Forms.ComboBox();
+			this.label6 = new System.Windows.Forms.Label();
+			this.currentIterationBox = new System.Windows.Forms.TextBox();
+			this.label5 = new System.Windows.Forms.Label();
 			this.groupBox5 = new System.Windows.Forms.GroupBox();
 			this.solutionBox = new System.Windows.Forms.TextBox();
 			this.groupBox1.SuspendLayout();
@@ -140,8 +140,9 @@ namespace Approximation
 			// 
 			// groupBox1
 			// 
-			this.groupBox1.Controls.Add(this.dataList);
-			this.groupBox1.Controls.Add(this.loadDataButton);
+			this.groupBox1.Controls.AddRange(new System.Windows.Forms.Control[] {
+																					this.dataList,
+																					this.loadDataButton});
 			this.groupBox1.Location = new System.Drawing.Point(10, 10);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Size = new System.Drawing.Size(180, 310);
@@ -154,6 +155,7 @@ namespace Approximation
 			this.dataList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
 																					   this.xColumnHeader,
 																					   this.yColumnHeader});
+			this.dataList.FullRowSelect = true;
 			this.dataList.GridLines = true;
 			this.dataList.Location = new System.Drawing.Point(10, 20);
 			this.dataList.Name = "dataList";
@@ -184,7 +186,8 @@ namespace Approximation
 			// 
 			// groupBox2
 			// 
-			this.groupBox2.Controls.Add(this.chart);
+			this.groupBox2.Controls.AddRange(new System.Windows.Forms.Control[] {
+																					this.chart});
 			this.groupBox2.Location = new System.Drawing.Point(200, 10);
 			this.groupBox2.Name = "groupBox2";
 			this.groupBox2.Size = new System.Drawing.Size(300, 310);
@@ -201,23 +204,62 @@ namespace Approximation
 			// 
 			// groupBox3
 			// 
-			this.groupBox3.Controls.Add(this.geneticMethodBox);
-			this.groupBox3.Controls.Add(this.label8);
-			this.groupBox3.Controls.Add(this.functionsSetBox);
-			this.groupBox3.Controls.Add(this.label7);
-			this.groupBox3.Controls.Add(this.label4);
-			this.groupBox3.Controls.Add(this.iterationsBox);
-			this.groupBox3.Controls.Add(this.label3);
-			this.groupBox3.Controls.Add(this.selectionBox);
-			this.groupBox3.Controls.Add(this.label2);
-			this.groupBox3.Controls.Add(this.populationSizeBox);
-			this.groupBox3.Controls.Add(this.label1);
+			this.groupBox3.Controls.AddRange(new System.Windows.Forms.Control[] {
+																					this.geneticMethodBox,
+																					this.label8,
+																					this.functionsSetBox,
+																					this.label7,
+																					this.label4,
+																					this.iterationsBox,
+																					this.label3,
+																					this.selectionBox,
+																					this.label2,
+																					this.populationSizeBox,
+																					this.label1});
 			this.groupBox3.Location = new System.Drawing.Point(510, 10);
 			this.groupBox3.Name = "groupBox3";
 			this.groupBox3.Size = new System.Drawing.Size(185, 198);
 			this.groupBox3.TabIndex = 2;
 			this.groupBox3.TabStop = false;
 			this.groupBox3.Text = "Settings";
+			// 
+			// geneticMethodBox
+			// 
+			this.geneticMethodBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.geneticMethodBox.Items.AddRange(new object[] {
+																  "GP",
+																  "GEP"});
+			this.geneticMethodBox.Location = new System.Drawing.Point(110, 95);
+			this.geneticMethodBox.Name = "geneticMethodBox";
+			this.geneticMethodBox.Size = new System.Drawing.Size(65, 21);
+			this.geneticMethodBox.TabIndex = 7;
+			// 
+			// label8
+			// 
+			this.label8.Location = new System.Drawing.Point(10, 97);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(88, 16);
+			this.label8.TabIndex = 6;
+			this.label8.Text = "Genetic method:";
+			// 
+			// functionsSetBox
+			// 
+			this.functionsSetBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.functionsSetBox.Items.AddRange(new object[] {
+																 "Simple",
+																 "Extended"});
+			this.functionsSetBox.Location = new System.Drawing.Point(110, 70);
+			this.functionsSetBox.Name = "functionsSetBox";
+			this.functionsSetBox.Size = new System.Drawing.Size(65, 21);
+			this.functionsSetBox.TabIndex = 5;
+			// 
+			// label7
+			// 
+			this.label7.Location = new System.Drawing.Point(10, 72);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(80, 16);
+			this.label7.TabIndex = 4;
+			this.label7.Text = "Functions set:";
 			// 
 			// label4
 			// 
@@ -300,41 +342,17 @@ namespace Approximation
 			// 
 			// groupBox4
 			// 
-			this.groupBox4.Controls.Add(this.currentErrorBox);
-			this.groupBox4.Controls.Add(this.label6);
-			this.groupBox4.Controls.Add(this.currentIterationBox);
-			this.groupBox4.Controls.Add(this.label5);
+			this.groupBox4.Controls.AddRange(new System.Windows.Forms.Control[] {
+																					this.currentErrorBox,
+																					this.label6,
+																					this.currentIterationBox,
+																					this.label5});
 			this.groupBox4.Location = new System.Drawing.Point(510, 216);
 			this.groupBox4.Name = "groupBox4";
 			this.groupBox4.Size = new System.Drawing.Size(185, 75);
 			this.groupBox4.TabIndex = 5;
 			this.groupBox4.TabStop = false;
 			this.groupBox4.Text = "Current iteration";
-			// 
-			// label5
-			// 
-			this.label5.Location = new System.Drawing.Point(10, 22);
-			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(70, 16);
-			this.label5.TabIndex = 0;
-			this.label5.Text = "Iteration:";
-			// 
-			// currentIterationBox
-			// 
-			this.currentIterationBox.Location = new System.Drawing.Point(125, 20);
-			this.currentIterationBox.Name = "currentIterationBox";
-			this.currentIterationBox.ReadOnly = true;
-			this.currentIterationBox.Size = new System.Drawing.Size(50, 20);
-			this.currentIterationBox.TabIndex = 1;
-			this.currentIterationBox.Text = "";
-			// 
-			// label6
-			// 
-			this.label6.Location = new System.Drawing.Point(10, 47);
-			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(70, 16);
-			this.label6.TabIndex = 2;
-			this.label6.Text = "Error:";
 			// 
 			// currentErrorBox
 			// 
@@ -345,47 +363,35 @@ namespace Approximation
 			this.currentErrorBox.TabIndex = 3;
 			this.currentErrorBox.Text = "";
 			// 
-			// label7
+			// label6
 			// 
-			this.label7.Location = new System.Drawing.Point(10, 72);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(80, 16);
-			this.label7.TabIndex = 4;
-			this.label7.Text = "Functions set:";
+			this.label6.Location = new System.Drawing.Point(10, 47);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(70, 16);
+			this.label6.TabIndex = 2;
+			this.label6.Text = "Error:";
 			// 
-			// functionsSetBox
+			// currentIterationBox
 			// 
-			this.functionsSetBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.functionsSetBox.Items.AddRange(new object[] {
-																 "Simple",
-																 "Extended"});
-			this.functionsSetBox.Location = new System.Drawing.Point(110, 70);
-			this.functionsSetBox.Name = "functionsSetBox";
-			this.functionsSetBox.Size = new System.Drawing.Size(65, 21);
-			this.functionsSetBox.TabIndex = 5;
+			this.currentIterationBox.Location = new System.Drawing.Point(125, 20);
+			this.currentIterationBox.Name = "currentIterationBox";
+			this.currentIterationBox.ReadOnly = true;
+			this.currentIterationBox.Size = new System.Drawing.Size(50, 20);
+			this.currentIterationBox.TabIndex = 1;
+			this.currentIterationBox.Text = "";
 			// 
-			// label8
+			// label5
 			// 
-			this.label8.Location = new System.Drawing.Point(10, 97);
-			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(88, 16);
-			this.label8.TabIndex = 6;
-			this.label8.Text = "Genetic method:";
-			// 
-			// geneticMethodBox
-			// 
-			this.geneticMethodBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.geneticMethodBox.Items.AddRange(new object[] {
-																  "GP",
-																  "GEP"});
-			this.geneticMethodBox.Location = new System.Drawing.Point(110, 95);
-			this.geneticMethodBox.Name = "geneticMethodBox";
-			this.geneticMethodBox.Size = new System.Drawing.Size(65, 21);
-			this.geneticMethodBox.TabIndex = 7;
+			this.label5.Location = new System.Drawing.Point(10, 22);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(70, 16);
+			this.label5.TabIndex = 0;
+			this.label5.Text = "Iteration:";
 			// 
 			// groupBox5
 			// 
-			this.groupBox5.Controls.Add(this.solutionBox);
+			this.groupBox5.Controls.AddRange(new System.Windows.Forms.Control[] {
+																					this.solutionBox});
 			this.groupBox5.Location = new System.Drawing.Point(10, 330);
 			this.groupBox5.Name = "groupBox5";
 			this.groupBox5.Size = new System.Drawing.Size(685, 50);
@@ -406,17 +412,18 @@ namespace Approximation
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(704, 390);
-			this.Controls.Add(this.groupBox5);
-			this.Controls.Add(this.groupBox4);
-			this.Controls.Add(this.stopButton);
-			this.Controls.Add(this.startButton);
-			this.Controls.Add(this.groupBox3);
-			this.Controls.Add(this.groupBox2);
-			this.Controls.Add(this.groupBox1);
+			this.Controls.AddRange(new System.Windows.Forms.Control[] {
+																		  this.groupBox5,
+																		  this.groupBox4,
+																		  this.stopButton,
+																		  this.startButton,
+																		  this.groupBox3,
+																		  this.groupBox2,
+																		  this.groupBox1});
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
 			this.Name = "MainForm";
-			this.Text = "Approximation";
+			this.Text = "Approximation (Symbolic Regression)";
 			this.Closing += new System.ComponentModel.CancelEventHandler(this.MainForm_Closing);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox2.ResumeLayout(false);
@@ -461,7 +468,7 @@ namespace Approximation
 			// show file selection dialog
 			if ( openFileDialog.ShowDialog( ) == DialogResult.OK )
 			{
-				// read maximum 100 points
+				// read maximum 50 points
 				double[,] tempData = new double[50, 2];
 				double minX = double.MaxValue;
 				double maxX = double.MinValue;
@@ -474,7 +481,7 @@ namespace Approximation
 					int		i = 0;
 
 					// read the data
-					while ( ( i < 100 ) && ( ( str = reader.ReadLine( ) ) != null ) )
+					while ( ( i < 50 ) && ( ( str = reader.ReadLine( ) ) != null ) )
 					{
 						string[] strs = str.Split( ';' );
 						if ( strs.Length == 1 )
@@ -484,17 +491,17 @@ namespace Approximation
 						tempData[i, 1] = double.Parse( strs[1] );
 
 						// search for min value
-						if ( tempData[i, 0 ] < minX )
+						if ( tempData[i, 0] < minX )
 							minX = tempData[i, 0];
 						// search for max value
-						if ( tempData[i, 0 ] > maxX )
+						if ( tempData[i, 0] > maxX )
 							maxX = tempData[i, 0];
 
 						i++;
 					}
 
 					// allocate and set data
-					data = new Double[i, 2];
+					data = new double[i, 2];
 					Array.Copy( tempData, 0, data, 0, i * 2 );
 				}
 				catch (Exception)
