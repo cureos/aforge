@@ -28,10 +28,28 @@ namespace TimeSeries
 		private System.ComponentModel.Container components = null;
 		private System.Windows.Forms.GroupBox groupBox2;
 		private TimeSeries.Chart chart;
+		private System.Windows.Forms.GroupBox groupBox3;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.TextBox populationSizeBox;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.ComboBox selectionBox;
+		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.ComboBox functionsSetBox;
+		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.ComboBox geneticMethodBox;
 
 		private double[] data = null;
 		private double[,] dataToShow = null;
 
+		private int populationSize = 40;
+		private int iterations = 100;
+		private int selectionMethod = 0;
+		private int functionsSet = 0;
+		private int geneticMethod = 0;
+
+		private Thread	workerThread = null;
+		private bool	needToStop = false;
+		
 		// Constructor
 		public MainForm()
 		{
@@ -43,6 +61,11 @@ namespace TimeSeries
 			//
 			chart.AddDataSeries( "data", Color.Red, Chart.SeriesType.Dots, 5 );
 			chart.AddDataSeries( "solution", Color.Blue, Chart.SeriesType.Line, 1 );
+
+			selectionBox.SelectedIndex		= selectionMethod;
+			functionsSetBox.SelectedIndex	= functionsSet;
+			geneticMethodBox.SelectedIndex	= geneticMethod;
+			UpdateSettings( );
 		}
 
 		/// <summary>
@@ -74,8 +97,18 @@ namespace TimeSeries
 			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.chart = new TimeSeries.Chart();
+			this.groupBox3 = new System.Windows.Forms.GroupBox();
+			this.label1 = new System.Windows.Forms.Label();
+			this.populationSizeBox = new System.Windows.Forms.TextBox();
+			this.label2 = new System.Windows.Forms.Label();
+			this.selectionBox = new System.Windows.Forms.ComboBox();
+			this.label3 = new System.Windows.Forms.Label();
+			this.functionsSetBox = new System.Windows.Forms.ComboBox();
+			this.label4 = new System.Windows.Forms.Label();
+			this.geneticMethodBox = new System.Windows.Forms.ComboBox();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
+			this.groupBox3.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// groupBox1
@@ -138,11 +171,104 @@ namespace TimeSeries
 			this.chart.Size = new System.Drawing.Size(280, 280);
 			this.chart.TabIndex = 0;
 			// 
+			// groupBox3
+			// 
+			this.groupBox3.Controls.AddRange(new System.Windows.Forms.Control[] {
+																					this.geneticMethodBox,
+																					this.label4,
+																					this.functionsSetBox,
+																					this.label3,
+																					this.selectionBox,
+																					this.label2,
+																					this.populationSizeBox,
+																					this.label1});
+			this.groupBox3.Location = new System.Drawing.Point(510, 10);
+			this.groupBox3.Name = "groupBox3";
+			this.groupBox3.Size = new System.Drawing.Size(185, 200);
+			this.groupBox3.TabIndex = 2;
+			this.groupBox3.TabStop = false;
+			this.groupBox3.Text = "Settings";
+			// 
+			// label1
+			// 
+			this.label1.Location = new System.Drawing.Point(10, 22);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(100, 16);
+			this.label1.TabIndex = 0;
+			this.label1.Text = "Population size:";
+			// 
+			// populationSizeBox
+			// 
+			this.populationSizeBox.Location = new System.Drawing.Point(125, 20);
+			this.populationSizeBox.Name = "populationSizeBox";
+			this.populationSizeBox.Size = new System.Drawing.Size(50, 20);
+			this.populationSizeBox.TabIndex = 1;
+			this.populationSizeBox.Text = "";
+			// 
+			// label2
+			// 
+			this.label2.Location = new System.Drawing.Point(10, 47);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(100, 16);
+			this.label2.TabIndex = 2;
+			this.label2.Text = "Selection method:";
+			// 
+			// selectionBox
+			// 
+			this.selectionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.selectionBox.Items.AddRange(new object[] {
+															  "Elite",
+															  "Rank",
+															  "Roulette"});
+			this.selectionBox.Location = new System.Drawing.Point(110, 45);
+			this.selectionBox.Name = "selectionBox";
+			this.selectionBox.Size = new System.Drawing.Size(65, 21);
+			this.selectionBox.TabIndex = 3;
+			// 
+			// label3
+			// 
+			this.label3.Location = new System.Drawing.Point(10, 72);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(100, 16);
+			this.label3.TabIndex = 4;
+			this.label3.Text = "Function set:";
+			// 
+			// functionsSetBox
+			// 
+			this.functionsSetBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.functionsSetBox.Items.AddRange(new object[] {
+																 "Simple",
+																 "Extended"});
+			this.functionsSetBox.Location = new System.Drawing.Point(110, 70);
+			this.functionsSetBox.Name = "functionsSetBox";
+			this.functionsSetBox.Size = new System.Drawing.Size(65, 21);
+			this.functionsSetBox.TabIndex = 5;
+			// 
+			// label4
+			// 
+			this.label4.Location = new System.Drawing.Point(10, 97);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(100, 16);
+			this.label4.TabIndex = 6;
+			this.label4.Text = "Genetic method:";
+			// 
+			// geneticMethodBox
+			// 
+			this.geneticMethodBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.geneticMethodBox.Items.AddRange(new object[] {
+																  "GP",
+																  "GEP"});
+			this.geneticMethodBox.Location = new System.Drawing.Point(110, 95);
+			this.geneticMethodBox.Name = "geneticMethodBox";
+			this.geneticMethodBox.Size = new System.Drawing.Size(65, 21);
+			this.geneticMethodBox.TabIndex = 7;
+			// 
 			// MainForm
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(650, 364);
+			this.ClientSize = new System.Drawing.Size(705, 364);
 			this.Controls.AddRange(new System.Windows.Forms.Control[] {
+																		  this.groupBox3,
 																		  this.groupBox2,
 																		  this.groupBox1});
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -152,6 +278,7 @@ namespace TimeSeries
 			this.Closing += new System.ComponentModel.CancelEventHandler(this.MainForm_Closing);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox2.ResumeLayout(false);
+			this.groupBox3.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -170,6 +297,13 @@ namespace TimeSeries
 		private void MainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 		
+		}
+
+		// Update settings controls
+		private void UpdateSettings( )
+		{
+			populationSizeBox.Text		= populationSize.ToString( );
+//			iterationsBox.Text			= iterations.ToString( );
 		}
 
 		// Load data
