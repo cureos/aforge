@@ -140,9 +140,8 @@ namespace Approximation
 			// 
 			// groupBox1
 			// 
-			this.groupBox1.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.dataList,
-																					this.loadDataButton});
+			this.groupBox1.Controls.Add(this.dataList);
+			this.groupBox1.Controls.Add(this.loadDataButton);
 			this.groupBox1.Location = new System.Drawing.Point(10, 10);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Size = new System.Drawing.Size(180, 310);
@@ -186,8 +185,7 @@ namespace Approximation
 			// 
 			// groupBox2
 			// 
-			this.groupBox2.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.chart});
+			this.groupBox2.Controls.Add(this.chart);
 			this.groupBox2.Location = new System.Drawing.Point(200, 10);
 			this.groupBox2.Name = "groupBox2";
 			this.groupBox2.Size = new System.Drawing.Size(300, 310);
@@ -204,18 +202,17 @@ namespace Approximation
 			// 
 			// groupBox3
 			// 
-			this.groupBox3.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.geneticMethodBox,
-																					this.label8,
-																					this.functionsSetBox,
-																					this.label7,
-																					this.label4,
-																					this.iterationsBox,
-																					this.label3,
-																					this.selectionBox,
-																					this.label2,
-																					this.populationSizeBox,
-																					this.label1});
+			this.groupBox3.Controls.Add(this.geneticMethodBox);
+			this.groupBox3.Controls.Add(this.label8);
+			this.groupBox3.Controls.Add(this.functionsSetBox);
+			this.groupBox3.Controls.Add(this.label7);
+			this.groupBox3.Controls.Add(this.label4);
+			this.groupBox3.Controls.Add(this.iterationsBox);
+			this.groupBox3.Controls.Add(this.label3);
+			this.groupBox3.Controls.Add(this.selectionBox);
+			this.groupBox3.Controls.Add(this.label2);
+			this.groupBox3.Controls.Add(this.populationSizeBox);
+			this.groupBox3.Controls.Add(this.label1);
 			this.groupBox3.Location = new System.Drawing.Point(510, 10);
 			this.groupBox3.Name = "groupBox3";
 			this.groupBox3.Size = new System.Drawing.Size(185, 198);
@@ -284,7 +281,7 @@ namespace Approximation
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(60, 16);
 			this.label3.TabIndex = 8;
-			this.label3.Text = "Iteration:";
+			this.label3.Text = "Iterations:";
 			// 
 			// selectionBox
 			// 
@@ -342,11 +339,10 @@ namespace Approximation
 			// 
 			// groupBox4
 			// 
-			this.groupBox4.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.currentErrorBox,
-																					this.label6,
-																					this.currentIterationBox,
-																					this.label5});
+			this.groupBox4.Controls.Add(this.currentErrorBox);
+			this.groupBox4.Controls.Add(this.label6);
+			this.groupBox4.Controls.Add(this.currentIterationBox);
+			this.groupBox4.Controls.Add(this.label5);
 			this.groupBox4.Location = new System.Drawing.Point(510, 216);
 			this.groupBox4.Name = "groupBox4";
 			this.groupBox4.Size = new System.Drawing.Size(185, 75);
@@ -390,8 +386,7 @@ namespace Approximation
 			// 
 			// groupBox5
 			// 
-			this.groupBox5.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.solutionBox});
+			this.groupBox5.Controls.Add(this.solutionBox);
 			this.groupBox5.Location = new System.Drawing.Point(10, 330);
 			this.groupBox5.Name = "groupBox5";
 			this.groupBox5.Size = new System.Drawing.Size(685, 50);
@@ -412,14 +407,13 @@ namespace Approximation
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(704, 390);
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.groupBox5,
-																		  this.groupBox4,
-																		  this.stopButton,
-																		  this.startButton,
-																		  this.groupBox3,
-																		  this.groupBox2,
-																		  this.groupBox1});
+			this.Controls.Add(this.groupBox5);
+			this.Controls.Add(this.groupBox4);
+			this.Controls.Add(this.stopButton);
+			this.Controls.Add(this.startButton);
+			this.Controls.Add(this.groupBox3);
+			this.Controls.Add(this.groupBox2);
+			this.Controls.Add(this.groupBox1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
 			this.Name = "MainForm";
@@ -468,6 +462,7 @@ namespace Approximation
 			// show file selection dialog
 			if ( openFileDialog.ShowDialog( ) == DialogResult.OK )
 			{
+				StreamReader reader = null;
 				// read maximum 50 points
 				double[,] tempData = new double[50, 2];
 				double minX = double.MaxValue;
@@ -476,7 +471,7 @@ namespace Approximation
 				try
 				{
 					// open selected file
-					StreamReader reader = File.OpenText( openFileDialog.FileName );
+					reader = File.OpenText( openFileDialog.FileName );
 					string	str = null;
 					int		i = 0;
 
@@ -508,6 +503,12 @@ namespace Approximation
 				{
 					MessageBox.Show( "Failed reading the file", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
 					return;
+				}
+				finally
+				{
+					// close file
+					if ( reader != null )
+						reader.Close( );
 				}
 
 				// update list and chart
@@ -571,7 +572,9 @@ namespace Approximation
 			// update settings controls
 			UpdateSettings( );
 
-			selectionMethod = selectionBox.SelectedIndex;
+			selectionMethod	= selectionBox.SelectedIndex;
+			functionsSet	= functionsSetBox.SelectedIndex;
+			geneticMethod	= geneticMethodBox.SelectedIndex;
 		
 			// disable all settings controls except "Stop" button
 			EnableControls( false );
@@ -628,21 +631,29 @@ namespace Approximation
 				// run one epoch of genetic algorithm
 				population.RunEpoch( );
 
-				// get best solution
-				string bestFunction = population.BestChromosome.ToString( );
-
-				// calculate best function
-				for ( int j = 0; j < 50; j++ )
+				try
 				{
-					input[0] = solution[j, 0];
-					solution[j, 1] = PolishExpression.Evaluate( bestFunction, input );
-				}
-				chart.UpdateDataSeries( "solution", solution );
+					// get best solution
+					string bestFunction = population.BestChromosome.ToString( );
 
-				// set current iteration's info
-				fitness.Evaluate( population.BestChromosome );
-				currentIterationBox.Text = i.ToString( );
-				currentErrorBox.Text = fitness.Error.ToString( "F3" );
+					// calculate best function
+					for ( int j = 0; j < 50; j++ )
+					{
+						input[0] = solution[j, 0];
+						solution[j, 1] = PolishExpression.Evaluate( bestFunction, input );
+					}
+					chart.UpdateDataSeries( "solution", solution );
+
+					// set current iteration's info
+					fitness.Evaluate( population.BestChromosome );
+					currentIterationBox.Text = i.ToString( );
+					currentErrorBox.Text = fitness.Error.ToString( "F3" );
+				}
+				catch
+				{
+					// remove any solutions from chart in case of any errors
+					chart.UpdateDataSeries( "solution", null );
+				}
 
 				// increase current iteration
 				i++;

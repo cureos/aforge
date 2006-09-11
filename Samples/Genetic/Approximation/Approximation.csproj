@@ -83,14 +83,14 @@
                     HintPath = "..\..\..\..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
                 <Reference
-                    Name = "AForge"
-                    AssemblyName = "AForge"
-                    HintPath = "..\..\..\Release\AForge.dll"
-                />
-                <Reference
                     Name = "AForge.Genetic"
                     AssemblyName = "AForge.Genetic"
                     HintPath = "..\..\..\Release\AForge.Genetic.dll"
+                />
+                <Reference
+                    Name = "AForge"
+                    AssemblyName = "AForge"
+                    HintPath = "..\..\..\Release\AForge.dll"
                 />
             </References>
         </Build>

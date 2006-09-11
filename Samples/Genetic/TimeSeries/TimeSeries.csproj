@@ -79,18 +79,18 @@
                 />
                 <Reference
                     Name = "System.XML"
-                    AssemblyName = "System.XML"
+                    AssemblyName = "System.Xml"
                     HintPath = "D:\WINNT\Microsoft.NET\Framework\v1.0.3705\System.XML.dll"
-                />
-                <Reference
-                    Name = "AForge.Genetic"
-                    AssemblyName = "AForge.Genetic"
-                    HintPath = "..\..\..\Release\AForge.Genetic.dll"
                 />
                 <Reference
                     Name = "AForge"
                     AssemblyName = "AForge"
                     HintPath = "..\..\..\Release\AForge.dll"
+                />
+                <Reference
+                    Name = "AForge.Genetic"
+                    AssemblyName = "AForge.Genetic"
+                    HintPath = "..\..\..\Release\AForge.Genetic.dll"
                 />
             </References>
         </Build>
@@ -102,6 +102,7 @@
                 />
                 <File
                     RelPath = "AssemblyInfo.cs"
+                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File

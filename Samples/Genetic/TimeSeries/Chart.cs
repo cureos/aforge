@@ -18,7 +18,8 @@ namespace TimeSeries
 		public enum SeriesType
 		{
 			Line,
-			Dots
+			Dots,
+			UnlimitedLine
 		}
 
 		// series data
@@ -218,7 +219,8 @@ namespace TimeSeries
 			series.data = data;
 
 			// update Y range
-			UpdateYRange( );
+			if ( series.type != SeriesType.UnlimitedLine )
+				UpdateYRange( );
 			// invalidate the control
 			Invalidate( );
 		}
@@ -237,7 +239,7 @@ namespace TimeSeries
 				// get data of the series
 				double[,] data = series.data;
 
-				if ( data != null )
+				if ( ( series.type != SeriesType.UnlimitedLine ) && ( data != null ) )
 				{
 					for ( int i = 0, n = data.GetLength( 0 ); i < n; i++ )
 					{

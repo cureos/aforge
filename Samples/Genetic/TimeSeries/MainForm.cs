@@ -37,18 +37,41 @@ namespace TimeSeries
 		private System.Windows.Forms.ComboBox functionsSetBox;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.ComboBox geneticMethodBox;
+		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.TextBox windowSizeBox;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.TextBox predictionSizeBox;
+		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.Label label9;
+		private System.Windows.Forms.TextBox iterationsBox;
+		private System.Windows.Forms.Label label10;
+		private System.Windows.Forms.Button startButton;
+		private System.Windows.Forms.Button stopButton;
 
 		private double[] data = null;
 		private double[,] dataToShow = null;
 
 		private int populationSize = 40;
 		private int iterations = 100;
+		private int windowSize = 5;
+		private int predictionSize = 1;
 		private int selectionMethod = 0;
 		private int functionsSet = 0;
 		private int geneticMethod = 0;
 
 		private Thread	workerThread = null;
 		private bool	needToStop = false;
+
+		private double[,]	windowDelimiter = new double[2, 2] { { 0, 0 }, { 0, 0 } };
+		private System.Windows.Forms.GroupBox groupBox4;
+		private System.Windows.Forms.Label label11;
+		private System.Windows.Forms.TextBox currentIterationBox;
+		private System.Windows.Forms.Label label12;
+		private System.Windows.Forms.TextBox currentLearningErrorBox;
+		private System.Windows.Forms.Label label13;
+		private System.Windows.Forms.TextBox currentPredictionErrorBox;
+		private double[,]	predictionDelimiter = new double[2, 2] { { 0, 0 }, { 0, 0 } };
 		
 		// Constructor
 		public MainForm()
@@ -61,6 +84,8 @@ namespace TimeSeries
 			//
 			chart.AddDataSeries( "data", Color.Red, Chart.SeriesType.Dots, 5 );
 			chart.AddDataSeries( "solution", Color.Blue, Chart.SeriesType.Line, 1 );
+			chart.AddDataSeries( "window", Color.LightGray, Chart.SeriesType.UnlimitedLine, 1 );
+			chart.AddDataSeries( "prediction", Color.Gray, Chart.SeriesType.UnlimitedLine, 1 );
 
 			selectionBox.SelectedIndex		= selectionMethod;
 			functionsSetBox.SelectedIndex	= functionsSet;
@@ -98,24 +123,42 @@ namespace TimeSeries
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.chart = new TimeSeries.Chart();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
-			this.label1 = new System.Windows.Forms.Label();
-			this.populationSizeBox = new System.Windows.Forms.TextBox();
-			this.label2 = new System.Windows.Forms.Label();
-			this.selectionBox = new System.Windows.Forms.ComboBox();
-			this.label3 = new System.Windows.Forms.Label();
-			this.functionsSetBox = new System.Windows.Forms.ComboBox();
-			this.label4 = new System.Windows.Forms.Label();
 			this.geneticMethodBox = new System.Windows.Forms.ComboBox();
+			this.label4 = new System.Windows.Forms.Label();
+			this.functionsSetBox = new System.Windows.Forms.ComboBox();
+			this.label3 = new System.Windows.Forms.Label();
+			this.selectionBox = new System.Windows.Forms.ComboBox();
+			this.label2 = new System.Windows.Forms.Label();
+			this.populationSizeBox = new System.Windows.Forms.TextBox();
+			this.label1 = new System.Windows.Forms.Label();
+			this.label5 = new System.Windows.Forms.Label();
+			this.label6 = new System.Windows.Forms.Label();
+			this.windowSizeBox = new System.Windows.Forms.TextBox();
+			this.label7 = new System.Windows.Forms.Label();
+			this.predictionSizeBox = new System.Windows.Forms.TextBox();
+			this.label8 = new System.Windows.Forms.Label();
+			this.label9 = new System.Windows.Forms.Label();
+			this.iterationsBox = new System.Windows.Forms.TextBox();
+			this.label10 = new System.Windows.Forms.Label();
+			this.startButton = new System.Windows.Forms.Button();
+			this.stopButton = new System.Windows.Forms.Button();
+			this.groupBox4 = new System.Windows.Forms.GroupBox();
+			this.label11 = new System.Windows.Forms.Label();
+			this.currentIterationBox = new System.Windows.Forms.TextBox();
+			this.label12 = new System.Windows.Forms.Label();
+			this.currentLearningErrorBox = new System.Windows.Forms.TextBox();
+			this.label13 = new System.Windows.Forms.Label();
+			this.currentPredictionErrorBox = new System.Windows.Forms.TextBox();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.groupBox3.SuspendLayout();
+			this.groupBox4.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// groupBox1
 			// 
-			this.groupBox1.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.dataList,
-																					this.loadDataButton});
+			this.groupBox1.Controls.Add(this.dataList);
+			this.groupBox1.Controls.Add(this.loadDataButton);
 			this.groupBox1.Location = new System.Drawing.Point(10, 10);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Size = new System.Drawing.Size(180, 310);
@@ -155,8 +198,7 @@ namespace TimeSeries
 			// 
 			// groupBox2
 			// 
-			this.groupBox2.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.chart});
+			this.groupBox2.Controls.Add(this.chart);
 			this.groupBox2.Location = new System.Drawing.Point(200, 10);
 			this.groupBox2.Name = "groupBox2";
 			this.groupBox2.Size = new System.Drawing.Size(300, 310);
@@ -173,45 +215,67 @@ namespace TimeSeries
 			// 
 			// groupBox3
 			// 
-			this.groupBox3.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.geneticMethodBox,
-																					this.label4,
-																					this.functionsSetBox,
-																					this.label3,
-																					this.selectionBox,
-																					this.label2,
-																					this.populationSizeBox,
-																					this.label1});
+			this.groupBox3.Controls.Add(this.label10);
+			this.groupBox3.Controls.Add(this.iterationsBox);
+			this.groupBox3.Controls.Add(this.label9);
+			this.groupBox3.Controls.Add(this.label8);
+			this.groupBox3.Controls.Add(this.predictionSizeBox);
+			this.groupBox3.Controls.Add(this.label7);
+			this.groupBox3.Controls.Add(this.windowSizeBox);
+			this.groupBox3.Controls.Add(this.label6);
+			this.groupBox3.Controls.Add(this.label5);
+			this.groupBox3.Controls.Add(this.geneticMethodBox);
+			this.groupBox3.Controls.Add(this.label4);
+			this.groupBox3.Controls.Add(this.functionsSetBox);
+			this.groupBox3.Controls.Add(this.label3);
+			this.groupBox3.Controls.Add(this.selectionBox);
+			this.groupBox3.Controls.Add(this.label2);
+			this.groupBox3.Controls.Add(this.populationSizeBox);
+			this.groupBox3.Controls.Add(this.label1);
 			this.groupBox3.Location = new System.Drawing.Point(510, 10);
 			this.groupBox3.Name = "groupBox3";
-			this.groupBox3.Size = new System.Drawing.Size(185, 200);
+			this.groupBox3.Size = new System.Drawing.Size(185, 240);
 			this.groupBox3.TabIndex = 2;
 			this.groupBox3.TabStop = false;
 			this.groupBox3.Text = "Settings";
 			// 
-			// label1
+			// geneticMethodBox
 			// 
-			this.label1.Location = new System.Drawing.Point(10, 22);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(100, 16);
-			this.label1.TabIndex = 0;
-			this.label1.Text = "Population size:";
+			this.geneticMethodBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.geneticMethodBox.Items.AddRange(new object[] {
+																  "GP",
+																  "GEP"});
+			this.geneticMethodBox.Location = new System.Drawing.Point(110, 95);
+			this.geneticMethodBox.Name = "geneticMethodBox";
+			this.geneticMethodBox.Size = new System.Drawing.Size(65, 21);
+			this.geneticMethodBox.TabIndex = 7;
 			// 
-			// populationSizeBox
+			// label4
 			// 
-			this.populationSizeBox.Location = new System.Drawing.Point(125, 20);
-			this.populationSizeBox.Name = "populationSizeBox";
-			this.populationSizeBox.Size = new System.Drawing.Size(50, 20);
-			this.populationSizeBox.TabIndex = 1;
-			this.populationSizeBox.Text = "";
+			this.label4.Location = new System.Drawing.Point(10, 97);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(100, 16);
+			this.label4.TabIndex = 6;
+			this.label4.Text = "Genetic method:";
 			// 
-			// label2
+			// functionsSetBox
 			// 
-			this.label2.Location = new System.Drawing.Point(10, 47);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(100, 16);
-			this.label2.TabIndex = 2;
-			this.label2.Text = "Selection method:";
+			this.functionsSetBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.functionsSetBox.Items.AddRange(new object[] {
+																 "Simple",
+																 "Extended"});
+			this.functionsSetBox.Location = new System.Drawing.Point(110, 70);
+			this.functionsSetBox.Name = "functionsSetBox";
+			this.functionsSetBox.Size = new System.Drawing.Size(65, 21);
+			this.functionsSetBox.TabIndex = 5;
+			// 
+			// label3
+			// 
+			this.label3.Location = new System.Drawing.Point(10, 72);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(100, 16);
+			this.label3.TabIndex = 4;
+			this.label3.Text = "Function set:";
 			// 
 			// selectionBox
 			// 
@@ -225,52 +289,199 @@ namespace TimeSeries
 			this.selectionBox.Size = new System.Drawing.Size(65, 21);
 			this.selectionBox.TabIndex = 3;
 			// 
-			// label3
+			// label2
 			// 
-			this.label3.Location = new System.Drawing.Point(10, 72);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(100, 16);
-			this.label3.TabIndex = 4;
-			this.label3.Text = "Function set:";
+			this.label2.Location = new System.Drawing.Point(10, 47);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(100, 16);
+			this.label2.TabIndex = 2;
+			this.label2.Text = "Selection method:";
 			// 
-			// functionsSetBox
+			// populationSizeBox
 			// 
-			this.functionsSetBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.functionsSetBox.Items.AddRange(new object[] {
-																 "Simple",
-																 "Extended"});
-			this.functionsSetBox.Location = new System.Drawing.Point(110, 70);
-			this.functionsSetBox.Name = "functionsSetBox";
-			this.functionsSetBox.Size = new System.Drawing.Size(65, 21);
-			this.functionsSetBox.TabIndex = 5;
+			this.populationSizeBox.Location = new System.Drawing.Point(125, 20);
+			this.populationSizeBox.Name = "populationSizeBox";
+			this.populationSizeBox.Size = new System.Drawing.Size(50, 20);
+			this.populationSizeBox.TabIndex = 1;
+			this.populationSizeBox.Text = "";
 			// 
-			// label4
+			// label1
 			// 
-			this.label4.Location = new System.Drawing.Point(10, 97);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(100, 16);
-			this.label4.TabIndex = 6;
-			this.label4.Text = "Genetic method:";
+			this.label1.Location = new System.Drawing.Point(10, 22);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(100, 16);
+			this.label1.TabIndex = 0;
+			this.label1.Text = "Population size:";
 			// 
-			// geneticMethodBox
+			// label5
 			// 
-			this.geneticMethodBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.geneticMethodBox.Items.AddRange(new object[] {
-																  "GP",
-																  "GEP"});
-			this.geneticMethodBox.Location = new System.Drawing.Point(110, 95);
-			this.geneticMethodBox.Name = "geneticMethodBox";
-			this.geneticMethodBox.Size = new System.Drawing.Size(65, 21);
-			this.geneticMethodBox.TabIndex = 7;
+			this.label5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.label5.Location = new System.Drawing.Point(10, 125);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(165, 2);
+			this.label5.TabIndex = 8;
+			// 
+			// label6
+			// 
+			this.label6.Location = new System.Drawing.Point(10, 137);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(80, 16);
+			this.label6.TabIndex = 9;
+			this.label6.Text = "Window size:";
+			// 
+			// windowSizeBox
+			// 
+			this.windowSizeBox.Location = new System.Drawing.Point(125, 135);
+			this.windowSizeBox.Name = "windowSizeBox";
+			this.windowSizeBox.Size = new System.Drawing.Size(50, 20);
+			this.windowSizeBox.TabIndex = 10;
+			this.windowSizeBox.Text = "";
+			this.windowSizeBox.TextChanged += new System.EventHandler(this.windowSizeBox_TextChanged);
+			// 
+			// label7
+			// 
+			this.label7.Location = new System.Drawing.Point(10, 162);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(90, 16);
+			this.label7.TabIndex = 11;
+			this.label7.Text = "Prediction size:";
+			// 
+			// predictionSizeBox
+			// 
+			this.predictionSizeBox.Location = new System.Drawing.Point(125, 160);
+			this.predictionSizeBox.Name = "predictionSizeBox";
+			this.predictionSizeBox.Size = new System.Drawing.Size(50, 20);
+			this.predictionSizeBox.TabIndex = 12;
+			this.predictionSizeBox.Text = "";
+			this.predictionSizeBox.TextChanged += new System.EventHandler(this.predictionSizeBox_TextChanged);
+			// 
+			// label8
+			// 
+			this.label8.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.label8.Location = new System.Drawing.Point(10, 190);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(165, 2);
+			this.label8.TabIndex = 13;
+			// 
+			// label9
+			// 
+			this.label9.Location = new System.Drawing.Point(10, 202);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(70, 16);
+			this.label9.TabIndex = 14;
+			this.label9.Text = "Iterations:";
+			// 
+			// iterationsBox
+			// 
+			this.iterationsBox.Location = new System.Drawing.Point(125, 200);
+			this.iterationsBox.Name = "iterationsBox";
+			this.iterationsBox.Size = new System.Drawing.Size(50, 20);
+			this.iterationsBox.TabIndex = 15;
+			this.iterationsBox.Text = "";
+			// 
+			// label10
+			// 
+			this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label10.Location = new System.Drawing.Point(125, 220);
+			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(58, 14);
+			this.label10.TabIndex = 16;
+			this.label10.Text = "( 0 - inifinity )";
+			// 
+			// startButton
+			// 
+			this.startButton.Enabled = false;
+			this.startButton.Location = new System.Drawing.Point(530, 364);
+			this.startButton.Name = "startButton";
+			this.startButton.TabIndex = 3;
+			this.startButton.Text = "&Start";
+			this.startButton.Click += new System.EventHandler(this.startButton_Click);
+			// 
+			// stopButton
+			// 
+			this.stopButton.Enabled = false;
+			this.stopButton.Location = new System.Drawing.Point(620, 364);
+			this.stopButton.Name = "stopButton";
+			this.stopButton.TabIndex = 4;
+			this.stopButton.Text = "S&top";
+			this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
+			// 
+			// groupBox4
+			// 
+			this.groupBox4.Controls.Add(this.currentPredictionErrorBox);
+			this.groupBox4.Controls.Add(this.label13);
+			this.groupBox4.Controls.Add(this.currentLearningErrorBox);
+			this.groupBox4.Controls.Add(this.label12);
+			this.groupBox4.Controls.Add(this.currentIterationBox);
+			this.groupBox4.Controls.Add(this.label11);
+			this.groupBox4.Location = new System.Drawing.Point(510, 255);
+			this.groupBox4.Name = "groupBox4";
+			this.groupBox4.Size = new System.Drawing.Size(185, 100);
+			this.groupBox4.TabIndex = 5;
+			this.groupBox4.TabStop = false;
+			this.groupBox4.Text = "Current iteration:";
+			// 
+			// label11
+			// 
+			this.label11.Location = new System.Drawing.Point(10, 22);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(70, 16);
+			this.label11.TabIndex = 0;
+			this.label11.Text = "Iteration:";
+			// 
+			// currentIterationBox
+			// 
+			this.currentIterationBox.Location = new System.Drawing.Point(125, 20);
+			this.currentIterationBox.Name = "currentIterationBox";
+			this.currentIterationBox.ReadOnly = true;
+			this.currentIterationBox.Size = new System.Drawing.Size(50, 20);
+			this.currentIterationBox.TabIndex = 1;
+			this.currentIterationBox.Text = "";
+			// 
+			// label12
+			// 
+			this.label12.Location = new System.Drawing.Point(10, 47);
+			this.label12.Name = "label12";
+			this.label12.Size = new System.Drawing.Size(80, 16);
+			this.label12.TabIndex = 2;
+			this.label12.Text = "Learning error:";
+			// 
+			// currentLearningErrorBox
+			// 
+			this.currentLearningErrorBox.Location = new System.Drawing.Point(125, 45);
+			this.currentLearningErrorBox.Name = "currentLearningErrorBox";
+			this.currentLearningErrorBox.ReadOnly = true;
+			this.currentLearningErrorBox.Size = new System.Drawing.Size(50, 20);
+			this.currentLearningErrorBox.TabIndex = 3;
+			this.currentLearningErrorBox.Text = "";
+			// 
+			// label13
+			// 
+			this.label13.Location = new System.Drawing.Point(10, 72);
+			this.label13.Name = "label13";
+			this.label13.Size = new System.Drawing.Size(100, 16);
+			this.label13.TabIndex = 4;
+			this.label13.Text = "Prediction error:";
+			// 
+			// currentPredictionErrorBox
+			// 
+			this.currentPredictionErrorBox.Location = new System.Drawing.Point(125, 70);
+			this.currentPredictionErrorBox.Name = "currentPredictionErrorBox";
+			this.currentPredictionErrorBox.ReadOnly = true;
+			this.currentPredictionErrorBox.Size = new System.Drawing.Size(50, 20);
+			this.currentPredictionErrorBox.TabIndex = 5;
+			this.currentPredictionErrorBox.Text = "";
 			// 
 			// MainForm
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(705, 364);
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.groupBox3,
-																		  this.groupBox2,
-																		  this.groupBox1});
+			this.ClientSize = new System.Drawing.Size(705, 396);
+			this.Controls.Add(this.groupBox4);
+			this.Controls.Add(this.stopButton);
+			this.Controls.Add(this.startButton);
+			this.Controls.Add(this.groupBox3);
+			this.Controls.Add(this.groupBox2);
+			this.Controls.Add(this.groupBox1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
 			this.Name = "MainForm";
@@ -279,6 +490,7 @@ namespace TimeSeries
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox3.ResumeLayout(false);
+			this.groupBox4.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -296,14 +508,21 @@ namespace TimeSeries
 		// On main form closing
 		private void MainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-		
+			// check if worker thread is running
+			if ( ( workerThread != null ) && ( workerThread.IsAlive ) )
+			{
+				needToStop = true;
+				workerThread.Join( );
+			}
 		}
 
 		// Update settings controls
 		private void UpdateSettings( )
 		{
-			populationSizeBox.Text		= populationSize.ToString( );
-//			iterationsBox.Text			= iterations.ToString( );
+			populationSizeBox.Text	= populationSize.ToString( );
+			iterationsBox.Text		= iterations.ToString( );
+			windowSizeBox.Text		= windowSize.ToString( );
+			predictionSizeBox.Text	= predictionSize.ToString( );
 		}
 
 		// Load data
@@ -312,13 +531,14 @@ namespace TimeSeries
 			// show file selection dialog
 			if ( openFileDialog.ShowDialog( ) == DialogResult.OK )
 			{
+				StreamReader reader = null;
 				// read maximum 50 points
 				double[] tempData = new double[50];
 
 				try
 				{
 					// open selected file
-					StreamReader reader = File.OpenText( openFileDialog.FileName );
+					reader = File.OpenText( openFileDialog.FileName );
 					string	str = null;
 					int		i = 0;
 
@@ -346,16 +566,39 @@ namespace TimeSeries
 					MessageBox.Show( "Failed reading the file", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
 					return;
 				}
+				finally
+				{
+					// close file
+					if ( reader != null )
+						reader.Close( );
+				}
 
 				// update list and chart
 				UpdateDataListView( );
 				chart.RangeX = new DoubleRange( 0, data.Length - 1 );
 				chart.UpdateDataSeries( "data", dataToShow );
 				chart.UpdateDataSeries( "solution", null );
+				// set delimiters
+				UpdateDelimiters( );
 				// enable "Start" button
-//				startButton.Enabled = true;
+				startButton.Enabled = true;
 			}
 		
+		}
+
+		// Update delimiters on the chart
+		private void UpdateDelimiters( )
+		{
+			// window delimiter
+			windowDelimiter[0, 0] = windowDelimiter[1, 0] = windowSize;
+			windowDelimiter[0, 1] = chart.RangeY.Min;
+			windowDelimiter[1, 1] = chart.RangeY.Max;
+			chart.UpdateDataSeries( "window", windowDelimiter );
+			// prediction delimiter
+			predictionDelimiter[0, 0] = predictionDelimiter[1, 0] = data.Length - 1 - predictionSize;
+			predictionDelimiter[0, 1] = chart.RangeY.Min;
+			predictionDelimiter[1, 1] = chart.RangeY.Max;
+			chart.UpdateDataSeries( "prediction", predictionDelimiter );
 		}
 
 		// Update data in list view
@@ -370,6 +613,224 @@ namespace TimeSeries
 			}
 		}
 
+		// Enable/disale controls
+		private void EnableControls( bool enable )
+		{
+			loadDataButton.Enabled		= enable;
+			populationSizeBox.Enabled	= enable;
+			iterationsBox.Enabled		= enable;
+			selectionBox.Enabled		= enable;
+			functionsSetBox.Enabled		= enable;
+			geneticMethodBox.Enabled	= enable;
+			windowSizeBox.Enabled		= enable;
+			predictionSizeBox.Enabled	= enable;
+
+			startButton.Enabled	= enable;
+			stopButton.Enabled	= !enable;
+		}
+		
+		// On window size changed
+		private void windowSizeBox_TextChanged( object sender, System.EventArgs e )
+		{
+			UpdateWindowSize( );
+		}
+
+		// On prediction changed
+		private void predictionSizeBox_TextChanged( object sender, System.EventArgs e )
+		{
+			UpdatePredictionSize( );		
+		}
+
+		// Update window size
+		private void UpdateWindowSize( )
+		{
+			if ( data != null )
+			{
+				// get new window size value
+				try
+				{
+					windowSize = Math.Max( 1, Math.Min( 15, int.Parse( windowSizeBox.Text ) ) );
+				}
+				catch
+				{
+					windowSize = 5;
+				}
+				// check if we have too few data
+				if ( windowSize >= data.Length )
+					windowSize = 1;
+				// update delimiters
+				UpdateDelimiters( );
+			}
+		}
+
+		// Update prediction size
+		private void UpdatePredictionSize( )
+		{
+			if ( data != null )
+			{
+				// get new prediction size value
+				try
+				{
+					predictionSize = Math.Max( 1, Math.Min( 10, int.Parse( predictionSizeBox.Text ) ) );
+				}
+				catch
+				{
+					predictionSize = 1;
+				}
+				// check if we have too few data
+				if ( data.Length - predictionSize - 1 < windowSize )
+					predictionSize = 1;
+				// update delimiters
+				UpdateDelimiters( );
+			}
+		}
+
+		// On button "Start"
+		private void startButton_Click( object sender, System.EventArgs e )
+		{
+			chart.UpdateDataSeries( "solution", null );
+			// get population size
+			try
+			{
+				populationSize = Math.Max( 10, Math.Min( 100, int.Parse( populationSizeBox.Text ) ) );
+			}
+			catch
+			{
+				populationSize = 40;
+			}
+			// iterations
+			try
+			{
+				iterations = Math.Max( 0, int.Parse( iterationsBox.Text ) );
+			}
+			catch
+			{
+				iterations = 100;
+			}
+			// window size
+			UpdateWindowSize( );
+			// prediction size
+			UpdatePredictionSize( );
+			// update settings controls
+			UpdateSettings( );
+
+			selectionMethod	= selectionBox.SelectedIndex;
+			functionsSet	= functionsSetBox.SelectedIndex;
+			geneticMethod	= geneticMethodBox.SelectedIndex;
+		
+			// disable all settings controls except "Stop" button
+			EnableControls( false );
+
+			// run worker thread
+			needToStop = false;
+			workerThread = new Thread( new ThreadStart( SearchSolution ) );
+			workerThread.Start( );
+		}
+
+		// On button "Stop"
+		private void stopButton_Click( object sender, System.EventArgs e )
+		{
+			// stop worker thread
+			needToStop = true;
+			workerThread.Join( );
+			workerThread = null;
+		}
+
+		// Worker thread
+		void SearchSolution( )
+		{
+			// constants
+			double[] constants = new double[10] { 1, 2, 3, 5, 7, 11, 13, 17, 19, 23 };
+			// create fitness function
+			TimeSeriesPredictionFitness fitness = new TimeSeriesPredictionFitness(
+				data, windowSize, predictionSize, constants );
+			// create gene function
+			IGPGene gene = ( functionsSet == 0 ) ?
+				(IGPGene) new SimpleGeneFunction( windowSize + constants.Length ) :
+				(IGPGene) new ExtendedGeneFunction( windowSize + constants.Length );
+			// create population
+			Population population = new Population( populationSize,
+				( geneticMethod == 0 ) ?
+				(IChromosome) new GPTreeChromosome( gene ) :
+				(IChromosome) new GEPChromosome( gene, 20 ),
+				fitness,
+				( selectionMethod == 0 ) ? (ISelectionMethod) new EliteSelection( ) :
+				( selectionMethod == 1 ) ? (ISelectionMethod) new RankSelection( ) :
+				(ISelectionMethod) new RouletteWheelSelection( )
+				);
+			// iterations
+			int i = 1;
+			// solution array
+			int			solutionSize = data.Length - windowSize;
+			double[,]	solution = new double[solutionSize, 2];
+			double[]	input = new double[windowSize + constants.Length];
+
+			// calculate X values to be used with solution function
+			for ( int j = 0; j < solutionSize; j++ )
+			{
+				solution[j, 0] = j + windowSize;
+			}
+			// prepare input
+			Array.Copy( constants, 0, input, windowSize, constants.Length );
+
+			// loop
+			while ( !needToStop )
+			{
+				// run one epoch of genetic algorithm
+				population.RunEpoch( );
+
+				try
+				{
+					// get best solution
+					string bestFunction = population.BestChromosome.ToString( );
+
+					// calculate best function and prediction error
+					double predictionError = 0.0;
+					// go through all the data
+					for ( int j = 0, n = data.Length - windowSize; j < n; j++ )
+					{
+						// put values from current window as variables
+						for ( int k = 0; k < windowSize; k++ )
+						{
+							input[k] = data[j + k];
+						}
+
+						// evalue the function
+						solution[j, 1] = PolishExpression.Evaluate( bestFunction, input );
+
+						// calculate prediction error
+						if ( j >= n - predictionSize )
+						{
+							predictionError += Math.Abs( solution[j, 1] - data[windowSize + j] );
+						}
+					}
+					// update solution on the chart
+					chart.UpdateDataSeries( "solution", solution );
+				
+					// set current iteration's info
+					fitness.Evaluate( population.BestChromosome );
+					currentIterationBox.Text = i.ToString( );
+					currentLearningErrorBox.Text = fitness.Error.ToString( "F3" );
+					currentPredictionErrorBox.Text = predictionError.ToString( "F3" );
+				}
+				catch
+				{
+					// remove any solutions from chart in case of any errors
+					chart.UpdateDataSeries( "solution", null );
+				}
+
+
+				// increase current iteration
+				i++;
+
+				//
+				if ( ( iterations != 0 ) && ( i > iterations ) )
+					break;
+			}
+
+			// enable settings controls
+			EnableControls( true );
+		}
 
 	}
 }
