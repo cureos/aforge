@@ -63,16 +63,14 @@ namespace AForge.Genetic
 					if ( double.IsNaN( y ) )
 						return 0;
 					// get the difference between evaluated Y and real Y
-					double d = y - data[i, 1];
-					// sum the error
-					error += d * d;
+					// and sum error
+					error += Math.Abs( y - data[i, 1] );
 				}
 				catch
 				{
 					return 0;
 				}
 			}
-			error = Math.Sqrt( error );
 
 			// return optimization function value
 			return 100.0 / ( error + 1 );

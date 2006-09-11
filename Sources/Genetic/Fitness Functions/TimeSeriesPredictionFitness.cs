@@ -20,18 +20,33 @@ namespace AForge.Genetic
 		private double[]	variables;
 		// window size
 		private int			windowSize;
+		// prediction size
+		private int			predictionSize;
+		// last evaluation error
+		private double		error = 0;
+
+		/// <summary>
+		/// Last evaluation error
+		/// </summary>
+		public double Error
+		{
+			get { return error; }
+		}
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public TimeSeriesPredictionFitness( double[] data, int windowSize, double[] constants )
+		public TimeSeriesPredictionFitness( double[] data, int windowSize, int predictionSize, double[] constants )
 		{
 			// check for correct parameters
 			if ( windowSize >= data.Length )
 				throw new ArgumentException( "Window size should be less then data amount" );
+			if ( data.Length - windowSize - predictionSize < 1 )
+				throw new ArgumentException( "Data size should be enough for window and prediction" );
 			// save parameters
-			this.data		= data;
-			this.windowSize	= windowSize;
+			this.data			= data;
+			this.windowSize		= windowSize;
+			this.predictionSize	= predictionSize;
 			// copy constants
 			variables = new double[constants.Length + windowSize];
 			Array.Copy( constants, 0, variables, windowSize, constants.Length );
@@ -45,11 +60,10 @@ namespace AForge.Genetic
 		{
 			// get function in polish notation
 			string function = chromosome.ToString( );
-			// error sum
-			double e = 0;
 
 			// go through all the data
-			for ( int i = 0, n = data.Length - windowSize; i < n; i++ )
+			error = 0.0;
+			for ( int i = 0, n = data.Length - windowSize - predictionSize; i < n; i++ )
 			{
 				// put values from current window as variables
 				for ( int j = 0; j < windowSize; j++ )
@@ -66,10 +80,8 @@ namespace AForge.Genetic
 					if ( double.IsNaN( y ) )
 						return 0;
 					// get the difference between evaluated value and
-					// next value after the window
-					double d = y - data[i + windowSize];
-					// sum the error
-					e += d * d;
+					// next value after the window, and sum error
+					error += Math.Abs( y - data[i + windowSize] );
 				}
 				catch
 				{
@@ -78,7 +90,7 @@ namespace AForge.Genetic
 			}
 
 			// return optimization function value
-			return 100.0 / ( Math.Sqrt( e ) + 1 );
+			return 100.0 / ( error + 1 );
 		}
 
 		/// <summary>
