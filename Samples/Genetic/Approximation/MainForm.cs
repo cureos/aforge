@@ -551,6 +551,8 @@ namespace Approximation
 		// On button "Start"
 		private void startButton_Click(object sender, System.EventArgs e)
 		{
+			solutionBox.Text = string.Empty;
+
 			// get population size
 			try
 			{
@@ -663,6 +665,7 @@ namespace Approximation
 					break;
 			}
 
+			// show solution
 			solutionBox.Text = population.BestChromosome.ToString( );
 
 			// enable settings controls

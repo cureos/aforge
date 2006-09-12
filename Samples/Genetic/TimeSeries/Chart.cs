@@ -19,6 +19,7 @@ namespace TimeSeries
 		{
 			Line,
 			Dots,
+			ConnectedDots,
 			UnlimitedLine
 		}
 
@@ -159,7 +160,41 @@ namespace TimeSeries
 						}
 						brush.Dispose( );
 					}
-					else
+					else if ( series.type == SeriesType.ConnectedDots )
+					{
+						// draw dots connected with 1-pixel width line
+						Brush	brush = new SolidBrush( series.color );
+						Pen		pen = new Pen( series.color, 1 );
+						int		width = series.width;
+						int		r = width >> 1;
+
+						int x1 = (int) ( ( data[0, 0] - rangeX.Min ) * xFactor );
+						int y1 = (int) ( ( data[0, 1] - rangeY.Min ) * yFactor );
+
+						x1 += 5;
+						y1 = clientHeight - 6 - y1;
+						g.FillRectangle( brush, x1 - r, y1 - r, width, width );
+
+						// draw all lines
+						for ( int i = 1, n = data.GetLength( 0 ); i < n; i++ )
+						{
+							int x2 = (int) ( ( data[i, 0] - rangeX.Min ) * xFactor );
+							int y2 = (int) ( ( data[i, 1] - rangeY.Min ) * yFactor );
+
+							x2 += 5;
+							y2 = clientHeight - 6 - y2;
+							g.FillRectangle( brush, x2 - r, y2 - r, width, width );
+
+							g.DrawLine( pen, x1, y1, x2, y2 );
+
+							x1 = x2;
+							y1 = y2;
+						}
+
+						pen.Dispose( );
+						brush.Dispose( );
+					}
+					else if ( ( series.type == SeriesType.Line ) || ( series.type == SeriesType.UnlimitedLine ) )
 					{
 						// draw line
 						Pen pen = new Pen( series.color, series.width );
