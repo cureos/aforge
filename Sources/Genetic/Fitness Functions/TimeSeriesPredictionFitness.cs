@@ -66,9 +66,9 @@ namespace AForge.Genetic
 			for ( int i = 0, n = data.Length - windowSize - predictionSize; i < n; i++ )
 			{
 				// put values from current window as variables
-				for ( int j = 0; j < windowSize; j++ )
+				for ( int j = 0, b = i + windowSize - 1; j < windowSize; j++ )
 				{
-					variables[j] = data[i + j];
+					variables[j] = data[b - j];
 				}
 
 				// avoid evaluation errors
