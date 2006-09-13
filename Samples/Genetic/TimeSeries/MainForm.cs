@@ -45,22 +45,6 @@ namespace TimeSeries
 		private System.Windows.Forms.Label label10;
 		private System.Windows.Forms.Button startButton;
 		private System.Windows.Forms.Button stopButton;
-
-		private double[] data = null;
-		private double[,] dataToShow = null;
-
-		private int populationSize = 40;
-		private int iterations = 100;
-		private int windowSize = 5;
-		private int predictionSize = 1;
-		private int selectionMethod = 0;
-		private int functionsSet = 0;
-		private int geneticMethod = 0;
-
-		private Thread	workerThread = null;
-		private bool	needToStop = false;
-
-		private double[,]	windowDelimiter = new double[2, 2] { { 0, 0 }, { 0, 0 } };
 		private System.Windows.Forms.GroupBox groupBox4;
 		private System.Windows.Forms.Label label11;
 		private System.Windows.Forms.TextBox currentIterationBox;
@@ -73,6 +57,24 @@ namespace TimeSeries
 		private System.Windows.Forms.ColumnHeader estimatedYColumnHeader;
 		private System.Windows.Forms.Button moreSettingsButton;
 		private System.Windows.Forms.ToolTip toolTip;
+
+		private double[] data = null;
+		private double[,] dataToShow = null;
+
+		private int populationSize = 40;
+		private int iterations = 100;
+		private int windowSize = 5;
+		private int predictionSize = 1;
+		private int selectionMethod = 0;
+		private int functionsSet = 0;
+		private int geneticMethod = 0;
+
+		private int headLength = 20;
+
+		private Thread	workerThread = null;
+		private bool	needToStop = false;
+
+		private double[,]	windowDelimiter = new double[2, 2] { { 0, 0 }, { 0, 0 } };
 		private double[,]	predictionDelimiter = new double[2, 2] { { 0, 0 }, { 0, 0 } };
 		
 		// Constructor
@@ -825,7 +827,7 @@ namespace TimeSeries
 			Population population = new Population( populationSize,
 				( geneticMethod == 0 ) ?
 				(IChromosome) new GPTreeChromosome( gene ) :
-				(IChromosome) new GEPChromosome( gene, 20 ),
+				(IChromosome) new GEPChromosome( gene, headLength ),
 				fitness,
 				( selectionMethod == 0 ) ? (ISelectionMethod) new EliteSelection( ) :
 				( selectionMethod == 1 ) ? (ISelectionMethod) new RankSelection( ) :
@@ -916,10 +918,18 @@ namespace TimeSeries
 		private void moreSettingsButton_Click( object sender, System.EventArgs e )
 		{
 			ExSettingsDialog settingsDlg = new ExSettingsDialog( );
-		
+
+			// init the dialog
+			settingsDlg.MaxInitialTreeLevel	= GPTreeChromosome.MaxInitialLevel;
+			settingsDlg.MaxTreeLevel		= GPTreeChromosome.MaxLevel;
+			settingsDlg.HeadLength			= headLength;
+
+			// show the dialog
 			if ( settingsDlg.ShowDialog( ) == DialogResult.OK )
 			{
-
+				GPTreeChromosome.MaxInitialLevel = settingsDlg.MaxInitialTreeLevel;
+				GPTreeChromosome.MaxLevel = settingsDlg.MaxTreeLevel;
+				headLength = settingsDlg.HeadLength;
 			}
 		}
 	}
