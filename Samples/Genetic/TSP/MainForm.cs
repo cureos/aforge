@@ -375,6 +375,8 @@ namespace TSP
 			iterationsBox.Enabled		= enable;
 			selectionBox.Enabled		= enable;
 
+			generateMapButton.Enabled	= enable;
+
 			startButton.Enabled	= enable;
 			stopButton.Enabled	= !enable;
 		}
