@@ -1,3 +1,10 @@
+// AForge Framework
+// Approximation (Symbolic Regression) using Genetic Programming and Gene Expression Programming
+//
+// Copyright © Andrew Kirillov, 2006
+// andrew.kirillov@gmail.com
+//
+
 using System;
 using System.Drawing;
 using System.Collections;
@@ -417,7 +424,8 @@ namespace Approximation
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
 			this.Name = "MainForm";
-			this.Text = "Approximation (Symbolic Regression)";
+			this.Text = "Approximation (Symbolic Regression) using Genetic Programming and Gene Expression" +
+				" Programming";
 			this.Closing += new System.ComponentModel.CancelEventHandler(this.MainForm_Closing);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox2.ResumeLayout(false);

@@ -1,3 +1,10 @@
+// AForge Framework
+// Traveling Salesman Problem using Genetic Algorithms
+//
+// Copyright © Andrew Kirillov, 2006
+// andrew.kirillov@gmail.com
+//
+
 using System;
 using System.Drawing;
 using System.Collections;
@@ -100,6 +107,7 @@ namespace TSP
 			this.label1 = new System.Windows.Forms.Label();
 			this.mapControl = new TSP.MapControl();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.greedyCrossoverBox = new System.Windows.Forms.CheckBox();
 			this.label5 = new System.Windows.Forms.Label();
 			this.iterationsBox = new System.Windows.Forms.TextBox();
 			this.label4 = new System.Windows.Forms.Label();
@@ -114,7 +122,6 @@ namespace TSP
 			this.label6 = new System.Windows.Forms.Label();
 			this.startButton = new System.Windows.Forms.Button();
 			this.stopButton = new System.Windows.Forms.Button();
-			this.greedyCrossoverBox = new System.Windows.Forms.CheckBox();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.groupBox3.SuspendLayout();
@@ -183,6 +190,14 @@ namespace TSP
 			this.groupBox2.TabIndex = 1;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Settings";
+			// 
+			// greedyCrossoverBox
+			// 
+			this.greedyCrossoverBox.Location = new System.Drawing.Point(10, 70);
+			this.greedyCrossoverBox.Name = "greedyCrossoverBox";
+			this.greedyCrossoverBox.Size = new System.Drawing.Size(120, 24);
+			this.greedyCrossoverBox.TabIndex = 7;
+			this.greedyCrossoverBox.Text = "Greedy crossover";
 			// 
 			// label5
 			// 
@@ -309,14 +324,6 @@ namespace TSP
 			this.stopButton.Text = "S&top";
 			this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
 			// 
-			// greedyCrossoverBox
-			// 
-			this.greedyCrossoverBox.Location = new System.Drawing.Point(10, 70);
-			this.greedyCrossoverBox.Name = "greedyCrossoverBox";
-			this.greedyCrossoverBox.Size = new System.Drawing.Size(120, 24);
-			this.greedyCrossoverBox.TabIndex = 7;
-			this.greedyCrossoverBox.Text = "Greedy crossover";
-			// 
 			// MainForm
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
@@ -329,7 +336,7 @@ namespace TSP
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
 			this.Name = "MainForm";
-			this.Text = "Traveling Salesman Problem";
+			this.Text = "Traveling Salesman Problem using Genetic Algorithms";
 			this.Closing += new System.ComponentModel.CancelEventHandler(this.MainForm_Closing);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox2.ResumeLayout(false);

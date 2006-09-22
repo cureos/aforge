@@ -1,3 +1,10 @@
+// AForge Framework
+// 1D Optimization using Genetic Algorithms
+//
+// Copyright © Andrew Kirillov, 2006
+// andrew.kirillov@gmail.com
+//
+
 using System;
 using System.Drawing;
 using System.Collections;
@@ -141,12 +148,11 @@ namespace Optimization1D
 			// 
 			// groupBox1
 			// 
-			this.groupBox1.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.chart,
-																					this.label1,
-																					this.minXBox,
-																					this.maxXBox,
-																					this.label2});
+			this.groupBox1.Controls.Add(this.chart);
+			this.groupBox1.Controls.Add(this.label1);
+			this.groupBox1.Controls.Add(this.minXBox);
+			this.groupBox1.Controls.Add(this.maxXBox);
+			this.groupBox1.Controls.Add(this.label2);
 			this.groupBox1.Location = new System.Drawing.Point(10, 10);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Size = new System.Drawing.Size(300, 330);
@@ -190,19 +196,18 @@ namespace Optimization1D
 			// 
 			// groupBox2
 			// 
-			this.groupBox2.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.modeBox,
-																					this.label8,
-																					this.selectionBox,
-																					this.label7,
-																					this.label6,
-																					this.iterationsBox,
-																					this.label5,
-																					this.onlyBestCheck,
-																					this.chromosomeLengthBox,
-																					this.label4,
-																					this.populationSizeBox,
-																					this.label3});
+			this.groupBox2.Controls.Add(this.modeBox);
+			this.groupBox2.Controls.Add(this.label8);
+			this.groupBox2.Controls.Add(this.selectionBox);
+			this.groupBox2.Controls.Add(this.label7);
+			this.groupBox2.Controls.Add(this.label6);
+			this.groupBox2.Controls.Add(this.iterationsBox);
+			this.groupBox2.Controls.Add(this.label5);
+			this.groupBox2.Controls.Add(this.onlyBestCheck);
+			this.groupBox2.Controls.Add(this.chromosomeLengthBox);
+			this.groupBox2.Controls.Add(this.label4);
+			this.groupBox2.Controls.Add(this.populationSizeBox);
+			this.groupBox2.Controls.Add(this.label3);
 			this.groupBox2.Location = new System.Drawing.Point(320, 10);
 			this.groupBox2.Name = "groupBox2";
 			this.groupBox2.Size = new System.Drawing.Size(185, 222);
@@ -333,11 +338,10 @@ namespace Optimization1D
 			// 
 			// groupBox3
 			// 
-			this.groupBox3.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.currentValueBox,
-																					this.label10,
-																					this.currentIterationBox,
-																					this.label9});
+			this.groupBox3.Controls.Add(this.currentValueBox);
+			this.groupBox3.Controls.Add(this.label10);
+			this.groupBox3.Controls.Add(this.currentIterationBox);
+			this.groupBox3.Controls.Add(this.label9);
 			this.groupBox3.Location = new System.Drawing.Point(320, 235);
 			this.groupBox3.Name = "groupBox3";
 			this.groupBox3.Size = new System.Drawing.Size(185, 75);
@@ -383,16 +387,15 @@ namespace Optimization1D
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(514, 350);
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.groupBox3,
-																		  this.stopButton,
-																		  this.startButton,
-																		  this.groupBox2,
-																		  this.groupBox1});
+			this.Controls.Add(this.groupBox3);
+			this.Controls.Add(this.stopButton);
+			this.Controls.Add(this.startButton);
+			this.Controls.Add(this.groupBox2);
+			this.Controls.Add(this.groupBox1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
 			this.Name = "MainForm";
-			this.Text = "1D Optimization";
+			this.Text = "1D Optimization using Genetic Algorithms";
 			this.Closing += new System.ComponentModel.CancelEventHandler(this.MainForm_Closing);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox2.ResumeLayout(false);

@@ -1,3 +1,9 @@
+// AForge Framework
+//
+// Copyright © Andrew Kirillov, 2006
+// andrew.kirillov@gmail.com
+//
+
 using System;
 using System.Collections;
 using System.ComponentModel;

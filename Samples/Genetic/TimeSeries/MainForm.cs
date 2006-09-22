@@ -1,3 +1,10 @@
+// AForge Framework
+// Time Series Prediction using Genetic Programming and Gene Expression Programming
+//
+// Copyright © Andrew Kirillov, 2006
+// andrew.kirillov@gmail.com
+//
+
 using System;
 using System.Drawing;
 using System.Collections;
@@ -123,11 +130,13 @@ namespace TimeSeries
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.dataList = new System.Windows.Forms.ListView();
 			this.yColumnHeader = new System.Windows.Forms.ColumnHeader();
+			this.estimatedYColumnHeader = new System.Windows.Forms.ColumnHeader();
 			this.loadDataButton = new System.Windows.Forms.Button();
 			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.chart = new TimeSeries.Chart();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
+			this.moreSettingsButton = new System.Windows.Forms.Button();
 			this.label10 = new System.Windows.Forms.Label();
 			this.iterationsBox = new System.Windows.Forms.TextBox();
 			this.label9 = new System.Windows.Forms.Label();
@@ -156,8 +165,6 @@ namespace TimeSeries
 			this.label11 = new System.Windows.Forms.Label();
 			this.groupBox5 = new System.Windows.Forms.GroupBox();
 			this.solutionBox = new System.Windows.Forms.TextBox();
-			this.estimatedYColumnHeader = new System.Windows.Forms.ColumnHeader();
-			this.moreSettingsButton = new System.Windows.Forms.Button();
 			this.toolTip = new System.Windows.Forms.ToolTip(this.components);
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
@@ -168,9 +175,8 @@ namespace TimeSeries
 			// 
 			// groupBox1
 			// 
-			this.groupBox1.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.dataList,
-																					this.loadDataButton});
+			this.groupBox1.Controls.Add(this.dataList);
+			this.groupBox1.Controls.Add(this.loadDataButton);
 			this.groupBox1.Location = new System.Drawing.Point(10, 10);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Size = new System.Drawing.Size(180, 380);
@@ -196,6 +202,11 @@ namespace TimeSeries
 			this.yColumnHeader.Text = "Y:Real";
 			this.yColumnHeader.Width = 70;
 			// 
+			// estimatedYColumnHeader
+			// 
+			this.estimatedYColumnHeader.Text = "Y:Estimated";
+			this.estimatedYColumnHeader.Width = 70;
+			// 
 			// loadDataButton
 			// 
 			this.loadDataButton.Location = new System.Drawing.Point(10, 345);
@@ -211,8 +222,7 @@ namespace TimeSeries
 			// 
 			// groupBox2
 			// 
-			this.groupBox2.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.chart});
+			this.groupBox2.Controls.Add(this.chart);
 			this.groupBox2.Location = new System.Drawing.Point(200, 10);
 			this.groupBox2.Name = "groupBox2";
 			this.groupBox2.Size = new System.Drawing.Size(300, 380);
@@ -229,31 +239,42 @@ namespace TimeSeries
 			// 
 			// groupBox3
 			// 
-			this.groupBox3.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.moreSettingsButton,
-																					this.label10,
-																					this.iterationsBox,
-																					this.label9,
-																					this.label8,
-																					this.predictionSizeBox,
-																					this.label7,
-																					this.windowSizeBox,
-																					this.label6,
-																					this.label5,
-																					this.geneticMethodBox,
-																					this.label4,
-																					this.functionsSetBox,
-																					this.label3,
-																					this.selectionBox,
-																					this.label2,
-																					this.populationSizeBox,
-																					this.label1});
+			this.groupBox3.Controls.Add(this.moreSettingsButton);
+			this.groupBox3.Controls.Add(this.label10);
+			this.groupBox3.Controls.Add(this.iterationsBox);
+			this.groupBox3.Controls.Add(this.label9);
+			this.groupBox3.Controls.Add(this.label8);
+			this.groupBox3.Controls.Add(this.predictionSizeBox);
+			this.groupBox3.Controls.Add(this.label7);
+			this.groupBox3.Controls.Add(this.windowSizeBox);
+			this.groupBox3.Controls.Add(this.label6);
+			this.groupBox3.Controls.Add(this.label5);
+			this.groupBox3.Controls.Add(this.geneticMethodBox);
+			this.groupBox3.Controls.Add(this.label4);
+			this.groupBox3.Controls.Add(this.functionsSetBox);
+			this.groupBox3.Controls.Add(this.label3);
+			this.groupBox3.Controls.Add(this.selectionBox);
+			this.groupBox3.Controls.Add(this.label2);
+			this.groupBox3.Controls.Add(this.populationSizeBox);
+			this.groupBox3.Controls.Add(this.label1);
 			this.groupBox3.Location = new System.Drawing.Point(510, 10);
 			this.groupBox3.Name = "groupBox3";
 			this.groupBox3.Size = new System.Drawing.Size(185, 240);
 			this.groupBox3.TabIndex = 2;
 			this.groupBox3.TabStop = false;
 			this.groupBox3.Text = "Settings";
+			// 
+			// moreSettingsButton
+			// 
+			this.moreSettingsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(204)));
+			this.moreSettingsButton.ForeColor = System.Drawing.SystemColors.ControlText;
+			this.moreSettingsButton.Location = new System.Drawing.Point(10, 220);
+			this.moreSettingsButton.Name = "moreSettingsButton";
+			this.moreSettingsButton.Size = new System.Drawing.Size(25, 15);
+			this.moreSettingsButton.TabIndex = 17;
+			this.moreSettingsButton.Text = ">>";
+			this.toolTip.SetToolTip(this.moreSettingsButton, "More settings");
+			this.moreSettingsButton.Click += new System.EventHandler(this.moreSettingsButton_Click);
 			// 
 			// label10
 			// 
@@ -424,13 +445,12 @@ namespace TimeSeries
 			// 
 			// groupBox4
 			// 
-			this.groupBox4.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.currentPredictionErrorBox,
-																					this.label13,
-																					this.currentLearningErrorBox,
-																					this.label12,
-																					this.currentIterationBox,
-																					this.label11});
+			this.groupBox4.Controls.Add(this.currentPredictionErrorBox);
+			this.groupBox4.Controls.Add(this.label13);
+			this.groupBox4.Controls.Add(this.currentLearningErrorBox);
+			this.groupBox4.Controls.Add(this.label12);
+			this.groupBox4.Controls.Add(this.currentIterationBox);
+			this.groupBox4.Controls.Add(this.label11);
 			this.groupBox4.Location = new System.Drawing.Point(510, 255);
 			this.groupBox4.Name = "groupBox4";
 			this.groupBox4.Size = new System.Drawing.Size(185, 100);
@@ -491,8 +511,7 @@ namespace TimeSeries
 			// 
 			// groupBox5
 			// 
-			this.groupBox5.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.solutionBox});
+			this.groupBox5.Controls.Add(this.solutionBox);
 			this.groupBox5.Location = new System.Drawing.Point(10, 395);
 			this.groupBox5.Name = "groupBox5";
 			this.groupBox5.Size = new System.Drawing.Size(685, 50);
@@ -509,39 +528,21 @@ namespace TimeSeries
 			this.solutionBox.TabIndex = 0;
 			this.solutionBox.Text = "";
 			// 
-			// estimatedYColumnHeader
-			// 
-			this.estimatedYColumnHeader.Text = "Y:Estimated";
-			this.estimatedYColumnHeader.Width = 70;
-			// 
-			// moreSettingsButton
-			// 
-			this.moreSettingsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(204)));
-			this.moreSettingsButton.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.moreSettingsButton.Location = new System.Drawing.Point(10, 220);
-			this.moreSettingsButton.Name = "moreSettingsButton";
-			this.moreSettingsButton.Size = new System.Drawing.Size(25, 15);
-			this.moreSettingsButton.TabIndex = 17;
-			this.moreSettingsButton.Text = ">>";
-			this.toolTip.SetToolTip(this.moreSettingsButton, "More settings");
-			this.moreSettingsButton.Click += new System.EventHandler(this.moreSettingsButton_Click);
-			// 
 			// MainForm
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(704, 455);
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.groupBox5,
-																		  this.groupBox4,
-																		  this.stopButton,
-																		  this.startButton,
-																		  this.groupBox3,
-																		  this.groupBox2,
-																		  this.groupBox1});
+			this.Controls.Add(this.groupBox5);
+			this.Controls.Add(this.groupBox4);
+			this.Controls.Add(this.stopButton);
+			this.Controls.Add(this.startButton);
+			this.Controls.Add(this.groupBox3);
+			this.Controls.Add(this.groupBox2);
+			this.Controls.Add(this.groupBox1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
 			this.Name = "MainForm";
-			this.Text = "Time Series Prediction";
+			this.Text = "Time Series Prediction using Genetic Programming and Gene Expression Programming";
 			this.Closing += new System.ComponentModel.CancelEventHandler(this.MainForm_Closing);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox2.ResumeLayout(false);
