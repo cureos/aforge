@@ -1,0 +1,14 @@
+AForge Neural Net Library
+
+Copyright © Andrew Kirillov, 2005-2006
+andrew.kirillov@gmail.com
+
+
+The library is FREE for any non commercial usage. In the case of
+modifying and/or redistributing the code it's obligate to retain
+the original copyright notice.  It is not allowed to create your
+own commercial products on the basis of the library or any parts
+of it.
+
+
+Please, contact me for any offers, remarks, ideas, etc.
