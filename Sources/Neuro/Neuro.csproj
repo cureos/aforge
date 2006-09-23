@@ -1,8 +1,8 @@
 <VisualStudioProject>
     <CSHARP
         ProjectType = "Local"
-        ProductVersion = "7.10.3077"
-        SchemaVersion = "2.0"
+        ProductVersion = "7.0.9466"
+        SchemaVersion = "1.0"
         ProjectGuid = "{53B51230-2CD7-435B-8677-A3E24D134CD8}"
     >
         <Build>
@@ -16,10 +16,7 @@
                 DefaultTargetSchema = "IE50"
                 DelaySign = "false"
                 OutputType = "Library"
-                PreBuildEvent = ""
-                PostBuildEvent = ""
                 RootNamespace = "AForge.Neuro"
-                RunPostBuildEvent = "OnBuildSuccess"
                 StartupObject = ""
             >
                 <Config
@@ -29,12 +26,10 @@
                     CheckForOverflowUnderflow = "false"
                     ConfigurationOverrideFile = ""
                     DefineConstants = "DEBUG;TRACE"
-                    DocumentationFile = ""
+                    DocumentationFile = "AForge.Neuro.xml"
                     DebugSymbols = "true"
                     FileAlignment = "4096"
                     IncrementalBuild = "false"
-                    NoStdLib = "false"
-                    NoWarn = ""
                     Optimize = "false"
                     OutputPath = "bin\Debug\"
                     RegisterForComInterop = "false"
@@ -49,12 +44,10 @@
                     CheckForOverflowUnderflow = "false"
                     ConfigurationOverrideFile = ""
                     DefineConstants = "TRACE"
-                    DocumentationFile = ""
+                    DocumentationFile = "AForge.Neuro.xml"
                     DebugSymbols = "false"
                     FileAlignment = "4096"
                     IncrementalBuild = "false"
-                    NoStdLib = "false"
-                    NoWarn = ""
                     Optimize = "true"
                     OutputPath = "..\..\Release\"
                     RegisterForComInterop = "false"

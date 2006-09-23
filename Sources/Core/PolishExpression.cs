@@ -12,13 +12,36 @@ namespace AForge
 	// Quick and dirty implementation of polish expression evaluator
 
 	/// <summary>
-	/// Evaluator of expression written in polish notation.
+	/// Evaluator of expressions written in polish notation
 	/// </summary>
+	/// 
+	/// <example>The following sample illustrates the usage of <c>PolishExpression</c>
+	/// <code>
+	/// // expression written in polish notation
+	/// string expression = "2 $0 / 3 $1 * +";
+	/// // variables for the expression
+	/// double[] vars = new double[] { 3, 4 };
+	/// // expression evaluation
+	/// double result = PolishExpression.Evaluate( expression, vars );
+	/// </code>
+	/// </example>
+	/// 
 	public class PolishExpression
 	{
 		/// <summary>
+		/// Constructor (the class should not be instantiated at this moment)
+		/// </summary>
+		private PolishExpression ( ) { }
+
+		/// <summary>
 		/// Evaluate specified expression
 		/// </summary>
+		///
+		/// <param name="expression">Expression written in polish notation</param>
+		/// <param name="variables">Variables for the expression</param>
+		/// 
+		/// <returns>Evaluated value of the expression</returns>
+		///
 		public static double Evaluate( string expression, double[] variables )
 		{
 			// split expression to separate tokens, which represent functions ans variables

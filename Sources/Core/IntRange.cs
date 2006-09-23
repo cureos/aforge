@@ -9,14 +9,14 @@ namespace AForge
 	using System;
 
 	/// <summary>
-	/// Represents an integer range with min and max values
+	/// Represents an integer range with minimum and maximum values
 	/// </summary>
 	public class IntRange
 	{
 		private int min, max;
 
 		/// <summary>
-		/// Min value
+		/// Minimum value
 		/// </summary>
 		public int Min
 		{
@@ -25,7 +25,7 @@ namespace AForge
 		}
 
 		/// <summary>
-		/// Max value
+		/// Maximum value
 		/// </summary>
 		public int Max
 		{
@@ -34,7 +34,7 @@ namespace AForge
 		}
 
 		/// <summary>
-		/// Length of the range (deffirence between max and min values)
+		/// Length of the range (deffirence between maximum and minimum values)
 		/// </summary>
 		public int Length
 		{
@@ -44,6 +44,9 @@ namespace AForge
 		/// <summary>
 		/// Constructor
 		/// </summary>
+		/// 
+		/// <param name="min">Minimum value of the range</param>
+		/// <param name="max">Maximum value of the range</param>
 		public IntRange( int min, int max )
 		{
 			this.min = min;

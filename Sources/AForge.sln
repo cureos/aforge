@@ -3,13 +3,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Genetic", "Genetic\Genetic.csproj", "{DD4F9C19-9F1C-44A8-81F3-6CA157DCA1C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neuro", "Neuro\Neuro.csproj", "{53B51230-2CD7-435B-8677-A3E24D134CD8}"
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		ConfigName.0 = Debug
 		ConfigName.1 = Release
 	EndGlobalSection
 	GlobalSection(ProjectDependencies) = postSolution
-		{DD4F9C19-9F1C-44A8-81F3-6CA157DCA1C2}.0 = {BFAF50DC-4942-46B8-8615-2A0B4CF08AD2}
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
 		{BFAF50DC-4942-46B8-8615-2A0B4CF08AD2}.Debug.ActiveCfg = Debug|.NET
@@ -20,6 +21,10 @@ Global
 		{DD4F9C19-9F1C-44A8-81F3-6CA157DCA1C2}.Debug.Build.0 = Debug|.NET
 		{DD4F9C19-9F1C-44A8-81F3-6CA157DCA1C2}.Release.ActiveCfg = Release|.NET
 		{DD4F9C19-9F1C-44A8-81F3-6CA157DCA1C2}.Release.Build.0 = Release|.NET
+		{53B51230-2CD7-435B-8677-A3E24D134CD8}.Debug.ActiveCfg = Debug|.NET
+		{53B51230-2CD7-435B-8677-A3E24D134CD8}.Debug.Build.0 = Debug|.NET
+		{53B51230-2CD7-435B-8677-A3E24D134CD8}.Release.ActiveCfg = Release|.NET
+		{53B51230-2CD7-435B-8677-A3E24D134CD8}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

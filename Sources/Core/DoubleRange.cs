@@ -9,14 +9,14 @@ namespace AForge
 	using System;
 
 	/// <summary>
-	/// Represents a double range with min and max values
+	/// Represents a double range with minimum and maximum values
 	/// </summary>
 	public class DoubleRange
 	{
 		private double min, max;
 
 		/// <summary>
-		/// Min value
+		/// Minimum value
 		/// </summary>
 		public double Min
 		{
@@ -25,7 +25,7 @@ namespace AForge
 		}
 
 		/// <summary>
-		/// Max value
+		/// Maximum value
 		/// </summary>
 		public double Max
 		{
@@ -34,7 +34,7 @@ namespace AForge
 		}
 
 		/// <summary>
-		/// Length of the range (deffirence between max and min values)
+		/// Length of the range (deffirence between maximum and minimum values)
 		/// </summary>
 		public double Length
 		{
@@ -45,6 +45,9 @@ namespace AForge
 		/// <summary>
 		/// Constructor
 		/// </summary>
+		/// 
+		/// <param name="min">Minimum value of the range</param>
+		/// <param name="max">Maximum value of the range</param>
 		public DoubleRange( double min, double max )
 		{
 			this.min = min;
