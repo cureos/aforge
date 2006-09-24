@@ -861,6 +861,7 @@ namespace TimeSeries
 					string bestFunction = population.BestChromosome.ToString( );
 
 					// calculate best function and prediction error
+					double learningError = 0.0;
 					double predictionError = 0.0;
 					// go through all the data
 					for ( int j = 0, n = data.Length - windowSize; j < n; j++ )
@@ -879,14 +880,17 @@ namespace TimeSeries
 						{
 							predictionError += Math.Abs( solution[j, 1] - data[windowSize + j] );
 						}
+						else
+						{
+							learningError += Math.Abs( solution[j, 1] - data[windowSize + j] );
+						}
 					}
 					// update solution on the chart
 					chart.UpdateDataSeries( "solution", solution );
 				
 					// set current iteration's info
-					fitness.Evaluate( population.BestChromosome );
 					currentIterationBox.Text = i.ToString( );
-					currentLearningErrorBox.Text = fitness.Error.ToString( "F3" );
+					currentLearningErrorBox.Text = learningError.ToString( "F3" );
 					currentPredictionErrorBox.Text = predictionError.ToString( "F3" );
 				}
 				catch

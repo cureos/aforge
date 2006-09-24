@@ -22,16 +22,6 @@ namespace AForge.Genetic
 		private int			windowSize;
 		// prediction size
 		private int			predictionSize;
-		// last evaluation error
-		private double		error = 0;
-
-		/// <summary>
-		/// Last evaluation error
-		/// </summary>
-		public double Error
-		{
-			get { return error; }
-		}
 
 		/// <summary>
 		/// Constructor
@@ -62,7 +52,7 @@ namespace AForge.Genetic
 			string function = chromosome.ToString( );
 
 			// go through all the data
-			error = 0.0;
+			double error = 0.0;
 			for ( int i = 0, n = data.Length - windowSize - predictionSize; i < n; i++ )
 			{
 				// put values from current window as variables

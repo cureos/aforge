@@ -653,13 +653,19 @@ namespace Approximation
 						solution[j, 1] = PolishExpression.Evaluate( bestFunction, input );
 					}
 					chart.UpdateDataSeries( "solution", solution );
+					// calculate error
+					double error = 0.0;
+					for ( int j = 0, k = data.GetLength( 0 ); j < k; j++ )
+					{
+						input[0] = data[j, 0];
+						error += Math.Abs( data[j, 1] - PolishExpression.Evaluate( bestFunction, input ) );
+					}
 
 					// set current iteration's info
-					fitness.Evaluate( population.BestChromosome );
 					currentIterationBox.Text = i.ToString( );
-					currentErrorBox.Text = fitness.Error.ToString( "F3" );
+					currentErrorBox.Text = error.ToString( "F3" );
 				}
-				catch
+				catch ( Exception e )
 				{
 					// remove any solutions from chart in case of any errors
 					chart.UpdateDataSeries( "solution", null );

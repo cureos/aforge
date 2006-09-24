@@ -18,16 +18,6 @@ namespace AForge.Genetic
 		private double[,]	data;
 		// varibles
 		private double[]	variables;
-		// last evaluation error
-		private double		error = 0;
-
-		/// <summary>
-		/// Last evaluation error
-		/// </summary>
-		public double Error
-		{
-			get { return error; }
-		}
 
 		/// <summary>
 		/// Constructor
@@ -49,7 +39,7 @@ namespace AForge.Genetic
 			string function = chromosome.ToString( );
 
 			// go through all the data
-			error = 0.0;
+			double error = 0.0;
 			for ( int i = 0, n = data.GetLength( 0 ); i < n; i++ )
 			{
 				// put next X value to variables list
