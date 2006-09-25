@@ -15,6 +15,21 @@ namespace AForge
 	/// Evaluator of expressions written in polish notation
 	/// </summary>
 	/// 
+	/// <remarks>The class evaluates expressions writen in post fix polish notation.
+	/// The list of supported functuins is:
+	/// <list type="bullet">
+	/// <item><b>Arithmetic functions</b>: +, -, *, /;</item>
+	/// <item><b>sin</b> - sine;</item>
+	/// <item><b>cos</b> - cosine;</item>
+	/// <item><b>ln</b> - natural logarithm;</item>
+	/// <item><b>exp</b> - exponent;</item>
+	/// <item><b>sqrt</b> - square root.</item>
+	/// </list>
+	/// Arguments for these functions could be as usual constants, written as numbers, as variables,
+	/// writen as $&lt;var_number&gt; (<b>$2</b>, for example). The variable number is zero based index
+	/// of variables array.
+	/// </remarks>
+	/// 
 	/// <example>The following sample illustrates the usage of <c>PolishExpression</c>
 	/// <code>
 	/// // expression written in polish notation
@@ -34,7 +49,7 @@ namespace AForge
 		private PolishExpression ( ) { }
 
 		/// <summary>
-		/// Evaluate specified expression
+		/// Evaluates specified expression
 		/// </summary>
 		///
 		/// <param name="expression">Expression written in polish notation</param>
