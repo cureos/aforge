@@ -16,7 +16,7 @@ namespace AForge.Genetic
 	{
 		private double	epsilon = 0;
 		// random number generator
-		static Random	rand = new Random( (int) DateTime.Now.Ticks );
+		private static Random	rand = new Random( (int) DateTime.Now.Ticks );
 
 		/// <summary>
 		/// Percent of random chromosomes in new generation

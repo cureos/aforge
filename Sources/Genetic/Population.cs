@@ -16,7 +16,7 @@ namespace AForge.Genetic
 	{
 		private IFitnessFunction fitnessFunction;
 		private ISelectionMethod selectionMethod;
-		private ArrayList	population;
+		private ArrayList	population = new ArrayList( );
 		private int			size;
 
 		// population parameters
@@ -24,7 +24,7 @@ namespace AForge.Genetic
 		private double		mutationRate	= 0.10;
 
 		// random number generator
-		static Random		rand = new Random( (int) DateTime.Now.Ticks );
+		private static Random rand = new Random( (int) DateTime.Now.Ticks );
 
 		//
 		private double		fitnessMax = 0;
@@ -92,12 +92,27 @@ namespace AForge.Genetic
 			this.fitnessFunction = fitnessFunction;
 			this.selectionMethod = selectionMethod;
 			this.size	= size;
-			population	= new ArrayList( );
 
 			// add ancestor to the population
 			population.Add( ancestor );
 			// add more chromosomes to the population
 			for ( int i = 1; i < size; i++ )
+			{
+				population.Add( ancestor.CreateOffspring( ) );
+			}
+		}
+
+		/// <summary>
+		/// Regenerate population - feel it with random chromosomes
+		/// </summary>
+		public void Regenerate( )
+		{
+			IChromosome ancestor = (IChromosome) population[0];
+
+			// clear population
+			population.Clear( );
+			// add chromosomes to the population
+			for ( int i = 0; i < size; i++ )
 			{
 				population.Add( ancestor.CreateOffspring( ) );
 			}
