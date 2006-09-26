@@ -26,7 +26,7 @@ namespace AForge.Genetic
 		// chromosome's fitness
 		protected double		fitness = 0;
 
-		// random number generator for chromosoms generation
+		// random number generator for chromosomes generation
 		protected static Random	rand = new Random( (int) DateTime.Now.Ticks );
 
 		/// <summary>

@@ -18,6 +18,7 @@ namespace AForge.Genetic
 		private ISelectionMethod selectionMethod;
 		private ArrayList	population = new ArrayList( );
 		private int			size;
+		private double		randomSelectionPortion = 0.0;
 
 		// population parameters
 		private double		crossOverRate	= 0.75;
@@ -98,8 +99,25 @@ namespace AForge.Genetic
 			// add more chromosomes to the population
 			for ( int i = 1; i < size; i++ )
 			{
+				// create new chromosome
+				IChromosome c = ancestor.CreateOffspring( );
+				// calculate it's fitness
+				c.Evaluate( fitnessFunction );
+				// add it to population
 				population.Add( ancestor.CreateOffspring( ) );
 			}
+		}
+
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public Population( int size,
+			IChromosome ancestor,
+			IFitnessFunction fitnessFunction,
+			ISelectionMethod selectionMethod,
+			double randomSelectionPortion ) : this ( size, ancestor, fitnessFunction, selectionMethod )
+		{
+			this.randomSelectionPortion = Math.Max( 0, Math.Min( 0.5, randomSelectionPortion ) );
 		}
 
 		/// <summary>
@@ -114,6 +132,11 @@ namespace AForge.Genetic
 			// add chromosomes to the population
 			for ( int i = 0; i < size; i++ )
 			{
+				// create new chromosome
+				IChromosome c = ancestor.CreateOffspring( );
+				// calculate it's fitness
+				c.Evaluate( fitnessFunction );
+				// add it to population
 				population.Add( ancestor.CreateOffspring( ) );
 			}
 		}
@@ -136,6 +159,10 @@ namespace AForge.Genetic
 					// do crossover
 					c1.Crossover( c2 );
 
+					// calculate fitness of these two offsprings
+					c1.Evaluate( fitnessFunction );
+					c2.Evaluate( fitnessFunction );
+
 					// add two new offsprings to the population
 					population.Add( c1 );
 					population.Add( c2 );
@@ -156,10 +183,10 @@ namespace AForge.Genetic
 				{
 					// clone the chromosome
 					IChromosome c = ((IChromosome) population[i]).Clone( );
-
 					// mutate it
 					c.Mutate( );
-
+					// calculate fitness of the mutant
+					c.Evaluate( fitnessFunction );
 					// add mutant to the population
 					population.Add( c );
 				}
@@ -171,14 +198,27 @@ namespace AForge.Genetic
 		/// </summary>
 		public virtual void Selection( )
 		{
-			// calculate fitness for the population
-			foreach ( IChromosome c in population )
-			{
-				c.Evaluate( fitnessFunction );
-			}
+			// amount of random chromosomes in the new population
+			int randomAmount = (int)( randomSelectionPortion * size );
 
 			// do selection
-			selectionMethod.ApplySelection( population, size );
+			selectionMethod.ApplySelection( population, size - randomAmount );
+
+			// add random chromosomes
+			if ( randomAmount > 0 )
+			{
+				IChromosome ancestor = (IChromosome) population[0];
+
+				for ( int i = 0; i < randomAmount; i++ )
+				{
+					// create new chromosome
+					IChromosome c = ancestor.CreateOffspring( );
+					// calculate it's fitness
+					c.Evaluate( fitnessFunction );
+					// add it to population
+					population.Add( ancestor.CreateOffspring( ) );
+				}
+			}
 
 			// find best chromosome
 			fitnessMax = 0;
@@ -199,7 +239,6 @@ namespace AForge.Genetic
 				}
 			}
 			fitnessAvg = fitnessSum / size;
-		
 		}
 
 		/// <summary>

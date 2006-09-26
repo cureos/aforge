@@ -14,20 +14,10 @@ namespace AForge.Genetic
 	/// </summary>
 	public class EliteSelection : ISelectionMethod
 	{
-		private double	epsilon = 0;
-		private bool	shuffle = true;
+		private bool shuffle = true;
 
 		// random number generator
-		private static Random	rand = new Random( (int) DateTime.Now.Ticks );
-
-		/// <summary>
-		/// Percent of random chromosomes in new generation
-		/// </summary>
-		public double Epsilon
-		{
-			get { return epsilon; }
-			set { epsilon = Math.Max( 0.0, Math.Min( 0.5, value ) ); }
-		}
+		private static Random rand = new Random( (int) DateTime.Now.Ticks );
 
 		/// <summary>
 		/// Determines if population should be shuffled after applying selection
@@ -46,17 +36,8 @@ namespace AForge.Genetic
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public EliteSelection( double epsilon )
+		public EliteSelection( bool shuffle )
 		{
-			this.epsilon = epsilon;
-		}
-
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public EliteSelection( double epsilon, bool shuffle )
-		{
-			this.epsilon = epsilon;
 			this.shuffle = shuffle;
 		}
 
@@ -66,27 +47,11 @@ namespace AForge.Genetic
 		/// </summary>
 		public void ApplySelection( ArrayList chromosomes, int size )
 		{
-			// amount of random chromosomes in the new population
-			int randomAmount = (int)( epsilon * size );
-
 			// sort chromosomes
 			chromosomes.Sort( );
 
-			size -= randomAmount;
-
 			// remove bad chromosomes
 			chromosomes.RemoveRange( size, chromosomes.Count - size );
-
-			// add random chromosomes
-			if ( randomAmount > 0 )
-			{
-				IChromosome ancestor = (IChromosome) chromosomes[0];
-
-				for ( int i = 0; i < randomAmount; i++ )
-				{
-					chromosomes.Add( ancestor.CreateOffspring( ) );
-				}
-			}
 
 			// shuffle chromosomes
 			if ( shuffle )

@@ -258,7 +258,6 @@ namespace AForge.Genetic
 				if ( ( root.Children == null ) || ( rand.Next( maxLevel ) == 0 ) )
 				{
 					// give the root to the pair and use pair's part as a new root
-//					System.Diagnostics.Debug.WriteLine( "1> head" );
 					root = p.RandomSwap( root );
 				}
 				else
@@ -276,7 +275,6 @@ namespace AForge.Genetic
 						if ( ( child.Children == null ) || ( rand.Next( maxLevel ) == 0 ) )
 						{
 							// swap the node with pair's one
-//							System.Diagnostics.Debug.WriteLine( "1> " + child.ToString( ) );
 							node.Children[r] = p.RandomSwap( child );
 							break;
 						}
@@ -305,7 +303,6 @@ namespace AForge.Genetic
 				// replace current root and return it
 				retNode	= root;
 				root	= source;
-//				System.Diagnostics.Debug.WriteLine( "2> head" );
 			}
 			else
 			{
@@ -324,7 +321,6 @@ namespace AForge.Genetic
 						// swap the node with pair's one
 						retNode = child;
 						node.Children[r] = source;
-//						System.Diagnostics.Debug.WriteLine( "2> " + retNode.ToString( ) );
 						break;
 					}
 

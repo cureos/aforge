@@ -14,31 +14,13 @@ namespace AForge.Genetic
 	/// </summary>
 	public class RouletteWheelSelection : ISelectionMethod
 	{
-		private double	epsilon = 0;
 		// random number generator
-		private static Random	rand = new Random( (int) DateTime.Now.Ticks );
-
-		/// <summary>
-		/// Percent of random chromosomes in new generation
-		/// </summary>
-		public double Epsilon
-		{
-			get { return epsilon; }
-			set { epsilon = Math.Max( 0.0, Math.Min( 0.5, value ) ); }
-		}
+		private static Random rand = new Random( (int) DateTime.Now.Ticks );
 
 		/// <summary>
 		/// Default constructor
 		/// </summary>
 		public RouletteWheelSelection( ) { }
-
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public RouletteWheelSelection( double epsilon )
-		{
-			this.epsilon = epsilon;
-		}
 
 		/// <summary>
 		/// Apply selection to the population
@@ -49,8 +31,6 @@ namespace AForge.Genetic
 			ArrayList newPopulation = new ArrayList( );
 			// size of current population
 			int currentSize = chromosomes.Count;
-			// amount of random chromosomes in the new population
-			int randomAmount = (int)( epsilon * size );
 
 			// calculate summary fitness of current population
 			double fitnessSum = 0;
@@ -72,7 +52,6 @@ namespace AForge.Genetic
 			}
 
 			// select chromosomes from old population to the new population
-			size -= randomAmount;
 			for ( int j = 0; j < size; j++ )
 			{
 				// get wheel value
@@ -86,17 +65,6 @@ namespace AForge.Genetic
 						newPopulation.Add( ((IChromosome) chromosomes[i]).Clone( ) );
 						break;
 					}
-				}
-			}
-
-			// add random chromosomes
-			if ( randomAmount > 0 )
-			{
-				IChromosome ancestor = (IChromosome) newPopulation[0];
-
-				for ( int i = 0; i < randomAmount; i++ )
-				{
-					newPopulation.Add( ancestor.CreateOffspring( ) );
 				}
 			}
 
