@@ -95,17 +95,17 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Activation Functions\HyperbolicTangensFunction.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Activation Functions\IActivationFunction.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Activation Functions\SigmoidFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Activation Functions\ThresholdFunction.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

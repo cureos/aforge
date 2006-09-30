@@ -52,7 +52,7 @@ namespace AForge
 		/// Evaluates specified expression
 		/// </summary>
 		///
-		/// <param name="expression">Expression written in polish notation</param>
+		/// <param name="expression">Expression written in post fix polish notation</param>
 		/// <param name="variables">Variables for the expression</param>
 		/// 
 		/// <returns>Evaluated value of the expression</returns>

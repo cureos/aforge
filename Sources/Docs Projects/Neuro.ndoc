@@ -2,6 +2,9 @@
     <assemblies>
         <assembly location="..\Neuro\bin\Debug\AForge.Neuro.dll" documentation="..\Neuro\bin\Debug\AForge.Neuro.xml" />
     </assemblies>
+    <namespaces>
+        <namespace name="AForge.Neuro">The <b>AForge.Neuro</b> namespace contains interfaces and classes for neural networks computations. The namespace and its sub namespaces contain classes, which allows as creating of popular neural network architectures, as classes to train these networks.</namespace>
+    </namespaces>
     <documenters>
         <documenter name="JavaDoc">
             <property name="OutputDirectory" value=".\doc\" />
@@ -18,12 +21,12 @@
             <property name="Title" value="An NDoc Documented Class Library" />
         </documenter>
         <documenter name="MSDN">
-            <property name="OutputDirectory" value=".\..\..\Docs\" />
+            <property name="OutputDirectory" value=".\Docs\" />
             <property name="HtmlHelpName" value="AForge.Neuro" />
             <property name="Title" value="AForge.Neuro Class Library" />
             <property name="OutputTarget" value="HtmlHelp" />
+            <property name="AdditionalContentResourceDirectory" value="..\Neuro\Images\" />
             <property name="ShowMissingSummaries" value="True" />
-            <property name="ShowMissingRemarks" value="True" />
             <property name="ShowMissingParams" value="True" />
             <property name="ShowMissingReturns" value="True" />
             <property name="ShowMissingValues" value="True" />

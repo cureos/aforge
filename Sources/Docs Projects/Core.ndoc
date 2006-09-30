@@ -2,6 +2,9 @@
     <assemblies>
         <assembly location="..\Core\bin\Debug\AForge.dll" documentation="..\Core\bin\Debug\AForge.Core.xml" />
     </assemblies>
+    <namespaces>
+        <namespace name="AForge">The <b>AForge</b> namespace contains base interfaces and classes, which are commonly used by other namespaces of the <b>AForge</b> framework.</namespace>
+    </namespaces>
     <documenters>
         <documenter name="JavaDoc">
             <property name="OutputDirectory" value=".\doc\" />
