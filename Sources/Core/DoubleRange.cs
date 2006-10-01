@@ -43,7 +43,7 @@ namespace AForge
 
 		
 		/// <summary>
-		/// Initializes a new instance of the <see cref="DoubleRange">DoubleRange</see> class
+		/// Initializes a new instance of the <see cref="DoubleRange"/> class
 		/// </summary>
 		/// 
 		/// <param name="min">Minimum value of the range</param>

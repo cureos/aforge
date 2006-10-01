@@ -45,12 +45,12 @@ namespace AForge.Neuro
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="SigmoidFunction">SigmoidFunction</see> class
+		/// Initializes a new instance of the <see cref="SigmoidFunction"/> class
 		/// </summary>
 		public SigmoidFunction( ) { }
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="SigmoidFunction">SigmoidFunction</see> class
+		/// Initializes a new instance of the <see cref="SigmoidFunction"/> class
 		/// </summary>
 		/// 
 		/// <param name="alpha">Sigmoid's alpha value</param>
@@ -97,14 +97,14 @@ namespace AForge.Neuro
 		/// </summary>
 		/// 
 		/// <param name="y">Function output value - the value, which was obtained
-		/// with the help of <see cref="Function">Function</see> method</param>
+		/// with the help of <see cref="Function"/> method</param>
 		/// 
 		/// <returns>Function derivative, <i>f'(x)</i></returns>
 		/// 
 		/// <remarks>The method calculates the same derivative value as the
-		/// <see cref="Derivative">Derivative</see> method, but it takes not the input <b>x</b> value
+		/// <see cref="Derivative"/> method, but it takes not the input <b>x</b> value
 		/// itself, but the function value, which was calculated previously with
-		/// the help of <see cref="Function">Function</see> method. <i>(Some applications require as
+		/// the help of <see cref="Function"/> method. <i>(Some applications require as
 		/// function value, as derivative value, so they can seve the amount of
 		/// calculations using this method to calculate derivative)</i></remarks>
 		/// 

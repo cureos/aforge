@@ -42,7 +42,7 @@ namespace AForge
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="IntRange">IntRange</see> class
+		/// Initializes a new instance of the <see cref="IntRange"/> class
 		/// </summary>
 		/// 
 		/// <param name="min">Minimum value of the range</param>

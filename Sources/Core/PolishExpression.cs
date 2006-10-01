@@ -30,7 +30,7 @@ namespace AForge
 	/// of variables array.
 	/// </remarks>
 	/// 
-	/// <example>The following sample illustrates the usage of <c>PolishExpression</c>
+	/// <example>The following sample illustrates the usage of <c>PolishExpression</c> class:
 	/// <code>
 	/// // expression written in polish notation
 	/// string expression = "2 $0 / 3 $1 * +";

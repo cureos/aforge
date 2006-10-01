@@ -24,7 +24,7 @@ namespace AForge.Neuro
 	public class ThresholdFunction : IActivationFunction
 	{
 		/// <summary>
-		/// Initializes a new instance of the <see cref="ThresholdFunction">ThresholdFunction</see> class
+		/// Initializes a new instance of the <see cref="ThresholdFunction"/> class
 		/// </summary>
 		public ThresholdFunction( ) { }
 
