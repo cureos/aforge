@@ -15,7 +15,7 @@ namespace AForge
 	/// Evaluator of expressions written in polish notation
 	/// </summary>
 	/// 
-	/// <remarks>The class evaluates expressions writen in post fix polish notation.
+	/// <remarks>The class evaluates expressions writen in postfix polish notation.
 	/// The list of supported functuins is:
 	/// <list type="bullet">
 	/// <item><b>Arithmetic functions</b>: +, -, *, /;</item>
@@ -52,7 +52,7 @@ namespace AForge
 		/// Evaluates specified expression
 		/// </summary>
 		///
-		/// <param name="expression">Expression written in post fix polish notation</param>
+		/// <param name="expression">Expression written in postfix polish notation</param>
 		/// <param name="variables">Variables for the expression</param>
 		/// 
 		/// <returns>Evaluated value of the expression</returns>
