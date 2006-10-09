@@ -123,7 +123,7 @@ namespace AForge.Neuro
 		}
 
 		/// <summary>
-		/// Randomize weights 
+		/// Randomize neuron 
 		/// </summary>
 		/// 
 		/// <remarks>Initialize neuron's weights with random values within the range specified
@@ -139,14 +139,15 @@ namespace AForge.Neuro
 		}
 
 		/// <summary>
-		/// Compute output value of neuron
+		/// Computes output value of neuron
 		/// </summary>
 		/// 
 		/// <param name="input">Input vector</param>
 		/// 
 		/// <returns>Returns neuron's output value</returns>
 		/// 
-		/// <remarks>The actual neuron's output value is determined by inherited class.</remarks>
+		/// <remarks>The actual neuron's output value is determined by inherited class.
+		/// The output value is also stored in <see cref="Output"/> property.</remarks>
 		/// 
 		public abstract double Compute( double[] input );
 	}
