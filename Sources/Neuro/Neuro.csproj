@@ -115,6 +115,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Learning\ISupervisedLearning.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Learning\PerceptronLearning.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Neurons\ActivationNeuron.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
