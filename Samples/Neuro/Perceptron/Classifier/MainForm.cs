@@ -5,8 +5,11 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Data;
 using System.IO;
+using System.Threading;
 
 using AForge;
+using AForge.Neuro;
+using AForge.Neuro.Learning;
 
 namespace Classifier
 {
@@ -20,17 +23,35 @@ namespace Classifier
 		private System.Windows.Forms.Button loadButton;
 		private System.Windows.Forms.OpenFileDialog openFileDialog;
 		private Classifier.Chart chart;
+		private System.Windows.Forms.GroupBox groupBox2;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.TextBox learningRateBox;
+		private System.Windows.Forms.Button startButton;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 
+		private int			samples = 0;
 		private int			variables = 0;
 		private double[,]	data = null;
-		private System.Windows.Forms.GroupBox groupBox2;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.TextBox learningRateBox;
 		private double[]	classes = null;
+
+		private double		learningRate = 0.1;
+
+		private Thread	workerThread = null;
+		private System.Windows.Forms.Label noVisualizationLabel;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.ListView weightsList;
+		private System.Windows.Forms.ColumnHeader columnHeader1;
+		private System.Windows.Forms.ColumnHeader columnHeader2;
+		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.TextBox iterationsBox;
+		private System.Windows.Forms.Button stopButton;
+		private System.Windows.Forms.Label label5;
+		private Classifier.Chart errorChart;
+		private bool	needToStop = false;
 
 		// Constructor
 		public MainForm( )
@@ -43,6 +64,11 @@ namespace Classifier
 			//
 			chart.AddDataSeries( "class1", Color.Red, Chart.SeriesType.Dots, 5 );
 			chart.AddDataSeries( "class2", Color.Blue, Chart.SeriesType.Dots, 5 );
+			chart.AddDataSeries( "classifier", Color.Gray, Chart.SeriesType.UnlimitedLine, 1 );
+
+			errorChart.AddDataSeries( "error", Color.Red, Chart.SeriesType.ConnectedDots, 3 );
+			//
+			UpdateSettings( );
 		}
 
 		/// <summary>
@@ -68,29 +94,49 @@ namespace Classifier
 		private void InitializeComponent()
 		{
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.chart = new Classifier.Chart();
 			this.loadButton = new System.Windows.Forms.Button();
 			this.dataList = new System.Windows.Forms.ListView();
 			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-			this.chart = new Classifier.Chart();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
-			this.label1 = new System.Windows.Forms.Label();
 			this.learningRateBox = new System.Windows.Forms.TextBox();
+			this.label1 = new System.Windows.Forms.Label();
+			this.startButton = new System.Windows.Forms.Button();
+			this.noVisualizationLabel = new System.Windows.Forms.Label();
+			this.label2 = new System.Windows.Forms.Label();
+			this.label3 = new System.Windows.Forms.Label();
+			this.weightsList = new System.Windows.Forms.ListView();
+			this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
+			this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
+			this.label4 = new System.Windows.Forms.Label();
+			this.iterationsBox = new System.Windows.Forms.TextBox();
+			this.stopButton = new System.Windows.Forms.Button();
+			this.label5 = new System.Windows.Forms.Label();
+			this.errorChart = new Classifier.Chart();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// groupBox1
 			// 
-			this.groupBox1.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.chart,
-																					this.loadButton,
-																					this.dataList});
+			this.groupBox1.Controls.Add(this.chart);
+			this.groupBox1.Controls.Add(this.loadButton);
+			this.groupBox1.Controls.Add(this.dataList);
+			this.groupBox1.Controls.Add(this.noVisualizationLabel);
 			this.groupBox1.Location = new System.Drawing.Point(10, 10);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Size = new System.Drawing.Size(190, 420);
 			this.groupBox1.TabIndex = 0;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Data";
+			// 
+			// chart
+			// 
+			this.chart.Location = new System.Drawing.Point(10, 215);
+			this.chart.Name = "chart";
+			this.chart.Size = new System.Drawing.Size(170, 170);
+			this.chart.TabIndex = 2;
+			this.chart.Text = "chart1";
 			// 
 			// loadButton
 			// 
@@ -104,6 +150,7 @@ namespace Classifier
 			// 
 			this.dataList.FullRowSelect = true;
 			this.dataList.GridLines = true;
+			this.dataList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
 			this.dataList.Location = new System.Drawing.Point(10, 20);
 			this.dataList.Name = "dataList";
 			this.dataList.Size = new System.Drawing.Size(170, 190);
@@ -115,25 +162,33 @@ namespace Classifier
 			this.openFileDialog.Filter = "CSV (Comma delimited) (*.csv)|*.csv";
 			this.openFileDialog.Title = "Select data file";
 			// 
-			// chart
-			// 
-			this.chart.Location = new System.Drawing.Point(10, 215);
-			this.chart.Name = "chart";
-			this.chart.Size = new System.Drawing.Size(170, 170);
-			this.chart.TabIndex = 2;
-			this.chart.Text = "chart1";
-			// 
 			// groupBox2
 			// 
-			this.groupBox2.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.learningRateBox,
-																					this.label1});
+			this.groupBox2.Controls.Add(this.errorChart);
+			this.groupBox2.Controls.Add(this.label5);
+			this.groupBox2.Controls.Add(this.stopButton);
+			this.groupBox2.Controls.Add(this.iterationsBox);
+			this.groupBox2.Controls.Add(this.label4);
+			this.groupBox2.Controls.Add(this.weightsList);
+			this.groupBox2.Controls.Add(this.label3);
+			this.groupBox2.Controls.Add(this.label2);
+			this.groupBox2.Controls.Add(this.startButton);
+			this.groupBox2.Controls.Add(this.learningRateBox);
+			this.groupBox2.Controls.Add(this.label1);
 			this.groupBox2.Location = new System.Drawing.Point(210, 10);
 			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(200, 200);
+			this.groupBox2.Size = new System.Drawing.Size(240, 420);
 			this.groupBox2.TabIndex = 1;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Training";
+			// 
+			// learningRateBox
+			// 
+			this.learningRateBox.Location = new System.Drawing.Point(90, 20);
+			this.learningRateBox.Name = "learningRateBox";
+			this.learningRateBox.Size = new System.Drawing.Size(50, 20);
+			this.learningRateBox.TabIndex = 1;
+			this.learningRateBox.Text = "";
 			// 
 			// label1
 			// 
@@ -143,25 +198,117 @@ namespace Classifier
 			this.label1.TabIndex = 0;
 			this.label1.Text = "Learning rate:";
 			// 
-			// learningRateBox
+			// startButton
 			// 
-			this.learningRateBox.Location = new System.Drawing.Point(85, 20);
-			this.learningRateBox.Name = "learningRateBox";
-			this.learningRateBox.Size = new System.Drawing.Size(50, 20);
-			this.learningRateBox.TabIndex = 1;
-			this.learningRateBox.Text = "";
+			this.startButton.Enabled = false;
+			this.startButton.Location = new System.Drawing.Point(155, 19);
+			this.startButton.Name = "startButton";
+			this.startButton.TabIndex = 2;
+			this.startButton.Text = "&Start";
+			this.startButton.Click += new System.EventHandler(this.startButton_Click);
+			// 
+			// noVisualizationLabel
+			// 
+			this.noVisualizationLabel.Location = new System.Drawing.Point(10, 215);
+			this.noVisualizationLabel.Name = "noVisualizationLabel";
+			this.noVisualizationLabel.Size = new System.Drawing.Size(170, 170);
+			this.noVisualizationLabel.TabIndex = 2;
+			this.noVisualizationLabel.Text = "Visualization is not available.";
+			this.noVisualizationLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.noVisualizationLabel.Visible = false;
+			// 
+			// label2
+			// 
+			this.label2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.label2.Location = new System.Drawing.Point(10, 80);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(220, 2);
+			this.label2.TabIndex = 3;
+			// 
+			// label3
+			// 
+			this.label3.Location = new System.Drawing.Point(10, 90);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(112, 16);
+			this.label3.TabIndex = 4;
+			this.label3.Text = "Perceptron weights:";
+			// 
+			// weightsList
+			// 
+			this.weightsList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+																						  this.columnHeader1,
+																						  this.columnHeader2});
+			this.weightsList.FullRowSelect = true;
+			this.weightsList.GridLines = true;
+			this.weightsList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+			this.weightsList.Location = new System.Drawing.Point(10, 110);
+			this.weightsList.Name = "weightsList";
+			this.weightsList.Size = new System.Drawing.Size(220, 130);
+			this.weightsList.TabIndex = 5;
+			this.weightsList.View = System.Windows.Forms.View.Details;
+			// 
+			// columnHeader1
+			// 
+			this.columnHeader1.Text = "Weight";
+			this.columnHeader1.Width = 70;
+			// 
+			// columnHeader2
+			// 
+			this.columnHeader2.Text = "Value";
+			this.columnHeader2.Width = 100;
+			// 
+			// label4
+			// 
+			this.label4.Location = new System.Drawing.Point(10, 52);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(65, 16);
+			this.label4.TabIndex = 6;
+			this.label4.Text = "Iterations:";
+			// 
+			// iterationsBox
+			// 
+			this.iterationsBox.Location = new System.Drawing.Point(90, 50);
+			this.iterationsBox.Name = "iterationsBox";
+			this.iterationsBox.ReadOnly = true;
+			this.iterationsBox.Size = new System.Drawing.Size(50, 20);
+			this.iterationsBox.TabIndex = 7;
+			this.iterationsBox.Text = "";
+			// 
+			// stopButton
+			// 
+			this.stopButton.Enabled = false;
+			this.stopButton.Location = new System.Drawing.Point(155, 49);
+			this.stopButton.Name = "stopButton";
+			this.stopButton.TabIndex = 8;
+			this.stopButton.Text = "S&top";
+			this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
+			// 
+			// label5
+			// 
+			this.label5.Location = new System.Drawing.Point(10, 250);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(101, 15);
+			this.label5.TabIndex = 9;
+			this.label5.Text = "Error\'s dynamic:";
+			// 
+			// errorChart
+			// 
+			this.errorChart.Location = new System.Drawing.Point(10, 270);
+			this.errorChart.Name = "errorChart";
+			this.errorChart.Size = new System.Drawing.Size(220, 140);
+			this.errorChart.TabIndex = 10;
 			// 
 			// MainForm
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(732, 440);
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.groupBox2,
-																		  this.groupBox1});
+			this.ClientSize = new System.Drawing.Size(459, 440);
+			this.Controls.Add(this.groupBox2);
+			this.Controls.Add(this.groupBox1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
 			this.Name = "MainForm";
 			this.Text = "Perceptron Classifier";
+			this.Closing += new System.ComponentModel.CancelEventHandler(this.MainForm_Closing);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox2.ResumeLayout(false);
 			this.ResumeLayout(false);
@@ -176,6 +323,17 @@ namespace Classifier
 		static void Main( ) 
 		{
 			Application.Run( new MainForm( ) );
+		}
+
+		// On main form closing
+		private void MainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			// check if worker thread is running
+			if ( ( workerThread != null ) && ( workerThread.IsAlive ) )
+			{
+				needToStop = true;
+				workerThread.Join( );
+			}
 		}
 
 		// On "Load" button click - load data
@@ -197,16 +355,18 @@ namespace Classifier
 				double minX = double.MaxValue;
 				double maxX = double.MinValue;
 
+				// samples count
+				samples = 0;
+
 				try
 				{
 					string	str = null;
-					int		i = 0;
 
 					// open selected file
 					reader = File.OpenText( openFileDialog.FileName );
 
 					// read the data
-					while ( ( i < 50 ) && ( ( str = reader.ReadLine( ) ) != null ) )
+					while ( ( samples < 50 ) && ( ( str = reader.ReadLine( ) ) != null ) )
 					{
 						// split the string
 						string[] strs = str.Split( ';' );
@@ -214,7 +374,7 @@ namespace Classifier
 							strs = str.Split( ',' );
 
 						// allocate data array
-						if ( i == 0 )
+						if ( samples == 0 )
 						{
 							variables = strs.Length - 1;
 							tempData = new double[50, variables];
@@ -223,25 +383,25 @@ namespace Classifier
 						// parse data
 						for ( int j = 0; j < variables; j++ )
 						{
-							tempData[i, j] = double.Parse( strs[j] );
+							tempData[samples, j] = double.Parse( strs[j] );
 						}
-						tempClasses[i] = double.Parse( strs[variables] );
+						tempClasses[samples] = double.Parse( strs[variables] );
 
 						// search for min value
-						if ( tempData[i, 0] < minX )
-							minX = tempData[i, 0];
+						if ( tempData[samples, 0] < minX )
+							minX = tempData[samples, 0];
 						// search for max value
-						if ( tempData[i, 0] > maxX )
-							maxX = tempData[i, 0];
+						if ( tempData[samples, 0] > maxX )
+							maxX = tempData[samples, 0];
 
-						i++;
+						samples++;
 					}
 
 					// allocate and set data
-					data = new double[i, variables];
-					Array.Copy( tempData, 0, data, 0, i * variables );
-					classes = new double[i];
-					Array.Copy( tempClasses, 0, classes, 0, i );
+					data = new double[samples, variables];
+					Array.Copy( tempData, 0, data, 0, samples * variables );
+					classes = new double[samples];
+					Array.Copy( tempClasses, 0, classes, 0, samples );
 				}
 				catch ( Exception )
 				{
@@ -258,12 +418,27 @@ namespace Classifier
 				// update list and chart
 				UpdateDataListView( );
 
-				if ( variables == 2 )
+				// show chart or not
+				bool showChart = ( variables == 2 );
+
+				if ( showChart )
 				{
 					chart.RangeX = new DoubleRange( minX, maxX );
 					ShowTrainingData( );
 				}
+
+				chart.Visible = showChart;
+				noVisualizationLabel.Visible = !showChart;
+
+				// enable start button
+				startButton.Enabled = true;
 			}
+		}
+
+		// Update settings controls
+		private void UpdateSettings( )
+		{
+			learningRateBox.Text = learningRate.ToString( );
 		}
 
 		// Update data in list view
@@ -282,11 +457,11 @@ namespace Classifier
 			dataList.Columns.Add( "Class", 50, HorizontalAlignment.Left );
 
 			// add items
-			for ( int i = 0, n = data.GetLength( 0 ); i < n; i++ )
+			for ( int i = 0; i < samples; i++ )
 			{
 				dataList.Items.Add( data[i, 0].ToString( ) );
 
-				for ( int j = 1, k = variables; j < k; j++ )
+				for ( int j = 1; j < variables; j++ )
 				{
 					dataList.Items[i].SubItems.Add( data[i, j].ToString( ) );
 				}
@@ -301,7 +476,7 @@ namespace Classifier
 			int class2Size = 0;
 
 			// calculate number of samples in each class
-			for ( int i = 0, n = classes.Length; i < n; i++ )
+			for ( int i = 0, n = samples; i < n; i++ )
 			{
 				if ( classes[i] == 0 )
 					class1Size++;
@@ -314,7 +489,7 @@ namespace Classifier
 			double[,] class2 = new double[class2Size, 2];
 
 			// fill classes arrays
-			for ( int i = 0, c1 = 0, c2 = 0, n = data.GetLength( 0 ); i < n; i++ )
+			for ( int i = 0, c1 = 0, c2 = 0; i < samples; i++ )
 			{
 				if ( classes[i] == 0 )
 				{
@@ -335,6 +510,139 @@ namespace Classifier
 			// updata chart control
 			chart.UpdateDataSeries( "class1", class1 );
 			chart.UpdateDataSeries( "class2", class2 );
+		}
+
+		// Enable/disale controls
+		private void EnableControls( bool enable )
+		{
+			learningRateBox.Enabled		= enable;
+			loadButton.Enabled			= enable;
+			startButton.Enabled			= enable;
+			stopButton.Enabled			= !enable;
+		}
+
+		// On button "Start" - start learning procedure
+		private void startButton_Click(object sender, System.EventArgs e)
+		{
+			// get learning rate
+			try
+			{
+				learningRate = Math.Max( 0.00001, Math.Min( 1, int.Parse( learningRateBox.Text ) ) );
+			}
+			catch
+			{
+				learningRate = 0.1;
+			}
+			// update settings controls
+			UpdateSettings( );
+
+			// disable all settings controls
+			EnableControls( false );
+
+			// run worker thread
+			needToStop = false;
+			workerThread = new Thread( new ThreadStart( SearchSolution ) );
+			workerThread.Start( );
+		}
+
+		// On button "Stop" - stop learning procedure
+		private void stopButton_Click(object sender, System.EventArgs e)
+		{
+			// stop worker thread
+			needToStop = true;
+			workerThread.Join( );
+			workerThread = null;
+		}
+
+		// Worker thread
+		void SearchSolution( )
+		{
+			// prepare learning data
+			double[][] input = new double[samples][];
+			double[][] output = new double[samples][];
+
+			for ( int i = 0; i < samples; i++ )
+			{
+				input[i] = new double[variables];
+				output[i] = new double[1];
+
+				// copy input
+				for ( int j = 0; j < variables; j++ )
+					input[i][j] = data[i, j];
+				// copy output
+				output[i][0] = classes[i];
+			}
+
+			// create perceptron
+			ActivationNeuron perceptron = new ActivationNeuron( variables, new ThresholdFunction( ) );
+			// create teacher
+			PerceptronLearning teacher = new PerceptronLearning( perceptron );
+			// set learning rate
+			teacher.LearningRate = learningRate;
+
+			// iterations
+			int iteration = 1;
+
+			// erros list
+			ArrayList errorsList = new ArrayList( );
+
+			// loop
+			while ( !needToStop )
+			{
+				// run epoch of learning procedure
+				double error = teacher.RunEpoch( input, output );
+				errorsList.Add( error );
+
+				System.Diagnostics.Debug.WriteLine( "iteration: " + iteration + ", Error: " + error );
+
+				// show current iteration
+				iterationsBox.Text = iteration.ToString( );
+
+				// show classifier in the case of 2 dimensional data
+				if ( ( perceptron.InputsCount == 2 ) && ( perceptron[1] != 0 ) )
+				{
+					double k = - perceptron[0] / perceptron[1];
+					double b = - perceptron.Threshold / perceptron[1];
+
+					double[,] classifier = new double[2, 2] {
+																{ chart.RangeX.Min, chart.RangeX.Min * k + b },
+																{ chart.RangeX.Max, chart.RangeX.Max * k + b }
+															};
+
+					chart.UpdateDataSeries( "classifier", classifier );
+				}
+
+				// stop if no error
+				if ( error == 0 )
+					break;
+
+				iteration++;
+			}
+
+			// show perceptron's weights
+			weightsList.Items.Clear( );
+			for ( int i = 0; i < variables; i++ )
+			{
+				weightsList.Items.Add( string.Format( "Weight {0}", i + 1  ) );
+				weightsList.Items[i].SubItems.Add( perceptron[i].ToString( "F6" ) );
+			}
+			weightsList.Items.Add( "Threshold" );
+			weightsList.Items[variables].SubItems.Add( perceptron.Threshold.ToString( "F6" ) );
+
+			// show error's dynamics
+			double[,] errors = new double[errorsList.Count, 2];
+
+			for ( int i = 0, n = errorsList.Count; i < n; i++ )
+			{
+				errors[i, 0] = i;
+				errors[i, 1] = (double) errorsList[i];
+			}
+
+			errorChart.RangeX = new DoubleRange( 0, errorsList.Count - 1 );
+			errorChart.UpdateDataSeries( "error", errors );
+
+			// enable settings controls
+			EnableControls( true );
 		}
 	}
 }
