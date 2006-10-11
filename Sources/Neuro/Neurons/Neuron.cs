@@ -41,7 +41,8 @@ namespace AForge.Neuro
 		/// Random generator range
 		/// </summary>
 		/// 
-		/// <remarks>Sets the range of random generator. Affects initial values of neuron's weight.</remarks>
+		/// <remarks>Sets the range of random generator. Affects initial values of neuron's weight.
+		/// Default value is [0, 1].</remarks>
 		/// 
 		protected static DoubleRange randRange = new DoubleRange( 0.0, 1.0 );
 
@@ -116,10 +117,18 @@ namespace AForge.Neuro
 		/// Initializes a new instance of the <see cref="Neuron"/> class
 		/// </summary>
 		///
-		/// <param name="inputs">Neuron's inputs count</param> 
+		/// <param name="inputs">Neuron's inputs count</param>
+		/// 
+		/// <remarks>The new neuron will be randomized (see <see cref="Randomize"/> method)
+		/// after it is created.</remarks>
 		///
 		public Neuron( int inputs )
 		{
+			// allocate weights
+			inputsCount = Math.Max( 1, inputs );
+			weights = new double[inputsCount];
+			// randomize the neuron
+			Randomize( );
 		}
 
 		/// <summary>
@@ -133,7 +142,7 @@ namespace AForge.Neuro
 		{
 			double d = randRange.Length;
 
-			// generate weights
+			// randomize weights
 			for ( int i = 0; i < inputsCount; i++ )
 				weights[i] = rand.NextDouble( ) * d + randRange.Min;
 		}

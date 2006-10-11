@@ -15,6 +15,20 @@ namespace AForge.Neuro.Learning
 	{
 		// perceptron to teach
 		private ActivationNeuron perceptron;
+		// learning rate
+		private double learningRate = 0.1;
+
+		/// <summary>
+		/// Learning rate
+		/// </summary>
+		/// 
+		/// <remarks>The value determines speed of learning</remarks>
+		/// 
+		public double LearningRate
+		{
+			get { return learningRate; }
+			set { learningRate = value; }
+		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PerceptronLearning"/> class
@@ -38,9 +52,31 @@ namespace AForge.Neuro.Learning
 		/// 
 		/// 
 		/// 
-		double Learn( double[] input, double[] output )
+		public double Run( double[] input, double[] output )
 		{
-			return 0;
+			// compute output of our perceptron
+			double perceptronOutput = perceptron.Compute( input );
+
+			// compute error
+			double error = output[0] - perceptronOutput;
+
+			// check error
+			if ( error != 0 )
+			{
+				// update weights
+				for ( int i = 0, n = perceptron.InputsCount; i < n; i++ )
+				{
+					perceptron[i] += learningRate * error * input[i];
+				}
+
+				// update threshold value
+				perceptron.Threshold += learningRate * error;
+
+				// make error to be absolute
+				error = Math.Abs( error );
+			}
+
+			return error;
 		}
 
 	
@@ -55,9 +91,18 @@ namespace AForge.Neuro.Learning
 		/// 
 		/// 
 		/// 
-		double LearnEpoch( double[][] input, double[][] output )
+		public double RunEpoch( double[][] input, double[][] output )
 		{
-			return 0;
+			double error = 0.0;
+
+			// run learning procedure for all samples
+			for ( int i = 0, n = input.Length; i < n; i++ )
+			{
+				error += Run( input[i], output[i] );
+			}
+
+			// return summary error
+			return error;
 		}
 	}
 }

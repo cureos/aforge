@@ -32,7 +32,7 @@ namespace AForge.Neuro.Learning
 		/// 
 		/// 
 		/// 
-		double Learn( double[] input, double[] output );
+		double Run( double[] input, double[] output );
 
 		/// <summary>
 		/// Runs learning epoch
@@ -45,6 +45,6 @@ namespace AForge.Neuro.Learning
 		/// 
 		/// 
 		/// 
-		double LearnEpoch( double[][] input, double[][] output );
+		double RunEpoch( double[][] input, double[][] output );
 	}
 }
