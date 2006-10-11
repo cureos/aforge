@@ -9,8 +9,14 @@ namespace AForge.Neuro.Learning
 	using System;
 
 	/// <summary>
-	/// Summary description for PerceptronLearning.
+	/// Perceptron learning algorithm
 	/// </summary>
+	/// 
+	/// <remarks>This learning algorithm is used to train perceptron -
+	/// <see cref="AForge.Neuro.ActivationNeuron">Activation Neuron</see> with
+	/// the <see cref="AForge.Neuro.ThresholdFunction">Threshold</see> activation
+	/// function.</remarks>
+	/// 
 	public class PerceptronLearning : ISupervisedLearning
 	{
 		// perceptron to teach
@@ -50,7 +56,9 @@ namespace AForge.Neuro.Learning
 		/// 
 		/// <returns>Returns absolute error</returns>
 		/// 
-		/// 
+		/// <remarks>Runs one learning iteration and updates neuron's
+		/// weights in case if neuron's output does not equal to the
+		/// desired output.</remarks>
 		/// 
 		public double Run( double[] input, double[] output )
 		{
@@ -79,7 +87,6 @@ namespace AForge.Neuro.Learning
 			return error;
 		}
 
-	
 		/// <summary>
 		/// Runs learning epoch
 		/// </summary>
@@ -89,7 +96,9 @@ namespace AForge.Neuro.Learning
 		/// 
 		/// <returns>Returns sum of absolute errors</returns>
 		/// 
-		/// 
+		/// <remarks>Runs series of learning iterations - one iteration
+		/// for each input sample. Updates neuron's weights each time,
+		/// when neuron's output does not equal to the desired output.</remarks>
 		/// 
 		public double RunEpoch( double[][] input, double[][] output )
 		{
