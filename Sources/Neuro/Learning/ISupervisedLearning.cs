@@ -16,8 +16,8 @@ namespace AForge.Neuro.Learning
 	/// by all supervised learning algorithms. Supervised learning is such a
 	/// type of learning algorithms, where system's desired output is known on
 	/// the learning stage. So, given sample input values and desired outputs,
-	/// system should adopt its internals to produce correct result after the
-	/// learning step is complete.</remarks>
+	/// system should adopt its internals to produce correct (or closer to correct)
+	/// result after the learning step is complete.</remarks>
 	/// 
 	public interface ISupervisedLearning
 	{
@@ -30,8 +30,6 @@ namespace AForge.Neuro.Learning
 		/// 
 		/// <returns>Returns absolute error</returns>
 		/// 
-		/// 
-		/// 
 		double Run( double[] input, double[] output );
 
 		/// <summary>
@@ -42,8 +40,6 @@ namespace AForge.Neuro.Learning
 		/// <param name="output">array of output vectors</param>
 		/// 
 		/// <returns>Returns sum of absolute errors</returns>
-		/// 
-		/// 
 		/// 
 		double RunEpoch( double[][] input, double[][] output );
 	}

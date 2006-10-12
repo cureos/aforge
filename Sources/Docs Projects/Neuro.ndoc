@@ -4,6 +4,7 @@
     </assemblies>
     <namespaces>
         <namespace name="AForge.Neuro">The <b>AForge.Neuro</b> namespace contains interfaces and classes for neural networks computations. The namespace and its sub namespaces contain classes, which allow as creating of popular neural network architectures, as classes to train these networks.</namespace>
+        <namespace name="AForge.Neuro.Learning">The <b>AForge.Neuro.Learning</b> namespace contains interfaces and classes for neurons and neural networks learning. The namespace contains classes as for supervised learning, as for unsupervised learning.</namespace>
     </namespaces>
     <documenters>
         <documenter name="JavaDoc">

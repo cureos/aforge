@@ -50,7 +50,7 @@ namespace AForge.Genetic
 		/// 
 		/// <param name="data">Function to be approximated</param>
 		/// <param name="constants">Array of constants to be used as additional
-		/// paramters to genetic expression</param>
+		/// paramters for genetic expression</param>
 		/// 
 		/// <remarks>The <b>data</b> parameter defines the function to be approximated and
 		/// represents a two dimensional array of (x, y) points.<br /><br />
