@@ -95,6 +95,7 @@ namespace AForge.Genetic
 			this.size	= size;
 
 			// add ancestor to the population
+			ancestor.Evaluate( fitnessFunction );
 			population.Add( ancestor );
 			// add more chromosomes to the population
 			for ( int i = 1; i < size; i++ )
@@ -104,7 +105,7 @@ namespace AForge.Genetic
 				// calculate it's fitness
 				c.Evaluate( fitnessFunction );
 				// add it to population
-				population.Add( ancestor.CreateOffspring( ) );
+				population.Add( c );
 			}
 		}
 
@@ -137,7 +138,7 @@ namespace AForge.Genetic
 				// calculate it's fitness
 				c.Evaluate( fitnessFunction );
 				// add it to population
-				population.Add( ancestor.CreateOffspring( ) );
+				population.Add( c );
 			}
 		}
 
@@ -216,7 +217,7 @@ namespace AForge.Genetic
 					// calculate it's fitness
 					c.Evaluate( fitnessFunction );
 					// add it to population
-					population.Add( ancestor.CreateOffspring( ) );
+					population.Add( c );
 				}
 			}
 

@@ -122,7 +122,7 @@ namespace AForge.Genetic
 				// avoid evaluation errors
 				try
 				{
-					// evalue the function
+					// evaluate the function
 					double y = PolishExpression.Evaluate( function, variables );
 					// check for correct numeric value
 					if ( double.IsNaN( y ) )

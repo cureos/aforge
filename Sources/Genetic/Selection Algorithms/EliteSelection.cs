@@ -64,7 +64,7 @@ namespace AForge.Genetic
 					// swap two chromosomes
 					object temp = chromosomes[c1];
 					chromosomes[c1] = chromosomes[c2];
-					chromosomes[c2] = chromosomes[c1];
+					chromosomes[c2] = temp;
 				}
 			}
 		}
