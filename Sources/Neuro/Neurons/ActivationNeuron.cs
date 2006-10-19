@@ -50,6 +50,10 @@ namespace AForge.Neuro
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ActivationNeuron"/> class
 		/// </summary>
+		/// 
+		/// <param name="inputs">Neuron's inputs count</param>
+		/// <param name="function">Neuron's activation function</param>
+		/// 
 		public ActivationNeuron( int inputs, IActivationFunction function ) : base( inputs )
 		{
 			this.function = function;
