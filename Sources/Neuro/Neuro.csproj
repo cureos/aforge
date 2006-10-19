@@ -115,7 +115,22 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Layers\DistanceLayer.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Layers\Layer.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Learning\ISupervisedLearning.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Learning\IUnsupervisedLearning.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -125,7 +140,27 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Learning\SOMLearning.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Networks\DistanceNetwork.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Networks\Network.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Neurons\ActivationNeuron.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Neurons\DistanceNeuron.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

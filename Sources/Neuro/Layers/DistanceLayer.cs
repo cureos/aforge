@@ -9,10 +9,10 @@ namespace AForge.Neuro
 	using System;
 
 	/// <summary>
-	/// Distance Layer
+	/// Distance layer
 	/// </summary>
 	/// 
-	/// <remarks>Distance Layer is a layer of distance neurons. The layer is usually a single layer
+	/// <remarks>Distance layer is a layer of distance neurons. The layer is usually a single layer
 	/// of such networks as Kohonen Self Organizing Map, Elastic Net, Hamming Memory Net.</remarks>
 	/// 
 	public class DistanceLayer : Layer
@@ -38,8 +38,8 @@ namespace AForge.Neuro
 		/// <param name="neuronsCount">Layer's neurons count</param>
 		/// <param name="inputsCount">Layer's inputs count</param>
 		/// 
-		/// <remarks>The new layet will be randomized (see <see cref="Layer.Randomize"/> method)
-		/// after it is created.</remarks>
+		/// <remarks>The new layet will be randomized (see <see cref="Layer.Randomize"/>
+		/// method) after it is created.</remarks>
 		/// 
 		public DistanceLayer( int neuronsCount, int inputsCount ) : base( neuronsCount, inputsCount )
 		{

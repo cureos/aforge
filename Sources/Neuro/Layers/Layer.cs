@@ -11,6 +11,10 @@ namespace AForge.Neuro
 	/// <summary>
 	/// Base neural layer class
 	/// </summary>
+	/// 
+	/// <remarks>This is a base neural layer class, which represents
+	/// collection of neuron.</remarks>
+	/// 
 	public abstract class Layer
 	{
 		/// <summary>
@@ -53,7 +57,8 @@ namespace AForge.Neuro
 		/// Layer's output vector
 		/// </summary>
 		/// 
-		/// <remarks>The calculation way of layer's output vector is determined by inherited class.</remarks>
+		/// <remarks>The calculation way of layer's output vector is determined by
+		/// inherited class.</remarks>
 		/// 
 		public double[] Output
 		{
@@ -93,15 +98,15 @@ namespace AForge.Neuro
 
 
 		/// <summary>
-		/// Compute output value of the layer 
+		/// Compute output vector of the layer 
 		/// </summary>
 		/// 
 		/// <param name="input">Input vector</param>
 		/// 
 		/// <returns>Returns layer's output vector</returns>
 		/// 
-		/// <remarks>The actual layer's output value is determined by inherited class and it
-		/// consists of output values of layer's neurons. The output value is also stored in
+		/// <remarks>The actual layer's output vector is determined by inherited class and it
+		/// consists of output values of layer's neurons. The output vector is also stored in
 		/// <see cref="Output"/> property.</remarks>
 		/// 
 		public virtual double[] Compute( double[] input )
