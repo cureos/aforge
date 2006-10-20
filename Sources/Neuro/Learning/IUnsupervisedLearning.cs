@@ -17,9 +17,9 @@ namespace AForge.Neuro.Learning
 	/// type of learning algorithms, where system's desired output is not known on
 	/// the learning stage. Given sample input values, it is expected, that
 	/// system will organize itself in the way to find similarities betweed provided
-	/// samples.
+	/// samples.</remarks>
 	/// 
-	public class IUnsupervisedLearning
+	public interface IUnsupervisedLearning
 	{
 		/// <summary>
 		/// Runs learning iteration
@@ -27,7 +27,7 @@ namespace AForge.Neuro.Learning
 		/// 
 		/// <param name="input">input vector</param>
 		/// 
-		double Run( double[] input );
+		void Run( double[] input );
 
 		/// <summary>
 		/// Runs learning epoch
