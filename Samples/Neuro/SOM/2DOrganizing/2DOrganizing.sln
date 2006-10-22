@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 7.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2DOrganizing", "2DOrganizing.csproj", "{C646B987-EA7E-4D82-A930-448DE583FEB3}"
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		ConfigName.0 = Debug
+		ConfigName.1 = Release
+	EndGlobalSection
+	GlobalSection(ProjectDependencies) = postSolution
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{C646B987-EA7E-4D82-A930-448DE583FEB3}.Debug.ActiveCfg = Debug|.NET
+		{C646B987-EA7E-4D82-A930-448DE583FEB3}.Debug.Build.0 = Debug|.NET
+		{C646B987-EA7E-4D82-A930-448DE583FEB3}.Release.ActiveCfg = Release|.NET
+		{C646B987-EA7E-4D82-A930-448DE583FEB3}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

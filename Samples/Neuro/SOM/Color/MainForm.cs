@@ -38,6 +38,8 @@ namespace Color
 		private System.Windows.Forms.Button startButton;
 		private System.Windows.Forms.Button stopButton;
 		private System.Windows.Forms.Button randomizeButton;
+		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.TextBox currentIterationBox;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -52,8 +54,6 @@ namespace Color
 		private double			radius = 15;
 
 		private Thread	workerThread = null;
-		private System.Windows.Forms.Label label5;
-		private System.Windows.Forms.TextBox currentIterationBox;
 		private bool	needToStop = false;
 
 		// Constructor
@@ -62,7 +62,7 @@ namespace Color
 			//
 			// Required for Windows Form Designer support
 			//
-			InitializeComponent();
+			InitializeComponent( );
 
 			// Create network
 			network = new DistanceNetwork( 3, 100 * 100 );
@@ -82,9 +82,9 @@ namespace Color
 		{
 			if( disposing )
 			{
-				if (components != null) 
+				if ( components != null ) 
 				{
-					components.Dispose();
+					components.Dispose( );
 				}
 			}
 			base.Dispose( disposing );
