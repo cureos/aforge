@@ -79,7 +79,7 @@
                 />
                 <Reference
                     Name = "System.XML"
-                    AssemblyName = "System.XML"
+                    AssemblyName = "System.Xml"
                     HintPath = "D:\WINNT\Microsoft.NET\Framework\v1.0.3705\System.XML.dll"
                 />
                 <Reference
@@ -102,6 +102,11 @@
                 />
                 <File
                     RelPath = "AssemblyInfo.cs"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "BufferedPanel.cs"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
