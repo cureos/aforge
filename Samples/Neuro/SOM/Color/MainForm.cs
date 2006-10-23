@@ -99,7 +99,7 @@ namespace Color
 		{
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.randomizeButton = new System.Windows.Forms.Button();
-			this.mapPanel = new System.Windows.Forms.Panel();
+			this.mapPanel = new BufferedPanel();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.currentIterationBox = new System.Windows.Forms.TextBox();
 			this.label5 = new System.Windows.Forms.Label();
@@ -419,7 +419,7 @@ namespace Color
 			}
 			catch
 			{
-				learningRate = 0.5;
+				learningRate = 0.1;
 			}
 			// get radius
 			try
@@ -428,7 +428,7 @@ namespace Color
 			}
 			catch
 			{
-				radius = 25;
+				radius = 15;
 			}
 			// update settings controls
 			UpdateSettings( );
@@ -457,11 +457,11 @@ namespace Color
 			// create learning algorithm
 			SOMLearning	trainer = new SOMLearning( network );
 
-			double	fixedLearningRate = learningRate / 10;
-			double	driftingLearningRate = fixedLearningRate * 9;
-
 			// input
 			double[] input = new double[3];
+
+			double	fixedLearningRate = learningRate / 10;
+			double	driftingLearningRate = fixedLearningRate * 9;
 
 			// iterations
 			int i = 0;
