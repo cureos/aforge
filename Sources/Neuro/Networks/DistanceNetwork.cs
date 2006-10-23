@@ -53,6 +53,9 @@ namespace AForge.Neuro
 			layers = new DistanceLayer[1];
 			// create layer
 			layers[0] = new DistanceLayer( neuronsCount, inputsCount );
+
+			// randomize the network
+			Randomize( );
 		}
 
 		/// <summary>
