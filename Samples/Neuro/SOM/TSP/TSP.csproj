@@ -79,7 +79,7 @@
                 />
                 <Reference
                     Name = "System.XML"
-                    AssemblyName = "System.XML"
+                    AssemblyName = "System.Xml"
                     HintPath = "D:\WINNT\Microsoft.NET\Framework\v1.0.3705\System.XML.dll"
                 />
                 <Reference
@@ -105,6 +105,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Chart.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Chart.resx"
+                    DependentUpon = "Chart.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "MainForm.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
@@ -112,16 +122,6 @@
                 <File
                     RelPath = "MainForm.resx"
                     DependentUpon = "MainForm.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "MapControl.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "MapControl.resx"
-                    DependentUpon = "MapControl.cs"
                     BuildAction = "EmbeddedResource"
                 />
             </Include>

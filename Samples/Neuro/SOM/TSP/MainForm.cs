@@ -16,6 +16,7 @@ using System.Threading;
 
 using AForge;
 using AForge.Neuro;
+using AForge.Neuro.Learning;
 
 namespace TSP
 {
@@ -28,7 +29,6 @@ namespace TSP
 		private System.Windows.Forms.Button generateMapButton;
 		private System.Windows.Forms.TextBox citiesCountBox;
 		private System.Windows.Forms.Label label1;
-		private TSP.MapControl mapControl;
 		private System.Windows.Forms.GroupBox groupBox2;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.TextBox neuronsBox;
@@ -52,9 +52,11 @@ namespace TSP
 		private int	iterations		= 500;
 		private double learningRate	= 0.5;
 
-		private int[,]	map = null;
+		private double[,]	map = null;
+		private Random		rand = new Random();
 
 		private Thread	workerThread = null;
+		private TSP.Chart chart;
 		private bool	needToStop = false;
 
 		// Constructor
@@ -65,13 +67,14 @@ namespace TSP
 			//
 			InitializeComponent( );
 
+			// initialize chart
+			chart.AddDataSeries( "cities", Color.Red, Chart.SeriesType.Dots, 5 );
+			chart.AddDataSeries( "path", Color.Blue, Chart.SeriesType.Line, 1 );
+			chart.RangeX = new DoubleRange( 0, 1000 );
+
 			//
 			UpdateSettings( );
 			GenerateMap( );
-
-			// set up map control
-			mapControl.RangeX = new IntRange( 0, 1000 );
-			mapControl.RangeY = new IntRange( 0, 1000 );
 		}
 
 		/// <summary>
@@ -100,11 +103,9 @@ namespace TSP
 			this.generateMapButton = new System.Windows.Forms.Button();
 			this.citiesCountBox = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
-			this.mapControl = new TSP.MapControl();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
-			this.label2 = new System.Windows.Forms.Label();
-			this.neuronsBox = new System.Windows.Forms.TextBox();
-			this.label3 = new System.Windows.Forms.Label();
+			this.stopButton = new System.Windows.Forms.Button();
+			this.startButton = new System.Windows.Forms.Button();
 			this.currentIterationBox = new System.Windows.Forms.TextBox();
 			this.label8 = new System.Windows.Forms.Label();
 			this.label7 = new System.Windows.Forms.Label();
@@ -112,8 +113,10 @@ namespace TSP
 			this.label5 = new System.Windows.Forms.Label();
 			this.iterationsBox = new System.Windows.Forms.TextBox();
 			this.label6 = new System.Windows.Forms.Label();
-			this.stopButton = new System.Windows.Forms.Button();
-			this.startButton = new System.Windows.Forms.Button();
+			this.label3 = new System.Windows.Forms.Label();
+			this.neuronsBox = new System.Windows.Forms.TextBox();
+			this.label2 = new System.Windows.Forms.Label();
+			this.chart = new TSP.Chart();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.SuspendLayout();
@@ -121,10 +124,10 @@ namespace TSP
 			// groupBox1
 			// 
 			this.groupBox1.Controls.AddRange(new System.Windows.Forms.Control[] {
+																					this.chart,
 																					this.generateMapButton,
 																					this.citiesCountBox,
-																					this.label1,
-																					this.mapControl});
+																					this.label1});
 			this.groupBox1.Location = new System.Drawing.Point(10, 10);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Size = new System.Drawing.Size(300, 340);
@@ -157,15 +160,6 @@ namespace TSP
 			this.label1.TabIndex = 1;
 			this.label1.Text = "Cities:";
 			// 
-			// mapControl
-			// 
-			this.mapControl.Location = new System.Drawing.Point(10, 20);
-			this.mapControl.Map = null;
-			this.mapControl.Name = "mapControl";
-			this.mapControl.Path = null;
-			this.mapControl.Size = new System.Drawing.Size(280, 280);
-			this.mapControl.TabIndex = 0;
-			// 
 			// groupBox2
 			// 
 			this.groupBox2.Controls.AddRange(new System.Windows.Forms.Control[] {
@@ -188,29 +182,22 @@ namespace TSP
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Neural Network";
 			// 
-			// label2
+			// stopButton
 			// 
-			this.label2.Location = new System.Drawing.Point(10, 22);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(60, 16);
-			this.label2.TabIndex = 0;
-			this.label2.Text = "Neurons:";
+			this.stopButton.Enabled = false;
+			this.stopButton.Location = new System.Drawing.Point(95, 305);
+			this.stopButton.Name = "stopButton";
+			this.stopButton.TabIndex = 23;
+			this.stopButton.Text = "S&top";
+			this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
 			// 
-			// neuronsBox
+			// startButton
 			// 
-			this.neuronsBox.Location = new System.Drawing.Point(110, 20);
-			this.neuronsBox.Name = "neuronsBox";
-			this.neuronsBox.Size = new System.Drawing.Size(60, 20);
-			this.neuronsBox.TabIndex = 1;
-			this.neuronsBox.Text = "";
-			// 
-			// label3
-			// 
-			this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.label3.Location = new System.Drawing.Point(10, 50);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(160, 2);
-			this.label3.TabIndex = 4;
+			this.startButton.Location = new System.Drawing.Point(10, 305);
+			this.startButton.Name = "startButton";
+			this.startButton.TabIndex = 22;
+			this.startButton.Text = "&Start";
+			this.startButton.Click += new System.EventHandler(this.startButton_Click);
 			// 
 			// currentIterationBox
 			// 
@@ -269,22 +256,36 @@ namespace TSP
 			this.label6.TabIndex = 15;
 			this.label6.Text = "Iteraions:";
 			// 
-			// stopButton
+			// label3
 			// 
-			this.stopButton.Enabled = false;
-			this.stopButton.Location = new System.Drawing.Point(95, 305);
-			this.stopButton.Name = "stopButton";
-			this.stopButton.TabIndex = 23;
-			this.stopButton.Text = "S&top";
-			this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
+			this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.label3.Location = new System.Drawing.Point(10, 50);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(160, 2);
+			this.label3.TabIndex = 4;
 			// 
-			// startButton
+			// neuronsBox
 			// 
-			this.startButton.Location = new System.Drawing.Point(10, 305);
-			this.startButton.Name = "startButton";
-			this.startButton.TabIndex = 22;
-			this.startButton.Text = "&Start";
-			this.startButton.Click += new System.EventHandler(this.startButton_Click);
+			this.neuronsBox.Location = new System.Drawing.Point(110, 20);
+			this.neuronsBox.Name = "neuronsBox";
+			this.neuronsBox.Size = new System.Drawing.Size(60, 20);
+			this.neuronsBox.TabIndex = 1;
+			this.neuronsBox.Text = "";
+			// 
+			// label2
+			// 
+			this.label2.Location = new System.Drawing.Point(10, 22);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(60, 16);
+			this.label2.TabIndex = 0;
+			this.label2.Text = "Neurons:";
+			// 
+			// chart
+			// 
+			this.chart.Location = new System.Drawing.Point(10, 20);
+			this.chart.Name = "chart";
+			this.chart.Size = new System.Drawing.Size(280, 280);
+			this.chart.TabIndex = 4;
 			// 
 			// MainForm
 			// 
@@ -340,7 +341,7 @@ namespace TSP
 			Random rand = new Random( (int) DateTime.Now.Ticks );
 
 			// create coordinates array
-			map = new int[citiesCount, 2];
+			map = new double[citiesCount, 2];
 
 			for ( int i = 0; i < citiesCount; i++ )
 			{
@@ -349,9 +350,9 @@ namespace TSP
 			}
 
 			// set the map
-			mapControl.Map = map;
+			chart.UpdateDataSeries( "cities", map );
 			// erase path if it is
-			mapControl.Path = null;
+			chart.UpdateDataSeries( "path", null );
 		}
 
 		// On "Generate" button click - generate map
@@ -438,6 +439,52 @@ namespace TSP
 		// Worker thread
 		void SearchSolution( )
 		{
+			// set random generators range
+			Neuron.RandRange = new DoubleRange( 0, 1000 );
+
+			// create network
+			DistanceNetwork network = new DistanceNetwork( 2, neurons );
+
+			// create learning algorithm
+			SOMLearning	trainer = new SOMLearning( network, neurons, 1 );
+
+			double	fixedLearningRate = learningRate / 10;
+			double	driftingLearningRate = fixedLearningRate * 9;
+
+			// input
+			double[] input = new double[2];
+
+			// iterations
+			int i = 0;
+
+			// loop
+			while ( !needToStop )
+			{
+				// update learning speed
+				trainer.LearningRate = driftingLearningRate * ( iterations - i ) / iterations + fixedLearningRate;
+
+				// set network input
+				int currentCity = rand.Next( citiesCount );
+				input[0] = map[citiesCount, 0];
+				input[1] = map[citiesCount, 1];
+
+				// run one training iteration
+				trainer.Run( input );
+
+				// show current path
+
+
+				// increase current iteration
+				i++;
+
+				// set current iteration's info
+				currentIterationBox.Text = i.ToString( );
+
+				// stop ?
+				if ( i >= iterations )
+					break;
+			}
+
 			// enable settings controls
 			EnableControls( true );
 		}
