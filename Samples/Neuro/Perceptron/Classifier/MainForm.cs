@@ -420,6 +420,9 @@ namespace Classifier
 					Array.Copy( tempData, 0, data, 0, samples * variables );
 					classes = new double[samples];
 					Array.Copy( tempClasses, 0, classes, 0, samples );
+
+					// clear current result
+					ClearCurrentSolution( );
 				}
 				catch ( Exception )
 				{
@@ -539,6 +542,14 @@ namespace Classifier
 			stopButton.Enabled			= !enable;
 		}
 
+		// Clear current solution
+		private void ClearCurrentSolution( )
+		{
+			chart.UpdateDataSeries( "classifier", null );
+			errorChart.UpdateDataSeries( "error", null );
+			weightsList.Items.Clear( );
+		}
+
 		// On button "Start" - start learning procedure
 		private void startButton_Click(object sender, System.EventArgs e)
 		{
@@ -607,91 +618,99 @@ namespace Classifier
 			StreamWriter errorsFile = null;
 			StreamWriter weightsFile = null;
 
-			// check if we need to save statistics to files
-			if ( saveStatisticsToFiles )
+			try
 			{
-				// open files
-				errorsFile	= File.CreateText( "errors.csv" );
-				weightsFile	= File.CreateText( "weights.csv" );
-			}
-
-			// erros list
-			ArrayList errorsList = new ArrayList( );
-
-			// loop
-			while ( !needToStop )
-			{
-				// save current weights
-				if ( weightsFile != null )
+				// check if we need to save statistics to files
+				if ( saveStatisticsToFiles )
 				{
-					for ( int i = 0; i < variables; i++ )
-					{
-						weightsFile.Write( perceptron[i] + ";" );
-					}
-					weightsFile.WriteLine( perceptron.Threshold );
+					// open files
+					errorsFile	= File.CreateText( "errors.csv" );
+					weightsFile	= File.CreateText( "weights.csv" );
 				}
 
-				// run epoch of learning procedure
-				double error = teacher.RunEpoch( input, output );
-				errorsList.Add( error );
+				// erros list
+				ArrayList errorsList = new ArrayList( );
 
-				// save current error
-				if ( errorsFile != null )
+				// loop
+				while ( !needToStop )
 				{
-					errorsFile.WriteLine( error );
-				}				
+					// save current weights
+					if ( weightsFile != null )
+					{
+						for ( int i = 0; i < variables; i++ )
+						{
+							weightsFile.Write( perceptron[i] + ";" );
+						}
+						weightsFile.WriteLine( perceptron.Threshold );
+					}
 
-				// show current iteration
-				iterationsBox.Text = iteration.ToString( );
+					// run epoch of learning procedure
+					double error = teacher.RunEpoch( input, output );
+					errorsList.Add( error );
 
-				// show classifier in the case of 2 dimensional data
-				if ( ( perceptron.InputsCount == 2 ) && ( perceptron[1] != 0 ) )
-				{
-					double k = - perceptron[0] / perceptron[1];
-					double b = - perceptron.Threshold / perceptron[1];
+					// save current error
+					if ( errorsFile != null )
+					{
+						errorsFile.WriteLine( error );
+					}				
 
-					double[,] classifier = new double[2, 2] {
+					// show current iteration
+					iterationsBox.Text = iteration.ToString( );
+
+					// show classifier in the case of 2 dimensional data
+					if ( ( perceptron.InputsCount == 2 ) && ( perceptron[1] != 0 ) )
+					{
+						double k = - perceptron[0] / perceptron[1];
+						double b = - perceptron.Threshold / perceptron[1];
+
+						double[,] classifier = new double[2, 2] {
 						{ chart.RangeX.Min, chart.RangeX.Min * k + b },
 						{ chart.RangeX.Max, chart.RangeX.Max * k + b }
-															};
-					// update chart
-					chart.UpdateDataSeries( "classifier", classifier );
+																};
+						// update chart
+						chart.UpdateDataSeries( "classifier", classifier );
+					}
+
+					// stop if no error
+					if ( error == 0 )
+						break;
+
+					iteration++;
 				}
 
-				// stop if no error
-				if ( error == 0 )
-					break;
+				// close files
+				if ( errorsFile != null )
+					errorsFile.Close( );
+				if ( weightsFile != null )
+					weightsFile.Close( );
 
-				iteration++;
+				// show perceptron's weights
+				weightsList.Items.Clear( );
+				for ( int i = 0; i < variables; i++ )
+				{
+					weightsList.Items.Add( string.Format( "Weight {0}", i + 1  ) );
+					weightsList.Items[i].SubItems.Add( perceptron[i].ToString( "F6" ) );
+				}
+				weightsList.Items.Add( "Threshold" );
+				weightsList.Items[variables].SubItems.Add( perceptron.Threshold.ToString( "F6" ) );
+
+				// show error's dynamics
+				double[,] errors = new double[errorsList.Count, 2];
+
+				for ( int i = 0, n = errorsList.Count; i < n; i++ )
+				{
+					errors[i, 0] = i;
+					errors[i, 1] = (double) errorsList[i];
+				}
+
+				errorChart.RangeX = new DoubleRange( 0, errorsList.Count - 1 );
+				errorChart.UpdateDataSeries( "error", errors );
 			}
 
-			// close files
-			if ( errorsFile != null )
-				errorsFile.Close( );
-			if ( weightsFile != null )
-				weightsFile.Close( );
-
-			// show perceptron's weights
-			weightsList.Items.Clear( );
-			for ( int i = 0; i < variables; i++ )
+			catch ( IOException )
 			{
-				weightsList.Items.Add( string.Format( "Weight {0}", i + 1  ) );
-				weightsList.Items[i].SubItems.Add( perceptron[i].ToString( "F6" ) );
+				MessageBox.Show( "Failed writing file", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
 			}
-			weightsList.Items.Add( "Threshold" );
-			weightsList.Items[variables].SubItems.Add( perceptron.Threshold.ToString( "F6" ) );
-
-			// show error's dynamics
-			double[,] errors = new double[errorsList.Count, 2];
-
-			for ( int i = 0, n = errorsList.Count; i < n; i++ )
-			{
-				errors[i, 0] = i;
-				errors[i, 1] = (double) errorsList[i];
-			}
-
-			errorChart.RangeX = new DoubleRange( 0, errorsList.Count - 1 );
-			errorChart.UpdateDataSeries( "error", errors );
 
 			// enable settings controls
 			EnableControls( true );
