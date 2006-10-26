@@ -11,12 +11,12 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Data;
-
 using System.Threading;
 
 using AForge;
 using AForge.Neuro;
 using AForge.Neuro.Learning;
+using AForge.Controls;
 
 namespace TSP
 {
@@ -42,6 +42,7 @@ namespace TSP
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.Button stopButton;
 		private System.Windows.Forms.Button startButton;
+		private AForge.Controls.Chart chart;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -56,7 +57,6 @@ namespace TSP
 		private Random		rand = new Random();
 
 		private Thread	workerThread = null;
-		private TSP.Chart chart;
 		private bool	needToStop = false;
 
 		// Constructor
@@ -117,7 +117,7 @@ namespace TSP
 			this.label3 = new System.Windows.Forms.Label();
 			this.neuronsBox = new System.Windows.Forms.TextBox();
 			this.label2 = new System.Windows.Forms.Label();
-			this.chart = new TSP.Chart();
+			this.chart = new AForge.Controls.Chart();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.SuspendLayout();

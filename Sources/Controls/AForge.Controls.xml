@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AForge.Controls</name>
+    </assembly>
+    <members>
+        <member name="T:AForge.Controls.Chart">
+            <summary>
+            Summary description for Chart.
+            </summary>
+        </member>
+        <member name="F:AForge.Controls.Chart.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:AForge.Controls.Chart.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:AForge.Controls.Chart.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+        </member>
+        <member name="M:AForge.Controls.Chart.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:AForge.Controls.Chart.AddDataSeries(System.String,System.Drawing.Color,AForge.Controls.Chart.SeriesType,System.Int32)">
+            <summary>
+            Add data series to the chart
+            </summary>
+        </member>
+        <member name="M:AForge.Controls.Chart.AddDataSeries(System.String,System.Drawing.Color,AForge.Controls.Chart.SeriesType,System.Int32,System.Boolean)">
+            <summary>
+            Add data series to the chart
+            </summary>
+        </member>
+        <member name="M:AForge.Controls.Chart.UpdateDataSeries(System.String,System.Double[0:,0:])">
+            <summary>
+            Update data series on the chart
+            </summary>
+        </member>
+        <member name="P:AForge.Controls.Chart.RangeX">
+            <summary>
+            X range
+            </summary>
+        </member>
+        <member name="P:AForge.Controls.Chart.RangeY">
+            <summary>
+            Y range
+            </summary>
+        </member>
+    </members>
+</doc>

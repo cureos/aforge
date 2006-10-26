@@ -22,7 +22,7 @@
         </documenter>
         <documenter name="MSDN">
             <property name="OutputDirectory" value=".\Docs\" />
-            <property name="HtmlHelpName" value="AForge" />
+            <property name="HtmlHelpName" value="AForge.Core" />
             <property name="Title" value="AForge Class Library" />
             <property name="OutputTarget" value="HtmlHelp" />
             <property name="ShowMissingSummaries" value="True" />

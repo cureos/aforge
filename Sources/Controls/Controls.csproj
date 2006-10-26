@@ -3,20 +3,20 @@
         ProjectType = "Local"
         ProductVersion = "7.0.9466"
         SchemaVersion = "1.0"
-        ProjectGuid = "{6FA77B7F-E933-4B25-AC4C-99E343B35AC8}"
+        ProjectGuid = "{D08F6D8A-A5F5-49C3-B607-526D9EE0DEE3}"
     >
         <Build>
             <Settings
-                ApplicationIcon = "App.ico"
+                ApplicationIcon = ""
                 AssemblyKeyContainerName = ""
-                AssemblyName = "TSP"
+                AssemblyName = "AForge.Controls"
                 AssemblyOriginatorKeyFile = ""
                 DefaultClientScript = "JScript"
                 DefaultHTMLPageLayout = "Grid"
                 DefaultTargetSchema = "IE50"
                 DelaySign = "false"
-                OutputType = "WinExe"
-                RootNamespace = "TSP"
+                OutputType = "Library"
+                RootNamespace = "AForge.Controls"
                 StartupObject = ""
             >
                 <Config
@@ -44,12 +44,12 @@
                     CheckForOverflowUnderflow = "false"
                     ConfigurationOverrideFile = ""
                     DefineConstants = "TRACE"
-                    DocumentationFile = ""
+                    DocumentationFile = "AForge.Controls.xml"
                     DebugSymbols = "false"
                     FileAlignment = "4096"
                     IncrementalBuild = "false"
                     Optimize = "true"
-                    OutputPath = "bin\Release\"
+                    OutputPath = "..\..\Release\"
                     RegisterForComInterop = "false"
                     RemoveIntegerChecks = "false"
                     TreatWarningsAsErrors = "false"
@@ -83,41 +83,36 @@
                     HintPath = "D:\WINNT\Microsoft.NET\Framework\v1.0.3705\System.XML.dll"
                 />
                 <Reference
-                    Name = "AForge"
-                    AssemblyName = "AForge"
-                    HintPath = "..\..\..\..\Release\AForge.dll"
-                />
-                <Reference
-                    Name = "AForge.Neuro"
-                    AssemblyName = "AForge.Neuro"
-                    HintPath = "..\..\..\..\Release\AForge.Neuro.dll"
-                />
-                <Reference
-                    Name = "AForge.Controls"
-                    AssemblyName = "AForge.Controls"
-                    HintPath = "..\..\..\..\Release\AForge.Controls.dll"
+                    Name = "Core"
+                    Project = "{BFAF50DC-4942-46B8-8615-2A0B4CF08AD2}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
             </References>
         </Build>
         <Files>
             <Include>
                 <File
-                    RelPath = "App.ico"
-                    BuildAction = "Content"
-                />
-                <File
                     RelPath = "AssemblyInfo.cs"
+                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "MainForm.cs"
-                    SubType = "Form"
+                    RelPath = "Chart.cs"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "MainForm.resx"
-                    DependentUpon = "MainForm.cs"
+                    RelPath = "Chart.resx"
+                    DependentUpon = "Chart.cs"
                     BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Copyright.txt"
+                    BuildAction = "None"
+                />
+                <File
+                    RelPath = "Version.txt"
+                    BuildAction = "None"
                 />
             </Include>
         </Files>

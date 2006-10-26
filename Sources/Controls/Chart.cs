@@ -1,20 +1,19 @@
-// AForge Framework
+// AForge Controls Library
 //
-// Copyright © Andrew Kirillov, 2006
+// Copyright © Andrew Kirillov, 2005-2006
 // andrew.kirillov@gmail.com
 //
 
-using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Windows.Forms;
-
-using AForge;
-
-namespace TSP
+namespace AForge.Controls
 {
+	using System;
+	using System.Collections;
+	using System.ComponentModel;
+	using System.Drawing;
+	using System.Data;
+	using System.Windows.Forms;
+	using AForge;
+
 	/// <summary>
 	/// Summary description for Chart.
 	/// </summary>
