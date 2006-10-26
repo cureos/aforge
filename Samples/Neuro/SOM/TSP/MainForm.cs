@@ -68,9 +68,10 @@ namespace TSP
 			InitializeComponent( );
 
 			// initialize chart
-			chart.AddDataSeries( "cities", Color.Red, Chart.SeriesType.Dots, 5 );
-			chart.AddDataSeries( "path", Color.Blue, Chart.SeriesType.Line, 1 );
+			chart.AddDataSeries( "cities", Color.Red, Chart.SeriesType.Dots, 5, false );
+			chart.AddDataSeries( "path", Color.Blue, Chart.SeriesType.Line, 1, false );
 			chart.RangeX = new DoubleRange( 0, 1000 );
+			chart.RangeY = new DoubleRange( 0, 1000 );
 
 			//
 			UpdateSettings( );
@@ -446,10 +447,13 @@ namespace TSP
 			DistanceNetwork network = new DistanceNetwork( 2, neurons );
 
 			// create learning algorithm
-			SOMLearning	trainer = new SOMLearning( network, neurons, 1 );
+			ElasticNetworkLearning	trainer = new ElasticNetworkLearning( network );
 
-			double	fixedLearningRate = learningRate / 10;
-			double	driftingLearningRate = fixedLearningRate * 9;
+			double	fixedLearningRate = learningRate / 20;
+			double	driftingLearningRate = fixedLearningRate * 19;
+
+			// path
+			double[,] path = new double[neurons + 1, 2];
 
 			// input
 			double[] input = new double[2];
@@ -465,14 +469,22 @@ namespace TSP
 
 				// set network input
 				int currentCity = rand.Next( citiesCount );
-				input[0] = map[citiesCount, 0];
-				input[1] = map[citiesCount, 1];
+				input[0] = map[currentCity, 0];
+				input[1] = map[currentCity, 1];
 
 				// run one training iteration
 				trainer.Run( input );
 
 				// show current path
+				for ( int j = 0; j < neurons; j++ )
+				{
+					path[j, 0] = network[0][j][0];
+					path[j, 1] = network[0][j][1];
+				}
+				path[neurons, 0] = network[0][0][0];
+				path[neurons, 1] = network[0][0][1];
 
+				chart.UpdateDataSeries( "path", path );
 
 				// increase current iteration
 				i++;

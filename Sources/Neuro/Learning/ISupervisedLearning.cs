@@ -28,7 +28,7 @@ namespace AForge.Neuro.Learning
 		/// <param name="input">input vector</param>
 		/// <param name="output">desired output vector</param>
 		/// 
-		/// <returns>Returns absolute error</returns>
+		/// <returns>Returns absolute error.</returns>
 		/// 
 		double Run( double[] input, double[] output );
 
@@ -39,7 +39,7 @@ namespace AForge.Neuro.Learning
 		/// <param name="input">array of input vectors</param>
 		/// <param name="output">array of output vectors</param>
 		/// 
-		/// <returns>Returns sum of absolute errors</returns>
+		/// <returns>Returns sum of absolute errors.</returns>
 		/// 
 		double RunEpoch( double[][] input, double[][] output );
 	}

@@ -45,7 +45,7 @@ namespace TSP
 		private Brush	whiteBrush = new SolidBrush( Color.White );
 
 		private DoubleRange	rangeX = new DoubleRange( 0, 1 );
-		private DoubleRange	rangeY = null;
+		private DoubleRange	rangeY = new DoubleRange( 0, 1 );
 
 		/// <summary>
 		/// X range
@@ -66,6 +66,11 @@ namespace TSP
 		public DoubleRange RangeY
 		{
 			get { return rangeY; }
+			set
+			{
+				rangeY = value;
+				Invalidate( );
+			}
 		}
 
 		/// <summary>
@@ -200,7 +205,7 @@ namespace TSP
 						pen.Dispose( );
 						brush.Dispose( );
 					}
-					else if ( ( series.type == SeriesType.Line ) || ( series.type == SeriesType.UnlimitedLine ) )
+					else if ( series.type == SeriesType.Line )
 					{
 						// draw line
 						Pen pen = new Pen( series.color, series.width );
@@ -239,7 +244,7 @@ namespace TSP
 		/// </summary>
 		public void AddDataSeries( string name, Color color, SeriesType type, int width )
 		{
-			AddDataSeries( name, color, typr, width, true );
+			AddDataSeries( name, color, type, width, true );
 		}
 
 		/// <summary>
@@ -289,7 +294,7 @@ namespace TSP
 				// get data of the series
 				double[,] data = series.data;
 
-				if ( ( series.type != SeriesType.UnlimitedLine ) && ( data != null ) )
+				if ( ( series.updateYRange ) && ( data != null ) )
 				{
 					for ( int i = 0, n = data.GetLength( 0 ); i < n; i++ )
 					{

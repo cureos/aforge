@@ -34,7 +34,8 @@ namespace AForge.Neuro.Learning
 		/// Learning rate
 		/// </summary>
 		/// 
-		/// Determins speed of learning. Value range is [0, 1]. Default value equals to 0.1.
+		/// <remarks>Determines speed of learning. Value range is [0, 1].
+		/// Default value equals to 0.1.</remarks>
 		/// 
 		public double LearningRate
 		{
@@ -48,6 +49,12 @@ namespace AForge.Neuro.Learning
 		/// <summary>
 		/// Learning radius
 		/// </summary>
+		/// 
+		/// <remarks>Determines the amount of neurons to be updated around
+		/// winner neuron. Neurons, which are in the circle of specified radius,
+		/// are updated during the learning procedure. Neurons, which are closer
+		/// to the winner neuron, get more update.</remarks>
+		/// 
 		public int LearningRadius
 		{
 			get { return learningRadius; }
