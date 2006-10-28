@@ -14,12 +14,12 @@ namespace TSP
 	/// </summary>
 	public class TSPChromosome : PermutationChromosome
 	{
-		private int[,] map = null;
+		private double[,] map = null;
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public TSPChromosome( int[,] map ) : base( map.GetLength( 0 ) )
+		public TSPChromosome( double[,] map ) : base( map.GetLength( 0 ) )
 		{
 			this.map = map;
 		}

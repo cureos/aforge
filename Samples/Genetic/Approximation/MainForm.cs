@@ -16,6 +16,7 @@ using System.Threading;
 
 using AForge;
 using AForge.Genetic;
+using AForge.Controls;
 
 namespace Approximation
 {
@@ -35,7 +36,7 @@ namespace Approximation
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 		private System.Windows.Forms.GroupBox groupBox2;
-		private Approximation.Chart chart;
+		private AForge.Controls.Chart chart;
 		private System.Windows.Forms.GroupBox groupBox3;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox populationSizeBox;
@@ -116,7 +117,7 @@ namespace Approximation
 			this.loadDataButton = new System.Windows.Forms.Button();
 			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
-			this.chart = new Approximation.Chart();
+			this.chart = new AForge.Controls.Chart();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
 			this.geneticMethodBox = new System.Windows.Forms.ComboBox();
 			this.label8 = new System.Windows.Forms.Label();
@@ -665,7 +666,7 @@ namespace Approximation
 					currentIterationBox.Text = i.ToString( );
 					currentErrorBox.Text = error.ToString( "F3" );
 				}
-				catch ( Exception e )
+				catch
 				{
 					// remove any solutions from chart in case of any errors
 					chart.UpdateDataSeries( "solution", null );

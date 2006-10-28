@@ -15,6 +15,7 @@ using System.Threading;
 
 using AForge;
 using AForge.Genetic;
+using AForge.Controls;
 
 namespace Optimization1D
 {
@@ -23,7 +24,7 @@ namespace Optimization1D
 	/// </summary>
 	public class MainForm : System.Windows.Forms.Form
 	{
-		private Optimization1D.Chart chart;
+		private AForge.Controls.Chart chart;
 		private System.Windows.Forms.GroupBox groupBox1;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox minXBox;
@@ -108,7 +109,7 @@ namespace Optimization1D
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.chart = new Optimization1D.Chart();
+			this.chart = new AForge.Controls.Chart();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.minXBox = new System.Windows.Forms.TextBox();

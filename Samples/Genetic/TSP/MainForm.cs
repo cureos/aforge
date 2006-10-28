@@ -15,6 +15,7 @@ using System.Threading;
 
 using AForge;
 using AForge.Genetic;
+using AForge.Controls;
 
 namespace TSP
 {
@@ -24,7 +25,7 @@ namespace TSP
 	public class MainForm : System.Windows.Forms.Form
 	{
 		private System.Windows.Forms.GroupBox groupBox1;
-		private TSP.MapControl mapControl;
+		private AForge.Controls.Chart mapControl;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox citiesCountBox;
 		private System.Windows.Forms.Button generateMapButton;
@@ -55,7 +56,7 @@ namespace TSP
 		private int selectionMethod = 0;
 		private bool greedyCrossover = true;
 
-		private int[,]	map = null;
+		private double[,]	map = null;
 
 		private Thread	workerThread = null;
 		private bool	needToStop = false;
@@ -68,15 +69,17 @@ namespace TSP
 			//
 			InitializeComponent();
 
+			// set up map control
+			mapControl.RangeX = new DoubleRange( 0, 1000 );
+			mapControl.RangeY = new DoubleRange( 0, 1000 );
+			mapControl.AddDataSeries( "map", Color.Red, Chart.SeriesType.Dots, 5, false );
+			mapControl.AddDataSeries( "path", Color.Blue, Chart.SeriesType.Line, 1, false );
+
 			//
 			selectionBox.SelectedIndex = selectionMethod;
 			greedyCrossoverBox.Checked = greedyCrossover;
 			UpdateSettings( );
 			GenerateMap( );
-
-			// set up map control
-			mapControl.RangeX = new IntRange( 0, 1000 );
-			mapControl.RangeY = new IntRange( 0, 1000 );
 		}
 
 		/// <summary>
@@ -105,7 +108,7 @@ namespace TSP
 			this.generateMapButton = new System.Windows.Forms.Button();
 			this.citiesCountBox = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
-			this.mapControl = new TSP.MapControl();
+			this.mapControl = new AForge.Controls.Chart();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.greedyCrossoverBox = new System.Windows.Forms.CheckBox();
 			this.label5 = new System.Windows.Forms.Label();
@@ -168,9 +171,7 @@ namespace TSP
 			// mapControl
 			// 
 			this.mapControl.Location = new System.Drawing.Point(10, 20);
-			this.mapControl.Map = null;
 			this.mapControl.Name = "mapControl";
-			this.mapControl.Path = null;
 			this.mapControl.Size = new System.Drawing.Size(280, 280);
 			this.mapControl.TabIndex = 0;
 			// 
@@ -394,7 +395,7 @@ namespace TSP
 			Random rand = new Random( (int) DateTime.Now.Ticks );
 
 			// create coordinates array
-			map = new int[citiesCount, 2];
+			map = new double[citiesCount, 2];
 
 			for ( int i = 0; i < citiesCount; i++ )
 			{
@@ -403,9 +404,9 @@ namespace TSP
 			}
 
 			// set the map
-			mapControl.Map = map;
+			mapControl.UpdateDataSeries( "map", map );
 			// erase path if it is
-			mapControl.Path = null;
+			mapControl.UpdateDataSeries( "path", null );
 		}
 
 		// On "Generate" button click - generate map
@@ -487,6 +488,9 @@ namespace TSP
 			// iterations
 			int i = 1;
 
+			// path
+			double[,] path = new double[citiesCount + 1, 2];
+
 			// loop
 			while ( !needToStop )
 			{
@@ -494,7 +498,17 @@ namespace TSP
 				population.RunEpoch( );
 
 				// display current path
-				mapControl.Path = ((PermutationChromosome) population.BestChromosome).Value;
+				ushort[] bestValue = ((PermutationChromosome) population.BestChromosome).Value;
+
+				for ( int j = 0; j < citiesCount; j++ )
+				{
+					path[j, 0] = map[bestValue[j], 0];
+					path[j, 1] = map[bestValue[j], 1];
+				}
+				path[citiesCount, 0] = map[bestValue[0], 0];
+				path[citiesCount, 1] = map[bestValue[0], 1];
+
+				mapControl.UpdateDataSeries( "path", path );
 
 				// set current iteration's info
 				currentIterationBox.Text = i.ToString( );

@@ -16,6 +16,7 @@ using System.Threading;
 
 using AForge;
 using AForge.Genetic;
+using AForge.Controls;
 
 namespace TimeSeries
 {
@@ -31,7 +32,7 @@ namespace TimeSeries
 		private System.Windows.Forms.OpenFileDialog openFileDialog;
 		private System.ComponentModel.IContainer components;
 		private System.Windows.Forms.GroupBox groupBox2;
-		private TimeSeries.Chart chart;
+		private AForge.Controls.Chart chart;
 		private System.Windows.Forms.GroupBox groupBox3;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox populationSizeBox;
@@ -95,8 +96,8 @@ namespace TimeSeries
 			//
 			chart.AddDataSeries( "data", Color.Red, Chart.SeriesType.Dots, 5 );
 			chart.AddDataSeries( "solution", Color.Blue, Chart.SeriesType.Line, 1 );
-			chart.AddDataSeries( "window", Color.LightGray, Chart.SeriesType.UnlimitedLine, 1 );
-			chart.AddDataSeries( "prediction", Color.Gray, Chart.SeriesType.UnlimitedLine, 1 );
+			chart.AddDataSeries( "window", Color.LightGray, Chart.SeriesType.Line, 1, false );
+			chart.AddDataSeries( "prediction", Color.Gray, Chart.SeriesType.Line, 1, false );
 
 			selectionBox.SelectedIndex		= selectionMethod;
 			functionsSetBox.SelectedIndex	= functionsSet;
@@ -134,7 +135,7 @@ namespace TimeSeries
 			this.loadDataButton = new System.Windows.Forms.Button();
 			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
-			this.chart = new TimeSeries.Chart();
+			this.chart = new AForge.Controls.Chart();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
 			this.moreSettingsButton = new System.Windows.Forms.Button();
 			this.label10 = new System.Windows.Forms.Label();

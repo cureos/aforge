@@ -15,10 +15,10 @@ namespace TSP
 	public class TSPFitnessFunction : IFitnessFunction
 	{
 		// map
-		private int[,]	map = null;
+		private double[,]	map = null;
 
 		// Constructor
-		public TSPFitnessFunction( int[,] map )
+		public TSPFitnessFunction( double[,] map )
 		{
 			this.map = map;
 		}
