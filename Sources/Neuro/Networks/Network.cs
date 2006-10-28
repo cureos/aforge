@@ -80,6 +80,24 @@ namespace AForge.Neuro
 
 
 		/// <summary>
+		/// Initializes a new instance of the <see cref="Network"/> class
+		/// </summary>
+		/// 
+		/// <param name="inputsCount">Network's inputs count</param>
+		/// <param name="layersCount">Network's layers count</param>
+		/// 
+		/// <remarks>Protected constructor, which initializes <see cref="inputsCount"/>,
+		/// <see cref="layersCount"/> and <see cref="layers"/> members.</remarks>
+		/// 
+		protected Network( int inputsCount, int layersCount )
+		{
+			this.inputsCount = Math.Max( 1, inputsCount );
+			this.layersCount = Math.Max( 1, layersCount );
+			// create collection of layers
+			layers = new Layer[this.layersCount];
+		}
+
+		/// <summary>
 		/// Compute output vector of the network
 		/// </summary>
 		/// 

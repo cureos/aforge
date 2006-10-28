@@ -18,8 +18,6 @@ namespace AForge.Neuro
 	///
 	public class DistanceNetwork : Network
 	{
-		// Get layer at the specified index
-
 		/// <summary>
 		/// Network's layers accessor
 		/// </summary>
@@ -40,22 +38,14 @@ namespace AForge.Neuro
 		/// <param name="inputsCount">Network's inputs count</param>
 		/// <param name="neuronsCount">Network's neurons count</param>
 		/// 
-		/// <remarks>The new network will be randomized (see <see cref="Network.Randomize"/>
+		/// <remarks>The new network will be randomized (see <see cref="Neurons.Randomize"/>
 		/// method) after it is created.</remarks>
 		/// 
 		public DistanceNetwork( int inputsCount, int neuronsCount )
+						: base( inputsCount, 1 )
 		{
-			this.inputsCount = Math.Max( 1, inputsCount );
-			// this network has always only one layer
-			this.layersCount = 1;
-
-			// create collection of layers
-			layers = new DistanceLayer[1];
 			// create layer
 			layers[0] = new DistanceLayer( neuronsCount, inputsCount );
-
-			// randomize the network
-			Randomize( );
 		}
 
 		/// <summary>

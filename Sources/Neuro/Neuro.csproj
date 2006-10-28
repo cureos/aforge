@@ -115,6 +115,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Layers\ActivationLayer.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Layers\DistanceLayer.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -146,6 +151,11 @@
                 />
                 <File
                     RelPath = "Learning\SOMLearning.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Networks\ActivationNetwork.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

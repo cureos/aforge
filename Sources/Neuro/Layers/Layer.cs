@@ -86,14 +86,18 @@ namespace AForge.Neuro
 		/// <param name="neuronsCount">Layer's neurons count</param>
 		/// <param name="inputsCount">Layer's inputs count</param>
 		/// 
-		public Layer( int neuronsCount, int inputsCount )
+		/// <remarks>Protected contructor, which initializes <see cref="inputsCount"/>,
+		/// <see cref="neuronsCount"/>, <see cref="neurons"/> and <see cref="output"/>
+		/// members.</remarks>
+		/// 
+		protected Layer( int neuronsCount, int inputsCount )
 		{
 			this.inputsCount	= Math.Max( 1, inputsCount );
 			this.neuronsCount	= Math.Max( 1, neuronsCount );
 			// create collection of neurons
-			neurons = new Neuron[neuronsCount];
+			neurons = new Neuron[this.neuronsCount];
 			// allocate output array
-			output = new double[neuronsCount];
+			output = new double[this.neuronsCount];
 		}
 
 
