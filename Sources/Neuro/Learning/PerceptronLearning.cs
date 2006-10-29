@@ -28,12 +28,15 @@ namespace AForge.Neuro.Learning
 		/// Learning rate
 		/// </summary>
 		/// 
-		/// <remarks>The value determines speed of learning</remarks>
+		/// <remarks>The value determines speed of learning. Default value is 0.1.</remarks>
 		/// 
 		public double LearningRate
 		{
 			get { return learningRate; }
-			set { learningRate = value; }
+			set
+			{
+				learningRate = Math.Max( 0.0, Math.Min( 1.0, value ) );
+			}
 		}
 
 		/// <summary>

@@ -130,6 +130,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Learning\BackPropagationLearning.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Learning\ElasticNetworkLearning.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
