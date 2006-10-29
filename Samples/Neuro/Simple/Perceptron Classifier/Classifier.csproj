@@ -92,6 +92,11 @@
                     AssemblyName = "AForge"
                     HintPath = "..\..\..\..\Release\AForge.dll"
                 />
+                <Reference
+                    Name = "AForge.Controls"
+                    AssemblyName = "AForge.Controls"
+                    HintPath = "..\..\..\..\Release\AForge.Controls.dll"
+                />
             </References>
         </Build>
         <Files>
@@ -102,17 +107,8 @@
                 />
                 <File
                     RelPath = "AssemblyInfo.cs"
+                    SubType = "Code"
                     BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Chart.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Chart.resx"
-                    DependentUpon = "Chart.cs"
-                    BuildAction = "EmbeddedResource"
                 />
                 <File
                     RelPath = "MainForm.cs"

@@ -38,7 +38,7 @@ namespace AForge.Neuro
 		/// <param name="inputsCount">Network's inputs count</param>
 		/// <param name="neuronsCount">Network's neurons count</param>
 		/// 
-		/// <remarks>The new network will be randomized (see <see cref="Neurons.Randomize"/>
+		/// <remarks>The new network will be randomized (see <see cref="Neuron.Randomize"/>
 		/// method) after it is created.</remarks>
 		/// 
 		public DistanceNetwork( int inputsCount, int neuronsCount )

@@ -38,7 +38,7 @@ namespace AForge.Neuro
 		/// <param name="inputsCount">Layer's inputs count</param>
 		/// <param name="function">Activation function of neurons of the layer</param>
 		/// 
-		/// <remarks>The new layet will be randomized (see <see cref="Neuron.Randomize"/>
+		/// <remarks>The new layet will be randomized (see <see cref="ActivationNeuron.Randomize"/>
 		/// method) after it is created.</remarks>
 		/// 
 		public ActivationLayer( int neuronsCount, int inputsCount, IActivationFunction function )

@@ -38,7 +38,7 @@ namespace AForge.Neuro
 		/// <param name="neuronsCount">Array, which specifies the amount of neurons in
 		/// each layer of the neural network</param>
 		/// 
-		/// <remarks>The new network will be randomized (see <see cref="Neuron.Randomize"/>
+		/// <remarks>The new network will be randomized (see <see cref="ActivationNeuron.Randomize"/>
 		/// method) after it is created.</remarks>
 		/// 
 		/// <example>The following sample illustrates the usage of <c>ActivationNetwork</c> class:

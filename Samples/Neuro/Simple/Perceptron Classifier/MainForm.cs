@@ -1,3 +1,10 @@
+// AForge Framework
+// Perceptron Classifier
+//
+// Copyright © Andrew Kirillov, 2006
+// andrew.kirillov@gmail.com
+//
+
 using System;
 using System.Drawing;
 using System.Collections;
@@ -10,6 +17,7 @@ using System.Threading;
 using AForge;
 using AForge.Neuro;
 using AForge.Neuro.Learning;
+using AForge.Controls;
 
 namespace Classifier
 {
@@ -22,7 +30,7 @@ namespace Classifier
 		private System.Windows.Forms.ListView dataList;
 		private System.Windows.Forms.Button loadButton;
 		private System.Windows.Forms.OpenFileDialog openFileDialog;
-		private Classifier.Chart chart;
+		private AForge.Controls.Chart chart;
 		private System.Windows.Forms.GroupBox groupBox2;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TextBox learningRateBox;
@@ -37,7 +45,7 @@ namespace Classifier
 		private System.Windows.Forms.TextBox iterationsBox;
 		private System.Windows.Forms.Button stopButton;
 		private System.Windows.Forms.Label label5;
-		private Classifier.Chart errorChart;
+		private AForge.Controls.Chart errorChart;
 		private System.Windows.Forms.CheckBox saveFilesCheck;
 		/// <summary>
 		/// Required designer variable.
@@ -67,9 +75,9 @@ namespace Classifier
 			// initialize charts
 			chart.AddDataSeries( "class1", Color.Red, Chart.SeriesType.Dots, 5 );
 			chart.AddDataSeries( "class2", Color.Blue, Chart.SeriesType.Dots, 5 );
-			chart.AddDataSeries( "classifier", Color.Gray, Chart.SeriesType.UnlimitedLine, 1 );
+			chart.AddDataSeries( "classifier", Color.Gray, Chart.SeriesType.Line, 1, false );
 
-			errorChart.AddDataSeries( "error", Color.Red, Chart.SeriesType.ConnectedDots, 3 );
+			errorChart.AddDataSeries( "error", Color.Red, Chart.SeriesType.ConnectedDots, 3, false );
 
 			// update some controls
 			saveFilesCheck.Checked = saveStatisticsToFiles;
@@ -99,13 +107,13 @@ namespace Classifier
 		private void InitializeComponent()
 		{
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.chart = new Classifier.Chart();
+			this.chart = new AForge.Controls.Chart();
 			this.loadButton = new System.Windows.Forms.Button();
 			this.dataList = new System.Windows.Forms.ListView();
 			this.noVisualizationLabel = new System.Windows.Forms.Label();
 			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
-			this.errorChart = new Classifier.Chart();
+			this.errorChart = new AForge.Controls.Chart();
 			this.label5 = new System.Windows.Forms.Label();
 			this.stopButton = new System.Windows.Forms.Button();
 			this.iterationsBox = new System.Windows.Forms.TextBox();
@@ -605,9 +613,10 @@ namespace Classifier
 			}
 
 			// create perceptron
-			ActivationNeuron perceptron = new ActivationNeuron( variables, new ThresholdFunction( ) );
+			ActivationNetwork	network = new ActivationNetwork( new ThresholdFunction( ), variables, 1 );
+			ActivationNeuron	neuron = network[0][0];
 			// create teacher
-			PerceptronLearning teacher = new PerceptronLearning( perceptron );
+			PerceptronLearning teacher = new PerceptronLearning( network );
 			// set learning rate
 			teacher.LearningRate = learningRate;
 
@@ -639,9 +648,9 @@ namespace Classifier
 					{
 						for ( int i = 0; i < variables; i++ )
 						{
-							weightsFile.Write( perceptron[i] + ";" );
+							weightsFile.Write( neuron[i] + ";" );
 						}
-						weightsFile.WriteLine( perceptron.Threshold );
+						weightsFile.WriteLine( neuron.Threshold );
 					}
 
 					// run epoch of learning procedure
@@ -658,14 +667,14 @@ namespace Classifier
 					iterationsBox.Text = iteration.ToString( );
 
 					// show classifier in the case of 2 dimensional data
-					if ( ( perceptron.InputsCount == 2 ) && ( perceptron[1] != 0 ) )
+					if ( ( neuron.InputsCount == 2 ) && ( neuron[1] != 0 ) )
 					{
-						double k = - perceptron[0] / perceptron[1];
-						double b = - perceptron.Threshold / perceptron[1];
+						double k = - neuron[0] / neuron[1];
+						double b = - neuron.Threshold / neuron[1];
 
 						double[,] classifier = new double[2, 2] {
-						{ chart.RangeX.Min, chart.RangeX.Min * k + b },
-						{ chart.RangeX.Max, chart.RangeX.Max * k + b }
+							{ chart.RangeX.Min, chart.RangeX.Min * k + b },
+							{ chart.RangeX.Max, chart.RangeX.Max * k + b }
 																};
 						// update chart
 						chart.UpdateDataSeries( "classifier", classifier );
@@ -689,10 +698,10 @@ namespace Classifier
 				for ( int i = 0; i < variables; i++ )
 				{
 					weightsList.Items.Add( string.Format( "Weight {0}", i + 1  ) );
-					weightsList.Items[i].SubItems.Add( perceptron[i].ToString( "F6" ) );
+					weightsList.Items[i].SubItems.Add( neuron[i].ToString( "F6" ) );
 				}
 				weightsList.Items.Add( "Threshold" );
-				weightsList.Items[variables].SubItems.Add( perceptron.Threshold.ToString( "F6" ) );
+				weightsList.Items[variables].SubItems.Add( neuron.Threshold.ToString( "F6" ) );
 
 				// show error's dynamics
 				double[,] errors = new double[errorsList.Count, 2];
@@ -704,6 +713,7 @@ namespace Classifier
 				}
 
 				errorChart.RangeX = new DoubleRange( 0, errorsList.Count - 1 );
+				errorChart.RangeY = new DoubleRange( 0, samples );
 				errorChart.UpdateDataSeries( "error", errors );
 			}
 

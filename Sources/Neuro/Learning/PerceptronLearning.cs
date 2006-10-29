@@ -12,15 +12,15 @@ namespace AForge.Neuro.Learning
 	/// Perceptron learning algorithm
 	/// </summary>
 	/// 
-	/// <remarks>This learning algorithm is used to train perceptron -
-	/// <see cref="AForge.Neuro.ActivationNeuron">Activation Neuron</see> with
-	/// the <see cref="AForge.Neuro.ThresholdFunction">Threshold</see> activation
-	/// function.</remarks>
+	/// <remarks>This learning algorithm is used to train one layer neural
+	/// network of <see cref="AForge.Neuro.ActivationNeuron">Activation Neurons</see>
+	/// with the <see cref="AForge.Neuro.ThresholdFunction">Threshold</see>
+	/// activation function.</remarks>
 	/// 
 	public class PerceptronLearning : ISupervisedLearning
 	{
-		// perceptron to teach
-		private ActivationNeuron perceptron;
+		// network to teach
+		private ActivationNetwork network;
 		// learning rate
 		private double learningRate = 0.1;
 
@@ -40,11 +40,17 @@ namespace AForge.Neuro.Learning
 		/// Initializes a new instance of the <see cref="PerceptronLearning"/> class
 		/// </summary>
 		/// 
-		/// <param name="perceptron">Perceptron to teach</param>
+		/// <param name="network">Network to teach</param>
 		/// 
-		public PerceptronLearning( ActivationNeuron perceptron )
+		public PerceptronLearning( ActivationNetwork network )
 		{
-			this.perceptron = perceptron;
+			// check layers count
+			if ( network.LayersCount != 1 )
+			{
+				throw new ArgumentException( "Invalid nuaral network. It should have one layer only." );
+			}
+
+			this.network = network;
 		}
 
 		/// <summary>
@@ -62,26 +68,36 @@ namespace AForge.Neuro.Learning
 		/// 
 		public double Run( double[] input, double[] output )
 		{
-			// compute output of our perceptron
-			double perceptronOutput = perceptron.Compute( input );
+			// compute output of network
+			double[] networkOutput = network.Compute( input );
 
-			// compute error
-			double error = output[0] - perceptronOutput;
+			// get the only layer of the network
+			ActivationLayer layer = network[0];
 
-			// check error
-			if ( error != 0 )
+			// summary network absolute error
+			double error = 0.0;
+
+			// check output of each neuron and update weights
+			for ( int j = 0, k = layer.NeuronsCount; j < k; j++ )
 			{
-				// update weights
-				for ( int i = 0, n = perceptron.InputsCount; i < n; i++ )
+				double e = output[j] - networkOutput[j];
+
+				if ( e != 0 )
 				{
-					perceptron[i] += learningRate * error * input[i];
+					ActivationNeuron perceptron = layer[j];
+
+					// update weights
+					for ( int i = 0, n = perceptron.InputsCount; i < n; i++ )
+					{
+						perceptron[i] += learningRate * e * input[i];
+					}
+
+					// update threshold value
+					perceptron.Threshold += learningRate * e;
+
+					// make error to be absolute
+					error += Math.Abs( e );
 				}
-
-				// update threshold value
-				perceptron.Threshold += learningRate * error;
-
-				// make error to be absolute
-				error = Math.Abs( error );
 			}
 
 			return error;
