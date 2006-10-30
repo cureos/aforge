@@ -28,7 +28,7 @@ namespace AForge.Neuro.Learning
 		/// Learning rate
 		/// </summary>
 		/// 
-		/// <remarks>The value determines speed of learning. Default value is 0.1.</remarks>
+		/// <remarks>The value determines speed of learning. Default value equals to 0.1.</remarks>
 		/// 
 		public double LearningRate
 		{
@@ -63,7 +63,8 @@ namespace AForge.Neuro.Learning
 		/// <param name="input">input vector</param>
 		/// <param name="output">desired output vector</param>
 		/// 
-		/// <returns>Returns absolute error</returns>
+		/// <returns>Returns absolute error - difference between real output and
+		/// desired output</returns>
 		/// 
 		/// <remarks>Runs one learning iteration and updates neuron's
 		/// weights in case if neuron's output does not equal to the

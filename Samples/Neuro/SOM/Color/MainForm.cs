@@ -470,7 +470,7 @@ namespace Color
 			while ( !needToStop )
 			{
 				trainer.LearningRate = driftingLearningRate * ( iterations - i ) / iterations + fixedLearningRate;
-				trainer.LearningRadius = (int) ( radius * ( iterations - i ) / iterations ) + 1;
+				trainer.LearningRadius = (double) radius * ( iterations - i ) / iterations;
 
 				input[0] = rand.Next( 256 );
 				input[1] = rand.Next( 256 );

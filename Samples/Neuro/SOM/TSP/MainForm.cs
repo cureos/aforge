@@ -43,6 +43,8 @@ namespace TSP
 		private System.Windows.Forms.Button stopButton;
 		private System.Windows.Forms.Button startButton;
 		private AForge.Controls.Chart chart;
+		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.TextBox radiusBox;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -52,6 +54,7 @@ namespace TSP
 		private int neurons			= 20;
 		private int	iterations		= 500;
 		private double learningRate	= 0.5;
+		private double learningRadius = 0.5;
 
 		private double[,]	map = null;
 		private Random		rand = new Random();
@@ -117,18 +120,19 @@ namespace TSP
 			this.label3 = new System.Windows.Forms.Label();
 			this.neuronsBox = new System.Windows.Forms.TextBox();
 			this.label2 = new System.Windows.Forms.Label();
-			this.chart = new AForge.Controls.Chart();
+			this.label4 = new System.Windows.Forms.Label();
+			this.radiusBox = new System.Windows.Forms.TextBox();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.SuspendLayout();
+			this.chart = new AForge.Controls.Chart( );
 			// 
 			// groupBox1
 			// 
-			this.groupBox1.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.chart,
-																					this.generateMapButton,
-																					this.citiesCountBox,
-																					this.label1});
+			this.groupBox1.Controls.Add(this.generateMapButton);
+			this.groupBox1.Controls.Add(this.citiesCountBox);
+			this.groupBox1.Controls.Add(this.label1);
+			this.groupBox1.Controls.Add(this.chart);
 			this.groupBox1.Location = new System.Drawing.Point(10, 10);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Size = new System.Drawing.Size(300, 340);
@@ -161,21 +165,29 @@ namespace TSP
 			this.label1.TabIndex = 1;
 			this.label1.Text = "Cities:";
 			// 
+			// chart
+			// 
+			this.chart.Location = new System.Drawing.Point(10, 20);
+			this.chart.Name = "chart";
+			this.chart.Size = new System.Drawing.Size(280, 280);
+			this.chart.TabIndex = 4;
+			// 
 			// groupBox2
 			// 
-			this.groupBox2.Controls.AddRange(new System.Windows.Forms.Control[] {
-																					this.stopButton,
-																					this.startButton,
-																					this.currentIterationBox,
-																					this.label8,
-																					this.label7,
-																					this.rateBox,
-																					this.label5,
-																					this.iterationsBox,
-																					this.label6,
-																					this.label3,
-																					this.neuronsBox,
-																					this.label2});
+			this.groupBox2.Controls.Add(this.radiusBox);
+			this.groupBox2.Controls.Add(this.label4);
+			this.groupBox2.Controls.Add(this.stopButton);
+			this.groupBox2.Controls.Add(this.startButton);
+			this.groupBox2.Controls.Add(this.currentIterationBox);
+			this.groupBox2.Controls.Add(this.label8);
+			this.groupBox2.Controls.Add(this.label7);
+			this.groupBox2.Controls.Add(this.rateBox);
+			this.groupBox2.Controls.Add(this.label5);
+			this.groupBox2.Controls.Add(this.iterationsBox);
+			this.groupBox2.Controls.Add(this.label6);
+			this.groupBox2.Controls.Add(this.label3);
+			this.groupBox2.Controls.Add(this.neuronsBox);
+			this.groupBox2.Controls.Add(this.label2);
 			this.groupBox2.Location = new System.Drawing.Point(320, 10);
 			this.groupBox2.Name = "groupBox2";
 			this.groupBox2.Size = new System.Drawing.Size(180, 340);
@@ -202,7 +214,7 @@ namespace TSP
 			// 
 			// currentIterationBox
 			// 
-			this.currentIterationBox.Location = new System.Drawing.Point(110, 125);
+			this.currentIterationBox.Location = new System.Drawing.Point(110, 150);
 			this.currentIterationBox.Name = "currentIterationBox";
 			this.currentIterationBox.ReadOnly = true;
 			this.currentIterationBox.Size = new System.Drawing.Size(60, 20);
@@ -211,7 +223,7 @@ namespace TSP
 			// 
 			// label8
 			// 
-			this.label8.Location = new System.Drawing.Point(10, 127);
+			this.label8.Location = new System.Drawing.Point(10, 152);
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(100, 16);
 			this.label8.TabIndex = 20;
@@ -220,7 +232,7 @@ namespace TSP
 			// label7
 			// 
 			this.label7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.label7.Location = new System.Drawing.Point(10, 112);
+			this.label7.Location = new System.Drawing.Point(10, 139);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(160, 2);
 			this.label7.TabIndex = 19;
@@ -260,7 +272,7 @@ namespace TSP
 			// label3
 			// 
 			this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.label3.Location = new System.Drawing.Point(10, 50);
+			this.label3.Location = new System.Drawing.Point(10, 48);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(160, 2);
 			this.label3.TabIndex = 4;
@@ -281,20 +293,28 @@ namespace TSP
 			this.label2.TabIndex = 0;
 			this.label2.Text = "Neurons:";
 			// 
-			// chart
+			// label4
 			// 
-			this.chart.Location = new System.Drawing.Point(10, 20);
-			this.chart.Name = "chart";
-			this.chart.Size = new System.Drawing.Size(280, 280);
-			this.chart.TabIndex = 4;
+			this.label4.Location = new System.Drawing.Point(10, 112);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(100, 16);
+			this.label4.TabIndex = 24;
+			this.label4.Text = "Learning radius:";
+			// 
+			// radiusBox
+			// 
+			this.radiusBox.Location = new System.Drawing.Point(110, 110);
+			this.radiusBox.Name = "radiusBox";
+			this.radiusBox.Size = new System.Drawing.Size(60, 20);
+			this.radiusBox.TabIndex = 25;
+			this.radiusBox.Text = "";
 			// 
 			// MainForm
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(509, 360);
-			this.Controls.AddRange(new System.Windows.Forms.Control[] {
-																		  this.groupBox2,
-																		  this.groupBox1});
+			this.Controls.Add(this.groupBox2);
+			this.Controls.Add(this.groupBox1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
 			this.Name = "MainForm";
@@ -334,6 +354,7 @@ namespace TSP
 			neuronsBox.Text		= neurons.ToString( );
 			iterationsBox.Text	= iterations.ToString( );
 			rateBox.Text		= learningRate.ToString( );
+			radiusBox.Text		= learningRadius.ToString( );
 		}
 
 		// Generate new map for the Traivaling Salesman problem
@@ -380,6 +401,7 @@ namespace TSP
 			neuronsBox.Enabled		= enable;
 			iterationsBox.Enabled	= enable;
 			rateBox.Enabled			= enable;
+			radiusBox.Enabled		= enable;
 
 			startButton.Enabled			= enable;
 			generateMapButton.Enabled	= enable;
@@ -415,6 +437,15 @@ namespace TSP
 			catch
 			{
 				learningRate = 0.5;
+			}
+			// get learning radius
+			try
+			{
+				learningRadius = Math.Max( 0.00001, Math.Min( 1.0, double.Parse( radiusBox.Text ) ) );
+			}
+			catch
+			{
+				learningRadius = 0.5;
 			}
 			// update settings controls
 			UpdateSettings( );
@@ -464,8 +495,9 @@ namespace TSP
 			// loop
 			while ( !needToStop )
 			{
-				// update learning speed
+				// update learning speed & radius
 				trainer.LearningRate = driftingLearningRate * ( iterations - i ) / iterations + fixedLearningRate;
+				trainer.LearningRadius = learningRadius * ( iterations - i ) / iterations;
 
 				// set network input
 				int currentCity = rand.Next( citiesCount );

@@ -15,15 +15,29 @@ namespace AForge.Controls
 	using AForge;
 
 	/// <summary>
-	/// Summary description for Chart.
+	/// Chart control
 	/// </summary>
+	/// 
+	/// <remarks></remarks>
+	/// 
 	public class Chart : System.Windows.Forms.Control
 	{
-		// series types
+		/// <summary>
+		/// Chart series type enumeration
+		/// </summary>
 		public enum SeriesType
 		{
+			/// <summary>
+			/// Line style
+			/// </summary>
 			Line,
+			/// <summary>
+			/// Dots style
+			/// </summary>
 			Dots,
+			/// <summary>
+			/// Connected dots style
+			/// </summary>
 			ConnectedDots
 		}
 
@@ -47,8 +61,11 @@ namespace AForge.Controls
 		private DoubleRange	rangeY = new DoubleRange( 0, 1 );
 
 		/// <summary>
-		/// X range
+		/// Chart's X range
 		/// </summary>
+		/// 
+		/// <remarks>The value sets the X's range of data to be displayed on the chart</remarks>
+		/// 
 		public DoubleRange RangeX
 		{
 			get { return rangeX; }
@@ -60,8 +77,11 @@ namespace AForge.Controls
 		}
 
 		/// <summary>
-		/// Y range
+		/// Chart's Y range
 		/// </summary>
+		/// 
+		/// <remarks>The value sets the Y's range of data to be displayed on the chart</remarks>
+		///
 		public DoubleRange RangeY
 		{
 			get { return rangeY; }
@@ -78,7 +98,7 @@ namespace AForge.Controls
 		private System.ComponentModel.Container components = null;
 
 		/// <summary>
-		/// Constructor
+		/// Initializes a new instance of the <see cref="Chart"/> class
 		/// </summary>
 		public Chart( )
 		{
@@ -118,8 +138,13 @@ namespace AForge.Controls
 		}
 		#endregion
 
-		// Paint the control
-		protected override void OnPaint(PaintEventArgs pe)
+		/// <summary>
+		/// Paint the control with all available data series
+		/// </summary>
+		/// 
+		/// <param name="pe">Data for Paint event</param>
+		/// 
+		protected override void OnPaint( PaintEventArgs pe )
 		{
 			Graphics	g = pe.Graphics;
 			int			clientWidth = ClientRectangle.Width;
@@ -241,6 +266,22 @@ namespace AForge.Controls
 		/// <summary>
 		/// Add data series to the chart
 		/// </summary>
+		/// 
+		/// <param name="name">Data series name</param>
+		/// <param name="color">Data series color</param>
+		/// <param name="type">Data series type</param>
+		/// <param name="width">Width (depends on the data series type, see remarks)</param>
+		/// 
+		/// <remarks>Adds new empty data series to the collection of data series. To update this
+		/// series the <see cref="UpdateDataSeries"/> method should be used.<br /><br />
+		/// The meaning of the width parameter depends on the data series type:
+		/// <list type="bullet">
+		/// <item><b>Line</b> - width of the line;</item>
+		/// <item><b>Dots</b> - size of dots (rectangular dots with specified width and the same height);</item>
+		/// <item><b>Connected dots</b> - size of dots (dots are connected with one pixel width line).</item>
+		/// </list>
+		/// </remarks>
+		/// 
 		public void AddDataSeries( string name, Color color, SeriesType type, int width )
 		{
 			AddDataSeries( name, color, type, width, true );
@@ -249,6 +290,15 @@ namespace AForge.Controls
 		/// <summary>
 		/// Add data series to the chart
 		/// </summary>
+		/// 
+		/// <param name="name">Data series name</param>
+		/// <param name="color">Data series color</param>
+		/// <param name="type">Data series type</param>
+		/// <param name="width">Width (depends on the data series type, see remarks)</param>
+		/// <param name="updateYRange">Specifies if <see cref="RangeY"/> should be updated</param>
+		/// 
+		/// <remarks></remarks>
+		/// 
 		public void AddDataSeries( string name, Color color, SeriesType type, int width, bool updateYRange  )
 		{
 			// create new series definition ...

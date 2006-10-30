@@ -27,7 +27,9 @@ namespace AForge.Neuro.Learning
 		/// 
 		/// <param name="input">input vector</param>
 		/// 
-		void Run( double[] input );
+		/// <returns>Returns learning error</returns>
+		/// 
+		double Run( double[] input );
 
 		/// <summary>
 		/// Runs learning epoch
@@ -35,6 +37,8 @@ namespace AForge.Neuro.Learning
 		/// 
 		/// <param name="input">array of input vectors</param>
 		///
-		void RunEpoch( double[][] input );
+		/// <returns>Returns sum of learning errors</returns>
+		/// 
+		double RunEpoch( double[][] input );
 	}
 }

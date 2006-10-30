@@ -29,7 +29,7 @@ namespace AForge.Neuro.Learning
 		/// Learning rate
 		/// </summary>
 		/// 
-		/// <remarks>The value determines speed of learning. Default value is 0.1.</remarks>
+		/// <remarks>The value determines speed of learning. Default value equals to 0.1.</remarks>
 		/// 
 		public double LearningRate
 		{
@@ -51,7 +51,7 @@ namespace AForge.Neuro.Learning
 		/// to use from current iteration. If the value is equal to 0.1, for example,
 		/// then 0.1 portion of previous update and 0.9 portion of current update are used
 		/// to update weight's value.<br /><br />
-		///	Default value is 0.0.</remarks>
+		///	Default value equals to 0.0.</remarks>
 		/// 
 		private double Momentum
 		{

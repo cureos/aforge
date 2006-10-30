@@ -656,7 +656,7 @@ namespace SOMOrganizing
 			while ( !needToStop )
 			{
 				trainer.LearningRate = driftingLearningRate * ( iterations - i ) / iterations + fixedLearningRate;
-				trainer.LearningRadius = (int) ( learningRadius * ( iterations - i ) / iterations ) + 1;
+				trainer.LearningRadius = (double) learningRadius * ( iterations - i ) / iterations;
 
 				// run training epoch
 				trainer.RunEpoch( trainingSet );

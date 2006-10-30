@@ -25,10 +25,10 @@ namespace AForge.Neuro.Learning
 		// learning rate
 		private double	learningRate = 0.1;
 		// learning radius
-		private int		learningRadius = 7;
+		private double	learningRadius = 7;
 		
 		// squared learning radius multiplied by 2 (precalculated value to speed up computations)
-		private int		squaredRadius2 = 2 * 7 * 7;
+		private double	squaredRadius2 = 2 * 7 * 7;
 
 		/// <summary>
 		/// Learning rate
@@ -53,9 +53,10 @@ namespace AForge.Neuro.Learning
 		/// <remarks>Determines the amount of neurons to be updated around
 		/// winner neuron. Neurons, which are in the circle of specified radius,
 		/// are updated during the learning procedure. Neurons, which are closer
-		/// to the winner neuron, get more update.</remarks>
+		/// to the winner neuron, get more update.<br /><br />
+		/// Default value equals to 7.</remarks>
 		/// 
-		public int LearningRadius
+		public double LearningRadius
 		{
 			get { return learningRadius; }
 			set
@@ -123,8 +124,14 @@ namespace AForge.Neuro.Learning
 		/// 
 		/// <param name="input">input vector</param>
 		/// 
-		public void Run( double[] input )
+		/// <returns>Returns learning error - summary absolute difference between updated
+		/// weights and according inputs. The difference is measured according to the neurons
+		/// distance to the  winner neuron.</returns>
+		/// 
+		public double Run( double[] input )
 		{
+			double error = 0.0;
+
 			// compute the network
 			network.Compute( input );
 			int winner = network.GetWinner( );
@@ -163,10 +170,15 @@ namespace AForge.Neuro.Learning
 					// update weight of the neuron
 					for ( int i = 0, n = neuron.InputsCount; i < n; i++ )
 					{
-						neuron[i] += ( input[i] - neuron[i] ) * learningRate * factor;
+						// calculate the error
+						double e = ( input[i] - neuron[i] ) * factor;
+						error += Math.Abs( e );
+						// update weight
+						neuron[i] += e * learningRate;
 					}
 				}
 			}
+			return error;
 		}
 
 		/// <summary>
@@ -175,13 +187,21 @@ namespace AForge.Neuro.Learning
 		/// 
 		/// <param name="input">array of input vectors</param>
 		/// 
-		public void RunEpoch( double[][] input )
+		/// <returns>Returns summary learning error for the epoch. See <see cref="Run"/>
+		/// method for details about learning error calculation.</returns>
+		/// 
+		public double RunEpoch( double[][] input )
 		{
+			double error = 0.0;
+
 			// walk through all training samples
 			foreach ( double[] sample in input )
 			{
-				Run( sample );
+				error += Run( sample );
 			}
+
+			// return summary error
+			return error;
 		}
 	}
 }
