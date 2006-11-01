@@ -329,6 +329,31 @@ namespace AForge.Controls
 			Invalidate( );
 		}
 
+		/// <summary>
+		/// Remove data series from the chart
+		/// </summary>
+		/// 
+		/// <param name="name">Data series name</param>
+		/// 
+		public void RemoveDataSeries( string name )
+		{
+			// remove data series from table
+			seriesTable.Remove( name );
+			// invalidate the control
+			Invalidate( );
+		}
+
+		/// <summary>
+		/// Remove all data series from the chart
+		/// </summary>
+		public void RemoveAllDataSeries( )
+		{
+			// remove all data series from table
+			seriesTable.Clear( );
+			// invalidate the control
+			Invalidate( );
+		}
+
 		// Recalculate Y range
 		private void UpdateYRange( )
 		{
