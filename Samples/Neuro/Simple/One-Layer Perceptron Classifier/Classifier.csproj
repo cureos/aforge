@@ -83,9 +83,9 @@
                     HintPath = "D:\WINNT\Microsoft.NET\Framework\v1.0.3705\System.XML.dll"
                 />
                 <Reference
-                    Name = "AForge.Neuro"
-                    AssemblyName = "AForge.Neuro"
-                    HintPath = "..\..\..\..\Release\AForge.Neuro.dll"
+                    Name = "AForge.Controls"
+                    AssemblyName = "AForge.Controls"
+                    HintPath = "..\..\..\..\Release\AForge.Controls.dll"
                 />
                 <Reference
                     Name = "AForge"
@@ -93,9 +93,9 @@
                     HintPath = "..\..\..\..\Release\AForge.dll"
                 />
                 <Reference
-                    Name = "AForge.Controls"
-                    AssemblyName = "AForge.Controls"
-                    HintPath = "..\..\..\..\Release\AForge.Controls.dll"
+                    Name = "AForge.Neuro"
+                    AssemblyName = "AForge.Neuro"
+                    HintPath = "..\..\..\..\Release\AForge.Neuro.dll"
                 />
             </References>
         </Build>

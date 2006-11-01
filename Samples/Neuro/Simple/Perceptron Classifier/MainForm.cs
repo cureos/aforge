@@ -58,7 +58,6 @@ namespace Classifier
 		private double[]	classes = null;
 
 		private double		learningRate = 0.1;
-
 		private bool		saveStatisticsToFiles = false;
 
 		private Thread	workerThread = null;
@@ -657,14 +656,14 @@ namespace Classifier
 					double error = teacher.RunEpoch( input, output );
 					errorsList.Add( error );
 
+					// show current iteration
+					iterationsBox.Text = iteration.ToString( );
+
 					// save current error
 					if ( errorsFile != null )
 					{
 						errorsFile.WriteLine( error );
 					}				
-
-					// show current iteration
-					iterationsBox.Text = iteration.ToString( );
 
 					// show classifier in the case of 2 dimensional data
 					if ( ( neuron.InputsCount == 2 ) && ( neuron[1] != 0 ) )
@@ -686,12 +685,6 @@ namespace Classifier
 
 					iteration++;
 				}
-
-				// close files
-				if ( errorsFile != null )
-					errorsFile.Close( );
-				if ( weightsFile != null )
-					weightsFile.Close( );
 
 				// show perceptron's weights
 				weightsList.Items.Clear( );
@@ -716,10 +709,17 @@ namespace Classifier
 				errorChart.RangeY = new DoubleRange( 0, samples );
 				errorChart.UpdateDataSeries( "error", errors );
 			}
-
 			catch ( IOException )
 			{
 				MessageBox.Show( "Failed writing file", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+			}
+			finally
+			{
+				// close files
+				if ( errorsFile != null )
+					errorsFile.Close( );
+				if ( weightsFile != null )
+					weightsFile.Close( );
 			}
 
 			// enable settings controls
