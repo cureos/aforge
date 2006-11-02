@@ -12,19 +12,37 @@ namespace AForge.Genetic
 	/// <summary>
 	/// Rank selection method
 	/// </summary>
+	/// 
+	/// <remarks>The algorithm selects chromosomes to the new generation depending on
+	/// their fitness values - the better fitness value chromosome has, the more chances
+	/// it has to become member of the new generation. Each chromosome can be selected
+	/// several times to the new generation. This algorithm is similar to
+	/// <see cref="RouletteWheelSelection">Roulette Wheel Selection</see> algorithm, but
+	/// a the difference in "wheel" and its sectors size calculation method. The size
+	/// of the wheel equals to <b>size * ( size + 1 ) / 2</b>, where <b>size</b> is the
+	/// current size of population. The worst chromosome has its sector's size equals to 1,
+	/// the next chromosome has its sector's size equals to 2, etc.</remarks>
+	/// 
 	public class RankSelection : ISelectionMethod
 	{
 		// random number generator
 		private static Random rand = new Random( (int) DateTime.Now.Ticks );
 
 		/// <summary>
-		/// Default constructor
+		/// Initializes a new instance of the <see cref="RankSelection"/> class
 		/// </summary>
 		public RankSelection( ) { }
 
 		/// <summary>
 		/// Apply selection to the population
 		/// </summary>
+		/// 
+		/// <param name="chromosomes">Population, which should be filtered</param>
+		/// <param name="size">The amount of chromosomes to keep</param>
+		/// 
+		/// <remarks>Filters specified population according to the implemented
+		/// algorithm</remarks>
+		/// 
 		public void ApplySelection( ArrayList chromosomes, int size )
 		{
 			// new population, initially empty

@@ -12,19 +12,35 @@ namespace AForge.Genetic
 	/// <summary>
 	/// Roulette Wheel selection method
 	/// </summary>
+	/// 
+	/// <remarks>The algorithm selects chromosomes to the new generation according to
+	/// their fitness values - the more fitness value chromosome has, the more chances
+	/// it has to become member of new generation. Each chromosome can be selected
+	/// several times to the new generation. The "roulette's wheel" is divided into
+	/// sectors, which size is proportional to the fitness values of chromosomes - the
+	/// size of the wheel is the sum of all fitness values, size of each sector equals
+	/// to fitness value of chromosome.</remarks>
+	/// 
 	public class RouletteWheelSelection : ISelectionMethod
 	{
 		// random number generator
 		private static Random rand = new Random( (int) DateTime.Now.Ticks );
 
 		/// <summary>
-		/// Default constructor
+		/// Initializes a new instance of the <see cref="RouletteWheelSelection"/> class
 		/// </summary>
 		public RouletteWheelSelection( ) { }
 
 		/// <summary>
 		/// Apply selection to the population
 		/// </summary>
+		/// 
+		/// <param name="chromosomes">Population, which should be filtered</param>
+		/// <param name="size">The amount of chromosomes to keep</param>
+		/// 
+		/// <remarks>Filters specified population according to the implemented
+		/// algorithm</remarks>
+		/// 
 		public void ApplySelection( ArrayList chromosomes, int size )
 		{
 			// new population, initially empty

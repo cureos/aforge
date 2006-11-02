@@ -12,6 +12,10 @@ namespace AForge.Genetic
 	/// <summary>
 	/// Elite selection method
 	/// </summary>
+	/// 
+	/// <remarks>Elite selection method selects specified amount of
+	/// best chromosomes to the next generation</remarks> 
+	/// 
 	public class EliteSelection : ISelectionMethod
 	{
 		private bool shuffle = true;
@@ -22,6 +26,11 @@ namespace AForge.Genetic
 		/// <summary>
 		/// Determines if population should be shuffled after applying selection
 		/// </summary>
+		///
+		/// <remarks>If the value is <b>false</b>, then the result new generation
+		/// is sorted in the descending order. If the value is <b>true</b>, then
+		/// the new generation is shuffled.</remarks> 
+		///
 		public bool Shuffle
 		{
 			get { return shuffle; }
@@ -29,13 +38,17 @@ namespace AForge.Genetic
 		}
 
 		/// <summary>
-		/// Default constructor
+		/// Initializes a new instance of the <see cref="EliteSelection"/> class
 		/// </summary>
 		public EliteSelection( ) { }
 
 		/// <summary>
-		/// Constructor
+		/// Initializes a new instance of the <see cref="EliteSelection"/> class
 		/// </summary>
+		/// 
+		/// <param name="shuffle">Specifies if new generation should be shuffled after
+		/// applying selection</param>
+		/// 
 		public EliteSelection( bool shuffle )
 		{
 			this.shuffle = shuffle;
@@ -45,6 +58,13 @@ namespace AForge.Genetic
 		/// <summary>
 		/// Apply selection to the population
 		/// </summary>
+		/// 
+		/// <param name="chromosomes">Population, which should be filtered</param>
+		/// <param name="size">The amount of chromosomes to keep</param>
+		/// 
+		/// <remarks>Filters specified population according to the implemented
+		/// algorithm</remarks>
+		/// 
 		public void ApplySelection( ArrayList chromosomes, int size )
 		{
 			// sort chromosomes
