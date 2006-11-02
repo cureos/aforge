@@ -75,7 +75,7 @@
                 <Reference
                     Name = "AForge"
                     AssemblyName = "AForge"
-                    HintPath = "..\Core\bin\Debug\AForge.dll"
+                    HintPath = "..\..\Release\AForge.dll"
                 />
             </References>
         </Build>
@@ -131,6 +131,11 @@
                 />
                 <File
                     RelPath = "Learning\BackPropagationLearning.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Learning\DeltaRuleLearning.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

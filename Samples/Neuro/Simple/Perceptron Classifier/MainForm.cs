@@ -55,7 +55,7 @@ namespace Classifier
 		private int			samples = 0;
 		private int			variables = 0;
 		private double[,]	data = null;
-		private double[]	classes = null;
+		private int[]		classes = null;
 
 		private double		learningRate = 0.1;
 		private bool		saveStatisticsToFiles = false;
@@ -374,7 +374,7 @@ namespace Classifier
 
 				// temp buffers (for 50 samples only)
 				double[,]	tempData = null;
-				double[]	tempClasses = new double[50];
+				int[]		tempClasses = new int[50];
 
 				// min and max X values
 				double minX = double.MaxValue;
@@ -410,7 +410,7 @@ namespace Classifier
 						{
 							tempData[samples, j] = double.Parse( strs[j] );
 						}
-						tempClasses[samples] = double.Parse( strs[variables] );
+						tempClasses[samples] = int.Parse( strs[variables] );
 
 						// search for min value
 						if ( tempData[samples, 0] < minX )
@@ -425,7 +425,7 @@ namespace Classifier
 					// allocate and set data
 					data = new double[samples, variables];
 					Array.Copy( tempData, 0, data, 0, samples * variables );
-					classes = new double[samples];
+					classes = new int[samples];
 					Array.Copy( tempClasses, 0, classes, 0, samples );
 
 					// clear current result

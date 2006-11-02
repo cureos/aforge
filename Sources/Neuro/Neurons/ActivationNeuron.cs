@@ -46,6 +46,15 @@ namespace AForge.Neuro
 			get { return threshold; }
 			set { threshold = value; }
 		}
+
+		/// <summary>
+		/// Neuron's activation function
+		/// </summary>
+		/// 
+		public IActivationFunction ActivationFunction
+		{
+			get { return function; }
+		}
 		
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ActivationNeuron"/> class
