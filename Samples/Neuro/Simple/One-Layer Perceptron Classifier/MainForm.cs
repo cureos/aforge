@@ -511,7 +511,7 @@ namespace Classifier
 			// get learning rate
 			try
 			{
-				learningRate = Math.Max( 0.00001, Math.Min( 1, int.Parse( learningRateBox.Text ) ) );
+				learningRate = Math.Max( 0.00001, Math.Min( 1, double.Parse( learningRateBox.Text ) ) );
 			}
 			catch
 			{
