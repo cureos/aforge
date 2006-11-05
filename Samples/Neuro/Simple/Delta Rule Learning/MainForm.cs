@@ -647,6 +647,7 @@ namespace Classifier
 				neuronsCount = ( ( classesCount == 2 ) && ( useOneNeuronForTwoClasses ) ) ? 1 : classesCount;
 				neuronsBox.Text = neuronsCount.ToString( );
 
+				ClearSolution( );
 				startButton.Enabled = true;
 			}
 		}
@@ -715,6 +716,15 @@ namespace Classifier
 			loadButton.Enabled			= enable;
 			startButton.Enabled			= enable;
 			stopButton.Enabled			= !enable;
+		}
+
+		// Clear current solution
+		private void ClearSolution( )
+		{
+			errorChart.UpdateDataSeries( "error", null );
+			weightsList.Items.Clear( );
+			currentIterationBox.Text	= string.Empty;
+			currentErrorBox.Text		= string.Empty;
 		}
 
 		// On "Start" button click
