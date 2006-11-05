@@ -82,6 +82,21 @@
                     AssemblyName = "System.Xml"
                     HintPath = "D:\WINNT\Microsoft.NET\Framework\v1.0.3705\System.XML.dll"
                 />
+                <Reference
+                    Name = "aforge.controls"
+                    AssemblyName = "aforge.controls"
+                    HintPath = "..\..\..\..\release\aforge.controls.dll"
+                />
+                <Reference
+                    Name = "AForge.Neuro"
+                    AssemblyName = "AForge.Neuro"
+                    HintPath = "..\..\..\..\Release\AForge.Neuro.dll"
+                />
+                <Reference
+                    Name = "AForge"
+                    AssemblyName = "AForge"
+                    HintPath = "..\..\..\..\Release\AForge.dll"
+                />
             </References>
         </Build>
         <Files>

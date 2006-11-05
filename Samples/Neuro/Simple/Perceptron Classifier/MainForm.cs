@@ -221,7 +221,7 @@ namespace Classifier
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(101, 15);
 			this.label5.TabIndex = 9;
-			this.label5.Text = "Error\'s dynamic:";
+			this.label5.Text = "Error\'s dynamics:";
 			// 
 			// stopButton
 			// 
@@ -543,10 +543,11 @@ namespace Classifier
 		// Enable/disale controls
 		private void EnableControls( bool enable )
 		{
-			learningRateBox.Enabled		= enable;
-			loadButton.Enabled			= enable;
-			startButton.Enabled			= enable;
-			stopButton.Enabled			= !enable;
+			learningRateBox.Enabled	= enable;
+			loadButton.Enabled		= enable;
+			startButton.Enabled		= enable;
+			saveFilesCheck.Enabled	= enable;
+			stopButton.Enabled		= !enable;
 		}
 
 		// Clear current solution

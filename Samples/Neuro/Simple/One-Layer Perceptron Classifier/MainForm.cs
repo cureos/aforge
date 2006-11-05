@@ -114,19 +114,19 @@ namespace Classifier
 			this.chart = new AForge.Controls.Chart();
 			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.weightsList = new System.Windows.Forms.ListView();
+			this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
+			this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
+			this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
+			this.label4 = new System.Windows.Forms.Label();
+			this.label3 = new System.Windows.Forms.Label();
+			this.saveFilesCheck = new System.Windows.Forms.CheckBox();
 			this.stopButton = new System.Windows.Forms.Button();
 			this.startButton = new System.Windows.Forms.Button();
 			this.iterationsBox = new System.Windows.Forms.TextBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.learningRateBox = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
-			this.saveFilesCheck = new System.Windows.Forms.CheckBox();
-			this.label3 = new System.Windows.Forms.Label();
-			this.label4 = new System.Windows.Forms.Label();
-			this.weightsList = new System.Windows.Forms.ListView();
-			this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-			this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
-			this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
 			this.errorChart = new AForge.Controls.Chart();
 			this.groupBox1.SuspendLayout();
@@ -186,6 +186,58 @@ namespace Classifier
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Training";
 			// 
+			// weightsList
+			// 
+			this.weightsList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+																						  this.columnHeader1,
+																						  this.columnHeader2,
+																						  this.columnHeader3});
+			this.weightsList.FullRowSelect = true;
+			this.weightsList.GridLines = true;
+			this.weightsList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+			this.weightsList.Location = new System.Drawing.Point(10, 130);
+			this.weightsList.Name = "weightsList";
+			this.weightsList.Size = new System.Drawing.Size(220, 270);
+			this.weightsList.TabIndex = 14;
+			this.weightsList.View = System.Windows.Forms.View.Details;
+			// 
+			// columnHeader1
+			// 
+			this.columnHeader1.Text = "Neuron";
+			// 
+			// columnHeader2
+			// 
+			this.columnHeader2.Text = "Weigh";
+			// 
+			// columnHeader3
+			// 
+			this.columnHeader3.Text = "Value";
+			this.columnHeader3.Width = 65;
+			// 
+			// label4
+			// 
+			this.label4.Location = new System.Drawing.Point(10, 110);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(55, 16);
+			this.label4.TabIndex = 13;
+			this.label4.Text = "Weights:";
+			// 
+			// label3
+			// 
+			this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.label3.Location = new System.Drawing.Point(10, 100);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(220, 2);
+			this.label3.TabIndex = 12;
+			// 
+			// saveFilesCheck
+			// 
+			this.saveFilesCheck.Location = new System.Drawing.Point(10, 80);
+			this.saveFilesCheck.Name = "saveFilesCheck";
+			this.saveFilesCheck.Size = new System.Drawing.Size(150, 16);
+			this.saveFilesCheck.TabIndex = 11;
+			this.saveFilesCheck.Text = "Save weights and errors to files";
+			// 
 			// stopButton
 			// 
 			this.stopButton.Enabled = false;
@@ -237,58 +289,6 @@ namespace Classifier
 			this.label1.TabIndex = 0;
 			this.label1.Text = "Learning rate:";
 			// 
-			// saveFilesCheck
-			// 
-			this.saveFilesCheck.Location = new System.Drawing.Point(10, 80);
-			this.saveFilesCheck.Name = "saveFilesCheck";
-			this.saveFilesCheck.Size = new System.Drawing.Size(150, 16);
-			this.saveFilesCheck.TabIndex = 11;
-			this.saveFilesCheck.Text = "Save weights and errors to files";
-			// 
-			// label3
-			// 
-			this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.label3.Location = new System.Drawing.Point(10, 100);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(220, 2);
-			this.label3.TabIndex = 12;
-			// 
-			// label4
-			// 
-			this.label4.Location = new System.Drawing.Point(10, 110);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(55, 16);
-			this.label4.TabIndex = 13;
-			this.label4.Text = "Weights:";
-			// 
-			// weightsList
-			// 
-			this.weightsList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-																						  this.columnHeader1,
-																						  this.columnHeader2,
-																						  this.columnHeader3});
-			this.weightsList.FullRowSelect = true;
-			this.weightsList.GridLines = true;
-			this.weightsList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-			this.weightsList.Location = new System.Drawing.Point(10, 130);
-			this.weightsList.Name = "weightsList";
-			this.weightsList.Size = new System.Drawing.Size(220, 270);
-			this.weightsList.TabIndex = 14;
-			this.weightsList.View = System.Windows.Forms.View.Details;
-			// 
-			// columnHeader1
-			// 
-			this.columnHeader1.Text = "Neuron";
-			// 
-			// columnHeader2
-			// 
-			this.columnHeader2.Text = "Weigh";
-			// 
-			// columnHeader3
-			// 
-			this.columnHeader3.Text = "Value";
-			this.columnHeader3.Width = 65;
-			// 
 			// groupBox3
 			// 
 			this.groupBox3.Controls.AddRange(new System.Windows.Forms.Control[] {
@@ -298,7 +298,7 @@ namespace Classifier
 			this.groupBox3.Size = new System.Drawing.Size(220, 150);
 			this.groupBox3.TabIndex = 2;
 			this.groupBox3.TabStop = false;
-			this.groupBox3.Text = "Error\'s dynamic";
+			this.groupBox3.Text = "Error\'s dynamics";
 			// 
 			// errorChart
 			// 
@@ -321,6 +321,7 @@ namespace Classifier
 			this.Name = "MainForm";
 			this.Text = "One-Layer Perceptron Classifier";
 			this.Closing += new System.ComponentModel.CancelEventHandler(this.MainForm_Closing);
+			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox3.ResumeLayout(false);
@@ -499,10 +500,11 @@ namespace Classifier
 		// Enable/disale controls
 		private void EnableControls( bool enable )
 		{
-			learningRateBox.Enabled		= enable;
-			loadButton.Enabled			= enable;
-			startButton.Enabled			= enable;
-			stopButton.Enabled			= !enable;
+			learningRateBox.Enabled	= enable;
+			loadButton.Enabled		= enable;
+			startButton.Enabled		= enable;
+			saveFilesCheck.Enabled	= enable;
+			stopButton.Enabled		= !enable;
 		}
 
 		// On "Start" button click
@@ -655,7 +657,6 @@ namespace Classifier
 					item = weightsList.Items.Add( neuronName );
 					item.SubItems.Add( "Threshold" );
 					item.SubItems.Add( layer[i].Threshold.ToString( "F6" ) );
-
 				}
 
 				// show error's dynamics
@@ -685,6 +686,11 @@ namespace Classifier
 
 			// enable settings controls
 			EnableControls( true );
+		}
+
+		private void MainForm_Load(object sender, System.EventArgs e)
+		{
+		
 		}
 	}
 }
