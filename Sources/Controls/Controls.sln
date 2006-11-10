@@ -1,12 +1,12 @@
-Microsoft Visual Studio Solution File, Format Version 7.00
+Microsoft Visual Studio Solution File, Format Version 8.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controls", "Controls.csproj", "{D08F6D8A-A5F5-49C3-B607-526D9EE0DEE3}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
-		ConfigName.0 = Debug
-		ConfigName.1 = Release
-	EndGlobalSection
-	GlobalSection(ProjectDependencies) = postSolution
+		Debug = Debug
+		Release = Release
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
 		{D08F6D8A-A5F5-49C3-B607-526D9EE0DEE3}.Debug.ActiveCfg = Debug|.NET

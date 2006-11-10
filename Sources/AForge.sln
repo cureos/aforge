@@ -1,18 +1,24 @@
-Microsoft Visual Studio Solution File, Format Version 7.00
+Microsoft Visual Studio Solution File, Format Version 8.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{BFAF50DC-4942-46B8-8615-2A0B4CF08AD2}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Genetic", "Genetic\Genetic.csproj", "{DD4F9C19-9F1C-44A8-81F3-6CA157DCA1C2}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neuro", "Neuro\Neuro.csproj", "{53B51230-2CD7-435B-8677-A3E24D134CD8}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controls", "Controls\Controls.csproj", "{D08F6D8A-A5F5-49C3-B607-526D9EE0DEE3}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
-		ConfigName.0 = Debug
-		ConfigName.1 = Release
-	EndGlobalSection
-	GlobalSection(ProjectDependencies) = postSolution
+		Debug = Debug
+		Release = Release
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
 		{BFAF50DC-4942-46B8-8615-2A0B4CF08AD2}.Debug.ActiveCfg = Debug|.NET

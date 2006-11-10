@@ -1,12 +1,12 @@
-Microsoft Visual Studio Solution File, Format Version 7.00
+Microsoft Visual Studio Solution File, Format Version 8.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Approximation", "Approximation.csproj", "{63E2EBC4-E9F5-4D8D-8329-DE7D541EA0C9}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
-		ConfigName.0 = Debug
-		ConfigName.1 = Release
-	EndGlobalSection
-	GlobalSection(ProjectDependencies) = postSolution
+		Debug = Debug
+		Release = Release
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
 		{63E2EBC4-E9F5-4D8D-8329-DE7D541EA0C9}.Debug.ActiveCfg = Debug|.NET

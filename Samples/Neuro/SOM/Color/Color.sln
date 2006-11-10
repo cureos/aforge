@@ -1,12 +1,12 @@
-Microsoft Visual Studio Solution File, Format Version 7.00
+Microsoft Visual Studio Solution File, Format Version 8.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Color", "Color.csproj", "{59E2469C-197F-4A4C-9D52-AA58EA49927E}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
-		ConfigName.0 = Debug
-		ConfigName.1 = Release
-	EndGlobalSection
-	GlobalSection(ProjectDependencies) = postSolution
+		Debug = Debug
+		Release = Release
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
 		{59E2469C-197F-4A4C-9D52-AA58EA49927E}.Debug.ActiveCfg = Debug|.NET
