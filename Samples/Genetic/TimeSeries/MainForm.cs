@@ -66,8 +66,8 @@ namespace TimeSeries
 		private System.Windows.Forms.Button moreSettingsButton;
 		private System.Windows.Forms.ToolTip toolTip;
 
-		private double[] data = null;
-		private double[,] dataToShow = null;
+		private double[]	data = null;
+		private double[,]	dataToShow = null;
 
 		private int populationSize = 40;
 		private int iterations = 100;
@@ -86,7 +86,7 @@ namespace TimeSeries
 		private double[,]	predictionDelimiter = new double[2, 2] { { 0, 0 }, { 0, 0 } };
 		
 		// Constructor
-		public MainForm()
+		public MainForm( )
 		{
 			//
 			// Required for Windows Form Designer support
@@ -642,7 +642,6 @@ namespace TimeSeries
 				// enable "Start" button
 				startButton.Enabled = true;
 			}
-		
 		}
 
 		// Update delimiters on the chart
@@ -672,7 +671,7 @@ namespace TimeSeries
 			}
 		}
 
-		// Enable/disale controls
+		// Enable/disable controls
 		private void EnableControls( bool enable )
 		{
 			loadDataButton.Enabled		= enable;
@@ -784,10 +783,6 @@ namespace TimeSeries
 			{
 				iterations = 100;
 			}
-			// window size
-			UpdateWindowSize( );
-			// prediction size
-			UpdatePredictionSize( );
 			// update settings controls
 			UpdateSettings( );
 
