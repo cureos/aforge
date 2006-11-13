@@ -11,6 +11,12 @@ namespace AForge.Neuro.Learning
 	/// <summary>
 	/// Delta rule learning algorithm
 	/// </summary>
+	/// 
+	/// <remarks>This learning algorithm is used to train one layer neural
+	/// network of <see cref="AForge.Neuro.ActivationNeuron">Activation Neurons</see>
+	/// with continuous activation function, see <see cref="SigmoidFunction"/>
+	/// for example.</remarks>
+	/// 
 	public class DeltaRuleLearning : ISupervisedLearning
 	{
 		// network to teach
@@ -51,6 +57,18 @@ namespace AForge.Neuro.Learning
 			this.network = network;
 		}
 
+		/// <summary>
+		/// Runs learning iteration
+		/// </summary>
+		/// 
+		/// <param name="input">input vector</param>
+		/// <param name="output">desired output vector</param>
+		/// 
+		/// <returns>Returns squared error divided by 2</returns>
+		/// 
+		/// <remarks>Runs one learning iteration and updates neuron's
+		/// weights.</remarks>
+		///
 		public double Run( double[] input, double[] output )
 		{
 			// compute output of network
@@ -90,6 +108,19 @@ namespace AForge.Neuro.Learning
 			return error / 2;
 		}
 
+		/// <summary>
+		/// Runs learning epoch
+		/// </summary>
+		/// 
+		/// <param name="input">array of input vectors</param>
+		/// <param name="output">array of output vectors</param>
+		/// 
+		/// <returns>Returns sum of squared errors divided by 2</returns>
+		/// 
+		/// <remarks>Runs series of learning iterations - one iteration
+		/// for each input sample. Updates neuron's weights after each sample
+		/// presented.</remarks>
+		/// 
 		public double RunEpoch( double[][] input, double[][] output )
 		{
 			double error = 0.0;
