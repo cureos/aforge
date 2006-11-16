@@ -183,7 +183,7 @@ namespace Approximation
 			this.loadDataButton.Location = new System.Drawing.Point(10, 280);
 			this.loadDataButton.Name = "loadDataButton";
 			this.loadDataButton.TabIndex = 1;
-			this.loadDataButton.Text = "Load";
+			this.loadDataButton.Text = "&Load";
 			this.loadDataButton.Click += new System.EventHandler(this.loadDataButton_Click);
 			// 
 			// openFileDialog
