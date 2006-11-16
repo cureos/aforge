@@ -52,5 +52,47 @@ namespace AForge
 			this.min = min;
 			this.max = max;
 		}
+
+		/// <summary>
+		/// Check if the specified value is inside this range
+		/// </summary>
+		/// 
+		/// <param name="x">Value to check</param>
+		/// 
+		/// <returns><b>True</b> if the specified value is inside this range or
+		/// <b>false</b> otherwise.</returns>
+		/// 
+		public bool IsInside( int x )
+		{
+			return ( ( x >= min ) && ( x <= min ) );
+		}
+
+		/// <summary>
+		/// Check if the specified range is inside this range
+		/// </summary>
+		/// 
+		/// <param name="range">Range to check</param>
+		/// 
+		/// <returns><b>True</b> if the specified range is inside this range or
+		/// <b>false</b> otherwise.</returns>
+		/// 
+		public bool IsInside( IntRange range )
+		{
+			return ( ( IsInside( range.min ) ) && ( IsInside( range.max ) ) );
+		}
+
+		/// <summary>
+		/// Check if the specified range overlaps with this range
+		/// </summary>
+		/// 
+		/// <param name="range">Range to check for overlapping</param>
+		/// 
+		/// <returns><b>True</b> if the specified range overlaps with this range or
+		/// <b>false</b> otherwise.</returns>
+		/// 
+		public bool IsOverlapping( IntRange range )
+		{
+			return ( ( IsInside( range.min ) ) || ( IsInside( range.max ) ) );
+		}
 	}
 }
