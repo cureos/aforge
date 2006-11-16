@@ -12,7 +12,9 @@ namespace AForge.Neuro.Learning
 	/// Elastic network learning algorithm
 	/// </summary>
 	///
-	/// <remarks></remarks> 
+	/// <remarks>This class implements elastic network's learning algorithm and
+	/// allows to train <see cref="DistanceNetwork">Distance Networks</see>.
+	/// </remarks> 
 	///
 	public class ElasticNetworkLearning : IUnsupervisedLearning
 	{

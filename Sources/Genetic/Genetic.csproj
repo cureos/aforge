@@ -80,9 +80,9 @@
                     HintPath = "D:\WINNT\Microsoft.NET\Framework\v1.0.3705\System.XML.dll"
                 />
                 <Reference
-                    Name = "Core"
-                    Project = "{BFAF50DC-4942-46B8-8615-2A0B4CF08AD2}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                    Name = "AForge"
+                    AssemblyName = "AForge"
+                    HintPath = "..\..\Release\AForge.dll"
                 />
             </References>
         </Build>

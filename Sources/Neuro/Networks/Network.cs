@@ -12,8 +12,8 @@ namespace AForge.Neuro
 	/// Base neural network class
 	/// </summary>
 	/// 
-	/// <remarks>This is a sbase neural netwok class, which represents
-	/// collection of neuron's kayers.</remarks>
+	/// <remarks>This is a base neural netwok class, which represents
+	/// collection of neuron's layers.</remarks>
 	/// 
 	public abstract class Network
 	{

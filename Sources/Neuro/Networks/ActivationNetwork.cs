@@ -12,8 +12,9 @@ namespace AForge.Neuro
 	/// Activation network
 	/// </summary>
 	/// 
-	/// <remarks>Activation network is a base for multi-layer neural networks
-	/// with activation functions.</remarks>
+	/// <remarks>Activation network is a base for multi-layer neural network
+	/// with activation functions. It consists of <see cref="ActivationLayer">activation
+	/// layers</see>.</remarks>
 	///
 	public class ActivationNetwork : Network
 	{

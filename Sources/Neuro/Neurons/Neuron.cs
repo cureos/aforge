@@ -12,6 +12,10 @@ namespace AForge.Neuro
 	/// <summary>
 	/// Base neuron class
 	/// </summary>
+	/// 
+	/// <remarks>This is a base neuron class, which encapsulates such
+	/// common properties, like neuron's input, output and weights.</remarks>
+	/// 
 	public abstract class Neuron
 	{
 		/// <summary>

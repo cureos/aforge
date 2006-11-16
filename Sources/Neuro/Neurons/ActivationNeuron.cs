@@ -14,7 +14,7 @@ namespace AForge.Neuro
 	/// 
 	/// <remarks>Activation neuron computes weighted sum of its inputs, adds
 	/// threshold value and then applies activation function. The neuron is
-	/// usually used in multi layer networks.</remarks>
+	/// usually used in multi-layer neural networks.</remarks>
 	/// 
 	public class ActivationNeuron : Neuron
 	{

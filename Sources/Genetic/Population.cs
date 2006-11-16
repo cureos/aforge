@@ -12,6 +12,15 @@ namespace AForge.Genetic
 	/// <summary>
 	/// Population of chromosomes
 	/// </summary>
+	/// 
+	/// <remarks>The class represents population - collection of individuals (chromosomes)
+	/// and provides functionality for common population's life cycle - population growing
+	/// with help of genetic operators and selection of chromosomes to new generation
+	/// with help of selection algorithm. The class may work with any type of chromosomes
+	/// implementing <see cref="IChromosome"/> interface, use any type of fitness functions
+	/// implementing <see cref="IFitnessFunction"/> interface and use any type of selection
+	/// algorithms implementing <see cref="ISelectionMethod"/> interface.</remarks>
+	/// 
 	public class Population
 	{
 		private IFitnessFunction fitnessFunction;
@@ -68,6 +77,11 @@ namespace AForge.Genetic
 		/// <sumary>
 		/// Size of the population
 		/// </sumary>
+		/// 
+		/// <remarks>The property returns initial (minimal) size of population.
+		/// Population always returns to this size after using <see cref="Selection"/>
+		/// or <see cref="RunEpoch"/> methods.</remarks>
+		/// 
 		public int Size
 		{
 			get { return size; }
@@ -76,6 +90,11 @@ namespace AForge.Genetic
 		/// <sumary>
 		/// Get chromosome with specified index
 		/// </sumary>
+		/// 
+		/// <param name="index">Chromosome's index</param>
+		/// 
+		/// <remarks>Allows to access individuals of the population.</remarks>
+		/// 
 		public IChromosome this[int index]
 		{
 			get { return (IChromosome) population[index]; }
@@ -83,8 +102,20 @@ namespace AForge.Genetic
 
 
 		/// <summary>
-		/// Constructor
+		/// Initializes a new instance of the <see cref="Population"/> class
 		/// </summary>
+		/// 
+		/// <param name="size">Initial size of population</param>
+		/// <param name="ancestor">Ancestor chromosome to use for population creatioin</param>
+		/// <param name="fitnessFunction">Fitness function to use for calculating
+		/// chromosome's fitness values</param>
+		/// <param name="selectionMethod">Selection algorithm to use for selection
+		/// chromosome's to new generation</param>
+		/// 
+		/// <remarks>Creates new population of specified size. The specified ancestor
+		/// becomes first member of the population and is used to create other members
+		/// with same parameters, which were used for ancestor's creation.</remarks>
+		///
 		public Population( int size,
 							IChromosome ancestor,
 							IFitnessFunction fitnessFunction,
@@ -110,8 +141,15 @@ namespace AForge.Genetic
 		}
 
 		/// <summary>
-		/// Constructor
+		/// Initializes a new instance of the <see cref="Population"/> class
 		/// </summary>
+		/// 
+		/// <param name="size"></param>
+		/// <param name="ancestor"></param>
+		/// <param name="fitnessFunction"></param>
+		/// <param name="selectionMethod"></param>
+		/// <param name="randomSelectionPortion"></param>
+		/// 
 		public Population( int size,
 			IChromosome ancestor,
 			IFitnessFunction fitnessFunction,
@@ -252,7 +290,7 @@ namespace AForge.Genetic
 			Selection( );
 		}
 		
-		public void Trace( )
+/*		public void Trace( )
 		{
 			System.Diagnostics.Debug.WriteLine( "Max = " + fitnessMax );
 			System.Diagnostics.Debug.WriteLine( "Sum = " + fitnessSum );
@@ -265,6 +303,6 @@ namespace AForge.Genetic
 					" , fitness = " + c.Fitness );
 			}
 			System.Diagnostics.Debug.WriteLine( "==========================" );
-		}
+		}*/
 	}
 }

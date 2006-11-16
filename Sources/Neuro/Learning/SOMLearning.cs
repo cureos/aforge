@@ -12,7 +12,9 @@ namespace AForge.Neuro.Learning
 	/// Kohonen Self Organizing Map (SOM) learning algorithm
 	/// </summary>
 	/// 
-	/// <remarks></remarks>
+	/// <remarks>This class implements Kohonen's SOM learning algorithm and
+	/// is widelí used in clusterization tasks. The class allows to train
+	/// <see cref="DistanceNetwork">Distance Networks</see>.</remarks>
 	/// 
 	public class SOMLearning : IUnsupervisedLearning
 	{

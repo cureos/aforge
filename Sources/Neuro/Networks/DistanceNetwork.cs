@@ -12,8 +12,8 @@ namespace AForge.Neuro
 	/// Distance network
 	/// </summary>
 	///
-	/// <remarks>Distance network is a neural network of only one distance layer.
-	/// The network is a base for such neural networks as SOM, Elastic net, etc.
+	/// <remarks>Distance network is a neural network of only one <see cref="DistanceLayer">distance
+	/// layer</see>. The network is a base for such neural networks as SOM, Elastic net, etc.
 	/// </remarks>
 	///
 	public class DistanceNetwork : Network

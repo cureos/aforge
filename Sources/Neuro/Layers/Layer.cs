@@ -13,7 +13,7 @@ namespace AForge.Neuro
 	/// </summary>
 	/// 
 	/// <remarks>This is a base neural layer class, which represents
-	/// collection of neuron.</remarks>
+	/// collection of neurons.</remarks>
 	/// 
 	public abstract class Layer
 	{
