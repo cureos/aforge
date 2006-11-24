@@ -30,7 +30,7 @@ namespace AForge.Genetic
 		private double		randomSelectionPortion = 0.0;
 
 		// population parameters
-		private double		crossOverRate	= 0.75;
+		private double		crossoverRate	= 0.75;
 		private double		mutationRate	= 0.10;
 
 		// random number generator
@@ -41,6 +41,57 @@ namespace AForge.Genetic
 		private double		fitnessSum = 0;
 		private double		fitnessAvg = 0;
 		private IChromosome	bestChromosome = null;
+
+		/// <summary>
+		/// Crossover rate
+		/// </summary>
+		/// 
+		/// <remarks>The value determines the amount of chromosomes which participate
+		/// in crossover. The value is measured in the range of [0.1, 1]. Default value
+		/// is 0.75.</remarks>
+		/// 
+		public double CrossoverRate
+		{
+			get { return crossoverRate; }
+			set
+			{
+				crossoverRate = Math.Max( 0.1, Math.Min( 1.0, value ) );
+			}
+		}
+
+		/// <summary>
+		/// Mutation rate
+		/// </summary>
+		/// 
+		/// <remarks>The value determines the amount of chromosomes which participate
+		/// in mutation. The value is measured in the range of [0.1, 1]. Defaul value
+		/// is 0.1.</remarks>
+		/// 
+		public double MutationRate
+		{
+			get { return mutationRate; }
+			set
+			{
+				mutationRate = Math.Max( 0.1, Math.Min( 1.0, value ) );
+			}
+		}
+
+		/// <summary>
+		/// Random selection portion
+		/// </summary>
+		/// 
+		/// <remarks>The value determines the amount of chromosomes which will be
+		/// randomly generated for the new population. The value is measured in the
+		/// range of [0, 0.9]. Default value is 0.</remarks>
+		/// 
+		public double RandomSelectionPortion
+		{
+			get { return randomSelectionPortion; }
+			set
+			{
+				randomSelectionPortion = Math.Max( 0, Math.Min( 0.9, value ) );
+			}
+		}
 
 		/// <summary>
 		/// Maximum fitness of the population
@@ -66,17 +117,17 @@ namespace AForge.Genetic
 			get { return fitnessAvg; }
 		}
 
-		/// <sumary>
+		/// <summary>
 		/// Best chromosome of the population
-		/// </sumary>
+		/// </summary>
 		public IChromosome BestChromosome
 		{
 			get { return bestChromosome; }
 		}
 
-		/// <sumary>
+		/// <summary>
 		/// Size of the population
-		/// </sumary>
+		/// </summary>
 		/// 
 		/// <remarks>The property returns initial (minimal) size of population.
 		/// Population always returns to this size after using <see cref="Selection"/>
@@ -87,9 +138,9 @@ namespace AForge.Genetic
 			get { return size; }
 		}
 
-		/// <sumary>
+		/// <summary>
 		/// Get chromosome with specified index
-		/// </sumary>
+		/// </summary>
 		/// 
 		/// <param name="index">Chromosome's index</param>
 		/// 
@@ -123,7 +174,7 @@ namespace AForge.Genetic
 		{
 			this.fitnessFunction = fitnessFunction;
 			this.selectionMethod = selectionMethod;
-			this.size	= size;
+			this.size = size;
 
 			// add ancestor to the population
 			ancestor.Evaluate( fitnessFunction );
@@ -141,27 +192,11 @@ namespace AForge.Genetic
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Population"/> class
+		/// Regenerate population
 		/// </summary>
 		/// 
-		/// <param name="size"></param>
-		/// <param name="ancestor"></param>
-		/// <param name="fitnessFunction"></param>
-		/// <param name="selectionMethod"></param>
-		/// <param name="randomSelectionPortion"></param>
+		/// <remarks>The method regenerates population filling it with random chromosomes.</remarks>
 		/// 
-		public Population( int size,
-			IChromosome ancestor,
-			IFitnessFunction fitnessFunction,
-			ISelectionMethod selectionMethod,
-			double randomSelectionPortion ) : this ( size, ancestor, fitnessFunction, selectionMethod )
-		{
-			this.randomSelectionPortion = Math.Max( 0, Math.Min( 0.5, randomSelectionPortion ) );
-		}
-
-		/// <summary>
-		/// Regenerate population - feel it with random chromosomes
-		/// </summary>
 		public void Regenerate( )
 		{
 			IChromosome ancestor = (IChromosome) population[0];
@@ -183,13 +218,19 @@ namespace AForge.Genetic
 		/// <summary>
 		/// Do crossover in the population
 		/// </summary>
+		/// 
+		/// <remarks>The method walks through the population and performs crossover operator
+		/// taking each two chromosomes in the order of their presence in the population.
+		/// The total amount of paired chromosomes is determined by
+		/// <see cref="CrossoverRate">crossover rate</see>.</remarks>
+		/// 
 		public virtual void Crossover( )
 		{
 			// crossover
 			for ( int i = 1; i < size; i += 2 )
 			{
 				// generate next random number and check if we need to do crossover
-				if ( rand.NextDouble( ) <= crossOverRate )
+				if ( rand.NextDouble( ) <= crossoverRate )
 				{
 					// clone both ancestors
 					IChromosome c1 = ((IChromosome) population[i - 1]).Clone( );
@@ -212,6 +253,11 @@ namespace AForge.Genetic
 		/// <summary>
 		/// Do mutation in the population
 		/// </summary>
+		/// 
+		/// <remarks>The method walks through the population and performs mutation operator
+		/// taking each chromosome one by one. The total amount of mutated chromosomes is
+		/// determined by <see cref="MutationRate">mutation rate</see>.</remarks>
+		/// 
 		public virtual void Mutate( )
 		{
 			// mutate
@@ -235,6 +281,12 @@ namespace AForge.Genetic
 		/// <summary>
 		/// Do selection
 		/// </summary>
+		/// 
+		/// <remarks>The method applies selection operator to the current population. Using
+		/// specified selection algorithm it selects members to the new generation from current
+		/// generates and adds certain amount of random members, if is required
+		/// (see <see cref="RandomSelectionPortion"/>).</remarks>
+		/// 
 		public virtual void Selection( )
 		{
 			// amount of random chromosomes in the new population
@@ -281,8 +333,12 @@ namespace AForge.Genetic
 		}
 
 		/// <summary>
-		/// Run one epoch of the population - crossover, mutation and selection
+		/// Run one epoch of the population
 		/// </summary>
+		/// 
+		/// <remarks>The method runs one epoch of the population, doing crossover, mutation
+		/// and selection.</remarks>
+		/// 
 		public void RunEpoch( )
 		{
 			Crossover( );

@@ -18,7 +18,8 @@ namespace AForge.Controls
 	/// Chart control
 	/// </summary>
 	/// 
-	/// <remarks></remarks>
+	/// <remarks>The chart control allows to display multiple charts at time
+	/// of different types: dots, lines, connected dots.</remarks>
 	/// 
 	public class Chart : System.Windows.Forms.Control
 	{
@@ -297,7 +298,8 @@ namespace AForge.Controls
 		/// <param name="width">Width (depends on the data series type, see remarks)</param>
 		/// <param name="updateYRange">Specifies if <see cref="RangeY"/> should be updated</param>
 		/// 
-		/// <remarks></remarks>
+		/// <remarks>Adds new empty data series to the collection of data series. The <b>updateYRange</b>
+		/// parameter specifies if the data series can affect displayable Y range.</remarks>
 		/// 
 		public void AddDataSeries( string name, Color color, SeriesType type, int width, bool updateYRange  )
 		{
@@ -315,6 +317,10 @@ namespace AForge.Controls
 		/// <summary>
 		/// Update data series on the chart
 		/// </summary>
+		/// 
+		/// <param name="name">Data series name to update</param>
+		/// <param name="data">Data series values</param>
+		/// 
 		public void UpdateDataSeries( string name, double[,] data )
 		{
 			// get data series
@@ -354,7 +360,9 @@ namespace AForge.Controls
 			Invalidate( );
 		}
 
-		// Recalculate Y range
+		/// <summary>
+		/// displayable Y range
+		/// </summary>
 		private void UpdateYRange( )
 		{
 			double	minY = double.MaxValue;
@@ -383,7 +391,8 @@ namespace AForge.Controls
 				}
 			}
 
-			if ( ( minY != double.MaxValue) || ( maxY != double.MinValue ) )
+			// update Y range, if there are any data
+			if ( ( minY != double.MaxValue ) || ( maxY != double.MinValue ) )
 			{
 				rangeY = new DoubleRange( minY, maxY );
 			}
