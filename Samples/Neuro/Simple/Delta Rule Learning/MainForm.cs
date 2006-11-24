@@ -857,9 +857,9 @@ namespace Classifier
 					{
 						for ( int i = 0; i < neuronsCount; i++ )
 						{
-							weightsFile.Write( "neuron" + i + ";" );
+							weightsFile.Write( "neuron" + i + "," );
 							for ( int j = 0; j < variables; j++ )
-								weightsFile.Write( layer[i][j] + ";" );
+								weightsFile.Write( layer[i][j] + "," );
 							weightsFile.WriteLine( layer[i].Threshold );
 						}
 					}
