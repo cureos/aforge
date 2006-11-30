@@ -127,6 +127,26 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Filters\Color Filters\Grayscale.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Color Filters\GrayscaleBT709.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Color Filters\GrayscaleRMY.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Color Filters\GrayscaleY.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Filters\Color Filters\Sepia.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

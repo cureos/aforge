@@ -109,7 +109,7 @@ namespace AForge.Imaging.Filters
 			// process the filter
 			ProcessFilter( dstData );
 
-			// unlock both images
+			// unlock destination images
 			dstImage.UnlockBits( dstData );
 
 			return dstImage;
