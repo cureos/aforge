@@ -127,6 +127,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Filters\Base classes\FilterAnyToAny.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Base classes\FilterColorToColor.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Filters\Color Filters\Grayscale.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -143,6 +153,16 @@
                 />
                 <File
                     RelPath = "Filters\Color Filters\GrayscaleY.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Color Filters\Invert.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Color Filters\RotateChannels.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
