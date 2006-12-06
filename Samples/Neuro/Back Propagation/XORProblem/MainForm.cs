@@ -102,6 +102,8 @@ namespace XORProblem
 		private void InitializeComponent()
 		{
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.momentumBox = new System.Windows.Forms.TextBox();
+			this.label6 = new System.Windows.Forms.Label();
 			this.stopButton = new System.Windows.Forms.Button();
 			this.startButton = new System.Windows.Forms.Button();
 			this.label5 = new System.Windows.Forms.Label();
@@ -119,10 +121,7 @@ namespace XORProblem
 			this.label1 = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
-			this.errorChart = new AForge.Controls.Chart();
 			this.saveFilesCheck = new System.Windows.Forms.CheckBox();
-			this.label6 = new System.Windows.Forms.Label();
-			this.momentumBox = new System.Windows.Forms.TextBox();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.SuspendLayout();
@@ -153,6 +152,22 @@ namespace XORProblem
 			this.groupBox1.TabIndex = 0;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Neural Network";
+			// 
+			// momentumBox
+			// 
+			this.momentumBox.Location = new System.Drawing.Point(125, 45);
+			this.momentumBox.Name = "momentumBox";
+			this.momentumBox.Size = new System.Drawing.Size(60, 20);
+			this.momentumBox.TabIndex = 3;
+			this.momentumBox.Text = "";
+			// 
+			// label6
+			// 
+			this.label6.Location = new System.Drawing.Point(10, 47);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(82, 17);
+			this.label6.TabIndex = 2;
+			this.label6.Text = "Momentum:";
 			// 
 			// stopButton
 			// 
@@ -194,7 +209,7 @@ namespace XORProblem
 			this.label11.Name = "label11";
 			this.label11.Size = new System.Drawing.Size(121, 14);
 			this.label11.TabIndex = 24;
-			this.label11.Text = "Current average error:";
+			this.label11.Text = "Current summary error:";
 			// 
 			// currentIterationBox
 			// 
@@ -291,21 +306,12 @@ namespace XORProblem
 			// groupBox2
 			// 
 			this.groupBox2.Controls.Add(this.saveFilesCheck);
-			this.groupBox2.Controls.Add(this.errorChart);
 			this.groupBox2.Location = new System.Drawing.Point(215, 10);
 			this.groupBox2.Name = "groupBox2";
 			this.groupBox2.Size = new System.Drawing.Size(220, 260);
 			this.groupBox2.TabIndex = 1;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Error\'s dynamics";
-			// 
-			// errorChart
-			// 
-			this.errorChart.Location = new System.Drawing.Point(10, 20);
-			this.errorChart.Name = "errorChart";
-			this.errorChart.Size = new System.Drawing.Size(200, 205);
-			this.errorChart.TabIndex = 0;
-			this.errorChart.Text = "chart1";
 			// 
 			// saveFilesCheck
 			// 
@@ -314,22 +320,6 @@ namespace XORProblem
 			this.saveFilesCheck.Size = new System.Drawing.Size(200, 18);
 			this.saveFilesCheck.TabIndex = 1;
 			this.saveFilesCheck.Text = "Save errors to files";
-			// 
-			// label6
-			// 
-			this.label6.Location = new System.Drawing.Point(10, 47);
-			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(82, 17);
-			this.label6.TabIndex = 2;
-			this.label6.Text = "Momentum:";
-			// 
-			// momentumBox
-			// 
-			this.momentumBox.Location = new System.Drawing.Point(125, 45);
-			this.momentumBox.Name = "momentumBox";
-			this.momentumBox.Size = new System.Drawing.Size(60, 20);
-			this.momentumBox.TabIndex = 3;
-			this.momentumBox.Text = "";
 			// 
 			// MainForm
 			// 
