@@ -11,33 +11,53 @@ namespace AForge.Imaging.Filters
 	using System.Drawing.Imaging;
 
 	/// <summary>
-	/// Base class for image grayscaling
+	/// Extract RGB channel from image
 	/// </summary>
 	/// 
-	/// <remarks>This class is the base class for image grayscaling. Other
-	/// classes should inherit from this class and specify <b>RGB</b>
-	/// coefficients used for image conversion to grayscale.</remarks>
+	/// <remarks>Extracts specified channel of color image and returns
+	/// it the form of grayscale image.</remarks>
 	/// 
-	public abstract class Grayscale : FilterColorToGray
+	public class ExtractChannel : FilterColorToGray
 	{
-		// RGB coefficients for grayscale transformation
-		private double	cr;
-		private double	cg;
-		private double	cb;
+		private short channel = RGB.R;
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Grayscale"/> class
+		/// RGB channel to extract (default value is red)
+		/// </summary>
+		public short Channel
+		{
+			get { return channel; }
+			set
+			{
+				if (
+					( value != RGB.R ) &&
+					( value != RGB.G ) &&
+					( value != RGB.B )
+					)
+				{
+					throw new ArgumentException( );
+				}
+				channel = value;
+			}
+		}
+
+		// Constructor
+
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ExtractChannel"/> class
+		/// </summary>
+		public ExtractChannel( ) { }
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ExtractChannel"/> class
 		/// </summary>
 		/// 
-		/// <param name="cr">Red coefficient</param>
-		/// <param name="cg">Green coefficient</param>
-		/// <param name="cb">Blue coefficient</param>
+		/// <param name="channel">RGB channel to extract</param>
 		/// 
-		public Grayscale( double cr, double cg, double cb )
+		public ExtractChannel( short channel )
 		{
-			this.cr = cr;
-			this.cg = cg;
-			this.cb = cb;
+			this.Channel = channel;
 		}
 
 		/// <summary>
@@ -60,13 +80,14 @@ namespace AForge.Imaging.Filters
 			byte * src = (byte *) sourceData.Scan0.ToPointer( );
 			byte * dst = (byte *) destinationData.Scan0.ToPointer( );
 
-			// for each line
+			// allign source pointer to the required channel
+			src += channel;
+
 			for ( int y = 0; y < height; y++ )
 			{
-				// for each pixel
 				for ( int x = 0; x < width; x++, src += 3, dst ++ )
 				{
-					*dst = (byte)( cr * src[RGB.R] + cg * src[RGB.G] + cb * src[RGB.B] );
+					*dst = *src;
 				}
 				src += srcOffset;
 				dst += dstOffset;

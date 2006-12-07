@@ -84,6 +84,11 @@
                     AssemblyName = "System.Drawing"
                     HintPath = "C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Drawing.dll"
                 />
+                <Reference
+                    Name = "AForge"
+                    AssemblyName = "AForge"
+                    HintPath = "..\..\Release\AForge.dll"
+                />
             </References>
         </Build>
         <Files>
@@ -137,6 +142,36 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Filters\Base classes\FilterColorToGray.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Color Filters\ChannelFiltering.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Color Filters\ColorFiltering.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Color Filters\EuclideanColorFiltering.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Color Filters\ExtractChannel.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Color Filters\GammaCorrection.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Filters\Color Filters\Grayscale.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -152,6 +187,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Filters\Color Filters\GrayscaleToRGB.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Filters\Color Filters\GrayscaleY.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -162,12 +202,47 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Filters\Color Filters\ReplaceChannel.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Filters\Color Filters\RotateChannels.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Filters\Color Filters\Sepia.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\HSL Filters\BrightnessCorrection.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\HSL Filters\ContrastCorrection.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\HSL Filters\HSLFiltering.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\HSL Filters\HSLLinear.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\HSL Filters\HueModifier.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\HSL Filters\SaturationCorrection.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
