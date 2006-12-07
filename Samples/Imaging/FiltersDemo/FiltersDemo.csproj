@@ -86,13 +86,18 @@
                 />
                 <Reference
                     Name = "System.XML"
-                    AssemblyName = "System.XML"
+                    AssemblyName = "System.Xml"
                     HintPath = "C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
                 <Reference
                     Name = "AForge.Imaging"
                     AssemblyName = "AForge.Imaging"
                     HintPath = "..\..\..\Release\AForge.Imaging.dll"
+                />
+                <Reference
+                    Name = "AForge"
+                    AssemblyName = "AForge"
+                    HintPath = "..\..\..\Release\AForge.dll"
                 />
             </References>
         </Build>

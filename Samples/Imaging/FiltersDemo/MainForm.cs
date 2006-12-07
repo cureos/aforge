@@ -13,6 +13,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Data;
 
+using AForge;
 using AForge.Imaging;
 using AForge.Imaging.Filters;
 
@@ -44,6 +45,17 @@ namespace FiltersDemo
 		private System.Drawing.Bitmap	sourceImage;
 		private System.Drawing.Bitmap	filteredImage;
 		private System.Windows.Forms.MenuItem grayscaleFiltersItem;
+		private System.Windows.Forms.MenuItem extractChannelFiltersItem;
+		private System.Windows.Forms.MenuItem gammaFiltersItem;
+		private System.Windows.Forms.MenuItem channelFiltersItem;
+		private System.Windows.Forms.MenuItem colorFiltersItem;
+		private System.Windows.Forms.MenuItem euclideanColorFiltersItem;
+		private System.Windows.Forms.MenuItem menuItem2;
+		private System.Windows.Forms.MenuItem hueModifierFiltersItem;
+		private System.Windows.Forms.MenuItem saturationAdjustingFiltersItem;
+		private System.Windows.Forms.MenuItem brightnessAdjustingFiltersItem;
+		private System.Windows.Forms.MenuItem contrastAdjustingFiltersItem;
+		private System.Windows.Forms.MenuItem hslFiltersItem;
 
 		/// <summary>
 		/// Required designer variable.
@@ -89,19 +101,30 @@ namespace FiltersDemo
 			this.openFileItem = new System.Windows.Forms.MenuItem();
 			this.menuItem3 = new System.Windows.Forms.MenuItem();
 			this.exitFilrItem = new System.Windows.Forms.MenuItem();
+			this.filtersItem = new System.Windows.Forms.MenuItem();
+			this.noneFiltersItem = new System.Windows.Forms.MenuItem();
+			this.menuItem1 = new System.Windows.Forms.MenuItem();
+			this.grayscaleFiltersItem = new System.Windows.Forms.MenuItem();
+			this.sepiaFiltersItem = new System.Windows.Forms.MenuItem();
+			this.invertFiltersItem = new System.Windows.Forms.MenuItem();
+			this.rotateChannelFiltersItem = new System.Windows.Forms.MenuItem();
+			this.extractChannelFiltersItem = new System.Windows.Forms.MenuItem();
+			this.gammaFiltersItem = new System.Windows.Forms.MenuItem();
+			this.channelFiltersItem = new System.Windows.Forms.MenuItem();
+			this.colorFiltersItem = new System.Windows.Forms.MenuItem();
+			this.euclideanColorFiltersItem = new System.Windows.Forms.MenuItem();
+			this.menuItem2 = new System.Windows.Forms.MenuItem();
+			this.hueModifierFiltersItem = new System.Windows.Forms.MenuItem();
+			this.saturationAdjustingFiltersItem = new System.Windows.Forms.MenuItem();
+			this.brightnessAdjustingFiltersItem = new System.Windows.Forms.MenuItem();
+			this.contrastAdjustingFiltersItem = new System.Windows.Forms.MenuItem();
 			this.sizeItem = new System.Windows.Forms.MenuItem();
 			this.normalSizeItem = new System.Windows.Forms.MenuItem();
 			this.stretchedSizeItem = new System.Windows.Forms.MenuItem();
 			this.centeredSizeItem = new System.Windows.Forms.MenuItem();
 			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.pictureBox = new System.Windows.Forms.PictureBox();
-			this.filtersItem = new System.Windows.Forms.MenuItem();
-			this.noneFiltersItem = new System.Windows.Forms.MenuItem();
-			this.menuItem1 = new System.Windows.Forms.MenuItem();
-			this.sepiaFiltersItem = new System.Windows.Forms.MenuItem();
-			this.invertFiltersItem = new System.Windows.Forms.MenuItem();
-			this.rotateChannelFiltersItem = new System.Windows.Forms.MenuItem();
-			this.grayscaleFiltersItem = new System.Windows.Forms.MenuItem();
+			this.hslFiltersItem = new System.Windows.Forms.MenuItem();
 			this.SuspendLayout();
 			// 
 			// mainMenu
@@ -136,6 +159,124 @@ namespace FiltersDemo
 			this.exitFilrItem.Index = 2;
 			this.exitFilrItem.Text = "E&xit";
 			this.exitFilrItem.Click += new System.EventHandler(this.exitFilrItem_Click);
+			// 
+			// filtersItem
+			// 
+			this.filtersItem.Enabled = false;
+			this.filtersItem.Index = 1;
+			this.filtersItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+																						this.noneFiltersItem,
+																						this.menuItem1,
+																						this.grayscaleFiltersItem,
+																						this.sepiaFiltersItem,
+																						this.invertFiltersItem,
+																						this.rotateChannelFiltersItem,
+																						this.extractChannelFiltersItem,
+																						this.gammaFiltersItem,
+																						this.channelFiltersItem,
+																						this.colorFiltersItem,
+																						this.euclideanColorFiltersItem,
+																						this.menuItem2,
+																						this.hueModifierFiltersItem,
+																						this.saturationAdjustingFiltersItem,
+																						this.brightnessAdjustingFiltersItem,
+																						this.contrastAdjustingFiltersItem,
+																						this.hslFiltersItem});
+			this.filtersItem.Text = "Fi&lters";
+			// 
+			// noneFiltersItem
+			// 
+			this.noneFiltersItem.Index = 0;
+			this.noneFiltersItem.Text = "&None";
+			this.noneFiltersItem.Click += new System.EventHandler(this.noneFiltersItem_Click);
+			// 
+			// menuItem1
+			// 
+			this.menuItem1.Index = 1;
+			this.menuItem1.Text = "-";
+			// 
+			// grayscaleFiltersItem
+			// 
+			this.grayscaleFiltersItem.Index = 2;
+			this.grayscaleFiltersItem.Text = "&Grayscale";
+			this.grayscaleFiltersItem.Click += new System.EventHandler(this.grayscaleFiltersItem_Click);
+			// 
+			// sepiaFiltersItem
+			// 
+			this.sepiaFiltersItem.Index = 3;
+			this.sepiaFiltersItem.Text = "&Sepia";
+			this.sepiaFiltersItem.Click += new System.EventHandler(this.sepiaFiltersItem_Click);
+			// 
+			// invertFiltersItem
+			// 
+			this.invertFiltersItem.Index = 4;
+			this.invertFiltersItem.Text = "&Invert";
+			this.invertFiltersItem.Click += new System.EventHandler(this.invertFiltersItem_Click);
+			// 
+			// rotateChannelFiltersItem
+			// 
+			this.rotateChannelFiltersItem.Index = 5;
+			this.rotateChannelFiltersItem.Text = "&Rotate channel";
+			this.rotateChannelFiltersItem.Click += new System.EventHandler(this.rotateChannelFiltersItem_Click);
+			// 
+			// extractChannelFiltersItem
+			// 
+			this.extractChannelFiltersItem.Index = 6;
+			this.extractChannelFiltersItem.Text = "Extract channel (green)";
+			this.extractChannelFiltersItem.Click += new System.EventHandler(this.extractChannelFiltersItem_Click);
+			// 
+			// gammaFiltersItem
+			// 
+			this.gammaFiltersItem.Index = 7;
+			this.gammaFiltersItem.Text = "Gamma correction";
+			this.gammaFiltersItem.Click += new System.EventHandler(this.gammaFiltersItem_Click);
+			// 
+			// channelFiltersItem
+			// 
+			this.channelFiltersItem.Index = 8;
+			this.channelFiltersItem.Text = "Channel filtering";
+			this.channelFiltersItem.Click += new System.EventHandler(this.channelFiltersItem_Click);
+			// 
+			// colorFiltersItem
+			// 
+			this.colorFiltersItem.Index = 9;
+			this.colorFiltersItem.Text = "Color filtering";
+			this.colorFiltersItem.Click += new System.EventHandler(this.colorFiltersItem_Click);
+			// 
+			// euclideanColorFiltersItem
+			// 
+			this.euclideanColorFiltersItem.Index = 10;
+			this.euclideanColorFiltersItem.Text = "Euclidean color filtering";
+			this.euclideanColorFiltersItem.Click += new System.EventHandler(this.euclideanColorFiltersItem_Click);
+			// 
+			// menuItem2
+			// 
+			this.menuItem2.Index = 11;
+			this.menuItem2.Text = "-";
+			// 
+			// hueModifierFiltersItem
+			// 
+			this.hueModifierFiltersItem.Index = 12;
+			this.hueModifierFiltersItem.Text = "Hue modifier";
+			this.hueModifierFiltersItem.Click += new System.EventHandler(this.hueModifierFiltersItem_Click);
+			// 
+			// saturationAdjustingFiltersItem
+			// 
+			this.saturationAdjustingFiltersItem.Index = 13;
+			this.saturationAdjustingFiltersItem.Text = "Saturation adjusting";
+			this.saturationAdjustingFiltersItem.Click += new System.EventHandler(this.saturationAdjustingFiltersItem_Click);
+			// 
+			// brightnessAdjustingFiltersItem
+			// 
+			this.brightnessAdjustingFiltersItem.Index = 14;
+			this.brightnessAdjustingFiltersItem.Text = "Brightness adjusting";
+			this.brightnessAdjustingFiltersItem.Click += new System.EventHandler(this.brightnessAdjustingFiltersItem_Click);
+			// 
+			// contrastAdjustingFiltersItem
+			// 
+			this.contrastAdjustingFiltersItem.Index = 15;
+			this.contrastAdjustingFiltersItem.Text = "Contrast adjusting";
+			this.contrastAdjustingFiltersItem.Click += new System.EventHandler(this.contrastAdjustingFiltersItem_Click);
 			// 
 			// sizeItem
 			// 
@@ -184,53 +325,11 @@ namespace FiltersDemo
 			this.pictureBox.TabIndex = 0;
 			this.pictureBox.TabStop = false;
 			// 
-			// filtersItem
+			// hslFiltersItem
 			// 
-			this.filtersItem.Enabled = false;
-			this.filtersItem.Index = 1;
-			this.filtersItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																						this.noneFiltersItem,
-																						this.menuItem1,
-																						this.grayscaleFiltersItem,
-																						this.sepiaFiltersItem,
-																						this.invertFiltersItem,
-																						this.rotateChannelFiltersItem});
-			this.filtersItem.Text = "Fi&lters";
-			// 
-			// noneFiltersItem
-			// 
-			this.noneFiltersItem.Index = 0;
-			this.noneFiltersItem.Text = "&None";
-			this.noneFiltersItem.Click += new System.EventHandler(this.noneFiltersItem_Click);
-			// 
-			// menuItem1
-			// 
-			this.menuItem1.Index = 1;
-			this.menuItem1.Text = "-";
-			// 
-			// sepiaFiltersItem
-			// 
-			this.sepiaFiltersItem.Index = 3;
-			this.sepiaFiltersItem.Text = "&Sepia";
-			this.sepiaFiltersItem.Click += new System.EventHandler(this.sepiaFiltersItem_Click);
-			// 
-			// invertFiltersItem
-			// 
-			this.invertFiltersItem.Index = 4;
-			this.invertFiltersItem.Text = "&Invert";
-			this.invertFiltersItem.Click += new System.EventHandler(this.invertFiltersItem_Click);
-			// 
-			// rotateChannelFiltersItem
-			// 
-			this.rotateChannelFiltersItem.Index = 5;
-			this.rotateChannelFiltersItem.Text = "&Rotate channel";
-			this.rotateChannelFiltersItem.Click += new System.EventHandler(this.rotateChannelFiltersItem_Click);
-			// 
-			// grayscaleFiltersItem
-			// 
-			this.grayscaleFiltersItem.Index = 2;
-			this.grayscaleFiltersItem.Text = "&Grayscale";
-			this.grayscaleFiltersItem.Click += new System.EventHandler(this.grayscaleFiltersItem_Click);
+			this.hslFiltersItem.Index = 16;
+			this.hslFiltersItem.Text = "HSL filtering";
+			this.hslFiltersItem.Click += new System.EventHandler(this.hslFiltersItem_Click);
 			// 
 			// MainForm
 			// 
@@ -282,6 +381,8 @@ namespace FiltersDemo
 						sourceImage.Dispose( );
 						sourceImage = null;
 					}
+
+					ClearCurrentImage( );
 
 					// display image
 					pictureBox.Image = sourceImage;
@@ -359,31 +460,101 @@ namespace FiltersDemo
 		}
 
 		// On Filters->Grayscale item
-		private void grayscaleFiltersItem_Click(object sender, System.EventArgs e)
+		private void grayscaleFiltersItem_Click( object sender, System.EventArgs e )
 		{
 			ApplyFilter( new GrayscaleBT709( ) );
 			grayscaleFiltersItem.Checked = true;
 		}
 
 		// On Filters->Sepia item
-		private void sepiaFiltersItem_Click(object sender, System.EventArgs e)
+		private void sepiaFiltersItem_Click( object sender, System.EventArgs e )
 		{
 			ApplyFilter( new Sepia( ) );
 			sepiaFiltersItem.Checked = true;
 		}
 
 		// On Filters->Invert item
-		private void invertFiltersItem_Click(object sender, System.EventArgs e)
+		private void invertFiltersItem_Click( object sender, System.EventArgs e )
 		{
 			ApplyFilter( new Invert( ) );
 			invertFiltersItem.Checked = true;
 		}
 
 		// On Filters->Rotate Channels item
-		private void rotateChannelFiltersItem_Click(object sender, System.EventArgs e)
+		private void rotateChannelFiltersItem_Click( object sender, System.EventArgs e )
 		{
 			ApplyFilter( new RotateChannels( ) );
 			rotateChannelFiltersItem.Checked = true;
+		}
+
+		// On Filters->Extract Channel
+		private void extractChannelFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			ApplyFilter( new ExtractChannel( RGB.G ) );
+			extractChannelFiltersItem.Checked = true;
+		}
+
+		// On Filters->Gamma Correction
+		private void gammaFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			ApplyFilter( new GammaCorrection( ) );
+			gammaFiltersItem.Checked = true;
+		}
+
+		// On Filters->Channel filtering
+		private void channelFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			ApplyFilter( new ChannelFiltering( new IntRange( 25, 230), new IntRange( 25, 230), new IntRange( 25, 230) ) );
+			channelFiltersItem.Checked = true;
+		}
+
+		// On Filters->Color filtering
+		private void colorFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			ApplyFilter( new ColorFiltering( new IntRange( 25, 230), new IntRange( 25, 230), new IntRange( 25, 230) ) );
+			colorFiltersItem.Checked = true;
+		}
+
+		// On Filters->Euclidean color filtering
+		private void euclideanColorFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			ApplyFilter( new EuclideanColorFiltering( Color.FromArgb( 255, 0, 0 ), 150 ) );
+			euclideanColorFiltersItem.Checked = true;
+		}
+
+		// On Filters->Hue modifier
+		private void hueModifierFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			ApplyFilter( new HueModifier( 50 ) );
+			hueModifierFiltersItem.Checked = true;
+		}
+
+		// On Filters->Saturation adjusting
+		private void saturationAdjustingFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			ApplyFilter( new SaturationCorrection( 0.15 ) );
+			saturationAdjustingFiltersItem.Checked = true;
+		}
+
+		// On Filters->Brightness adjusting
+		private void brightnessAdjustingFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			ApplyFilter( new BrightnessCorrection( ) );
+			brightnessAdjustingFiltersItem.Checked = true;
+		}
+
+		// On Filters->Contrast adjusting
+		private void contrastAdjustingFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			ApplyFilter( new ContrastCorrection( ) );
+			contrastAdjustingFiltersItem.Checked = true;
+		}
+
+		// On Filters->HSL filtering
+		private void hslFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			ApplyFilter( new HSLFiltering( new IntRange( 330, 30 ), new DoubleRange( 0, 1 ), new DoubleRange( 0, 1 ) ) );
+			hslFiltersItem.Checked = true;
 		}
 	}
 }
