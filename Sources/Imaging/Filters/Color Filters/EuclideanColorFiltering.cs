@@ -11,7 +11,7 @@ namespace AForge.Imaging.Filters
 	using System.Drawing.Imaging;
 	
 	/// <summary>
-	/// Euclidean ñolor àiltering
+	/// Euclidean color filtering
 	/// </summary>
 	/// 
 	/// <remarks>The filter filters pixel, which color is inside or outside

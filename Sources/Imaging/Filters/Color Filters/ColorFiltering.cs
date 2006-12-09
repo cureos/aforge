@@ -15,7 +15,7 @@ namespace AForge.Imaging.Filters
 	/// Color filtering
 	/// </summary>
 	/// 
-	/// <remarks>The filter filters pixels inside or outside specified color range</remarks>
+	/// <remarks>The filter filters pixels inside or outside of specified color range</remarks>
 	/// 
 	public class ColorFiltering : FilterColorToColor
 	{

@@ -16,7 +16,7 @@ namespace AForge.Imaging.Filters
 	/// </summary>
 	/// 
 	/// <remarks>The filter operates in <b>HSL</b> color space and filters
-	/// pixels, which color is inside or outside specified HSL range.</remarks>
+	/// pixels, which color is inside or outside of specified HSL range.</remarks>
 	/// 
 	public class HSLFiltering : FilterColorToColor
 	{
