@@ -137,12 +137,27 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Filters\Base classes\FilterAnyToGray.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Filters\Base classes\FilterColorToColor.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Filters\Base classes\FilterColorToGray.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Binarization\Threshold.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Binarization\ThresholdCarry.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
