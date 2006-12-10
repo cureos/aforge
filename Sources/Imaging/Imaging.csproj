@@ -117,11 +117,6 @@
                     BuildAction = "None"
                 />
                 <File
-                    RelPath = "Win32.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Filters\IFilter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -148,6 +143,51 @@
                 />
                 <File
                     RelPath = "Filters\Base classes\FilterColorToGray.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Binarization\BayerDithering.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Binarization\BurkesDithering.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Binarization\ErrorDiffusionDithering.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Binarization\FloydSteinbergDithering.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Binarization\JarvisJudiceNinkeDithering.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Binarization\OrderedDithering.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Binarization\SierraDithering.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Binarization\StevensonArceDithering.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Binarization\StuckiDithering.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

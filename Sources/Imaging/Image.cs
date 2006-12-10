@@ -9,7 +9,7 @@ namespace AForge.Imaging
 	using System;
 	using System.Drawing;
 	using System.Drawing.Imaging;
-
+	using AForge;
 
 	/// <summary>
 	/// Core image relatad methods
