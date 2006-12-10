@@ -56,6 +56,14 @@ namespace FiltersDemo
 		private System.Windows.Forms.MenuItem brightnessAdjustingFiltersItem;
 		private System.Windows.Forms.MenuItem contrastAdjustingFiltersItem;
 		private System.Windows.Forms.MenuItem hslFiltersItem;
+		private System.Windows.Forms.MenuItem menuItem4;
+		private System.Windows.Forms.MenuItem yCbCrLinearFiltersItem;
+		private System.Windows.Forms.MenuItem yCbCrFiltersItem;
+		private System.Windows.Forms.MenuItem extractCbFiltersItem;
+		private System.Windows.Forms.MenuItem menuItem5;
+		private System.Windows.Forms.MenuItem thresholdFiltersItem;
+		private System.Windows.Forms.MenuItem floydFiltersItem;
+		private System.Windows.Forms.MenuItem orderedDitheringFiltersItem;
 
 		/// <summary>
 		/// Required designer variable.
@@ -118,13 +126,21 @@ namespace FiltersDemo
 			this.saturationAdjustingFiltersItem = new System.Windows.Forms.MenuItem();
 			this.brightnessAdjustingFiltersItem = new System.Windows.Forms.MenuItem();
 			this.contrastAdjustingFiltersItem = new System.Windows.Forms.MenuItem();
+			this.hslFiltersItem = new System.Windows.Forms.MenuItem();
+			this.menuItem4 = new System.Windows.Forms.MenuItem();
+			this.yCbCrLinearFiltersItem = new System.Windows.Forms.MenuItem();
+			this.yCbCrFiltersItem = new System.Windows.Forms.MenuItem();
+			this.extractCbFiltersItem = new System.Windows.Forms.MenuItem();
+			this.menuItem5 = new System.Windows.Forms.MenuItem();
+			this.thresholdFiltersItem = new System.Windows.Forms.MenuItem();
 			this.sizeItem = new System.Windows.Forms.MenuItem();
 			this.normalSizeItem = new System.Windows.Forms.MenuItem();
 			this.stretchedSizeItem = new System.Windows.Forms.MenuItem();
 			this.centeredSizeItem = new System.Windows.Forms.MenuItem();
 			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.pictureBox = new System.Windows.Forms.PictureBox();
-			this.hslFiltersItem = new System.Windows.Forms.MenuItem();
+			this.floydFiltersItem = new System.Windows.Forms.MenuItem();
+			this.orderedDitheringFiltersItem = new System.Windows.Forms.MenuItem();
 			this.SuspendLayout();
 			// 
 			// mainMenu
@@ -181,7 +197,15 @@ namespace FiltersDemo
 																						this.saturationAdjustingFiltersItem,
 																						this.brightnessAdjustingFiltersItem,
 																						this.contrastAdjustingFiltersItem,
-																						this.hslFiltersItem});
+																						this.hslFiltersItem,
+																						this.menuItem4,
+																						this.yCbCrLinearFiltersItem,
+																						this.yCbCrFiltersItem,
+																						this.extractCbFiltersItem,
+																						this.menuItem5,
+																						this.thresholdFiltersItem,
+																						this.floydFiltersItem,
+																						this.orderedDitheringFiltersItem});
 			this.filtersItem.Text = "Fi&lters";
 			// 
 			// noneFiltersItem
@@ -278,6 +302,46 @@ namespace FiltersDemo
 			this.contrastAdjustingFiltersItem.Text = "Contrast adjusting";
 			this.contrastAdjustingFiltersItem.Click += new System.EventHandler(this.contrastAdjustingFiltersItem_Click);
 			// 
+			// hslFiltersItem
+			// 
+			this.hslFiltersItem.Index = 16;
+			this.hslFiltersItem.Text = "HSL filtering";
+			this.hslFiltersItem.Click += new System.EventHandler(this.hslFiltersItem_Click);
+			// 
+			// menuItem4
+			// 
+			this.menuItem4.Index = 17;
+			this.menuItem4.Text = "-";
+			// 
+			// yCbCrLinearFiltersItem
+			// 
+			this.yCbCrLinearFiltersItem.Index = 18;
+			this.yCbCrLinearFiltersItem.Text = "YCbCr linear correction";
+			this.yCbCrLinearFiltersItem.Click += new System.EventHandler(this.yCbCrLinearFiltersItem_Click);
+			// 
+			// yCbCrFiltersItem
+			// 
+			this.yCbCrFiltersItem.Index = 19;
+			this.yCbCrFiltersItem.Text = "YCbCr filtering";
+			this.yCbCrFiltersItem.Click += new System.EventHandler(this.yCbCrFiltersItem_Click);
+			// 
+			// extractCbFiltersItem
+			// 
+			this.extractCbFiltersItem.Index = 20;
+			this.extractCbFiltersItem.Text = "Extract Cb channel of YCbCr color space";
+			this.extractCbFiltersItem.Click += new System.EventHandler(this.extractCbFiltersItem_Click);
+			// 
+			// menuItem5
+			// 
+			this.menuItem5.Index = 21;
+			this.menuItem5.Text = "-";
+			// 
+			// thresholdFiltersItem
+			// 
+			this.thresholdFiltersItem.Index = 22;
+			this.thresholdFiltersItem.Text = "Threshold &binarization";
+			this.thresholdFiltersItem.Click += new System.EventHandler(this.thresholdFiltersItem_Click);
+			// 
 			// sizeItem
 			// 
 			this.sizeItem.Index = 2;
@@ -325,11 +389,17 @@ namespace FiltersDemo
 			this.pictureBox.TabIndex = 0;
 			this.pictureBox.TabStop = false;
 			// 
-			// hslFiltersItem
+			// floydFiltersItem
 			// 
-			this.hslFiltersItem.Index = 16;
-			this.hslFiltersItem.Text = "HSL filtering";
-			this.hslFiltersItem.Click += new System.EventHandler(this.hslFiltersItem_Click);
+			this.floydFiltersItem.Index = 23;
+			this.floydFiltersItem.Text = "Floyd-Steinberg dithering";
+			this.floydFiltersItem.Click += new System.EventHandler(this.floydFiltersItem_Click);
+			// 
+			// orderedDitheringFiltersItem
+			// 
+			this.orderedDitheringFiltersItem.Index = 24;
+			this.orderedDitheringFiltersItem.Text = "Ordered dithering";
+			this.orderedDitheringFiltersItem.Click += new System.EventHandler(this.orderedDitheringFiltersItem_Click);
 			// 
 			// MainForm
 			// 
@@ -555,6 +625,52 @@ namespace FiltersDemo
 		{
 			ApplyFilter( new HSLFiltering( new IntRange( 330, 30 ), new DoubleRange( 0, 1 ), new DoubleRange( 0, 1 ) ) );
 			hslFiltersItem.Checked = true;
+		}
+
+		// On Filters->YCbCr filtering
+		private void yCbCrLinearFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			YCbCrLinear filter = new YCbCrLinear( );
+
+			filter.InCb = new DoubleRange( -0.3, 0.3 );
+
+			ApplyFilter( filter );
+			yCbCrLinearFiltersItem.Checked = true;
+		}
+
+		// On Filters->YCbCr filtering
+		private void yCbCrFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			ApplyFilter( new YCbCrFiltering( new DoubleRange( 0.2, 0.9), new DoubleRange( -0.3, 0.3), new DoubleRange( -0.3, 0.3) ) );
+			yCbCrFiltersItem.Checked = true;
+		}
+
+		// On Filters->Extract Cb channel
+		private void extractCbFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			ApplyFilter( new YCbCrExtractChannel( YCbCr.CbIndex ) );
+			extractCbFiltersItem.Checked = true;
+		}
+
+		// On Filters->Threshold binarization
+		private void thresholdFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			ApplyFilter( new Threshold( ) );
+			thresholdFiltersItem.Checked = true;
+		}
+
+		// On Filters->Floyd-Steinberg dithering
+		private void floydFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			ApplyFilter( new FloydSteinbergDithering( ) );
+			floydFiltersItem.Checked = true;
+		}
+
+		// On Filters->Ordered dithering
+		private void orderedDitheringFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			ApplyFilter( new OrderedDithering( ) );
+			orderedDitheringFiltersItem.Checked = true;
 		}
 	}
 }
