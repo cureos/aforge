@@ -1,10 +1,10 @@
-// AForge Image Processing Library
+// AForge Library
 //
 // Copyright © Andrew Kirillov, 2005-2006
 // andrew.kirillov@gmail.com
 //
 
-namespace AForge.Imaging
+namespace AForge
 {
 	using System;
 	using System.Runtime.InteropServices;
@@ -15,10 +15,57 @@ namespace AForge.Imaging
 	/// </summary>
 	/// 
 	/// <remarks>Some Win32 API function's are used by the library to perform memory
-	/// related routines,</remarks>
+	/// related routines.</remarks>
 	/// 
-	internal class Win32
+	public class Win32
 	{
+		// Avoid class instantiation
+		private Win32( ) { }
+
+		/// <summary>
+		/// Memory allocation attributes
+		/// </summary>
+		[Flags]
+		public enum MemoryFlags
+		{
+			/// <summary>
+			/// Allocates fixed memory
+			/// </summary>
+			Fixed		= 0,
+
+			/// <summary>
+			/// Initializes memory contents to zero
+			/// </summary>
+			ZeroInit	= 0x40
+		}
+
+		/// <summary>
+		/// Allocate the specified number of bytes from the heap
+		/// </summary>
+		/// 
+		/// <param name="flags">Memory allocation attributes (see <see cref="MemoryFlags"/>)</param>
+		/// <param name="size">Number of bytes to allocate</param>
+		/// 
+		/// <returns>If the function succeeds, the return value is a handle to the newly allocated memory object.
+		/// If the function fails, the return value is <b>IntPtr.Zero</b>.</returns>
+		/// 
+		[DllImport("kernel32.dll")]
+		public static extern IntPtr LocalAlloc(
+			[In, MarshalAs(UnmanagedType.I4)] MemoryFlags flags,
+			int size );
+
+		/// <summary>
+		/// Free the specified local memory object and invalidate its handle
+		/// </summary>
+		/// 
+		/// <param name="memBlock">Handle to the local memory object</param>
+		/// 
+		/// <returns>If the function succeeds, the return value is <b>IntPtr.Zero</b>.</returns>
+		/// 
+		[DllImport("kernel32.dll")]
+		public static extern IntPtr LocalFree(
+			IntPtr memBlock );
+
 		/// <summary>
 		/// Copy a block of memory
 		/// </summary>
@@ -49,7 +96,7 @@ namespace AForge.Imaging
 		public static extern unsafe byte * memcpy(
 			byte * dst,
 			byte * src,
-			int count);
+			int count );
 
 		/// <summary>
 		/// Fills buffer with a specified value
@@ -65,6 +112,6 @@ namespace AForge.Imaging
 		public static extern IntPtr memset(
 			IntPtr dst,
 			int filler,
-			int count);
+			int count );
 	}
 }
