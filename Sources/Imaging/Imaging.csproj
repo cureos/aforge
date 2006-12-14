@@ -127,6 +127,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Filters\Adaptive Binarization\SISThreshold.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Filters\Base classes\FilterAnyToAny.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
