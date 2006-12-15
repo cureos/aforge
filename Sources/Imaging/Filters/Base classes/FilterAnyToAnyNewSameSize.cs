@@ -1,4 +1,4 @@
-// AForge Image Processing Library
+	// AForge Image Processing Library
 //
 // Copyright © Andrew Kirillov, 2005-2006
 // andrew.kirillov@gmail.com
@@ -79,7 +79,9 @@ namespace AForge.Imaging.Filters
 			int height = imageData.Height;
 
 			// create new image
-			Bitmap dstImage = new Bitmap( width, height, imageData.PixelFormat );
+			Bitmap dstImage = ( imageData.PixelFormat == PixelFormat.Format24bppRgb ) ?
+				new Bitmap( width, height, imageData.PixelFormat ) :
+				AForge.Imaging.Image.CreateGrayscaleImage( width, height );
 
 			// lock destination bitmap data
 			BitmapData dstData = dstImage.LockBits(
