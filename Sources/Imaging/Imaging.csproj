@@ -312,6 +312,21 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Filters\Edge Detectors\DifferenceEdgeDetector.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Edge Detectors\HomogenityEdgeDetector.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Edge Detectors\SobelEdgeDetector.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Filters\HSL Filters\BrightnessCorrection.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
