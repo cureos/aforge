@@ -137,6 +137,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Filters\Base classes\FilterAnyToAnyNewSameSize.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Filters\Base classes\FilterAnyToGray.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -273,6 +278,36 @@
                 />
                 <File
                     RelPath = "Filters\Color Filters\Sepia.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Convolution\Blur.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Convolution\Convolution.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Convolution\Correlation.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Convolution\Edges.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Convolution\Mean.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Convolution\Sharpen.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
