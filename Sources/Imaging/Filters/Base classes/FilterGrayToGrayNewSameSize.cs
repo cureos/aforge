@@ -11,17 +11,17 @@ namespace AForge.Imaging.Filters
 	using System.Drawing.Imaging;
 
 	/// <summary>
-	/// Base class for filtering any images without changing pixel format, but
+	/// Base class for filtering grayscale images without changing pixel format, but
 	/// creating new image
 	/// </summary>
 	/// 
 	/// <remarks>The abstract class is the base class for all filters, which can
-	/// be applied to color and grayscale images without changing their pixel format
+	/// be applied to grayscale images without changing their pixel format
 	/// and image dimension. The base class is used for filters, which can not be applied
 	/// directly to the specified source image updating them. Instead of this, these
 	/// filters return new image as a result of processing routine.</remarks>
 	/// 
-	public abstract class FilterAnyToAnyNewSameSize : IFilter
+	public abstract class FilterGrayToGrayNewSameSize : IFilter
 	{
 		/// <summary>
 		/// Apply filter to an image
@@ -40,9 +40,7 @@ namespace AForge.Imaging.Filters
 			// lock source bitmap data
 			BitmapData srcData = image.LockBits(
 				new Rectangle( 0, 0, image.Width, image.Height ),
-				ImageLockMode.ReadOnly,
-				( image.PixelFormat == PixelFormat.Format8bppIndexed ) ?
-				PixelFormat.Format8bppIndexed : PixelFormat.Format24bppRgb );
+				ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed );
 
 			// apply the filter
 			Bitmap dstImage = Apply( srcData );
@@ -68,10 +66,7 @@ namespace AForge.Imaging.Filters
 		/// 
 		public Bitmap Apply( BitmapData imageData )
 		{
-			if (
-				( imageData.PixelFormat != PixelFormat.Format24bppRgb ) &&
-				( imageData.PixelFormat != PixelFormat.Format8bppIndexed )
-				)
+			if ( imageData.PixelFormat != PixelFormat.Format8bppIndexed )
 				throw new ArgumentException( );
 
 			// get image dimension
@@ -79,14 +74,12 @@ namespace AForge.Imaging.Filters
 			int height = imageData.Height;
 
 			// create new image
-			Bitmap dstImage = ( imageData.PixelFormat == PixelFormat.Format24bppRgb ) ?
-				new Bitmap( width, height, imageData.PixelFormat ) :
-				AForge.Imaging.Image.CreateGrayscaleImage( width, height );
+			Bitmap dstImage = AForge.Imaging.Image.CreateGrayscaleImage( width, height );
 
 			// lock destination bitmap data
 			BitmapData dstData = dstImage.LockBits(
 				new Rectangle( 0, 0, width, height ),
-				ImageLockMode.ReadWrite, imageData.PixelFormat );
+				ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed );
 
 			// process the filter
 			ProcessFilter( imageData, dstData );

@@ -157,6 +157,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Filters\Base classes\FilterGrayToGrayNewSameSize.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Filters\Binarization\BayerDithering.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -353,6 +358,31 @@
                 />
                 <File
                     RelPath = "Filters\HSL Filters\SaturationCorrection.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Morphology\Closing.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Morphology\Dilatation.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Morphology\Erosion.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Morphology\HitAndMiss.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Morphology\Opening.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
