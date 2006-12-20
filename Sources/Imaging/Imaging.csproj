@@ -127,6 +127,46 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Filters\Median.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\2 Source filters\Add.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\2 Source filters\Difference.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\2 Source filters\Intersect.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\2 Source filters\Merge.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\2 Source filters\Morph.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\2 Source filters\MoveTowards.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\2 Source filters\Subtract.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Filters\Adaptive Binarization\SISThreshold.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -268,6 +308,11 @@
                 />
                 <File
                     RelPath = "Filters\Color Filters\Invert.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Color Filters\LevelsLinear.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
