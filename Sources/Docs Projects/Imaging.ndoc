@@ -2,6 +2,10 @@
     <assemblies>
         <assembly location="..\Imaging\bin\Debug\AForge.Imaging.dll" documentation="..\Imaging\bin\Debug\AForge.Imaging.xml" />
     </assemblies>
+    <namespaces>
+        <namespace name="AForge.Imaging">The <b>AForge.Imaging</b> namespace contains interfaces and classes for different image processing routines.</namespace>
+        <namespace name="AForge.Imaging.Filters">The <b>AForge.Imaging.Filters</b> namespace contains collection of interfaces and classes, which provides different image processing filters. Classes of this namespace allow to do different transformation of a source image, doing it directly on the source image or providing new image as a result of image processing routine.</namespace>
+    </namespaces>
     <documenters>
         <documenter name="JavaDoc">
             <property name="OutputDirectory" value=".\doc\" />
