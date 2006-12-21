@@ -41,9 +41,6 @@ namespace FiltersDemo
 		private System.Windows.Forms.MenuItem sepiaFiltersItem;
 		private System.Windows.Forms.MenuItem invertFiltersItem;
 		private System.Windows.Forms.MenuItem rotateChannelFiltersItem;
-
-		private System.Drawing.Bitmap	sourceImage;
-		private System.Drawing.Bitmap	filteredImage;
 		private System.Windows.Forms.MenuItem grayscaleFiltersItem;
 		private System.Windows.Forms.MenuItem extractChannelFiltersItem;
 		private System.Windows.Forms.MenuItem gammaFiltersItem;
@@ -64,6 +61,20 @@ namespace FiltersDemo
 		private System.Windows.Forms.MenuItem thresholdFiltersItem;
 		private System.Windows.Forms.MenuItem floydFiltersItem;
 		private System.Windows.Forms.MenuItem orderedDitheringFiltersItem;
+		private System.Windows.Forms.MenuItem adaptiveBinarizationFiltersItem;
+		private System.Windows.Forms.MenuItem menuItem6;
+		private System.Windows.Forms.MenuItem correlationFiltersItem;
+		private System.Windows.Forms.MenuItem sharpenFiltersItem;
+		private System.Windows.Forms.MenuItem menuItem7;
+		private System.Windows.Forms.MenuItem differenceEdgesFiltersItem;
+		private System.Windows.Forms.MenuItem homogenityEdgesFiltersItem;
+		private System.Windows.Forms.MenuItem sobelEdgesFiltersItem;
+
+		private System.Drawing.Bitmap	sourceImage;
+		private System.Drawing.Bitmap	filteredImage;
+		private System.Windows.Forms.MenuItem rgbLinearFiltersItem;
+		private System.Windows.Forms.MenuItem menuItem8;
+		private System.Windows.Forms.MenuItem medianFiltersItem;
 
 		/// <summary>
 		/// Required designer variable.
@@ -133,14 +144,25 @@ namespace FiltersDemo
 			this.extractCbFiltersItem = new System.Windows.Forms.MenuItem();
 			this.menuItem5 = new System.Windows.Forms.MenuItem();
 			this.thresholdFiltersItem = new System.Windows.Forms.MenuItem();
+			this.floydFiltersItem = new System.Windows.Forms.MenuItem();
+			this.orderedDitheringFiltersItem = new System.Windows.Forms.MenuItem();
+			this.adaptiveBinarizationFiltersItem = new System.Windows.Forms.MenuItem();
+			this.menuItem6 = new System.Windows.Forms.MenuItem();
+			this.correlationFiltersItem = new System.Windows.Forms.MenuItem();
+			this.sharpenFiltersItem = new System.Windows.Forms.MenuItem();
+			this.menuItem7 = new System.Windows.Forms.MenuItem();
+			this.differenceEdgesFiltersItem = new System.Windows.Forms.MenuItem();
+			this.homogenityEdgesFiltersItem = new System.Windows.Forms.MenuItem();
+			this.sobelEdgesFiltersItem = new System.Windows.Forms.MenuItem();
 			this.sizeItem = new System.Windows.Forms.MenuItem();
 			this.normalSizeItem = new System.Windows.Forms.MenuItem();
 			this.stretchedSizeItem = new System.Windows.Forms.MenuItem();
 			this.centeredSizeItem = new System.Windows.Forms.MenuItem();
 			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.pictureBox = new System.Windows.Forms.PictureBox();
-			this.floydFiltersItem = new System.Windows.Forms.MenuItem();
-			this.orderedDitheringFiltersItem = new System.Windows.Forms.MenuItem();
+			this.rgbLinearFiltersItem = new System.Windows.Forms.MenuItem();
+			this.menuItem8 = new System.Windows.Forms.MenuItem();
+			this.medianFiltersItem = new System.Windows.Forms.MenuItem();
 			this.SuspendLayout();
 			// 
 			// mainMenu
@@ -192,6 +214,7 @@ namespace FiltersDemo
 																						this.channelFiltersItem,
 																						this.colorFiltersItem,
 																						this.euclideanColorFiltersItem,
+																						this.rgbLinearFiltersItem,
 																						this.menuItem2,
 																						this.hueModifierFiltersItem,
 																						this.saturationAdjustingFiltersItem,
@@ -205,7 +228,17 @@ namespace FiltersDemo
 																						this.menuItem5,
 																						this.thresholdFiltersItem,
 																						this.floydFiltersItem,
-																						this.orderedDitheringFiltersItem});
+																						this.orderedDitheringFiltersItem,
+																						this.adaptiveBinarizationFiltersItem,
+																						this.menuItem6,
+																						this.correlationFiltersItem,
+																						this.sharpenFiltersItem,
+																						this.menuItem7,
+																						this.differenceEdgesFiltersItem,
+																						this.homogenityEdgesFiltersItem,
+																						this.sobelEdgesFiltersItem,
+																						this.menuItem8,
+																						this.medianFiltersItem});
 			this.filtersItem.Text = "Fi&lters";
 			// 
 			// noneFiltersItem
@@ -275,72 +308,130 @@ namespace FiltersDemo
 			// 
 			// menuItem2
 			// 
-			this.menuItem2.Index = 11;
+			this.menuItem2.Index = 12;
 			this.menuItem2.Text = "-";
 			// 
 			// hueModifierFiltersItem
 			// 
-			this.hueModifierFiltersItem.Index = 12;
+			this.hueModifierFiltersItem.Index = 13;
 			this.hueModifierFiltersItem.Text = "Hue modifier";
 			this.hueModifierFiltersItem.Click += new System.EventHandler(this.hueModifierFiltersItem_Click);
 			// 
 			// saturationAdjustingFiltersItem
 			// 
-			this.saturationAdjustingFiltersItem.Index = 13;
+			this.saturationAdjustingFiltersItem.Index = 14;
 			this.saturationAdjustingFiltersItem.Text = "Saturation adjusting";
 			this.saturationAdjustingFiltersItem.Click += new System.EventHandler(this.saturationAdjustingFiltersItem_Click);
 			// 
 			// brightnessAdjustingFiltersItem
 			// 
-			this.brightnessAdjustingFiltersItem.Index = 14;
+			this.brightnessAdjustingFiltersItem.Index = 15;
 			this.brightnessAdjustingFiltersItem.Text = "Brightness adjusting";
 			this.brightnessAdjustingFiltersItem.Click += new System.EventHandler(this.brightnessAdjustingFiltersItem_Click);
 			// 
 			// contrastAdjustingFiltersItem
 			// 
-			this.contrastAdjustingFiltersItem.Index = 15;
+			this.contrastAdjustingFiltersItem.Index = 16;
 			this.contrastAdjustingFiltersItem.Text = "Contrast adjusting";
 			this.contrastAdjustingFiltersItem.Click += new System.EventHandler(this.contrastAdjustingFiltersItem_Click);
 			// 
 			// hslFiltersItem
 			// 
-			this.hslFiltersItem.Index = 16;
+			this.hslFiltersItem.Index = 17;
 			this.hslFiltersItem.Text = "HSL filtering";
 			this.hslFiltersItem.Click += new System.EventHandler(this.hslFiltersItem_Click);
 			// 
 			// menuItem4
 			// 
-			this.menuItem4.Index = 17;
+			this.menuItem4.Index = 18;
 			this.menuItem4.Text = "-";
 			// 
 			// yCbCrLinearFiltersItem
 			// 
-			this.yCbCrLinearFiltersItem.Index = 18;
+			this.yCbCrLinearFiltersItem.Index = 19;
 			this.yCbCrLinearFiltersItem.Text = "YCbCr linear correction";
 			this.yCbCrLinearFiltersItem.Click += new System.EventHandler(this.yCbCrLinearFiltersItem_Click);
 			// 
 			// yCbCrFiltersItem
 			// 
-			this.yCbCrFiltersItem.Index = 19;
+			this.yCbCrFiltersItem.Index = 20;
 			this.yCbCrFiltersItem.Text = "YCbCr filtering";
 			this.yCbCrFiltersItem.Click += new System.EventHandler(this.yCbCrFiltersItem_Click);
 			// 
 			// extractCbFiltersItem
 			// 
-			this.extractCbFiltersItem.Index = 20;
+			this.extractCbFiltersItem.Index = 21;
 			this.extractCbFiltersItem.Text = "Extract Cb channel of YCbCr color space";
 			this.extractCbFiltersItem.Click += new System.EventHandler(this.extractCbFiltersItem_Click);
 			// 
 			// menuItem5
 			// 
-			this.menuItem5.Index = 21;
+			this.menuItem5.Index = 22;
 			this.menuItem5.Text = "-";
 			// 
 			// thresholdFiltersItem
 			// 
-			this.thresholdFiltersItem.Index = 22;
+			this.thresholdFiltersItem.Index = 23;
 			this.thresholdFiltersItem.Text = "Threshold &binarization";
 			this.thresholdFiltersItem.Click += new System.EventHandler(this.thresholdFiltersItem_Click);
+			// 
+			// floydFiltersItem
+			// 
+			this.floydFiltersItem.Index = 24;
+			this.floydFiltersItem.Text = "Floyd-Steinberg dithering";
+			this.floydFiltersItem.Click += new System.EventHandler(this.floydFiltersItem_Click);
+			// 
+			// orderedDitheringFiltersItem
+			// 
+			this.orderedDitheringFiltersItem.Index = 25;
+			this.orderedDitheringFiltersItem.Text = "Ordered dithering";
+			this.orderedDitheringFiltersItem.Click += new System.EventHandler(this.orderedDitheringFiltersItem_Click);
+			// 
+			// adaptiveBinarizationFiltersItem
+			// 
+			this.adaptiveBinarizationFiltersItem.Index = 26;
+			this.adaptiveBinarizationFiltersItem.Text = "Adaptive binarization";
+			this.adaptiveBinarizationFiltersItem.Click += new System.EventHandler(this.adaptiveBinarizationFiltersItem_Click);
+			// 
+			// menuItem6
+			// 
+			this.menuItem6.Index = 27;
+			this.menuItem6.Text = "-";
+			// 
+			// correlationFiltersItem
+			// 
+			this.correlationFiltersItem.Index = 28;
+			this.correlationFiltersItem.Text = "Correlation";
+			this.correlationFiltersItem.Click += new System.EventHandler(this.correlationFiltersItem_Click);
+			// 
+			// sharpenFiltersItem
+			// 
+			this.sharpenFiltersItem.Index = 29;
+			this.sharpenFiltersItem.Text = "Sharpen";
+			this.sharpenFiltersItem.Click += new System.EventHandler(this.sharpenFiltersItem_Click);
+			// 
+			// menuItem7
+			// 
+			this.menuItem7.Index = 30;
+			this.menuItem7.Text = "-";
+			// 
+			// differenceEdgesFiltersItem
+			// 
+			this.differenceEdgesFiltersItem.Index = 31;
+			this.differenceEdgesFiltersItem.Text = "Difference edge detector";
+			this.differenceEdgesFiltersItem.Click += new System.EventHandler(this.differenceEdgesFiltersItem_Click);
+			// 
+			// homogenityEdgesFiltersItem
+			// 
+			this.homogenityEdgesFiltersItem.Index = 32;
+			this.homogenityEdgesFiltersItem.Text = "Homogenity edge detector";
+			this.homogenityEdgesFiltersItem.Click += new System.EventHandler(this.homogenityEdgesFiltersItem_Click);
+			// 
+			// sobelEdgesFiltersItem
+			// 
+			this.sobelEdgesFiltersItem.Index = 33;
+			this.sobelEdgesFiltersItem.Text = "Sobel edge detector";
+			this.sobelEdgesFiltersItem.Click += new System.EventHandler(this.sobelEdgesFiltersItem_Click);
 			// 
 			// sizeItem
 			// 
@@ -389,17 +480,22 @@ namespace FiltersDemo
 			this.pictureBox.TabIndex = 0;
 			this.pictureBox.TabStop = false;
 			// 
-			// floydFiltersItem
+			// rgbLinearFiltersItem
 			// 
-			this.floydFiltersItem.Index = 23;
-			this.floydFiltersItem.Text = "Floyd-Steinberg dithering";
-			this.floydFiltersItem.Click += new System.EventHandler(this.floydFiltersItem_Click);
+			this.rgbLinearFiltersItem.Index = 11;
+			this.rgbLinearFiltersItem.Text = "Levels linear correction";
+			this.rgbLinearFiltersItem.Click += new System.EventHandler(this.rgbLinearFiltersItem_Click);
 			// 
-			// orderedDitheringFiltersItem
+			// menuItem8
 			// 
-			this.orderedDitheringFiltersItem.Index = 24;
-			this.orderedDitheringFiltersItem.Text = "Ordered dithering";
-			this.orderedDitheringFiltersItem.Click += new System.EventHandler(this.orderedDitheringFiltersItem_Click);
+			this.menuItem8.Index = 34;
+			this.menuItem8.Text = "-";
+			// 
+			// medianFiltersItem
+			// 
+			this.medianFiltersItem.Index = 35;
+			this.medianFiltersItem.Text = "Median";
+			this.medianFiltersItem.Click += new System.EventHandler(this.medianFiltersItem_Click);
 			// 
 			// MainForm
 			// 
@@ -671,6 +767,73 @@ namespace FiltersDemo
 		{
 			ApplyFilter( new OrderedDithering( ) );
 			orderedDitheringFiltersItem.Checked = true;
+		}
+
+		// On Filters->Adaptive binarization
+		private void adaptiveBinarizationFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			ApplyFilter( new SISThreshold( ) );
+			adaptiveBinarizationFiltersItem.Checked = true;
+		}
+
+		// On Filters->Correlation
+		private void correlationFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			ApplyFilter( new Correlation( new int[,] {
+								{ 1, 2, 3, 2, 1 },
+								{ 2, 4, 5, 4, 2 },
+								{ 3, 5, 6, 5, 3 },
+								{ 2, 4, 5, 4, 2 },
+								{ 1, 2, 3, 2, 1 } } ) );
+			correlationFiltersItem.Checked = true;
+		}
+
+		// On Filters->Sharpen
+		private void sharpenFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			ApplyFilter( new Sharpen( ) );
+			sharpenFiltersItem.Checked = true;
+		}
+
+		// On Filters->Difference edge detector
+		private void differenceEdgesFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			ApplyFilter( new DifferenceEdgeDetector( ) );
+			differenceEdgesFiltersItem.Checked = true;
+		}
+
+		// On Filters->Homogenity edge detector
+		private void homogenityEdgesFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			ApplyFilter( new HomogenityEdgeDetector( ) );
+			homogenityEdgesFiltersItem.Checked = true;
+		}
+
+		// On Filters->Sobel edge detector
+		private void sobelEdgesFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			ApplyFilter( new SobelEdgeDetector( ) );
+			sobelEdgesFiltersItem.Checked = true;
+		}
+
+		// On Filters->Levels Linear Correction
+		private void rgbLinearFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			LevelsLinear filter = new LevelsLinear( );
+
+			filter.InRed = new IntRange( 30, 230 );
+			filter.InGreen = new IntRange( 50, 240 );
+			filter.InBlue = new IntRange( 10, 210 );
+
+			ApplyFilter( filter );
+			rgbLinearFiltersItem.Checked = true;
+		}
+
+		// On Filters->Median
+		private void medianFiltersItem_Click(object sender, System.EventArgs e)
+		{
+			ApplyFilter( new Median( ) );
+			medianFiltersItem.Checked = true;
 		}
 	}
 }
