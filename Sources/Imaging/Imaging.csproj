@@ -99,6 +99,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Blob.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "BlobCounter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ColorConverter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -193,6 +203,11 @@
                 />
                 <File
                     RelPath = "Filters\Base classes\FilterColorToGray.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Base classes\FilterGrayToColor.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -428,6 +443,11 @@
                 />
                 <File
                     RelPath = "Filters\Morphology\Opening.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Other\ConnectedComponentsLabeling.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

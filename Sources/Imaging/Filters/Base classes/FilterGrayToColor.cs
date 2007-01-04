@@ -11,17 +11,17 @@ namespace AForge.Imaging.Filters
 	using System.Drawing.Imaging;
 
 	/// <summary>
-	/// Base class for filters, which transform color image to grayscale
+	/// Base class for filters, which transform grayscale image to color
 	/// </summary>
 	/// 
 	/// <remarks>The abstract class is the base class for all filters, which
-	/// transform color imgae to grayscale without changing image dimension.
+	/// transform grayscale to color imgae without changing image dimension.
 	/// Filters based on this class cannot be applied directly to the source
 	/// image. Instead of this they provide output image as a result of image
 	/// processing routine.
 	/// </remarks>
 	/// 
-	public abstract class FilterColorToGray : IFilter
+	public abstract class FilterGrayToColor : IFilter
 	{
 		/// <summary>
 		/// Apply filter to an image
@@ -40,7 +40,7 @@ namespace AForge.Imaging.Filters
 			// lock source bitmap data
 			BitmapData srcData = image.LockBits(
 				new Rectangle( 0, 0, image.Width, image.Height ),
-				ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb );
+				ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed );
 
 			// apply the filter
 			Bitmap dstImage = Apply( srcData );
@@ -66,7 +66,7 @@ namespace AForge.Imaging.Filters
 		/// 
 		public Bitmap Apply( BitmapData imageData )
 		{
-			if ( imageData.PixelFormat != PixelFormat.Format24bppRgb )
+			if ( imageData.PixelFormat != PixelFormat.Format8bppIndexed )
 				throw new ArgumentException( );
 
 			// get width and height
@@ -74,12 +74,12 @@ namespace AForge.Imaging.Filters
 			int height = imageData.Height;
 
 			// create new grayscale image
-			Bitmap dstImage = AForge.Imaging.Image.CreateGrayscaleImage( width, height );
+			Bitmap dstImage = new Bitmap( width, height, PixelFormat.Format24bppRgb );
 
 			// lock destination bitmap data
 			BitmapData dstData = dstImage.LockBits(
 				new Rectangle( 0, 0, width, height ),
-				ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed );
+				ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb );
 
 			// process the filter
 			ProcessFilter( imageData, dstData );

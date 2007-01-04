@@ -11,10 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neuro", "Neuro\Neuro.csproj
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controls", "Controls\Controls.csproj", "{D08F6D8A-A5F5-49C3-B607-526D9EE0DEE3}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Imaging", "Imaging\Imaging.csproj", "{AF802E16-573E-4748-AE76-E2A4FDC74179}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
@@ -37,10 +33,6 @@ Global
 		{53B51230-2CD7-435B-8677-A3E24D134CD8}.Debug.Build.0 = Debug|.NET
 		{53B51230-2CD7-435B-8677-A3E24D134CD8}.Release.ActiveCfg = Release|.NET
 		{53B51230-2CD7-435B-8677-A3E24D134CD8}.Release.Build.0 = Release|.NET
-		{D08F6D8A-A5F5-49C3-B607-526D9EE0DEE3}.Debug.ActiveCfg = Debug|.NET
-		{D08F6D8A-A5F5-49C3-B607-526D9EE0DEE3}.Debug.Build.0 = Debug|.NET
-		{D08F6D8A-A5F5-49C3-B607-526D9EE0DEE3}.Release.ActiveCfg = Release|.NET
-		{D08F6D8A-A5F5-49C3-B607-526D9EE0DEE3}.Release.Build.0 = Release|.NET
 		{AF802E16-573E-4748-AE76-E2A4FDC74179}.Debug.ActiveCfg = Debug|.NET
 		{AF802E16-573E-4748-AE76-E2A4FDC74179}.Debug.Build.0 = Debug|.NET
 		{AF802E16-573E-4748-AE76-E2A4FDC74179}.Release.ActiveCfg = Release|.NET
