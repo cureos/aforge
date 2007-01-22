@@ -65,7 +65,7 @@ namespace AForge
 		/// 
 		public bool IsInside( double x )
 		{
-			return ( ( x >= min ) && ( x <= min ) );
+			return ( ( x >= min ) && ( x <= max ) );
 		}
 
 		/// <summary>

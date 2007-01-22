@@ -64,7 +64,7 @@ namespace AForge
 		/// 
 		public bool IsInside( int x )
 		{
-			return ( ( x >= min ) && ( x <= min ) );
+			return ( ( x >= min ) && ( x <= max ) );
 		}
 
 		/// <summary>
