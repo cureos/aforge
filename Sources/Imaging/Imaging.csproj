@@ -452,6 +452,26 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Filters\Other\ConservativeSmoothing.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Other\Jitter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Other\OilPainting.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Filters\Other\Pixellate.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Filters\YCbCr Filters\YCbCrExtractChannel.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

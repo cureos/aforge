@@ -1,6 +1,6 @@
 // AForge Image Processing Library
 //
-// Copyright © Andrew Kirillov, 2005
+// Copyright © Andrew Kirillov, 2005-2006
 // andrew.kirillov@gmail.com
 //
 

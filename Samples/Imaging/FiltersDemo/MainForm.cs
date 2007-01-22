@@ -75,6 +75,9 @@ namespace FiltersDemo
 		private System.Windows.Forms.MenuItem rgbLinearFiltersItem;
 		private System.Windows.Forms.MenuItem menuItem8;
 		private System.Windows.Forms.MenuItem medianFiltersItem;
+		private System.Windows.Forms.MenuItem conservativeSmoothingFiltersItem;
+		private System.Windows.Forms.MenuItem jitterFiltersItem;
+		private System.Windows.Forms.MenuItem oilFiltersItem;
 
 		/// <summary>
 		/// Required designer variable.
@@ -132,6 +135,7 @@ namespace FiltersDemo
 			this.channelFiltersItem = new System.Windows.Forms.MenuItem();
 			this.colorFiltersItem = new System.Windows.Forms.MenuItem();
 			this.euclideanColorFiltersItem = new System.Windows.Forms.MenuItem();
+			this.rgbLinearFiltersItem = new System.Windows.Forms.MenuItem();
 			this.menuItem2 = new System.Windows.Forms.MenuItem();
 			this.hueModifierFiltersItem = new System.Windows.Forms.MenuItem();
 			this.saturationAdjustingFiltersItem = new System.Windows.Forms.MenuItem();
@@ -154,15 +158,17 @@ namespace FiltersDemo
 			this.differenceEdgesFiltersItem = new System.Windows.Forms.MenuItem();
 			this.homogenityEdgesFiltersItem = new System.Windows.Forms.MenuItem();
 			this.sobelEdgesFiltersItem = new System.Windows.Forms.MenuItem();
+			this.menuItem8 = new System.Windows.Forms.MenuItem();
+			this.medianFiltersItem = new System.Windows.Forms.MenuItem();
 			this.sizeItem = new System.Windows.Forms.MenuItem();
 			this.normalSizeItem = new System.Windows.Forms.MenuItem();
 			this.stretchedSizeItem = new System.Windows.Forms.MenuItem();
 			this.centeredSizeItem = new System.Windows.Forms.MenuItem();
 			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.pictureBox = new System.Windows.Forms.PictureBox();
-			this.rgbLinearFiltersItem = new System.Windows.Forms.MenuItem();
-			this.menuItem8 = new System.Windows.Forms.MenuItem();
-			this.medianFiltersItem = new System.Windows.Forms.MenuItem();
+			this.conservativeSmoothingFiltersItem = new System.Windows.Forms.MenuItem();
+			this.jitterFiltersItem = new System.Windows.Forms.MenuItem();
+			this.oilFiltersItem = new System.Windows.Forms.MenuItem();
 			this.SuspendLayout();
 			// 
 			// mainMenu
@@ -238,7 +244,10 @@ namespace FiltersDemo
 																						this.homogenityEdgesFiltersItem,
 																						this.sobelEdgesFiltersItem,
 																						this.menuItem8,
-																						this.medianFiltersItem});
+																						this.medianFiltersItem,
+																						this.conservativeSmoothingFiltersItem,
+																						this.jitterFiltersItem,
+																						this.oilFiltersItem});
 			this.filtersItem.Text = "Fi&lters";
 			// 
 			// noneFiltersItem
@@ -305,6 +314,12 @@ namespace FiltersDemo
 			this.euclideanColorFiltersItem.Index = 10;
 			this.euclideanColorFiltersItem.Text = "Euclidean color filtering";
 			this.euclideanColorFiltersItem.Click += new System.EventHandler(this.euclideanColorFiltersItem_Click);
+			// 
+			// rgbLinearFiltersItem
+			// 
+			this.rgbLinearFiltersItem.Index = 11;
+			this.rgbLinearFiltersItem.Text = "Levels linear correction";
+			this.rgbLinearFiltersItem.Click += new System.EventHandler(this.rgbLinearFiltersItem_Click);
 			// 
 			// menuItem2
 			// 
@@ -433,6 +448,17 @@ namespace FiltersDemo
 			this.sobelEdgesFiltersItem.Text = "Sobel edge detector";
 			this.sobelEdgesFiltersItem.Click += new System.EventHandler(this.sobelEdgesFiltersItem_Click);
 			// 
+			// menuItem8
+			// 
+			this.menuItem8.Index = 34;
+			this.menuItem8.Text = "-";
+			// 
+			// medianFiltersItem
+			// 
+			this.medianFiltersItem.Index = 35;
+			this.medianFiltersItem.Text = "Median";
+			this.medianFiltersItem.Click += new System.EventHandler(this.medianFiltersItem_Click);
+			// 
 			// sizeItem
 			// 
 			this.sizeItem.Index = 2;
@@ -480,22 +506,23 @@ namespace FiltersDemo
 			this.pictureBox.TabIndex = 0;
 			this.pictureBox.TabStop = false;
 			// 
-			// rgbLinearFiltersItem
+			// conservativeSmoothingFiltersItem
 			// 
-			this.rgbLinearFiltersItem.Index = 11;
-			this.rgbLinearFiltersItem.Text = "Levels linear correction";
-			this.rgbLinearFiltersItem.Click += new System.EventHandler(this.rgbLinearFiltersItem_Click);
+			this.conservativeSmoothingFiltersItem.Index = 36;
+			this.conservativeSmoothingFiltersItem.Text = "Conservative Smoothing";
+			this.conservativeSmoothingFiltersItem.Click += new System.EventHandler(this.conservativeSmoothingFiltersItem_Click);
 			// 
-			// menuItem8
+			// jitterFiltersItem
 			// 
-			this.menuItem8.Index = 34;
-			this.menuItem8.Text = "-";
+			this.jitterFiltersItem.Index = 37;
+			this.jitterFiltersItem.Text = "Jitter";
+			this.jitterFiltersItem.Click += new System.EventHandler(this.jitterFiltersItem_Click);
 			// 
-			// medianFiltersItem
+			// oilFiltersItem
 			// 
-			this.medianFiltersItem.Index = 35;
-			this.medianFiltersItem.Text = "Median";
-			this.medianFiltersItem.Click += new System.EventHandler(this.medianFiltersItem_Click);
+			this.oilFiltersItem.Index = 38;
+			this.oilFiltersItem.Text = "Oil Painting";
+			this.oilFiltersItem.Click += new System.EventHandler(this.oilFiltersItem_Click);
 			// 
 			// MainForm
 			// 
@@ -830,10 +857,31 @@ namespace FiltersDemo
 		}
 
 		// On Filters->Median
-		private void medianFiltersItem_Click(object sender, System.EventArgs e)
+		private void medianFiltersItem_Click( object sender, System.EventArgs e )
 		{
 			ApplyFilter( new Median( ) );
 			medianFiltersItem.Checked = true;
+		}
+
+		// On Filters->Conservative Smoothing
+		private void conservativeSmoothingFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			ApplyFilter( new ConservativeSmoothing( ) );
+			conservativeSmoothingFiltersItem.Checked = true;
+		}
+
+		// On Filters->Jitter
+		private void jitterFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			ApplyFilter( new Jitter( ) );
+			jitterFiltersItem.Checked = true;		
+		}
+
+		// On Filters->Oil Painting
+		private void oilFiltersItem_Click( object sender, System.EventArgs e )
+		{
+			ApplyFilter( new OilPainting( ) );
+			oilFiltersItem.Checked = true;
 		}
 	}
 }
