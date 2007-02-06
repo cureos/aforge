@@ -5,14 +5,22 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Genetic", "Genetic\Genetic.csproj", "{DD4F9C19-9F1C-44A8-81F3-6CA157DCA1C2}"
 	ProjectSection(ProjectDependencies) = postProject
+		{BFAF50DC-4942-46B8-8615-2A0B4CF08AD2} = {BFAF50DC-4942-46B8-8615-2A0B4CF08AD2}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neuro", "Neuro\Neuro.csproj", "{53B51230-2CD7-435B-8677-A3E24D134CD8}"
 	ProjectSection(ProjectDependencies) = postProject
+		{BFAF50DC-4942-46B8-8615-2A0B4CF08AD2} = {BFAF50DC-4942-46B8-8615-2A0B4CF08AD2}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Imaging", "Imaging\Imaging.csproj", "{AF802E16-573E-4748-AE76-E2A4FDC74179}"
 	ProjectSection(ProjectDependencies) = postProject
+		{BFAF50DC-4942-46B8-8615-2A0B4CF08AD2} = {BFAF50DC-4942-46B8-8615-2A0B4CF08AD2}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Math", "Math\Math.csproj", "{435E98DC-6780-4EA7-8D04-5B9337A10787}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BFAF50DC-4942-46B8-8615-2A0B4CF08AD2} = {BFAF50DC-4942-46B8-8615-2A0B4CF08AD2}
 	EndProjectSection
 EndProject
 Global
@@ -37,6 +45,10 @@ Global
 		{AF802E16-573E-4748-AE76-E2A4FDC74179}.Debug.Build.0 = Debug|.NET
 		{AF802E16-573E-4748-AE76-E2A4FDC74179}.Release.ActiveCfg = Release|.NET
 		{AF802E16-573E-4748-AE76-E2A4FDC74179}.Release.Build.0 = Release|.NET
+		{435E98DC-6780-4EA7-8D04-5B9337A10787}.Debug.ActiveCfg = Debug|.NET
+		{435E98DC-6780-4EA7-8D04-5B9337A10787}.Debug.Build.0 = Debug|.NET
+		{435E98DC-6780-4EA7-8D04-5B9337A10787}.Release.ActiveCfg = Release|.NET
+		{435E98DC-6780-4EA7-8D04-5B9337A10787}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

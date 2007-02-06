@@ -1,0 +1,49 @@
+<project SchemaVersion="1.3">
+    <assemblies>
+        <assembly location="..\Math\bin\Debug\AForge.Math.dll" documentation="..\Math\bin\Debug\AForge.Math.xml" />
+    </assemblies>
+    <namespaces>
+        <namespace name="AForge.Math">The <b>AForge.Math</b> namespace contains set of math utilities, which are used by other <b>AForge</b> namespaces or may be used separately.</namespace>
+    </namespaces>
+    <documenters>
+        <documenter name="JavaDoc">
+            <property name="OutputDirectory" value=".\doc\" />
+        </documenter>
+        <documenter name="LaTeX">
+            <property name="OutputDirectory" value=".\doc\" />
+            <property name="TextFileFullName" value="Documentation.tex" />
+            <property name="TexFileBaseName" value="Documentation" />
+            <property name="LatexCompiler" value="latex" />
+            <property name="TexFileFullPath" value=".\doc\Documentation.tex" />
+        </documenter>
+        <documenter name="LinearHtml">
+            <property name="OutputDirectory" value=".\doc\" />
+            <property name="Title" value="An NDoc Documented Class Library" />
+        </documenter>
+        <documenter name="MSDN">
+            <property name="OutputDirectory" value=".\Docs\" />
+            <property name="HtmlHelpName" value="AForge.Math" />
+            <property name="Title" value="AForge.Math Class Library" />
+            <property name="OutputTarget" value="HtmlHelp" />
+            <property name="ShowMissingSummaries" value="True" />
+            <property name="ShowMissingParams" value="True" />
+            <property name="ShowMissingReturns" value="True" />
+            <property name="ShowMissingValues" value="True" />
+            <property name="IncludeDefaultThreadSafety" value="False" />
+            <property name="StaticMembersDefaultToSafe" value="False" />
+            <property name="CleanIntermediates" value="True" />
+        </documenter>
+        <documenter name="MSDN 2003">
+            <property name="OutputDirectory" value=".\doc\" />
+            <property name="Title" value="An NDoc Documented Class Library" />
+        </documenter>
+        <documenter name="VS.NET 2003">
+            <property name="OutputDirectory" value=".\doc\" />
+            <property name="HtmlHelpName" value="Documentation" />
+            <property name="Title" value="An NDoc documented library" />
+        </documenter>
+        <documenter name="XML">
+            <property name="OutputFile" value=".\doc\doc.xml" />
+        </documenter>
+    </documenters>
+</project>
