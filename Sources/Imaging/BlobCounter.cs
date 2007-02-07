@@ -321,8 +321,8 @@ namespace AForge.Imaging
 		/// <returns>Returns array of objects rectangles</returns>
 		/// 
 		/// <remarks>The method returns array of objects rectangles. Before calling the
-		/// method, the <see cref="ProcessImage"/> method should be calls, which will
-		/// build objects map.</remarks>
+        /// method, the <see cref="ProcessImage(Bitmap)"/> or <see cref="ProcessImage(BitmapData)"/>
+        /// method should be calls, which will build objects map.</remarks>
 		/// 
 		public Rectangle[] GetObjectRectangles( Bitmap image )
 		{
@@ -349,9 +349,9 @@ namespace AForge.Imaging
 		/// <returns>Returns array of objects rectangles</returns>
 		/// 
 		/// <remarks>The method returns array of objects rectangles. Before calling the
-		/// method, the <see cref="ProcessImage"/> method should be calls, which will
-		/// build objects map.</remarks>
-		/// 
+        /// method, the <see cref="ProcessImage(Bitmap)"/> or <see cref="ProcessImage(BitmapData)"/>
+        /// method should be calls, which will build objects map.</remarks>
+        /// 
 		public Rectangle[] GetObjectRectangles( BitmapData imageData )
 		{
 			// process the image
@@ -427,9 +427,9 @@ namespace AForge.Imaging
 		/// <returns>Returns array of blobs</returns>
 		/// 
 		/// <remarks>The method returns array of blobs. Before calling the
-		/// method, the <see cref="ProcessImage"/> method should be calls, which will
-		/// build objects map.</remarks>
-		/// 
+        /// method, the <see cref="ProcessImage(Bitmap)"/> or <see cref="ProcessImage(BitmapData)"/>
+        /// method should be calls, which will build objects map.</remarks>
+        /// 
 		public Blob[] GetObjects( Bitmap image )
 		{
 			// lock source bitmap data
@@ -455,9 +455,9 @@ namespace AForge.Imaging
 		/// <returns>Returns array of blobs</returns>
 		/// 
 		/// <remarks>The method returns array of blobs. Before calling the
-		/// method, the <see cref="ProcessImage"/> method should be calls, which will
-		/// build objects map.</remarks>
-		/// 
+        /// method, the <see cref="ProcessImage(Bitmap)"/> or <see cref="ProcessImage(BitmapData)"/>
+        /// method should be calls, which will build objects map.</remarks>
+        /// 
 		public Blob[] GetObjects( BitmapData imageData )
 		{
 			// process the image

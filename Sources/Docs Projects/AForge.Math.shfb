@@ -1,0 +1,38 @@
+﻿<project schemaVersion="1.3.3.1">
+    <assemblies>
+        <assembly assemblyPath="D:\Andrew\AForge\trunk\Release\AForge.Math.dll" xmlCommentsPath="D:\Andrew\AForge\trunk\Release\AForge.Math.xml" commentsOnly="False" />
+    </assemblies>
+    <namespaceSummaries>
+        <namespaceSummaryItem name="" isDocumented="False" />
+        <namespaceSummaryItem name="AForge.Math" isDocumented="True">The &lt;b&gt;AForge.Math&lt;/b&gt; namespace contains set of math utilities, which are used by other &lt;b&gt;AForge&lt;/b&gt; namespaces or may be used separately.</namespaceSummaryItem>
+    </namespaceSummaries>
+    <contentPlacement>AboveNamespaces</contentPlacement>
+    <projectSummary />
+    <sandcastlePath />
+    <hhcPath />
+    <hxcompPath />
+    <outputPath>.\Help\</outputPath>
+    <helpFileFormat>HtmlHelp1x</helpFileFormat>
+    <cleanIntermediates>True</cleanIntermediates>
+    <purgeDuplicateTopics>True</purgeDuplicateTopics>
+    <cppCommentsFixup>False</cppCommentsFixup>
+    <frameworkVersion>2.0.50727</frameworkVersion>
+    <binaryTOC>True</binaryTOC>
+    <includeFavorites>False</includeFavorites>
+    <preliminary>False</preliminary>
+    <rootNSContainer>False</rootNSContainer>
+    <helpTitle>AForge.Math Class Library</helpTitle>
+    <htmlHelpName>AForge.Math</htmlHelpName>
+    <language>en-US</language>
+    <copyrightHref />
+    <copyrightText />
+    <feedbackEMailAddress />
+    <headerText />
+    <projectLinks>Local</projectLinks>
+    <sdkLinks>None</sdkLinks>
+    <presentationStyle>Prototype</presentationStyle>
+    <namingMethod>Guid</namingMethod>
+    <syntaxFilters>CSharp</syntaxFilters>
+    <missingTags>Summary, Parameter, Returns, AutoDocumentCtors</missingTags>
+    <visibleItems>InheritedMembers, Protected, SealedProtected</visibleItems>
+</project>

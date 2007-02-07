@@ -121,8 +121,8 @@ namespace AForge.Imaging
 		/// 
 		/// <returns>Returns clone of the source image with specified pixel format</returns>
 		///
-		/// <remarks>The original <see cref="System.Drawing.Bitmap.Clone">Bitmap.Clone()</see> does
-		/// not produce the desired result - it does not create a clone with specified pixel format.
+        /// <remarks>The original <see cref="System.Drawing.Bitmap.Clone(System.Drawing.Rectangle, System.Drawing.Imaging.PixelFormat)">Bitmap.Clone()</see>
+        /// does not produce the desired result - it does not create a clone with specified pixel format.
 		/// More of it, the original method does not create an actual clone - it does not create a copy
 		/// of the image. That is why this method was implemented to provide the functionality.</remarks> 
 		///
@@ -154,8 +154,8 @@ namespace AForge.Imaging
 		/// 
 		/// <returns>Return clone of the source image</returns>
 		/// 
-		/// <remarks>The original <see cref="System.Drawing.Bitmap.Clone">Bitmap.Clone()</see> does
-		/// not produce the desired result - it does not create an actual clone (it does not create a copy
+        /// <remarks>The original <see cref="System.Drawing.Bitmap.Clone(System.Drawing.Rectangle, System.Drawing.Imaging.PixelFormat)">Bitmap.Clone()</see>
+        /// does not produce the desired result - it does not create an actual clone (it does not create a copy
 		/// of the image). That is why this method was implemented to provide the functionality.</remarks> 
 		/// 
 		public static Bitmap Clone( Bitmap src )

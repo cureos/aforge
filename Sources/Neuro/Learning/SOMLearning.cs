@@ -81,7 +81,7 @@ namespace AForge.Neuro.Learning
 		{
 			// network's dimension was not specified, let's try to guess
 			int neuronsCount = network[0].NeuronsCount;
-			width = (int) Math.Sqrt( neuronsCount );
+			int width = (int) Math.Sqrt( neuronsCount );
 
 			if ( width * width != neuronsCount )
 			{
@@ -91,7 +91,7 @@ namespace AForge.Neuro.Learning
 			// ok, we got it
 			this.network	= network;
 			this.width		= width;
-			this.height		= height;
+			this.height		= width;
 		}
 
 

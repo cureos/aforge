@@ -103,7 +103,7 @@ namespace AForge.Imaging
 		/// </summary>
 		/// 
 		/// <param name="disposing"><b>True</b> if the method is called from
-		/// <see cref="Dispose"/> method, <b>false</b> if the method is called
+		/// <see cref="AForge.Imaging.Blob.Dispose()"/> method, <b>false</b> if the method is called
 		/// from destructor.</param>
 		/// 
 		protected virtual void Dispose( bool disposing )
