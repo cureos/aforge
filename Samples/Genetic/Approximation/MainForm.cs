@@ -68,7 +68,7 @@ namespace Approximation
 		private int geneticMethod = 0;
 
 		private Thread	workerThread = null;
-		private bool	needToStop = false;
+        private volatile bool needToStop = false;
 
 		// Constructor
 		public MainForm()
@@ -447,6 +447,23 @@ namespace Approximation
 			Application.Run( new MainForm( ) );
 		}
 
+        // Delegates to enable async calls for setting controls properties
+        private delegate void SetTextCallback( System.Windows.Forms.Control control, string text );
+
+        // Thread safe updating of control's text property
+        private void SetText( System.Windows.Forms.Control control, string text )
+        {
+            if ( control.InvokeRequired )
+            {
+                SetTextCallback d = new SetTextCallback( SetText );
+                Invoke( d, new object[] { control, text } );
+            }
+            else
+            {
+                control.Text = text;
+            }
+        }
+
 		// On main form closing
 		private void MainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
@@ -454,8 +471,9 @@ namespace Approximation
 			if ( ( workerThread != null ) && ( workerThread.IsAlive ) )
 			{
 				needToStop = true;
-				workerThread.Join( );
-			}
+                while ( !workerThread.Join( 100 ) )
+                    Application.DoEvents( );
+            }
 		}
 
 		// Update settings controls
@@ -543,19 +561,30 @@ namespace Approximation
 			}
 		}
 
-		// Enable/disale controls
-		private void EnableControls( bool enable )
-		{
-			loadDataButton.Enabled		= enable;
-			populationSizeBox.Enabled	= enable;
-			iterationsBox.Enabled		= enable;
-			selectionBox.Enabled		= enable;
-			functionsSetBox.Enabled		= enable;
-			geneticMethodBox.Enabled	= enable;
+        // Delegates to enable async calls for setting controls properties
+        private delegate void EnableCallback( bool enable );
 
-			startButton.Enabled	= enable;
-			stopButton.Enabled	= !enable;
-		}
+        // Enable/disale controls (safe for threading)
+        private void EnableControls( bool enable )
+		{
+            if ( InvokeRequired )
+            {
+                EnableCallback d = new EnableCallback( EnableControls );
+                Invoke( d, new object[] { enable } );
+            }
+            else
+            {
+                loadDataButton.Enabled      = enable;
+                populationSizeBox.Enabled   = enable;
+                iterationsBox.Enabled       = enable;
+                selectionBox.Enabled        = enable;
+                functionsSetBox.Enabled     = enable;
+                geneticMethodBox.Enabled    = enable;
+
+                startButton.Enabled         = enable;
+                stopButton.Enabled          = !enable;
+            }
+ 		}
 		
 		// On button "Start"
 		private void startButton_Click(object sender, System.EventArgs e)
@@ -593,15 +622,17 @@ namespace Approximation
 			// run worker thread
 			needToStop = false;
 			workerThread = new Thread( new ThreadStart( SearchSolution ) );
+            
 			workerThread.Start( );
 		}
 
 		// On button "Stop"
-		private void stopButton_Click(object sender, System.EventArgs e)
+		private void stopButton_Click( object sender, System.EventArgs e )
 		{
 			// stop worker thread
 			needToStop = true;
-			workerThread.Join( );
+            while ( !workerThread.Join( 100 ) )
+                Application.DoEvents( );
 			workerThread = null;
 		}
 
@@ -663,8 +694,8 @@ namespace Approximation
 					}
 
 					// set current iteration's info
-					currentIterationBox.Text = i.ToString( );
-					currentErrorBox.Text = error.ToString( "F3" );
+                    SetText( currentIterationBox, i.ToString( ) );
+                    SetText( currentErrorBox, error.ToString( "F3" ) );
 				}
 				catch
 				{
@@ -681,7 +712,7 @@ namespace Approximation
 			}
 
 			// show solution
-			solutionBox.Text = population.BestChromosome.ToString( );
+            SetText( solutionBox, population.BestChromosome.ToString( ) );
 
 			// enable settings controls
 			EnableControls( true );
