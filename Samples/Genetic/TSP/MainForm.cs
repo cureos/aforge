@@ -356,14 +356,32 @@ namespace TSP
 			Application.Run( new MainForm( ) );
 		}
 
-		// On main form closing
+        // Delegates to enable async calls for setting controls properties
+        private delegate void SetTextCallback( System.Windows.Forms.Control control, string text );
+
+        // Thread safe updating of control's text property
+        private void SetText( System.Windows.Forms.Control control, string text )
+        {
+            if ( control.InvokeRequired )
+            {
+                SetTextCallback d = new SetTextCallback( SetText );
+                Invoke( d, new object[] { control, text } );
+            }
+            else
+            {
+                control.Text = text;
+            }
+        }
+
+        // On main form closing
 		private void MainForm_Closing( object sender, System.ComponentModel.CancelEventArgs e )
 		{
 			// check if worker thread is running
 			if ( ( workerThread != null ) && ( workerThread.IsAlive ) )
 			{
 				needToStop = true;
-				workerThread.Join( );
+                while ( !workerThread.Join( 100 ) )
+                    Application.DoEvents( );
 			}
 		}
 
@@ -375,18 +393,29 @@ namespace TSP
 			iterationsBox.Text		= iterations.ToString( );
 		}
 
-		// Enable/disale controls
-		private void EnableControls( bool enable )
+        // Delegates to enable async calls for setting controls properties
+        private delegate void EnableCallback( bool enable );
+
+        // Enable/disale controls (safe for threading)
+        private void EnableControls( bool enable )
 		{
-			citiesCountBox.Enabled		= enable;
-			populationSizeBox.Enabled	= enable;
-			iterationsBox.Enabled		= enable;
-			selectionBox.Enabled		= enable;
+            if ( InvokeRequired )
+            {
+                EnableCallback d = new EnableCallback( EnableControls );
+                Invoke( d, new object[] { enable } );
+            }
+            else
+            {
+                citiesCountBox.Enabled      = enable;
+                populationSizeBox.Enabled   = enable;
+                iterationsBox.Enabled       = enable;
+                selectionBox.Enabled        = enable;
 
-			generateMapButton.Enabled	= enable;
+                generateMapButton.Enabled   = enable;
 
-			startButton.Enabled	= enable;
-			stopButton.Enabled	= !enable;
+                startButton.Enabled = enable;
+                stopButton.Enabled  = !enable;
+            }
 		}
 
 		// Generate new map for the Traivaling Salesman problem
@@ -511,8 +540,8 @@ namespace TSP
 				mapControl.UpdateDataSeries( "path", path );
 
 				// set current iteration's info
-				currentIterationBox.Text = i.ToString( );
-				pathLengthBox.Text = fitnessFunction.PathLength( population.BestChromosome ).ToString( );
+                SetText( currentIterationBox, i.ToString( ) );
+                SetText( pathLengthBox, fitnessFunction.PathLength( population.BestChromosome ).ToString( ) );
 
 				// increase current iteration
 				i++;
