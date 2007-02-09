@@ -237,6 +237,7 @@
     <Compile Include="Filters\Convolution\Edges.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\Convolution\GaussianBlur.cs" />
     <Compile Include="Filters\Convolution\Mean.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -326,6 +327,12 @@
     </Compile>
     <None Include="Copyright.txt" />
     <None Include="Version.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Math\Math.csproj">
+      <Project>{435E98DC-6780-4EA7-8D04-5B9337A10787}</Project>
+      <Name>Math</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
