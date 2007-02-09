@@ -284,15 +284,33 @@ namespace Color
 			Application.Run( new MainForm( ) );
 		}
 
-		// On main form closing
+        // Delegates to enable async calls for setting controls properties
+        private delegate void SetTextCallback( System.Windows.Forms.Control control, string text );
+
+        // Thread safe updating of control's text property
+        private void SetText( System.Windows.Forms.Control control, string text )
+        {
+            if ( control.InvokeRequired )
+            {
+                SetTextCallback d = new SetTextCallback( SetText );
+                Invoke( d, new object[] { control, text } );
+            }
+            else
+            {
+                control.Text = text;
+            }
+        }
+
+        // On main form closing
 		private void MainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			// check if worker thread is running
 			if ( ( workerThread != null ) && ( workerThread.IsAlive ) )
 			{
 				needToStop = true;
-				workerThread.Join( );
-			}
+                while ( !workerThread.Join( 100 ) )
+                    Application.DoEvents( );
+            }
 		}
 
 		// Update settings controls
@@ -388,16 +406,27 @@ namespace Color
 			Monitor.Exit( this );
 		}
 
-		// Enable/disale controls
-		private void EnableControls( bool enable )
-		{
-			iterationsBox.Enabled	= enable;
-			rateBox.Enabled			= enable;
-			radiusBox.Enabled		= enable;
+        // Delegates to enable async calls for setting controls properties
+        private delegate void EnableCallback( bool enable );
 
-			startButton.Enabled		= enable;
-			randomizeButton.Enabled	= enable;
-			stopButton.Enabled		= !enable;
+        // Enable/disale controls (safe for threading)
+        private void EnableControls( bool enable )
+		{
+            if ( InvokeRequired )
+            {
+                EnableCallback d = new EnableCallback( EnableControls );
+                Invoke( d, new object[] { enable } );
+            }
+            else
+            {
+			    iterationsBox.Enabled	= enable;
+			    rateBox.Enabled			= enable;
+			    radiusBox.Enabled		= enable;
+
+			    startButton.Enabled		= enable;
+			    randomizeButton.Enabled	= enable;
+			    stopButton.Enabled		= !enable;
+            }
 		}
 
 		// On "Start" button click
@@ -447,8 +476,9 @@ namespace Color
 		{
 			// stop worker thread
 			needToStop = true;
-			workerThread.Join( );
-			workerThread = null;
+            while ( !workerThread.Join( 100 ) )
+                Application.DoEvents( );
+            workerThread = null;
 		}
 
 		// Worker thread
@@ -488,7 +518,7 @@ namespace Color
 				i++;
 
 				// set current iteration's info
-				currentIterationBox.Text = i.ToString( );
+                SetText( currentIterationBox, i.ToString( ) );
 
 				// stop ?
 				if ( i >= iterations )
