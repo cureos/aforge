@@ -3,7 +3,9 @@
 // Copyright © Andrew Kirillov, 2005-2007
 // andrew.kirillov@gmail.com
 //
-
+// Original idea found in Paint.NET project
+// http://www.eecs.wsu.edu/paint.net/
+//
 namespace AForge.Imaging.Filters
 {
 	using System;
@@ -11,12 +13,12 @@ namespace AForge.Imaging.Filters
 	using System.Drawing.Imaging;
 	
 	/// <summary>
-	/// Gaussian blur filter
+	/// Extended sharpen filter
 	/// </summary>
     /// 
-    /// <remarks></remarks>
+    /// <break></break>
     /// 
-	public sealed class GaussianBlur : IFilter
+	public class SharpenEx : IFilter
 	{
 		private Correlation	filter;
 		private double		sigma = 1.4;
@@ -30,7 +32,7 @@ namespace AForge.Imaging.Filters
         /// the kernel. Default value is 1.4. Minimum value is 0.5. Maximum
         /// value is 5.0.</remarks>
         /// 
-		public double Sigma
+        public double Sigma
 		{
 			get { return sigma; }
 			set
@@ -38,7 +40,7 @@ namespace AForge.Imaging.Filters
 				// get new sigma value
 				sigma = Math.Max( 0.5, Math.Min( 5.0, value ) );
 				// create filter
-				CreateFilter( );
+				CreateFilter();
 			}
 		}
 
@@ -60,38 +62,37 @@ namespace AForge.Imaging.Filters
 		}
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Correlation"/> class
+        /// Initializes a new instance of the <see cref="SharpenEx"/> class
         /// </summary>
         /// 
-		public GaussianBlur( )
+		public SharpenEx( )
 		{
-			CreateFilter();
+			CreateFilter( );
 		}
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Correlation"/> class
+        /// Initializes a new instance of the <see cref="SharpenEx"/> class
         /// </summary>
         /// 
         /// <param name="sigma">Gaussian sigma value</param>
         /// 
-		public GaussianBlur( double sigma )
+        public SharpenEx( double sigma )
 		{
 			Sigma = sigma;
 		}
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Correlation"/> class
+        /// Initializes a new instance of the <see cref="SharpenEx"/> class
         /// </summary>
         /// 
         /// <param name="sigma">Gaussian sigma value</param>
         /// <param name="size">Kernel size</param>
         /// 
-		public GaussianBlur( double sigma, int size )
+        public SharpenEx( double sigma, int size )
 		{
-			Sigma = sigma;
-			Size = size;
+			Sigma   = sigma;
+			Size    = size;
 		}
-
 
         /// <summary>
         /// Apply filter to an image
@@ -106,23 +107,23 @@ namespace AForge.Imaging.Filters
         /// the result of image processing filter as new image.</remarks> 
         ///
         public Bitmap Apply( Bitmap image )
-		{
+        {
             return filter.Apply( image );
-		}
+        }
 
-		/// <summary>
-		/// Apply filter to an image
-		/// </summary>
-		/// 
-		/// <param name="imageData">Source image to apply filter to</param>
-		/// 
-		/// <returns>Returns filter's result obtained by applying the filter to
-		/// the source image</returns>
-		/// 
-		/// <remarks>The filter accepts birmap data as input and returns the result
-		/// of image processing filter as new image. The source image data are kept
-		/// unchanged.</remarks>
-		/// 
+        /// <summary>
+        /// Apply filter to an image
+        /// </summary>
+        /// 
+        /// <param name="imageData">Source image to apply filter to</param>
+        /// 
+        /// <returns>Returns filter's result obtained by applying the filter to
+        /// the source image</returns>
+        /// 
+        /// <remarks>The filter accepts birmap data as input and returns the result
+        /// of image processing filter as new image. The source image data are kept
+        /// unchanged.</remarks>
+        /// 
         public Bitmap Apply( BitmapData imageData )
         {
             return filter.Apply( imageData );
@@ -132,12 +133,45 @@ namespace AForge.Imaging.Filters
 		#region Private Members
 
 		// Create Gaussian filter
-		private void CreateFilter( )
+		private void CreateFilter ()
 		{
 			// create Gaussian function
 			AForge.Math.Gaussian gaus = new AForge.Math.Gaussian( sigma );
-			// create kernel
+
+			// create Gaussian kernel
 			int[,] kernel = gaus.KernelDiscret2D( size );
+
+			// calculte sum of the kernel
+			int sum = 0;
+
+			for ( int i = 0; i < size; i++ )
+			{
+				for ( int j = 0; j < size; j++ )
+				{
+					sum += kernel[i, j];
+				}
+			}
+
+			// recalc kernel
+			int c = size >> 1;
+
+			for ( int i = 0; i < size; i++ )
+			{
+				for ( int j = 0; j < size; j++ )
+				{
+					if ( ( i == c ) && ( j == c ) )
+					{
+						// calculate central value
+						kernel[i, j] = 2 * sum - kernel[i, j];
+					}
+					else
+					{
+						// invert value
+						kernel[i, j] = -kernel[i, j];
+					}
+				}
+			}
+
 			// create filter
 			filter = new Correlation( kernel );
 		}

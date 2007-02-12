@@ -76,6 +76,7 @@
       <Name>AForge</Name>
       <HintPath>..\..\Release\AForge.dll</HintPath>
     </Reference>
+    <Reference Include="AForge.Math, Version=1.0.2596.31937, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -244,6 +245,8 @@
     <Compile Include="Filters\Convolution\Sharpen.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\Convolution\SharpenEx.cs" />
+    <Compile Include="Filters\Edge Detectors\CannyEdgeDetector.cs" />
     <Compile Include="Filters\Edge Detectors\DifferenceEdgeDetector.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -327,12 +330,6 @@
     </Compile>
     <None Include="Copyright.txt" />
     <None Include="Version.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Math\Math.csproj">
-      <Project>{435E98DC-6780-4EA7-8D04-5B9337A10787}</Project>
-      <Name>Math</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
