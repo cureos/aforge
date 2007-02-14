@@ -298,6 +298,7 @@
     <Compile Include="Filters\Morphology\Opening.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\Other\AdaptiveSmooth.cs" />
     <Compile Include="Filters\Other\ConnectedComponentsLabeling.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -313,6 +314,7 @@
     <Compile Include="Filters\Other\Pixellate.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\Other\SimpleSkeletonization.cs" />
     <Compile Include="Filters\YCbCr Filters\YCbCrExtractChannel.cs">
       <SubType>Code</SubType>
     </Compile>
