@@ -330,6 +330,12 @@
     <Compile Include="Image.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Textures\CloudsTexture.cs" />
+    <Compile Include="Textures\ITextureGenerator.cs" />
+    <Compile Include="Textures\LabyrinthTexture.cs" />
+    <Compile Include="Textures\MarbleTexture.cs" />
+    <Compile Include="Textures\TextileTexture.cs" />
+    <Compile Include="Textures\WoodTexture.cs" />
     <None Include="Copyright.txt" />
     <None Include="Version.txt" />
   </ItemGroup>

@@ -5,7 +5,8 @@
     <namespaceSummaries>
         <namespaceSummaryItem name="" isDocumented="False" />
         <namespaceSummaryItem name="AForge.Imaging" isDocumented="True">The &lt;b&gt;AForge.Imaging&lt;/b&gt; namespace contains interfaces and classes for different image processing routines.</namespaceSummaryItem>
-        <namespaceSummaryItem name="AForge.Imaging.Filters" isDocumented="True">The &lt;b&gt;AForge.Imaging.Filters&lt;/b&gt; namespace contains collection of interfaces and classes, which provides different image processing filters. Classes of this namespace allow to do different transformation of a source image, doing it directly on the source image or providing new image as a result of image processing routine.</namespaceSummaryItem>
+        <namespaceSummaryItem name="AForge.Imaging.Filters" isDocumented="True">The &lt;b&gt;AForge.Imaging.Filters&lt;/b&gt; namespace contains collection of interfaces and classes, which provide different image processing filters. Classes of this namespace allow to do different transformation of a source image, doing it directly on the source image or providing new image as a result of image processing routine.</namespaceSummaryItem>
+        <namespaceSummaryItem name="AForge.Imaging.Textures" isDocumented="True">The &lt;b&gt;AForge.Imaging.Textures&lt;/b&gt; namespace contains collection of classes, which generate different textures.</namespaceSummaryItem>
     </namespaceSummaries>
     <additionalContent>
         <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\sepia.jpg" destPath="" />
@@ -14,6 +15,7 @@
     <contentPlacement>AboveNamespaces</contentPlacement>
     <dependencies>
         <dependencyItem depPath="D:\Andrew\AForge\trunk\Release\AForge.dll" />
+        <dependencyItem depPath="D:\Andrew\AForge\trunk\Release\AForge.Math.dll" />
     </dependencies>
     <projectSummary />
     <sandcastlePath />
