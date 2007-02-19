@@ -325,6 +325,7 @@
     <Compile Include="Filters\Transform\ResizeBicubic.cs" />
     <Compile Include="Filters\Transform\ResizeBilinear.cs" />
     <Compile Include="Filters\Transform\ResizeNearestNeighbor.cs" />
+    <Compile Include="Filters\Transform\RotateNearestNeighbor.cs" />
     <Compile Include="Filters\YCbCr Filters\YCbCrExtractChannel.cs">
       <SubType>Code</SubType>
     </Compile>
