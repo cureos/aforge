@@ -16,6 +16,7 @@ using System.Data;
 using AForge;
 using AForge.Imaging;
 using AForge.Imaging.Filters;
+using AForge.Imaging.Textures;
 
 namespace FiltersDemo
 {
@@ -69,17 +70,18 @@ namespace FiltersDemo
 		private System.Windows.Forms.MenuItem differenceEdgesFiltersItem;
 		private System.Windows.Forms.MenuItem homogenityEdgesFiltersItem;
 		private System.Windows.Forms.MenuItem sobelEdgesFiltersItem;
-
-		private System.Drawing.Bitmap	sourceImage;
-		private System.Drawing.Bitmap	filteredImage;
-		private System.Windows.Forms.MenuItem rgbLinearFiltersItem;
-		private System.Windows.Forms.MenuItem menuItem8;
-		private System.Windows.Forms.MenuItem medianFiltersItem;
-		private System.Windows.Forms.MenuItem conservativeSmoothingFiltersItem;
-		private System.Windows.Forms.MenuItem jitterFiltersItem;
+        private System.Windows.Forms.MenuItem rgbLinearFiltersItem;
+        private System.Windows.Forms.MenuItem menuItem8;
+        private System.Windows.Forms.MenuItem medianFiltersItem;
+        private System.Windows.Forms.MenuItem conservativeSmoothingFiltersItem;
+        private System.Windows.Forms.MenuItem jitterFiltersItem;
         private System.Windows.Forms.MenuItem oilFiltersItem;
         private MenuItem gaussianFiltersItem;
+        private MenuItem textureFiltersItem;
         private IContainer components;
+
+        private System.Drawing.Bitmap sourceImage;
+		private System.Drawing.Bitmap	filteredImage;
 
 		// Constructor
 		public MainForm( )
@@ -152,6 +154,7 @@ namespace FiltersDemo
             this.menuItem6 = new System.Windows.Forms.MenuItem( );
             this.correlationFiltersItem = new System.Windows.Forms.MenuItem( );
             this.sharpenFiltersItem = new System.Windows.Forms.MenuItem( );
+            this.gaussianFiltersItem = new System.Windows.Forms.MenuItem( );
             this.menuItem7 = new System.Windows.Forms.MenuItem( );
             this.differenceEdgesFiltersItem = new System.Windows.Forms.MenuItem( );
             this.homogenityEdgesFiltersItem = new System.Windows.Forms.MenuItem( );
@@ -161,13 +164,13 @@ namespace FiltersDemo
             this.conservativeSmoothingFiltersItem = new System.Windows.Forms.MenuItem( );
             this.jitterFiltersItem = new System.Windows.Forms.MenuItem( );
             this.oilFiltersItem = new System.Windows.Forms.MenuItem( );
+            this.textureFiltersItem = new System.Windows.Forms.MenuItem( );
             this.sizeItem = new System.Windows.Forms.MenuItem( );
             this.normalSizeItem = new System.Windows.Forms.MenuItem( );
             this.stretchedSizeItem = new System.Windows.Forms.MenuItem( );
             this.centeredSizeItem = new System.Windows.Forms.MenuItem( );
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog( );
             this.pictureBox = new System.Windows.Forms.PictureBox( );
-            this.gaussianFiltersItem = new System.Windows.Forms.MenuItem( );
             ( (System.ComponentModel.ISupportInitialize) ( this.pictureBox ) ).BeginInit( );
             this.SuspendLayout( );
             // 
@@ -248,7 +251,8 @@ namespace FiltersDemo
             this.medianFiltersItem,
             this.conservativeSmoothingFiltersItem,
             this.jitterFiltersItem,
-            this.oilFiltersItem} );
+            this.oilFiltersItem,
+            this.textureFiltersItem} );
             this.filtersItem.Text = "Fi&lters";
             // 
             // noneFiltersItem
@@ -426,6 +430,12 @@ namespace FiltersDemo
             this.sharpenFiltersItem.Text = "Sharpen";
             this.sharpenFiltersItem.Click += new System.EventHandler( this.sharpenFiltersItem_Click );
             // 
+            // gaussianFiltersItem
+            // 
+            this.gaussianFiltersItem.Index = 30;
+            this.gaussianFiltersItem.Text = "Gaussian blur";
+            this.gaussianFiltersItem.Click += new System.EventHandler( this.gaussianFiltersItem_Click );
+            // 
             // menuItem7
             // 
             this.menuItem7.Index = 31;
@@ -478,6 +488,12 @@ namespace FiltersDemo
             this.oilFiltersItem.Text = "Oil Painting";
             this.oilFiltersItem.Click += new System.EventHandler( this.oilFiltersItem_Click );
             // 
+            // textureFiltersItem
+            // 
+            this.textureFiltersItem.Index = 40;
+            this.textureFiltersItem.Text = "Texture";
+            this.textureFiltersItem.Click += new System.EventHandler( this.textureFiltersItem_Click );
+            // 
             // sizeItem
             // 
             this.sizeItem.Index = 2;
@@ -524,12 +540,6 @@ namespace FiltersDemo
             this.pictureBox.Size = new System.Drawing.Size( 530, 315 );
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
-            // 
-            // gaussianFiltersItem
-            // 
-            this.gaussianFiltersItem.Index = 30;
-            this.gaussianFiltersItem.Text = "Gaussian blur";
-            this.gaussianFiltersItem.Click += new System.EventHandler( this.gaussianFiltersItem_Click );
             // 
             // MainForm
             // 
@@ -897,6 +907,13 @@ namespace FiltersDemo
         {
             ApplyFilter( new GaussianBlur( 2.0, 7 ) );
             gaussianFiltersItem.Checked = true;
+        }
+
+        // On Filters->Texture
+        private void textureFiltersItem_Click( object sender, EventArgs e )
+        {
+            ApplyFilter( new Texturer( new TextileTexture( ), 1.0, 0.8 ) );
+            textureFiltersItem.Checked = true;
         }
 	}
 }
