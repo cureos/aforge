@@ -21,7 +21,7 @@
     <sandcastlePath />
     <hhcPath />
     <hxcompPath />
-    <outputPath>.\Help\</outputPath>
+    <outputPath>..\..\Docs\</outputPath>
     <helpFileFormat>HtmlHelp1x</helpFileFormat>
     <cleanIntermediates>True</cleanIntermediates>
     <purgeDuplicateTopics>True</purgeDuplicateTopics>
