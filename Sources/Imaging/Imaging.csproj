@@ -130,6 +130,7 @@
     <Compile Include="Filters\Base classes\FilterAnyToAny.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\Base classes\FilterAnyToAnyNew.cs" />
     <Compile Include="Filters\Base classes\FilterAnyToAnyNewSameSize.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -256,6 +257,8 @@
     <Compile Include="Filters\Edge Detectors\SobelEdgeDetector.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\FilterIterator.cs" />
+    <Compile Include="Filters\FiltersSequence.cs" />
     <Compile Include="Filters\HSL Filters\BrightnessCorrection.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -280,6 +283,7 @@
     <Compile Include="Filters\IInPlaceFilter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\MaskedFilter.cs" />
     <Compile Include="Filters\Median.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -315,6 +319,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Filters\Other\SimpleSkeletonization.cs" />
+    <Compile Include="Filters\Other\TexturedFilter.cs" />
+    <Compile Include="Filters\Other\TexturedMerge.cs" />
+    <Compile Include="Filters\Other\Texturer.cs" />
+    <Compile Include="Filters\Transform\ResizeBicubic.cs" />
+    <Compile Include="Filters\Transform\ResizeBilinear.cs" />
+    <Compile Include="Filters\Transform\ResizeNearestNeighbor.cs" />
     <Compile Include="Filters\YCbCr Filters\YCbCrExtractChannel.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -330,6 +340,7 @@
     <Compile Include="Image.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Interpolation.cs" />
     <Compile Include="Textures\CloudsTexture.cs" />
     <Compile Include="Textures\ITextureGenerator.cs" />
     <Compile Include="Textures\LabyrinthTexture.cs" />
