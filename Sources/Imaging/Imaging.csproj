@@ -76,7 +76,7 @@
       <Name>AForge</Name>
       <HintPath>..\..\Release\AForge.dll</HintPath>
     </Reference>
-    <Reference Include="AForge.Math, Version=1.0.2596.31937, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="AForge.Math, Version=1.0.2607.14480, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -103,6 +103,7 @@
     <Compile Include="ColorConverter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ComplexImage.cs" />
     <Compile Include="Filters\2 Source filters\Add.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -149,6 +150,8 @@
     <Compile Include="Filters\Base classes\FilterGrayToGrayNewSameSize.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\Base classes\FilterResize.cs" />
+    <Compile Include="Filters\Base classes\FilterRotate.cs" />
     <Compile Include="Filters\Binarization\BayerDithering.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -247,6 +250,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Filters\Convolution\SharpenEx.cs" />
+    <Compile Include="Filters\Crop.cs" />
     <Compile Include="Filters\Edge Detectors\CannyEdgeDetector.cs" />
     <Compile Include="Filters\Edge Detectors\DifferenceEdgeDetector.cs">
       <SubType>Code</SubType>
@@ -318,6 +322,7 @@
     <Compile Include="Filters\Other\Pixellate.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\Other\Shrink.cs" />
     <Compile Include="Filters\Other\SimpleSkeletonization.cs" />
     <Compile Include="Filters\Other\TexturedFilter.cs" />
     <Compile Include="Filters\Other\TexturedMerge.cs" />
@@ -325,6 +330,8 @@
     <Compile Include="Filters\Transform\ResizeBicubic.cs" />
     <Compile Include="Filters\Transform\ResizeBilinear.cs" />
     <Compile Include="Filters\Transform\ResizeNearestNeighbor.cs" />
+    <Compile Include="Filters\Transform\RotateBicubic.cs" />
+    <Compile Include="Filters\Transform\RotateBilinear.cs" />
     <Compile Include="Filters\Transform\RotateNearestNeighbor.cs" />
     <Compile Include="Filters\YCbCr Filters\YCbCrExtractChannel.cs">
       <SubType>Code</SubType>

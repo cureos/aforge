@@ -23,7 +23,7 @@ namespace AForge.Math
 		/// <summary>
 		/// Fourier transformation direction
 		/// </summary>
-		public enum FourierDirection
+		public enum Direction
 		{
 			/// <summary>
 			/// Forward direction of Fourier transformation
@@ -43,7 +43,7 @@ namespace AForge.Math
 		/// <param name="data">Data to transform</param>
 		/// <param name="direction">Transformation direction</param>
 		/// 
-		public static void DFT( Complex[] data, FourierDirection direction )
+        public static void DFT( Complex[] data, Direction direction )
 		{
 			int			n = data.Length;
 			double		arg, cos, sin;
@@ -68,7 +68,7 @@ namespace AForge.Math
 			}
 
 			// copy elements
-			if ( direction == FourierDirection.Forward )
+            if ( direction == Direction.Forward )
 			{
 				// devide also for forward transform
 				for ( int i = 0; i < n; i++ )
@@ -94,7 +94,7 @@ namespace AForge.Math
 		/// <param name="data">Data to transform</param>
 		/// <param name="direction">Transformation direction</param>
 		/// 
-		public static void DFT2( Complex[,] data, FourierDirection direction )
+        public static void DFT2( Complex[,] data, Direction direction )
 		{
 			int			n = data.GetLength( 0 );	// rows
 			int			m = data.GetLength( 1 );	// columns
@@ -122,7 +122,7 @@ namespace AForge.Math
 				}
 
 				// copy elements
-				if ( direction == FourierDirection.Forward )
+                if ( direction == Direction.Forward )
 				{
 					// devide also for forward transform
 					for ( int j = 0; j < m; j++ )
@@ -162,7 +162,7 @@ namespace AForge.Math
 				}
 
 				// copy elements
-				if ( direction == FourierDirection.Forward )
+                if ( direction == Direction.Forward )
 				{
 					// devide also for forward transform
 					for ( int i = 0; i < n; i++ )
@@ -190,7 +190,7 @@ namespace AForge.Math
 		/// <param name="data">Data to transform</param>
 		/// <param name="direction">Transformation direction</param>
 		/// 
-		public static void FFT( Complex[] data, FourierDirection direction )
+        public static void FFT( Complex[] data, Direction direction )
 		{
 			int		n = data.Length;
 			int		m = Tools.Log2( n );
@@ -230,7 +230,7 @@ namespace AForge.Math
 				}
 			}
 
-			if ( direction == FourierDirection.Forward ) 
+            if ( direction == Direction.Forward ) 
 			{
 				for (int i = 0; i < n; i++) 
 				{
@@ -247,7 +247,7 @@ namespace AForge.Math
 		/// <param name="data">Data to transform</param>
 		/// <param name="direction">Transformation direction</param>
 		/// 
-		public static void FFT2( Complex[,] data, FourierDirection direction )
+        public static void FFT2( Complex[,] data, Direction direction )
 		{
 			int k = data.GetLength( 0 );
 			int n = data.GetLength( 1 );
@@ -334,9 +334,9 @@ namespace AForge.Math
 		}
 
 		// Get rotation of complex number
-		private static Complex[] GetComplexRotation( int numberOfBits, FourierDirection direction )
+        private static Complex[] GetComplexRotation( int numberOfBits, Direction direction )
 		{
-			int		directionIndex = ( direction == FourierDirection.Forward ) ? 0 : 1;
+            int directionIndex = ( direction == Direction.Forward ) ? 0 : 1;
 
 			// check if the array is already calculated
 			if ( complexRotation[numberOfBits - 1, directionIndex] == null )
