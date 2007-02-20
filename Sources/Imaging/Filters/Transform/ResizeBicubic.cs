@@ -16,32 +16,8 @@ namespace AForge.Imaging.Filters
     /// 
     /// <remarks></remarks>
     /// 
-    public class ResizeBicubic : FilterAnyToAnyNew
+    public class ResizeBicubic : FilterResize
     {
-        // dimension of the new image
-        private int newWidth;
-        private int newHeight;
-
-        /// <summary>
-        /// Width of new image
-        /// </summary>
-        /// 
-        public int NewWidth
-        {
-            get { return newWidth; }
-            set { newWidth = Math.Max( 1, value ); }
-        }
-
-        /// <summary>
-        /// Height of new image
-        /// </summary>
-        /// 
-        public int NewHeight
-        {
-            get { return newHeight; }
-            set { newHeight = Math.Max( 1, value ); }
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ResizeBicubic"/> class
         /// </summary>
@@ -49,24 +25,10 @@ namespace AForge.Imaging.Filters
         /// <param name="newWidth">Width of new image</param>
         /// <param name="newHeight">Height of new image</param>
         /// 
-		public ResizeBicubic( int newWidth, int newHeight )
-		{
-			this.newWidth   = newWidth;
-			this.newHeight  = newHeight;
-		}
-
-        /// <summary>
-        /// Calculates new image size
-        /// </summary>
-        /// 
-        /// <param name="sourceData">Source image data</param>
-        /// 
-        /// <returns>New image size</returns>
-        /// 
-        protected override System.Drawing.Size CalculateNewImageSize( BitmapData sourceData )
+		public ResizeBicubic( int newWidth, int newHeight ) :
+            base( newWidth, newHeight )
         {
-            return new Size( newWidth, newHeight );
-        }
+		}
 
         /// <summary>
         /// Process the filter on the specified image
@@ -103,7 +65,7 @@ namespace AForge.Imaging.Filters
             byte* p;
 
             // check pixel format
-            if ( sourceData.PixelFormat == PixelFormat.Format8bppIndexed )
+            if ( destinationData.PixelFormat == PixelFormat.Format8bppIndexed )
             {
                 // grayscale
                 for ( int y = 0; y < newHeight; y++ )

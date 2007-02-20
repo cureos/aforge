@@ -16,32 +16,8 @@ namespace AForge.Imaging.Filters
     /// 
     /// <remarks></remarks>
     /// 
-    public class ResizeNearestNeighbor : FilterAnyToAnyNew
+    public class ResizeNearestNeighbor : FilterResize
     {
-        // dimension of the new image
-        private int newWidth;
-        private int newHeight;
-
-        /// <summary>
-        /// Width of new image
-        /// </summary>
-        /// 
-        public int NewWidth
-        {
-            get { return newWidth; }
-            set { newWidth = Math.Max( 1, value ); }
-        }
-
-        /// <summary>
-        /// Height of new image
-        /// </summary>
-        /// 
-        public int NewHeight
-        {
-            get { return newHeight; }
-            set { newHeight = Math.Max( 1, value ); }
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ResizeNearestNeighbor"/> class
         /// </summary>
@@ -49,24 +25,10 @@ namespace AForge.Imaging.Filters
         /// <param name="newWidth">Width of new image</param>
         /// <param name="newHeight">Height of new image</param>
         /// 
-		public ResizeNearestNeighbor( int newWidth, int newHeight )
+		public ResizeNearestNeighbor( int newWidth, int newHeight ) :
+            base( newWidth, newHeight )
 		{
-			this.newWidth   = newWidth;
-			this.newHeight  = newHeight;
 		}
-
-        /// <summary>
-        /// Calculates new image size
-        /// </summary>
-        /// 
-        /// <param name="sourceData">Source image data</param>
-        /// 
-        /// <returns>New image size</returns>
-        /// 
-        protected override System.Drawing.Size CalculateNewImageSize( BitmapData sourceData )
-        {
-            return new Size( newWidth, newHeight );
-        }
 
         /// <summary>
         /// Process the filter on the specified image

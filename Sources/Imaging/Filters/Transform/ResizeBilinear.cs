@@ -16,32 +16,8 @@ namespace AForge.Imaging.Filters
     /// 
     /// <remarks></remarks>
     /// 
-    public class ResizeBilinear : FilterAnyToAnyNew
+    public class ResizeBilinear : FilterResize
     {
-        // dimension of the new image
-        private int newWidth;
-        private int newHeight;
-
-        /// <summary>
-        /// Width of new image
-        /// </summary>
-        /// 
-        public int NewWidth
-        {
-            get { return newWidth; }
-            set { newWidth = Math.Max( 1, value ); }
-        }
-
-        /// <summary>
-        /// Height of new image
-        /// </summary>
-        /// 
-        public int NewHeight
-        {
-            get { return newHeight; }
-            set { newHeight = Math.Max( 1, value ); }
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ResizeBilinear"/> class
         /// </summary>
@@ -49,24 +25,10 @@ namespace AForge.Imaging.Filters
         /// <param name="newWidth">Width of new image</param>
         /// <param name="newHeight">Height of new image</param>
         /// 
-		public ResizeBilinear( int newWidth, int newHeight )
+		public ResizeBilinear( int newWidth, int newHeight ) :
+            base( newWidth, newHeight )
 		{
-			this.newWidth   = newWidth;
-			this.newHeight  = newHeight;
 		}
-
-        /// <summary>
-        /// Calculates new image size
-        /// </summary>
-        /// 
-        /// <param name="sourceData">Source image data</param>
-        /// 
-        /// <returns>New image size</returns>
-        /// 
-        protected override System.Drawing.Size CalculateNewImageSize( BitmapData sourceData )
-        {
-            return new Size( newWidth, newHeight );
-        }
 
         /// <summary>
         /// Process the filter on the specified image
@@ -99,7 +61,6 @@ namespace AForge.Imaging.Filters
             int xmax = width - 1;
             // temporary pointers
             byte* tp1, tp2;
-            // point of 
             byte* p1, p2, p3, p4;
 
             // for each line
