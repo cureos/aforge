@@ -1,21 +1,19 @@
-Microsoft Visual Studio Solution File, Format Version 8.00
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual C# Express 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Approximation", "Approximation.csproj", "{1A7BCB9F-5DD2-4C16-9969-88C31720865F}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
 EndProject
 Global
-	GlobalSection(SolutionConfiguration) = preSolution
-		Debug = Debug
-		Release = Release
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(ProjectConfiguration) = postSolution
-		{1A7BCB9F-5DD2-4C16-9969-88C31720865F}.Debug.ActiveCfg = Debug|.NET
-		{1A7BCB9F-5DD2-4C16-9969-88C31720865F}.Debug.Build.0 = Debug|.NET
-		{1A7BCB9F-5DD2-4C16-9969-88C31720865F}.Release.ActiveCfg = Release|.NET
-		{1A7BCB9F-5DD2-4C16-9969-88C31720865F}.Release.Build.0 = Release|.NET
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1A7BCB9F-5DD2-4C16-9969-88C31720865F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A7BCB9F-5DD2-4C16-9969-88C31720865F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A7BCB9F-5DD2-4C16-9969-88C31720865F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A7BCB9F-5DD2-4C16-9969-88C31720865F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-	EndGlobalSection
-	GlobalSection(ExtensibilityAddIns) = postSolution
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
