@@ -534,6 +534,7 @@ namespace Classifier
 
         // Delegates to enable async calls for setting controls properties
         private delegate void SetTextCallback( System.Windows.Forms.Control control, string text );
+        private delegate void ClearListCallback( System.Windows.Forms.ListView control );
         private delegate ListViewItem AddListItemCallback( System.Windows.Forms.ListView control, string itemText );
         private delegate void AddListSubitemCallback( ListViewItem item, string subItemText );
 
@@ -548,6 +549,20 @@ namespace Classifier
             else
             {
                 control.Text = text;
+            }
+        }
+
+        // Thread safe clearing of list view
+        private void ClearList( System.Windows.Forms.ListView control )
+        {
+            if ( control.InvokeRequired )
+            {
+                ClearListCallback d = new ClearListCallback( ClearList );
+                Invoke( d, new object[] { control } );
+            }
+            else
+            {
+                control.Items.Clear( );
             }
         }
 
@@ -951,7 +966,7 @@ namespace Classifier
 				}
 
 				// show perceptron's weights
-				weightsList.Items.Clear( );
+                ClearList( weightsList );
 				for ( int i = 0; i < neuronsCount; i++ )
 				{
 					string neuronName = string.Format( "Neuron {0}", i + 1 );
