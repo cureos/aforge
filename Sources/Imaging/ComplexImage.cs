@@ -48,7 +48,7 @@ namespace AForge.Imaging
 		}
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Blob"/> class
+        /// Initializes a new instance of the <see cref="ComplexImage"/> class
         /// </summary>
         /// 
         /// <param name="width">Image width</param>

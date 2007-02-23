@@ -76,7 +76,7 @@
       <Name>AForge</Name>
       <HintPath>..\..\Release\AForge.dll</HintPath>
     </Reference>
-    <Reference Include="AForge.Math, Version=1.0.2607.14480, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="AForge.Math, Version=1.0.2610.14115, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -348,6 +348,9 @@
     <Compile Include="Image.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ImageStatistics.cs" />
+    <Compile Include="ImageStatisticsHSL.cs" />
+    <Compile Include="ImageStatisticsYCbCr.cs" />
     <Compile Include="Interpolation.cs" />
     <Compile Include="Textures\CloudsTexture.cs" />
     <Compile Include="Textures\ITextureGenerator.cs" />
