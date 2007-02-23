@@ -564,15 +564,48 @@ namespace TimeSeries
 			Application.Run( new MainForm( ) );
 		}
 
-		// On main form closing
+        // Delegates to enable async calls for setting controls properties
+        private delegate void SetTextCallback( System.Windows.Forms.Control control, string text );
+        private delegate void AddSubItemCallback( System.Windows.Forms.ListView control, int item, string subitemText );
+
+        // Thread safe updating of control's text property
+        private void SetText( System.Windows.Forms.Control control, string text )
+        {
+            if ( control.InvokeRequired )
+            {
+                SetTextCallback d = new SetTextCallback( SetText );
+                Invoke( d, new object[] { control, text } );
+            }
+            else
+            {
+                control.Text = text;
+            }
+        }
+
+        // Thread safe adding of subitem to list control
+        private void AddSubItem( System.Windows.Forms.ListView control, int item, string subitemText )
+        {
+            if ( control.InvokeRequired )
+            {
+                AddSubItemCallback d = new AddSubItemCallback( AddSubItem );
+                Invoke( d, new object[] { control, item, subitemText } );
+            }
+            else
+            {
+                control.Items[item].SubItems.Add( subitemText );
+            }
+        }
+
+        // On main form closing
 		private void MainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			// check if worker thread is running
 			if ( ( workerThread != null ) && ( workerThread.IsAlive ) )
 			{
 				needToStop = true;
-				workerThread.Join( );
-			}
+                while ( !workerThread.Join( 100 ) )
+                    Application.DoEvents( );
+            }
 		}
 
 		// Update settings controls
@@ -671,22 +704,34 @@ namespace TimeSeries
 			}
 		}
 
-		// Enable/disable controls
-		private void EnableControls( bool enable )
-		{
-			loadDataButton.Enabled		= enable;
-			populationSizeBox.Enabled	= enable;
-			iterationsBox.Enabled		= enable;
-			selectionBox.Enabled		= enable;
-			functionsSetBox.Enabled		= enable;
-			geneticMethodBox.Enabled	= enable;
-			windowSizeBox.Enabled		= enable;
-			predictionSizeBox.Enabled	= enable;
+        // Delegates to enable async calls for setting controls properties
+        private delegate void EnableCallback( bool enable );
 
-			moreSettingsButton.Enabled	= enable;
+        // Enable/disale controls (safe for threading)
+        private void EnableControls( bool enable )
+        {
+            if ( InvokeRequired )
+            {
+                EnableCallback d = new EnableCallback( EnableControls );
+                Invoke( d, new object[] { enable } );
+            }
+            else
+            {
 
-			startButton.Enabled	= enable;
-			stopButton.Enabled	= !enable;
+                loadDataButton.Enabled = enable;
+                populationSizeBox.Enabled = enable;
+                iterationsBox.Enabled = enable;
+                selectionBox.Enabled = enable;
+                functionsSetBox.Enabled = enable;
+                geneticMethodBox.Enabled = enable;
+                windowSizeBox.Enabled = enable;
+                predictionSizeBox.Enabled = enable;
+
+                moreSettingsButton.Enabled = enable;
+
+                startButton.Enabled = enable;
+                stopButton.Enabled = !enable;
+            }
 		}
 		
 		// On window size changed
@@ -804,8 +849,9 @@ namespace TimeSeries
 		{
 			// stop worker thread
 			needToStop = true;
-			workerThread.Join( );
-			workerThread = null;
+            while ( !workerThread.Join( 100 ) )
+                Application.DoEvents( );
+            workerThread = null;
 		}
 
 		// Worker thread
@@ -885,9 +931,9 @@ namespace TimeSeries
 					chart.UpdateDataSeries( "solution", solution );
 				
 					// set current iteration's info
-					currentIterationBox.Text = i.ToString( );
-					currentLearningErrorBox.Text = learningError.ToString( "F3" );
-					currentPredictionErrorBox.Text = predictionError.ToString( "F3" );
+                    SetText( currentIterationBox, i.ToString( ) );
+                    SetText( currentLearningErrorBox, learningError.ToString( "F3" ) );
+                    SetText( currentPredictionErrorBox, predictionError.ToString( "F3" ) );
 				}
 				catch
 				{
@@ -905,10 +951,10 @@ namespace TimeSeries
 			}
 
 			// show solution
-			solutionBox.Text = population.BestChromosome.ToString( );
+            SetText( solutionBox, population.BestChromosome.ToString( ) );
 			for ( int j = windowSize, k = 0, n = data.Length; j < n; j++, k++ )
 			{
-				dataList.Items[j].SubItems.Add( solution[k, 1].ToString( ) );
+                AddSubItem( dataList, j, solution[k, 1].ToString( ) );
 			}
 
 			// enable settings controls
