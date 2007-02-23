@@ -158,10 +158,10 @@ namespace AForge.Controls
 			g.DrawRectangle( blackPen, 0, 0, clientWidth - 1, clientHeight - 1 );
 
 			// check if there are any series
-			if ( rangeY != null )
+			if ( ( rangeY != null ) && ( rangeX.Length != 0 ) )
 			{
 				double xFactor = (double)( clientWidth - 10 ) / ( rangeX.Length );
-				double yFactor = (double)( clientHeight - 10 ) / ( rangeY.Length );
+				double yFactor = (double)( clientHeight - 10 ) / ( ( rangeY.Length != 0 ) ? rangeY.Length : 1 );
 
 				// walk through all data series
 				IDictionaryEnumerator en = seriesTable.GetEnumerator( );
