@@ -341,7 +341,7 @@ namespace AForge.Math
 			// check if the array is already calculated
 			if ( complexRotation[numberOfBits - 1, directionIndex] == null )
 			{
-				int			n = 1 << (numberOfBits - 1);
+				int			n = 1 << ( numberOfBits - 1 );
 				double		uR = 1.0;
 				double		uI = 0.0;
 				double		angle = System.Math.PI / n * (int) direction;
@@ -352,7 +352,7 @@ namespace AForge.Math
 
 				for ( int i = 0; i < n; i++ )
 				{
-					rotation[i] = new Complex(uR, uI);
+					rotation[i] = new Complex( uR, uI );
 					t = uR * wI + uI * wR;
 					uR = uR * wR - uI * wI;
 					uI = t;

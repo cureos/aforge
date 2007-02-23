@@ -72,6 +72,7 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AForge, Version=1.0.0.31937, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -89,15 +90,18 @@
     <Compile Include="Complex.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ContinuousHistogram.cs" />
     <Compile Include="FourierTransform.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Gaussian.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Histogram.cs" />
     <Compile Include="PerlinNoise.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Statistics.cs" />
     <Compile Include="Tools.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -144,21 +144,21 @@ namespace AForge.Math
 				total += values[i];
 			}
 
-			int min, max, v;
+			int min, max, hits;
 			int h = (int)( total * ( percent + ( 1 - percent ) / 2 ) );
 
 			// get range min value
-			for ( min = 0, v = total; min < n; min++ )
+            for ( min = 0, hits = total; min < n; min++ )
 			{
-				v -= values[min];
-				if ( v < h )
+                hits -= values[min];
+                if ( hits < h )
 					break;
 			}
 			// get range max value
-			for ( max = n - 1, v = total;  max >= 0; max-- )
+            for ( max = n - 1, hits = total; max >= 0; max-- )
 			{
-				v -= values[max];
-				if ( v < h )
+                hits -= values[max];
+                if ( hits < h )
 					break;
 			}
 			return new IntRange( min, max );
