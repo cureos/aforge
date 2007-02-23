@@ -321,7 +321,6 @@ namespace Classifier
 			this.Name = "MainForm";
 			this.Text = "One-Layer Perceptron Classifier";
 			this.Closing += new System.ComponentModel.CancelEventHandler(this.MainForm_Closing);
-			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox3.ResumeLayout(false);
@@ -703,8 +702,8 @@ namespace Classifier
 					// show classifiers
 					for ( int j = 0; j < classesCount; j++ )
 					{
-						double k = - layer[j][0] / layer[j][1];
-						double b = - layer[j].Threshold / layer[j][1];
+						double k = ( layer[j][1] != 0 ) ? ( - layer[j][0] / layer[j][1] ) : 0;
+						double b = ( layer[j][1] != 0 ) ? ( - layer[j].Threshold / layer[j][1] ) : 0;
 
 						double[,] classifier = new double[2, 2] {
 							{ chart.RangeX.Min, chart.RangeX.Min * k + b },
@@ -765,11 +764,6 @@ namespace Classifier
 
 			// enable settings controls
 			EnableControls( true );
-		}
-
-		private void MainForm_Load(object sender, System.EventArgs e)
-		{
-		
 		}
 	}
 }

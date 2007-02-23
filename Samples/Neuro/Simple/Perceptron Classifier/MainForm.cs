@@ -350,15 +350,82 @@ namespace Classifier
 			Application.Run( new MainForm( ) );
 		}
 
-		// On main form closing
+        // Delegates to enable async calls for setting controls properties
+        private delegate void SetTextCallback( System.Windows.Forms.Control control, string text );
+        private delegate void ClearListCallback( System.Windows.Forms.ListView control );
+        private delegate ListViewItem AddListItemCallback( System.Windows.Forms.ListView control, string itemText );
+        private delegate void AddListSubitemCallback( ListViewItem item, string subItemText );
+
+        // Thread safe updating of control's text property
+        private void SetText( System.Windows.Forms.Control control, string text )
+        {
+            if ( control.InvokeRequired )
+            {
+                SetTextCallback d = new SetTextCallback( SetText );
+                Invoke( d, new object[] { control, text } );
+            }
+            else
+            {
+                control.Text = text;
+            }
+        }
+
+        // Thread safe clearing of list view
+        private void ClearList( System.Windows.Forms.ListView control )
+        {
+            if ( control.InvokeRequired )
+            {
+                ClearListCallback d = new ClearListCallback( ClearList );
+                Invoke( d, new object[] { control } );
+            }
+            else
+            {
+                control.Items.Clear( );
+            }
+        }
+
+        // Thread safe adding of item to list control
+        private ListViewItem AddListItem( System.Windows.Forms.ListView control, string itemText )
+        {
+            ListViewItem item = null;
+
+            if ( control.InvokeRequired )
+            {
+                AddListItemCallback d = new AddListItemCallback( AddListItem );
+                item = (ListViewItem) Invoke( d, new object[] { control, itemText } );
+            }
+            else
+            {
+                item = control.Items.Add( itemText );
+            }
+
+            return item;
+        }
+
+        // Thread safe adding of subitem to list control
+        private void AddListSubitem( ListViewItem item, string subItemText )
+        {
+            if ( this.InvokeRequired )
+            {
+                AddListSubitemCallback d = new AddListSubitemCallback( AddListSubitem );
+                Invoke( d, new object[] { item, subItemText } );
+            }
+            else
+            {
+                item.SubItems.Add( subItemText );
+            }
+        }
+
+        // On main form closing
 		private void MainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			// check if worker thread is running
 			if ( ( workerThread != null ) && ( workerThread.IsAlive ) )
 			{
 				needToStop = true;
-				workerThread.Join( );
-			}
+                while ( !workerThread.Join( 100 ) )
+                    Application.DoEvents( );
+            }
 		}
 
 		// On "Load" button click - load data
@@ -540,15 +607,26 @@ namespace Classifier
 			chart.UpdateDataSeries( "class2", class2 );
 		}
 
-		// Enable/disale controls
-		private void EnableControls( bool enable )
+        // Delegates to enable async calls for setting controls properties
+        private delegate void EnableCallback( bool enable );
+
+        // Enable/disale controls (safe for threading)
+        private void EnableControls( bool enable )
 		{
-			learningRateBox.Enabled	= enable;
-			loadButton.Enabled		= enable;
-			startButton.Enabled		= enable;
-			saveFilesCheck.Enabled	= enable;
-			stopButton.Enabled		= !enable;
-		}
+            if ( InvokeRequired )
+            {
+                EnableCallback d = new EnableCallback( EnableControls );
+                Invoke( d, new object[] { enable } );
+            }
+            else
+            {
+			    learningRateBox.Enabled	= enable;
+			    loadButton.Enabled		= enable;
+			    startButton.Enabled		= enable;
+			    saveFilesCheck.Enabled	= enable;
+			    stopButton.Enabled		= !enable;
+		    }
+        }
 
 		// Clear current solution
 		private void ClearCurrentSolution( )
@@ -589,8 +667,9 @@ namespace Classifier
 		{
 			// stop worker thread
 			needToStop = true;
-			workerThread.Join( );
-			workerThread = null;
+            while ( !workerThread.Join( 100 ) )
+                Application.DoEvents( );
+            workerThread = null;
 		}
 
 		// Worker thread
@@ -658,7 +737,7 @@ namespace Classifier
 					errorsList.Add( error );
 
 					// show current iteration
-					iterationsBox.Text = iteration.ToString( );
+                    SetText( iterationsBox, iteration.ToString( ) );
 
 					// save current error
 					if ( errorsFile != null )
@@ -688,14 +767,16 @@ namespace Classifier
 				}
 
 				// show perceptron's weights
-				weightsList.Items.Clear( );
+                ListViewItem item = null;
+                
+                ClearList( weightsList );
 				for ( int i = 0; i < variables; i++ )
 				{
-					weightsList.Items.Add( string.Format( "Weight {0}", i + 1  ) );
-					weightsList.Items[i].SubItems.Add( neuron[i].ToString( "F6" ) );
+                    item = AddListItem( weightsList, string.Format( "Weight {0}", i + 1 ) );
+                    AddListSubitem( item, neuron[i].ToString( "F6" ) );
 				}
-				weightsList.Items.Add( "Threshold" );
-				weightsList.Items[variables].SubItems.Add( neuron.Threshold.ToString( "F6" ) );
+                item = AddListItem( weightsList, "Threshold" );
+                AddListSubitem( item, neuron.Threshold.ToString( "F6" ) );
 
 				// show error's dynamics
 				double[,] errors = new double[errorsList.Count, 2];
