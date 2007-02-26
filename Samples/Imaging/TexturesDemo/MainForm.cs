@@ -77,33 +77,8 @@ namespace TexturesDemo
             // generate texture
             float[,] texture = textureGenerator.Generate( width, height );
 
-            // create grayscale image
-            Bitmap image = AForge.Imaging.Image.CreateGrayscaleImage( width, height );
-
-            // lock image
-            BitmapData imageData = image.LockBits(
-                new Rectangle( 0, 0, width, height ),
-                ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed );
-
-            unsafe
-            {
-                int offset = imageData.Stride - width;
-                byte* dst = (byte*) imageData.Scan0.ToPointer( );
-
-                // for each line
-                for ( int y = 0; y < height; y++ )
-                {
-                    // for each pixel
-                    for ( int x = 0; x < width; x++, dst++ )
-                    {
-                        *dst = (byte) ( texture[y, x] * 255.0f );
-                    }
-                    dst += offset;
-                }
-            }
-
-            // unlock image
-            image.UnlockBits( imageData );
+            // create bitmap from the texture
+            Bitmap image = AForge.Imaging.Textures.Texture.ToBitmap( texture );
 
             // show image
             pictureBox.Image = image;

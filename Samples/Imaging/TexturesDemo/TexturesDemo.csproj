@@ -34,7 +34,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Release\AForge.dll</HintPath>
     </Reference>
-    <Reference Include="AForge.Imaging, Version=2.3.0.38451, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="AForge.Imaging, Version=2.3.0.33926, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Release\AForge.Imaging.dll</HintPath>
     </Reference>
