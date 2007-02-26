@@ -1,0 +1,16 @@
+AForge.NET Framework
+
+Copyright © Andrew Kirillov, 2006-2007
+andrew.kirillov@gmail.com
+
+Open source framework for researchers in the areas of Computer
+Vision and  Artificial Intelligence (image processing,  neural
+networks, genetic algorithms, etc).
+
+The framework is FREE for any non commercial usage. In the case of
+modifying and/or  redistributing the code it's  obligate to retain
+the  original copyright notice. Commercial usage of this framework
+is prohibited and is subject for negotiation.
+
+
+Please, contact project owners for any offers, remarks, ideas, etc.
