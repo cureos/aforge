@@ -76,6 +76,7 @@
       <Name>AForge</Name>
       <HintPath>..\..\Release\AForge.dll</HintPath>
     </Reference>
+    <Reference Include="AForge.Math, Version=1.1.0.31765, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -93,6 +94,7 @@
     <Compile Include="Chromosomes\BinaryChromosome.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Chromosomes\DoubleArrayChromosome.cs" />
     <Compile Include="Chromosomes\GP\ExtendedGeneFunction.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -150,8 +152,6 @@
     <Compile Include="Selection Algorithms\RouletteWheelSelection.cs">
       <SubType>Code</SubType>
     </Compile>
-    <None Include="Copyright.txt" />
-    <None Include="Version.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

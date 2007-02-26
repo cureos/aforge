@@ -357,9 +357,8 @@
     <Compile Include="Textures\LabyrinthTexture.cs" />
     <Compile Include="Textures\MarbleTexture.cs" />
     <Compile Include="Textures\TextileTexture.cs" />
+    <Compile Include="Textures\Texture.cs" />
     <Compile Include="Textures\WoodTexture.cs" />
-    <None Include="Copyright.txt" />
-    <None Include="Version.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

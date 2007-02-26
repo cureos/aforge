@@ -97,16 +97,20 @@
     <Compile Include="Gaussian.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Geometry\AffineTransformation2D.cs" />
     <Compile Include="Histogram.cs" />
     <Compile Include="PerlinNoise.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Random\GaussianGenerator.cs" />
+    <Compile Include="Random\IRandomNumberGenerator.cs" />
+    <Compile Include="Random\StandardGenerator.cs" />
+    <Compile Include="Random\UniformGenerator.cs" />
+    <Compile Include="Random\UniformOneGenerator.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="Tools.cs">
       <SubType>Code</SubType>
     </Compile>
-    <None Include="Copyright.txt" />
-    <None Include="Version.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

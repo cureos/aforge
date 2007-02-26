@@ -102,8 +102,6 @@
     <EmbeddedResource Include="Chart.resx">
       <DependentUpon>Chart.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="Copyright.txt" />
-    <None Include="Version.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

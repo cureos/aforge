@@ -150,8 +150,6 @@
     <Compile Include="Neurons\Neuron.cs">
       <SubType>Code</SubType>
     </Compile>
-    <None Include="Copyright.txt" />
-    <None Include="Version.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
