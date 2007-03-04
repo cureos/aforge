@@ -11,8 +11,7 @@
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
     <AssemblyName>AForge.Imaging</AssemblyName>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>AForge.Imaging.pfx</AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
@@ -26,6 +25,7 @@
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -72,11 +72,8 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AForge">
-      <Name>AForge</Name>
-      <HintPath>..\..\Release\AForge.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Math, Version=1.0.2610.14115, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="AForge, Version=1.1.0.23831, Culture=neutral, PublicKeyToken=9a0d19ffd4e7fe67, processorArchitecture=MSIL" />
+    <Reference Include="AForge.Math, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ec69efb6646d15f1, processorArchitecture=MSIL" />
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -182,9 +179,7 @@
     <Compile Include="Filters\Binarization\Threshold.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Filters\Binarization\ThresholdCarry.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Filters\Binarization\ThresholdWithCarry.cs" />
     <Compile Include="Filters\Color Filters\ChannelFiltering.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -359,6 +354,9 @@
     <Compile Include="Textures\TextileTexture.cs" />
     <Compile Include="Textures\Texture.cs" />
     <Compile Include="Textures\WoodTexture.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AForge.Imaging.pfx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
