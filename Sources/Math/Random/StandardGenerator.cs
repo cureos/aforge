@@ -26,6 +26,24 @@ namespace AForge.Math.Random
         private bool    useSecond = false;
 
         /// <summary>
+        /// Mean value of generator
+        /// </summary>
+        /// 
+        public double Mean
+        {
+            get { return 0; }
+        }
+
+        /// <summary>
+        /// Variance value of generator
+        /// </summary>
+        ///
+        public double Variance
+        {
+            get { return 1; }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="StandardGenerator"/> class
         /// </summary>
         /// 

@@ -13,7 +13,7 @@ namespace AForge.Math.Random
     /// </summary>
     /// 
     /// <remarks><para>The random number generator generates gaussian
-    /// random numbers with specified mean and standard deviation values.
+    /// random numbers with specified mean and standard deviation values.</para>
     /// <para>The generator uses <see cref="StandardGenerator"/> generator
     /// to generate random numbers.</para></remarks>
     /// 
@@ -27,12 +27,21 @@ namespace AForge.Math.Random
         private double stdDev;
 
         /// <summary>
-        /// Mean value
+        /// Mean value of generator
         /// </summary>
         ///
         public double Mean
         {
             get { return mean;  }
+        }
+
+        /// <summary>
+        /// Variance value of generator
+        /// </summary>
+        ///
+        public double Variance
+        {
+            get { return stdDev * stdDev; }
         }
 
         /// <summary>

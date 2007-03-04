@@ -7,32 +7,40 @@
 namespace AForge.Math.Random
 {
     using System;
-    using AForge;
 
     /// <summary>
-    /// Uniform random numbers generator
+    /// Exponential random numbers generator
     /// </summary>
     /// 
-    /// <remarks><para>The random number generator generates unformaly
-    /// distributed numbers in the specified range.</para>
+    /// <remarks><para>The random number generator generates exponential
+    /// random numbers with specified rate value (lambda).</para>
     /// <para>The generator uses <see cref="UniformOneGenerator"/> generator
     /// to generate random numbers.</para></remarks>
     /// 
-    public class UniformGenerator : IRandomNumberGenerator
+    public class ExponentialGenerator : IRandomNumberGenerator
     {
         private UniformOneGenerator rand = null;
 
-        // generator's range
-        private double min;
-        private double length;
+        private double rate = 0;
+
+        /// <summary>
+        /// Rate value (inverse scale)
+        /// </summary>
+        /// 
+        /// <remarks>The rate value should be positive and non zero.</remarks>
+        /// 
+        public double Rate
+        {
+            get { return rate; }
+        }
 
         /// <summary>
         /// Mean value of generator
         /// </summary>
-        ///
+        /// 
         public double Mean
         {
-            get { return ( min + min + length ) / 2; }
+            get { return 1 / rate; }
         }
 
         /// <summary>
@@ -41,44 +49,35 @@ namespace AForge.Math.Random
         ///
         public double Variance
         {
-            get { return length * length / 12; }
+            get { return 1 / ( rate * rate ); }
         }
-
+        
         /// <summary>
-        /// Random numbers range
+        /// Initializes a new instance of the <see cref="ExponentialGenerator"/> class
         /// </summary>
         /// 
-        public DoubleRange Range
-        {
-            get { return new DoubleRange( min, min + length ); }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UniformGenerator"/> class
-        /// </summary>
+        /// <param name="rate">Rate value</param>
         /// 
-        /// <param name="range">Random numbers range</param>
-        /// 
-        /// <remarks>Initializes random numbers generator with zero seed.</remarks>
-        /// 
-        public UniformGenerator( DoubleRange range ) :
-            this( range, 0 )
+        public ExponentialGenerator( double rate ) :
+            this( rate, 0 )
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UniformGenerator"/> class
+        /// Initializes a new instance of the <see cref="ExponentialGenerator"/> class
         /// </summary>
         /// 
-        /// <param name="range">Random numbers range</param>
+        /// <param name="rate">Rate value</param>
         /// <param name="seed">Seed value to initialize random numbers generator</param>
         /// 
-        public UniformGenerator( DoubleRange range, int seed )
+        public ExponentialGenerator( double rate, int seed )
         {
-            rand = new UniformOneGenerator( seed );
+            // check rate value
+            if ( rate <= 0 )
+                throw new ArgumentException( "Rate value should be positive and non zero" );
 
-            min     = range.Min;
-            length  = range.Length;
+            this.rand = new UniformOneGenerator( seed );
+            this.rate = rate;
         }
 
         /// <summary>
@@ -89,7 +88,7 @@ namespace AForge.Math.Random
         /// 
         public double Next( )
         {
-            return rand.Next( ) * length + min;
+            return - Math.Log( rand.Next( ) ) / rate;
         }
 
         /// <summary>

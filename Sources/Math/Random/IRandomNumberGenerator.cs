@@ -15,6 +15,18 @@ namespace AForge.Math.Random
     public interface IRandomNumberGenerator
     {
         /// <summary>
+        /// Mean value of generator
+        /// </summary>
+        /// 
+        double Mean { get; }
+
+        /// <summary>
+        /// Variance value of generator
+        /// </summary>
+        /// 
+        double Variance { get; }
+
+        /// <summary>
         /// Generate next random number
         /// </summary>
         /// 

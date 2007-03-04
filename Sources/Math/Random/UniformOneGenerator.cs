@@ -24,6 +24,24 @@ namespace AForge.Math.Random
         private Random rand = null;
 
         /// <summary>
+        /// Mean value of generator
+        /// </summary>
+        ///
+        public double Mean
+        {
+            get { return 0.5; }
+        }
+
+        /// <summary>
+        /// Variance value of generator
+        /// </summary>
+        ///
+        public double Variance
+        {
+            get { return 1 / 12; }
+        }
+
+        /// <summary>
 		/// Initializes a new instance of the <see cref="UniformOneGenerator"/> class
         /// </summary>
         /// 
