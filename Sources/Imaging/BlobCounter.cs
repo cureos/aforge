@@ -15,12 +15,14 @@ namespace AForge.Imaging
 	/// </summary>
 	/// 
 	/// <remarks>The class counts and extracts stand alone objects in
-	/// binary images.</remarks>
+	/// binary images using connected components labeling algorithm.</remarks>
 	/// 
 	public class BlobCounter
 	{
 		private int		objectsCount;
 		private int[]	objectLabels;
+        private int     imageWidth;
+        private int     imageHeight;
 
 		/// <summary>
 		/// Objects count
@@ -42,6 +44,45 @@ namespace AForge.Imaging
 		{
 			get { return objectLabels; }
 		}
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BlobCounter"/> class
+        /// </summary>
+        /// 
+        /// <remarks>Creates new instance of the <see cref="BlobCounter"/> class with
+        /// an empty objects map. Before using <see cref="GetObjects(Bitmap)"/> or 
+        /// <see cref="GetObjectRectangles"/> methods, the <see cref="ProcessImage(Bitmap)"/>
+        /// method should be called to collect objects map.</remarks>
+        /// 
+        public BlobCounter( ) { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BlobCounter"/> class
+        /// </summary>
+        /// 
+        /// <param name="image">Image to look for objects in</param>
+        /// 
+        /// <remarks>Creates new instance of the <see cref="BlobCounter"/> class with
+        /// initialized objects map built by calling <see cref="ProcessImage(Bitmap)"/> method.</remarks>
+        /// 
+        public BlobCounter( Bitmap image )
+        {
+            ProcessImage( image );
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BlobCounter"/> class
+        /// </summary>
+        /// 
+        /// <param name="imageData">Image data to look for objects in</param>
+        /// 
+        /// <remarks>Creates new instance of the <see cref="BlobCounter"/> class with
+        /// initialized objects map built by calling <see cref="ProcessImage(BitmapData)"/> method.</remarks>
+        /// 
+        public BlobCounter( BitmapData imageData )
+        {
+            ProcessImage( imageData );
+        }
 
 		/// <summary>
 		/// Builds objects map
@@ -79,25 +120,25 @@ namespace AForge.Imaging
 			// actually we need binary image, but binary images are
 			// represented as grayscale
 			if ( imageData.PixelFormat != PixelFormat.Format8bppIndexed )
-				throw new ArgumentException( );
+				throw new ArgumentException( "Only binary (8bpp indexed grayscale) images are supported" );
 
 			// get source image size
-			int width = imageData.Width;
-			int height = imageData.Height;
-			int stride = imageData.Stride;
-			int offset = stride - width;
+            imageWidth  = imageData.Width;
+            imageHeight = imageData.Height;
+			int stride  = imageData.Stride;
+			int offset  = stride - imageWidth;
 
 			// we don't want one pixel width images
-			if ( width == 1 )
+			if ( imageWidth == 1 )
 				throw new ArgumentException( "Too small image" );
 
 			// allocate labels array
-			objectLabels = new int[width * height];
+            objectLabels = new int[imageWidth * imageHeight];
 			// initial labels count
 			int labelsCount = 0;
 
 			// create map
-			int		maxObjects = ( ( width / 2 ) + 1 ) * ( ( height / 2 ) + 1 ) + 1;
+			int		maxObjects = ( ( imageWidth / 2 ) + 1 ) * ( ( imageHeight / 2 ) + 1 ) + 1;
 			int[]	map = new int[maxObjects];
 
 			// initially map all labels to themself
@@ -121,7 +162,7 @@ namespace AForge.Imaging
 				++p;
 
 				// process the rest of the first row
-				for ( int x = 1; x < width; x++, src++, p++ )
+				for ( int x = 1; x < imageWidth; x++, src++, p++ )
 				{
 					// check if we need to label current pixel
 					if ( *src != 0 )
@@ -143,7 +184,7 @@ namespace AForge.Imaging
 
 				// 2 - for other rows
 				// for each row
-				for ( int y = 1; y < height; y++ )
+                for ( int y = 1; y < imageHeight; y++ )
 				{
 					// for the first pixel of the row, we need to check
 					// only upper and upper-right pixels
@@ -153,12 +194,12 @@ namespace AForge.Imaging
 						if ( src[-stride] != 0 )
 						{
 							// label current pixel, as the above
-							objectLabels[p] = objectLabels[p - width];
+							objectLabels[p] = objectLabels[p - imageWidth];
 						}
 						else if ( src[1 - stride] != 0 )
 						{
 							// label current pixel, as the above right
-							objectLabels[p] = objectLabels[p + 1 - width];
+							objectLabels[p] = objectLabels[p + 1 - imageWidth];
 						}
 						else
 						{
@@ -170,7 +211,7 @@ namespace AForge.Imaging
 					++p;
 
 					// check left pixel and three upper pixels for the rest of pixels
-					for ( int x = 1; x < width - 1; x++, src++, p++ )
+					for ( int x = 1; x < imageWidth - 1; x++, src++, p++ )
 					{
 						if ( *src != 0 )
 						{
@@ -183,12 +224,12 @@ namespace AForge.Imaging
 							else if ( src[-1 - stride] != 0 )
 							{
 								// label current pixel, as the above left
-								objectLabels[p] = objectLabels[p - 1 - width];
+								objectLabels[p] = objectLabels[p - 1 - imageWidth];
 							}
 							else if ( src[-stride] != 0 )
 							{
 								// label current pixel, as the above
-								objectLabels[p] = objectLabels[p - width];
+								objectLabels[p] = objectLabels[p - imageWidth];
 							}
 
 							if ( src[1 - stride] != 0 )
@@ -196,12 +237,12 @@ namespace AForge.Imaging
 								if ( objectLabels[p] == 0 )
 								{
 									// label current pixel, as the above right
-									objectLabels[p] = objectLabels[p + 1 - width];
+									objectLabels[p] = objectLabels[p + 1 - imageWidth];
 								}
 								else
 								{
 									int	l1 = objectLabels[p];
-									int l2 = objectLabels[p + 1 - width];
+									int l2 = objectLabels[p + 1 - imageWidth];
 
 									if ( ( l1 != l2 ) && ( map[l1] != map[l2] ) )
 									{
@@ -263,12 +304,12 @@ namespace AForge.Imaging
 						else if ( src[-1 - stride] != 0 )
 						{
 							// label current pixel, as the above left
-							objectLabels[p] = objectLabels[p - 1 - width];
+							objectLabels[p] = objectLabels[p - 1 - imageWidth];
 						}
 						else if ( src[-stride] != 0 )
 						{
 							// label current pixel, as the above
-							objectLabels[p] = objectLabels[p - width];
+							objectLabels[p] = objectLabels[p - imageWidth];
 						}
 						else
 						{
@@ -316,52 +357,20 @@ namespace AForge.Imaging
 		/// Gets objects rectangles
 		/// </summary>
 		/// 
-		/// <param name="image">Source image</param>
-		/// 
 		/// <returns>Returns array of objects rectangles</returns>
 		/// 
 		/// <remarks>The method returns array of objects rectangles. Before calling the
         /// method, the <see cref="ProcessImage(Bitmap)"/> or <see cref="ProcessImage(BitmapData)"/>
-        /// method should be calls, which will build objects map.</remarks>
-		/// 
-		public Rectangle[] GetObjectRectangles( Bitmap image )
-		{
-			// lock source bitmap data
-			BitmapData imageData = image.LockBits(
-				new Rectangle( 0, 0, image.Width, image.Height ),
-				ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed );
-
-			// process image
-			Rectangle[] rects = GetObjectRectangles( imageData );
-
-			// unlock source images
-			image.UnlockBits( imageData );
-
-			return rects;
-		}
-
-		/// <summary>
-		/// Gets objects rectangles
-		/// </summary>
-		/// 
-		/// <param name="imageData">Source image data</param>
-		/// 
-		/// <returns>Returns array of objects rectangles</returns>
-		/// 
-		/// <remarks>The method returns array of objects rectangles. Before calling the
-        /// method, the <see cref="ProcessImage(Bitmap)"/> or <see cref="ProcessImage(BitmapData)"/>
-        /// method should be calls, which will build objects map.</remarks>
+        /// method should be called, which will build objects map.</remarks>
         /// 
-		public Rectangle[] GetObjectRectangles( BitmapData imageData )
+		public Rectangle[] GetObjectRectangles( )
 		{
-			// process the image
-			ProcessImage( imageData );
+            // check if objects map was collected
+            if ( objectLabels == null )
+                throw new ApplicationException( "Image should be processed before to collec objects map" );
 
-			// image size
-			int width = imageData.Width;
-			int height = imageData.Height;
-			int i = 0, label;
-
+            int i = 0, label;
+            
 			// create object coordinates arrays
 			int[] x1 = new int[objectsCount + 1];
 			int[] y1 = new int[objectsCount + 1];
@@ -370,14 +379,14 @@ namespace AForge.Imaging
 
 			for ( int j = 1; j <= objectsCount; j++ )
 			{
-				x1[j] = width;
-				y1[j] = height;
+				x1[j] = imageWidth;
+				y1[j] = imageHeight;
 			}
 
 			// walk through labels array
-			for ( int y = 0; y < height; y++ )
+            for ( int y = 0; y < imageHeight; y++ )
 			{
-				for ( int x = 0; x < width; x++, i++ )
+                for ( int x = 0; x < imageWidth; x++, i++ )
 				{
 					// get current label
 					label = objectLabels[i];
@@ -428,7 +437,7 @@ namespace AForge.Imaging
 		/// 
 		/// <remarks>The method returns array of blobs. Before calling the
         /// method, the <see cref="ProcessImage(Bitmap)"/> or <see cref="ProcessImage(BitmapData)"/>
-        /// method should be calls, which will build objects map.</remarks>
+        /// method should be called, which will build objects map.</remarks>
         /// 
 		public Blob[] GetObjects( Bitmap image )
 		{
@@ -456,12 +465,13 @@ namespace AForge.Imaging
 		/// 
 		/// <remarks>The method returns array of blobs. Before calling the
         /// method, the <see cref="ProcessImage(Bitmap)"/> or <see cref="ProcessImage(BitmapData)"/>
-        /// method should be calls, which will build objects map.</remarks>
+        /// method should be called, which will build objects map.</remarks>
         /// 
 		public Blob[] GetObjects( BitmapData imageData )
 		{
-			// process the image
-			ProcessImage( imageData );
+            // check if objects map was collected
+            if ( objectLabels == null )
+                throw new ApplicationException( "Image should be processed before to collec objects map" );
 
 			// image size
 			int width = imageData.Width;
