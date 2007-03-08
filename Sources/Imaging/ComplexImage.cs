@@ -59,7 +59,7 @@ namespace AForge.Imaging
             this.width  = width;
             this.height = height;
             this.data   = new Complex[height, width];
-            this.fmode = false;
+            this.fmode  = false;
         }
 
         /// <summary>
@@ -81,6 +81,9 @@ namespace AForge.Imaging
 					data[i, j] = this.data[i, j];
 				}
 			}
+
+            // clone mode as well
+            dstImage.fmode = fmode;
 
             return dstImage;
 		}
@@ -201,7 +204,7 @@ namespace AForge.Imaging
 		}
 
         /// <summary>
-        /// Applies forward fast Fourier transformation of the complex image
+        /// Applies forward fast Fourier transformation to the complex image
         /// </summary>
         /// 
 		public void ForwardFourierTransform( )
@@ -226,7 +229,7 @@ namespace AForge.Imaging
 		}
 
         /// <summary>
-        /// Applies backward fast Fourier transformation of the complex image
+        /// Applies backward fast Fourier transformation to the complex image
         /// </summary>
         /// 
 		public void BackwardFourierTransform( )
