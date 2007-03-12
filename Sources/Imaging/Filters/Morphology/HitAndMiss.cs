@@ -54,6 +54,9 @@ namespace AForge.Imaging.Filters
 		/// <summary>
 		/// Operation mode
 		/// </summary>
+        /// 
+        /// <remarks>Default mode is <see cref="Modes.HitAndMiss"/>.</remarks>
+        /// 
 		public Modes Mode
 		{
 			get { return mode; }
