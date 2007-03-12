@@ -58,8 +58,8 @@ namespace TSP
 
 		private double[,]	map = null;
 
-		private Thread	workerThread = null;
-		private bool	needToStop = false;
+		private Thread workerThread = null;
+		private volatile bool needToStop = false;
 
 		// Constructor
 		public MainForm( )

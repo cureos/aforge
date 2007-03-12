@@ -79,8 +79,8 @@ namespace TimeSeries
 
 		private int headLength = 20;
 
-		private Thread	workerThread = null;
-		private bool	needToStop = false;
+		private Thread workerThread = null;
+		private volatile bool needToStop = false;
 
 		private double[,]	windowDelimiter = new double[2, 2] { { 0, 0 }, { 0, 0 } };
 		private double[,]	predictionDelimiter = new double[2, 2] { { 0, 0 }, { 0, 0 } };

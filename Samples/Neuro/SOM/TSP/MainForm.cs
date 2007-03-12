@@ -59,8 +59,8 @@ namespace TSP
 		private double[,]	map = null;
 		private Random		rand = new Random();
 
-		private Thread	workerThread = null;
-		private bool	needToStop = false;
+		private Thread workerThread = null;
+        private volatile bool needToStop = false;
 
 		// Constructor
 		public MainForm( )

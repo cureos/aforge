@@ -66,7 +66,7 @@ namespace SOMOrganizing
 
 		private Random		rand = new Random( );
 		private Thread		workerThread = null;
-		private bool		needToStop = false;
+        private volatile bool needToStop = false;
 
 		// Constructor
 		public MainForm( )

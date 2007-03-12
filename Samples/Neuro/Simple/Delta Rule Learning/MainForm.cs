@@ -84,8 +84,8 @@ namespace Classifier
 		private bool		useErrorLimit = true;
 		private bool		saveStatisticsToFiles = false;
 
-		private Thread	workerThread = null;
-		private bool	needToStop = false;
+		private Thread workerThread = null;
+        private volatile bool needToStop = false;
 
 		// Constructor
 		public MainForm( )

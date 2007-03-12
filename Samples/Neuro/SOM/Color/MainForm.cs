@@ -53,8 +53,8 @@ namespace Color
 		private double			learningRate = 0.1;
 		private double			radius = 15;
 
-		private Thread	workerThread = null;
-		private bool	needToStop = false;
+		private Thread workerThread = null;
+        private volatile bool needToStop = false;
 
 		// Constructor
 		public MainForm( )

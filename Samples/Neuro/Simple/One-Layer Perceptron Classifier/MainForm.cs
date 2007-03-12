@@ -60,8 +60,8 @@ namespace Classifier
 		private double		learningRate = 0.1;
 		private bool		saveStatisticsToFiles = false;
 
-		private Thread	workerThread = null;
-		private bool	needToStop = false;
+		private Thread workerThread = null;
+        private volatile bool needToStop = false;
 
 		// color for data series
 		private static Color[]	dataSereisColors = new Color[10] {

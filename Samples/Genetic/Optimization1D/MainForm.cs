@@ -63,8 +63,8 @@ namespace Optimization1D
 		private int optimizationMode = 0;
 		private bool showOnlyBest = false;
 
-		private Thread	workerThread = null;
-		private bool	needToStop = false;
+		private Thread workerThread = null;
+		private volatile bool needToStop = false;
 
 		// Constructor
 		public MainForm( )
