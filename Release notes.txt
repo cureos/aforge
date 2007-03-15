@@ -1,3 +1,31 @@
+AForge.NET 1.2.0 release notes
+------------------------------
+15.03.2007.
+
+Version updates and fixes:
+
+* General
+  - Setup project added to provide installer application;
+  - AForge.NET libraries got strong name;
+  - Sample applications update to use volatile for need-to-stop flag
+
+* AForge.Math
+  - Random numbers generators added (Uniform, Standard, Gaussian, Exponential);
+  - 2D Affine transformation added;
+
+* AForge.Imaging
+  - Texture class added to handle texture related work;
+  - BlobCounter class updated to have constructor. GetObjectRectangles() does not
+    require parameter any more;
+  - Bug fixed in ComplexImage - image mode was not cloned;
+  - Color remapping filter was added
+
+* AForge.Genetic
+  - Double array chromosome added
+
+
+
+
 AForge.NET 1.1.0 release notes
 ------------------------------
 23.02.2007.

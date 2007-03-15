@@ -8,6 +8,7 @@
     </namespaceSummaries>
     <contentPlacement>AboveNamespaces</contentPlacement>
     <dependencies>
+        <dependencyItem depPath="D:\Andrew\AForge\trunk\Release\*.*" />
         <dependencyItem depPath="D:\Andrew\AForge\trunk\Release\AForge.dll" />
     </dependencies>
     <projectSummary />
