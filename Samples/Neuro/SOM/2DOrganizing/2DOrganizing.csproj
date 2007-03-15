@@ -73,12 +73,12 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AForge">
-      <Name>AForge</Name>
+    <Reference Include="AForge, Version=1.2.0.0, Culture=neutral, PublicKeyToken=9a0d19ffd4e7fe67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Release\AForge.dll</HintPath>
     </Reference>
-    <Reference Include="AForge.Neuro">
-      <Name>AForge.Neuro</Name>
+    <Reference Include="AForge.Neuro, Version=1.2.0.0, Culture=neutral, PublicKeyToken=fcb220950abbc73b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Release\AForge.Neuro.dll</HintPath>
     </Reference>
     <Reference Include="System">

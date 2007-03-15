@@ -73,14 +73,9 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AForge">
-      <Name>AForge</Name>
-      <HintPath>..\..\..\Release\AForge.dll</HintPath>
-    </Reference>
-    <Reference Include="AForge.Imaging">
-      <Name>AForge.Imaging</Name>
-      <HintPath>..\..\..\Release\AForge.Imaging.dll</HintPath>
-    </Reference>
+    <Reference Include="AForge, Version=1.2.0.0, Culture=neutral, PublicKeyToken=9a0d19ffd4e7fe67, processorArchitecture=MSIL" />
+    <Reference Include="AForge.Imaging, Version=1.2.0.0, Culture=neutral, PublicKeyToken=d604c8342bbdeba9, processorArchitecture=MSIL" />
+    <Reference Include="AForge.Math, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ec69efb6646d15f1, processorArchitecture=MSIL" />
     <Reference Include="System">
       <Name>System</Name>
     </Reference>

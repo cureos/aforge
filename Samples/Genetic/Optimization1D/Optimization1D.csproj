@@ -73,16 +73,16 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AForge">
-      <Name>AForge</Name>
+    <Reference Include="AForge, Version=1.2.0.0, Culture=neutral, PublicKeyToken=9a0d19ffd4e7fe67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Release\AForge.dll</HintPath>
     </Reference>
-    <Reference Include="AForge.Controls">
-      <Name>AForge.Controls</Name>
+    <Reference Include="AForge.Controls, Version=1.2.0.0, Culture=neutral, PublicKeyToken=60f302c78385b07a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Release\AForge.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="AForge.Genetic">
-      <Name>AForge.Genetic</Name>
+    <Reference Include="AForge.Genetic, Version=1.2.0.0, Culture=neutral, PublicKeyToken=a7761c267ba77011, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Release\AForge.Genetic.dll</HintPath>
     </Reference>
     <Reference Include="System">
