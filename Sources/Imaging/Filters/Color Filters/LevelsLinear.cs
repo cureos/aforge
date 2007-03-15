@@ -15,7 +15,24 @@ namespace AForge.Imaging.Filters
 	/// Linear correction of RGB channels
 	/// </summary>
 	/// 
-	/// <remarks></remarks>
+	/// <remarks><para>The filter performs linear correction of RGB channels. It is similar
+    /// to the <see cref="ColorRemapping"/>, but the remapping is linear.</para>
+    /// <para>Sample usage:</para>
+    /// <code>
+    /// // create filter
+    /// LevelsLinear filter = new LevelsLinear( );
+    /// // set ranges
+    /// filter.InRed = new IntRange( 30, 230 );
+    /// filter.InGreen = new IntRange( 50, 240 );
+    /// filter.InBlue = new IntRange( 10, 210 );
+    /// // apply the filter
+    /// filter.ApplyInPlace( Image );
+    /// </code>
+    /// <para><b>Initial image:</b></para>
+    /// <img src="sample1.jpg" width="480" height="361" />
+    /// <para><b>Result image:</b></para>
+    /// <img src="levels_linear.jpg" width="480" height="361" />
+    /// </remarks>
 	/// 
 	public class LevelsLinear : FilterAnyToAny
 	{
@@ -182,7 +199,7 @@ namespace AForge.Imaging.Filters
 		/// Process the filter on the specified image
 		/// </summary>
 		/// 
-		/// <param name="imageData">image data</param>
+		/// <param name="imageData">Image data</param>
 		/// 
 		protected override unsafe void ProcessFilter( BitmapData imageData )
 		{

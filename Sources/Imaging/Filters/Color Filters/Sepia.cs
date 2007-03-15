@@ -36,11 +36,17 @@ namespace AForge.Imaging.Filters
 	///	G = 1.0 * Y - 0.272 * I - 0.647 * Q
 	///	B = 1.0 * Y - 1.105 * I + 1.702 * Q
 	///	</code><br />
-	///	Below is the example of this filter application:
-	/// <list type="bullet">
-	/// <item><b>Source image</b><br /><img src="sample1.jpg" width="480" height="361" /></item>
-	/// <item><b>Result image</b><br /><img src="sepia.jpg" width="480" height="361" /></item>
-	/// </list>
+    /// <para>Sample usage:</para>
+    /// <code>
+    /// // create filter
+    /// Sepia filter = new Sepia( );
+    /// // apply the filter
+    /// filter.ApplyInPlace( image );
+    /// </code>
+    /// <para><b>Initial image:</b></para>
+    /// <img src="sample1.jpg" width="480" height="361" />
+    /// <para><b>Result image:</b></para>
+    /// <img src="sepia.jpg" width="480" height="361" />
 	/// </remarks> 
 	///
 	public sealed class Sepia : FilterColorToColor

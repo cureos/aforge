@@ -186,6 +186,7 @@
     <Compile Include="Filters\Color Filters\ColorFiltering.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\Color Filters\ColorRemapping.cs" />
     <Compile Include="Filters\Color Filters\EuclideanColorFiltering.cs">
       <SubType>Code</SubType>
     </Compile>

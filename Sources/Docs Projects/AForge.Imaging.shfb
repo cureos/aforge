@@ -9,8 +9,10 @@
         <namespaceSummaryItem name="AForge.Imaging.Textures" isDocumented="True">The &lt;b&gt;AForge.Imaging.Textures&lt;/b&gt; namespace contains collection of classes, which generate different textures.</namespaceSummaryItem>
     </namespaceSummaries>
     <additionalContent>
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\sepia.jpg" destPath="" />
+        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\color_remapping.jpg" destPath="" />
         <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\sample1.jpg" destPath="" />
+        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\sepia.jpg" destPath="" />
+        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\levels_linear.jpg" destPath="" />
     </additionalContent>
     <contentPlacement>AboveNamespaces</contentPlacement>
     <dependencies>
