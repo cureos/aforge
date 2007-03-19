@@ -11,7 +11,7 @@
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
     <AssemblyName>AForge.Imaging</AssemblyName>
-    <AssemblyOriginatorKeyFile>AForge.Imaging.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>AForge.Imaging.snk</AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
@@ -72,8 +72,8 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AForge, Version=1.2.0.0, Culture=neutral, PublicKeyToken=9a0d19ffd4e7fe67, processorArchitecture=MSIL" />
-    <Reference Include="AForge.Math, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ec69efb6646d15f1, processorArchitecture=MSIL" />
+    <Reference Include="AForge, Version=1.2.0.0, Culture=neutral, PublicKeyToken=75f8e82c5042a70f, processorArchitecture=MSIL" />
+    <Reference Include="AForge.Math, Version=1.2.0.0, Culture=neutral, PublicKeyToken=e12ceb15b47eb5cc, processorArchitecture=MSIL" />
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -144,6 +144,7 @@
     <Compile Include="Filters\Base classes\FilterGrayToColor.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\Base classes\FilterGrayToGray.cs" />
     <Compile Include="Filters\Base classes\FilterGrayToGrayNewSameSize.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -357,7 +358,7 @@
     <Compile Include="Textures\WoodTexture.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AForge.Imaging.pfx" />
+    <None Include="AForge.Imaging.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
