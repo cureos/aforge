@@ -25,6 +25,7 @@ namespace AForge.Imaging.Filters
 		/// <summary>
 		/// RGB channel to replace
 		/// </summary>
+        /// 
 		public short Channel
 		{
 			get { return channel; }
@@ -36,7 +37,7 @@ namespace AForge.Imaging.Filters
 					( value != RGB.B )
 					)
 				{
-					throw new ArgumentException( );
+					throw new ArgumentException( "Incorrect channel was specified" );
 				}
 				channel = value;
 			}
@@ -45,17 +46,15 @@ namespace AForge.Imaging.Filters
 		/// <summary>
 		/// Grayscale image to use for channel replacement
 		/// </summary>
+        /// 
 		public Bitmap ChannelImage
 		{
 			get { return channelImage; }
 			set
 			{
-				// check for not null
-				if ( value == null )
-					throw new NullReferenceException( );
 				// check for valid format
-				if ( value.PixelFormat != PixelFormat.Format8bppIndexed )
-					throw new ArgumentException( );
+				if ( ( value != null ) && ( value.PixelFormat != PixelFormat.Format8bppIndexed ) )
+					throw new ArgumentException( "Channel image should be 8bpp indexed image (grayscale)" );
 
 				channelImage = value;
 			}
@@ -86,7 +85,15 @@ namespace AForge.Imaging.Filters
 			int height	= imageData.Height;
 			int offset	= imageData.Stride - width * 3;
 
-			// check channel's image dimension
+            // check channel image
+            if ( channelImage == null )
+                throw new ArgumentException( "Channel image was not specified" );
+
+            // check channel's pixel format
+            if ( channelImage.PixelFormat == null )
+                throw new ArgumentException( "Channel image should be 8bpp indexed image (grayscale)" );
+            
+            // check channel's image dimension
 			if ( ( width != channelImage.Width ) || ( height != channelImage.Height ) )
 				throw new ArgumentException( "Channel image size does not match source image size" );
 
