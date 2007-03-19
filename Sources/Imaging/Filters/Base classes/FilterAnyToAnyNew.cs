@@ -1,4 +1,5 @@
 // AForge Image Processing Library
+// AForge.NET framework
 //
 // Copyright © Andrew Kirillov, 2005-2007
 // andrew.kirillov@gmail.com
@@ -12,7 +13,7 @@ namespace AForge.Imaging.Filters
 
     /// <summary>
     /// Base class for filtering any images without changing pixel format, but
-    /// creating new image of new size
+    /// creating new image of new size.
     /// </summary>
     /// 
     /// <remarks>The abstract class is the base class for all filters, which can
@@ -72,7 +73,7 @@ namespace AForge.Imaging.Filters
                 ( imageData.PixelFormat != PixelFormat.Format24bppRgb ) &&
                 ( imageData.PixelFormat != PixelFormat.Format8bppIndexed )
                 )
-                throw new ArgumentException( );
+                throw new ArgumentException( "The filter can be applied to graysclae (8bpp indexed) or color (24bpp) image only" );
 
             // get new image dimension
             Size newSize = CalculateNewImageSize( imageData );

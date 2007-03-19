@@ -1,6 +1,7 @@
 // AForge Image Processing Library
+// AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2005-2006
+// Copyright © Andrew Kirillov, 2005-2007
 // andrew.kirillov@gmail.com
 //
 
@@ -11,7 +12,7 @@ namespace AForge.Imaging.Filters
 	using System.Drawing.Imaging;
 
 	/// <summary>
-	/// Base class for filtering colored images without changing pixel format
+	/// Base class for filtering colored images without changing pixel format.
 	/// </summary>
 	/// 
 	/// <remarks>The abstract class is the base class for all filters, which can
@@ -67,7 +68,7 @@ namespace AForge.Imaging.Filters
 		public virtual Bitmap Apply( BitmapData imageData )
 		{
 			if ( imageData.PixelFormat != PixelFormat.Format24bppRgb )
-				throw new ArgumentException( );
+                throw new ArgumentException( "The filter can be applied to color (24bpp) image only" );
 
 			// get image dimension
 			int width = imageData.Width;
@@ -128,7 +129,7 @@ namespace AForge.Imaging.Filters
 		public virtual void ApplyInPlace( BitmapData imageData )
 		{
 			if ( imageData.PixelFormat != PixelFormat.Format24bppRgb )
-				throw new ArgumentException( );
+                throw new ArgumentException( "The filter can be applied to color (24bpp) image only" );
 
 			// process the filter
 			ProcessFilter( imageData );

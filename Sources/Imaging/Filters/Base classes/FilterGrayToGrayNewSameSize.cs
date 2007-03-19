@@ -1,6 +1,7 @@
 // AForge Image Processing Library
+// AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2005-2006
+// Copyright © Andrew Kirillov, 2005-2007
 // andrew.kirillov@gmail.com
 //
 
@@ -67,7 +68,7 @@ namespace AForge.Imaging.Filters
 		public Bitmap Apply( BitmapData imageData )
 		{
 			if ( imageData.PixelFormat != PixelFormat.Format8bppIndexed )
-				throw new ArgumentException( );
+                throw new ArgumentException( "The filter can be applied to graysclae (8bpp indexed) image only" );
 
 			// get image dimension
 			int width = imageData.Width;

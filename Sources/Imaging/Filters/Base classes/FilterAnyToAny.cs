@@ -1,6 +1,7 @@
 // AForge Image Processing Library
+// AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2005-2006
+// Copyright © Andrew Kirillov, 2005-2007
 // andrew.kirillov@gmail.com
 //
 
@@ -11,7 +12,7 @@ namespace AForge.Imaging.Filters
 	using System.Drawing.Imaging;
 
 	/// <summary>
-	/// Base class for filtering any images without changing pixel format
+	/// Base class for filtering any images without changing pixel format.
 	/// </summary>
 	/// 
 	/// <remarks>The abstract class is the base class for all filters, which can
@@ -72,7 +73,7 @@ namespace AForge.Imaging.Filters
 				( imageData.PixelFormat != PixelFormat.Format24bppRgb ) &&
 				( imageData.PixelFormat != PixelFormat.Format8bppIndexed )
 				)
-				throw new ArgumentException( );
+                throw new ArgumentException( "The filter can be applied to graysclae (8bpp indexed) or color (24bpp) image only" );
 
 			// get image dimension
 			int width = imageData.Width;
@@ -138,7 +139,7 @@ namespace AForge.Imaging.Filters
 				( imageData.PixelFormat != PixelFormat.Format24bppRgb ) ||
 				( imageData.PixelFormat != PixelFormat.Format8bppIndexed )
 				)
-				throw new ArgumentException( );
+                throw new ArgumentException( "The filter can be applied to graysclae (8bpp indexed) or color (24bpp) image only" );
 
 			// process the filter
 			ProcessFilter( imageData );

@@ -1,6 +1,7 @@
 // AForge Image Processing Library
+// AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2005-2006
+// Copyright © Andrew Kirillov, 2005-2007
 // andrew.kirillov@gmail.com
 //
 
@@ -11,7 +12,7 @@ namespace AForge.Imaging.Filters
 	using System.Drawing.Imaging;
 
 	/// <summary>
-	/// Base class for filters, which transform color image to grayscale
+	/// Base class for filters, which transform color image to grayscale.
 	/// </summary>
 	/// 
 	/// <remarks>The abstract class is the base class for all filters, which

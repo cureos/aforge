@@ -1,6 +1,7 @@
 // AForge Image Processing Library
+// AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2005-2006
+// Copyright © Andrew Kirillov, 2005-2007
 // andrew.kirillov@gmail.com
 //
 
@@ -16,7 +17,7 @@ namespace AForge.Imaging.Filters
 	/// 
 	/// <remarks></remarks>
 	/// 
-	public class SISThreshold : FilterAnyToGray
+	public class SISThreshold : FilterGrayToGray
 	{
 		private byte threshold;
 
@@ -32,101 +33,71 @@ namespace AForge.Imaging.Filters
 			get { return threshold; }
 		}
 
-		/// <summary>
-		/// Process the filter on the specified image
-		/// </summary>
-		/// 
-		/// <param name="sourceData">Source image data</param>
-		/// <param name="destinationData">Destination image data</param>
-		/// 
-		protected override unsafe void ProcessFilter( BitmapData sourceData, BitmapData destinationData )
-		{
-			byte * src = null;
-			byte * dst = (byte *) destinationData.Scan0.ToPointer( );
+        /// <summary>
+        /// Process the filter on the specified image
+        /// </summary>
+        /// 
+        /// <param name="imageData">Image data</param>
+        /// 
+        protected override unsafe void ProcessFilter( BitmapData imageData )
+        {
+            // get image width and height
+            int width = imageData.Width;
+            int height = imageData.Height;
+            int widthM1 = width - 1;
+            int heightM1 = height - 1;
+            int stride = imageData.Stride;
+            int offset = stride - width;
+            // differences and weights
+            double ex, ey, weight, weightTotal = 0, total = 0;
 
-			// get width and height
-			int width = sourceData.Width;
-			int height = sourceData.Height;
-			int widthM1 = width - 1;
-			int heightM1 = height - 1;
-			int stride = destinationData.Stride;
-			int offset = stride - width;
-			double ex, ey, weight, weightTotal = 0, total = 0;
+            // do the job
+            byte* ptr = (byte*) imageData.Scan0.ToPointer( );
 
-			// convert image to grayscale if it is color
-			Bitmap		grayImage = null;
-			BitmapData	grayData = null;
+            // --- 1st pass - collecting statistics
 
-			if ( sourceData.PixelFormat != PixelFormat.Format8bppIndexed )
-			{
-				// create grayscale filter
-				IFilter filter = new GrayscaleRMY( );
-				// do the processing
-				grayImage = filter.Apply( sourceData );
-				// lock the image
-				grayData = grayImage.LockBits(
-					new Rectangle( 0, 0, width, height ),
-					ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed );
-				// set source pointer
-				src = (byte *) grayData.Scan0.ToPointer( );
-			}
-			else
-			{
-				src = (byte *) sourceData.Scan0.ToPointer( );
-			}
+            // skip the first line for the first pass
+            ptr += stride;
 
-			// --- 1st pass - collecting statistics
+            // for each line
+            for ( int y = 1; y < heightM1; y++ )
+            {
+                ptr++;
+                // for each pixels
+                for ( int x = 1; x < widthM1; x++, ptr++ )
+                {
+                    // the equations are:
+                    // ex = I(x + 1, y) - I(x - 1, y)
+                    // ey = I(x, y + 1) - I(x, y - 1)
+                    // weight = max(ex, ey)
+                    // weightTotal += weight
+                    // total += weight * I(x, y)
 
-			// skip the first line for the first pass
-			src += stride;
+                    ex = ptr[1] - ptr[-1];
+                    ey = ptr[stride] - ptr[-stride];
+                    weight = ( ex > ey ) ? ex : ey;
+                    weightTotal += weight;
+                    total += weight * ( *ptr );
+                }
+                ptr += offset + 1;
+            }
 
-			// for each line
-			for ( int y = 1; y < heightM1; y++ )
-			{
-				src++;
-				// for each pixels
-				for ( int x = 1; x < widthM1; x++, src++ )
-				{
-					// the equations are:
-					// ex = I(x + 1, y) - I(x - 1, y)
-					// ey = I(x, y + 1) - I(x, y - 1)
-					// weight = max(ex, ey)
-					// weightTotal += weight
-					// total += weight * I(x, y)
-					
-					ex = src[1] - src[-1];
-					ey = src[stride] - src[-stride];
-					weight = ( ex > ey ) ? ex : ey;
-					weightTotal += weight;
-					total += weight * ( *src );
-				}
-				src += offset + 1;
-			}
+            // calculate threshold
+            threshold = ( weightTotal == 0 ) ? (byte) 0 : (byte) ( total / weightTotal );
 
-			// calculate threshold
-			threshold = ( weightTotal == 0 ) ? (byte) 0 : (byte) ( total / weightTotal );
+            // --- 2nd pass - thresholding
+            ptr = (byte*) imageData.Scan0.ToPointer( );
 
-			// --- 2nd pass - thresholding
-			src = ( grayData != null ) ? (byte *) grayData.Scan0.ToPointer( ) : (byte *) sourceData.Scan0.ToPointer( );
-
-			// for each line
-			for ( int y = 0; y < height; y++ )
-			{
-				// for all pixels
-				for ( int x = 0; x < width; x++, src++, dst++ )
-				{
-					*dst = (byte) ( ( *src <= threshold ) ? 0 : 255 );
-				}
-				src += offset;
-				dst += offset;
-			}
-
-			// release gray image, if there was conversion
-			if ( grayData != null )
-			{
-				grayImage.UnlockBits( grayData );
-				grayImage.Dispose( );
-			}
-		}
+            // for each line
+            for ( int y = 0; y < height; y++ )
+            {
+                // for all pixels
+                for ( int x = 0; x < width; x++, ptr++ )
+                {
+                    *ptr = (byte) ( ( *ptr >= threshold ) ? 255 : 0 );
+                }
+                ptr += offset;
+            }
+        }
 	}
 }

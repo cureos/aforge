@@ -796,29 +796,69 @@ namespace FiltersDemo
 		// On Filters->Threshold binarization
 		private void thresholdFiltersItem_Click( object sender, System.EventArgs e )
 		{
+            // save original image
+            Bitmap originalImage = sourceImage;
+            // get grayscale image
+            IFilter grayscaleFilter = new GrayscaleRMY( );
+            sourceImage = grayscaleFilter.Apply( sourceImage );
+            // apply threshold filter
 			ApplyFilter( new Threshold( ) );
+            // delete grayscale image and restore original
+            sourceImage.Dispose( );
+            sourceImage = originalImage;
+
 			thresholdFiltersItem.Checked = true;
 		}
 
 		// On Filters->Floyd-Steinberg dithering
 		private void floydFiltersItem_Click( object sender, System.EventArgs e )
 		{
-			ApplyFilter( new FloydSteinbergDithering( ) );
-			floydFiltersItem.Checked = true;
+            // save original image
+            Bitmap originalImage = sourceImage;
+            // get grayscale image
+            IFilter grayscaleFilter = new GrayscaleRMY( );
+            sourceImage = grayscaleFilter.Apply( sourceImage );
+            // apply threshold filter
+            ApplyFilter( new FloydSteinbergDithering( ) );
+            // delete grayscale image and restore original
+            sourceImage.Dispose( );
+            sourceImage = originalImage;
+			
+            floydFiltersItem.Checked = true;
 		}
 
 		// On Filters->Ordered dithering
 		private void orderedDitheringFiltersItem_Click( object sender, System.EventArgs e )
 		{
-			ApplyFilter( new OrderedDithering( ) );
+            // save original image
+            Bitmap originalImage = sourceImage;
+            // get grayscale image
+            IFilter grayscaleFilter = new GrayscaleRMY( );
+            sourceImage = grayscaleFilter.Apply( sourceImage );
+            // apply threshold filter
+            ApplyFilter( new OrderedDithering( ) );
+            // delete grayscale image and restore original
+            sourceImage.Dispose( );
+            sourceImage = originalImage;
+
 			orderedDitheringFiltersItem.Checked = true;
 		}
 
 		// On Filters->Adaptive binarization
 		private void adaptiveBinarizationFiltersItem_Click( object sender, System.EventArgs e )
 		{
-			ApplyFilter( new SISThreshold( ) );
-			adaptiveBinarizationFiltersItem.Checked = true;
+            // save original image
+            Bitmap originalImage = sourceImage;
+            // get grayscale image
+            IFilter grayscaleFilter = new GrayscaleRMY( );
+            sourceImage = grayscaleFilter.Apply( sourceImage );
+            // apply threshold filter
+            ApplyFilter( new SISThreshold( ) );
+            // delete grayscale image and restore original
+            sourceImage.Dispose( );
+            sourceImage = originalImage;
+            
+            adaptiveBinarizationFiltersItem.Checked = true;
 		}
 
 		// On Filters->Correlation

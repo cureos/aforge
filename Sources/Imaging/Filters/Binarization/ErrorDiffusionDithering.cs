@@ -1,6 +1,7 @@
 // AForge Image Processing Library
+// AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2005-2006
+// Copyright © Andrew Kirillov, 2005-2007
 // andrew.kirillov@gmail.com
 //
 namespace AForge.Imaging.Filters
@@ -16,7 +17,7 @@ namespace AForge.Imaging.Filters
 	/// 
 	/// <remarks></remarks>
 	/// 
-	public abstract class ErrorDiffusionDithering : FilterAnyToGray
+    public abstract class ErrorDiffusionDithering : FilterGrayToGrayNewSameSize
 	{
 		/// <summary>
 		/// Current processing X coordinate
@@ -65,7 +66,7 @@ namespace AForge.Imaging.Filters
 		/// 
 		protected abstract unsafe void Diffuse( int error, byte * ptr );
 
-		/// <summary>
+        /// <summary>
 		/// Process the filter on the specified image
 		/// </summary>
 		/// 
@@ -84,28 +85,8 @@ namespace AForge.Imaging.Filters
 			// allocate memory for source copy
 			IntPtr sourceCopy = Win32.LocalAlloc( Win32.MemoryFlags.Fixed, destinationData.Stride * height );
 
-			// check source image format
-			if ( sourceData.PixelFormat == PixelFormat.Format8bppIndexed )
-			{
-				// copy source image
-				Win32.memcpy( sourceCopy, sourceData.Scan0, destinationData.Stride * height );
-			}
-			else
-			{
-				// convert color image to grayscale
-				IFilter filter = new GrayscaleRMY( );
-				Bitmap grayImage = filter.Apply( sourceData );
-				// copy the image
-				BitmapData grayData = grayImage.LockBits(
-					new Rectangle( 0, 0, width, height ),
-					ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed );
-
-				Win32.memcpy( sourceCopy, grayData.Scan0, destinationData.Stride * height );
-
-				grayImage.UnlockBits( grayData );
-				// free the gray image
-				grayImage.Dispose( );
-			}
+			// copy source image
+			Win32.memcpy( sourceCopy, sourceData.Scan0, destinationData.Stride * height );
 
 			int offset = stride - width;
 			int	v, error;

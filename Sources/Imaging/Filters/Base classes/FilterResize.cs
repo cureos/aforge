@@ -1,4 +1,5 @@
 // AForge Image Processing Library
+// AForge.NET framework
 //
 // Copyright © Andrew Kirillov, 2007
 // andrew.kirillov@gmail.com
@@ -11,7 +12,7 @@ namespace AForge.Imaging.Filters
     using System.Drawing.Imaging;
 
     /// <summary>
-    /// Base class for image resizing filters
+    /// Base class for image resizing filters.
     /// </summary>
     /// 
     /// <remarks>The abstract class is the base class for all filters,
