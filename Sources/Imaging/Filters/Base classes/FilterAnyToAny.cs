@@ -115,7 +115,9 @@ namespace AForge.Imaging.Filters
 			// lock source bitmap data
 			BitmapData data = image.LockBits(
 				new Rectangle( 0, 0, image.Width, image.Height ),
-				ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb );
+				ImageLockMode.ReadWrite,
+				( image.PixelFormat == PixelFormat.Format8bppIndexed ) ?
+				PixelFormat.Format8bppIndexed : PixelFormat.Format24bppRgb );
 
 			// process the filter
 			ApplyInPlace( data );
@@ -136,7 +138,7 @@ namespace AForge.Imaging.Filters
 		public void ApplyInPlace( BitmapData imageData )
 		{
 			if (
-				( imageData.PixelFormat != PixelFormat.Format24bppRgb ) ||
+				( imageData.PixelFormat != PixelFormat.Format24bppRgb ) &&
 				( imageData.PixelFormat != PixelFormat.Format8bppIndexed )
 				)
                 throw new ArgumentException( "The filter can be applied to graysclae (8bpp indexed) or color (24bpp) image only" );
