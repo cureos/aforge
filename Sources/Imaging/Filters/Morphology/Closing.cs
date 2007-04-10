@@ -1,6 +1,7 @@
 // AForge Image Processing Library
+// AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2005-2006
+// Copyright © Andrew Kirillov, 2005-2007
 // andrew.kirillov@gmail.com
 //
 
@@ -11,10 +12,19 @@ namespace AForge.Imaging.Filters
 	using System.Drawing.Imaging;
 
 	/// <summary>
-	/// Closing operator from Mathematical Morphology
+	/// Closing operator from Mathematical Morphology.
 	/// </summary>
 	/// 
-	/// <remarks></remarks>
+    /// <remarks><para>Closing morphology operator equals to <see cref="Dilatation">dilatation</see> followed
+    /// by <see cref="Erosion">erosion</see>.</para>
+    /// <para>Sample usage:</para>
+    /// <code>
+    /// // create filter
+    /// Closing filter = new Closing( );
+    /// // apply the filter
+    /// filter.Apply( image );
+    /// </code>
+    /// </remarks>
 	/// 
 	public class Closing : IFilter
 	{
@@ -22,15 +32,16 @@ namespace AForge.Imaging.Filters
 		private IFilter dilatation = new Dilatation( );
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Closing"/> class
+		/// Initializes a new instance of the <see cref="Closing"/> class.
 		/// </summary>
+        /// 
 		public Closing( ) { }
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Closing"/> class
+		/// Initializes a new instance of the <see cref="Closing"/> class.
 		/// </summary>
 		/// 
-		/// <param name="se">Structuring element</param>
+		/// <param name="se">Structuring element.</param>
 		/// 
 		public Closing( short[,] se )
 		{
@@ -39,13 +50,13 @@ namespace AForge.Imaging.Filters
 		}
 
 		/// <summary>
-		/// Apply filter to an image
+		/// Apply filter to an image.
 		/// </summary>
 		/// 
-		/// <param name="image">Source image to apply filter to</param>
+		/// <param name="image">Source image to apply filter to.</param>
 		/// 
 		/// <returns>Returns filter's result obtained by applying the filter to
-		/// the source image</returns>
+		/// the source image.</returns>
 		/// 
 		/// <remarks>The method keeps the source image unchanged and returns the
 		/// the result of image processing filter as new image.</remarks> 
@@ -55,19 +66,19 @@ namespace AForge.Imaging.Filters
 			Bitmap tempImage = dilatation.Apply( image );
 			Bitmap destImage = errosion.Apply( tempImage );
 
-			tempImage.Dispose();
+			tempImage.Dispose( );
 
 			return destImage;
 		}
 
 		/// <summary>
-		/// Apply filter to an image
+		/// Apply filter to an image.
 		/// </summary>
 		/// 
-		/// <param name="imageData">Source image to apply filter to</param>
+		/// <param name="imageData">Source image to apply filter to.</param>
 		/// 
 		/// <returns>Returns filter's result obtained by applying the filter to
-		/// the source image</returns>
+		/// the source image.</returns>
 		/// 
 		/// <remarks>The filter accepts birmap data as input and returns the result
 		/// of image processing filter as new image. The source image data are kept
@@ -78,7 +89,7 @@ namespace AForge.Imaging.Filters
 			Bitmap tempImage = dilatation.Apply( imageData );
 			Bitmap destImage = errosion.Apply( tempImage );
 
-			tempImage.Dispose();
+			tempImage.Dispose( );
 
 			return destImage;
 		}

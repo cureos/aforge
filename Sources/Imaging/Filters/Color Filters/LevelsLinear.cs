@@ -1,6 +1,7 @@
 // AForge Image Processing Library
+// AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2005-2006
+// Copyright © Andrew Kirillov, 2005-2007
 // andrew.kirillov@gmail.com
 //
 
@@ -12,7 +13,7 @@ namespace AForge.Imaging.Filters
 	using AForge;
 
 	/// <summary>
-	/// Linear correction of RGB channels
+	/// Linear correction of RGB channels.
 	/// </summary>
 	/// 
 	/// <remarks><para>The filter performs linear correction of RGB channels. It is similar
@@ -51,7 +52,7 @@ namespace AForge.Imaging.Filters
 		#region Public Propertis
 
 		/// <summary>
-		/// Red component's input range
+		/// Red component's input range.
 		/// </summary>
 		public IntRange InRed
 		{
@@ -64,7 +65,7 @@ namespace AForge.Imaging.Filters
 		}
 
 		/// <summary>
-		/// Green component's input range
+		/// Green component's input range.
 		/// </summary>
 		public IntRange InGreen
 		{
@@ -77,7 +78,7 @@ namespace AForge.Imaging.Filters
 		}
 
 		/// <summary>
-		/// Blue component's input range
+		/// Blue component's input range.
 		/// </summary>
 		public IntRange InBlue
 		{
@@ -90,7 +91,7 @@ namespace AForge.Imaging.Filters
 		}
 
 		/// <summary>
-		/// Gray component's input range
+		/// Gray component's input range.
 		/// </summary>
 		public IntRange InGray
 		{
@@ -103,7 +104,7 @@ namespace AForge.Imaging.Filters
 		}
 
 		/// <summary>
-		/// Input range for all components
+		/// Input range for all components.
 		/// </summary>
 		public IntRange Input
 		{
@@ -117,7 +118,7 @@ namespace AForge.Imaging.Filters
 		}
 
 		/// <summary>
-		/// Red component's output range
+		/// Red component's output range.
 		/// </summary>
 		public IntRange OutRed
 		{
@@ -130,7 +131,7 @@ namespace AForge.Imaging.Filters
 		}
 
 		/// <summary>
-		/// Green component's output range
+		/// Green component's output range.
 		/// </summary>
 		public IntRange OutGreen
 		{
@@ -143,7 +144,7 @@ namespace AForge.Imaging.Filters
 		}
 
 		/// <summary>
-		/// Blue component's output range
+		/// Blue component's output range.
 		/// </summary>
 		public IntRange OutBlue
 		{
@@ -156,7 +157,7 @@ namespace AForge.Imaging.Filters
 		}
 
 		/// <summary>
-		/// Gray component's output range
+		/// Gray component's output range.
 		/// </summary>
 		public IntRange OutGray
 		{
@@ -169,7 +170,7 @@ namespace AForge.Imaging.Filters
 		}
 
 		/// <summary>
-		/// Output range for all components
+		/// Output range for all components.
 		/// </summary>
 		public IntRange Output
 		{
@@ -186,7 +187,7 @@ namespace AForge.Imaging.Filters
 
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="LevelsLinear"/> class
+		/// Initializes a new instance of the <see cref="LevelsLinear"/> class.
 		/// </summary>
 		public LevelsLinear( )
 		{
@@ -196,10 +197,10 @@ namespace AForge.Imaging.Filters
 		}
 
 		/// <summary>
-		/// Process the filter on the specified image
+		/// Process the filter on the specified image.
 		/// </summary>
 		/// 
-		/// <param name="imageData">Image data</param>
+		/// <param name="imageData">Image data.</param>
 		/// 
 		protected override unsafe void ProcessFilter( BitmapData imageData )
 		{
@@ -245,12 +246,12 @@ namespace AForge.Imaging.Filters
 
 
 		/// <summary>
-		/// Calculate conversion map
+		/// Calculate conversion map.
 		/// </summary>
 		/// 
-		/// <param name="inRange">Input range</param>
-		/// <param name="outRange">Output range</param>
-		/// <param name="map">Conversion map</param>
+		/// <param name="inRange">Input range.</param>
+		/// <param name="outRange">Output range.</param>
+		/// <param name="map">Conversion map.</param>
 		/// 
 		private void CalculateMap( IntRange inRange, IntRange outRange, byte[] map )
 		{

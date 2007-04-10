@@ -288,6 +288,7 @@
     <Compile Include="Filters\Median.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\Morphology\BottomHat.cs" />
     <Compile Include="Filters\Morphology\Closing.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -303,6 +304,9 @@
     <Compile Include="Filters\Morphology\Opening.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\Morphology\TopHat.cs" />
+    <Compile Include="Filters\Noise generation\AdditiveNoise.cs" />
+    <Compile Include="Filters\Noise generation\SaltAndPepperNoise.cs" />
     <Compile Include="Filters\Other\AdaptiveSmooth.cs" />
     <Compile Include="Filters\Other\ConnectedComponentsLabeling.cs">
       <SubType>Code</SubType>

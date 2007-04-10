@@ -1,4 +1,5 @@
 // AForge Image Processing Library
+// AForge.NET framework
 //
 // Copyright © Andrew Kirillov, 2005-2006
 // andrew.kirillov@gmail.com
@@ -11,7 +12,7 @@ namespace AForge.Imaging.Filters
 	using System.Drawing.Imaging;
 
 	/// <summary>
-	/// Sepia filter - brown photo
+	/// Sepia filter - brown photo.
 	/// </summary>
 	///
 	/// <remarks>The filter makes an image look like an old brown photo. The main
@@ -52,10 +53,10 @@ namespace AForge.Imaging.Filters
 	public sealed class Sepia : FilterColorToColor
 	{
 		/// <summary>
-		/// Process the filter on the specified image
+		/// Process the filter on the specified image.
 		/// </summary>
 		/// 
-		/// <param name="imageData">Image data</param>
+		/// <param name="imageData">Image data.</param>
 		/// 
 		protected override unsafe void ProcessFilter( BitmapData imageData )
 		{

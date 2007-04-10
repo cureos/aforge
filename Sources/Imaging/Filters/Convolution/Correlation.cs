@@ -144,7 +144,7 @@ namespace AForge.Imaging.Filters
 				for ( int y = 0; y < height; y++ )
 				{
 					// for each pixel
-					for ( int x = 0; x <	width; x++, src += 3, dst += 3 )
+					for ( int x = 0; x < width; x++, src += 3, dst += 3 )
 					{
 						r = g = b = div = 0;
 			

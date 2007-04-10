@@ -13,6 +13,10 @@
         <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\sample1.jpg" destPath="" />
         <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\sepia.jpg" destPath="" />
         <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\levels_linear.jpg" destPath="" />
+        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\erosion.jpg" destPath="" />
+        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\dilatation.jpg" destPath="" />
+        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\additive_noise.jpg" destPath="" />
+        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\salt_noise.jpg" destPath="" />
     </additionalContent>
     <contentPlacement>AboveNamespaces</contentPlacement>
     <dependencies>

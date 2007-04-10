@@ -1,6 +1,7 @@
 // AForge Image Processing Library
+// AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2005-2006
+// Copyright © Andrew Kirillov, 2005-2007
 // andrew.kirillov@gmail.com
 //
 
@@ -10,7 +11,7 @@ namespace AForge.Imaging.Filters
 	using System.Drawing.Imaging;
 
 	/// <summary>
-	/// In Place Filter interface
+	/// In Place Filter interface.
 	/// </summary>
 	/// 
 	/// <remarks>The interface defines the set of methods, which should be
@@ -23,10 +24,10 @@ namespace AForge.Imaging.Filters
 	public interface IInPlaceFilter
 	{
 		/// <summary>
-		/// Apply filter to an image
+		/// Apply filter to an image.
 		/// </summary>
 		/// 
-		/// <param name="image">Image to apply filter to</param>
+		/// <param name="image">Image to apply filter to.</param>
 		/// 
 		/// <remarks>The method applies the filter directly to the provided
 		/// image.</remarks>
@@ -34,10 +35,10 @@ namespace AForge.Imaging.Filters
 		void ApplyInPlace( Bitmap image );
 
 		/// <summary>
-		/// Apply filter to an image
+		/// Apply filter to an image.
 		/// </summary>
 		/// 
-		/// <param name="imageData">Image to apply filter to</param>
+		/// <param name="imageData">Image to apply filter to.</param>
 		/// 
 		/// <remarks>The method applies the filter directly to the provided
 		/// image data.</remarks>

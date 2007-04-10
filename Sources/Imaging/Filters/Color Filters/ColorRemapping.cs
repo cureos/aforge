@@ -1,4 +1,5 @@
 // AForge Image Processing Library
+// AForge.NET framework
 //
 // Copyright © Andrew Kirillov, 2005-2007
 // andrew.kirillov@gmail.com
@@ -12,7 +13,7 @@ namespace AForge.Imaging.Filters
     using AForge;
 
     /// <summary>
-    /// Color remapping
+    /// Color remapping.
     /// </summary>
     /// 
     /// <remarks><para>The filter allows to remap color of the image. Unlike <see cref="LevelsLinear"/> filter
@@ -45,7 +46,7 @@ namespace AForge.Imaging.Filters
         private byte[] grayMap;
 
         /// <summary>
-        /// Remapping array for red color plane
+        /// Remapping array for red color plane.
         /// </summary>
         /// 
         /// <remarks>The remapping array should contain 256 remapping values.</remarks>
@@ -64,7 +65,7 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Remapping array for green color plane
+        /// Remapping array for green color plane.
         /// </summary>
         /// 
         /// <remarks>The remapping array should contain 256 remapping values.</remarks>
@@ -83,7 +84,7 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Remapping array for blue color plane
+        /// Remapping array for blue color plane.
         /// </summary>
         /// 
         /// <remarks>The remapping array should contain 256 remapping values.</remarks>
@@ -102,7 +103,7 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Remapping array for gray color
+        /// Remapping array for gray color.
         /// </summary>
         /// 
         /// <remarks><para>The remapping array should contain 256 remapping values.</para>
@@ -122,7 +123,7 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColorRemapping"/> class
+        /// Initializes a new instance of the <see cref="ColorRemapping"/> class.
         /// </summary>
         /// 
         /// <remarks>Initializes the filter without any remapping. Any
@@ -143,12 +144,12 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColorRemapping"/> class
+        /// Initializes a new instance of the <see cref="ColorRemapping"/> class.
         /// </summary>
         /// 
-        /// <param name="redMap">Red map</param>
-        /// <param name="greenMap">Green map</param>
-        /// <param name="blueMap">Blue map</param>
+        /// <param name="redMap">Red map.</param>
+        /// <param name="greenMap">Green map.</param>
+        /// <param name="blueMap">Blue map.</param>
         /// 
         public ColorRemapping( byte[] redMap, byte[] greenMap, byte[] blueMap )
         {
@@ -158,10 +159,10 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColorRemapping"/> class
+        /// Initializes a new instance of the <see cref="ColorRemapping"/> class.
         /// </summary>
         /// 
-        /// <param name="grayMap">Gray map</param>
+        /// <param name="grayMap">Gray map.</param>
         /// 
         /// <remarks>This constructor is supposed for grayscale images.</remarks>
         /// 
@@ -171,10 +172,10 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Process the filter on the specified image
+        /// Process the filter on the specified image.
         /// </summary>
         /// 
-        /// <param name="imageData">Image data</param>
+        /// <param name="imageData">Image data.</param>
         /// 
         protected override unsafe void ProcessFilter( BitmapData imageData )
         {
