@@ -90,7 +90,7 @@ namespace AForge.Imaging.Filters
                 throw new ArgumentException( "Channel image was not specified" );
 
             // check channel's pixel format
-            if ( channelImage.PixelFormat == null )
+            if ( channelImage.PixelFormat != PixelFormat.Format8bppIndexed )
                 throw new ArgumentException( "Channel image should be 8bpp indexed image (grayscale)" );
             
             // check channel's image dimension
