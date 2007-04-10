@@ -1,6 +1,7 @@
 // AForge Image Processing Library
+// AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2005-2006
+// Copyright © Andrew Kirillov, 2005-2007
 // andrew.kirillov@gmail.com
 //
 
@@ -12,7 +13,7 @@ namespace AForge.Imaging
 	using AForge;
 
 	/// <summary>
-	/// Core image relatad methods
+	/// Core image relatad methods.
 	/// </summary>
 	/// 
 	/// <remarks>All methods of this class are static and represent general routines
@@ -24,10 +25,10 @@ namespace AForge.Imaging
 		private Image( ) { }
 
 		/// <summary>
-		/// Check if the image is grayscale
+		/// Check if the image is grayscale.
 		/// </summary>
 		/// 
-		/// <param name="image">Image to check</param>
+		/// <param name="image">Image to check.</param>
 		/// 
 		/// <returns>Returns <b>true</b> if the image is grayscale or <b>false</b> otherwise.</returns>
 		/// 
@@ -62,18 +63,18 @@ namespace AForge.Imaging
 		}
 
 		/// <summary>
-		/// Create and initialize grayscale image
+		/// Create and initialize new grayscale image.
 		/// </summary>
 		/// 
-		/// <param name="width">Image width</param>
-		/// <param name="height">Image height</param>
+		/// <param name="width">Image width.</param>
+		/// <param name="height">Image height.</param>
 		/// 
-		/// <returns>Returns the created grayscale image</returns>
+		/// <returns>Returns the created grayscale image.</returns>
 		/// 
 		/// <remarks>The methods create new grayscale image and initializes its palette.
 		/// Grayscale image is represented as
 		/// <see cref="System.Drawing.Imaging.PixelFormat">Format8bppIndexed</see>
-		/// image with palette initialized to 256 gradients of gray color</remarks>
+		/// image with palette initialized to 256 gradients of gray color.</remarks>
 		/// 
 		public static Bitmap CreateGrayscaleImage( int width, int height )
 		{
@@ -86,10 +87,10 @@ namespace AForge.Imaging
 		}
 
 		/// <summary>
-		/// Set pallete of the image to grayscale
+		/// Set pallete of the image to grayscale.
 		/// </summary>
 		/// 
-		/// <param name="image">Image to initialize</param>
+		/// <param name="image">Image to initialize.</param>
 		/// 
 		/// <remarks>The method initializes palette of
 		/// <see cref="System.Drawing.Imaging.PixelFormat">Format8bppIndexed</see>
@@ -113,85 +114,73 @@ namespace AForge.Imaging
 		}
 
 		/// <summary>
-		/// Clone image
+		/// Clone image.
 		/// </summary>
 		/// 
-		/// <param name="src">Source image</param>
-		/// <param name="format">Pixel format of result image</param>
+        /// <param name="source">Source image.</param>
+		/// <param name="format">Pixel format of result image.</param>
 		/// 
-		/// <returns>Returns clone of the source image with specified pixel format</returns>
+		/// <returns>Returns clone of the source image with specified pixel format.</returns>
 		///
         /// <remarks>The original <see cref="System.Drawing.Bitmap.Clone(System.Drawing.Rectangle, System.Drawing.Imaging.PixelFormat)">Bitmap.Clone()</see>
         /// does not produce the desired result - it does not create a clone with specified pixel format.
 		/// More of it, the original method does not create an actual clone - it does not create a copy
 		/// of the image. That is why this method was implemented to provide the functionality.</remarks> 
 		///
-		public static Bitmap Clone( Bitmap src, PixelFormat format )
+		public static Bitmap Clone( Bitmap source, PixelFormat format )
 		{
 			// copy image if pixel format is the same
-			if ( src.PixelFormat == format )
-				return Clone( src );
+            if ( source.PixelFormat == format )
+                return Clone( source );
 
-			int width	= src.Width;
-			int height	= src.Height;
+			int width = source.Width;
+			int height = source.Height;
 
 			// create new image with desired pixel format
-			Bitmap bmp = new Bitmap( width, height, format );
+			Bitmap bitmap = new Bitmap( width, height, format );
 
 			// draw source image on the new one using Graphics
-			Graphics g = Graphics.FromImage( bmp );
-			g.DrawImage( src, 0, 0, width, height );
+			Graphics g = Graphics.FromImage( bitmap );
+            g.DrawImage( source, 0, 0, width, height );
 			g.Dispose( );
 
-			return bmp;
+			return bitmap;
 		}
 
 		/// <summary>
-		/// Clone image
+		/// Clone image.
 		/// </summary>
 		/// 
-		/// <param name="src">Source image</param>
+		/// <param name="source">Source image.</param>
 		/// 
-		/// <returns>Return clone of the source image</returns>
+		/// <returns>Return clone of the source image.</returns>
 		/// 
         /// <remarks>The original <see cref="System.Drawing.Bitmap.Clone(System.Drawing.Rectangle, System.Drawing.Imaging.PixelFormat)">Bitmap.Clone()</see>
         /// does not produce the desired result - it does not create an actual clone (it does not create a copy
 		/// of the image). That is why this method was implemented to provide the functionality.</remarks> 
 		/// 
-		public static Bitmap Clone( Bitmap src )
+		public static Bitmap Clone( Bitmap source )
 		{
-			// get source image size
-			int width = src.Width;
-			int height = src.Height;
-
 			// lock source bitmap data
-			BitmapData srcData = src.LockBits(
-				new Rectangle( 0, 0, width, height ),
-				ImageLockMode.ReadWrite, src.PixelFormat );
+            BitmapData sourceData = source.LockBits(
+                new Rectangle( 0, 0, source.Width, source.Height ),
+                ImageLockMode.ReadOnly, source.PixelFormat );
 
 			// create new image
-			Bitmap dst = new Bitmap( width, height, src.PixelFormat );
+            Bitmap destination = Clone( sourceData );
 
-			// lock destination bitmap data
-			BitmapData dstData = dst.LockBits(
-				new Rectangle( 0, 0, width, height ),
-				ImageLockMode.ReadWrite, dst.PixelFormat );
-
-			Win32.memcpy( dstData.Scan0, srcData.Scan0, height * srcData.Stride );
-
-			// unlock both images
-			dst.UnlockBits( dstData );
-			src.UnlockBits( srcData );
+            // unlock source image
+            source.UnlockBits( sourceData );
 
 			//
 			if (
-				( src.PixelFormat == PixelFormat.Format1bppIndexed ) ||
-				( src.PixelFormat == PixelFormat.Format4bppIndexed ) ||
-				( src.PixelFormat == PixelFormat.Format8bppIndexed ) ||
-				( src.PixelFormat == PixelFormat.Indexed ) )
+                ( source.PixelFormat == PixelFormat.Format1bppIndexed ) ||
+                ( source.PixelFormat == PixelFormat.Format4bppIndexed ) ||
+                ( source.PixelFormat == PixelFormat.Format8bppIndexed ) ||
+                ( source.PixelFormat == PixelFormat.Indexed ) )
 			{
-				ColorPalette srcPalette = src.Palette;
-				ColorPalette dstPalette = dst.Palette;
+                ColorPalette srcPalette = source.Palette;
+				ColorPalette dstPalette = destination.Palette;
 
 				int n = srcPalette.Entries.Length;
 
@@ -201,17 +190,48 @@ namespace AForge.Imaging
 					dstPalette.Entries[i] = srcPalette.Entries[i];
 				}
 
-				dst.Palette = dstPalette;
+				destination.Palette = dstPalette;
 			}
 			
-			return dst;
+			return destination;
 		}
 
+        /// <summary>
+        /// Clone image.
+        /// </summary>
+        /// 
+        /// <param name="sourceData">Source image data.</param>
+        ///
+        /// <returns>Clones image from source image data. The message does not clone pallete in the
+        /// case if the source image has indexed pixel format.</returns>
+        /// 
+        public static Bitmap Clone( BitmapData sourceData )
+        {
+            // get source image size
+            int width = sourceData.Width;
+            int height = sourceData.Height;
+
+            // create new image
+            Bitmap destination = new Bitmap( width, height, sourceData.PixelFormat );
+
+            // lock destination bitmap data
+            BitmapData destinationData = destination.LockBits(
+                new Rectangle( 0, 0, width, height ),
+                ImageLockMode.ReadWrite, destination.PixelFormat );
+
+            Win32.memcpy( destinationData.Scan0, sourceData.Scan0, height * sourceData.Stride );
+
+            // unlock destination image
+            destination.UnlockBits( destinationData );
+
+            return destination;
+        }
+
 		/// <summary>
-		///  Format an image
+		/// Format an image.
 		/// </summary>
 		/// 
-		/// <param name="image">Source image to format</param>
+		/// <param name="image">Source image to format.</param>
 		/// 
 		/// <remarks>Formats the image to one of the formats, which are supported
 		/// by the <b>AForge.Imaging</b> library. The image is left untouched in the
