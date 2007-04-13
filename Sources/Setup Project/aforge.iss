@@ -2,7 +2,7 @@
 
 [Setup]
 AppName=AForge.NET Framework
-AppVerName=AForge.NET Framework 1.2.0
+AppVerName=AForge.NET Framework 1.3.0
 AppPublisher=AForge
 AppPublisherURL=http://code.google.com/p/aforge
 AppSupportURL=http://code.google.com/p/aforge
@@ -38,5 +38,6 @@ Source: "Files\IPLab\*"; DestDir: "{app}\IPLab"; Components: iplab
 Name: "{group}\Documentation"; Filename: "{app}\Docs"
 Name: "{group}\Image Processing Lab"; Filename: "{app}\IPLab\iplab.exe"
 Name: "{group}\Project Home"; Filename: "http://code.google.com/p/aforge/"
+Name: "{group}\Release Notes"; Filename: "{app}\Release notes.txt"
 
 Name: "{group}\{cm:UninstallProgram,AForge.NET Framework}"; Filename: "{uninstallexe}"

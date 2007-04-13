@@ -1,3 +1,50 @@
+AForge.NET 1.3.0 release notes
+------------------------------
+13.04.2007.
+
+Version updates and fixes:
+
+* General
+  - Added new namespaces: MachineLearning, Vision, Video, Video.VFW;
+  - Password protection removed from signing keys;
+
+* AForge.Imaging
+  - Binarization filters updated so they can be applied to grayscale images only;
+  - Replace channel filter updated so it can be created without specifying channel image;
+  - Bug fixed in FilterAnyToAny - image was not locked correctly and pixel format
+    was not checked correctly for in-place filtering;
+  - Bug fixed in Replace Channel filter - pixel format of channel image was not
+    checked correctly;
+  - Added method to clone image from Bitmap Data;
+  - Top-Hat and Bottom-Hat filters added;
+  - Noise generation filters added - additive noise and salt&pepper noise;
+
+* AForge.Vision
+  - Two frames difference motion detector added;
+  - Background modeling high precision motion detector added;
+  - Background modeling low precision motion detector added;
+
+* AForge.Video
+  - IVideoSource interface added;
+  - JPEG video source added;
+  - MJPEG stream video source added;
+
+* AForge.Video.VFW
+  - AVI reader class added;
+  - AVI writer class added;
+  - AVI file video source added;
+
+* AForge.MachineLearning
+  - QLearning and Sarsa learning algorithms added;
+  - Epsilon greedy, Boltzmann and Tabu Search exploration policies added;
+
+* Samples
+  - Animat sample added - demonstrates MachineLearning namespace;
+  - MotionDetector sample added - demonstrates Vision and Video namespaces;
+
+
+
+
 AForge.NET 1.2.0 release notes
 ------------------------------
 15.03.2007.
