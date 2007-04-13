@@ -73,9 +73,15 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AForge, Version=1.2.0.0, Culture=neutral, PublicKeyToken=9a0d19ffd4e7fe67, processorArchitecture=MSIL" />
-    <Reference Include="AForge.Controls, Version=1.2.0.0, Culture=neutral, PublicKeyToken=60f302c78385b07a, processorArchitecture=MSIL" />
-    <Reference Include="AForge.Neuro, Version=1.2.0.0, Culture=neutral, PublicKeyToken=fcb220950abbc73b, processorArchitecture=MSIL" />
+    <Reference Include="AForge, Version=1.2.0.0, Culture=neutral, PublicKeyToken=9a0d19ffd4e7fe67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="AForge.Controls, Version=1.2.0.0, Culture=neutral, PublicKeyToken=60f302c78385b07a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="AForge.Neuro, Version=1.2.0.0, Culture=neutral, PublicKeyToken=fcb220950abbc73b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
