@@ -313,7 +313,7 @@ namespace Animat
             this.stopButton.TabIndex = 3;
             this.stopButton.Text = "S&top";
             this.stopButton.UseVisualStyleBackColor = true;
-            this.stopButton.Click += new System.EventHandler( this.button1_Click );
+            this.stopButton.Click += new System.EventHandler( this.stopButton_Click );
             // 
             // startLearningButton
             // 
