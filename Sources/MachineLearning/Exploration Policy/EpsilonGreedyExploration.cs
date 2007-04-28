@@ -13,10 +13,10 @@ namespace AForge.MachineLearning
     /// Epsilon greedy exploration policy.
     /// </summary>
     /// 
-    /// <remarks><para>The class implements epsilon greedy policy. Acording to the policy,
-    /// the best action is choosen with probability <b>1-epsilon</b>. Otherwise,
+    /// <remarks><para>The class implements epsilon greedy exploration policy. Acording to the policy,
+    /// the best action is chosen with probability <b>1-epsilon</b>. Otherwise,
     /// with probability <b>epsilon</b>, any other action, except the best one, is
-    /// choosen randomly.</para>
+    /// chosen randomly.</para>
     /// <para>According to the policy, the epsilon value is known also as exploration rate.</para>
     /// </remarks>
     /// 

@@ -40,6 +40,7 @@
     <Compile Include="Exploration Policy\BoltzmannExploration.cs" />
     <Compile Include="Exploration Policy\EpsilonGreedyExploration.cs" />
     <Compile Include="Exploration Policy\IExplorationPolicy.cs" />
+    <Compile Include="Exploration Policy\RouletteWheelExploration.cs" />
     <Compile Include="Exploration Policy\TabuSearchExploration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QLearning.cs" />

@@ -13,8 +13,8 @@ namespace AForge.MachineLearning
     /// Boltzmann distribution exploration policy.
     /// </summary>
     /// 
-    /// <remarks><para>The class implements epsilon greedy policy. Acording to the policy,
-    /// action <i>a</i> at state <i>s</i> is selected with the next probability:
+    /// <remarks><para>The class implements exploration policy base on Boltzmann distribution.
+    /// Acording to the policy, action <i>a</i> at state <i>s</i> is selected with the next probability:
     /// <code>
     ///                   exp( Q( s, a ) / t )
     /// p( s, a ) = -----------------------------
@@ -80,6 +80,23 @@ namespace AForge.MachineLearning
 
                 actionProbabilities[i] = actionProbability;
                 probabilitiesSum += actionProbability;
+            }
+
+            if ( double.IsInfinity( probabilitiesSum ) )
+            {
+                // do greedy selection in the case of infinity
+                double maxReward = actionEstimates[0];
+                int greedyAction = 0;
+
+                for ( int i = 1; i < actionsCount; i++ )
+                {
+                    if ( actionEstimates[i] > maxReward )
+                    {
+                        maxReward = actionEstimates[i];
+                        greedyAction = i;
+                    }
+                }
+                return greedyAction;
             }
 
             // get random number, which determines which action to choose
