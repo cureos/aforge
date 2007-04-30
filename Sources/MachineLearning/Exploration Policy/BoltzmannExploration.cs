@@ -82,9 +82,9 @@ namespace AForge.MachineLearning
                 probabilitiesSum += actionProbability;
             }
 
-            if ( double.IsInfinity( probabilitiesSum ) )
+            if ( ( double.IsInfinity( probabilitiesSum ) ) || ( probabilitiesSum == 0 ) )
             {
-                // do greedy selection in the case of infinity
+                // do greedy selection in the case of infinity or zero
                 double maxReward = actionEstimates[0];
                 int greedyAction = 0;
 
