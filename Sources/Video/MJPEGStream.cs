@@ -349,6 +349,9 @@ namespace AForge.Video
 		{
             // buffer to read stream
             byte[] buffer = new byte[bufSize];
+            // JPEG magic number
+            byte[] jpegMagic = new byte[] { 0xFF, 0xD8, 0xFF };
+            int jpegMagicLength = 3;
 
 			while ( true )
 			{
@@ -361,13 +364,10 @@ namespace AForge.Video
 				WebResponse responce = null;
                 // stream for MJPEG downloading
                 Stream stream = null;
-                // new line delimiters
-				byte[] delimiter = null;
-				byte[] delimiter2 = null;
                 // boundary betweeen images
-				byte[]			boundary = null;
-                // length of delimiters and boundary
-				int boundaryLen, delimiterLen = 0, delimiter2Len = 0;
+				byte[] boundary = null;
+                // length of boundary
+				int boundaryLen;
                 // read amounts and positions
 				int read, todo = 0, total = 0, pos = 0, align = 1;
 				int start = 0, stop = 0;
@@ -439,54 +439,13 @@ namespace AForge.Video
 						// increment received bytes counter
 						bytesReceived += read;
 				
-						// do we know the delimiter ?
-						if ( delimiter == null )
-						{
-							// find boundary
-							pos = ByteArrayUtils.Find( buffer, boundary, pos, todo );
-
-							if ( pos == -1 )
-							{
-								// was not found
-								todo = boundaryLen - 1;
-								pos = total - todo;
-								continue;
-							}
-
-                            // data to process further
-							todo = total - pos;
-
-							if ( todo < 2 )
-								continue;
-
-							// check new line delimiter type
-							if ( buffer[pos + boundaryLen] == 10 )
-							{
-								delimiterLen = 2;
-								delimiter = new byte[2] { 10, 10 };
-								delimiter2Len = 1;
-								delimiter2 = new byte[1] { 10 };
-							}
-							else
-							{
-								delimiterLen = 4;
-								delimiter = new byte[4]  {13, 10, 13, 10 };
-								delimiter2Len = 2;
-								delimiter2 = new byte[2] { 13, 10 };
-							}
-
-							pos += boundaryLen + delimiter2Len;
-							todo = total - pos;
-						}
-
 						// search for image start
 						if ( align == 1 )
 						{
-							start = ByteArrayUtils.Find( buffer, delimiter, pos, todo );
+							start = ByteArrayUtils.Find( buffer, jpegMagic, pos, todo );
 							if ( start != -1 )
 							{
-								// found delimiter
-								start	+= delimiterLen;
+								// found JPEG start
 								pos		= start;
 								todo	= total - pos;
 								align	= 2;
@@ -494,7 +453,7 @@ namespace AForge.Video
 							else
 							{
 								// delimiter not found
-								todo	= delimiterLen - 1;
+                                todo    = jpegMagicLength - 1;
 								pos		= total - todo;
 							}
 						}
@@ -503,7 +462,7 @@ namespace AForge.Video
 						while ( ( align == 2 ) && ( todo >= boundaryLen ) )
 						{
 							stop = ByteArrayUtils.Find( buffer, boundary, pos, todo );
-							if (stop != -1)
+							if ( stop != -1 )
 							{
 								pos		= stop;
 								todo	= total - pos;
@@ -533,7 +492,7 @@ namespace AForge.Video
 							}
 							else
 							{
-								// delimiter not found
+								// boundary not found
 								todo	= boundaryLen - 1;
 								pos		= total - todo;
 							}
@@ -546,7 +505,6 @@ namespace AForge.Video
                     if ( VideoSourceError != null )
                     {
                         VideoSourceError( this, new VideoSourceErrorEventArgs( exception.Message ) );
-
                     }
                     // wait for a while before the next try
 					Thread.Sleep( 250 );
