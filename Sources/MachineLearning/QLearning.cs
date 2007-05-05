@@ -96,19 +96,54 @@ namespace AForge.MachineLearning
         /// <param name="actions">Amount of possible actions.</param>
         /// <param name="explorationPolicy">Exploration policy.</param>
         /// 
-		public QLearning( int states, int actions, IExplorationPolicy explorationPolicy )
+        /// <remarks>Action estimates are randomized in the case of this constructor
+        /// is used.</remarks>
+        /// 
+		public QLearning( int states, int actions, IExplorationPolicy explorationPolicy ) :
+            this( states, actions, explorationPolicy, true )
 		{
-			this.states = states;
-			this.actions = actions;
+		}
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="QLearning"/> class.
+        /// </summary>
+        /// 
+        /// <param name="states">Amount of possible states.</param>
+        /// <param name="actions">Amount of possible actions.</param>
+        /// <param name="explorationPolicy">Exploration policy.</param>
+        /// <param name="randomize">Randomize action estimates or not.</param>
+        /// 
+        /// <remarks>The <b>randomize</b> parameter specifies if initial action estimates should be randomized
+        /// with small values or not. Randomization of action values may be useful, when greedy exploration
+        /// policies are used. In this case randomization ensures that actions of the same type are not chosen always.</remarks>
+        /// 
+        public QLearning( int states, int actions, IExplorationPolicy explorationPolicy, bool randomize )
+        {
+            this.states = states;
+            this.actions = actions;
             this.explorationPolicy = explorationPolicy;
 
             // create Q-array
-			qvalues = new double[states][];
+            qvalues = new double[states][];
             for ( int i = 0; i < states; i++ )
             {
                 qvalues[i] = new double[actions];
             }
-		}
+
+            // do randomization
+            if ( randomize )
+            {
+                Random rand = new Random( (int) DateTime.Now.Ticks );
+
+                for ( int i = 0; i < states; i++ )
+                {
+                    for ( int j = 0; j < actions; j++ )
+                    {
+                        qvalues[i][j] = rand.NextDouble( ) / 10;
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Get next action from the specified state.
