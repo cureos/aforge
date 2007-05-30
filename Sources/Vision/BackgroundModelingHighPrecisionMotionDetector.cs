@@ -62,6 +62,7 @@ namespace AForge.Vision
         private bool highlighMotionEdges = true;
         // suppress noise
         private bool suppressNoise = false;
+        private bool keepObjectEdges = false;
 
         // threshold values
         private int differenceThreshold = 15;
@@ -130,6 +131,22 @@ namespace AForge.Vision
                     Marshal.FreeHGlobal( tempFrame );
                 }
             }
+        }
+
+        /// <summary>
+        /// Restore objects edges after noise suppression or not.
+        /// </summary>
+        /// 
+        /// <remarks><para>The value specifies if additional filtering should be done
+        /// to restore objects edges after noise suppression.</para>
+        /// <para>Turning the value on leads to more processing time of video frame. Default values
+        /// is <b>false</b>.</para>
+        /// </remarks>
+        /// 
+        public bool KeepObjectsEdges
+        {
+            get { return keepObjectEdges; }
+            set { keepObjectEdges = true; }
         }
 
         /// <summary>
@@ -204,6 +221,21 @@ namespace AForge.Vision
         {
             this.highlightMotionRegions = highlightMotionRegions;
             this.suppressNoise = suppressNoise;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BackgroundModelingHighPrecisionMotionDetector"/> class.
+        /// </summary>
+        /// 
+        /// <param name="highlightMotionRegions">Highlight motion regions or not.</param>
+        /// <param name="suppressNoise">Suppress noise in video frames or not.</param>
+        /// <param name="keepObjectEdges">Restore objects edges after noise suppression or not.</param>
+        /// 
+        public BackgroundModelingHighPrecisionMotionDetector( bool highlightMotionRegions, bool suppressNoise, bool keepObjectEdges )
+        {
+            this.highlightMotionRegions = highlightMotionRegions;
+            this.suppressNoise = suppressNoise;
+            this.keepObjectEdges = keepObjectEdges;
         }
 
         /// <summary>
@@ -331,6 +363,32 @@ namespace AForge.Vision
                     }
                     motion += 2;
                     temp += 2;
+                }
+
+                // check if we need to restore objects edges
+                if ( keepObjectEdges )
+                {
+                    pixelsChanged = 0;
+
+                    AForge.Win32.memcpy( tempFrame, currentFrame, frameSize );
+
+                    motion = (byte*) currentFrame.ToPointer( ) + width + 1;
+                    temp = (byte*) tempFrame.ToPointer( ) + width + 1;
+
+                    // dilatation is used to restore objects edges
+                    for ( int y = 1; y < heightM1; y++ )
+                    {
+                        for ( int x = 1; x < widthM1; x++, motion++, temp++ )
+                        {
+                            *motion = (byte) ( temp[-width - 1] | temp[-width] | temp[-width + 1] |
+                                temp[width - 1] | temp[width] | temp[width + 1] |
+                                temp[1] | temp[-1] );
+
+                            pixelsChanged += ( *motion & 1 );
+                        }
+                        motion += 2;
+                        temp += 2;
+                    }
                 }
             }
             else
