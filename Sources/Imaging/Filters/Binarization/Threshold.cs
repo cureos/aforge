@@ -19,7 +19,10 @@ namespace AForge.Imaging.Filters
 	/// 
     public class Threshold : FilterGrayToGray
 	{
-		private byte threshold = 128;
+        /// <summary>
+        /// Threshold value.
+        /// </summary>
+		protected byte threshold = 128;
 
 		/// <summary>
 		/// Threshold value (default is 128)
