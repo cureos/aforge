@@ -4,6 +4,9 @@
 // Copyright © Markus Falkensteiner, 2007
 // mfalkensteiner@gmx.at
 //
+// Andrew Kirillov
+// andrew.kirillov@gmail.com
+//
 
 namespace AForge.Imaging.Filters
 {
@@ -12,128 +15,151 @@ namespace AForge.Imaging.Filters
     using System.Drawing.Imaging;
 
 	/// <summary>
-	/// Iterative Threshold search and binarization
-	/// The algorithm works in the following way:
-	/// 1) select any start threshold
-	/// 2) compute average value of Background (µB) and Object (µO) values
-	///		all pixel with a value that is below T, belong to the background values.
-	///		all pixel greater oe equal T belong to the Object values
-	///	3) calculate new Thresghold: T_1 = (µB+µO) / 2
-	/// 4) if Abs(T- T_1) less than a given max. allowed error. exit iteration process.
-	///		now create the binary image with the new threshold
-	///
-	/// see also: Digital Image Processing, Gonzalez/Woods. Ch.10 page:599
+	/// Iterative threshold search and binarization.
 	/// </summary>
 	/// 
-	/// <remarks></remarks>
+	/// <remarks>
+    /// <para>The algorithm works in the following way:
+    /// <list type="bullet">
+    /// <item>select any start threshold;</item>
+    /// <item>compute average value of Background (µB) and Object (µO) values:
+    /// 1) all pixels with a value that is below threshold, belong to the Background values;
+    ///	2) all pixels greater or equal threshold, belong to the Object values.
+    /// </item>
+    ///	<item>calculate new thresghold: ( µB + µO ) / 2;</item>
+    /// <item>if Abs(oldThreshold - newThreshold) is less than a given manimum allowed error, then stop iteration process
+    /// and create the binary image with the new threshold.</item>item>
+    /// </list>
+    /// </para>
+    /// <para>See also: Digital Image Processing, Gonzalez/Woods. Ch.10 page:599.</para>
+    /// <para>Sample usage:</para>
+    /// <code>
+    /// // create filter
+    /// IterativeThreshold filter = new IterativeThreshold( 2, 128 );
+    /// // apply the filter
+    /// Bitmap newImage = filter.Apply( image );
+    /// </code>
+    /// </remarks>
+    /// 
     public class IterativeThreshold : Threshold
     {
-        private byte m_iMinError = 0;
+        private byte minError = 0;
 
         /// <summary>
-        /// Minimum error, value when iterative threshold search is stopped
+        /// Minimum error, value when iterative threshold search is stopped.
         /// </summary>
+        /// 
+        /// <remarks>Default value is 0.</remarks>
+        /// 
         public byte MinimumError
         {
-            get { return m_iMinError; }
-            set { m_iMinError = value; }
+            get { return minError; }
+            set { minError = value; }
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IterativeThreshold"/> class
+        /// Initializes a new instance of the <see cref="IterativeThreshold"/> class.
         /// </summary>
         /// 
-        public IterativeThreshold() { }
+        public IterativeThreshold( ) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IterativeThreshold"/> class
+        /// Initializes a new instance of the <see cref="IterativeThreshold"/> class.
         /// </summary>
         /// 
-        /// <param name="iMinError">Minimum allowed error, that ends the iteration process</param>
-        public IterativeThreshold(byte iMinError)
+        /// <param name="minError">Minimum allowed error, that ends the iteration process.</param>
+        /// 
+        public IterativeThreshold( byte minError )
         {
-            m_iMinError = iMinError;
+            this.minError = minError;
         }
 
-               /// <summary>
-        /// Process the filter on the specified image
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IterativeThreshold"/> class.
         /// </summary>
         /// 
-        /// <param name="imageData">Image data</param>
+        /// <param name="minError">Minimum allowed error, that ends the iteration process.</param>
+        /// <param name="threshold">Initial threshold value.</param>
         /// 
-        protected override unsafe void ProcessFilter(BitmapData imageData)
+        public IterativeThreshold( byte minError, byte threshold )
+        {
+            this.minError = minError;
+            this.threshold = threshold;
+        }
+
+        /// <summary>
+        /// Process the filter on the specified image.
+        /// </summary>
+        /// 
+        /// <param name="imageData">Image data.</param>
+        /// 
+        protected override unsafe void ProcessFilter( BitmapData imageData )
         {
             // get image width and height
             int width = imageData.Width;
             int height = imageData.Height;
             int offset = imageData.Stride - width;
 
+            // amount of object pixels and their summary value
+            int objectValue = 0;
+            int objectPixels = 0;
 
-            int iObjectValue = 0;
-            int iNumberObjects = 0;
+            // amount of background pixels and their summary value
+            int backgroundValue = 0;
+            int backgroundPixels = 0;
 
-            int iBackgroundValue = 0;
-            int iNumberBackground = 0;
+            // new threshold value
+            byte newThreshold = 0;
 
-            int newThreshold = 0;
+            bool firstPass = true;
 
-			// currently i only support grayscale image
-			if (imageData.PixelFormat != PixelFormat.Format8bppIndexed)
-			{
-				base.ProcessFilter(imageData);
-				return;
-			}
-
-            bool first = true;
             do
             {
-                iObjectValue = 0;
-                iNumberObjects = 0;
-                iBackgroundValue = 0;
-                iNumberBackground = 0;
+                objectValue = 0;
+                objectPixels = 0;
+                backgroundValue = 0;
+                backgroundPixels = 0;
 
                 // do the job
-                byte* ptr = (byte*)imageData.Scan0.ToPointer();
+                byte* ptr = (byte*)imageData.Scan0.ToPointer( );
 
-                if (!first)
-                    ThresholdValue = (byte) newThreshold;
+                if ( !firstPass )
+                    threshold = newThreshold;
 
-                first = false;
+                firstPass = false;
+
                 // for each line	
-                for (int y = 0; y < height; y++)
+                for ( int y = 0; y < height; y++ )
                 {
                     // for each pixel
-                    for (int x = 0; x < width; x++, ptr++)
+                    for ( int x = 0; x < width; x++, ptr++ )
                     {
-                        if (*ptr >= ThresholdValue)
+                        if ( *ptr >= threshold )
                         {
-                            iObjectValue += (int)*ptr;
-                            iNumberObjects++;
+                            objectValue += *ptr;
+                            objectPixels++;
                         }
                         else
                         {
-                            iBackgroundValue += (int)*ptr;
-                            iNumberBackground++;
+                            backgroundValue += *ptr;
+                            backgroundPixels++;
                         }
                     }
                     ptr += offset;
                 }
 
-				byte iMeanObject = 0;
-				byte iMeanBackground = 0;
-				
-				if (iNumberObjects > 0)
-					iMeanObject = Convert.ToByte(iObjectValue / iNumberObjects);
+                // mean object and background values
+				double meanObject = ( objectPixels == 0 ) ? 0 : (double) objectValue / objectPixels;
+				double meanBackground = ( backgroundPixels == 0 ) ? 0 : (double) backgroundValue / backgroundPixels;
+				// calculate new threshold value
+                newThreshold = (byte) ( ( meanBackground + meanObject ) / 2 );
+            }
+            while ( Math.Abs( threshold - newThreshold ) > minError );
 
-                if (iNumberBackground > 0)
-					iMeanBackground = Convert.ToByte(iBackgroundValue / iNumberBackground);
+            threshold = newThreshold;
 
-                newThreshold = (iMeanBackground + iMeanObject) / 2;
-
-            } while (Math.Abs(ThresholdValue - newThreshold) > m_iMinError);
-
-            ThresholdValue = Convert.ToByte(newThreshold);
-            base.ProcessFilter(imageData);
+            // process image data using base filter
+            base.ProcessFilter( imageData );
         }
     }
 }
