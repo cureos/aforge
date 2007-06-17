@@ -1,145 +1,198 @@
-/*
- * Created by: Volodymyr Goncharov aka avov
- * mail-to: volodymyr.goncharov@gmail.com
- * Created: 5 may 2007 y.
- */
+// AForge Image Processing Library
+// AForge.NET framework
+//
+// Copyright © Volodymyr Goncharov, 2007
+// volodymyr.goncharov@gmail.com
+//
+// Andrew Kirillov
+// andrew.kirillov@gmail.com
+//
 
-using System.Drawing;
-using System.Drawing.Imaging;
-
-namespace AForge.Imaging.Filters.Transform
+namespace AForge.Imaging.Filters
 {
+    using System.Drawing;
+    using System.Drawing.Imaging;
+
     /// <summary>
-    /// Filter, which retains canvas at specified Region and
-    /// fills cut off area with RGBColor or GrayColor
+    /// Fill areas outiside of specified areas.
     /// </summary>
+    /// 
+    /// <remarks>
+    /// <para>The filter fills areas outside of specified area using the specified color.</para>
+    /// <para>Sample usage:</para>
+    /// <code>
+    /// // create filter
+    /// CanvasCrop filter = new CanvasCrop( new Rectangle(
+    ///                         5, 5, image.Width - 10, image.Height - 10 ), Color.Red );
+    /// // apply the filter
+    /// filter.ApplyInPlace( image );
+    /// </code>
+    /// <para><b>Initial image:</b></para>
+    /// <img src="sample1.jpg" width="480" height="361" />
+    /// <para><b>Result image:</b></para>
+    /// <img src="canvas_crop.jpg" width="480" height="361" />
+    /// </remarks>
+    /// 
     public class CanvasCrop : FilterAnyToAny
     {
-        private Color _rGBColor = Color.White;
-        private byte _grayColor = 0;
-        private Rectangle _region;
+        // RGB fill color
+        private byte fillRed = 255;
+        private byte fillGreen = 255;
+        private byte fillBlue = 255;
+        // gray fill color
+        private byte fillGray = 255;
+        // region to keep
+        private Rectangle region;
 
         /// <summary>
-        /// Constructor
-        /// Values by default:
-        /// RGBColor = Color.White;
-        /// GrayColor = 0;
+        /// RGB fill color.
         /// </summary>
-        /// <param name="_region">Region which remains after crop</param>
-        public CanvasCrop(Rectangle _region)
+        /// 
+        /// <remarks>The color is used to fill areas out of specified region in color images. Default value
+        /// is white - RGB(255, 255, 255).</remarks>
+        /// 
+        public Color FillColorRGB
         {
-            this._region = _region;
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="_rGBColor">Color for filling in case of RGB image</param>
-        /// <param name="_region">Region which remains after crop</param>
-        public CanvasCrop(Color _rGBColor, Rectangle _region)
-        {
-            this._rGBColor = _rGBColor;
-            this._region = _region;
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="_grayColor">Color for filling in case of gray image</param>
-        /// <param name="_region">Region which remains after crop</param>
-        public CanvasCrop(byte _grayColor, Rectangle _region)
-        {
-            this._grayColor = _grayColor;
-            this._region = _region;
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="_rGBColor">Color for filling in case of RGB image</param>
-        /// <param name="_grayColor">Color for filling in case of gray image</param>
-        /// <param name="_region">Region which remains after crop</param>
-        public CanvasCrop(Color _rGBColor, byte _grayColor, Rectangle _region)
-        {
-            this._rGBColor = _rGBColor;
-            this._grayColor = _grayColor;
-            this._region = _region;
-        }
-
-        /// <summary>
-        /// Color for filling in case of RGB image
-        /// </summary>
-        public Color RGBColor
-        {
-            get
-            {
-                return _rGBColor;
-            }
+            get { return Color.FromArgb( fillRed, fillGreen, fillBlue ); }
             set
             {
-                _rGBColor = value;
+                fillRed     = value.R;
+                fillGreen   = value.G;
+                fillBlue    = value.B;
             }
         }
 
         /// <summary>
-        /// Color for filling in case of gray image
+        /// Gray fill color.
         /// </summary>
-        public byte GrayColor
+        /// 
+        /// <remarks>The color is used to fill areas out of specified region in grayscale images. Default value
+        /// is white - 255.</remarks>
+        /// 
+        public byte FillColorGray
         {
-            get
-            {
-                return _grayColor;
-            }
-            set
-            {
-                _grayColor = value;
-            }
+            get { return fillGray; }
+            set { fillGray = value; }
         }
 
         /// <summary>
-        /// Region which remains after crop
+        /// Region to keep.
         /// </summary>
+        /// 
+        /// <remarks>Pixel inside of the specified region will keep their value, but
+        /// pixels outside of the region will be filled with specified color.</remarks>
+        /// 
         public Rectangle Region
         {
-            get
-            {
-                return _region;
-            }
-            set
-            {
-                _region = value;
-            }
+            get { return region; }
+            set { region = value; }
         }
 
-        protected override unsafe void ProcessFilter(BitmapData imageData)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CanvasCrop"/> class.
+        /// </summary>
+        /// 
+        /// <param name="region">Region to keep.</param>
+        /// 
+        public CanvasCrop( Rectangle  region )
+        {
+            this.region = region;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CanvasCrop"/> class.
+        /// </summary>
+        /// 
+        /// <param name="region">Region to keep.</param>
+        /// <param name="fillColorRGB">RGB color to use for filling areas outside of specified region in color images.</param>
+        /// 
+        public CanvasCrop( Rectangle region, Color fillColorRGB )
+        {
+            this.region     = region;
+            this.fillRed    = fillColorRGB.R;
+            this.fillGreen  = fillColorRGB.G;
+            this.fillBlue   = fillColorRGB.B;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CanvasCrop"/> class.
+        /// </summary>
+        /// 
+        /// <param name="region">Region to keep.</param>
+        /// <param name="fillColorGray">Gray color to use for filling areas outside of specified region in grayscale images.</param>
+        /// 
+        public CanvasCrop( Rectangle region, byte fillColorGray )
+        {
+            this.region = region;
+            this.fillGray = fillColorGray;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CanvasCrop"/> class.
+        /// </summary>
+        /// 
+        /// <param name="region">Region to keep.</param>
+        /// <param name="fillColorRGB">RGB color to use for filling areas outside of specified region in color images.</param>
+        /// <param name="fillColorGray">Gray color to use for filling areas outside of specified region in grayscale images.</param>
+        /// 
+        public CanvasCrop( Rectangle region, Color fillColorRGB, byte fillColorGray )
+        {
+            this.region     = region;
+            this.fillRed    = fillColorRGB.R;
+            this.fillGreen  = fillColorRGB.G;
+            this.fillBlue   = fillColorRGB.B;
+            this.fillGray   = fillColorGray;
+        }
+
+        /// <summary>
+        /// Process the filter on the specified image.
+        /// </summary>
+        /// 
+        /// <param name="imageData">Image data.</param>
+        /// 
+        protected override unsafe void ProcessFilter( BitmapData imageData )
         {
             // get image width and height
             int width = imageData.Width;
             int height = imageData.Height;
+			int offset = imageData.Stride - ( ( imageData.PixelFormat == PixelFormat.Format8bppIndexed ) ? width : width * 3 );
 
-            byte* src = (byte*) imageData.Scan0.ToPointer();
-            byte* pixel;
-            
-            int pixelSize = (imageData.PixelFormat == PixelFormat.Format8bppIndexed) ? 1 : 3;
-            int yScale = imageData.Stride;
-            int xScale = pixelSize;
+			// do the job
+			byte * ptr = (byte *) imageData.Scan0.ToPointer( );
 
-            for (int y = 0; y < height; y++, src += yScale)
+            if ( imageData.PixelFormat == PixelFormat.Format8bppIndexed )
             {
-                pixel = src;
-                
-                for (int x = 0; x < width; x++, pixel += xScale)
+                // grayscale image
+                for ( int y = 0; y < height; y++ )
                 {
-                    if(!_region.Contains(x, y)) // pixel for cutting off
+                    for ( int x = 0; x < width; x++, ptr++ )
                     {
-                        // fills pixel
-                        int color = (pixelSize == 1) ? _grayColor : _rGBColor.ToArgb();
-                        byte* data = pixel;
-                        for (int i = 0; i < pixelSize; i++, data++)
+                        if ( !region.Contains( x, y ) )
                         {
-                            *data = (byte) ((color >> i*8) & 255);
+                            *ptr = fillGray;
                         }
                     }
+                    ptr += offset;
+                }
+            }
+            else
+            {
+                // color image
+                for ( int y = 0; y < height; y++ )
+                {
+                    for ( int x = 0; x < width; x++, ptr += 3 )
+                    {
+                        if ( !region.Contains( x, y ) )
+                        {
+                            // red
+                            ptr[RGB.R] = fillRed;
+                            // green
+                            ptr[RGB.G] = fillGreen;
+                            // blue
+                            ptr[RGB.B] = fillBlue;
+                        }
+                    }
+                    ptr += offset;
                 }
             }
         }
