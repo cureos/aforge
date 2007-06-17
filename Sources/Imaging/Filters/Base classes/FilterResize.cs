@@ -21,17 +21,17 @@ namespace AForge.Imaging.Filters
     public abstract class FilterResize : FilterAnyToAnyNew
     {
         /// <summary>
-        /// New image width
+        /// New image width.
         /// </summary>
         protected int newWidth;
 
         /// <summary>
-        /// New image height
+        /// New image height.
         /// </summary>
         protected int newHeight;
 
         /// <summary>
-        /// Width of new image
+        /// Width of new image.
         /// </summary>
         /// 
         public int NewWidth
@@ -41,7 +41,7 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Height of new image
+        /// Height of new image.
         /// </summary>
         /// 
         public int NewHeight
@@ -51,11 +51,11 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FilterResize"/> class
+        /// Initializes a new instance of the <see cref="FilterResize"/> class.
         /// </summary>
         /// 
-        /// <param name="newWidth">Width of new image</param>
-        /// <param name="newHeight">Height of new image</param>
+        /// <param name="newWidth">Width of new image.</param>
+        /// <param name="newHeight">Height of new image.</param>
         /// 
         protected FilterResize( int newWidth, int newHeight )
 		{
@@ -64,12 +64,12 @@ namespace AForge.Imaging.Filters
 		}
 
         /// <summary>
-        /// Calculates new image size
+        /// Calculates new image size.
         /// </summary>
         /// 
-        /// <param name="sourceData">Source image data</param>
+        /// <param name="sourceData">Source image data.</param>
         /// 
-        /// <returns>New image size</returns>
+        /// <returns>New image size.</returns>
         /// 
         protected override System.Drawing.Size CalculateNewImageSize( BitmapData sourceData )
         {

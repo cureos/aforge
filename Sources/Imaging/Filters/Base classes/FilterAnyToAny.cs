@@ -25,13 +25,13 @@ namespace AForge.Imaging.Filters
 	public abstract class FilterAnyToAny : IFilter, IInPlaceFilter
 	{
 		/// <summary>
-		/// Apply filter to an image
+		/// Apply filter to an image.
 		/// </summary>
 		/// 
-		/// <param name="image">Source image to apply filter to</param>
+		/// <param name="image">Source image to apply filter to.</param>
 		/// 
 		/// <returns>Returns filter's result obtained by applying the filter to
-		/// the source image</returns>
+		/// the source image.</returns>
 		/// 
 		/// <remarks>The method keeps the source image unchanged and returns the
 		/// the result of image processing filter as new image.</remarks> 
@@ -55,13 +55,13 @@ namespace AForge.Imaging.Filters
 		}
 
 		/// <summary>
-		/// Apply filter to an image
+		/// Apply filter to an image.
 		/// </summary>
 		/// 
-		/// <param name="imageData">Source image to apply filter to</param>
+		/// <param name="imageData">Source image to apply filter to.</param>
 		/// 
 		/// <returns>Returns filter's result obtained by applying the filter to
-		/// the source image</returns>
+		/// the source image.</returns>
 		/// 
 		/// <remarks>The filter accepts birmap data as input and returns the result
 		/// of image processing filter as new image. The source image data are kept
@@ -102,10 +102,10 @@ namespace AForge.Imaging.Filters
 		}
 
 		/// <summary>
-		/// Apply filter to an image
+		/// Apply filter to an image.
 		/// </summary>
 		/// 
-		/// <param name="image">Image to apply filter to</param>
+		/// <param name="image">Image to apply filter to.</param>
 		/// 
 		/// <remarks>The method applies the filter directly to the provided
 		/// image.</remarks>
@@ -127,10 +127,10 @@ namespace AForge.Imaging.Filters
 		}
 
 		/// <summary>
-		/// Apply filter to an image
+		/// Apply filter to an image.
 		/// </summary>
 		/// 
-		/// <param name="imageData">Image to apply filter to</param>
+		/// <param name="imageData">Image to apply filter to.</param>
 		/// 
 		/// <remarks>The method applies the filter directly to the provided
 		/// image data.</remarks>
@@ -148,10 +148,10 @@ namespace AForge.Imaging.Filters
 		}
 
 		/// <summary>
-		/// Process the filter on the specified image
+		/// Process the filter on the specified image.
 		/// </summary>
 		/// 
-		/// <param name="imageData">Image data</param>
+		/// <param name="imageData">Image data.</param>
 		/// 
 		protected abstract unsafe void ProcessFilter( BitmapData imageData );
 	}

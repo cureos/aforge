@@ -21,22 +21,22 @@ namespace AForge.Imaging.Filters
     public abstract class FilterRotate : FilterAnyToAnyNew
     {
         /// <summary>
-        /// Rotation angle
+        /// Rotation angle.
         /// </summary>
         protected double angle;
 
         /// <summary>
-        /// Keep image size or not
+        /// Keep image size or not.
         /// </summary>
         protected bool keepSize = false;
 
         /// <summary>
-        /// Fill color
+        /// Fill color.
         /// </summary>
         protected Color fillColor = Color.FromArgb( 0, 0, 0 );
 
         /// <summary>
-        /// Rotation angle
+        /// Rotation angle.
         /// </summary>
         public double Angle
         {
@@ -45,7 +45,7 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Keep image size or not
+        /// Keep image size or not.
         /// </summary>
         /// 
         /// <remarks>The property determines if source image's size will be kept
@@ -60,7 +60,7 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Fill color
+        /// Fill color.
         /// </summary>
         /// 
         /// <remarks>The fill color is used to fill areas of destination image,
@@ -73,10 +73,10 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FilterRotate"/> class
+        /// Initializes a new instance of the <see cref="FilterRotate"/> class.
         /// </summary>
         /// 
-        /// <param name="angle">Rotation angle</param>
+        /// <param name="angle">Rotation angle.</param>
         /// 
         public FilterRotate( double angle )
 		{
@@ -84,11 +84,11 @@ namespace AForge.Imaging.Filters
 		}
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FilterRotate"/> class
+        /// Initializes a new instance of the <see cref="FilterRotate"/> class.
         /// </summary>
         /// 
-        /// <param name="angle">Rotation angle</param>
-        /// <param name="keepSize">Keep image size or not</param>
+        /// <param name="angle">Rotation angle.</param>
+        /// <param name="keepSize">Keep image size or not.</param>
         /// 
         public FilterRotate( double angle, bool keepSize )
 		{
@@ -97,12 +97,12 @@ namespace AForge.Imaging.Filters
 		}
 
         /// <summary>
-        /// Calculates new image size
+        /// Calculates new image size.
         /// </summary>
         /// 
-        /// <param name="sourceData">Source image data</param>
+        /// <param name="sourceData">Source image data.</param>
         /// 
-        /// <returns>New image size</returns>
+        /// <returns>New image size.</returns>
         /// 
         protected override System.Drawing.Size CalculateNewImageSize( BitmapData sourceData )
         {
