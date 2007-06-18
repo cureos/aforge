@@ -1,164 +1,233 @@
-/*
- * Created by: Volodymyr Goncharov aka avov
- * mail-to: volodymyr.goncharov@gmail.com
- * Created: 1 may 2007 y.
- */
-
-using System.Drawing;
-using System.Drawing.Imaging;
+// AForge Image Processing Library
+// AForge.NET framework
+//
+// Copyright © Volodymyr Goncharov, 2007
+// volodymyr.goncharov@gmail.com
+//
+// Andrew Kirillov
+// andrew.kirillov@gmail.com
+//
 
 namespace AForge.Imaging.Filters
 {
+    using System.Drawing;
+    using System.Drawing.Imaging;
+
     /// <summary>
-    /// Filter, which moves canvas to specified point and
-    /// fills unused area with RGBColor or GrayColor
+    /// Move canvas to the specified point.
     /// </summary>
+    /// 
+    /// <remarks>
+    /// <para>The filter moves canvas to the specified area filling unused empty areas with specified color.</para>
+    /// <para>Sample usage:</para>
+    /// <code>
+    /// // create filter
+    /// CanvasMove filter = new CanvasMove( new Point( 5, 5 ), Color.Red );
+    /// // apply the filter
+    /// filter.ApplyInPlace( image );
+    /// </code>
+    /// </remarks>
+    /// 
     public class CanvasMove : FilterAnyToAny
     {
-        private Color _rGBColor = Color.White;
-        private byte _grayColor = 0;
-        private Point _point = new Point(0, 0);
+        // RGB fill color
+        private byte fillRed = 255;
+        private byte fillGreen = 255;
+        private byte fillBlue = 255;
+        // gray fill color
+        private byte fillGray = 255;
+        // point to move to
+        private Point movePoint;
 
         /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="_rGBColor">Color for filling in case of RGB image</param>
-        /// <param name="_point">Point to which canvas would be moved</param>
-        public CanvasMove(Color _rGBColor, Point _point)
-        {
-            this._rGBColor = _rGBColor;
-            this._point = _point;
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="_grayColor">Color for filling in case of gray image</param>
-        /// <param name="_point">Point to which canvas would be moved</param>
-        public CanvasMove(byte _grayColor, Point _point)
-        {
-            this._grayColor = _grayColor;
-            this._point = _point;
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="_rGBColor">Color for filling in case of RGB image</param>
-        /// <param name="_grayColor">Color for filling in case of gray image</param>
-        /// <param name="_point">Point to which canvas would be moved</param>
-        public CanvasMove(Color _rGBColor, byte _grayColor, Point _point)
-        {
-            this._rGBColor = _rGBColor;
-            this._grayColor = _grayColor;
-            this._point = _point;
-        }
-
-        /// <summary>
-        /// Default constructor
-        /// Values by default:
-        /// RGBColor = Color.White;
-        /// GrayColor = 0;
-        /// Point = new Point(0, 0);
-        /// </summary>
-        public CanvasMove()
-        {
-        }
-
-        /// <summary>
-        /// Color for filling in case of RGB image
-        /// </summary>
-        public Color RGBColor
-        {
-            get
-            {
-                return _rGBColor;
-            }
-            set
-            {
-                _rGBColor = value;
-            }
-        }
-
-        /// <summary>
-        /// Color for filling in case of gray image
-        /// </summary>
-        public byte GrayColor
-        {
-            get
-            {
-                return _grayColor;
-            }
-            set
-            {
-                _grayColor = value;
-            }
-        }
-
-        /// <summary>
-        /// Point to which canvas would be moved
-        /// </summary>
-        public Point Point
-        {
-            get
-            {
-                return _point;
-            }
-            set
-            {
-                _point = value;
-            }
-        }
-
-        /// <summary>
-        /// Process the filter on the specified image
+        /// RGB fill color.
         /// </summary>
         /// 
-        /// <param name="imageData">image data</param>
+        /// <remarks>The color is used to fill empty areas in color images. Default value
+        /// is white - RGB(255, 255, 255).</remarks>
         /// 
-        protected override unsafe void ProcessFilter(BitmapData imageData)
+        public Color FillColorRGB
+        {
+            get { return Color.FromArgb( fillRed, fillGreen, fillBlue ); }
+            set
+            {
+                fillRed = value.R;
+                fillGreen = value.G;
+                fillBlue = value.B;
+            }
+        }
+
+        /// <summary>
+        /// Gray fill color.
+        /// </summary>
+        /// 
+        /// <remarks>The color is used to fill empty areas in grayscale images. Default value
+        /// is white - 255.</remarks>
+        /// 
+        public byte FillColorGray
+        {
+            get { return fillGray; }
+            set { fillGray = value; }
+        }
+
+        /// <summary>
+        /// Point to move the canvas.
+        /// </summary>
+        /// 
+        public Point MovePoint
+        {
+            get { return movePoint; }
+            set { movePoint = value; }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CanvasMove"/> class.
+        /// </summary>
+        /// 
+        /// <param name="movePoint">Point to move the canvas.</param>
+        /// 
+        public CanvasMove( Point movePoint )
+        {
+            this.movePoint = movePoint;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CanvasMove"/> class.
+        /// </summary>
+        /// 
+        /// <param name="movePoint">Point to move the canvas.</param>
+        /// <param name="fillColorRGB">RGB color to use for filling areas empty areas in color images.</param>
+        /// 
+        public CanvasMove( Point movePoint, Color fillColorRGB )
+        {
+            this.movePoint  = movePoint;
+            this.fillRed    = fillColorRGB.R;
+            this.fillGreen  = fillColorRGB.G;
+            this.fillBlue   = fillColorRGB.B;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CanvasMove"/> class.
+        /// </summary>
+        /// 
+        /// <param name="movePoint">Point to move the canvas.</param>
+        /// <param name="fillColorGray">Gray color to use for filling empty areas in grayscale images.</param>
+        /// 
+        public CanvasMove( Point movePoint, byte fillColorGray )
+        {
+            this.movePoint = movePoint;
+            this.fillGray = fillColorGray;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CanvasMove"/> class.
+        /// </summary>
+        /// 
+        /// <param name="movePoint">Point to move the canvas.</param>
+        /// <param name="fillColorRGB">RGB color to use for filling areas empty areas in color images.</param>
+        /// <param name="fillColorGray">Gray color to use for filling empty areas in grayscale images.</param>
+        /// 
+        public CanvasMove( Point movePoint, Color fillColorRGB, byte fillColorGray )
+        {
+            this.movePoint  = movePoint;
+            this.fillRed    = fillColorRGB.R;
+            this.fillGreen  = fillColorRGB.G;
+            this.fillBlue   = fillColorRGB.B;
+            this.fillGray   = fillColorGray;
+        }
+
+        /// <summary>
+        /// Process the filter on the specified image.
+        /// </summary>
+        /// 
+        /// <param name="imageData">Image data.</param>
+        /// 
+        protected override unsafe void ProcessFilter( BitmapData imageData )
         {
             // get image width and height
             int width = imageData.Width;
             int height = imageData.Height;
+            int stride = imageData.Stride;
 
-            Rectangle intersect = Rectangle.Intersect(new Rectangle(0, 0, width, height), new Rectangle(_point.X, _point.Y, width, height));
+            int movePointX = movePoint.X;
+            int movePointY = movePoint.Y;
 
-            byte* src = (byte*) imageData.Scan0.ToPointer();
+            // intersection rectangle
+            Rectangle intersect = Rectangle.Intersect(
+                new Rectangle( 0, 0, width, height ),
+                new Rectangle( movePointX, movePointY, width, height ) );
 
-            int pixelSize = (imageData.PixelFormat == PixelFormat.Format8bppIndexed) ? 1 : 3;
-            int yScale = imageData.Stride;
-            int xScale = pixelSize;
+            // start, stop and step for X adn Y
+            int yStart  = 0;
+            int yStop   = height;
+            int yStep   = 1;
+            int xStart  = 0;
+            int xStop   = width;
+            int xStep   = 1;
 
-
-            for (int y = (_point.Y < 0) ? 0 : height - 1;
-                 (_point.Y < 0 && y < height) || (_point.Y >= 0 && y >= 0);
-                 y += (_point.Y < 0) ? 1 : -1) // line iteration
+            if ( movePointY > 0 )
             {
-                for (int x = (_point.X < 0) ? 0 : width - 1;
-                     (_point.X < 0 && x < width) || (_point.X >= 0 && x >= 0);
-                     x += (_point.X < 0) ? 1 : -1) // pixel iteration
+                yStart  = height - 1;
+                yStop   = -1;
+                yStep   = -1;
+            }
+            if ( movePointX > 0 )
+            {
+                xStart = width - 1;
+                xStop = -1;
+                xStep = -1;
+            }
+
+            // do the job
+            byte* src = (byte*) imageData.Scan0.ToPointer( );
+            byte* pixel, moved;
+
+            if ( imageData.PixelFormat == PixelFormat.Format8bppIndexed )
+            {
+                // grayscale image
+                for ( int y = yStart; y != yStop; y += yStep )
                 {
-                    byte* pixel = src + y*yScale + x*xScale;
+                    for ( int x = xStart; x != xStop; x += xStep )
+                    {
+                        // current pixel
+                        pixel = src + y * stride + x;
 
-                    if(intersect.Contains(x, y))
-                    { // moving pixel
-                        
-                        byte* moved = src + (y - _point.Y)*yScale + (x - _point.X)*xScale;
-
-                        for (int i = 0; i < pixelSize; i++, pixel++, moved++)
+                        if ( intersect.Contains( x, y ) )
                         {
+                            moved = src + ( y - movePointY ) * stride + ( x - movePointX );
+
                             *pixel = *moved;
                         }
-                    }
-                    else
-                    { // fills with color for replacement
-                        
-                        int color = (pixelSize == 1) ? _grayColor : _rGBColor.ToArgb();
-
-                        for (int i = 0; i < pixelSize; i++, pixel++)
+                        else
                         {
-                            *pixel = (byte) ((color >> i*8) & 255);
+                            *pixel = fillGray;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // color image
+                for ( int y = yStart; y != yStop; y += yStep )
+                {
+                    for ( int x = xStart; x != xStop; x += xStep )
+                    {
+                        // current pixel
+                        pixel = src + y * stride + x * 3;
+
+                        if ( intersect.Contains( x, y ) )
+                        {
+                            moved = src + ( y - movePointY ) * stride + ( x - movePointX ) * 3;
+
+                            pixel[RGB.R] = moved[RGB.R];
+                            pixel[RGB.G] = moved[RGB.G];
+                            pixel[RGB.B] = moved[RGB.B];
+                        }
+                        else
+                        {
+                            pixel[RGB.R] = fillRed;
+                            pixel[RGB.G] = fillGreen;
+                            pixel[RGB.B] = fillBlue;
                         }
                     }
                 }
