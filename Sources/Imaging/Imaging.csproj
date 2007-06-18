@@ -314,6 +314,7 @@
     <Compile Include="Filters\Noise generation\SaltAndPepperNoise.cs" />
     <Compile Include="Filters\Other\AdaptiveSmooth.cs" />
     <Compile Include="Filters\Other\CanvasCrop.cs" />
+    <Compile Include="Filters\Other\CanvasMove.cs" />
     <Compile Include="Filters\Other\ConnectedComponentsLabeling.cs">
       <SubType>Code</SubType>
     </Compile>
