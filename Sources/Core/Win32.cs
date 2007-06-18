@@ -1,6 +1,7 @@
-// AForge Library
+// AForge Core Library
+// AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2005-2006
+// Copyright © Andrew Kirillov, 2005-2007
 // andrew.kirillov@gmail.com
 //
 
@@ -11,7 +12,7 @@ namespace AForge
 	using System.Security;
 
 	/// <summary>
-	/// Windows API functions and structures
+	/// Windows API functions and structures.
 	/// </summary>
 	/// 
 	/// <remarks>Some Win32 API function's are used by the library to perform memory
@@ -23,7 +24,7 @@ namespace AForge
 		private Win32( ) { }
 
 		/// <summary>
-		/// Memory allocation attributes
+		/// Memory allocation attributes.
 		/// </summary>
 		[Flags]
 		public enum MemoryFlags
@@ -40,11 +41,11 @@ namespace AForge
 		}
 
 		/// <summary>
-		/// Allocate the specified number of bytes from the heap
+		/// Allocate the specified number of bytes from the heap.
 		/// </summary>
 		/// 
-		/// <param name="flags">Memory allocation attributes (see <see cref="MemoryFlags"/>)</param>
-		/// <param name="size">Number of bytes to allocate</param>
+		/// <param name="flags">Memory allocation attributes (see <see cref="MemoryFlags"/>).</param>
+		/// <param name="size">Number of bytes to allocate.</param>
 		/// 
 		/// <returns>If the function succeeds, the return value is a handle to the newly allocated memory object.
 		/// If the function fails, the return value is <b>IntPtr.Zero</b>.</returns>
@@ -55,10 +56,10 @@ namespace AForge
 			int size );
 
 		/// <summary>
-		/// Free the specified local memory object and invalidate its handle
+		/// Free the specified local memory object and invalidate its handle.
 		/// </summary>
 		/// 
-		/// <param name="memBlock">Handle to the local memory object</param>
+		/// <param name="memBlock">Handle to the local memory object.</param>
 		/// 
 		/// <returns>If the function succeeds, the return value is <b>IntPtr.Zero</b>.</returns>
 		/// 
@@ -67,12 +68,12 @@ namespace AForge
 			IntPtr memBlock );
 
 		/// <summary>
-		/// Copy a block of memory
+		/// Copy a block of memory.
 		/// </summary>
 		/// 
-		/// <param name="dst">Destination pointer</param>
-		/// <param name="src">Source pointer</param>
-		/// <param name="count">Memory block's length to copy</param>
+		/// <param name="dst">Destination pointer.</param>
+		/// <param name="src">Source pointer.</param>
+		/// <param name="count">Memory block's length to copy.</param>
 		/// 
 		/// <returns>Return's the value of <b>dst</b> - pointer to destination.</returns>
 		/// 
@@ -83,12 +84,12 @@ namespace AForge
 			int count);
 
 		/// <summary>
-		/// Copy a block of memory
+		/// Copy a block of memory.
 		/// </summary>
 		/// 
-		/// <param name="dst">Destination pointer</param>
-		/// <param name="src">Source pointer</param>
-		/// <param name="count">Memory block's length to copy</param>
+		/// <param name="dst">Destination pointer.</param>
+		/// <param name="src">Source pointer.</param>
+		/// <param name="count">Memory block's length to copy.</param>
 		/// 
 		/// <returns>Return's the value of <b>dst</b> - pointer to destination.</returns>
 		/// 
@@ -99,12 +100,12 @@ namespace AForge
 			int count );
 
         /// <summary>
-        /// Copy a block of memory
+        /// Copy a block of memory.
         /// </summary>
         /// 
-        /// <param name="dst">Destination pointer</param>
-        /// <param name="src">Source pointer</param>
-        /// <param name="count">Memory block's length to copy</param>
+        /// <param name="dst">Destination pointer.</param>
+        /// <param name="src">Source pointer.</param>
+        /// <param name="count">Memory block's length to copy.</param>
         /// 
         /// <returns>Return's the value of <b>dst</b> - pointer to destination.</returns>
         /// 
@@ -115,12 +116,12 @@ namespace AForge
             int count );
         
         /// <summary>
-		/// Fills buffer with a specified value
+		/// Fills buffer with a specified value.
 		/// </summary>
 		/// 
-		/// <param name="dst">Destination pointer</param>
-		/// <param name="filler">Value to use fo buffer filling</param>
-		/// <param name="count">Size of buffer to fill</param>
+		/// <param name="dst">Destination pointer.</param>
+		/// <param name="filler">Value to use fo buffer filling.</param>
+		/// <param name="count">Size of buffer to fill.</param>
 		/// 
 		/// <returns>Return's the value of <b>dst</b> - pointer to destination.</returns>
 		/// 
@@ -129,5 +130,21 @@ namespace AForge
 			IntPtr dst,
 			int filler,
 			int count );
-	}
+
+        /// <summary>
+        /// Fills buffer with a specified value.
+        /// </summary>
+        /// 
+        /// <param name="dst">Destination pointer.</param>
+        /// <param name="filler">Value to use fo buffer filling.</param>
+        /// <param name="count">Size of buffer to fill.</param>
+        /// 
+        /// <returns>Return's the value of <b>dst</b> - pointer to destination.</returns>
+        /// 
+        [DllImport( "ntdll.dll" )]
+        public static extern unsafe byte * memset(
+            byte * dst,
+            int filler,
+            int count );
+    }
 }
