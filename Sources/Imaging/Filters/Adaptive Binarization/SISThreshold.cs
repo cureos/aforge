@@ -67,14 +67,14 @@ namespace AForge.Imaging.Filters
                 for ( int x = 1; x < widthM1; x++, ptr++ )
                 {
                     // the equations are:
-                    // ex = I(x + 1, y) - I(x - 1, y)
-                    // ey = I(x, y + 1) - I(x, y - 1)
+                    // ex = | I(x + 1, y) - I(x - 1, y) |
+                    // ey = | I(x, y + 1) - I(x, y - 1) |
                     // weight = max(ex, ey)
                     // weightTotal += weight
                     // total += weight * I(x, y)
 
-                    ex = ptr[1] - ptr[-1];
-                    ey = ptr[stride] - ptr[-stride];
+                    ex = Math.Abs( ptr[1] - ptr[-1] );
+                    ey = Math.Abs( ptr[stride] - ptr[-stride] );
                     weight = ( ex > ey ) ? ex : ey;
                     weightTotal += weight;
                     total += weight * ( *ptr );
