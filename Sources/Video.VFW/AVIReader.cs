@@ -133,7 +133,7 @@ namespace AForge.Video.VFW
         /// 
 		public AVIReader( )
 		{
-			Win32.AVIFileInit();
+			Win32.AVIFileInit( );
 		}
 
         /// <summary>
@@ -190,44 +190,47 @@ namespace AForge.Video.VFW
 			// close previous file
 			Close( );
 
-			// open AVI file
-			if ( Win32.AVIFileOpen( out file, fileName, Win32.OpenFileMode.ShareDenyWrite, IntPtr.Zero ) != 0 )
-				throw new ApplicationException( "Failed opening AVI file" );
+            lock ( this )
+            {
+                // open AVI file
+                if ( Win32.AVIFileOpen( out file, fileName, Win32.OpenFileMode.ShareDenyWrite, IntPtr.Zero ) != 0 )
+                    throw new ApplicationException( "Failed opening AVI file" );
 
-			// get first video stream
-			if ( Win32.AVIFileGetStream( file, out stream, Win32.mmioFOURCC( "vids" ), 0 ) != 0 )
-				throw new ApplicationException( "Failed getting video stream" );
+                // get first video stream
+                if ( Win32.AVIFileGetStream( file, out stream, Win32.mmioFOURCC( "vids" ), 0 ) != 0 )
+                    throw new ApplicationException( "Failed getting video stream" );
 
-			// get stream info
-			Win32.AVISTREAMINFO	info = new Win32.AVISTREAMINFO( );
-			Win32.AVIStreamInfo( stream, ref info, Marshal.SizeOf( info ) );
+                // get stream info
+                Win32.AVISTREAMINFO info = new Win32.AVISTREAMINFO( );
+                Win32.AVIStreamInfo( stream, ref info, Marshal.SizeOf( info ) );
 
-			width		= info.rectFrame.right;
-			height		= info.rectFrame.bottom;
-			position	= info.start;
-			start		= info.start;
-			length		= info.length;
-			rate		= (float) info.rate / (float) info.scale;
-			codec		= Win32.decode_mmioFOURCC( info.handler );
+                width = info.rectFrame.right;
+                height = info.rectFrame.bottom;
+                position = info.start;
+                start = info.start;
+                length = info.length;
+                rate = (float) info.rate / (float) info.scale;
+                codec = Win32.decode_mmioFOURCC( info.handler );
 
-			// prepare decompressor
-			Win32.BITMAPINFOHEADER bitmapInfoHeader = new Win32.BITMAPINFOHEADER( );
+                // prepare decompressor
+                Win32.BITMAPINFOHEADER bitmapInfoHeader = new Win32.BITMAPINFOHEADER( );
 
-            bitmapInfoHeader.size           = Marshal.SizeOf( bitmapInfoHeader.GetType( ) );
-            bitmapInfoHeader.width          = width;
-            bitmapInfoHeader.height         = height;
-            bitmapInfoHeader.planes         = 1;
-            bitmapInfoHeader.bitCount       = 24;
-            bitmapInfoHeader.compression    = 0; // BI_RGB
+                bitmapInfoHeader.size = Marshal.SizeOf( bitmapInfoHeader.GetType( ) );
+                bitmapInfoHeader.width = width;
+                bitmapInfoHeader.height = height;
+                bitmapInfoHeader.planes = 1;
+                bitmapInfoHeader.bitCount = 24;
+                bitmapInfoHeader.compression = 0; // BI_RGB
 
-			// get frame object
-			if ( ( getFrame = Win32.AVIStreamGetFrameOpen( stream, ref bitmapInfoHeader ) ) == IntPtr.Zero )
-			{
-				bitmapInfoHeader.height = -height;
-
+                // get frame object
                 if ( ( getFrame = Win32.AVIStreamGetFrameOpen( stream, ref bitmapInfoHeader ) ) == IntPtr.Zero )
-					throw new ApplicationException( "Failed initializing decompressor" );
-			}
+                {
+                    bitmapInfoHeader.height = -height;
+
+                    if ( ( getFrame = Win32.AVIStreamGetFrameOpen( stream, ref bitmapInfoHeader ) ) == IntPtr.Zero )
+                        throw new ApplicationException( "Failed initializing decompressor" );
+                }
+            }
 		}
 
         /// <summary>
@@ -236,26 +239,29 @@ namespace AForge.Video.VFW
         /// 
 		public void Close( )
 		{
-			// release get frame object
-			if ( getFrame != IntPtr.Zero )
-			{
-				Win32.AVIStreamGetFrameClose( getFrame );
-				getFrame = IntPtr.Zero;
-			}
+            lock ( this )
+            {
+                // release get frame object
+                if ( getFrame != IntPtr.Zero )
+                {
+                    Win32.AVIStreamGetFrameClose( getFrame );
+                    getFrame = IntPtr.Zero;
+                }
 
-			// release stream
-			if ( stream != IntPtr.Zero )
-			{
-				Win32.AVIStreamRelease( stream );
-				stream = IntPtr.Zero;
-			}
+                // release stream
+                if ( stream != IntPtr.Zero )
+                {
+                    Win32.AVIStreamRelease( stream );
+                    stream = IntPtr.Zero;
+                }
 
-			// release file
-			if ( file != IntPtr.Zero )
-			{
-				Win32.AVIFileRelease( file );
-				file = IntPtr.Zero;
-			}
+                // release file
+                if ( file != IntPtr.Zero )
+                {
+                    Win32.AVIFileRelease( file );
+                    file = IntPtr.Zero;
+                }
+            }
 		}
 
         /// <summary>
@@ -269,60 +275,63 @@ namespace AForge.Video.VFW
         /// 
         public Bitmap GetNextFrame( )
 		{
-			// get frame at specified position
-			IntPtr DIB = Win32.AVIStreamGetFrame( getFrame, position );
-			if ( DIB == IntPtr.Zero )
-				throw new ApplicationException( "Failed getting frame" );
+            lock ( this )
+            {
+                // get frame at specified position
+                IntPtr DIB = Win32.AVIStreamGetFrame( getFrame, position );
+                if ( DIB == IntPtr.Zero )
+                    throw new ApplicationException( "Failed getting frame" );
 
-			Win32.BITMAPINFOHEADER bitmapInfoHeader;
+                Win32.BITMAPINFOHEADER bitmapInfoHeader;
 
-			// copy BITMAPINFOHEADER from unmanaged memory
-            bitmapInfoHeader = (Win32.BITMAPINFOHEADER) Marshal.PtrToStructure( DIB, typeof( Win32.BITMAPINFOHEADER ) );
+                // copy BITMAPINFOHEADER from unmanaged memory
+                bitmapInfoHeader = (Win32.BITMAPINFOHEADER) Marshal.PtrToStructure( DIB, typeof( Win32.BITMAPINFOHEADER ) );
 
-			// create new bitmap
-			Bitmap image = new Bitmap( width, height, PixelFormat.Format24bppRgb );
+                // create new bitmap
+                Bitmap image = new Bitmap( width, height, PixelFormat.Format24bppRgb );
 
-			// lock bitmap data
-			BitmapData imageData = image.LockBits(
-				new Rectangle( 0, 0, width, height ),
-				ImageLockMode.ReadWrite,
-				PixelFormat.Format24bppRgb );
+                // lock bitmap data
+                BitmapData imageData = image.LockBits(
+                    new Rectangle( 0, 0, width, height ),
+                    ImageLockMode.ReadWrite,
+                    PixelFormat.Format24bppRgb );
 
-			// copy image data
-			int srcStride = imageData.Stride;
-            int dstStride = imageData.Stride;
+                // copy image data
+                int srcStride = imageData.Stride;
+                int dstStride = imageData.Stride;
 
-			// check image direction
-            if ( bitmapInfoHeader.height > 0 )
-			{
-				// it`s a bottom-top image
-				int dst = imageData.Scan0.ToInt32( ) + dstStride * ( height - 1 );
-				int src = DIB.ToInt32( ) + Marshal.SizeOf( typeof( Win32.BITMAPINFOHEADER ) );
+                // check image direction
+                if ( bitmapInfoHeader.height > 0 )
+                {
+                    // it`s a bottom-top image
+                    int dst = imageData.Scan0.ToInt32( ) + dstStride * ( height - 1 );
+                    int src = DIB.ToInt32( ) + Marshal.SizeOf( typeof( Win32.BITMAPINFOHEADER ) );
 
-				for ( int y = 0; y < height; y++ )
-				{
-					AForge.Win32.memcpy( dst, src, srcStride );
-					dst -= dstStride; 
-					src += srcStride;
-				}
-			}
-			else
-			{
-				// it`s a top bootom image
-				int dst = imageData.Scan0.ToInt32( );
-				int src = DIB.ToInt32( ) + Marshal.SizeOf( typeof( Win32.BITMAPINFOHEADER ) );
+                    for ( int y = 0; y < height; y++ )
+                    {
+                        AForge.Win32.memcpy( dst, src, srcStride );
+                        dst -= dstStride;
+                        src += srcStride;
+                    }
+                }
+                else
+                {
+                    // it`s a top bootom image
+                    int dst = imageData.Scan0.ToInt32( );
+                    int src = DIB.ToInt32( ) + Marshal.SizeOf( typeof( Win32.BITMAPINFOHEADER ) );
 
-				// copy the whole image
-				AForge.Win32.memcpy( dst, src, srcStride * height );
-			}
+                    // copy the whole image
+                    AForge.Win32.memcpy( dst, src, srcStride * height );
+                }
 
-			// unlock bitmap data
-			image.UnlockBits( imageData );
+                // unlock bitmap data
+                image.UnlockBits( imageData );
 
-            // move position to the next frame
-			position++;
+                // move position to the next frame
+                position++;
 
-			return image;
+                return image;
+            }
 		}
 	}
 }

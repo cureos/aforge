@@ -137,7 +137,7 @@ namespace AForge.Video.VFW
         /// 
         public AVIWriter( )
 		{
-			Win32.AVIFileInit();
+			Win32.AVIFileInit( );
 		}
 
         /// <summary>
@@ -148,8 +148,7 @@ namespace AForge.Video.VFW
         /// 
         /// <remarks>Initializes Video for Windows library.</remarks>
         /// 
-        public AVIWriter( string codec )
-            : this( )
+        public AVIWriter( string codec ) : this( )
 		{
 			this.codec = codec;
 		}
@@ -160,7 +159,7 @@ namespace AForge.Video.VFW
         /// 
         ~AVIWriter( )
 		{
-			Dispose(false);
+			Dispose( false );
 		}
 
         /// <summary>
@@ -210,63 +209,69 @@ namespace AForge.Video.VFW
 			// close previous file
 			Close( );
 
-			// calculate stride
-			stride = width * 3;
-			if ( ( stride % 4 ) != 0 )
-				stride += (4 - stride % 4 );
+            lock ( this )
+            {
+                // calculate stride
+                stride = width * 3;
+                if ( ( stride % 4 ) != 0 )
+                    stride += ( 4 - stride % 4 );
 
-			// create new file
-			if ( Win32.AVIFileOpen( out file, fileName, Win32.OpenFileMode.Create | Win32.OpenFileMode.Write, IntPtr.Zero ) != 0 )
-				throw new ApplicationException( "Failed opening file" );
+                // create new file
+                if ( Win32.AVIFileOpen( out file, fileName, Win32.OpenFileMode.Create | Win32.OpenFileMode.Write, IntPtr.Zero ) != 0 )
+                    throw new ApplicationException( "Failed opening file" );
 
-			this.width = width;
-			this.height = height;
+                this.width = width;
+                this.height = height;
 
-			// describe new stream
-			Win32.AVISTREAMINFO info = new Win32.AVISTREAMINFO( );
+                // describe new stream
+                Win32.AVISTREAMINFO info = new Win32.AVISTREAMINFO( );
 
-			info.type                   = Win32.mmioFOURCC( "vids" );
-			info.handler                = Win32.mmioFOURCC( codec );
-			info.scale                  = 1;
-			info.rate                   = rate;
-			info.suggestedBufferSize    = stride * height;
+                info.type = Win32.mmioFOURCC( "vids" );
+                info.handler = Win32.mmioFOURCC( codec );
+                info.scale = 1;
+                info.rate = rate;
+                info.suggestedBufferSize = stride * height;
 
-			// create stream
-			if ( Win32.AVIFileCreateStream( file, out stream, ref info ) != 0)
-				throw new ApplicationException( "Failed creating stream" );
+                // create stream
+                if ( Win32.AVIFileCreateStream( file, out stream, ref info ) != 0 )
+                    throw new ApplicationException( "Failed creating stream" );
 
-			// describe compression options
-			Win32.AVICOMPRESSOPTIONS options = new Win32.AVICOMPRESSOPTIONS( );
+                // describe compression options
+                Win32.AVICOMPRESSOPTIONS options = new Win32.AVICOMPRESSOPTIONS( );
 
-            options.handler = Win32.mmioFOURCC( codec );
-            options.quality = quality;
+                options.handler = Win32.mmioFOURCC( codec );
+                options.quality = quality;
 
-			//
-			// Win32.AVISaveOptions(stream, ref opts, IntPtr.Zero);
-			
-			// create compressed stream
-			if ( Win32.AVIMakeCompressedStream( out streamCompressed, stream, ref options, IntPtr.Zero ) != 0 )
-				throw new ApplicationException( "Failed creating compressed stream" );
+                //
+                // Win32.AVISaveOptions(stream, ref opts, IntPtr.Zero);
 
-			// describe frame format
-			Win32.BITMAPINFOHEADER bitmapInfoHeader = new Win32.BITMAPINFOHEADER( );
+                // create compressed stream
+                if ( Win32.AVIMakeCompressedStream( out streamCompressed, stream, ref options, IntPtr.Zero ) != 0 )
+                    throw new ApplicationException( "Failed creating compressed stream" );
 
-            bitmapInfoHeader.size           = Marshal.SizeOf( bitmapInfoHeader.GetType( ) );
-            bitmapInfoHeader.width          = width;
-            bitmapInfoHeader.height         = height;
-            bitmapInfoHeader.planes         = 1;
-            bitmapInfoHeader.bitCount       = 24;
-            bitmapInfoHeader.sizeImage      = 0;
-            bitmapInfoHeader.compression    = 0; // BI_RGB
+                // describe frame format
+                Win32.BITMAPINFOHEADER bitmapInfoHeader = new Win32.BITMAPINFOHEADER( );
 
-			// set frame format
-            if ( Win32.AVIStreamSetFormat( streamCompressed, 0, ref bitmapInfoHeader, Marshal.SizeOf( bitmapInfoHeader.GetType( ) ) ) != 0 )
-				throw new ApplicationException( "Failed creating compressed stream" );
+                bitmapInfoHeader.size = Marshal.SizeOf( bitmapInfoHeader.GetType( ) );
+                bitmapInfoHeader.width = width;
+                bitmapInfoHeader.height = height;
+                bitmapInfoHeader.planes = 1;
+                bitmapInfoHeader.bitCount = 24;
+                bitmapInfoHeader.sizeImage = 0;
+                bitmapInfoHeader.compression = 0; // BI_RGB
 
-			// alloc unmanaged memory for frame
-			buffer = Marshal.AllocHGlobal( stride * height );
+                // set frame format
+                if ( Win32.AVIStreamSetFormat( streamCompressed, 0, ref bitmapInfoHeader, Marshal.SizeOf( bitmapInfoHeader.GetType( ) ) ) != 0 )
+                    throw new ApplicationException( "Failed creating compressed stream" );
 
-			position = 0;
+                // alloc unmanaged memory for frame
+                buffer = Marshal.AllocHGlobal( stride * height );
+
+                if ( buffer == IntPtr.Zero )
+                    throw new ApplicationException( "Insufficient memory for internal buffer" );
+
+                position = 0;
+            }
 		}
 
         /// <summary>
@@ -275,33 +280,36 @@ namespace AForge.Video.VFW
         /// 
         public void Close( )
 		{
-			// free unmanaged memory
-            if ( buffer != IntPtr.Zero )
-			{
-                Marshal.FreeHGlobal( buffer );
-                buffer = IntPtr.Zero;
-			}
+            lock ( this )
+            {
+                // free unmanaged memory
+                if ( buffer != IntPtr.Zero )
+                {
+                    Marshal.FreeHGlobal( buffer );
+                    buffer = IntPtr.Zero;
+                }
 
-			// release compressed stream
-			if ( streamCompressed != IntPtr.Zero )
-			{
-				Win32.AVIStreamRelease( streamCompressed );
-				streamCompressed = IntPtr.Zero;
-			}
+                // release compressed stream
+                if ( streamCompressed != IntPtr.Zero )
+                {
+                    Win32.AVIStreamRelease( streamCompressed );
+                    streamCompressed = IntPtr.Zero;
+                }
 
-			// release stream
-			if ( stream != IntPtr.Zero )
-			{
-				Win32.AVIStreamRelease( stream );
-				stream = IntPtr.Zero;
-			}
+                // release stream
+                if ( stream != IntPtr.Zero )
+                {
+                    Win32.AVIStreamRelease( stream );
+                    stream = IntPtr.Zero;
+                }
 
-			// release file
-			if ( file != IntPtr.Zero )
-			{
-				Win32.AVIFileRelease( file );
-				file = IntPtr.Zero;
-			}
+                // release file
+                if ( file != IntPtr.Zero )
+                {
+                    Win32.AVIFileRelease( file );
+                    file = IntPtr.Zero;
+                }
+            }
 		}
 
         /// <summary>
@@ -315,38 +323,45 @@ namespace AForge.Video.VFW
         /// 
         public void AddFrame( Bitmap frameImage )
 		{
-			// check image dimension
-            if ( ( frameImage.Width != width ) || ( frameImage.Height != height ) )
-				throw new ApplicationException( "Invalid image dimension" );
+            lock ( this )
+            {
+                // check if AVI file was properly opened
+                if ( buffer == IntPtr.Zero )
+                    throw new ApplicationException( "AVI file should be successfully opened before writing" );
 
-			// lock bitmap data
-            BitmapData imageData = frameImage.LockBits(
-				new Rectangle( 0, 0, width, height ),
-				ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb );
+                // check image dimension
+                if ( ( frameImage.Width != width ) || ( frameImage.Height != height ) )
+                    throw new ApplicationException( "Invalid image dimension" );
 
-			// copy image data
-			int srcStride = imageData.Stride;
-			int dstStride = stride;
+                // lock bitmap data
+                BitmapData imageData = frameImage.LockBits(
+                    new Rectangle( 0, 0, width, height ),
+                    ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb );
 
-            int src = imageData.Scan0.ToInt32( ) + srcStride * ( height - 1 );
-			int dst = buffer.ToInt32( );
+                // copy image data
+                int srcStride = imageData.Stride;
+                int dstStride = stride;
 
-			for ( int y = 0; y < height; y++ )
-			{
-				AForge.Win32.memcpy( dst, src, dstStride );
-				dst += dstStride;
-				src -= srcStride;
-			}
+                int src = imageData.Scan0.ToInt32( ) + srcStride * ( height - 1 );
+                int dst = buffer.ToInt32( );
 
-			// unlock bitmap data
-            frameImage.UnlockBits( imageData );
+                for ( int y = 0; y < height; y++ )
+                {
+                    AForge.Win32.memcpy( dst, src, dstStride );
+                    dst += dstStride;
+                    src -= srcStride;
+                }
 
-			// write to stream
-			if ( Win32.AVIStreamWrite( streamCompressed, position, 1, buffer,
-				stride * height, 0, IntPtr.Zero, IntPtr.Zero ) != 0)
-				throw new ApplicationException( "Failed adding frame" );
+                // unlock bitmap data
+                frameImage.UnlockBits( imageData );
 
-			position++;
+                // write to stream
+                if ( Win32.AVIStreamWrite( streamCompressed, position, 1, buffer,
+                    stride * height, 0, IntPtr.Zero, IntPtr.Zero ) != 0 )
+                    throw new ApplicationException( "Failed adding frame" );
+
+                position++;
+            }
 		}
 	}
 }
