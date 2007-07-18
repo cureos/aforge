@@ -64,9 +64,9 @@ namespace AForge.Imaging
         /// <param name="value">Object to compare with.</param>
         /// 
         /// <returns><para>A signed number indicating the relative values of this instance and <b>value</b>: 1) greater than zero - 
-        /// This instance is greater than <b>value</b>; 2) zero - this instance is equal to <b>value</b>;
+        /// this instance is greater than <b>value</b>; 2) zero - this instance is equal to <b>value</b>;
         /// 3) greater than zero - this instance is less than <b>value</b>.</para>
-        /// <para><b>Note</b>:</para> the sort is descending.</returns>
+        /// <para><b>Note</b>:</para> the sort order is descending.</returns>
         /// 
         public int CompareTo( object value )
         {
@@ -78,7 +78,7 @@ namespace AForge.Imaging
 	/// Hough line transformation.
 	/// </summary>
     ///
-    /// <remarks><para>Hough line transformation allows to detect lines in an image.</para>
+    /// <remarks><para>Hough line transformation allows to detect lines in image.</para>
     /// <para>Sample usage:</para>
     /// <code>
     /// HoughLineTransformation lineTransform = new HoughLineTransformation( );
@@ -107,7 +107,7 @@ namespace AForge.Imaging
 		private double[]	cosMap;
         // Hough map
 		private short[,]	houghMap;
-		private short		maxMapIntensity;
+		private short		maxMapIntensity = 0;
 
 		private int 		localPeakRadius = 4;
         private short       minLineIntensity = 10;
@@ -201,7 +201,7 @@ namespace AForge.Imaging
         /// Process an image building Hough map.
         /// </summary>
         /// 
-        /// <param name="image">Souurse image to process.</param>
+        /// <param name="image">Source image to process.</param>
         /// 
 		public void ProcessImage( Bitmap image )
 		{
@@ -296,7 +296,7 @@ namespace AForge.Imaging
         /// Ñonvert Hough map to bitmap. 
         /// </summary>
         /// 
-        /// <returns>Returns bitmap, which shows Hough map.</returns>
+        /// <returns>Returns a bitmap, which shows Hough map.</returns>
         /// 
 		public Bitmap ToBitmap( )
 		{
@@ -396,7 +396,7 @@ namespace AForge.Imaging
 
             int     halfHoughWidth = maxRadius >> 1;
 
-            // lines collection
+            // clean lines collection
             lines.Clear( );
 
 			// for each Theta value

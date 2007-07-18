@@ -354,6 +354,7 @@
     <Compile Include="Filters\YCbCr Filters\YCbCrReplaceChannel.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="HoughCircleTransformation.cs" />
     <Compile Include="Image.cs">
       <SubType>Code</SubType>
     </Compile>
