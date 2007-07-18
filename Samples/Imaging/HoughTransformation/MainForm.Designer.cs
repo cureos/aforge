@@ -36,15 +36,19 @@ namespace HoughTransform
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog( );
             this.tabControl = new System.Windows.Forms.TabControl( );
             this.tabPage1 = new System.Windows.Forms.TabPage( );
-            this.tabPage2 = new System.Windows.Forms.TabPage( );
             this.sourcePictureBox = new System.Windows.Forms.PictureBox( );
+            this.tabPage2 = new System.Windows.Forms.TabPage( );
             this.houghLinePictureBox = new System.Windows.Forms.PictureBox( );
+            this.tabPage3 = new System.Windows.Forms.TabPage( );
+            this.houghCirclePictureBox = new System.Windows.Forms.PictureBox( );
             this.menuStrip1.SuspendLayout( );
             this.tabControl.SuspendLayout( );
             this.tabPage1.SuspendLayout( );
-            this.tabPage2.SuspendLayout( );
             ( (System.ComponentModel.ISupportInitialize) ( this.sourcePictureBox ) ).BeginInit( );
+            this.tabPage2.SuspendLayout( );
             ( (System.ComponentModel.ISupportInitialize) ( this.houghLinePictureBox ) ).BeginInit( );
+            this.tabPage3.SuspendLayout( );
+            ( (System.ComponentModel.ISupportInitialize) ( this.houghCirclePictureBox ) ).BeginInit( );
             this.SuspendLayout( );
             // 
             // menuStrip1
@@ -71,19 +75,19 @@ namespace HoughTransform
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.ShortcutKeys = ( (System.Windows.Forms.Keys) ( ( System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O ) ) );
-            this.openToolStripMenuItem.Size = new System.Drawing.Size( 152, 22 );
+            this.openToolStripMenuItem.Size = new System.Drawing.Size( 151, 22 );
             this.openToolStripMenuItem.Text = "&Open";
             this.openToolStripMenuItem.Click += new System.EventHandler( this.openToolStripMenuItem_Click );
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size( 149, 6 );
+            this.toolStripMenuItem1.Size = new System.Drawing.Size( 148, 6 );
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size( 152, 22 );
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size( 151, 22 );
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler( this.exitToolStripMenuItem_Click );
             // 
@@ -98,6 +102,7 @@ namespace HoughTransform
             // 
             this.tabControl.Controls.Add( this.tabPage1 );
             this.tabControl.Controls.Add( this.tabPage2 );
+            this.tabControl.Controls.Add( this.tabPage3 );
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point( 0, 24 );
             this.tabControl.Name = "tabControl";
@@ -116,6 +121,16 @@ namespace HoughTransform
             this.tabPage1.Text = "Original image";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // sourcePictureBox
+            // 
+            this.sourcePictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sourcePictureBox.Location = new System.Drawing.Point( 3, 3 );
+            this.sourcePictureBox.Name = "sourcePictureBox";
+            this.sourcePictureBox.Size = new System.Drawing.Size( 618, 410 );
+            this.sourcePictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.sourcePictureBox.TabIndex = 0;
+            this.sourcePictureBox.TabStop = false;
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add( this.houghLinePictureBox );
@@ -127,16 +142,6 @@ namespace HoughTransform
             this.tabPage2.Text = "Hough lines";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // sourcePictureBox
-            // 
-            this.sourcePictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sourcePictureBox.Location = new System.Drawing.Point( 3, 3 );
-            this.sourcePictureBox.Name = "sourcePictureBox";
-            this.sourcePictureBox.Size = new System.Drawing.Size( 618, 410 );
-            this.sourcePictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.sourcePictureBox.TabIndex = 0;
-            this.sourcePictureBox.TabStop = false;
-            // 
             // houghLinePictureBox
             // 
             this.houghLinePictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -146,6 +151,26 @@ namespace HoughTransform
             this.houghLinePictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.houghLinePictureBox.TabIndex = 0;
             this.houghLinePictureBox.TabStop = false;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add( this.houghCirclePictureBox );
+            this.tabPage3.Location = new System.Drawing.Point( 4, 22 );
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size( 624, 416 );
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Hough circles";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // houghCirclePictureBox
+            // 
+            this.houghCirclePictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.houghCirclePictureBox.Location = new System.Drawing.Point( 0, 0 );
+            this.houghCirclePictureBox.Name = "houghCirclePictureBox";
+            this.houghCirclePictureBox.Size = new System.Drawing.Size( 624, 416 );
+            this.houghCirclePictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.houghCirclePictureBox.TabIndex = 0;
+            this.houghCirclePictureBox.TabStop = false;
             // 
             // MainForm
             // 
@@ -161,9 +186,11 @@ namespace HoughTransform
             this.menuStrip1.PerformLayout( );
             this.tabControl.ResumeLayout( false );
             this.tabPage1.ResumeLayout( false );
-            this.tabPage2.ResumeLayout( false );
             ( (System.ComponentModel.ISupportInitialize) ( this.sourcePictureBox ) ).EndInit( );
+            this.tabPage2.ResumeLayout( false );
             ( (System.ComponentModel.ISupportInitialize) ( this.houghLinePictureBox ) ).EndInit( );
+            this.tabPage3.ResumeLayout( false );
+            ( (System.ComponentModel.ISupportInitialize) ( this.houghCirclePictureBox ) ).EndInit( );
             this.ResumeLayout( false );
             this.PerformLayout( );
 
@@ -182,6 +209,8 @@ namespace HoughTransform
         private System.Windows.Forms.PictureBox sourcePictureBox;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.PictureBox houghLinePictureBox;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.PictureBox houghCirclePictureBox;
     }
 }
 

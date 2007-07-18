@@ -22,6 +22,7 @@ namespace HoughTransform
     {
         private Bitmap sourceImage;
         private Bitmap houghLineImage;
+        private Bitmap houghCirlceImage;
 
         // binarization filtering sequence
         private FiltersSequence filter = new FiltersSequence(
@@ -30,7 +31,7 @@ namespace HoughTransform
         );
 
         HoughLineTransformation lineTransform = new HoughLineTransformation( );
-
+        HoughCircleTransformation circleTransform = new HoughCircleTransformation( 35 );
 
         // Construct MainForm
         public MainForm( )
@@ -74,9 +75,26 @@ namespace HoughTransform
                     System.Diagnostics.Debug.WriteLine( "Found lines: " + lineTransform.LinesCount );
                     System.Diagnostics.Debug.WriteLine( "Max intensity: " + lineTransform.MaxIntensity );
 
+                    // apply Hough circle transform
+                    circleTransform.ProcessImage( sourceImage );
+                    houghCirlceImage = circleTransform.ToBitmap( );
+
+                    // get circles using relative intensity
+                    HoughCircle[] circles = circleTransform.GetCirclesByRelativeIntensity( 0.5 );
+
+                    foreach ( HoughCircle circle in circles )
+                    {
+                        string s = string.Format( "X = {0}, Y = {1}, I = {2} ({3})", circle.X, circle.Y, circle.Intensity, circle.RelativeIntensity );
+                        System.Diagnostics.Debug.WriteLine( s );
+                    }
+
+                    System.Diagnostics.Debug.WriteLine( "Found circles: " + circleTransform.CirclesCount );
+                    System.Diagnostics.Debug.WriteLine( "Max intensity: " + circleTransform.MaxIntensity );
+
                     // show images
                     sourcePictureBox.Image = sourceImage;
                     houghLinePictureBox.Image = houghLineImage;
+                    houghCirclePictureBox.Image = houghCirlceImage;
                 }
             }
             catch
