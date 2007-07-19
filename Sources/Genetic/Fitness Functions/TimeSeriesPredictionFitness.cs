@@ -10,11 +10,6 @@ namespace AForge.Genetic
 	using AForge;
 
 	/// <summary>
-	/// Evaluates fitness of GP chromosomes for time series prediction task
-	/// </summary>
-	/// 
-
-	/// <summary>
 	/// Fitness function for times series prediction problem
 	/// </summary>
 	/// 

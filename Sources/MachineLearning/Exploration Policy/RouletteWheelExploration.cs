@@ -14,15 +14,15 @@ namespace AForge.MachineLearning
     /// </summary>
     /// 
     /// <remarks><para>The class implements roulette whell exploration policy. Acording to the policy,
-    /// action <i>a</i> at state <i>s</i> is selected with the next probability:
+    /// action <i>a</i> at state <i>s</i> is selected with the next probability:</para>
     /// <code>
     ///                   Q( s, a )
     /// p( s, a ) = ------------------
     ///              SUM( Q( s, b ) )
     ///               b
     /// </code>
-    /// <b>Note:</b> the exploration policy may be applied only in cases, when action estimates (usefulness)
-    /// are represented with positive value greater then 0.
+    /// <para><b>Note:</b> the exploration policy may be applied only in cases, when action estimates (usefulness)
+    /// are represented with positive value greater then 0.</para>
     /// </remarks>
     /// 
     public class RouletteWheelExploration : IExplorationPolicy
