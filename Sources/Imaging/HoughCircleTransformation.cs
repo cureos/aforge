@@ -384,9 +384,9 @@ namespace AForge.Imaging
                         for ( int tx = x - localPeakRadius, txMax = x + localPeakRadius; tx < txMax; tx++ )
                         {
                             // continue or break if the coordinate is out of map
-                            if ( x < 0 )
+                            if ( tx < 0 )
                                 continue;
-                            if ( x >= width )
+                            if ( tx >= width )
                                 break;
 
                             // compare the neighboor with current value
