@@ -1,3 +1,16 @@
+AForge.NET 1.4.1 release notes
+------------------------------
+21.07.2007.
+
+Version updates and fixes:
+
+* AForge.Imaging
+  - Fixed an issue with out of range coordinates checking in Hough Circle Transformation.
+
+
+
+
+
 AForge.NET 1.4.0 release notes
 ------------------------------
 19.07.2007.
