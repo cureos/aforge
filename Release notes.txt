@@ -1,3 +1,22 @@
+AForge.NET 1.4.2 release notes
+------------------------------
+01.08.2007.
+
+Version updates and fixes:
+
+* General
+  - Added new namespaces: Video.DirectShow;
+
+* AForge.Video.DirectShow
+  - VideoCaptureDevice class added to access local video capture devices like USB webcams
+    using DirectShow;
+  - FileVideoSource added to access video files using DirectShow (DirectShow supports more
+    video codecs than Video for Windows so this class allows to play wider range of video
+    files).
+
+
+
+
 AForge.NET 1.4.1 release notes
 ------------------------------
 21.07.2007.
@@ -6,7 +25,6 @@ Version updates and fixes:
 
 * AForge.Imaging
   - Fixed an issue with out of range coordinates checking in Hough Circle Transformation.
-
 
 
 

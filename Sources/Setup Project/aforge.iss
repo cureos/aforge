@@ -2,7 +2,7 @@
 
 [Setup]
 AppName=AForge.NET Framework
-AppVerName=AForge.NET Framework 1.4.1
+AppVerName=AForge.NET Framework 1.4.2
 AppPublisher=AForge
 AppPublisherURL=http://code.google.com/p/aforge
 AppSupportURL=http://code.google.com/p/aforge
