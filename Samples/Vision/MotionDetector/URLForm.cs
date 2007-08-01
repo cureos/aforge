@@ -1,3 +1,10 @@
+// AForge.NET Framework
+// Motion Detection sample application
+//
+// Copyright © Andrew Kirillov, 2007
+// andrew.kirillov@gmail.com
+//
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

@@ -163,7 +163,7 @@ namespace AForge.Video.VFW
         /// Dispose the object
         /// </summary>
         /// 
-        /// <param name="disposing">Indicates if disposing was initiated manually</param>
+        /// <param name="disposing">Indicates if disposing was initiated manually.</param>
         /// 
 		protected virtual void Dispose( bool disposing )
 		{

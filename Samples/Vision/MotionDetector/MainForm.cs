@@ -16,6 +16,7 @@ using System.Threading;
 
 using AForge.Video;
 using AForge.Video.VFW;
+using AForge.Video.DirectShow;
 using AForge.Vision;
 
 namespace MotionDetector
@@ -122,6 +123,35 @@ namespace MotionDetector
                 // open it
                 OpenVideoSource( mjpegSource );
             }
+        }
+
+        // Open local video capture device
+        private void localVideoCaptureDeviceToolStripMenuItem_Click( object sender, EventArgs e )
+        {
+            VideoCaptureDeviceForm form = new VideoCaptureDeviceForm( );
+
+            if ( form.ShowDialog( this ) == DialogResult.OK )
+            {
+                // create video source
+                VideoCaptureDevice videoSource = new VideoCaptureDevice( form.VideoDevice );
+
+                // open it
+                OpenVideoSource( videoSource );
+            }
+        }
+
+        // Open video file using DirectShow
+        private void openVideoFileusingDirectShowToolStripMenuItem_Click( object sender, EventArgs e )
+        {
+            if ( openFileDialog.ShowDialog( ) == DialogResult.OK )
+            {
+                // create video source
+                FileVideoSource fileSource = new FileVideoSource( openFileDialog.FileName );
+
+                // open it
+                OpenVideoSource( fileSource );
+            }
+
         }
 
         // Open video source
