@@ -1,6 +1,6 @@
 ﻿<project schemaVersion="1.3.3.1">
     <assemblies>
-        <assembly assemblyPath="D:\Andrew\AForge\Video.DirectShow\Release\AForge.Video.DirectShow.dll" xmlCommentsPath="D:\Andrew\AForge\Video.DirectShow\Release\AForge.Video.DirectShow.xml" commentsOnly="False" />
+        <assembly assemblyPath="D:\Andrew\AForge\trunk\Release\AForge.Video.DirectShow.dll" xmlCommentsPath="D:\Andrew\AForge\trunk\Release\AForge.Video.DirectShow.xml" commentsOnly="False" />
     </assemblies>
     <namespaceSummaries>
         <namespaceSummaryItem name="" isDocumented="False" />
