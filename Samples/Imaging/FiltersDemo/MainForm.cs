@@ -20,56 +20,56 @@ using AForge.Imaging.Textures;
 
 namespace FiltersDemo
 {
-	/// <summary>
-	/// Summary description for MainForm.
-	/// </summary>
-	public class MainForm : System.Windows.Forms.Form
-	{
-		private System.Windows.Forms.MenuItem fileItem;
-		private System.Windows.Forms.MenuItem openFileItem;
-		private System.Windows.Forms.MenuItem menuItem3;
-		private System.Windows.Forms.MenuItem exitFilrItem;
-		private System.Windows.Forms.OpenFileDialog openFileDialog;
-		private System.Windows.Forms.PictureBox pictureBox;
-		private System.Windows.Forms.MainMenu mainMenu;
-		private System.Windows.Forms.MenuItem sizeItem;
-		private System.Windows.Forms.MenuItem normalSizeItem;
-		private System.Windows.Forms.MenuItem stretchedSizeItem;
-		private System.Windows.Forms.MenuItem centeredSizeItem;
-		private System.Windows.Forms.MenuItem filtersItem;
-		private System.Windows.Forms.MenuItem noneFiltersItem;
-		private System.Windows.Forms.MenuItem menuItem1;
-		private System.Windows.Forms.MenuItem sepiaFiltersItem;
-		private System.Windows.Forms.MenuItem invertFiltersItem;
-		private System.Windows.Forms.MenuItem rotateChannelFiltersItem;
-		private System.Windows.Forms.MenuItem grayscaleFiltersItem;
-		private System.Windows.Forms.MenuItem extractChannelFiltersItem;
-		private System.Windows.Forms.MenuItem gammaFiltersItem;
-		private System.Windows.Forms.MenuItem channelFiltersItem;
-		private System.Windows.Forms.MenuItem colorFiltersItem;
-		private System.Windows.Forms.MenuItem euclideanColorFiltersItem;
-		private System.Windows.Forms.MenuItem menuItem2;
-		private System.Windows.Forms.MenuItem hueModifierFiltersItem;
-		private System.Windows.Forms.MenuItem saturationAdjustingFiltersItem;
-		private System.Windows.Forms.MenuItem brightnessAdjustingFiltersItem;
-		private System.Windows.Forms.MenuItem contrastAdjustingFiltersItem;
-		private System.Windows.Forms.MenuItem hslFiltersItem;
-		private System.Windows.Forms.MenuItem menuItem4;
-		private System.Windows.Forms.MenuItem yCbCrLinearFiltersItem;
-		private System.Windows.Forms.MenuItem yCbCrFiltersItem;
-		private System.Windows.Forms.MenuItem extractCbFiltersItem;
-		private System.Windows.Forms.MenuItem menuItem5;
-		private System.Windows.Forms.MenuItem thresholdFiltersItem;
-		private System.Windows.Forms.MenuItem floydFiltersItem;
-		private System.Windows.Forms.MenuItem orderedDitheringFiltersItem;
-		private System.Windows.Forms.MenuItem adaptiveBinarizationFiltersItem;
-		private System.Windows.Forms.MenuItem menuItem6;
-		private System.Windows.Forms.MenuItem correlationFiltersItem;
-		private System.Windows.Forms.MenuItem sharpenFiltersItem;
-		private System.Windows.Forms.MenuItem menuItem7;
-		private System.Windows.Forms.MenuItem differenceEdgesFiltersItem;
-		private System.Windows.Forms.MenuItem homogenityEdgesFiltersItem;
-		private System.Windows.Forms.MenuItem sobelEdgesFiltersItem;
+    /// <summary>
+    /// Summary description for MainForm.
+    /// </summary>
+    public class MainForm : System.Windows.Forms.Form
+    {
+        private System.Windows.Forms.MenuItem fileItem;
+        private System.Windows.Forms.MenuItem openFileItem;
+        private System.Windows.Forms.MenuItem menuItem3;
+        private System.Windows.Forms.MenuItem exitFilrItem;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.PictureBox pictureBox;
+        private System.Windows.Forms.MainMenu mainMenu;
+        private System.Windows.Forms.MenuItem sizeItem;
+        private System.Windows.Forms.MenuItem normalSizeItem;
+        private System.Windows.Forms.MenuItem stretchedSizeItem;
+        private System.Windows.Forms.MenuItem centeredSizeItem;
+        private System.Windows.Forms.MenuItem filtersItem;
+        private System.Windows.Forms.MenuItem noneFiltersItem;
+        private System.Windows.Forms.MenuItem menuItem1;
+        private System.Windows.Forms.MenuItem sepiaFiltersItem;
+        private System.Windows.Forms.MenuItem invertFiltersItem;
+        private System.Windows.Forms.MenuItem rotateChannelFiltersItem;
+        private System.Windows.Forms.MenuItem grayscaleFiltersItem;
+        private System.Windows.Forms.MenuItem extractChannelFiltersItem;
+        private System.Windows.Forms.MenuItem gammaFiltersItem;
+        private System.Windows.Forms.MenuItem channelFiltersItem;
+        private System.Windows.Forms.MenuItem colorFiltersItem;
+        private System.Windows.Forms.MenuItem euclideanColorFiltersItem;
+        private System.Windows.Forms.MenuItem menuItem2;
+        private System.Windows.Forms.MenuItem hueModifierFiltersItem;
+        private System.Windows.Forms.MenuItem saturationAdjustingFiltersItem;
+        private System.Windows.Forms.MenuItem brightnessAdjustingFiltersItem;
+        private System.Windows.Forms.MenuItem contrastAdjustingFiltersItem;
+        private System.Windows.Forms.MenuItem hslFiltersItem;
+        private System.Windows.Forms.MenuItem menuItem4;
+        private System.Windows.Forms.MenuItem yCbCrLinearFiltersItem;
+        private System.Windows.Forms.MenuItem yCbCrFiltersItem;
+        private System.Windows.Forms.MenuItem extractCbFiltersItem;
+        private System.Windows.Forms.MenuItem menuItem5;
+        private System.Windows.Forms.MenuItem thresholdFiltersItem;
+        private System.Windows.Forms.MenuItem floydFiltersItem;
+        private System.Windows.Forms.MenuItem orderedDitheringFiltersItem;
+        private System.Windows.Forms.MenuItem adaptiveBinarizationFiltersItem;
+        private System.Windows.Forms.MenuItem menuItem6;
+        private System.Windows.Forms.MenuItem correlationFiltersItem;
+        private System.Windows.Forms.MenuItem sharpenFiltersItem;
+        private System.Windows.Forms.MenuItem menuItem7;
+        private System.Windows.Forms.MenuItem differenceEdgesFiltersItem;
+        private System.Windows.Forms.MenuItem homogenityEdgesFiltersItem;
+        private System.Windows.Forms.MenuItem sobelEdgesFiltersItem;
         private System.Windows.Forms.MenuItem rgbLinearFiltersItem;
         private System.Windows.Forms.MenuItem menuItem8;
         private System.Windows.Forms.MenuItem medianFiltersItem;
@@ -81,42 +81,42 @@ namespace FiltersDemo
         private IContainer components;
 
         private System.Drawing.Bitmap sourceImage;
-		private System.Drawing.Bitmap	filteredImage;
+        private System.Drawing.Bitmap filteredImage;
 
-		// Constructor
-		public MainForm( )
-		{
-			//
-			// Required for Windows Form Designer support
-			//
-			InitializeComponent();
+        // Constructor
+        public MainForm( )
+        {
+            //
+            // Required for Windows Form Designer support
+            //
+            InitializeComponent( );
 
-			// set default size mode of picture box
-			pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-		}
+            // set default size mode of picture box
+            pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+        }
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if (components != null) 
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        protected override void Dispose( bool disposing )
+        {
+            if ( disposing )
+            {
+                if ( components != null )
+                {
+                    components.Dispose( );
+                }
+            }
+            base.Dispose( disposing );
+        }
 
-		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
+        #region Windows Form Designer generated code
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent( )
+        {
             this.components = new System.ComponentModel.Container( );
             this.mainMenu = new System.Windows.Forms.MainMenu( this.components );
             this.fileItem = new System.Windows.Forms.MenuItem( );
@@ -553,266 +553,266 @@ namespace FiltersDemo
             ( (System.ComponentModel.ISupportInitialize) ( this.pictureBox ) ).EndInit( );
             this.ResumeLayout( false );
 
-		}
-		#endregion
+        }
+        #endregion
 
-		/// <summary>
-		/// The main entry point for the application.
-		/// </summary>
-		[STAThread]
-		static void Main( ) 
-		{
-			Application.Run( new MainForm( ) );
-		}
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        static void Main( )
+        {
+            Application.Run( new MainForm( ) );
+        }
 
-		// On File->Exit menu item
-		private void exitFilrItem_Click( object sender, System.EventArgs e )
-		{
-			Application.Exit( );
-		}
+        // On File->Exit menu item
+        private void exitFilrItem_Click( object sender, System.EventArgs e )
+        {
+            Application.Exit( );
+        }
 
-		// On File->Open menu item
-		private void openFileItem_Click( object sender, System.EventArgs e )
-		{
-			try
-			{
-				// show file open dialog
-				if ( openFileDialog.ShowDialog( ) == DialogResult.OK )
-				{
-					// load image
-					sourceImage = (Bitmap) Bitmap.FromFile( openFileDialog.FileName );
-					// format image
-					AForge.Imaging.Image.FormatImage( ref sourceImage );
+        // On File->Open menu item
+        private void openFileItem_Click( object sender, System.EventArgs e )
+        {
+            try
+            {
+                // show file open dialog
+                if ( openFileDialog.ShowDialog( ) == DialogResult.OK )
+                {
+                    // load image
+                    sourceImage = (Bitmap) Bitmap.FromFile( openFileDialog.FileName );
+                    // format image
+                    AForge.Imaging.Image.FormatImage( ref sourceImage );
 
-					// image type
-					if ( sourceImage.PixelFormat != PixelFormat.Format24bppRgb )
-					{
-						MessageBox.Show( "The demo application support only color images.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
-						// free image
-						sourceImage.Dispose( );
-						sourceImage = null;
-					}
+                    // image type
+                    if ( sourceImage.PixelFormat != PixelFormat.Format24bppRgb )
+                    {
+                        MessageBox.Show( "The demo application support only color images.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                        // free image
+                        sourceImage.Dispose( );
+                        sourceImage = null;
+                    }
 
-					ClearCurrentImage( );
+                    ClearCurrentImage( );
 
-					// display image
-					pictureBox.Image = sourceImage;
-					noneFiltersItem.Checked = true;
+                    // display image
+                    pictureBox.Image = sourceImage;
+                    noneFiltersItem.Checked = true;
 
-					// enable filters menu
-					filtersItem.Enabled = ( sourceImage != null );
-				}
-			}
-			catch
-			{
-				MessageBox.Show( "Failed loading the image", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
-			}
-		}
+                    // enable filters menu
+                    filtersItem.Enabled = ( sourceImage != null );
+                }
+            }
+            catch
+            {
+                MessageBox.Show( "Failed loading the image", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+            }
+        }
 
-		// On Size mode->Normal menu item
-		private void normalSizeItem_Click(object sender, System.EventArgs e)
-		{
-			pictureBox.SizeMode = PictureBoxSizeMode.Normal;
-		}
+        // On Size mode->Normal menu item
+        private void normalSizeItem_Click( object sender, System.EventArgs e )
+        {
+            pictureBox.SizeMode = PictureBoxSizeMode.Normal;
+        }
 
-		// On Size mode->Stretched menu item
-		private void stretchedSizeItem_Click( object sender, System.EventArgs e )
-		{
-			pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-		}
+        // On Size mode->Stretched menu item
+        private void stretchedSizeItem_Click( object sender, System.EventArgs e )
+        {
+            pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+        }
 
-		// On Size mode->Centered size menu item
-		private void centeredSizeItem_Click(object sender, System.EventArgs e)
-		{
-			pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
-		}
+        // On Size mode->Centered size menu item
+        private void centeredSizeItem_Click( object sender, System.EventArgs e )
+        {
+            pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
+        }
 
-		// On Size menu item popup
-		private void sizeItem_Popup(object sender, System.EventArgs e)
-		{
-			normalSizeItem.Checked = ( pictureBox.SizeMode == PictureBoxSizeMode.Normal );
-			stretchedSizeItem.Checked = ( pictureBox.SizeMode == PictureBoxSizeMode.StretchImage );
-			centeredSizeItem.Checked = ( pictureBox.SizeMode == PictureBoxSizeMode.CenterImage );
-		}
+        // On Size menu item popup
+        private void sizeItem_Popup( object sender, System.EventArgs e )
+        {
+            normalSizeItem.Checked = ( pictureBox.SizeMode == PictureBoxSizeMode.Normal );
+            stretchedSizeItem.Checked = ( pictureBox.SizeMode == PictureBoxSizeMode.StretchImage );
+            centeredSizeItem.Checked = ( pictureBox.SizeMode == PictureBoxSizeMode.CenterImage );
+        }
 
-		// Clear current image in picture box
-		private void ClearCurrentImage( )
-		{
-			// clear current image from picture box
-			pictureBox.Image = null;
-			// free current image
-			if ( ( noneFiltersItem.Checked == false ) && ( filteredImage != null ) )
-			{
-				filteredImage.Dispose( );
-				filteredImage = null;
-			}
-			// uncheck all menu items
-			foreach ( MenuItem item in filtersItem.MenuItems )
-				item.Checked = false;
-		}
+        // Clear current image in picture box
+        private void ClearCurrentImage( )
+        {
+            // clear current image from picture box
+            pictureBox.Image = null;
+            // free current image
+            if ( ( noneFiltersItem.Checked == false ) && ( filteredImage != null ) )
+            {
+                filteredImage.Dispose( );
+                filteredImage = null;
+            }
+            // uncheck all menu items
+            foreach ( MenuItem item in filtersItem.MenuItems )
+                item.Checked = false;
+        }
 
-		// Apply filter to the source image and show the filtered image
-		private void ApplyFilter( IFilter filter )
-		{
-			ClearCurrentImage( );
-			// apply filter
-			filteredImage = filter.Apply( sourceImage );
-			// display filtered image
-			pictureBox.Image = filteredImage;
-		}
+        // Apply filter to the source image and show the filtered image
+        private void ApplyFilter( IFilter filter )
+        {
+            ClearCurrentImage( );
+            // apply filter
+            filteredImage = filter.Apply( sourceImage );
+            // display filtered image
+            pictureBox.Image = filteredImage;
+        }
 
-		// On Filters->None item
-		private void noneFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ClearCurrentImage( );
-			// display source image
-			pictureBox.Image = sourceImage;
-			noneFiltersItem.Checked = true;
-		}
+        // On Filters->None item
+        private void noneFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ClearCurrentImage( );
+            // display source image
+            pictureBox.Image = sourceImage;
+            noneFiltersItem.Checked = true;
+        }
 
-		// On Filters->Grayscale item
-		private void grayscaleFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ApplyFilter( new GrayscaleBT709( ) );
-			grayscaleFiltersItem.Checked = true;
-		}
+        // On Filters->Grayscale item
+        private void grayscaleFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ApplyFilter( new GrayscaleBT709( ) );
+            grayscaleFiltersItem.Checked = true;
+        }
 
-		// On Filters->Sepia item
-		private void sepiaFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ApplyFilter( new Sepia( ) );
-			sepiaFiltersItem.Checked = true;
-		}
+        // On Filters->Sepia item
+        private void sepiaFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ApplyFilter( new Sepia( ) );
+            sepiaFiltersItem.Checked = true;
+        }
 
-		// On Filters->Invert item
-		private void invertFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ApplyFilter( new Invert( ) );
-			invertFiltersItem.Checked = true;
-		}
+        // On Filters->Invert item
+        private void invertFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ApplyFilter( new Invert( ) );
+            invertFiltersItem.Checked = true;
+        }
 
-		// On Filters->Rotate Channels item
-		private void rotateChannelFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ApplyFilter( new RotateChannels( ) );
-			rotateChannelFiltersItem.Checked = true;
-		}
+        // On Filters->Rotate Channels item
+        private void rotateChannelFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ApplyFilter( new RotateChannels( ) );
+            rotateChannelFiltersItem.Checked = true;
+        }
 
-		// On Filters->Extract Channel
-		private void extractChannelFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ApplyFilter( new ExtractChannel( RGB.G ) );
-			extractChannelFiltersItem.Checked = true;
-		}
+        // On Filters->Extract Channel
+        private void extractChannelFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ApplyFilter( new ExtractChannel( RGB.G ) );
+            extractChannelFiltersItem.Checked = true;
+        }
 
-		// On Filters->Gamma Correction
-		private void gammaFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ApplyFilter( new GammaCorrection( ) );
-			gammaFiltersItem.Checked = true;
-		}
+        // On Filters->Gamma Correction
+        private void gammaFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ApplyFilter( new GammaCorrection( ) );
+            gammaFiltersItem.Checked = true;
+        }
 
-		// On Filters->Channel filtering
-		private void channelFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ApplyFilter( new ChannelFiltering( new IntRange( 25, 230), new IntRange( 25, 230), new IntRange( 25, 230) ) );
-			channelFiltersItem.Checked = true;
-		}
+        // On Filters->Channel filtering
+        private void channelFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ApplyFilter( new ChannelFiltering( new IntRange( 25, 230 ), new IntRange( 25, 230 ), new IntRange( 25, 230 ) ) );
+            channelFiltersItem.Checked = true;
+        }
 
-		// On Filters->Color filtering
-		private void colorFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ApplyFilter( new ColorFiltering( new IntRange( 25, 230), new IntRange( 25, 230), new IntRange( 25, 230) ) );
-			colorFiltersItem.Checked = true;
-		}
+        // On Filters->Color filtering
+        private void colorFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ApplyFilter( new ColorFiltering( new IntRange( 25, 230 ), new IntRange( 25, 230 ), new IntRange( 25, 230 ) ) );
+            colorFiltersItem.Checked = true;
+        }
 
-		// On Filters->Euclidean color filtering
-		private void euclideanColorFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ApplyFilter( new EuclideanColorFiltering( Color.FromArgb( 255, 0, 0 ), 150 ) );
-			euclideanColorFiltersItem.Checked = true;
-		}
+        // On Filters->Euclidean color filtering
+        private void euclideanColorFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ApplyFilter( new EuclideanColorFiltering( Color.FromArgb( 255, 0, 0 ), 150 ) );
+            euclideanColorFiltersItem.Checked = true;
+        }
 
-		// On Filters->Hue modifier
-		private void hueModifierFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ApplyFilter( new HueModifier( 50 ) );
-			hueModifierFiltersItem.Checked = true;
-		}
+        // On Filters->Hue modifier
+        private void hueModifierFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ApplyFilter( new HueModifier( 50 ) );
+            hueModifierFiltersItem.Checked = true;
+        }
 
-		// On Filters->Saturation adjusting
-		private void saturationAdjustingFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ApplyFilter( new SaturationCorrection( 0.15 ) );
-			saturationAdjustingFiltersItem.Checked = true;
-		}
+        // On Filters->Saturation adjusting
+        private void saturationAdjustingFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ApplyFilter( new SaturationCorrection( 0.15 ) );
+            saturationAdjustingFiltersItem.Checked = true;
+        }
 
-		// On Filters->Brightness adjusting
-		private void brightnessAdjustingFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ApplyFilter( new BrightnessCorrection( ) );
-			brightnessAdjustingFiltersItem.Checked = true;
-		}
+        // On Filters->Brightness adjusting
+        private void brightnessAdjustingFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ApplyFilter( new BrightnessCorrection( ) );
+            brightnessAdjustingFiltersItem.Checked = true;
+        }
 
-		// On Filters->Contrast adjusting
-		private void contrastAdjustingFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ApplyFilter( new ContrastCorrection( ) );
-			contrastAdjustingFiltersItem.Checked = true;
-		}
+        // On Filters->Contrast adjusting
+        private void contrastAdjustingFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ApplyFilter( new ContrastCorrection( ) );
+            contrastAdjustingFiltersItem.Checked = true;
+        }
 
-		// On Filters->HSL filtering
-		private void hslFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ApplyFilter( new HSLFiltering( new IntRange( 330, 30 ), new DoubleRange( 0, 1 ), new DoubleRange( 0, 1 ) ) );
-			hslFiltersItem.Checked = true;
-		}
+        // On Filters->HSL filtering
+        private void hslFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ApplyFilter( new HSLFiltering( new IntRange( 330, 30 ), new DoubleRange( 0, 1 ), new DoubleRange( 0, 1 ) ) );
+            hslFiltersItem.Checked = true;
+        }
 
-		// On Filters->YCbCr filtering
-		private void yCbCrLinearFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			YCbCrLinear filter = new YCbCrLinear( );
+        // On Filters->YCbCr filtering
+        private void yCbCrLinearFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            YCbCrLinear filter = new YCbCrLinear( );
 
-			filter.InCb = new DoubleRange( -0.3, 0.3 );
+            filter.InCb = new DoubleRange( -0.3, 0.3 );
 
-			ApplyFilter( filter );
-			yCbCrLinearFiltersItem.Checked = true;
-		}
+            ApplyFilter( filter );
+            yCbCrLinearFiltersItem.Checked = true;
+        }
 
-		// On Filters->YCbCr filtering
-		private void yCbCrFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ApplyFilter( new YCbCrFiltering( new DoubleRange( 0.2, 0.9), new DoubleRange( -0.3, 0.3), new DoubleRange( -0.3, 0.3) ) );
-			yCbCrFiltersItem.Checked = true;
-		}
+        // On Filters->YCbCr filtering
+        private void yCbCrFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ApplyFilter( new YCbCrFiltering( new DoubleRange( 0.2, 0.9 ), new DoubleRange( -0.3, 0.3 ), new DoubleRange( -0.3, 0.3 ) ) );
+            yCbCrFiltersItem.Checked = true;
+        }
 
-		// On Filters->Extract Cb channel
-		private void extractCbFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ApplyFilter( new YCbCrExtractChannel( YCbCr.CbIndex ) );
-			extractCbFiltersItem.Checked = true;
-		}
+        // On Filters->Extract Cb channel
+        private void extractCbFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ApplyFilter( new YCbCrExtractChannel( YCbCr.CbIndex ) );
+            extractCbFiltersItem.Checked = true;
+        }
 
-		// On Filters->Threshold binarization
-		private void thresholdFiltersItem_Click( object sender, System.EventArgs e )
-		{
+        // On Filters->Threshold binarization
+        private void thresholdFiltersItem_Click( object sender, System.EventArgs e )
+        {
             // save original image
             Bitmap originalImage = sourceImage;
             // get grayscale image
             IFilter grayscaleFilter = new GrayscaleRMY( );
             sourceImage = grayscaleFilter.Apply( sourceImage );
             // apply threshold filter
-			ApplyFilter( new Threshold( ) );
+            ApplyFilter( new Threshold( ) );
             // delete grayscale image and restore original
             sourceImage.Dispose( );
             sourceImage = originalImage;
 
-			thresholdFiltersItem.Checked = true;
-		}
+            thresholdFiltersItem.Checked = true;
+        }
 
-		// On Filters->Floyd-Steinberg dithering
-		private void floydFiltersItem_Click( object sender, System.EventArgs e )
-		{
+        // On Filters->Floyd-Steinberg dithering
+        private void floydFiltersItem_Click( object sender, System.EventArgs e )
+        {
             // save original image
             Bitmap originalImage = sourceImage;
             // get grayscale image
@@ -823,13 +823,13 @@ namespace FiltersDemo
             // delete grayscale image and restore original
             sourceImage.Dispose( );
             sourceImage = originalImage;
-			
-            floydFiltersItem.Checked = true;
-		}
 
-		// On Filters->Ordered dithering
-		private void orderedDitheringFiltersItem_Click( object sender, System.EventArgs e )
-		{
+            floydFiltersItem.Checked = true;
+        }
+
+        // On Filters->Ordered dithering
+        private void orderedDitheringFiltersItem_Click( object sender, System.EventArgs e )
+        {
             // save original image
             Bitmap originalImage = sourceImage;
             // get grayscale image
@@ -841,12 +841,12 @@ namespace FiltersDemo
             sourceImage.Dispose( );
             sourceImage = originalImage;
 
-			orderedDitheringFiltersItem.Checked = true;
-		}
+            orderedDitheringFiltersItem.Checked = true;
+        }
 
-		// On Filters->Adaptive binarization
-		private void adaptiveBinarizationFiltersItem_Click( object sender, System.EventArgs e )
-		{
+        // On Filters->Adaptive binarization
+        private void adaptiveBinarizationFiltersItem_Click( object sender, System.EventArgs e )
+        {
             // save original image
             Bitmap originalImage = sourceImage;
             // get grayscale image
@@ -857,90 +857,90 @@ namespace FiltersDemo
             // delete grayscale image and restore original
             sourceImage.Dispose( );
             sourceImage = originalImage;
-            
-            adaptiveBinarizationFiltersItem.Checked = true;
-		}
 
-		// On Filters->Correlation
-		private void correlationFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ApplyFilter( new Correlation( new int[,] {
+            adaptiveBinarizationFiltersItem.Checked = true;
+        }
+
+        // On Filters->Correlation
+        private void correlationFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ApplyFilter( new Correlation( new int[,] {
 								{ 1, 2, 3, 2, 1 },
 								{ 2, 4, 5, 4, 2 },
 								{ 3, 5, 6, 5, 3 },
 								{ 2, 4, 5, 4, 2 },
 								{ 1, 2, 3, 2, 1 } } ) );
-			correlationFiltersItem.Checked = true;
-		}
+            correlationFiltersItem.Checked = true;
+        }
 
-		// On Filters->Sharpen
-		private void sharpenFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ApplyFilter( new Sharpen( ) );
-			sharpenFiltersItem.Checked = true;
-		}
+        // On Filters->Sharpen
+        private void sharpenFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ApplyFilter( new Sharpen( ) );
+            sharpenFiltersItem.Checked = true;
+        }
 
-		// On Filters->Difference edge detector
-		private void differenceEdgesFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ApplyFilter( new DifferenceEdgeDetector( ) );
-			differenceEdgesFiltersItem.Checked = true;
-		}
+        // On Filters->Difference edge detector
+        private void differenceEdgesFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ApplyFilter( new DifferenceEdgeDetector( ) );
+            differenceEdgesFiltersItem.Checked = true;
+        }
 
-		// On Filters->Homogenity edge detector
-		private void homogenityEdgesFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ApplyFilter( new HomogenityEdgeDetector( ) );
-			homogenityEdgesFiltersItem.Checked = true;
-		}
+        // On Filters->Homogenity edge detector
+        private void homogenityEdgesFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ApplyFilter( new HomogenityEdgeDetector( ) );
+            homogenityEdgesFiltersItem.Checked = true;
+        }
 
-		// On Filters->Sobel edge detector
-		private void sobelEdgesFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ApplyFilter( new SobelEdgeDetector( ) );
-			sobelEdgesFiltersItem.Checked = true;
-		}
+        // On Filters->Sobel edge detector
+        private void sobelEdgesFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ApplyFilter( new SobelEdgeDetector( ) );
+            sobelEdgesFiltersItem.Checked = true;
+        }
 
-		// On Filters->Levels Linear Correction
-		private void rgbLinearFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			LevelsLinear filter = new LevelsLinear( );
+        // On Filters->Levels Linear Correction
+        private void rgbLinearFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            LevelsLinear filter = new LevelsLinear( );
 
-			filter.InRed = new IntRange( 30, 230 );
-			filter.InGreen = new IntRange( 50, 240 );
-			filter.InBlue = new IntRange( 10, 210 );
+            filter.InRed = new IntRange( 30, 230 );
+            filter.InGreen = new IntRange( 50, 240 );
+            filter.InBlue = new IntRange( 10, 210 );
 
-			ApplyFilter( filter );
-			rgbLinearFiltersItem.Checked = true;
-		}
+            ApplyFilter( filter );
+            rgbLinearFiltersItem.Checked = true;
+        }
 
-		// On Filters->Median
-		private void medianFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ApplyFilter( new Median( ) );
-			medianFiltersItem.Checked = true;
-		}
+        // On Filters->Median
+        private void medianFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ApplyFilter( new Median( ) );
+            medianFiltersItem.Checked = true;
+        }
 
-		// On Filters->Conservative Smoothing
-		private void conservativeSmoothingFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ApplyFilter( new ConservativeSmoothing( ) );
-			conservativeSmoothingFiltersItem.Checked = true;
-		}
+        // On Filters->Conservative Smoothing
+        private void conservativeSmoothingFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ApplyFilter( new ConservativeSmoothing( ) );
+            conservativeSmoothingFiltersItem.Checked = true;
+        }
 
-		// On Filters->Jitter
-		private void jitterFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ApplyFilter( new Jitter( ) );
-			jitterFiltersItem.Checked = true;		
-		}
+        // On Filters->Jitter
+        private void jitterFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ApplyFilter( new Jitter( ) );
+            jitterFiltersItem.Checked = true;
+        }
 
-		// On Filters->Oil Painting
-		private void oilFiltersItem_Click( object sender, System.EventArgs e )
-		{
-			ApplyFilter( new OilPainting( ) );
-			oilFiltersItem.Checked = true;
-		}
+        // On Filters->Oil Painting
+        private void oilFiltersItem_Click( object sender, System.EventArgs e )
+        {
+            ApplyFilter( new OilPainting( ) );
+            oilFiltersItem.Checked = true;
+        }
 
         // On Filters->Gaussin blur
         private void gaussianFiltersItem_Click( object sender, EventArgs e )
@@ -955,5 +955,5 @@ namespace FiltersDemo
             ApplyFilter( new Texturer( new TextileTexture( ), 1.0, 0.8 ) );
             textureFiltersItem.Checked = true;
         }
-	}
+    }
 }
