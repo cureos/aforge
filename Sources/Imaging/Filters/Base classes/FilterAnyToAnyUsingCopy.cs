@@ -13,16 +13,18 @@ namespace AForge.Imaging.Filters
 
     /// <summary>
     /// Base class for filtering any images without changing pixel format, but
-    /// creating new image of new size.
+    /// using image copy in the background.
     /// </summary>
     /// 
     /// <remarks>The abstract class is the base class for all filters, which can
     /// be applied to color and grayscale images without changing their pixel format
-    /// but changing image dimension. The base class is used for filters, which can not be applied
-    /// directly to the specified source image updating them. Instead of this, these
-    /// filters return new image as a result of processing routine.</remarks>
+    /// and image dimension. The base class is used for filters, which can not do
+    /// direct manipulations with source image. To make effect of in-place filtering,
+    /// these filters create a background copy of the original image (done by this
+    /// base class) and then do manipulations with it putting result back to the original
+    /// source image.</remarks>
     /// 
-    public abstract class FilterAnyToAnyNew : IFilter
+    public abstract class FilterAnyToAnyUsingCopy : IFilter, IInPlaceFilter
     {
         /// <summary>
         /// Apply filter to an image.
@@ -32,8 +34,6 @@ namespace AForge.Imaging.Filters
         /// 
         /// <returns>Returns filter's result obtained by applying the filter to
         /// the source image.</returns>
-        /// 
-        /// <exception cref="ArgumentException">The source image has incorrect pixel format.</exception>
         /// 
         /// <remarks>The method keeps the source image unchanged and returns the
         /// the result of image processing filter as new image.</remarks> 
@@ -65,8 +65,6 @@ namespace AForge.Imaging.Filters
         /// <returns>Returns filter's result obtained by applying the filter to
         /// the source image.</returns>
         /// 
-        /// <exception cref="ArgumentException">The source image has incorrect pixel format.</exception>
-        /// 
         /// <remarks>The filter accepts birmap data as input and returns the result
         /// of image processing filter as new image. The source image data are kept
         /// unchanged.</remarks>
@@ -79,21 +77,22 @@ namespace AForge.Imaging.Filters
                 )
                 throw new ArgumentException( "The filter can be applied to graysclae (8bpp indexed) or color (24bpp) image only" );
 
-            // get new image dimension
-            Size newSize = CalculateNewImageSize( imageData );
+            // get image dimension
+            int width = imageData.Width;
+            int height = imageData.Height;
 
             // create new image
             Bitmap dstImage = ( imageData.PixelFormat == PixelFormat.Format24bppRgb ) ?
-                new Bitmap( newSize.Width, newSize.Height, imageData.PixelFormat ) :
-                AForge.Imaging.Image.CreateGrayscaleImage( newSize.Width, newSize.Height );
+                new Bitmap( width, height, imageData.PixelFormat ) :
+                AForge.Imaging.Image.CreateGrayscaleImage( width, height );
 
             // lock destination bitmap data
             BitmapData dstData = dstImage.LockBits(
-                new Rectangle( 0, 0, newSize.Width, newSize.Height ),
+                new Rectangle( 0, 0, width, height ),
                 ImageLockMode.ReadWrite, imageData.PixelFormat );
 
             // process the filter
-            ProcessFilter( imageData, dstData );
+            ProcessFilter( imageData.Scan0, dstData );
 
             // unlock destination images
             dstImage.UnlockBits( dstData );
@@ -102,22 +101,66 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Calculates new image size.
+        /// Apply filter to an image.
         /// </summary>
         /// 
-        /// <param name="sourceData">Source image data.</param>
+        /// <param name="image">Image to apply filter to.</param>
         /// 
-        /// <returns>New image size.</returns>
+        /// <remarks>The method applies the filter directly to the provided
+        /// image.</remarks>
         /// 
-        protected abstract System.Drawing.Size CalculateNewImageSize( BitmapData sourceData );
+        public void ApplyInPlace( Bitmap image )
+        {
+            // lock source bitmap data
+            BitmapData data = image.LockBits(
+                new Rectangle( 0, 0, image.Width, image.Height ),
+                ImageLockMode.ReadWrite,
+                ( image.PixelFormat == PixelFormat.Format8bppIndexed ) ?
+                PixelFormat.Format8bppIndexed : PixelFormat.Format24bppRgb );
+
+            // process the filter
+            ApplyInPlace( data );
+
+            // unlock image
+            image.UnlockBits( data );
+        }
+
+        /// <summary>
+        /// Apply filter to an image.
+        /// </summary>
+        /// 
+        /// <param name="imageData">Image to apply filter to.</param>
+        /// 
+        /// <remarks>The method applies the filter directly to the provided
+        /// image data.</remarks>
+        /// 
+        public void ApplyInPlace( BitmapData imageData )
+        {
+            if (
+                ( imageData.PixelFormat != PixelFormat.Format24bppRgb ) &&
+                ( imageData.PixelFormat != PixelFormat.Format8bppIndexed )
+                )
+                throw new ArgumentException( "The filter can be applied to graysclae (8bpp indexed) or color (24bpp) image only" );
+
+            // create a copy of the source image
+            int size = imageData.Stride * imageData.Height;
+
+            IntPtr sourceData = MemoryManager.Alloc( size );
+            AForge.Win32.memcpy( sourceData, imageData.Scan0, size );
+
+            // process the filter
+            ProcessFilter( sourceData, imageData );
+
+            MemoryManager.Free( sourceData );
+        }
 
         /// <summary>
         /// Process the filter on the specified image.
         /// </summary>
         /// 
-        /// <param name="sourceData">Source image data.</param>
+        /// <param name="sourceData">Pointer to source image data (first scan line).</param>
         /// <param name="destinationData">Destination image data.</param>
         /// 
-        protected abstract unsafe void ProcessFilter( BitmapData sourceData, BitmapData destinationData );
+        protected abstract unsafe void ProcessFilter( IntPtr sourceData, BitmapData destinationData );
     }
 }

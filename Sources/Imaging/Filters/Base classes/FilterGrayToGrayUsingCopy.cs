@@ -20,7 +20,7 @@ namespace AForge.Imaging.Filters
     /// be applied to grayscale images without changing their pixel format
     /// and image dimension. The base class is used for filters, which can not do
     /// direct manipulations with source image. To make effect of in-place filtering,
-    /// these filters create a background copy of the original image (dobe by this
+    /// these filters create a background copy of the original image (done by this
     /// base class) and then do manipulations with it putting result back to the original
     /// source image.</remarks>
     /// 
