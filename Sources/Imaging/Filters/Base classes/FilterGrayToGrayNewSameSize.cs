@@ -22,6 +22,7 @@ namespace AForge.Imaging.Filters
 	/// directly to the specified source image updating them. Instead of this, these
 	/// filters return new image as a result of processing routine.</remarks>
 	/// 
+    [Obsolete( "FilterGrayToGrayUsingCopy base filter should be used instead." )]
 	public abstract class FilterGrayToGrayNewSameSize : IFilter
 	{
 		/// <summary>
@@ -33,7 +34,9 @@ namespace AForge.Imaging.Filters
 		/// <returns>Returns filter's result obtained by applying the filter to
 		/// the source image.</returns>
 		/// 
-		/// <remarks>The method keeps the source image unchanged and returns the
+        /// <exception cref="ArgumentException">The source image has incorrect pixel format.</exception>
+        /// 
+        /// <remarks>The method keeps the source image unchanged and returns the
 		/// the result of image processing filter as new image.</remarks> 
 		///
 		public Bitmap Apply( Bitmap image )
@@ -61,7 +64,9 @@ namespace AForge.Imaging.Filters
 		/// <returns>Returns filter's result obtained by applying the filter to
 		/// the source image.</returns>
 		/// 
-		/// <remarks>The filter accepts birmap data as input and returns the result
+        /// <exception cref="ArgumentException">The source image has incorrect pixel format.</exception>
+        /// 
+        /// <remarks>The filter accepts birmap data as input and returns the result
 		/// of image processing filter as new image. The source image data are kept
 		/// unchanged.</remarks>
 		/// 

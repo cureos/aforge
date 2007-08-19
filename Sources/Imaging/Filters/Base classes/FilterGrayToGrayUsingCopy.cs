@@ -1,7 +1,7 @@
 // AForge Image Processing Library
 // AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2007
+// Copyright © Andrew Kirillov, 2005-2007
 // andrew.kirillov@gmail.com
 //
 
@@ -12,17 +12,19 @@ namespace AForge.Imaging.Filters
     using System.Drawing.Imaging;
 
     /// <summary>
-    /// Base class for filtering grayscale images without changing pixel format.
+    /// Base class for filtering grayscale images without changing pixel format, but
+    /// using image copy in the background.
     /// </summary>
     /// 
     /// <remarks>The abstract class is the base class for all filters, which can
-    /// be applied to grayscale images without changing their pixel format and image
-    /// dimension. The base class is used for filters, which can be applied as
-    /// directly to the specified image modifying it, as to the specified image
-    /// returning new image, which represent result of image processing filter.
-    /// </remarks>
+    /// be applied to grayscale images without changing their pixel format
+    /// and image dimension. The base class is used for filters, which can not do
+    /// direct manipulations with source image. To make effect of in-place filtering,
+    /// these filters create a background copy of the original image (dobe by this
+    /// base class) and then do manipulations with it putting result back to the original
+    /// source image.</remarks>
     /// 
-    public abstract class FilterGrayToGray : IFilter, IInPlaceFilter
+    public abstract class FilterGrayToGrayUsingCopy : IFilter, IInPlaceFilter
     {
         /// <summary>
         /// Apply filter to an image.
@@ -38,7 +40,7 @@ namespace AForge.Imaging.Filters
         /// <remarks>The method keeps the source image unchanged and returns the
         /// the result of image processing filter as new image.</remarks> 
         ///
-        public virtual Bitmap Apply( Bitmap image )
+        public Bitmap Apply( Bitmap image )
         {
             // lock source bitmap data
             BitmapData srcData = image.LockBits(
@@ -69,7 +71,7 @@ namespace AForge.Imaging.Filters
         /// of image processing filter as new image. The source image data are kept
         /// unchanged.</remarks>
         /// 
-        public virtual Bitmap Apply( BitmapData imageData )
+        public Bitmap Apply( BitmapData imageData )
         {
             if ( imageData.PixelFormat != PixelFormat.Format8bppIndexed )
                 throw new ArgumentException( "The filter can be applied to graysclae (8bpp indexed) image only" );
@@ -86,11 +88,8 @@ namespace AForge.Imaging.Filters
                 new Rectangle( 0, 0, width, height ),
                 ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed );
 
-            // copy image
-            Win32.memcpy( dstData.Scan0, imageData.Scan0, imageData.Stride * height );
-
             // process the filter
-            ProcessFilter( dstData );
+            ProcessFilter( imageData.Scan0, dstData );
 
             // unlock destination images
             dstImage.UnlockBits( dstData );
@@ -139,16 +138,25 @@ namespace AForge.Imaging.Filters
             if ( imageData.PixelFormat != PixelFormat.Format8bppIndexed )
                 throw new ArgumentException( "The filter can be applied to graysclae (8bpp indexed) image only" );
 
+            // create a copy of the source image
+            int size = imageData.Stride * imageData.Height;
+
+            IntPtr sourceData = MemoryManager.Alloc(  size );
+            AForge.Win32.memcpy( sourceData, imageData.Scan0, size );
+
             // process the filter
-            ProcessFilter( imageData );
+            ProcessFilter( sourceData, imageData );
+
+            MemoryManager.Free( sourceData );
         }
 
         /// <summary>
         /// Process the filter on the specified image.
         /// </summary>
         /// 
-        /// <param name="imageData">Image data.</param>
+        /// <param name="sourceData">Pointer to source image data (first scan line).</param>
+        /// <param name="destinationData">Destination image data.</param>
         /// 
-        protected abstract unsafe void ProcessFilter( BitmapData imageData );
+        protected abstract unsafe void ProcessFilter( IntPtr sourceData, BitmapData destinationData );
     }
 }
