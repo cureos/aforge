@@ -6,71 +6,71 @@
 
 namespace AForge.Imaging.Filters
 {
-	using System;
-	using System.Drawing;
-	using System.Drawing.Imaging;
+    using System;
+    using System.Drawing;
+    using System.Drawing.Imaging;
 
-	/// <summary>
-	/// Simple skeletonization filter
-	/// </summary>
+    /// <summary>
+    /// Simple skeletonization filter.
+    /// </summary>
     /// 
     /// <remarks></remarks>
     /// 
-    public class SimpleSkeletonization : FilterGrayToGrayNewSameSize
-	{
-		private byte	bg = 0;
-		private byte	fg = 255;
+    public class SimpleSkeletonization : FilterGrayToGrayUsingCopy
+    {
+        private byte bg = 0;
+        private byte fg = 255;
 
         /// <summary>
-        /// Background pixel color
+        /// Background pixel color.
         /// </summary>
         /// 
         /// <remarks>Defalt value is 0 - black.</remarks>
         /// 
-		public byte Background
-		{
-			get { return bg; }
-			set { bg = value; }
-		}
+        public byte Background
+        {
+            get { return bg; }
+            set { bg = value; }
+        }
 
         /// <summary>
-        /// Foreground pixel color
+        /// Foreground pixel color.
         /// </summary>
         /// 
         /// <remarks>Defalt value is 255 - white.</remarks>
         /// 
-		public byte Foreground
-		{
-			get { return fg; }
-			set { fg = value; }
-		}
+        public byte Foreground
+        {
+            get { return fg; }
+            set { fg = value; }
+        }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SimpleSkeletonization"/> class
+        /// Initializes a new instance of the <see cref="SimpleSkeletonization"/> class.
         /// </summary>
-		public SimpleSkeletonization( ) { }
+        public SimpleSkeletonization( ) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SimpleSkeletonization"/> class
+        /// Initializes a new instance of the <see cref="SimpleSkeletonization"/> class.
         /// </summary>
         /// 
-        /// <param name="bg">Background pixel color</param>
-        /// <param name="fg">Foreground pixel color</param>
+        /// <param name="bg">Background pixel color.</param>
+        /// <param name="fg">Foreground pixel color.</param>
         /// 
         public SimpleSkeletonization( byte bg, byte fg )
-		{
-			this.bg = bg;
-			this.fg = fg;
-		}
+        {
+            this.bg = bg;
+            this.fg = fg;
+        }
 
-		/// <summary>
-		/// Process the filter on the specified image
-		/// </summary>
-		/// 
-		/// <param name="sourceData">Source image data</param>
-		/// <param name="destinationData">Destination image data</param>
-		/// 
-        protected override unsafe void ProcessFilter( BitmapData sourceData, BitmapData destinationData )
+        /// <summary>
+        /// Process the filter on the specified image.
+        /// </summary>
+        /// 
+        /// <param name="sourceData">Pointer to source image data (first scan line).</param>
+        /// <param name="destinationData">Destination image data.</param>
+        /// 
+        protected override unsafe void ProcessFilter( IntPtr sourceData, BitmapData destinationData )
         {
             // get image size
             int width   = destinationData.Width;
@@ -83,7 +83,7 @@ namespace AForge.Imaging.Filters
             Win32.memset( destinationData.Scan0, bg, stride * height );
 
             // do the job
-            byte* src0 = (byte*) sourceData.Scan0.ToPointer( );
+            byte* src0 = (byte*) sourceData.ToPointer( );
             byte* dst0 = (byte*) destinationData.Scan0.ToPointer( );
             byte* src = src0;
             byte* dst = dst0;
@@ -153,5 +153,5 @@ namespace AForge.Imaging.Filters
                 }
             }
         }
-	}
+    }
 }
