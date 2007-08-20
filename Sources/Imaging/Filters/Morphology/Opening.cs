@@ -7,14 +7,14 @@
 
 namespace AForge.Imaging.Filters
 {
-	using System;
-	using System.Drawing;
-	using System.Drawing.Imaging;
+    using System;
+    using System.Drawing;
+    using System.Drawing.Imaging;
 
-	/// <summary>
-	/// Opening operator from Mathematical Morphology.
-	/// </summary>
-	/// 
+    /// <summary>
+    /// Opening operator from Mathematical Morphology.
+    /// </summary>
+    /// 
     /// <remarks><para>Opening morphology operator equals to <see cref="Erosion">erosion</see> followed
     /// by <see cref="Dilatation">dilatation</see>.</para>
     /// <para>Sample usage:</para>
@@ -26,72 +26,102 @@ namespace AForge.Imaging.Filters
     /// </code>
     /// </remarks>
     /// 
-	public class Opening : IFilter
-	{
-		private IFilter errosion = new Erosion( );
-		private IFilter dilatation = new Dilatation( );
+    public class Opening : IFilter, IInPlaceFilter
+    {
+        private Erosion     errosion = new Erosion( );
+        private Dilatation  dilatation = new Dilatation( );
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Opening"/> class.
-		/// </summary>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Opening"/> class.
+        /// </summary>
         /// 
-		public Opening( ) { }
+        public Opening( ) { }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Opening"/> class.
-		/// </summary>
-		/// 
-		/// <param name="se">Structuring element.</param>
-		/// 
-		public Opening( short[,] se )
-		{
-			errosion = new Erosion( se );
-			dilatation = new Dilatation( se );
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Opening"/> class.
+        /// </summary>
+        /// 
+        /// <param name="se">Structuring element.</param>
+        /// 
+        public Opening( short[,] se )
+        {
+            errosion = new Erosion( se );
+            dilatation = new Dilatation( se );
+        }
 
-		/// <summary>
-		/// Apply filter to an image.
-		/// </summary>
-		/// 
-		/// <param name="image">Source image to apply filter to.</param>
-		/// 
-		/// <returns>Returns filter's result obtained by applying the filter to
-		/// the source image.</returns>
-		/// 
-		/// <remarks>The method keeps the source image unchanged and returns the
-		/// the result of image processing filter as new image.</remarks> 
-		///
-		public Bitmap Apply( Bitmap image )
-		{
-			Bitmap tempImage = errosion.Apply( image );
-			Bitmap destImage = dilatation.Apply( tempImage );
+        /// <summary>
+        /// Apply filter to an image.
+        /// </summary>
+        /// 
+        /// <param name="image">Source image to apply filter to.</param>
+        /// 
+        /// <returns>Returns filter's result obtained by applying the filter to
+        /// the source image.</returns>
+        /// 
+        /// <remarks>The method keeps the source image unchanged and returns the
+        /// the result of image processing filter as new image.</remarks> 
+        ///
+        public Bitmap Apply( Bitmap image )
+        {
+            Bitmap tempImage = errosion.Apply( image );
+            Bitmap destImage = dilatation.Apply( tempImage );
 
-			tempImage.Dispose( );
+            tempImage.Dispose( );
 
-			return destImage;
-		}
+            return destImage;
+        }
 
-		/// <summary>
-		/// Apply filter to an image.
-		/// </summary>
-		/// 
-		/// <param name="imageData">Source image to apply filter to.</param>
-		/// 
-		/// <returns>Returns filter's result obtained by applying the filter to
-		/// the source image.</returns>
-		/// 
-		/// <remarks>The filter accepts birmap data as input and returns the result
-		/// of image processing filter as new image. The source image data are kept
-		/// unchanged.</remarks>
-		/// 
-		public Bitmap Apply( BitmapData imageData )
-		{
-			Bitmap tempImage = errosion.Apply( imageData );
-			Bitmap destImage = dilatation.Apply( tempImage );
+        /// <summary>
+        /// Apply filter to an image.
+        /// </summary>
+        /// 
+        /// <param name="imageData">Source image to apply filter to.</param>
+        /// 
+        /// <returns>Returns filter's result obtained by applying the filter to
+        /// the source image.</returns>
+        /// 
+        /// <remarks>The filter accepts bitmap data as input and returns the result
+        /// of image processing filter as new image. The source image data are kept
+        /// unchanged.</remarks>
+        /// 
+        public Bitmap Apply( BitmapData imageData )
+        {
+            Bitmap tempImage = errosion.Apply( imageData );
+            Bitmap destImage = dilatation.Apply( tempImage );
 
-			tempImage.Dispose( );
+            tempImage.Dispose( );
 
-			return destImage;
-		}
-	}
+            return destImage;
+        }
+
+        /// <summary>
+        /// Apply filter to an image.
+        /// </summary>
+        /// 
+        /// <param name="image">Image to apply filter to.</param>
+        /// 
+        /// <remarks>The method applies the filter directly to the provided
+        /// image.</remarks>
+        /// 
+        public void ApplyInPlace( Bitmap image )
+        {
+            errosion.ApplyInPlace( image );
+            dilatation.ApplyInPlace( image );
+        }
+
+        /// <summary>
+        /// Apply filter to an image.
+        /// </summary>
+        /// 
+        /// <param name="imageData">Image to apply filter to.</param>
+        /// 
+        /// <remarks>The method applies the filter directly to the provided
+        /// image data.</remarks>
+        /// 
+        public void ApplyInPlace( BitmapData imageData )
+        {
+            errosion.ApplyInPlace( imageData );
+            dilatation.ApplyInPlace( imageData );
+        }
+    }
 }

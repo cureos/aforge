@@ -26,10 +26,10 @@ namespace AForge.Imaging.Filters
     /// </code>
     /// </remarks>
 	/// 
-	public class Closing : IFilter
+	public class Closing : IFilter, IInPlaceFilter
 	{
-		private IFilter errosion = new Erosion( );
-		private IFilter dilatation = new Dilatation( );
+        private Erosion     errosion = new Erosion( );
+        private Dilatation  dilatation = new Dilatation( );
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Closing"/> class.
@@ -80,7 +80,7 @@ namespace AForge.Imaging.Filters
 		/// <returns>Returns filter's result obtained by applying the filter to
 		/// the source image.</returns>
 		/// 
-		/// <remarks>The filter accepts birmap data as input and returns the result
+		/// <remarks>The filter accepts bitmap data as input and returns the result
 		/// of image processing filter as new image. The source image data are kept
 		/// unchanged.</remarks>
 		/// 
@@ -93,5 +93,35 @@ namespace AForge.Imaging.Filters
 
 			return destImage;
 		}
+
+        /// <summary>
+        /// Apply filter to an image.
+        /// </summary>
+        /// 
+        /// <param name="image">Image to apply filter to.</param>
+        /// 
+        /// <remarks>The method applies the filter directly to the provided
+        /// image.</remarks>
+        /// 
+        public void ApplyInPlace( Bitmap image )
+        {
+            dilatation.ApplyInPlace( image );
+            errosion.ApplyInPlace( image );
+        }
+
+        /// <summary>
+        /// Apply filter to an image.
+        /// </summary>
+        /// 
+        /// <param name="imageData">Image to apply filter to.</param>
+        /// 
+        /// <remarks>The method applies the filter directly to the provided
+        /// image data.</remarks>
+        /// 
+        public void ApplyInPlace( BitmapData imageData )
+        {
+            dilatation.ApplyInPlace( imageData );
+            errosion.ApplyInPlace( imageData );
+        }
 	}
 }

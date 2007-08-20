@@ -27,7 +27,7 @@ namespace AForge.Imaging.Filters
     /// </code>
     /// </remarks>
     /// 
-    public class TopHat : IFilter
+    public class TopHat : IFilter, IInPlaceFilter
     {
         private Opening opening = new Opening( );
         private Subtract subtract = new Subtract( );
@@ -84,7 +84,7 @@ namespace AForge.Imaging.Filters
         /// <returns>Returns filter's result obtained by applying the filter to
         /// the source image.</returns>
         /// 
-        /// <remarks>The filter accepts birmap data as input and returns the result
+        /// <remarks>The filter accepts bitmap data as input and returns the result
         /// of image processing filter as new image. The source image data are kept
         /// unchanged.</remarks>
         /// 
@@ -100,6 +100,48 @@ namespace AForge.Imaging.Filters
             tempImage.Dispose( );
 
             return destImage;
+        }
+
+        /// <summary>
+        /// Apply filter to an image.
+        /// </summary>
+        /// 
+        /// <param name="image">Image to apply filter to.</param>
+        /// 
+        /// <remarks>The method applies the filter directly to the provided
+        /// image.</remarks>
+        /// 
+        public void ApplyInPlace( Bitmap image )
+        {
+            // morphological opening
+            Bitmap tempImage = opening.Apply( image );
+
+            // subtraction from original image
+            subtract.OverlayImage = tempImage;
+            subtract.ApplyInPlace( image );
+
+            tempImage.Dispose( );
+        }
+
+        /// <summary>
+        /// Apply filter to an image.
+        /// </summary>
+        /// 
+        /// <param name="imageData">Image to apply filter to.</param>
+        /// 
+        /// <remarks>The method applies the filter directly to the provided
+        /// image data.</remarks>
+        /// 
+        public void ApplyInPlace( BitmapData imageData )
+        {
+            // morphological opening
+            Bitmap tempImage = opening.Apply( imageData );
+
+            // subtraction from original image
+            subtract.OverlayImage = tempImage;
+            subtract.ApplyInPlace( imageData );
+
+            tempImage.Dispose( );
         }
     }
 }

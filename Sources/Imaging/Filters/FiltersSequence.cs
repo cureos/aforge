@@ -96,7 +96,7 @@ namespace AForge.Imaging.Filters
         /// <returns>Returns filter's result obtained by applying the filter to
         /// the source image</returns>
         /// 
-        /// <remarks>The filter accepts birmap data as input and returns the result
+        /// <remarks>The filter accepts bitmap data as input and returns the result
         /// of image processing filter as new image. The source image data are kept
         /// unchanged.</remarks>
         /// 

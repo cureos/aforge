@@ -67,7 +67,7 @@ namespace AForge.Imaging.Filters
         /// 
         /// <exception cref="ArgumentException">The source image has incorrect pixel format.</exception>
         /// 
-        /// <remarks>The filter accepts birmap data as input and returns the result
+        /// <remarks>The filter accepts bitmap data as input and returns the result
         /// of image processing filter as new image. The source image data are kept
         /// unchanged.</remarks>
         /// 

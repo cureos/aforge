@@ -27,7 +27,7 @@ namespace AForge.Imaging.Filters
     /// </code>
     /// </remarks>
     /// 
-    public class BottomHat : IFilter
+    public class BottomHat : IFilter, IInPlaceFilter
     {
         private Closing closing = new Closing( );
         private Subtract subtract = new Subtract( );
@@ -84,7 +84,7 @@ namespace AForge.Imaging.Filters
         /// <returns>Returns filter's result obtained by applying the filter to
         /// the source image.</returns>
         /// 
-        /// <remarks>The filter accepts birmap data as input and returns the result
+        /// <remarks>The filter accepts bitmap data as input and returns the result
         /// of image processing filter as new image. The source image data are kept
         /// unchanged.</remarks>
         /// 
@@ -105,6 +105,54 @@ namespace AForge.Imaging.Filters
             source.Dispose( );
 
             return destImage;
+        }
+
+        /// <summary>
+        /// Apply filter to an image.
+        /// </summary>
+        /// 
+        /// <param name="image">Image to apply filter to.</param>
+        /// 
+        /// <remarks>The method applies the filter directly to the provided
+        /// image.</remarks>
+        /// 
+        public void ApplyInPlace( Bitmap image )
+        {
+            // make a copy of the source image
+            Bitmap source = AForge.Imaging.Image.Clone( image );
+
+            // morphological closing
+            closing.ApplyInPlace( image );
+
+            // subtraction from original image
+            subtract.OverlayImage = source;
+            subtract.ApplyInPlace( image );
+
+            source.Dispose( );
+        }
+
+        /// <summary>
+        /// Apply filter to an image.
+        /// </summary>
+        /// 
+        /// <param name="imageData">Image to apply filter to.</param>
+        /// 
+        /// <remarks>The method applies the filter directly to the provided
+        /// image data.</remarks>
+        /// 
+        public void ApplyInPlace( BitmapData imageData )
+        {
+            // make a copy of the source image
+            Bitmap source = AForge.Imaging.Image.Clone( imageData );
+
+            // morphological closing
+            closing.ApplyInPlace( imageData );
+
+            // subtraction from original image
+            subtract.OverlayImage = source;
+            subtract.ApplyInPlace( imageData );
+
+            source.Dispose( );
         }
     }
 }

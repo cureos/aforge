@@ -7,15 +7,15 @@
 
 namespace AForge.Imaging.Filters
 {
-	using System;
-	using System.Drawing;
-	using System.Drawing.Imaging;
+    using System;
+    using System.Drawing;
+    using System.Drawing.Imaging;
 
-	/// <summary>
-	/// Erosion operator from Mathematical Morphology.
-	/// </summary>
-	/// 
-	/// <remarks><para>The filter assigns minimum value of surrounding pixels to each pixel of
+    /// <summary>
+    /// Erosion operator from Mathematical Morphology.
+    /// </summary>
+    /// 
+    /// <remarks><para>The filter assigns minimum value of surrounding pixels to each pixel of
     /// the result filter. Surrounding pixels, which should be processed, are specified by
     /// structuring element: 1 - to process the neighbor, 0 - to skip it.</para>
     /// <para>The filter especially useful for binary image processing, where it removes pixels, which
@@ -33,61 +33,61 @@ namespace AForge.Imaging.Filters
     /// <para><b>Result image:</b></para>
     /// <img src="erosion.jpg" width="480" height="361" />
     /// </remarks>
-	/// 
-	public class Erosion : FilterAnyToAnyNewSameSize
-	{
-		// structuring element
-		private short[,]	se = new short[3, 3] { { 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 } };
-		private int			size = 3;
+    /// 
+    public class Erosion : FilterAnyToAnyUsingCopy
+    {
+        // structuring element
+        private short[,] se = new short[3, 3] { { 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 } };
+        private int size = 3;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Erosion"/> class.
-		/// </summary>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Erosion"/> class.
+        /// </summary>
         /// 
-		public Erosion( ) { }
+        public Erosion( ) { }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Erosion"/> class.
-		/// </summary>
-		/// 
-		/// <param name="se">Structuring element.</param>
-		/// 
-		public Erosion( short[,] se )
-		{
-			int s = se.GetLength( 0 );
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Erosion"/> class.
+        /// </summary>
+        /// 
+        /// <param name="se">Structuring element.</param>
+        /// 
+        public Erosion( short[,] se )
+        {
+            int s = se.GetLength( 0 );
 
-			// check structuring element size
-			if ( ( s != se.GetLength( 1 ) ) || ( s < 3 ) || ( s > 25 ) || ( s % 2 == 0 ) )
-				throw new ArgumentException( );
+            // check structuring element size
+            if ( ( s != se.GetLength( 1 ) ) || ( s < 3 ) || ( s > 25 ) || ( s % 2 == 0 ) )
+                throw new ArgumentException( );
 
-			this.se = se;
-			this.size = s;
-		}
+            this.se = se;
+            this.size = s;
+        }
 
-		/// <summary>
-		/// Process the filter on the specified image.
-		/// </summary>
-		/// 
-		/// <param name="sourceData">Source image data.</param>
-		/// <param name="destinationData">Destination image data.</param>
-		/// 
-		protected override unsafe void ProcessFilter( BitmapData sourceData, BitmapData destinationData )
-		{
-			// get image size
-			int width	= destinationData.Width;
-			int height	= destinationData.Height;
-			int stride	= destinationData.Stride;
-            int offset  = stride - ( ( sourceData.PixelFormat == PixelFormat.Format8bppIndexed ) ? width : width * 3 );
+        /// <summary>
+        /// Process the filter on the specified image.
+        /// </summary>
+        /// 
+        /// <param name="sourceData">Pointer to source image data (first scan line).</param>
+        /// <param name="destinationData">Destination image data.</param>
+        /// 
+        protected override unsafe void ProcessFilter( IntPtr sourceData, BitmapData destinationData )
+        {
+            // get image size
+            int width = destinationData.Width;
+            int height = destinationData.Height;
+            int stride = destinationData.Stride;
+            int offset = stride - ( ( destinationData.PixelFormat == PixelFormat.Format8bppIndexed ) ? width : width * 3 );
             // loop and array indexes
-			int	t, ir, jr, i, j;
-			// structuring element's radius
-			int	r = size >> 1;
+            int t, ir, jr, i, j;
+            // structuring element's radius
+            int r = size >> 1;
 
-			// do the job
-			byte * src = (byte *) sourceData.Scan0.ToPointer( );
-			byte * dst = (byte *) destinationData.Scan0.ToPointer( );
+            // do the job
+            byte* src = (byte*) sourceData.ToPointer( );
+            byte* dst = (byte*) destinationData.Scan0.ToPointer( );
 
-            if ( sourceData.PixelFormat == PixelFormat.Format8bppIndexed )
+            if ( destinationData.PixelFormat == PixelFormat.Format8bppIndexed )
             {
                 // grayscale image
                 byte min, v;
@@ -147,7 +147,7 @@ namespace AForge.Imaging.Filters
                 byte minR, minG, minB, v;
                 byte* p;
 
-				// for each line
+                // for each line
                 for ( int y = 0; y < height; y++ )
                 {
                     // for each pixel
@@ -211,6 +211,6 @@ namespace AForge.Imaging.Filters
                     dst += offset;
                 }
             }
-		}
-	}
+        }
+    }
 }
