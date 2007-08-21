@@ -13,16 +13,19 @@ namespace AForge.Imaging.Filters
 
     /// <summary>
     /// Base class for filtering colored images without changing pixel format.
+    /// The base class allows to filter as entire image, as only specified rectangle.
     /// </summary>
     /// 
     /// <remarks>The abstract class is the base class for all filters, which can
     /// be applied to color images without changing their pixel format and image
     /// dimension. The base class is used for filters, which can be applied as
     /// directly to the specified image modifying it, as to the specified image
-    /// returning new image, which represents result of image processing filter.
+    /// returning new image, which represent results of image processing filter.
+    /// In the case of in-place filtering, inherited filters may be
+    /// applied to specified rectangle.
     /// </remarks>
     /// 
-    public abstract class FilterColorToColor : IFilter, IInPlaceFilter
+    public abstract class FilterColorToColorPartial : IFilter, IInPlaceFilter, IInPlacePartialFilter
     {
         /// <summary>
         /// Apply filter to an image.
@@ -90,7 +93,7 @@ namespace AForge.Imaging.Filters
             Win32.memcpy( dstData.Scan0, imageData.Scan0, imageData.Stride * height );
 
             // process the filter
-            ProcessFilter( dstData );
+            ProcessFilter( dstData, new Rectangle( 0, 0, width, height ) );
 
             // unlock destination images
             dstImage.UnlockBits( dstData );
@@ -111,16 +114,8 @@ namespace AForge.Imaging.Filters
         /// 
         public virtual void ApplyInPlace( Bitmap image )
         {
-            // lock source bitmap data
-            BitmapData data = image.LockBits(
-                new Rectangle( 0, 0, image.Width, image.Height ),
-                ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb );
-
             // apply the filter
-            ApplyInPlace( data );
-
-            // unlock image
-            image.UnlockBits( data );
+            ApplyInPlace( image, new Rectangle( 0, 0, image.Width, image.Height ) );
         }
 
         /// <summary>
@@ -136,11 +131,59 @@ namespace AForge.Imaging.Filters
         /// 
         public virtual void ApplyInPlace( BitmapData imageData )
         {
+            // apply the filter
+            ApplyInPlace( imageData, new Rectangle( 0, 0, imageData.Width, imageData.Height ) );
+        }
+
+        /// <summary>
+        /// Apply filter to an image or its part.
+        /// </summary>
+        /// 
+        /// <param name="image">Image to apply filter to.</param>
+        /// <param name="rect">Image rectangle for processing by the filter.</param>
+        /// 
+        /// <exception cref="ArgumentException">The source image has incorrect pixel format.</exception>
+        /// 
+        /// <remarks>The method applies the filter directly to the provided
+        /// image.</remarks>
+        /// 
+        public virtual void ApplyInPlace( Bitmap image, Rectangle rect )
+        {
+            // lock source bitmap data
+            BitmapData data = image.LockBits(
+                new Rectangle( 0, 0, image.Width, image.Height ),
+                ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb );
+
+            // apply the filter
+            ApplyInPlace( data, rect );
+
+            // unlock image
+            image.UnlockBits( data );
+        }
+
+        /// <summary>
+        /// Apply filter to an image or its part.
+        /// </summary>
+        /// 
+        /// <param name="imageData">Image to apply filter to.</param>
+        /// <param name="rect">Image rectangle for processing by the filter.</param>
+        /// 
+        /// <exception cref="ArgumentException">The source image has incorrect pixel format.</exception>
+        /// 
+        /// <remarks>The method applies the filter directly to the provided
+        /// image data.</remarks>
+        /// 
+        public virtual void ApplyInPlace( BitmapData imageData, Rectangle rect )
+        {
             if ( imageData.PixelFormat != PixelFormat.Format24bppRgb )
                 throw new ArgumentException( "The filter can be applied to color (24bpp) image only" );
 
-            // process the filter
-            ProcessFilter( imageData );
+            // validate rectangle
+            rect.Intersect( new Rectangle( 0, 0, imageData.Width, imageData.Height ) );
+
+            // process the filter if rectangle is not empty
+            if ( ( rect.Width | rect.Height ) != 0 )
+                ProcessFilter( imageData, rect );
         }
 
         /// <summary>
@@ -148,7 +191,8 @@ namespace AForge.Imaging.Filters
         /// </summary>
         /// 
         /// <param name="imageData">Image data.</param>
+        /// <param name="rect">Image rectangle for processing by the filter.</param>
         /// 
-        protected abstract unsafe void ProcessFilter( BitmapData imageData );
+        protected abstract unsafe void ProcessFilter( BitmapData imageData, Rectangle rect );
     }
 }

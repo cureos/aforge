@@ -143,6 +143,7 @@
     <Compile Include="Filters\Base classes\FilterColorToColor.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\Base classes\FilterColorToColorPartial.cs" />
     <Compile Include="Filters\Base classes\FilterColorToGray.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -291,6 +292,7 @@
     <Compile Include="Filters\IInPlaceFilter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\IInPlacePartialFilter.cs" />
     <Compile Include="Filters\MaskedFilter.cs" />
     <Compile Include="Filters\Median.cs">
       <SubType>Code</SubType>

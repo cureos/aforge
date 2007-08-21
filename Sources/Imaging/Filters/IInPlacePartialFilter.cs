@@ -11,39 +11,43 @@ namespace AForge.Imaging.Filters
     using System.Drawing.Imaging;
 
     /// <summary>
-    /// In-place filter interface.
+    /// In-place partial filter interface.
     /// </summary>
     /// 
-    /// <remarks>The interface defines the set of methods, which should be
+    /// <remarks><para>The interface defines the set of methods, which should be
     /// implemented by filters, which are capable to do image processing
     /// directly on the source image. Not all of image processing filters
     /// can be applied directly to the source image - only filter, which do not
     /// change image's dimension and pixel format, can be applied directly to the
-    /// source image.</remarks>
+    /// source image.</para>
+    /// <para>The interface also support partial image filtering, allowing to specify
+    /// image rectangle, which should be filtered.</para>
+    /// </remarks>
     /// 
-    public interface IInPlaceFilter
+    public interface IInPlacePartialFilter
     {
         /// <summary>
-        /// Apply filter to an image.
+        /// Apply filter to an image or its part.
         /// </summary>
         /// 
         /// <param name="image">Image to apply filter to.</param>
+        /// <param name="rect">Image rectangle for processing by the filter.</param>
         /// 
         /// <remarks>The method applies the filter directly to the provided
         /// image.</remarks>
         /// 
-        void ApplyInPlace( Bitmap image );
+        void ApplyInPlace( Bitmap image, Rectangle rect );
 
         /// <summary>
-        /// Apply filter to an image.
+        /// Apply filter to an image or its part.
         /// </summary>
         /// 
         /// <param name="imageData">Image to apply filter to.</param>
+        /// <param name="rect">Image rectangle for processing by the filter.</param>
         /// 
         /// <remarks>The method applies the filter directly to the provided
         /// image data.</remarks>
         /// 
-        void ApplyInPlace( BitmapData imageData );
+        void ApplyInPlace( BitmapData imageData, Rectangle rect );
     }
 }
-

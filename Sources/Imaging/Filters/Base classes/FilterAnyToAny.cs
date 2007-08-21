@@ -19,7 +19,7 @@ namespace AForge.Imaging.Filters
     /// be applied to color and grayscale images without changing their pixel format
     /// and image dimension. The base class is used for filters, which can be applied as
     /// directly to the specified image modifying it, as to the specified image
-    /// returning new image, which represent result of image processing filter.
+    /// returning new image, which represents result of image processing filter.
     /// </remarks>
     /// 
     public abstract class FilterAnyToAny : IFilter, IInPlaceFilter
