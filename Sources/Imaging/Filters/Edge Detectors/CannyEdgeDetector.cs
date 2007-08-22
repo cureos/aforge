@@ -5,56 +5,56 @@
 //
 namespace AForge.Imaging.Filters
 {
-	using System;
-	using System.Drawing;
-	using System.Drawing.Imaging;
+    using System;
+    using System.Drawing;
+    using System.Drawing.Imaging;
 
-	/// <summary>
-	/// Canny edge detector
-	/// </summary>
+    /// <summary>
+    /// Canny edge detector
+    /// </summary>
     /// 
     /// <remarks></remarks>
     /// 
     public class CannyEdgeDetector : FilterColorToGray
-	{
-		private IFilter			grayscaleFilter = new GrayscaleBT709( );
-		private GaussianBlur	gaussianFilter = new GaussianBlur( );
-		private byte			lowThreshold = 20;
-		private byte			highThreshold = 100;
+    {
+        private IFilter         grayscaleFilter = new GrayscaleBT709( );
+        private GaussianBlur    gaussianFilter = new GaussianBlur( );
+        private byte            lowThreshold = 20;
+        private byte            highThreshold = 100;
 
-		// Sobel kernels
-		private static int[,]	xKernel = new int[,]
+        // Sobel kernels
+        private static int[,] xKernel = new int[,]
 		{
-			{-1,  0,  1},
-			{-2,  0,  2},
-			{-1,  0,  1}
+			{ -1,  0,  1 },
+			{ -2,  0,  2 },
+			{ -1,  0,  1 }
 		};
-		private static int[,]	yKernel = new int[,]
+        private static int[,] yKernel = new int[,]
 		{
-			{ 1,  2,  1},
-			{ 0,  0,  0},
-			{-1, -2, -1}
+			{  1,  2,  1 },
+			{  0,  0,  0 },
+			{ -1, -2, -1 }
 		};
 
         /// <summary>
         /// Low threshold
         /// </summary>
         /// 
-		public byte LowThreshold
-		{
-			get { return lowThreshold; }
-			set { lowThreshold = value; }
-		}
+        public byte LowThreshold
+        {
+            get { return lowThreshold; }
+            set { lowThreshold = value; }
+        }
 
         /// <summary>
         /// High threshold
         /// </summary>
         /// 
         public byte HighThreshold
-		{
-			get { return highThreshold; }
-			set { highThreshold = value; }
-		}
+        {
+            get { return highThreshold; }
+            set { highThreshold = value; }
+        }
 
         /// <summary>
         /// Gaussian sigma
@@ -62,11 +62,11 @@ namespace AForge.Imaging.Filters
         /// 
         /// <remarks>The value is for Gaussian bluring</remarks>
         /// 
-		public double GaussianSigma
-		{
-			get { return gaussianFilter.Sigma; }
-			set { gaussianFilter.Sigma = value; }
-		}
+        public double GaussianSigma
+        {
+            get { return gaussianFilter.Sigma; }
+            set { gaussianFilter.Sigma = value; }
+        }
 
         /// <summary>
         /// Gaussian size
@@ -74,17 +74,17 @@ namespace AForge.Imaging.Filters
         /// 
         /// <remarks>Size of Gaussian kernel</remarks>
         /// 
-		public int GaussianSize
-		{
-			get { return gaussianFilter.Size; }
-			set { gaussianFilter.Size = value; }
-		}
+        public int GaussianSize
+        {
+            get { return gaussianFilter.Size; }
+            set { gaussianFilter.Size = value; }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CannyEdgeDetector"/> class
         /// </summary>
         /// 
-		public CannyEdgeDetector( ) { }
+        public CannyEdgeDetector( ) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CannyEdgeDetector"/> class
@@ -94,10 +94,10 @@ namespace AForge.Imaging.Filters
         /// <param name="highThreshold">High threshold</param>
         /// 
         public CannyEdgeDetector( byte lowThreshold, byte highThreshold )
-		{
-			this.lowThreshold	= lowThreshold;
-			this.highThreshold	= highThreshold;
-		}
+        {
+            this.lowThreshold = lowThreshold;
+            this.highThreshold = highThreshold;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CannyEdgeDetector"/> class
@@ -107,29 +107,29 @@ namespace AForge.Imaging.Filters
         /// <param name="highThreshold">High threshold</param>
         /// <param name="sigma">Gaussian sigma</param>
         /// 
-		public CannyEdgeDetector( byte lowThreshold, byte highThreshold, double sigma )
-		{
-			this.lowThreshold       = lowThreshold;
-			this.highThreshold      = highThreshold;
-			gaussianFilter.Sigma    = sigma;
-		}
+        public CannyEdgeDetector( byte lowThreshold, byte highThreshold, double sigma )
+        {
+            this.lowThreshold = lowThreshold;
+            this.highThreshold = highThreshold;
+            gaussianFilter.Sigma = sigma;
+        }
 
-		/// <summary>
-		/// Process the filter on the specified image
-		/// </summary>
-		/// 
-		/// <param name="sourceData">Source image data</param>
-		/// <param name="destinationData">Destination image data</param>
-		/// 
+        /// <summary>
+        /// Process the filter on the specified image
+        /// </summary>
+        /// 
+        /// <param name="sourceData">Source image data</param>
+        /// <param name="destinationData">Destination image data</param>
+        /// 
         protected override unsafe void ProcessFilter( BitmapData sourceData, BitmapData destinationData )
         {
             // get width and height
-            int width = sourceData.Width;
-            int height = sourceData.Height;
-            int widthM1 = width - 1;
-            int heightM1 = height - 1;
-            int stride = destinationData.Stride;
-            int offset = stride - width;
+            int width       = sourceData.Width;
+            int height      = sourceData.Height;
+            int widthM1     = width - 1;
+            int heightM1    = height - 1;
+            int stride      = destinationData.Stride;
+            int offset      = stride - width;
 
             // loop and array indexes
             int i, j, ir;
@@ -261,16 +261,16 @@ namespace AForge.Imaging.Filters
                             rightPixel = dst[1];
                             break;
                         case 45:
-                            leftPixel = dst[width - 1];
-                            rightPixel = dst[-width + 1];
+                            leftPixel = dst[stride - 1];
+                            rightPixel = dst[-stride + 1];
                             break;
                         case 90:
-                            leftPixel = dst[width];
-                            rightPixel = dst[-width];
+                            leftPixel = dst[stride];
+                            rightPixel = dst[-stride];
                             break;
                         case 135:
-                            leftPixel = dst[width + 1];
-                            rightPixel = dst[-width - 1];
+                            leftPixel = dst[stride + 1];
+                            rightPixel = dst[-stride - 1];
                             break;
                     }
                     // compare current pixels value with adjacent pixels
@@ -308,12 +308,12 @@ namespace AForge.Imaging.Filters
                             // check 8 neighboring pixels
                             if ( ( dst[-1] < highThreshold ) &&
                                 ( dst[1] < highThreshold ) &&
-                                ( dst[-width - 1] < highThreshold ) &&
-                                ( dst[-width] < highThreshold ) &&
-                                ( dst[-width + 1] < highThreshold ) &&
-                                ( dst[width - 1] < highThreshold ) &&
-                                ( dst[width] < highThreshold ) &&
-                                ( dst[width + 1] < highThreshold ) )
+                                ( dst[-stride - 1] < highThreshold ) &&
+                                ( dst[-stride] < highThreshold ) &&
+                                ( dst[-stride + 1] < highThreshold ) &&
+                                ( dst[stride - 1] < highThreshold ) &&
+                                ( dst[stride] < highThreshold ) &&
+                                ( dst[stride + 1] < highThreshold ) )
                             {
                                 *dst = 0;
                             }
@@ -335,5 +335,5 @@ namespace AForge.Imaging.Filters
                 grayImage.Dispose( );
             }
         }
-	}
+    }
 }
