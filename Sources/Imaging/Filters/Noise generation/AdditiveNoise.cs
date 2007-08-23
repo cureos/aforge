@@ -34,7 +34,7 @@ namespace AForge.Imaging.Filters
     /// <img src="additive_noise.jpg" width="480" height="361" />
     /// </remarks>
     /// 
-    public class AdditiveNoise : FilterAnyToAny
+    public class AdditiveNoise : FilterAnyToAnyPartial
     {
         // random number generator to add noise
         IRandomNumberGenerator generator = new UniformGenerator( new DoubleRange( -10, 10 ) );
@@ -73,24 +73,32 @@ namespace AForge.Imaging.Filters
         /// </summary>
         /// 
         /// <param name="imageData">Image data.</param>
+        /// <param name="rect">Image rectangle for processing by the filter.</param>
         /// 
-        protected override unsafe void ProcessFilter( BitmapData imageData )
+        protected override unsafe void ProcessFilter( BitmapData imageData, Rectangle rect )
         {
-            int width = imageData.Width;
-            int height = imageData.Height;
+            int pixelSize = ( imageData.PixelFormat == PixelFormat.Format8bppIndexed ) ? 1 : 3;
 
-            int lineSize = width * ( ( imageData.PixelFormat == PixelFormat.Format8bppIndexed ) ? 1 : 3 );
-            int offset = imageData.Stride - lineSize;
+            int startY  = rect.Top;
+            int stopY   = startY + rect.Height;
+
+            int startX  = rect.Left * pixelSize;
+            int stopX   = startX + rect.Width * pixelSize;
+
+            int offset  = imageData.Stride - ( stopX - startX );
 
             // do the job
             byte* ptr = (byte*) imageData.Scan0.ToPointer( );
 
-            // invert
-            for ( int y = 0; y < height; y++ )
+            // allign pointer to the first pixel to process
+            ptr += ( startY * imageData.Stride + rect.Left * pixelSize );
+
+            // for each line
+            for ( int y = startY; y < stopY; y++ )
             {
-                for ( int x = 0; x < lineSize; x++, ptr++ )
+                // for each pixel
+                for ( int x = startX; x < stopX; x++, ptr++ )
                 {
-                    // ivert each pixel
                     *ptr = (byte) Math.Max( 0, Math.Min( 255, *ptr + generator.Next( ) ) );
                 }
                 ptr += offset;

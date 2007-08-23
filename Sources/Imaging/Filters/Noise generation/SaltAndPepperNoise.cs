@@ -30,7 +30,7 @@ namespace AForge.Imaging.Filters
     /// <img src="salt_noise.jpg" width="480" height="361" />
     /// </remarks>
     /// 
-    public class SaltAndPepperNoise : FilterAnyToAny
+    public class SaltAndPepperNoise : FilterAnyToAnyPartial
     {
         // noise amount in percents
         private double noiseAmount = 10;
@@ -70,13 +70,16 @@ namespace AForge.Imaging.Filters
         /// </summary>
         /// 
         /// <param name="imageData">Image data.</param>
+        /// <param name="rect">Image rectangle for processing by the filter.</param>
         /// 
-        protected override unsafe void ProcessFilter( BitmapData imageData )
+        protected override unsafe void ProcessFilter( BitmapData imageData, Rectangle rect )
         {
-            // source image size
-            int width = imageData.Width;
-            int height = imageData.Height;
-            int stride = imageData.Stride;
+            int startX  = rect.Left;
+            int startY  = rect.Top;
+            int width   = rect.Width;
+            int height  = rect.Height;
+            int stride  = imageData.Stride;
+
             int noisyPixels = (int) ( ( width * height * noiseAmount ) / 100 );
 
             // values to set
@@ -90,8 +93,8 @@ namespace AForge.Imaging.Filters
                 // grayscale image
                 for ( int i = 0; i < noisyPixels; i++ )
                 {
-                    int x = rand.Next( width );
-                    int y = rand.Next( height );
+                    int x = startX + rand.Next( width );
+                    int y = startY + rand.Next( height );
 
                     ptr[y * stride + x] = values[rand.Next( 2 )];
                 }
@@ -101,8 +104,8 @@ namespace AForge.Imaging.Filters
                 // color image
                 for ( int i = 0; i < noisyPixels; i++ )
                 {
-                    int x = rand.Next( width );
-                    int y = rand.Next( height );
+                    int x = startX + rand.Next( width );
+                    int y = startY + rand.Next( height );
                     int colorPlane = rand.Next( 3 );
 
                     ptr[y * stride + x * 3 + colorPlane] = values[rand.Next( 2 )];
