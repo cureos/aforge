@@ -137,6 +137,7 @@
     <Compile Include="Filters\Base classes\FilterAnyToAnyNewSameSize.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\Base classes\FilterAnyToAnyPartial.cs" />
     <Compile Include="Filters\Base classes\FilterAnyToAnyUsingCopy.cs" />
     <Compile Include="Filters\Base classes\FilterAnyToGray.cs">
       <SubType>Code</SubType>
