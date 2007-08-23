@@ -12,20 +12,20 @@ namespace AForge.Imaging.Filters
     using System.Drawing.Imaging;
 
     /// <summary>
-    /// Base class for filtering colored images without changing pixel format.
+    /// Base class for filtering grayscale images without changing pixel format.
     /// The base class allows to filter as entire image, as only specified rectangle.
     /// </summary>
     /// 
     /// <remarks>The abstract class is the base class for all filters, which can
-    /// be applied to color images without changing their pixel format and image
+    /// be applied to grayscale images without changing their pixel format and image
     /// dimension. The base class is used for filters, which can be applied as
     /// directly to the specified image modifying it, as to the specified image
-    /// returning new image, which represents results of image processing filter.
+    /// returning new image, which represents result of image processing filter.
     /// In the case of in-place filtering, inherited filters may be
     /// applied to specified rectangle.
     /// </remarks>
     /// 
-    public abstract class FilterColorToColorPartial : IFilter, IInPlaceFilter, IInPlacePartialFilter
+    public abstract class FilterGrayToGrayPartial : IFilter, IInPlaceFilter, IInPlacePartialFilter
     {
         /// <summary>
         /// Apply filter to an image.
@@ -46,7 +46,7 @@ namespace AForge.Imaging.Filters
             // lock source bitmap data
             BitmapData srcData = image.LockBits(
                 new Rectangle( 0, 0, image.Width, image.Height ),
-                ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb );
+                ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed );
 
             // apply the filter
             Bitmap dstImage = Apply( srcData );
@@ -74,20 +74,20 @@ namespace AForge.Imaging.Filters
         /// 
         public virtual Bitmap Apply( BitmapData imageData )
         {
-            if ( imageData.PixelFormat != PixelFormat.Format24bppRgb )
-                throw new ArgumentException( "The filter can be applied to color (24bpp) image only" );
+            if ( imageData.PixelFormat != PixelFormat.Format8bppIndexed )
+                throw new ArgumentException( "The filter can be applied to graysclae (8bpp indexed) image only" );
 
             // get image dimension
             int width = imageData.Width;
             int height = imageData.Height;
 
             // create new image
-            Bitmap dstImage = new Bitmap( width, height, PixelFormat.Format24bppRgb );
+            Bitmap dstImage = AForge.Imaging.Image.CreateGrayscaleImage( width, height );
 
             // lock destination bitmap data
             BitmapData dstData = dstImage.LockBits(
                 new Rectangle( 0, 0, width, height ),
-                ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb );
+                ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed );
 
             // copy image
             Win32.memcpy( dstData.Scan0, imageData.Scan0, imageData.Stride * height );
@@ -147,12 +147,12 @@ namespace AForge.Imaging.Filters
         /// <remarks>The method applies the filter directly to the provided
         /// image.</remarks>
         /// 
-        public virtual void ApplyInPlace( Bitmap image, Rectangle rect )
+        public void ApplyInPlace( Bitmap image, Rectangle rect )
         {
             // lock source bitmap data
             BitmapData data = image.LockBits(
                 new Rectangle( 0, 0, image.Width, image.Height ),
-                ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb );
+                ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed );
 
             // apply the filter
             ApplyInPlace( data, rect );
@@ -173,10 +173,10 @@ namespace AForge.Imaging.Filters
         /// <remarks>The method applies the filter directly to the provided
         /// image data.</remarks>
         /// 
-        public virtual void ApplyInPlace( BitmapData imageData, Rectangle rect )
+        public void ApplyInPlace( BitmapData imageData, Rectangle rect )
         {
-            if ( imageData.PixelFormat != PixelFormat.Format24bppRgb )
-                throw new ArgumentException( "The filter can be applied to color (24bpp) image only" );
+            if ( imageData.PixelFormat != PixelFormat.Format8bppIndexed )
+                throw new ArgumentException( "The filter can be applied to graysclae (8bpp indexed) image only" );
 
             // validate rectangle
             rect.Intersect( new Rectangle( 0, 0, imageData.Width, imageData.Height ) );
