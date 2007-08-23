@@ -7,52 +7,58 @@
 
 namespace AForge.Imaging.Filters
 {
-	using System;
-	using System.Drawing;
-	using System.Drawing.Imaging;
+    using System;
+    using System.Drawing;
+    using System.Drawing.Imaging;
 
-	/// <summary>
-	/// Threshold using Simple Image Statistics (SIS)
-	/// </summary>
-	/// 
-	/// <remarks></remarks>
-	/// 
-	public class SISThreshold : FilterGrayToGray
-	{
-		private byte threshold;
-
-		/// <summary>
-		/// Threshold value
-		/// </summary>
-		/// 
-		/// <remarks>The property is read only and represents the value, which
-		/// was automaticaly calculated using image statistics.</remarks>
-		/// 
-		public byte Threshold
-		{
-			get { return threshold; }
-		}
+    /// <summary>
+    /// Threshold using Simple Image Statistics (SIS).
+    /// </summary>
+    /// 
+    /// <remarks></remarks>
+    /// 
+    public class SISThreshold : FilterGrayToGrayPartial
+    {
+        private byte threshold;
 
         /// <summary>
-        /// Process the filter on the specified image
+        /// Threshold value.
         /// </summary>
         /// 
-        /// <param name="imageData">Image data</param>
+        /// <remarks>The property is read only and represents the value, which
+        /// was automaticaly calculated using image statistics.</remarks>
         /// 
-        protected override unsafe void ProcessFilter( BitmapData imageData )
+        public byte Threshold
         {
-            // get image width and height
-            int width = imageData.Width;
-            int height = imageData.Height;
-            int widthM1 = width - 1;
-            int heightM1 = height - 1;
-            int stride = imageData.Stride;
-            int offset = stride - width;
+            get { return threshold; }
+        }
+
+        /// <summary>
+        /// Process the filter on the specified image.
+        /// </summary>
+        /// 
+        /// <param name="imageData">Image data.</param>
+        /// <param name="rect">Image rectangle for processing by the filter.</param>
+        /// 
+        protected override unsafe void ProcessFilter( BitmapData imageData, Rectangle rect )
+        {
+            int startX  = rect.Left;
+            int startY  = rect.Top;
+            int stopX   = startX + rect.Width;
+            int stopY   = startY + rect.Height;
+            int stopXM1 = stopX - 1;
+            int stopYM1 = stopY - 1;
+            int stride  = imageData.Stride;
+            int offset  = stride - rect.Width;
+
             // differences and weights
             double ex, ey, weight, weightTotal = 0, total = 0;
 
             // do the job
             byte* ptr = (byte*) imageData.Scan0.ToPointer( );
+
+            // allign pointer to the first pixel to process
+            ptr += ( startY * imageData.Stride + startX );
 
             // --- 1st pass - collecting statistics
 
@@ -60,11 +66,11 @@ namespace AForge.Imaging.Filters
             ptr += stride;
 
             // for each line
-            for ( int y = 1; y < heightM1; y++ )
+            for ( int y = startY + 1; y < stopYM1; y++ )
             {
                 ptr++;
                 // for each pixels
-                for ( int x = 1; x < widthM1; x++, ptr++ )
+                for ( int x = startX + 1; x < stopXM1; x++, ptr++ )
                 {
                     // the equations are:
                     // ex = | I(x + 1, y) - I(x - 1, y) |
@@ -88,16 +94,19 @@ namespace AForge.Imaging.Filters
             // --- 2nd pass - thresholding
             ptr = (byte*) imageData.Scan0.ToPointer( );
 
+            // allign pointer to the first pixel to process
+            ptr += ( startY * imageData.Stride + startX );
+
             // for each line
-            for ( int y = 0; y < height; y++ )
+            for ( int y = startY; y < stopY; y++ )
             {
                 // for all pixels
-                for ( int x = 0; x < width; x++, ptr++ )
+                for ( int x = startX; x < stopX; x++, ptr++ )
                 {
                     *ptr = (byte) ( ( *ptr >= threshold ) ? 255 : 0 );
                 }
                 ptr += offset;
             }
         }
-	}
+    }
 }

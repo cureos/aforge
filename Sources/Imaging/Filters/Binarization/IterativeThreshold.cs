@@ -92,13 +92,15 @@ namespace AForge.Imaging.Filters
         /// </summary>
         /// 
         /// <param name="imageData">Image data.</param>
+        /// <param name="rect">Image rectangle for processing by the filter.</param>
         /// 
-        protected override unsafe void ProcessFilter( BitmapData imageData )
+        protected override unsafe void ProcessFilter( BitmapData imageData, Rectangle rect )
         {
-            // get image width and height
-            int width = imageData.Width;
-            int height = imageData.Height;
-            int offset = imageData.Stride - width;
+            int startX  = rect.Left;
+            int startY  = rect.Top;
+            int stopX   = startX + rect.Width;
+            int stopY   = startY + rect.Height;
+            int offset  = imageData.Stride - rect.Width;
 
             // amount of object pixels and their summary value
             int objectValue = 0;
@@ -123,16 +125,19 @@ namespace AForge.Imaging.Filters
                 // do the job
                 byte* ptr = (byte*)imageData.Scan0.ToPointer( );
 
+                // allign pointer to the first pixel to process
+                ptr += ( startY * imageData.Stride + startX );
+
                 if ( !firstPass )
                     threshold = newThreshold;
 
                 firstPass = false;
 
                 // for each line	
-                for ( int y = 0; y < height; y++ )
+                for ( int y = startY; y < stopY; y++ )
                 {
                     // for each pixel
-                    for ( int x = 0; x < width; x++, ptr++ )
+                    for ( int x = startX; x < stopX; x++, ptr++ )
                     {
                         if ( *ptr >= threshold )
                         {
@@ -159,7 +164,7 @@ namespace AForge.Imaging.Filters
             threshold = newThreshold;
 
             // process image data using base filter
-            base.ProcessFilter( imageData );
+            base.ProcessFilter( imageData, rect );
         }
     }
 }

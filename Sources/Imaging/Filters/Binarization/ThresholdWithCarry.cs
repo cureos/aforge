@@ -7,58 +7,63 @@
 
 namespace AForge.Imaging.Filters
 {
-	using System;
-	using System.Drawing;
-	using System.Drawing.Imaging;
+    using System;
+    using System.Drawing;
+    using System.Drawing.Imaging;
 
-	/// <summary>
-	/// Threshold binarization with error carry
-	/// </summary>
-	/// 
-	/// <remarks></remarks>
-	/// 
-    public class ThresholdWithCarry : FilterGrayToGray
-	{
-		private byte threshold = 128;
+    /// <summary>
+    /// Threshold binarization with error carry.
+    /// </summary>
+    /// 
+    /// <remarks></remarks>
+    /// 
+    public class ThresholdWithCarry : FilterGrayToGrayPartial
+    {
+        private byte threshold = 128;
 
-		/// <summary>
-		/// Threshold value (default is 128)
-		/// </summary>
-		public byte ThresholdValue
-		{
-			get { return threshold; }
-			set { threshold = value; }
-		}
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ThresholdWithCarry"/> class
-		/// </summary>
-		/// 
-		public ThresholdWithCarry( ) { }
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ThresholdWithCarry"/> class
-		/// </summary>
-		/// 
-		/// <param name="threshold">Threshold value</param>
-		/// 
-		public ThresholdWithCarry( byte threshold )
-		{
-			this.threshold = threshold;
-		}
-		
         /// <summary>
-        /// Process the filter on the specified image
+        /// Threshold value.
         /// </summary>
         /// 
-        /// <param name="imageData">Image data</param>
+        /// <remarks>Default value is 128.</remarks>
         /// 
-        protected override unsafe void ProcessFilter( BitmapData imageData )
+        public byte ThresholdValue
         {
-            // get image width and height
-            int width = imageData.Width;
-            int height = imageData.Height;
-            int offset = imageData.Stride - width;
+            get { return threshold; }
+            set { threshold = value; }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ThresholdWithCarry"/> class.
+        /// </summary>
+        /// 
+        public ThresholdWithCarry( ) { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ThresholdWithCarry"/> class.
+        /// </summary>
+        /// 
+        /// <param name="threshold">Threshold value.</param>
+        /// 
+        public ThresholdWithCarry( byte threshold )
+        {
+            this.threshold = threshold;
+        }
+
+        /// <summary>
+        /// Process the filter on the specified image.
+        /// </summary>
+        /// 
+        /// <param name="imageData">Image data.</param>
+        /// <param name="rect">Image rectangle for processing by the filter.</param>
+        /// 
+        protected override unsafe void ProcessFilter( BitmapData imageData, Rectangle rect )
+        {
+            int startX  = rect.Left;
+            int startY  = rect.Top;
+            int stopX   = startX + rect.Width;
+            int stopY   = startY + rect.Height;
+            int offset  = imageData.Stride - rect.Width;
 
             // value which is caried from pixel to pixel
             short carry = 0;
@@ -66,13 +71,16 @@ namespace AForge.Imaging.Filters
             // do the job
             byte* ptr = (byte*) imageData.Scan0.ToPointer( );
 
+            // allign pointer to the first pixel to process
+            ptr += ( startY * imageData.Stride + startX );
+
             // for each line	
-            for ( int y = 0; y < height; y++ )
+            for ( int y = startY; y < stopY; y++ )
             {
                 carry = 0;
 
                 // for each pixel
-                for ( int x = 0; x < width; x++, ptr++ )
+                for ( int x = startX; x < stopX; x++, ptr++ )
                 {
                     carry += *ptr;
 
@@ -89,5 +97,5 @@ namespace AForge.Imaging.Filters
                 ptr += offset;
             }
         }
-	}
+    }
 }

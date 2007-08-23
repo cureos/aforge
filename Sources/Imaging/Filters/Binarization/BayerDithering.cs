@@ -1,6 +1,7 @@
 // AForge Image Processing Library
+// AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2005-2006
+// Copyright © Andrew Kirillov, 2005-2007
 // andrew.kirillov@gmail.com
 //
 
@@ -9,7 +10,7 @@ namespace AForge.Imaging.Filters
 	using System;
 
 	/// <summary>
-	/// Ordered dithering uaing Bayer matrix
+	/// Ordered dithering uaing Bayer matrix.
 	/// </summary>
 	/// 
 	/// <remarks></remarks>
@@ -17,7 +18,7 @@ namespace AForge.Imaging.Filters
 	public sealed class BayerDithering : OrderedDithering
 	{
 		/// <summary>
-		/// Initializes a new instance of the <see cref="BayerDithering"/> class
+		/// Initializes a new instance of the <see cref="BayerDithering"/> class.
 		/// </summary>
 		/// 
 		public BayerDithering( ) : base( new byte[,] {
