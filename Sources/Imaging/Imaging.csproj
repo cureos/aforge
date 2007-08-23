@@ -129,6 +129,7 @@
     <Compile Include="Filters\Adaptive Binarization\SISThreshold.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\Adaptive Binarization\IterativeThreshold.cs" />
     <Compile Include="Filters\Base classes\FilterAnyToAny.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -170,7 +171,6 @@
     <Compile Include="Filters\Binarization\FloydSteinbergDithering.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Filters\Binarization\IterativeThreshold.cs" />
     <Compile Include="Filters\Binarization\JarvisJudiceNinkeDithering.cs">
       <SubType>Code</SubType>
     </Compile>
