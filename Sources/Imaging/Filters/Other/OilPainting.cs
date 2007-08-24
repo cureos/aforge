@@ -89,7 +89,7 @@ namespace AForge.Imaging.Filters
                     for ( int x = 0; x < width; x++, src++, dst++ )
                     {
                         // clear arrays
-                        Array.Clear( intensities, 0, 255 );
+                        Array.Clear( intensities, 0, 256 );
 
                         // for each kernel row
                         for ( i = -radius; i <= radius; i++ )
@@ -154,7 +154,7 @@ namespace AForge.Imaging.Filters
                     for ( int x = 0; x < width; x++, src += 3, dst += 3 )
                     {
                         // clear arrays
-                        Array.Clear( intensities, 0, 255 );
+                        Array.Clear( intensities, 0, 256 );
                         Array.Clear( red, 0, 256 );
                         Array.Clear( green, 0, 256 );
                         Array.Clear( blue, 0, 256 );
