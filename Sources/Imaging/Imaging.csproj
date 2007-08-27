@@ -331,6 +331,7 @@
     <Compile Include="Filters\Other\Jitter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\Other\Mirror.cs" />
     <Compile Include="Filters\Other\OilPainting.cs">
       <SubType>Code</SubType>
     </Compile>
