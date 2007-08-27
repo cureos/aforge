@@ -37,7 +37,7 @@ namespace AForge.Imaging.Filters
     /// <img src="color_remapping.jpg" width="480" height="361" />
     /// </remarks>
     /// 
-    public class ColorRemapping : FilterAnyToAny
+    public class ColorRemapping : FilterAnyToAnyPartial
     {
         // color maps
         private byte[] redMap;
@@ -176,23 +176,31 @@ namespace AForge.Imaging.Filters
         /// </summary>
         /// 
         /// <param name="imageData">Image data.</param>
+        /// <param name="rect">Image rectangle for processing by the filter.</param>
         /// 
-        protected override unsafe void ProcessFilter( BitmapData imageData )
+        protected override unsafe void ProcessFilter( BitmapData imageData, Rectangle rect )
         {
-            int width = imageData.Width;
-            int height = imageData.Height;
+            int pixelSize = ( imageData.PixelFormat == PixelFormat.Format8bppIndexed ) ? 1 : 3;
 
-            int offset = imageData.Stride - ( ( imageData.PixelFormat == PixelFormat.Format8bppIndexed ) ? width : width * 3 );
+            // processing start and stop X,Y positions
+            int startX  = rect.Left;
+            int startY  = rect.Top;
+            int stopX   = startX + rect.Width;
+            int stopY   = startY + rect.Height;
+            int offset  = imageData.Stride - rect.Width * pixelSize;
 
             // do the job
             byte* ptr = (byte*) imageData.Scan0.ToPointer( );
 
+            // allign pointer to the first pixel to process
+            ptr += ( startY * imageData.Stride + startX * pixelSize );
+
             if ( imageData.PixelFormat == PixelFormat.Format8bppIndexed )
             {
                 // grayscale image
-                for ( int y = 0; y < height; y++ )
+                for ( int y = startY; y < stopY; y++ )
                 {
-                    for ( int x = 0; x < width; x++, ptr++ )
+                    for ( int x = startX; x < stopX; x++, ptr++ )
                     {
                         // gray
                         *ptr = grayMap[*ptr];
@@ -203,9 +211,9 @@ namespace AForge.Imaging.Filters
             else
             {
                 // RGB image
-                for ( int y = 0; y < height; y++ )
+                for ( int y = startY; y < stopY; y++ )
                 {
-                    for ( int x = 0; x < width; x++, ptr += 3 )
+                    for ( int x = startX; x < stopX; x++, ptr += 3 )
                     {
                         // red
                         ptr[RGB.R] = redMap[ptr[RGB.R]];
