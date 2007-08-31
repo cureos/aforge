@@ -23,7 +23,6 @@ namespace AForge.Imaging.Filters
     public class Jitter : FilterAnyToAnyUsingCopy
     {
         private int radius = 2;
-        private bool copyBefore = true;
 
         // random number generator
         private Random rand = new Random( );
@@ -46,10 +45,11 @@ namespace AForge.Imaging.Filters
         /// starting the jittering.
         /// </summary>
         /// 
+        [Obsolete( "Now the property is set to true by default" )]
         public bool CopyBefore
         {
-            get { return copyBefore; }
-            set { copyBefore = value; }
+            get { return true; }
+            set { }
         }
 
         /// <summary>
@@ -95,8 +95,8 @@ namespace AForge.Imaging.Filters
             byte* dst = (byte*) destinationData.Scan0.ToPointer( );
             byte* p;
 
-            if ( copyBefore )
-                Win32.memcpy( dst, src, stride * height );
+            // copy source to destination before
+            Win32.memcpy( dst, src, stride * height );
 
             // Note:
             // It is possible to speed-up this filter creating separate
