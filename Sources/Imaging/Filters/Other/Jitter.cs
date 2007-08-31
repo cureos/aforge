@@ -20,7 +20,7 @@ namespace AForge.Imaging.Filters
     /// 
     /// <remarks></remarks>
     /// 
-    public class Jitter : FilterAnyToAnyUsingCopy
+    public class Jitter : FilterAnyToAnyUsingCopyPartial
     {
         private int radius = 2;
 
@@ -74,16 +74,20 @@ namespace AForge.Imaging.Filters
         /// 
         /// <param name="sourceData">Pointer to source image data (first scan line).</param>
         /// <param name="destinationData">Destination image data.</param>
+        /// <param name="rect">Image rectangle for processing by the filter.</param>
         /// 
-        protected override unsafe void ProcessFilter( IntPtr sourceData, BitmapData destinationData )
+        protected override unsafe void ProcessFilter( IntPtr sourceData, BitmapData destinationData, Rectangle rect )
         {
-            // get source image size
-            int width = destinationData.Width;
-            int height = destinationData.Height;
-
             int pixelSize = ( destinationData.PixelFormat == PixelFormat.Format8bppIndexed ) ? 1 : 3;
+
+            // processing start and stop X,Y positions
+            int startX = rect.Left;
+            int startY  = rect.Top;
+            int stopX   = startX + rect.Width;
+            int stopY   = startY + rect.Height;
+
             int stride = destinationData.Stride;
-            int offset = stride - width * pixelSize;
+            int offset = stride - rect.Width * pixelSize;
 
             // new pixel's position
             int ox, oy;
@@ -96,30 +100,33 @@ namespace AForge.Imaging.Filters
             byte* p;
 
             // copy source to destination before
-            Win32.memcpy( dst, src, stride * height );
+            Win32.memcpy( dst, src, stride * destinationData.Height );
+
+            // allign pointer to the first pixel to process
+            dst += ( startY * stride + startX * pixelSize );
 
             // Note:
             // It is possible to speed-up this filter creating separate
             // loops for RGB and grayscale images.
 
             // for each line
-            for ( int y = 0; y < height; y++ )
+            for ( int y = startY; y < stopY; y++ )
             {
                 // for each pixel
-                for ( int x = 0; x < width; x++ )
+                for ( int x = startX; x < stopX; x++ )
                 {
                     // generate radnom pixel's position
                     ox = x + rand.Next( max ) - radius;
                     oy = y + rand.Next( max ) - radius;
 
                     // check if the random pixel is inside our image
-                    if ( ( ox >= 0 ) && ( oy >= 0 ) && ( ox < width ) && ( oy < height ) )
+                    if ( ( ox >= startX ) && ( oy >= startY ) && ( ox < stopX ) && ( oy < stopY ) )
                     {
                         p = src + oy * stride + ox * pixelSize;
 
-                        for ( int i = 0; i < pixelSize; i++, dst++ )
+                        for ( int i = 0; i < pixelSize; i++, dst++, p++ )
                         {
-                            *dst = p[i];
+                            *dst = *p;
                         }
                     }
                     else
