@@ -83,7 +83,7 @@ namespace AForge.Imaging.Filters
             byte* dst = (byte*) destinationData.Scan0.ToPointer( );
             byte* p;
 
-            // allign pointer to the first pixel to process
+            // allign pointers to the first pixel to process
             src += ( startY * stride + startX * pixelSize );
             dst += ( startY * stride + startX * pixelSize );
 
