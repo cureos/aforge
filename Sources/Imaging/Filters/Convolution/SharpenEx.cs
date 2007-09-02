@@ -19,7 +19,7 @@ namespace AForge.Imaging.Filters
     /// 
     /// <break></break>
     /// 
-    public class SharpenEx : IFilter, IInPlaceFilter
+    public class SharpenEx : IFilter, IInPlaceFilter, IInPlacePartialFilter
     {
         private Correlation filter;
         private double      sigma = 1.4;
@@ -156,6 +156,36 @@ namespace AForge.Imaging.Filters
         public void ApplyInPlace( BitmapData imageData )
         {
             filter.ApplyInPlace( imageData );
+        }
+
+        /// <summary>
+        /// Apply filter to an image or its part.
+        /// </summary>
+        /// 
+        /// <param name="image">Image to apply filter to.</param>
+        /// <param name="rect">Image rectangle for processing by the filter.</param>
+        /// 
+        /// <remarks>The method applies the filter directly to the provided
+        /// image.</remarks>
+        /// 
+        public void ApplyInPlace( Bitmap image, Rectangle rect )
+        {
+            filter.ApplyInPlace( image, rect );
+        }
+
+        /// <summary>
+        /// Apply filter to an image or its part.
+        /// </summary>
+        /// 
+        /// <param name="imageData">Image to apply filter to.</param>
+        /// <param name="rect">Image rectangle for processing by the filter.</param>
+        /// 
+        /// <remarks>The method applies the filter directly to the provided
+        /// image data.</remarks>
+        /// 
+        public void ApplyInPlace( BitmapData imageData, Rectangle rect )
+        {
+            filter.ApplyInPlace( imageData, rect );
         }
 
         // Private members
