@@ -26,7 +26,7 @@ namespace AForge.Imaging.Filters
     /// </code>
     /// </remarks>
 	/// 
-	public class Closing : IFilter, IInPlaceFilter
+	public class Closing : IFilter, IInPlaceFilter, IInPlacePartialFilter
 	{
         private Erosion     errosion = new Erosion( );
         private Dilatation  dilatation = new Dilatation( );
@@ -123,5 +123,38 @@ namespace AForge.Imaging.Filters
             dilatation.ApplyInPlace( imageData );
             errosion.ApplyInPlace( imageData );
         }
+
+        /// <summary>
+        /// Apply filter to an image or its part.
+        /// </summary>
+        /// 
+        /// <param name="image">Image to apply filter to.</param>
+        /// <param name="rect">Image rectangle for processing by the filter.</param>
+        /// 
+        /// <remarks>The method applies the filter directly to the provided
+        /// image.</remarks>
+        /// 
+        public void ApplyInPlace( Bitmap image, Rectangle rect )
+        {
+            dilatation.ApplyInPlace( image, rect );
+            errosion.ApplyInPlace( image, rect );
+        }
+
+        /// <summary>
+        /// Apply filter to an image or its part.
+        /// </summary>
+        /// 
+        /// <param name="imageData">Image to apply filter to.</param>
+        /// <param name="rect">Image rectangle for processing by the filter.</param>
+        /// 
+        /// <remarks>The method applies the filter directly to the provided
+        /// image data.</remarks>
+        /// 
+        public void ApplyInPlace( BitmapData imageData, Rectangle rect )
+        {
+            dilatation.ApplyInPlace( imageData, rect );
+            errosion.ApplyInPlace( imageData, rect );
+        }
+
 	}
 }

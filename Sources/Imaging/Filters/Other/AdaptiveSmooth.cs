@@ -21,7 +21,7 @@ namespace AForge.Imaging.Filters
     /// 
     /// <remarks></remarks>
     /// 
-    public class AdaptiveSmooth : FilterAnyToAnyUsingCopy
+    public class AdaptiveSmooth : FilterAnyToAnyUsingCopyPartial
     {
         private double factor = 3.0;
 
@@ -60,19 +60,26 @@ namespace AForge.Imaging.Filters
         /// 
         /// <param name="sourceData">Pointer to source image data (first scan line).</param>
         /// <param name="destinationData">Destination image data.</param>
+        /// <param name="rect">Image rectangle for processing by the filter.</param>
         /// 
-        protected override unsafe void ProcessFilter( IntPtr sourceData, BitmapData destinationData )
+        protected override unsafe void ProcessFilter( IntPtr sourceData, BitmapData destinationData, Rectangle rect )
         {
-            // get source image size
-            int width       = destinationData.Width;
-            int height      = destinationData.Height;
-            int widthM2     = width - 2;
-            int heightM2    = height - 2;
-
-            int stride      = destinationData.Stride;
             int pixelSize   = ( destinationData.PixelFormat == PixelFormat.Format8bppIndexed ) ? 1 : 3;
             int pixelSize2  = pixelSize * 2;
-            int offset      = stride - width * pixelSize;
+
+            // processing start and stop X,Y positions
+            int startX  = rect.Left;
+            int startY  = rect.Top;
+            int stopX   = startX + rect.Width;
+            int stopY   = startY + rect.Height;
+
+            int startXP2    = startX + 2;
+            int startYP2    = startY + 2;
+            int stopXM2     = stopX - 2;
+            int stopYM2     = stopY - 2;
+
+            int stride = destinationData.Stride;
+            int offset = stride - rect.Width * pixelSize;
 
             // gradient and weights
             double gx, gy, weight, weightTotal, total;
@@ -83,12 +90,16 @@ namespace AForge.Imaging.Filters
             byte* src = (byte*) sourceData.ToPointer( ) + stride * 2;
             byte* dst = (byte*) destinationData.Scan0.ToPointer( ) + stride * 2;
 
-            for ( int y = 2; y < heightM2; y++ )
+            // allign pointers to the first pixel to process
+            src += ( startY * stride + startX * pixelSize );
+            dst += ( startY * stride + startX * pixelSize );
+
+            for ( int y = startYP2; y < stopYM2; y++ )
             {
                 src += 2 * pixelSize;
                 dst += 2 * pixelSize;
 
-                for ( int x = 2; x < widthM2; x++ )
+                for ( int x = startXP2; x < stopXM2; x++ )
                 {
                     for ( int i = 0; i < pixelSize; i++, src++, dst++ )
                     {

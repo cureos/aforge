@@ -66,7 +66,7 @@ namespace AForge.Imaging.Filters
             int pixelSize = ( destinationData.PixelFormat == PixelFormat.Format8bppIndexed ) ? 1 : 3;
 
             // processing start and stop X,Y positions
-            int startX = rect.Left;
+            int startX  = rect.Left;
             int startY  = rect.Top;
             int stopX   = startX + rect.Width;
             int stopY   = startY + rect.Height;

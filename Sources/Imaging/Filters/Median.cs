@@ -17,7 +17,7 @@ namespace AForge.Imaging.Filters
     /// 
     /// <remarks></remarks>
     /// 
-    public class Median : FilterAnyToAnyUsingCopy
+    public class Median : FilterAnyToAnyUsingCopyPartial
     {
         private int size = 3;
 
@@ -56,15 +56,20 @@ namespace AForge.Imaging.Filters
         /// 
         /// <param name="sourceData">Pointer to source image data (first scan line).</param>
         /// <param name="destinationData">Destination image data.</param>
+        /// <param name="rect">Image rectangle for processing by the filter.</param>
         /// 
-        protected override unsafe void ProcessFilter( IntPtr sourceData, BitmapData destinationData )
+        protected override unsafe void ProcessFilter( IntPtr sourceData, BitmapData destinationData, Rectangle rect )
         {
-            // get source image size
-            int width = destinationData.Width;
-            int height = destinationData.Height;
+            int pixelSize = ( destinationData.PixelFormat == PixelFormat.Format8bppIndexed ) ? 1 : 3;
+
+            // processing start and stop X,Y positions
+            int startX  = rect.Left;
+            int startY  = rect.Top;
+            int stopX   = startX + rect.Width;
+            int stopY   = startY + rect.Height;
 
             int stride = destinationData.Stride;
-            int offset = stride - ( ( destinationData.PixelFormat == PixelFormat.Format8bppIndexed ) ? width : width * 3 );
+            int offset = stride - rect.Width * pixelSize;
 
             // loop and array indexes
             int i, j, t;
@@ -82,16 +87,20 @@ namespace AForge.Imaging.Filters
             byte* dst = (byte*) destinationData.Scan0.ToPointer( );
             byte* p;
 
+            // allign pointers to the first pixel to process
+            src += ( startY * stride + startX * pixelSize );
+            dst += ( startY * stride + startX * pixelSize );
+
             // do the processing job
             if ( destinationData.PixelFormat == PixelFormat.Format8bppIndexed )
             {
                 // grayscale image
 
                 // for each line
-                for ( int y = 0; y < height; y++ )
+                for ( int y = startY; y < stopY; y++ )
                 {
                     // for each pixel
-                    for ( int x = 0; x < width; x++, src++, dst++ )
+                    for ( int x = startX; x < stopX; x++, src++, dst++ )
                     {
                         c = 0;
 
@@ -101,10 +110,10 @@ namespace AForge.Imaging.Filters
                             t = y + i;
 
                             // skip row
-                            if ( t < 0 )
+                            if ( t < startY )
                                 continue;
                             // break
-                            if ( t >= height )
+                            if ( t >= stopY )
                                 break;
 
                             // for each kernel column
@@ -113,10 +122,10 @@ namespace AForge.Imaging.Filters
                                 t = x + j;
 
                                 // skip column
-                                if ( t < 0 )
+                                if ( t < startX )
                                     continue;
 
-                                if ( t < width )
+                                if ( t < stopX )
                                 {
                                     g[c++] = src[i * stride + j];
                                 }
@@ -136,10 +145,10 @@ namespace AForge.Imaging.Filters
                 // RGB image
 
                 // for each line
-                for ( int y = 0; y < height; y++ )
+                for ( int y = startY; y < stopY; y++ )
                 {
                     // for each pixel
-                    for ( int x = 0; x < width; x++, src += 3, dst += 3 )
+                    for ( int x = startX; x < stopX; x++, src += 3, dst += 3 )
                     {
                         c = 0;
 
@@ -149,10 +158,10 @@ namespace AForge.Imaging.Filters
                             t = y + i;
 
                             // skip row
-                            if ( t < 0 )
+                            if ( t < startY )
                                 continue;
                             // break
-                            if ( t >= height )
+                            if ( t >= stopY )
                                 break;
 
                             // for each kernel column
@@ -161,10 +170,10 @@ namespace AForge.Imaging.Filters
                                 t = x + j;
 
                                 // skip column
-                                if ( t < 0 )
+                                if ( t < startX )
                                     continue;
 
-                                if ( t < width )
+                                if ( t < stopX )
                                 {
                                     p = &src[i * stride + j * 3];
 

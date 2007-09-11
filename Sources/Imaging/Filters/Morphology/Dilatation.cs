@@ -33,7 +33,7 @@ namespace AForge.Imaging.Filters
     /// <img src="dilatation.jpg" width="480" height="361" />
     /// </remarks>
     /// 
-    public class Dilatation : FilterAnyToAnyUsingCopy
+    public class Dilatation : FilterAnyToAnyUsingCopyPartial
     {
         // structuring element
         private short[,] se = new short[3, 3] { { 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 } };
@@ -69,14 +69,21 @@ namespace AForge.Imaging.Filters
         /// 
         /// <param name="sourceData">Pointer to source image data (first scan line).</param>
         /// <param name="destinationData">Destination image data.</param>
+        /// <param name="rect">Image rectangle for processing by the filter.</param>
         /// 
-        protected override unsafe void ProcessFilter( IntPtr sourceData, BitmapData destinationData )
+        protected override unsafe void ProcessFilter( IntPtr sourceData, BitmapData destinationData, Rectangle rect )
         {
-            // get image size
-            int width = destinationData.Width;
-            int height = destinationData.Height;
+            int pixelSize = ( destinationData.PixelFormat == PixelFormat.Format8bppIndexed ) ? 1 : 3;
+
+            // processing start and stop X,Y positions
+            int startX  = rect.Left;
+            int startY  = rect.Top;
+            int stopX   = startX + rect.Width;
+            int stopY   = startY + rect.Height;
+
             int stride = destinationData.Stride;
-            int offset = stride - ( ( destinationData.PixelFormat == PixelFormat.Format8bppIndexed ) ? width : width * 3 );
+            int offset = stride - rect.Width * pixelSize;
+
             // loop and array indexes
             int t, ir, jr, i, j;
             // structuring element's radius
@@ -86,16 +93,20 @@ namespace AForge.Imaging.Filters
             byte* src = (byte*) sourceData.ToPointer( );
             byte* dst = (byte*) destinationData.Scan0.ToPointer( );
 
+            // allign pointers to the first pixel to process
+            src += ( startY * stride + startX * pixelSize );
+            dst += ( startY * stride + startX * pixelSize );
+
             if ( destinationData.PixelFormat == PixelFormat.Format8bppIndexed )
             {
                 // grayscale image
                 byte max, v;
 
                 // for each line
-                for ( int y = 0; y < height; y++ )
+                for ( int y = startY; y < stopY; y++ )
                 {
                     // for each pixel
-                    for ( int x = 0; x < width; x++, src++, dst++ )
+                    for ( int x = startX; x < stopX; x++, src++, dst++ )
                     {
                         max = 0;
 
@@ -106,10 +117,10 @@ namespace AForge.Imaging.Filters
                             t = y + ir;
 
                             // skip row
-                            if ( t < 0 )
+                            if ( t < startY )
                                 continue;
                             // break
-                            if ( t >= height )
+                            if ( t >= stopY )
                                 break;
 
                             // for each structuring slement's column
@@ -119,9 +130,9 @@ namespace AForge.Imaging.Filters
                                 t = x + jr;
 
                                 // skip column
-                                if ( t < 0 )
+                                if ( t < startX )
                                     continue;
-                                if ( t < width )
+                                if ( t < stopX )
                                 {
                                     if ( se[i, j] == 1 )
                                     {
@@ -147,10 +158,10 @@ namespace AForge.Imaging.Filters
                 byte* p;
 
                 // for each line
-                for ( int y = 0; y < height; y++ )
+                for ( int y = startY; y < stopY; y++ )
                 {
                     // for each pixel
-                    for ( int x = 0; x < width; x++, src += 3, dst += 3 )
+                    for ( int x = startX; x < stopX; x++, src += 3, dst += 3 )
                     {
                         maxR = maxG = maxB = 0;
 
@@ -161,10 +172,10 @@ namespace AForge.Imaging.Filters
                             t = y + ir;
 
                             // skip row
-                            if ( t < 0 )
+                            if ( t < startY )
                                 continue;
                             // break
-                            if ( t >= height )
+                            if ( t >= stopY )
                                 break;
 
                             // for each structuring element's column
@@ -174,9 +185,9 @@ namespace AForge.Imaging.Filters
                                 t = x + jr;
 
                                 // skip column
-                                if ( t < 0 )
+                                if ( t < startX )
                                     continue;
-                                if ( t < width )
+                                if ( t < stopX )
                                 {
                                     if ( se[i, j] == 1 )
                                     {
