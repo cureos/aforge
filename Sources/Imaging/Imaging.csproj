@@ -159,6 +159,7 @@
     </Compile>
     <Compile Include="Filters\Base classes\FilterGrayToGrayPartial.cs" />
     <Compile Include="Filters\Base classes\FilterGrayToGrayUsingCopy.cs" />
+    <Compile Include="Filters\Base classes\FilterGrayToGrayUsingCopyPartial.cs" />
     <Compile Include="Filters\Base classes\FilterResize.cs" />
     <Compile Include="Filters\Base classes\FilterRotate.cs" />
     <Compile Include="Filters\Binarization\BayerDithering.cs">
