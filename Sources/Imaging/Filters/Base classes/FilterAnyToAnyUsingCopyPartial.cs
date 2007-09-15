@@ -17,6 +17,17 @@ namespace AForge.Imaging.Filters
     /// as only specified rectangle.
     /// </summary>
     /// 
+    /// <remarks><para>The abstract class is the base class for all filters, which can
+    /// be applied to color and grayscale images without changing their pixel format
+    /// and image dimension. The base class is used for filters, which can not do
+    /// direct manipulations with source image. To make effect of in-place filtering,
+    /// these filters create a background copy of the original image (done by this
+    /// base class) and then do manipulations with it putting result back to the original
+    /// source image.</para>
+    /// <para>The base class is for those filters, which support partial filtering on specified
+    /// rectangle only.</para>
+    /// </remarks>
+    /// 
     public abstract class FilterAnyToAnyUsingCopyPartial : IFilter, IInPlaceFilter, IInPlacePartialFilter
     {
         /// <summary>

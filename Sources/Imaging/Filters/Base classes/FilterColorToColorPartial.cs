@@ -41,7 +41,7 @@ namespace AForge.Imaging.Filters
         /// <remarks>The method keeps the source image unchanged and returns the
         /// the result of image processing filter as new image.</remarks> 
         ///
-        public virtual Bitmap Apply( Bitmap image )
+        public Bitmap Apply( Bitmap image )
         {
             // lock source bitmap data
             BitmapData srcData = image.LockBits(
@@ -72,7 +72,7 @@ namespace AForge.Imaging.Filters
         /// of image processing filter as new image. The source image data are kept
         /// unchanged.</remarks>
         /// 
-        public virtual Bitmap Apply( BitmapData imageData )
+        public Bitmap Apply( BitmapData imageData )
         {
             if ( imageData.PixelFormat != PixelFormat.Format24bppRgb )
                 throw new ArgumentException( "The filter can be applied to color (24bpp) image only" );
@@ -112,7 +112,7 @@ namespace AForge.Imaging.Filters
         /// <remarks>The method applies the filter directly to the provided
         /// image.</remarks>
         /// 
-        public virtual void ApplyInPlace( Bitmap image )
+        public void ApplyInPlace( Bitmap image )
         {
             // apply the filter
             ApplyInPlace( image, new Rectangle( 0, 0, image.Width, image.Height ) );
@@ -129,7 +129,7 @@ namespace AForge.Imaging.Filters
         /// <remarks>The method applies the filter directly to the provided
         /// image data.</remarks>
         /// 
-        public virtual void ApplyInPlace( BitmapData imageData )
+        public void ApplyInPlace( BitmapData imageData )
         {
             // apply the filter
             ApplyInPlace( imageData, new Rectangle( 0, 0, imageData.Width, imageData.Height ) );
@@ -147,7 +147,7 @@ namespace AForge.Imaging.Filters
         /// <remarks>The method applies the filter directly to the provided
         /// image.</remarks>
         /// 
-        public virtual void ApplyInPlace( Bitmap image, Rectangle rect )
+        public void ApplyInPlace( Bitmap image, Rectangle rect )
         {
             // lock source bitmap data
             BitmapData data = image.LockBits(
@@ -173,7 +173,7 @@ namespace AForge.Imaging.Filters
         /// <remarks>The method applies the filter directly to the provided
         /// image data.</remarks>
         /// 
-        public virtual void ApplyInPlace( BitmapData imageData, Rectangle rect )
+        public void ApplyInPlace( BitmapData imageData, Rectangle rect )
         {
             if ( imageData.PixelFormat != PixelFormat.Format24bppRgb )
                 throw new ArgumentException( "The filter can be applied to color (24bpp) image only" );
