@@ -1,6 +1,7 @@
 // AForge Image Processing Library
+// AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2005-2006
+// Copyright © Andrew Kirillov, 2005-2007
 // andrew.kirillov@gmail.com
 //
 
@@ -21,7 +22,7 @@ namespace AForge.Imaging.Filters
     /// -1 - don't care.
     /// </remarks>
     /// 
-    public class HitAndMiss : FilterGrayToGrayUsingCopy
+    public class HitAndMiss : FilterGrayToGrayUsingCopyPartial
     {
         /// <summary>
         /// Hit and Miss modes.
@@ -100,14 +101,19 @@ namespace AForge.Imaging.Filters
         /// 
         /// <param name="sourceData">Pointer to source image data (first scan line).</param>
         /// <param name="destinationData">Destination image data.</param>
+        /// <param name="rect">Image rectangle for processing by the filter.</param>
         /// 
-        protected override unsafe void ProcessFilter( IntPtr sourceData, BitmapData destinationData )
+        protected override unsafe void ProcessFilter( IntPtr sourceData, BitmapData destinationData, Rectangle rect )
         {
-            // get image size
-            int width   = destinationData.Width;
-            int height  = destinationData.Height;
-            int stride  = destinationData.Stride;
-            int offset  = stride - width;
+            // processing start and stop X,Y positions
+            int startX  = rect.Left;
+            int startY  = rect.Top;
+            int stopX   = startX + rect.Width;
+            int stopY   = startY + rect.Height;
+
+            int stride = destinationData.Stride;
+            int offset = stride - rect.Width;
+
             // loop and array indexes
             int ir, jr, i, j;
             // structuring element's radius
@@ -126,11 +132,15 @@ namespace AForge.Imaging.Filters
             byte* src = (byte*) sourceData.ToPointer( );
             byte* dst = (byte*) destinationData.Scan0.ToPointer( );
 
+            // allign pointers to the first pixel to process
+            src += ( startY * stride + startX );
+            dst += ( startY * stride + startX );
+
             // for each line
-            for ( int y = 0; y < height; y++ )
+            for ( int y = startY; y < stopY; y++ )
             {
                 // for each pixel
-                for ( int x = 0; x < width; x++, src++, dst++ )
+                for ( int x = startX; x < stopX; x++, src++, dst++ )
                 {
                     missValue[1] = missValue[2] = *src;
                     dstValue = 255;
@@ -154,8 +164,8 @@ namespace AForge.Imaging.Filters
 
                             // check, if we outside
                             if (
-                                ( y + ir < 0 ) || ( y + ir >= height ) ||
-                                ( x + jr < 0 ) || ( x + jr >= width )
+                                ( y + ir < startY ) || ( y + ir >= stopY ) ||
+                                ( x + jr < startX ) || ( x + jr >= stopX )
                                 )
                             {
                                 // if it so, the result is zero,
