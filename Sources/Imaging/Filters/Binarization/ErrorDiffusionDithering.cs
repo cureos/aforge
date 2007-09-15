@@ -17,7 +17,7 @@ namespace AForge.Imaging.Filters
     /// 
     /// <remarks>The class is the base class for binarization algorithms based on error diffusion.</remarks>
     /// 
-    public abstract class ErrorDiffusionDithering : FilterGrayToGrayUsingCopy
+    public abstract class ErrorDiffusionDithering : FilterGrayToGrayUsingCopyPartial
     {
         /// <summary>
         /// Current processing X coordinate.
@@ -30,24 +30,34 @@ namespace AForge.Imaging.Filters
         protected int y;
 
         /// <summary>
-        /// Processing image's width.
+        /// Processing X start position.
         /// </summary>
-        protected int width;
+        protected int startX;
 
         /// <summary>
-        /// Processing image's height.
+        /// Processing Y start position.
         /// </summary>
-        protected int height;
+        protected int startY;
 
         /// <summary>
-        /// Processing image's width minus 1.
+        /// Processing X stop position.
         /// </summary>
-        protected int widthM1;
+        protected int stopX;
 
         /// <summary>
-        /// Processing image's height minus 1. 
+        /// Processing Y stop position.
         /// </summary>
-        protected int heightM1;
+        protected int stopY;
+
+        /// <summary>
+        /// Processing X stop position minus 1.
+        /// </summary>
+        protected int stopXM1;
+
+        /// <summary>
+        /// Processing Y stop position minus 1. 
+        /// </summary>
+        protected int stopYM1;
 
         /// <summary>
         /// Processing image's stride (line size).
@@ -72,34 +82,42 @@ namespace AForge.Imaging.Filters
         ///
         /// <param name="sourceData">Pointer to source image data (first scan line).</param>
         /// <param name="destinationData">Destination image data.</param>
+        /// <param name="rect">Image rectangle for processing by the filter.</param>
         /// 
-        protected override unsafe void ProcessFilter( IntPtr sourceData, BitmapData destinationData )
+        protected override unsafe void ProcessFilter( IntPtr sourceData, BitmapData destinationData, Rectangle rect )
         {
-            // get image dimension
-            width       = destinationData.Width;
-            height      = destinationData.Height;
-            stride      = destinationData.Stride;
-            widthM1     = width - 1;
-            heightM1    = height - 1;
+            // processing start and stop X,Y positions
+            startX  = rect.Left;
+            startY  = rect.Top;
+            stopX   = startX + rect.Width;
+            stopY   = startY + rect.Height;
+            stopXM1 = stopX - 1;
+            stopYM1 = stopY - 1;
+            stride  = destinationData.Stride;
+
+            int offset = stride - rect.Width;
 
             // allocate memory for source copy
-            IntPtr sourceCopy = Win32.LocalAlloc( Win32.MemoryFlags.Fixed, destinationData.Stride * height );
+            IntPtr sourceCopy = Win32.LocalAlloc( Win32.MemoryFlags.Fixed, destinationData.Stride * destinationData.Height );
 
             // copy source image
-            Win32.memcpy( sourceCopy, sourceData, destinationData.Stride * height );
+            Win32.memcpy( sourceCopy, sourceData, destinationData.Stride * destinationData.Height );
 
-            int offset = stride - width;
             int v, error;
 
             // do the job
             byte* src = (byte*) sourceCopy.ToPointer( );
             byte* dst = (byte*) destinationData.Scan0.ToPointer( );
 
+            // allign pointers to the first pixel to process
+            src += ( startY * stride + startX );
+            dst += ( startY * stride + startX );
+
             // for each line
-            for ( y = 0; y < height; y++ )
+            for ( y = startY; y < stopY; y++ )
             {
                 // for each pixels
-                for ( x = 0; x < width; x++, src++, dst++ )
+                for ( x = startX; x < stopX; x++, src++, dst++ )
                 {
                     v = *src;
 
