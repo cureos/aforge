@@ -1,4 +1,5 @@
 // AForge Image Processing Library
+// AForge.NET framework
 //
 // Copyright © Andrew Kirillov, 2005-2007
 // andrew.kirillov@gmail.com
@@ -16,7 +17,7 @@ namespace AForge.Imaging.Filters
     /// 
     /// <remarks></remarks>
     /// 
-    public class SimpleSkeletonization : FilterGrayToGrayUsingCopy
+    public class SimpleSkeletonization : FilterGrayToGrayUsingCopyPartial
     {
         private byte bg = 0;
         private byte fg = 255;
@@ -69,18 +70,23 @@ namespace AForge.Imaging.Filters
         /// 
         /// <param name="sourceData">Pointer to source image data (first scan line).</param>
         /// <param name="destinationData">Destination image data.</param>
+        /// <param name="rect">Image rectangle for processing by the filter.</param>
         /// 
-        protected override unsafe void ProcessFilter( IntPtr sourceData, BitmapData destinationData )
+        protected override unsafe void ProcessFilter( IntPtr sourceData, BitmapData destinationData, Rectangle rect )
         {
-            // get image size
-            int width   = destinationData.Width;
-            int height  = destinationData.Height;
-            int stride  = destinationData.Stride;
-            int offset  = stride - width;
-            int start;
+            // processing start and stop X,Y positions
+            int startX  = rect.Left;
+            int startY  = rect.Top;
+            int stopX   = startX + rect.Width;
+            int stopY   = startY + rect.Height;
 
-            // make destination image filled with background color
-            Win32.memset( destinationData.Scan0, bg, stride * height );
+            int stride = destinationData.Stride;
+            int offset = stride - rect.Width;
+
+            // get image size
+//            int width   = destinationData.Width;
+//            int height  = destinationData.Height;
+            int start;
 
             // do the job
             byte* src0 = (byte*) sourceData.ToPointer( );
@@ -90,12 +96,19 @@ namespace AForge.Imaging.Filters
 
             // horizontal pass
 
+            // allign pointers to the first pixel to process
+            src += ( startY * stride + startX );
+            dst += ( startY * stride );
+
             // for each line
-            for ( int y = 0; y < height; y++ )
+            for ( int y = startY; y < stopY; y++ )
             {
+                // make destination image filled with background color
+                Win32.memset( dst + startX, bg, stopX - startX );
+                
                 start = -1;
                 // for each pixel
-                for ( int x = 0; x < width; x++, src++ )
+                for ( int x = startX; x < stopX; x++, src++ )
                 {
                     // looking for foreground pixel
                     if ( start == -1 )
@@ -114,7 +127,7 @@ namespace AForge.Imaging.Filters
                 }
                 if ( start != -1 )
                 {
-                    dst[start + ( ( width - start ) >> 1 )] = (byte) fg;
+                    dst[start + ( ( stopX - start ) >> 1 )] = (byte) fg;
                 }
                 src += offset;
                 dst += stride;
@@ -122,15 +135,18 @@ namespace AForge.Imaging.Filters
 
             // vertical pass
 
+            // allign pointer to the first line to process
+            src0 += ( startY * stride );
+
             // for each column
-            for ( int x = 0; x < width; x++ )
+            for ( int x = startX; x < stopX; x++ )
             {
                 src = src0 + x;
                 dst = dst0 + x;
 
                 start = -1;
                 // for each row
-                for ( int y = 0; y < height; y++, src += stride )
+                for ( int y = startY; y < stopY; y++, src += stride )
                 {
                     // looking for foreground pixel
                     if ( start == -1 )
@@ -149,7 +165,7 @@ namespace AForge.Imaging.Filters
                 }
                 if ( start != -1 )
                 {
-                    dst[stride * ( start + ( ( height - start ) >> 1 ) )] = (byte) fg;
+                    dst[stride * ( start + ( ( stopY - start ) >> 1 ) )] = (byte) fg;
                 }
             }
         }
