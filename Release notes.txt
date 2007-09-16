@@ -1,3 +1,77 @@
+AForge.NET 1.5.0 release notes
+------------------------------
+16.09.2007.
+
+Version updates and fixes:
+
+* Fixed registered issues/requests:
+  - Issue 8 : Applying filter to image part.
+  - Issue 23: OilPainting filter partialy processes image.
+  - Issue 25: Mirror filter.
+  - Issue 27: Image statistics reports negative mean value for big images.
+
+
+* AForge.Math
+  - AForge.Math.Statistics.Mean() was fixed to use double for mean calculation instead of int,
+    what was causing incorrect mean value (in the case of histogram with large values).
+
+
+* AForge.Imaging
+  - Simple memory manager class added for allocation/dialocation unmanaged memory, which
+    could be required for image processing filters.
+
+  - Added new base class (FilterGrayToGrayUsingCopy) for filtering grayscale images. The
+    class allows to do "in-place" filtering for those filters, which can not do direct
+    manipulations with source image.
+
+  - Added new base class (FilterAnyToAnyUsingCopy) for filtering color grayscale images.
+    The class allows to do "in-place" filtering for those filters, which can not do direct
+    manipulations with source image.
+
+  - New interface was presented for filters, which can be applied to specified rectangle of
+    source image (IInPlacePartialFilter).
+
+  - New base class for partial filtering of color images was introduced (FilterColorToColorPartial).
+
+  - New base class for partial filtering of grayscale images was introduced (FilterGrayToGrayPartial).
+
+  - New base class for partial filtering of color and grayscale images was introduced
+    (FilterAnyToAnyPartial).
+
+  - New base class for partial filtering of color and grayscale images was added
+    (FilterAnyToAnyUsingCopyPartial). The class allows to do partial "in-place" filtering
+    for those filters, which can not do direct manipulations with source image.
+
+  - New base class for partial filtering of grayscale images was added (FilterGrayToGrayUsingCopyPartial).
+    The class allows to do "in-place" filtering for those filters, which can not do direct manipulations
+    with source image.
+
+  - Classes marked as depricated: FilterGrayToGrayNewSameSize, FilterAnyToAnyNewSameSize.
+
+  - Filters converted to in-place filters: Bottom Hat, Top Hat.
+
+  - Filters converted to partial filters: Sepia, Rotate Channels, Channel filtering, Color filtering,
+    Euclidean color filtering, Replace channel, Brightness correction, Contrast correction,
+    HSL filtering, HSL linear, Hue modifier, Saturation correction, YCbCr filtering, YCbCr linear,
+    YCbCr replace channel, Ordered dithering, Threshold, Iterative threshold, Threshold with carry,
+    SIS Threshold, Salt and Pepper noise, Additive noise, Invert, Pixellate, Color Remapping,
+    Gamma Correction, Levels Linear, Texturer
+
+  - Filters converted to in-place partial filters: Binarization filters based on error
+    diffusion dithering, Correlation, Gaussian Blur, Sharpen Ex, Hit-And-Miss, Jitter,
+    Oil painting, Median, Erosion, Dilatation, Closing, Opening, AdaptiveSmooth, ConservativeSmoothing,
+    Simple skeletonization.
+
+  - Bug is fixed in Canny Edge Detector related to incorrect checking of pixel neighbors.
+    The bug was possible to see only on images with odd width.
+
+  - Oil Painting filter fixed to clear intensities array correctly (issue 23).
+
+  - Mirror filter added, which allows to do vertical and/or horizontal mirroring (issue 25).
+
+
+
+
 AForge.NET 1.4.2 release notes
 ------------------------------
 01.08.2007.
