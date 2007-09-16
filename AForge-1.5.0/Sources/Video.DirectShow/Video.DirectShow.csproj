@@ -1,0 +1,79 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{26CD2CE7-FF63-4669-83B0-7D9C8F3408EE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AForge.Video.DirectShow</RootNamespace>
+    <AssemblyName>AForge.Video.DirectShow</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>AForge.Video.DirectShow.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>AForge.Video.DirectShow.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>AForge.Video.DirectShow.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AForge.Video, Version=1.4.0.0, Culture=neutral, PublicKeyToken=cbfb6e07d173c401, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Release\AForge.Video.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FileVideoSource.cs" />
+    <Compile Include="Internals\IBaseFilter.cs" />
+    <Compile Include="Internals\ICreateDevEnum.cs" />
+    <Compile Include="Internals\IEnumPins.cs" />
+    <Compile Include="Internals\IFileSourceFilter.cs" />
+    <Compile Include="Internals\IFilterGraph.cs" />
+    <Compile Include="Internals\IGraphBuilder.cs" />
+    <Compile Include="Internals\IMediaControl.cs" />
+    <Compile Include="Internals\IPin.cs" />
+    <Compile Include="Internals\IPropertyBag.cs" />
+    <Compile Include="Internals\ISampleGrabber.cs" />
+    <Compile Include="Internals\ISampleGrabberCB.cs" />
+    <Compile Include="Internals\IVideoWindow.cs" />
+    <Compile Include="Internals\Structures.cs" />
+    <Compile Include="Internals\Tools.cs" />
+    <Compile Include="Internals\Uuids.cs" />
+    <Compile Include="Internals\Win32.cs" />
+    <Compile Include="FilterInfo.cs" />
+    <Compile Include="FilterInfoCollection.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Uuids.cs" />
+    <Compile Include="VideoCaptureDevice.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AForge.Video.DirectShow.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
