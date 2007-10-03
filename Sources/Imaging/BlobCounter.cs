@@ -90,7 +90,7 @@ namespace AForge.Imaging
 		/// 
 		/// <param name="image">Source binary image</param>
 		/// 
-		/// <remarks>Processes the image and builds objects map, which used later to extracts blobs.</remarks>
+		/// <remarks>Processes the image and builds objects map, which is used later to extracts blobs.</remarks>
 		/// 
 		public void ProcessImage( Bitmap image )
 		{
@@ -112,7 +112,7 @@ namespace AForge.Imaging
 		/// 
 		/// <param name="imageData">Source image data</param>
 		/// 
-		/// <remarks>Processes the image and builds objects map, which used later to extracts blobs.</remarks>
+		/// <remarks>Processes the image and builds objects map, which is used later to extracts blobs.</remarks>
 		/// 
 		public void ProcessImage( BitmapData imageData )
 		{
@@ -262,23 +262,23 @@ namespace AForge.Imaging
 											// both values already mapped
 											map[ map[l1] ] = map[l2];
 											map[l1] = map[l2];
-										}
 
-										// reindex
-										for ( int i = 1; i <= labelsCount; i++ )
-										{
-											if ( map[i] != i )
-											{
-												// reindex
-												int j = map[i];
-												while ( j != map[j] )
-												{
-													j = map[j];
-												}
-												map[i] = j;
-											}
-										}
-									}
+                                            // reindex
+                                            for ( int i = 1; i <= labelsCount; i++ )
+                                            {
+                                                if ( map[i] != i )
+                                                {
+                                                    // reindex
+                                                    int j = map[i];
+                                                    while ( j != map[j] )
+                                                    {
+                                                        j = map[j];
+                                                    }
+                                                    map[i] = j;
+                                                }
+                                            }
+                                        }
+                                    }
 								}
 							}
 
