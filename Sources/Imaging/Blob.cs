@@ -1,6 +1,7 @@
 // AForge Image Processing Library
+// AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2005-2006
+// Copyright © Andrew Kirillov, 2005-2007
 // andrew.kirillov@gmail.com
 //
 
@@ -11,7 +12,7 @@ namespace AForge.Imaging
 	using System.Drawing.Imaging;
 
 	/// <summary>
-	/// Image's blob
+	/// Image's blob.
 	/// </summary>
 	/// 
 	/// <remarks>The class represents a blob - part of another images. The
@@ -27,7 +28,7 @@ namespace AForge.Imaging
 		private bool	disposed = false;
 
 		/// <summary>
-		/// Blob's image
+		/// Blob's image.
 		/// </summary>
 		public Bitmap Image
 		{
@@ -35,7 +36,7 @@ namespace AForge.Imaging
 		}
 
 		/// <summary>
-		/// Blob's location in parent (owner) image (see <see cref="Owner"/> property)
+		/// Blob's location in parent (owner) image (see <see cref="Owner"/> property).
 		/// </summary>
 		public Point Location
 		{
@@ -43,7 +44,7 @@ namespace AForge.Imaging
 		}
 
 		/// <summary>
-		/// Blob's owner image
+		/// Blob's owner image.
 		/// </summary>
 		public Bitmap Owner
 		{
@@ -51,11 +52,11 @@ namespace AForge.Imaging
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Blob"/> class
+		/// Initializes a new instance of the <see cref="Blob"/> class.
 		/// </summary>
 		/// 
-		/// <param name="image">Blob's image</param>
-		/// <param name="location">Blob's location in parent image</param>
+		/// <param name="image">Blob's image.</param>
+		/// <param name="location">Blob's location in parent image.</param>
 		/// 
 		public Blob( Bitmap image, Point location )
 		{
@@ -64,12 +65,12 @@ namespace AForge.Imaging
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Blob"/> class
+		/// Initializes a new instance of the <see cref="Blob"/> class.
 		/// </summary>
 		/// 
-		/// <param name="image">Blob's image</param>
-		/// <param name="location">Blob's location in parent image</param>
-		/// <param name="owner">Blob's owner image</param>
+		/// <param name="image">Blob's image.</param>
+		/// <param name="location">Blob's location in parent image.</param>
+		/// <param name="owner">Blob's owner image.</param>
 		/// 
 		public Blob( Bitmap image, Point location, Bitmap owner )
 		{
@@ -79,7 +80,7 @@ namespace AForge.Imaging
 		}
 
 		/// <summary>
-		/// Class destructor
+		/// Class destructor.
 		/// </summary>
 		~Blob( )
 		{
@@ -87,7 +88,7 @@ namespace AForge.Imaging
 		}
 
 		/// <summary>
-		/// Dispose the object
+		/// Dispose the object.
 		/// </summary>
 		public void Dispose( )
 		{
@@ -99,7 +100,7 @@ namespace AForge.Imaging
 		}
 
 		/// <summary>
-		/// Object disposing routine
+		/// Object disposing routine.
 		/// </summary>
 		/// 
 		/// <param name="disposing"><b>True</b> if the method is called from
