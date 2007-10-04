@@ -374,6 +374,7 @@
     <Compile Include="Interpolation.cs" />
     <Compile Include="HoughLineTransformation.cs" />
     <Compile Include="MemoryManager.cs" />
+    <Compile Include="RecursiveBlobCounter.cs" />
     <Compile Include="Textures\CloudsTexture.cs" />
     <Compile Include="Textures\ITextureGenerator.cs" />
     <Compile Include="Textures\LabyrinthTexture.cs" />
