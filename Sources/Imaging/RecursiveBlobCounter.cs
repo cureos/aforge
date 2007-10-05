@@ -74,11 +74,12 @@ namespace AForge.Imaging
         /// Actual objects map building.
         /// </summary>
         /// 
-        /// <param name="imageData">Source binary image data.</param>
+        /// <param name="rawImageData">Raw image data.</param>
+        /// <param name="stride">Length of one image line in bytes.</param>
         /// 
-        protected override void BuildObjectsMap( BitmapData imageData )
+        protected override void BuildObjectsMap( IntPtr rawImageData, int stride )
         {
-            stride = imageData.Stride;
+            this.stride = stride;
             int offset = stride - imageWidth;
 
             // allocate temporary labels array
@@ -101,7 +102,7 @@ namespace AForge.Imaging
 			// do the job
             unsafe
             {
-                byte* src = (byte*) imageData.Scan0.ToPointer( );
+                byte* src = (byte*) rawImageData.ToPointer( );
                 int p = imageWidth + 2 + 1;
 
                 // for each line

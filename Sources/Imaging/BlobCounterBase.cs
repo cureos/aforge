@@ -160,7 +160,30 @@ namespace AForge.Imaging
             imageHeight = imageData.Height;
 
             // do actual objects map building
-            BuildObjectsMap( imageData );
+            BuildObjectsMap( imageData.Scan0, imageData.Stride );
+        }
+
+        /// <summary>
+        /// Build object map from raw image data.
+        /// </summary>
+        /// 
+        /// <param name="rawImageData">Raw image data.</param>
+        /// <param name="width">Image width.</param>
+        /// <param name="height">Image height.</param>
+        /// <param name="stride">Length of one image line in bytes.</param>
+        /// 
+        /// <remarks><para>Processes the image and builds objects map, which is used later to extracts blobs.
+        /// This method works with raw image data kept in unmanaged memory.</para>
+        /// <para>Warning</para>: it is on user's responsibility to ensure that memory buffer contains
+        /// binary (or grayscale) image with 1 byte per pixel.</remarks>
+        /// 
+        public void ProcessImage( IntPtr rawImageData, int width, int height, int stride )
+        {
+            imageWidth = width;
+            imageHeight = height;
+
+            // do actual objects map building
+            BuildObjectsMap( rawImageData, stride );
         }
 
         /// <summary>
@@ -396,12 +419,13 @@ namespace AForge.Imaging
         /// Actual objects map building.
         /// </summary>
         /// 
-        /// <param name="imageData">Source binary image data.</param>
+        /// <param name="rawImageData">Raw image data.</param>
+        /// <param name="stride">Length of one image line in bytes.</param>
         /// 
         /// <remarks>By the time this method is called, bitmap's pixel format is already
         /// checked as well as <see cref="imageWidth"/> and <see cref="imageHeight"/>
         /// members are initialized.</remarks>
         /// 
-        protected abstract void BuildObjectsMap( BitmapData imageData );
+        protected abstract void BuildObjectsMap( IntPtr rawImageData, int stride );
     }
 }

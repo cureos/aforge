@@ -67,11 +67,11 @@ namespace AForge.Imaging
         /// Actual objects map building.
         /// </summary>
         /// 
-        /// <param name="imageData">Source binary image data.</param>
+        /// <param name="rawImageData">Raw image data.</param>
+        /// <param name="stride">Length of one image line in bytes.</param>
         /// 
-        protected override void BuildObjectsMap( BitmapData imageData )
+        protected override void BuildObjectsMap( IntPtr rawImageData, int stride )
         {
-            int stride = imageData.Stride;
             int offset = stride - imageWidth;
 
             // we don't want one pixel width images
@@ -96,7 +96,7 @@ namespace AForge.Imaging
             // do the job
             unsafe
             {
-                byte* src = (byte*) imageData.Scan0.ToPointer( );
+                byte* src = (byte*) rawImageData.ToPointer( );
                 int p = 0;
 
                 // 1 - for pixels of the first row
@@ -298,7 +298,5 @@ namespace AForge.Imaging
                 objectLabels[i] = reMap[objectLabels[i]];
             }
         }
-
-
     }
 }
