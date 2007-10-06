@@ -106,6 +106,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ComplexImage.cs" />
+    <Compile Include="Drawing.cs" />
     <Compile Include="Filters\2 Source filters\Add.cs">
       <SubType>Code</SubType>
     </Compile>
