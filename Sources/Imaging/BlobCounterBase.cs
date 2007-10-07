@@ -22,6 +22,10 @@ namespace AForge.Imaging
     /// <code>
     /// // create an instance of blob counter algorithm
     /// BlobCounterBase bc = new ...
+    /// // set filtering options
+    /// bc.FilterBlobsBySize = true;
+    /// bc.MinWidth  = 5;
+    /// bc.MinHeight = 5;
     /// // process binary image
     /// bc.ProcessImage( image );
     /// Blob[] blobs = bc.GetObjects( image );
@@ -37,6 +41,15 @@ namespace AForge.Imaging
     /// 
     public abstract class BlobCounterBase
     {
+        // filtering by size is required or nor
+        private bool filterBlobs = false;
+
+        // blobs' minimal and maximal size
+        private int minWidth    = 1;
+        private int minHeight   = 1;
+        private int maxWidth    = int.MaxValue;
+        private int maxHeight   = int.MaxValue;
+
         /// <summary>
         /// Objects count.
         /// </summary>
@@ -76,6 +89,63 @@ namespace AForge.Imaging
         public int[] ObjectLabels
         {
             get { return objectLabels; }
+        }
+
+        /// <summary>
+        /// Specifies if blobs should be filtered by size.
+        /// </summary>
+        /// 
+        /// <remarks><para>If the property is equal to <b>false</b>, then there is no any additional
+        /// post processing after image was processed. If the property is set to <b>true</b>, then
+        /// blobs filtering is done right after image processing routine. Blobs are filtered according
+        /// to dimensions specified in <see cref="MinWidth"/>, <see cref="MinHeight"/>, <see cref="MaxWidth"/>
+        /// and <see cref="MaxHeight"/> properties.</para>
+        /// <para>Default value is <b>false</b>.</para></remarks>
+        /// 
+        public bool FilterBlobsBySize
+        {
+            get { return filterBlobs; }
+            set { filterBlobs = value; }
+        }
+
+        /// <summary>
+        /// Minimum allowed width of blob.
+        /// </summary>
+        /// 
+        public int MinWidth
+        {
+            get { return minWidth; }
+            set { minWidth = value; }
+        }
+
+        /// <summary>
+        /// Minimum allowed height of blob.
+        /// </summary>
+        /// 
+        public int MinHeight
+        {
+            get { return minHeight; }
+            set { minHeight = value; }
+        }
+
+        /// <summary>
+        /// Maximum allowed width of blob.
+        /// </summary>
+        /// 
+        public int MaxWidth
+        {
+            get { return maxWidth; }
+            set { maxWidth = value; }
+        }
+
+        /// <summary>
+        /// Maximum allowed height of blob.
+        /// </summary>
+        /// 
+        public int MaxHeight
+        {
+            get { return maxHeight; }
+            set { maxHeight = value; }
         }
 
         /// <summary>
@@ -155,12 +225,8 @@ namespace AForge.Imaging
             if ( imageData.PixelFormat != PixelFormat.Format8bppIndexed )
                 throw new ArgumentException( "Only binary (8bpp indexed grayscale) images are supported" );
 
-            // get source image size
-            imageWidth = imageData.Width;
-            imageHeight = imageData.Height;
-
             // do actual objects map building
-            BuildObjectsMap( imageData.Scan0, imageData.Stride );
+            ProcessImage( imageData.Scan0, imageData.Width, imageData.Height, imageData.Stride );
         }
 
         /// <summary>
@@ -184,6 +250,100 @@ namespace AForge.Imaging
 
             // do actual objects map building
             BuildObjectsMap( rawImageData, stride );
+
+            // filter blobs by size if required
+            if ( filterBlobs )
+            {
+                int i = 0, label;
+
+                // create object coordinates arrays
+                int[] x1 = new int[objectsCount + 1];
+                int[] y1 = new int[objectsCount + 1];
+                int[] x2 = new int[objectsCount + 1];
+                int[] y2 = new int[objectsCount + 1];
+
+                for ( int j = 1; j <= objectsCount; j++ )
+                {
+                    x1[j] = imageWidth;
+                    y1[j] = imageHeight;
+                }
+
+                // walk through labels array
+                for ( int y = 0; y < imageHeight; y++ )
+                {
+                    for ( int x = 0; x < imageWidth; x++, i++ )
+                    {
+                        // get current label
+                        label = objectLabels[i];
+
+                        // skip unlabeled pixels
+                        if ( label == 0 )
+                            continue;
+
+                        // check and update all coordinates
+
+                        if ( x < x1[label] )
+                        {
+                            x1[label] = x;
+                        }
+                        if ( x > x2[label] )
+                        {
+                            x2[label] = x;
+                        }
+                        if ( y < y1[label] )
+                        {
+                            y1[label] = y;
+                        }
+                        if ( y > y2[label] )
+                        {
+                            y2[label] = y;
+                        }
+                    }
+                }
+
+                // labels remapping array
+                int[] labelsMap = new int[objectsCount + 1];
+                for ( int j = 1; j <= objectsCount; j++ )
+                {
+                    labelsMap[j] = j;
+                }
+
+                // check dimension of all objects and filter them
+                int objectsToRemove = 0;
+
+                for ( int j = 1; j <= objectsCount; j++ )
+                {
+                    int blobWidth  = x2[j] - x1[j] + 1;
+                    int blobHeight = y2[j] - y1[j] + 1;
+
+                    if (
+                        ( blobWidth < minWidth ) || ( blobHeight < minHeight ) ||
+                        ( blobWidth > maxWidth ) || ( blobHeight > maxHeight ) )
+                    {
+                        labelsMap[j] = 0;
+                        objectsToRemove++;
+                    }
+                }
+
+                // update labels remapping array
+                label = 1;
+                for ( int j = 1; j <= objectsCount; j++ )
+                {
+                    if ( labelsMap[j] != 0 )
+                    {
+                        labelsMap[j] = label;
+                        label++;
+                    }
+                }
+
+                // repair object labels
+                for ( int j = 0, n = objectLabels.Length; j < n; j++ )
+                {
+                    objectLabels[j] = labelsMap[objectLabels[j]];
+                }
+
+                objectsCount -= objectsToRemove;
+            }
         }
 
         /// <summary>
@@ -200,7 +360,7 @@ namespace AForge.Imaging
         {
             // check if objects map was collected
             if ( objectLabels == null )
-                throw new ApplicationException( "Image should be processed before to collec objects map" );
+                throw new ApplicationException( "Image should be processed before to collect objects map" );
 
             int i = 0, label;
 
