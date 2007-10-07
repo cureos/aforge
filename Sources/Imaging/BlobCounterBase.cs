@@ -23,7 +23,7 @@ namespace AForge.Imaging
     /// // create an instance of blob counter algorithm
     /// BlobCounterBase bc = new ...
     /// // set filtering options
-    /// bc.FilterBlobsBySize = true;
+    /// bc.FilterBlobs = true;
     /// bc.MinWidth  = 5;
     /// bc.MinHeight = 5;
     /// // process binary image
@@ -92,7 +92,7 @@ namespace AForge.Imaging
         }
 
         /// <summary>
-        /// Specifies if blobs should be filtered by size.
+        /// Specifies if blobs should be filtered.
         /// </summary>
         /// 
         /// <remarks><para>If the property is equal to <b>false</b>, then there is no any additional
@@ -102,7 +102,7 @@ namespace AForge.Imaging
         /// and <see cref="MaxHeight"/> properties.</para>
         /// <para>Default value is <b>false</b>.</para></remarks>
         /// 
-        public bool FilterBlobsBySize
+        public bool FilterBlobs
         {
             get { return filterBlobs; }
             set { filterBlobs = value; }
