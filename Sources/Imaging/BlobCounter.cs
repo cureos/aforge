@@ -208,20 +208,20 @@ namespace AForge.Imaging
                                             // both values already mapped
                                             map[map[l1]] = map[l2];
                                             map[l1] = map[l2];
+                                        }
 
-                                            // reindex
-                                            for ( int i = 1; i <= labelsCount; i++ )
+                                        // reindex
+                                        for ( int i = 1; i <= labelsCount; i++ )
+                                        {
+                                            if ( map[i] != i )
                                             {
-                                                if ( map[i] != i )
+                                                // reindex
+                                                int j = map[i];
+                                                while ( j != map[j] )
                                                 {
-                                                    // reindex
-                                                    int j = map[i];
-                                                    while ( j != map[j] )
-                                                    {
-                                                        j = map[j];
-                                                    }
-                                                    map[i] = j;
+                                                    j = map[j];
                                                 }
+                                                map[i] = j;
                                             }
                                         }
                                     }
