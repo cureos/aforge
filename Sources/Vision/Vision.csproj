@@ -34,9 +34,11 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AForge, Version=1.3.0.0, Culture=neutral, PublicKeyToken=75f8e82c5042a70f, processorArchitecture=MSIL">
+    <Reference Include="AForge, Version=1.5.0.0, Culture=neutral, PublicKeyToken=75f8e82c5042a70f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Release\AForge.dll</HintPath>
     </Reference>
+    <Reference Include="AForge.Imaging, Version=1.5.0.0, Culture=neutral, PublicKeyToken=38eb47741dd0492e, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -45,6 +47,7 @@
   <ItemGroup>
     <Compile Include="BackgroundModelingHighPrecisionMotionDetector.cs" />
     <Compile Include="BackgroundModelingLowPrecisionMotionDetector.cs" />
+    <Compile Include="CountingMotionDetector.cs" />
     <Compile Include="ImageProcessingTools.cs" />
     <Compile Include="IMotionDetector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
