@@ -32,7 +32,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Release\AForge.dll</HintPath>
     </Reference>
-    <Reference Include="AForge.Video, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cbfb6e07d173c401, processorArchitecture=MSIL">
+    <Reference Include="AForge.Imaging, Version=1.5.0.0, Culture=neutral, PublicKeyToken=38eb47741dd0492e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Release\AForge.Imaging.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Video, Version=1.5.0.0, Culture=neutral, PublicKeyToken=cbfb6e07d173c401, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Release\AForge.Video.dll</HintPath>
     </Reference>
@@ -44,7 +48,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Release\AForge.Video.VFW.dll</HintPath>
     </Reference>
-    <Reference Include="AForge.Vision, Version=1.0.0.0, Culture=neutral, PublicKeyToken=afefe794e0d71fcc, processorArchitecture=MSIL">
+    <Reference Include="AForge.Vision, Version=1.5.0.0, Culture=neutral, PublicKeyToken=afefe794e0d71fcc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Release\AForge.Vision.dll</HintPath>
     </Reference>

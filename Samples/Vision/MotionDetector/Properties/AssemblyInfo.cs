@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle( "WindowsApplication1" )]
+[assembly: AssemblyTitle( "Motion Detector" )]
 [assembly: AssemblyDescription( "" )]
 [assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "Hypercom Latvia" )]
-[assembly: AssemblyProduct( "WindowsApplication1" )]
-[assembly: AssemblyCopyright( "Copyright © Hypercom Latvia 2007" )]
+[assembly: AssemblyCompany( "AForge" )]
+[assembly: AssemblyProduct( "Motion Detector" )]
+[assembly: AssemblyCopyright( "AForge.NET © 2007" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion( "2.1.0.0" )]
-[assembly: AssemblyFileVersion( "2.1.0.0" )]
+[assembly: AssemblyVersion( "2.2.0.0" )]
+[assembly: AssemblyFileVersion( "2.2.0.0" )]

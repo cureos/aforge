@@ -43,7 +43,7 @@ namespace MotionDetector
         {
             InitializeComponent( );
 
-            cameraWindow.AutoSize = true;
+            cameraWindow.AutoSizeControl = true;
         }
 
         // Application's main form is closing
@@ -279,6 +279,14 @@ namespace MotionDetector
                 highlightMotionRegionsToolStripMenuItem.Checked ) );
         }
 
+        // Turn on motion detector type #4 - counting motion detector
+        private void detector4ToolStripMenuItem_Click( object sender, EventArgs e )
+        {
+            detectorType = 4;
+            SetMotionDetector( new CountingMotionDetector(
+                highlightMotionRegionsToolStripMenuItem.Checked ) );
+        }
+
         // Set motion detector
         private void SetMotionDetector( IMotionDetector detector )
         {
@@ -304,7 +312,7 @@ namespace MotionDetector
             ToolStripMenuItem[] items = new ToolStripMenuItem[]
 			{
 				noneToolStripMenuItem, detector1ToolStripMenuItem, detector2ToolStripMenuItem,
-                detector3ToolStripMenuItem
+                detector3ToolStripMenuItem, detector4ToolStripMenuItem
 			};
 
             for ( int i = 0; i < items.Length; i++ )

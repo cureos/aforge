@@ -36,6 +36,7 @@ namespace MotionDetector
             this.openJPEGURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.openMJPEGURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.localVideoCaptureDeviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
+            this.openVideoFileusingDirectShowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator( );
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.motionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
@@ -54,7 +55,7 @@ namespace MotionDetector
             this.fpsLabel = new System.Windows.Forms.ToolStripStatusLabel( );
             this.panel1 = new System.Windows.Forms.Panel( );
             this.cameraWindow = new MotionDetector.CameraWindow( );
-            this.openVideoFileusingDirectShowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
+            this.detector4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.menuMenu.SuspendLayout( );
             this.statusBar.SuspendLayout( );
             this.panel1.SuspendLayout( );
@@ -114,6 +115,13 @@ namespace MotionDetector
             this.localVideoCaptureDeviceToolStripMenuItem.Text = "Local &Video Capture Device";
             this.localVideoCaptureDeviceToolStripMenuItem.Click += new System.EventHandler( this.localVideoCaptureDeviceToolStripMenuItem_Click );
             // 
+            // openVideoFileusingDirectShowToolStripMenuItem
+            // 
+            this.openVideoFileusingDirectShowToolStripMenuItem.Name = "openVideoFileusingDirectShowToolStripMenuItem";
+            this.openVideoFileusingDirectShowToolStripMenuItem.Size = new System.Drawing.Size( 250, 22 );
+            this.openVideoFileusingDirectShowToolStripMenuItem.Text = "Open video &file (using DirectShow)";
+            this.openVideoFileusingDirectShowToolStripMenuItem.Click += new System.EventHandler( this.openVideoFileusingDirectShowToolStripMenuItem_Click );
+            // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
@@ -134,6 +142,7 @@ namespace MotionDetector
             this.detector1ToolStripMenuItem,
             this.detector2ToolStripMenuItem,
             this.detector3ToolStripMenuItem,
+            this.detector4ToolStripMenuItem,
             this.toolStripMenuItem3,
             this.highlightMotionRegionsToolStripMenuItem} );
             this.motionToolStripMenuItem.Name = "motionToolStripMenuItem";
@@ -247,12 +256,12 @@ namespace MotionDetector
             this.cameraWindow.Size = new System.Drawing.Size( 320, 240 );
             this.cameraWindow.TabIndex = 1;
             // 
-            // openVideoFileusingDirectShowToolStripMenuItem
+            // detector4ToolStripMenuItem
             // 
-            this.openVideoFileusingDirectShowToolStripMenuItem.Name = "openVideoFileusingDirectShowToolStripMenuItem";
-            this.openVideoFileusingDirectShowToolStripMenuItem.Size = new System.Drawing.Size( 250, 22 );
-            this.openVideoFileusingDirectShowToolStripMenuItem.Text = "Open video &file (using DirectShow)";
-            this.openVideoFileusingDirectShowToolStripMenuItem.Click += new System.EventHandler( this.openVideoFileusingDirectShowToolStripMenuItem_Click );
+            this.detector4ToolStripMenuItem.Name = "detector4ToolStripMenuItem";
+            this.detector4ToolStripMenuItem.Size = new System.Drawing.Size( 199, 22 );
+            this.detector4ToolStripMenuItem.Text = "Detector &4";
+            this.detector4ToolStripMenuItem.Click += new System.EventHandler( this.detector4ToolStripMenuItem_Click );
             // 
             // MainForm
             // 
@@ -305,6 +314,7 @@ namespace MotionDetector
         private System.Windows.Forms.ToolStripMenuItem highlightMotionRegionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem localVideoCaptureDeviceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openVideoFileusingDirectShowToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem detector4ToolStripMenuItem;
     }
 }
 

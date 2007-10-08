@@ -31,7 +31,7 @@ namespace MotionDetector
 
         // Auto size value
         [DefaultValue( false )]
-        public bool AutoSize
+        public bool AutoSizeControl
         {
             get { return autosize; }
             set
