@@ -14,9 +14,9 @@ namespace AForge.Math.Random
     /// 
     /// <remarks><para>The random number generator generates unformaly
     /// distributed numbers in the range of [0, 1].</para>
-    /// <para><b>Note</b>: At this point the generator is based on the
-    /// internal .NET generator, but is going to be rewriten to
-    /// use faster generation algorithm.</para></remarks>
+    /// <para><note>At this point the generator is based on the
+    /// internal .NET generator, but needs to be rewriten to
+    /// use faster generation algorithm.</note></para></remarks>
     /// 
     public class UniformOneGenerator : IRandomNumberGenerator
     {

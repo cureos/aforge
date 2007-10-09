@@ -21,8 +21,8 @@ namespace AForge.MachineLearning
     ///              SUM( Q( s, b ) )
     ///               b
     /// </code>
-    /// <para><b>Note:</b> the exploration policy may be applied only in cases, when action estimates (usefulness)
-    /// are represented with positive value greater then 0.</para>
+    /// <para><note>The exploration policy may be applied only in cases, when action estimates (usefulness)
+    /// are represented with positive value greater then 0.</note></para>
     /// </remarks>
     /// 
     public class RouletteWheelExploration : IExplorationPolicy

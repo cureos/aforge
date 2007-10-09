@@ -66,7 +66,7 @@ namespace AForge.Imaging
         /// <returns><para>A signed number indicating the relative values of this instance and <b>value</b>: 1) greater than zero - 
         /// this instance is greater than <b>value</b>; 2) zero - this instance is equal to <b>value</b>;
         /// 3) greater than zero - this instance is less than <b>value</b>.</para>
-        /// <para><b>Note</b>:</para> the sort order is descending.</returns>
+        /// <para><note>The sort order is descending.</note></para></returns>
         /// 
         public int CompareTo( object value )
         {

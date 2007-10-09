@@ -17,8 +17,8 @@ namespace AForge.Imaging
     /// 
     /// <remarks><para>The class allows to drawing of some primitives directly on
     /// locked image data.</para>
-    /// <note>All methods of this class support drawing only on color 24 bpp images and
-    /// on grayscale 8 bpp indexed images.</note></remarks>
+    /// <para><note>All methods of this class support drawing only on color 24 bpp images and
+    /// on grayscale 8 bpp indexed images.</note></para></remarks>
     /// 
     public class Drawing
     {

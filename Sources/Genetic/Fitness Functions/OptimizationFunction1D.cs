@@ -11,13 +11,15 @@ namespace AForge.Genetic
 
 	/// <summary>Base class for one dimensional function optimizations</summary>
 	/// 
-	/// <remarks>The class is aimed to be used for one dimensional function
+	/// <remarks><para>The class is aimed to be used for one dimensional function
 	/// optimization problems. It implements all methods of <see cref="IFitnessFunction"/>
 	/// interface and requires overriding only one method -
 	/// <see cref="OptimizationFunction"/>, which represents the
-	/// function to optimize. <b>Note</b>: the optimization function should be greater
-	/// then 0 on the specified optimization range.<br/><br/>
-	/// The class works only with binary chromosomes (<see cref="BinaryChromosome"/>).</remarks>
+    /// function to optimize.</para>
+    /// <para><note>The optimization function should be greater
+    /// then 0 on the specified optimization range.</note></para>
+    /// <para>The class works only with binary chromosomes (<see cref="BinaryChromosome"/>).</para>
+    /// </remarks>
 	/// 
 	/// <example>The following sample illustrates the usage of <c>OptimizationFunction1D</c> class:
 	/// <code>
