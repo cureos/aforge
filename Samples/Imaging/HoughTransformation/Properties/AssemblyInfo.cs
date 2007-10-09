@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle( "HoughTransform" )]
+[assembly: AssemblyTitle( "Imaging Hough Transform" )]
 [assembly: AssemblyDescription( "" )]
 [assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "Hypercom Latvia" )]
-[assembly: AssemblyProduct( "HoughTransform" )]
-[assembly: AssemblyCopyright( "Copyright © Hypercom Latvia 2007" )]
+[assembly: AssemblyCompany( "AForge" )]
+[assembly: AssemblyProduct( "Imaging Hough Transform" )]
+[assembly: AssemblyCopyright( "AForge.NET © 2007" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 

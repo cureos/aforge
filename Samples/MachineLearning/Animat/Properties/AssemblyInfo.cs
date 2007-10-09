@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle( "Animat" )]
+[assembly: AssemblyTitle( "Machine Learning Animat" )]
 [assembly: AssemblyDescription( "" )]
 [assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "Hypercom Latvia" )]
-[assembly: AssemblyProduct( "Animat" )]
-[assembly: AssemblyCopyright( "Copyright © Hypercom Latvia 2007" )]
+[assembly: AssemblyCompany( "AForge" )]
+[assembly: AssemblyProduct( "Machine Learning Animat" )]
+[assembly: AssemblyCopyright( "AForge.NET © 2007" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 
