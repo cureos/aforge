@@ -64,21 +64,6 @@ namespace AForge.Vision.Motion
         }
 
         /// <summary>
-        /// Highligh motion edges or not (not supported).
-        /// </summary>
-        /// 
-        /// <remarks><note>The property always returns <b>true</b>. Setting this property
-        /// does not have any effect. If <see cref="HighlightMotionRegions"/> property is
-        /// set to <b>true</b>, then moving objects are highlighted by rectangles.</note>
-        /// </remarks>
-        /// 
-        public bool HighlightMotionEdges
-        {
-            get { return true; }
-            set { }
-        }
-
-        /// <summary>
         /// Difference threshold value.
         /// </summary>
         /// 
