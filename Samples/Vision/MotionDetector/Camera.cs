@@ -10,8 +10,9 @@ namespace MotionDetector
 	using System;
 	using System.Drawing;
 	using System.Threading;
+
     using AForge.Video;
-    using AForge.Vision;
+    using AForge.Vision.Motion;
 
 	/// <summary>
 	/// Camera class

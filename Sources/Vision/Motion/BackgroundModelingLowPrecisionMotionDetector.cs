@@ -4,7 +4,7 @@
 // Copyright © Andrew Kirillov, 2007
 // andrew.kirillov@gmail.com
 //
-namespace AForge.Vision
+namespace AForge.Vision.Motion
 {
     using System;
     using System.Drawing;

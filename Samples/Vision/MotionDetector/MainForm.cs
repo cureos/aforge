@@ -17,7 +17,7 @@ using System.Threading;
 using AForge.Video;
 using AForge.Video.VFW;
 using AForge.Video.DirectShow;
-using AForge.Vision;
+using AForge.Vision.Motion;
 
 namespace MotionDetector
 {

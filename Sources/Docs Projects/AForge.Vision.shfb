@@ -5,8 +5,12 @@
     <namespaceSummaries>
         <namespaceSummaryItem name="" isDocumented="False" />
         <namespaceSummaryItem name="AForge.Vision" isDocumented="True">The &lt;b&gt;AForge.Vision&lt;/b&gt; namespace contains interfaces and classes of different computer vision algorithms and routines.</namespaceSummaryItem>
+        <namespaceSummaryItem name="AForge.Vision.Motion" isDocumented="True">The &lt;b&gt;AForge.Vision.Motion&lt;/b&gt; namespace contains interfaces and classes used for motion detection in video streams.</namespaceSummaryItem>
     </namespaceSummaries>
     <contentPlacement>AboveNamespaces</contentPlacement>
+    <dependencies>
+        <dependencyItem depPath="D:\Andrew\AForge\trunk\Release\AForge.Imaging.dll" />
+    </dependencies>
     <projectSummary />
     <sandcastlePath />
     <hhcPath />

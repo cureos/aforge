@@ -4,7 +4,7 @@
 // Copyright © Andrew Kirillov, 2007
 // andrew.kirillov@gmail.com
 //
-namespace AForge.Vision
+namespace AForge.Vision.Motion
 {
     using System;
     using System.Drawing;
@@ -12,39 +12,44 @@ namespace AForge.Vision
     using System.Runtime.InteropServices;
 
     /// <summary>
-    /// Motion detector based on two frames difference.
+    /// Motion detector based on background modeling (high precision version).
     /// </summary>
     /// 
-    /// <remarks><para>The class implements the simplest motion detector, which is based on
-    /// two continues frames difference. The difference frame is threshold and the amount of
-    /// difference pixels is calculated. To suppress stand-alone noisy pixels erosion
-    /// morphological operator may be applied.</para>
+    /// <remarks><para>The motion detector is based on difference of current video frame
+    /// (specified frame) with background frame, which is modeled internally. As the
+    /// first approximation of background frame, the first frame of video stream is used.
+    /// During further video processing the background frame is changing in the direction
+    /// to decrease difference with current video frame (the background frame is moving
+    /// towards current frame).</para>
     /// <para>Sample usage:</para>
     /// <code>
-    /// // create motion detector with noise suppresion
-    /// IMotionDetector detector = new TwoFramesDifferenceMotionDetector( false, true );
+    /// // create motion detector with noise suppresion and motion highligh
+    /// BackgroundModelingHighPrecisionMotionDetector detector =
+    ///     new BackgroundModelingHighPrecisionMotionDetector( true, true );
+    /// // highligh motion edges only
+    /// detector.HighlightMotionEdges = true;
     /// // feed first image to the detector
     /// detector.ProcessFrame( image );
     /// // ...
     /// // feed next image
     /// detector.ProcessFrame( nextImage );
-    /// // check amount of motion
-    /// if ( detector.MotionLevel &gt; 0.005 )
+    /// // check amount motion
+    /// if ( detector.MotionLevel > 0.005 )
     /// {
     ///     // motion amount is greater then 0.5% - fire alarm
     /// }
     /// </code>
     /// </remarks>
     /// 
-    public class TwoFramesDifferenceMotionDetector : IMotionDetector
+    public class BackgroundModelingHighPrecisionMotionDetector : IMotionDetector
     {
         // frame's dimension
         private int width;
         private int height;
         private int frameSize;
 
-        // previous frame of video stream
-        private IntPtr previousFrame;
+        // background frame of video stream
+        private IntPtr backgroundFrame;
         // current frame of video sream
         private IntPtr currentFrame;
         // temporary buffer used for suppressing noise
@@ -54,12 +59,17 @@ namespace AForge.Vision
 
         // the flag determines if it is required to highlight motion regions
         private bool highlightMotionRegions = false;
+        private bool highlighMotionEdges = true;
         // suppress noise
         private bool suppressNoise = false;
+        private bool keepObjectEdges = false;
 
         // threshold values
         private int differenceThreshold = 15;
         private int differenceThresholdNeg = -15;
+
+        private int framesPerBackgroundUpdate = 2;
+        private int framesCounter = 0;
 
         /// <summary>
         /// Highlight motion regions or not.
@@ -73,6 +83,23 @@ namespace AForge.Vision
         {
             get { return highlightMotionRegions; }
             set { highlightMotionRegions = value; }
+        }
+
+        /// <summary>
+        /// Highligh motion edges or not.
+        /// </summary>
+        /// 
+        /// <remarks><para>The value specifies if only edges of motion regions should be highlighted.
+        /// The value does not have any effect until <see cref="HighlightMotionRegions">highlight
+        /// motion regions</see> is requested.</para>
+        /// <para>Turning the value on leads to more processing time of video frame. Default values
+        /// is <b>true</b>.</para>
+        /// </remarks>
+        /// 
+        public bool HighlightMotionEdges
+        {
+            get { return highlighMotionEdges; }
+            set { highlighMotionEdges = value; }
         }
 
         /// <summary>
@@ -93,7 +120,7 @@ namespace AForge.Vision
                 suppressNoise = value;
 
                 // allocate temporary frame if required
-                if ( ( suppressNoise ) && ( tempFrame == IntPtr.Zero ) && ( previousFrame != IntPtr.Zero ) )
+                if ( ( suppressNoise ) && ( tempFrame == IntPtr.Zero ) && ( backgroundFrame != IntPtr.Zero ) )
                 {
                     tempFrame = Marshal.AllocHGlobal( width * height );
                 }
@@ -104,6 +131,22 @@ namespace AForge.Vision
                     Marshal.FreeHGlobal( tempFrame );
                 }
             }
+        }
+
+        /// <summary>
+        /// Restore objects edges after noise suppression or not.
+        /// </summary>
+        /// 
+        /// <remarks><para>The value specifies if additional filtering should be done
+        /// to restore objects edges after noise suppression.</para>
+        /// <para>Turning the value on leads to more processing time of video frame. Default values
+        /// is <b>false</b>.</para>
+        /// </remarks>
+        /// 
+        public bool KeepObjectsEdges
+        {
+            get { return keepObjectEdges; }
+            set { keepObjectEdges = true; }
         }
 
         /// <summary>
@@ -124,6 +167,22 @@ namespace AForge.Vision
         }
 
         /// <summary>
+        /// Frames per background update.
+        /// </summary>
+        /// 
+        /// <remarks><para>The value controls the speed of background adaptation to scene changes. After
+        /// each specified amount of frames the background frame is updated in the direction
+        /// to decrease difference with current processing frame.</para>
+        /// <para>The default value is 2. The value may be set in the range of [1, 50].</para>
+        /// </remarks>
+        /// 
+        public int FramesPerBackgroundUpdate
+        {
+            get { return framesPerBackgroundUpdate; }
+            set { framesPerBackgroundUpdate = Math.Max( 1, Math.Min( 50, value ) ); }
+        }
+
+        /// <summary>
         /// Motion level value.
         /// </summary>
         /// 
@@ -135,33 +194,48 @@ namespace AForge.Vision
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TwoFramesDifferenceMotionDetector"/> class.
+        /// Initializes a new instance of the <see cref="BackgroundModelingHighPrecisionMotionDetector"/> class.
         /// </summary>
         /// 
-        public TwoFramesDifferenceMotionDetector( ) { }
+        public BackgroundModelingHighPrecisionMotionDetector( ) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TwoFramesDifferenceMotionDetector"/> class.
+        /// Initializes a new instance of the <see cref="BackgroundModelingHighPrecisionMotionDetector"/> class.
         /// </summary>
         /// 
         /// <param name="highlightMotionRegions">Highlight motion regions or not.</param>
         /// 
-        public TwoFramesDifferenceMotionDetector( bool highlightMotionRegions )
+        public BackgroundModelingHighPrecisionMotionDetector( bool highlightMotionRegions )
         {
             this.highlightMotionRegions = highlightMotionRegions;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TwoFramesDifferenceMotionDetector"/> class.
+        /// Initializes a new instance of the <see cref="BackgroundModelingHighPrecisionMotionDetector"/> class.
         /// </summary>
         /// 
         /// <param name="highlightMotionRegions">Highlight motion regions or not.</param>
         /// <param name="suppressNoise">Suppress noise in video frames or not.</param>
         /// 
-        public TwoFramesDifferenceMotionDetector( bool highlightMotionRegions, bool suppressNoise )
+        public BackgroundModelingHighPrecisionMotionDetector( bool highlightMotionRegions, bool suppressNoise )
         {
             this.highlightMotionRegions = highlightMotionRegions;
             this.suppressNoise = suppressNoise;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BackgroundModelingHighPrecisionMotionDetector"/> class.
+        /// </summary>
+        /// 
+        /// <param name="highlightMotionRegions">Highlight motion regions or not.</param>
+        /// <param name="suppressNoise">Suppress noise in video frames or not.</param>
+        /// <param name="keepObjectEdges">Restore objects edges after noise suppression or not.</param>
+        /// 
+        public BackgroundModelingHighPrecisionMotionDetector( bool highlightMotionRegions, bool suppressNoise, bool keepObjectEdges )
+        {
+            this.highlightMotionRegions = highlightMotionRegions;
+            this.suppressNoise = suppressNoise;
+            this.keepObjectEdges = keepObjectEdges;
         }
 
         /// <summary>
@@ -175,7 +249,7 @@ namespace AForge.Vision
             BitmapData imageData = null;
 
             // check previous frame
-            if ( previousFrame == IntPtr.Zero )
+            if ( backgroundFrame == IntPtr.Zero )
             {
                 // save image dimension
                 width = image.Width;
@@ -183,8 +257,8 @@ namespace AForge.Vision
                 frameSize = width * height;
 
                 // alocate memory for previous and current frames
-                previousFrame = Marshal.AllocHGlobal( frameSize );
-                currentFrame  = Marshal.AllocHGlobal( frameSize );
+                backgroundFrame = Marshal.AllocHGlobal( frameSize );
+                currentFrame = Marshal.AllocHGlobal( frameSize );
                 // temporary buffer
                 if ( suppressNoise )
                 {
@@ -197,7 +271,7 @@ namespace AForge.Vision
                     ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb );
 
                 // convert source frame to grayscale
-                ImageProcessingTools.GrayscaleImage( imageData, previousFrame );
+                ImageProcessingTools.GrayscaleImage( imageData, backgroundFrame );
 
                 // unlock source image
                 image.UnlockBits( imageData );
@@ -218,21 +292,42 @@ namespace AForge.Vision
             // convert current image to grayscale
             ImageProcessingTools.GrayscaleImage( imageData, currentFrame );
 
-            // pointers to previous and current frames
-            byte* prevFrame = (byte*) previousFrame.ToPointer( );
-            byte* currFrame = (byte*) currentFrame.ToPointer( );
-            // difference value
+            // pointers to background and current frames
+            byte* backFrame;
+            byte* currFrame;
             int diff;
+
+            // update background frame
+            if ( ++framesCounter == framesPerBackgroundUpdate )
+            {
+                framesCounter = 0;
+
+                backFrame = (byte*) backgroundFrame.ToPointer( );
+                currFrame = (byte*) currentFrame.ToPointer( );
+
+                for ( int i = 0; i < frameSize; i++, backFrame++, currFrame++ )
+                {
+                    diff = *currFrame - *backFrame;
+                    if ( diff > 0 )
+                    {
+                        (*backFrame)++;
+                    }
+                    else if ( diff < 0 )
+                    {
+                        (*backFrame)--;
+                    }
+                }
+            }
+
+            backFrame = (byte*) backgroundFrame.ToPointer( );
+            currFrame = (byte*) currentFrame.ToPointer( );
 
             // 1 - get difference between frames
             // 2 - threshold the difference
-            // 3 - copy current frame to previous frame
-            for ( int i = 0; i < frameSize; i++, prevFrame++, currFrame++ )
+            for ( int i = 0; i < frameSize; i++, backFrame++, currFrame++ )
             {
                 // difference
-                diff = (int) *currFrame - (int) *prevFrame;
-                // copy current frame to previous
-                *prevFrame = *currFrame;
+                diff = (int) *currFrame - (int) *backFrame;
                 // treshold
                 *currFrame = ( ( diff >= differenceThreshold ) || ( diff <= differenceThresholdNeg ) ) ? (byte) 255 : (byte) 0;
             }
@@ -269,6 +364,32 @@ namespace AForge.Vision
                     motion += 2;
                     temp += 2;
                 }
+
+                // check if we need to restore objects edges
+                if ( keepObjectEdges )
+                {
+                    pixelsChanged = 0;
+
+                    AForge.Win32.memcpy( tempFrame, currentFrame, frameSize );
+
+                    motion = (byte*) currentFrame.ToPointer( ) + width + 1;
+                    temp = (byte*) tempFrame.ToPointer( ) + width + 1;
+
+                    // dilatation is used to restore objects edges
+                    for ( int y = 1; y < heightM1; y++ )
+                    {
+                        for ( int x = 1; x < widthM1; x++, motion++, temp++ )
+                        {
+                            *motion = (byte) ( temp[-width - 1] | temp[-width] | temp[-width + 1] |
+                                temp[width - 1] | temp[width] | temp[width + 1] |
+                                temp[1] | temp[-1] );
+
+                            pixelsChanged += ( *motion & 1 );
+                        }
+                        motion += 2;
+                        temp += 2;
+                    }
+                }
             }
             else
             {
@@ -284,8 +405,35 @@ namespace AForge.Vision
             // highlight motion regions
             if ( highlightMotionRegions )
             {
-                byte* src = (byte*) imageData.Scan0.ToPointer( );
                 byte* motion = (byte*) currentFrame.ToPointer( );
+
+                // is it required to highligh edges only
+                if ( highlighMotionEdges )
+                {
+                    AForge.Win32.memcpy( tempFrame, currentFrame, frameSize );
+
+                    motion += width + 1;
+                    byte* temp = (byte*) tempFrame.ToPointer( ) + width + 1;
+
+                    int widthM1 = width - 1;
+                    int heightM1 = height - 1;
+
+                    // apply difference edge detector
+                    for ( int y = 1; y < heightM1; y++ )
+                    {
+                        for ( int x = 1; x < widthM1; x++, motion++, temp++ )
+                        {
+                            *motion = (byte) ( 4 * *temp - temp[-width] - temp[width] - temp[1] - temp[-1] );
+                        }
+                        motion += 2;
+                        temp += 2;
+                    }
+
+                    // restore motion pointer
+                    motion = (byte*) currentFrame.ToPointer( );
+                }
+
+                byte* src = (byte*) imageData.Scan0.ToPointer( );
                 int srcOffset = imageData.Stride - width * 3;
 
                 // shift to the red channel
@@ -313,10 +461,10 @@ namespace AForge.Vision
         /// 
         public void Reset( )
         {
-            if ( previousFrame != IntPtr.Zero )
+            if ( backgroundFrame != IntPtr.Zero )
             {
-                Marshal.FreeHGlobal( previousFrame );
-                previousFrame = IntPtr.Zero;
+                Marshal.FreeHGlobal( backgroundFrame );
+                backgroundFrame = IntPtr.Zero;
             }
 
             if ( currentFrame != IntPtr.Zero )
@@ -330,6 +478,8 @@ namespace AForge.Vision
                 Marshal.FreeHGlobal( tempFrame );
                 tempFrame = IntPtr.Zero;
             }
+
+            framesCounter = 0;
         }
     }
 }
