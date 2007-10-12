@@ -21,7 +21,7 @@ namespace AForge.Vision.Motion
     /// 
     /// <remarks><para></para></remarks>
     /// 
-    public class CountingMotionDetector : IMotionDetector
+    public class CountingMotionDetector : ICountingMotionDetector
     {
         // frame's dimension
         private int width;
@@ -186,6 +186,21 @@ namespace AForge.Vision.Motion
                 lock ( blobCounter )
                 {
                     return blobCounter.ObjectsCount;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Rectangles of moving objects.
+        /// </summary>
+        /// 
+        public Rectangle[] ObjectRectangles
+        {
+            get
+            {
+                lock ( blobCounter )
+                {
+                    return blobCounter.GetObjectRectangles( );
                 }
             }
         }

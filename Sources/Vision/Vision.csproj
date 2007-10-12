@@ -49,6 +49,7 @@
     <Compile Include="Motion\BackgroundModelingHighPrecisionMotionDetector.cs" />
     <Compile Include="Motion\BackgroundModelingLowPrecisionMotionDetector.cs" />
     <Compile Include="Motion\CountingMotionDetector.cs" />
+    <Compile Include="Motion\ICountingMotionDetector.cs" />
     <Compile Include="Motion\IMotionDetector.cs" />
     <Compile Include="Motion\TwoFramesDifferenceMotionDetector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
