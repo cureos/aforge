@@ -21,7 +21,7 @@ namespace AForge.Vision.Motion
     /// 
     /// <remarks><para></para></remarks>
     /// 
-    public class CountingMotionDetector : ICountingMotionDetector
+    public class CountingMotionDetector : ICountingMotionDetector, IZonesMotionDetector
     {
         // frame's dimension
         private int width;
@@ -32,6 +32,8 @@ namespace AForge.Vision.Motion
         private IntPtr backgroundFrame;
         // current frame of video sream
         private IntPtr currentFrame;
+        // motion zones' frame
+        private IntPtr zonesFrame;
         // pixel changed in the new frame of video stream
         private int pixelsChanged;
 
@@ -47,6 +49,12 @@ namespace AForge.Vision.Motion
 
         // blob's counter algorithm
         private BlobCounter blobCounter = new BlobCounter( );
+
+        // motion detectoin zones
+        private Rectangle[] motionZones = null;
+        // the flag determines if it is required to highlight motion zones
+        private bool highlightMotionZones = false;
+
 
         /// <summary>
         /// Highlight motion regions or not.
@@ -206,6 +214,37 @@ namespace AForge.Vision.Motion
         }
 
         /// <summary>
+        /// Set of motion zones.
+        /// </summary>
+        /// 
+        /// <remarks>The property keeps array of zones, which are observed for motion detection.
+        /// Motion outside of these zones is ignored.</remarks>
+        /// 
+        public Rectangle[] MotionZones
+        {
+            get { return motionZones; }
+            set
+            {
+                motionZones = value;
+                CreateMotionZoneFrame( );
+            }
+        }
+
+        /// <summary>
+        /// Highligh motion zones or not.
+        /// </summary>
+        /// 
+        /// <remarks>Specifies if zones, which are subject to be observed for motion,
+        /// should be highlighted.</remarks>
+        /// 
+        public bool HighlightMotionZones
+        {
+            get { return highlightMotionZones; }
+            set { highlightMotionZones = value; }
+        }
+
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CountingMotionDetector"/> class.
         /// </summary>
         /// 
@@ -261,6 +300,9 @@ namespace AForge.Vision.Motion
                 // unlock source image
                 image.UnlockBits( imageData );
 
+                // create zones frame
+                CreateMotionZoneFrame( );
+
                 return;
             }
 
@@ -307,23 +349,57 @@ namespace AForge.Vision.Motion
             backFrame = (byte*) backgroundFrame.ToPointer( );
             currFrame = (byte*) currentFrame.ToPointer( );
 
+            pixelsChanged = 0;
+
             // 1 - get difference between frames
             // 2 - threshold the difference
             // 3 - calculate amount of motion pixels
-            for ( int i = 0; i < frameSize; i++, backFrame++, currFrame++ )
+            // ( the code duplication is done with optimization reason )
+            if ( motionZones == null )
             {
-                // difference
-                diff = (int) *currFrame - (int) *backFrame;
-                // treshold
-                *currFrame = ( ( diff >= differenceThreshold ) || ( diff <= differenceThresholdNeg ) ) ? (byte) 1 : (byte) 0;
-                // amount of motion
-                pixelsChanged += *currFrame;
+                for ( int i = 0; i < frameSize; i++, backFrame++, currFrame++ )
+                {
+                    // difference
+                    diff = (int) *currFrame - (int) *backFrame;
+                    // treshold
+                    *currFrame = ( ( diff >= differenceThreshold ) || ( diff <= differenceThresholdNeg ) ) ? (byte) 1 : (byte) 0;
+                    // amount of motion
+                    pixelsChanged += *currFrame;
+                }
+            }
+            else
+            {
+                lock ( motionZones )
+                {
+                    byte* zones = (byte*) zonesFrame.ToPointer( );
+
+                    for ( int i = 0; i < frameSize; i++, backFrame++, currFrame++, zones++ )
+                    {
+                        // difference
+                        diff = (int) *currFrame - (int) *backFrame;
+                        // treshold
+                        *currFrame = ( ( *zones == 1 ) && ( ( diff >= differenceThreshold ) || ( diff <= differenceThresholdNeg ) ) ) ? (byte) 1 : (byte) 0;
+                        // amount of motion
+                        pixelsChanged += *currFrame;
+                    }
+                }
             }
 
             // count objects
             lock ( blobCounter )
             {
                 blobCounter.ProcessImage( currentFrame, width, height, width );
+            }
+
+            if ( ( highlightMotionZones == true ) && ( motionZones != null ) )
+            {
+                lock ( motionZones )
+                {
+                    foreach ( Rectangle rect in motionZones )
+                    {
+                        Drawing.Rectangle( imageData, rect, Color.FromArgb( 0, 255, 0 ) );
+                    }
+                }
             }
 
             if ( highlightMotionRegions )
@@ -361,7 +437,67 @@ namespace AForge.Vision.Motion
                 currentFrame = IntPtr.Zero;
             }
 
+            if ( zonesFrame != IntPtr.Zero )
+            {
+                Marshal.FreeHGlobal( zonesFrame );
+                zonesFrame = IntPtr.Zero;
+            }
+
             framesCounter = 0;
+        }
+
+        /// <summary>
+        /// Create motion zones frame.
+        /// </summary>
+        /// 
+        /// <remarks>Creates motiion zones frame, which specifies all areas, which are observed for
+        /// motion. The frame contains <b>1</b> to mark pixels, which belong to motion zone, <b>0</b>,
+        /// which don't belong.</remarks>
+        /// 
+        private unsafe void CreateMotionZoneFrame( )
+        {
+            lock ( motionZones )
+            {
+                // free motion zones frame if required
+                if ( ( motionZones == null ) && ( zonesFrame != IntPtr.Zero ) )
+                {
+                    Marshal.FreeHGlobal( zonesFrame );
+                    zonesFrame = IntPtr.Zero;
+                }
+
+                // create motion zones frame only in the case if background frame exists
+                if ( ( motionZones != null ) && ( backgroundFrame != IntPtr.Zero ) )
+                {
+                    if ( zonesFrame == IntPtr.Zero )
+                    {
+                        zonesFrame = Marshal.AllocHGlobal( frameSize );
+                    }
+
+                    // clear memory
+                    AForge.Win32.memset( zonesFrame, 0, frameSize );
+
+                    Rectangle imageRect = new Rectangle( 0, 0, width, height );
+
+                    // draw all motion zones on motion frame
+                    foreach ( Rectangle rect in motionZones )
+                    {
+                        rect.Intersect( imageRect );
+
+                        // rectangle's dimenstion
+                        int rectWidth  = rect.Width;
+                        int rectHeight = rect.Height;
+
+                        // start pointer
+                        byte* ptr = (byte*) zonesFrame.ToPointer( ) + rect.Y * width + rect.X;
+
+                        for ( int y = 0; y < rectHeight; y++ )
+                        {
+                            AForge.Win32.memset( ptr, 1, rectWidth );
+                            ptr += width;
+                        }
+                    }
+                }
+            }
         }
     }
 }

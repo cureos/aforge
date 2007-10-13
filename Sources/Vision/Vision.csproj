@@ -38,7 +38,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Release\AForge.dll</HintPath>
     </Reference>
-    <Reference Include="AForge.Imaging, Version=1.5.0.0, Culture=neutral, PublicKeyToken=38eb47741dd0492e, processorArchitecture=MSIL" />
+    <Reference Include="AForge.Imaging, Version=1.5.0.0, Culture=neutral, PublicKeyToken=38eb47741dd0492e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Release\AForge.Imaging.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -51,6 +54,7 @@
     <Compile Include="Motion\CountingMotionDetector.cs" />
     <Compile Include="Motion\ICountingMotionDetector.cs" />
     <Compile Include="Motion\IMotionDetector.cs" />
+    <Compile Include="Motion\IZonesMotionDetector.cs" />
     <Compile Include="Motion\TwoFramesDifferenceMotionDetector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
