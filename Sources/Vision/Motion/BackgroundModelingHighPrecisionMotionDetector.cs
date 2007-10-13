@@ -75,7 +75,8 @@ namespace AForge.Vision.Motion
         /// Highlight motion regions or not.
         /// </summary>
         /// 
-        /// <remarks><para>Turning the value on leads to more processing time of video frame. Default values
+        /// <remarks><para>Specifies if regions, where motion has occured, should be highlighted.</para>
+        /// <para>Turning the value on leads to more processing time of video frame. Default values
         /// is <b>false</b>.</para>
         /// </remarks>
         /// 

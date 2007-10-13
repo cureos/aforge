@@ -22,6 +22,8 @@ namespace AForge.Vision.Motion
         /// Highlight motion regions or not.
         /// </summary>
         /// 
+        /// <remarks>Specifies if regions, where motion has occured, should be highlighted.</remarks>
+        /// 
         bool HighlightMotionRegions{ get; set; }
 
 		/// <summary>
