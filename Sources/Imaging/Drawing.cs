@@ -75,10 +75,7 @@ namespace AForge.Imaging
                 {
                     byte* ptr = (byte*) imageData.Scan0.ToPointer( ) + rectY1 * stride + startX;
 
-                    for ( int x = startX; x <= stopX; x++, ptr++ )
-                    {
-                        *ptr = gray;
-                    }
+                    AForge.Win32.memset( ptr, gray, stopX - startX );
                 }
 
                 // draw bottom horizontal line
@@ -86,10 +83,7 @@ namespace AForge.Imaging
                 {
                     byte* ptr = (byte*) imageData.Scan0.ToPointer( ) + rectY2 * stride + startX ;
 
-                    for ( int x = startX; x <= stopX; x++, ptr++ )
-                    {
-                        *ptr = gray;
-                    }
+                    AForge.Win32.memset( ptr, gray, stopX - startX );
                 }
 
                 // draw left vertical line
