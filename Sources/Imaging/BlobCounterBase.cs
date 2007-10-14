@@ -41,6 +41,9 @@ namespace AForge.Imaging
     /// 
     public abstract class BlobCounterBase
     {
+        // blobs' rectangles
+        Rectangle[] blobsRectangles = null;
+
         // filtering by size is required or nor
         private bool filterBlobs = false;
 
@@ -248,6 +251,9 @@ namespace AForge.Imaging
             imageWidth = width;
             imageHeight = height;
 
+            // free old blobs' rectangles
+            blobsRectangles = null;
+
             // do actual objects map building
             BuildObjectsMap( rawImageData, stride );
 
@@ -308,8 +314,10 @@ namespace AForge.Imaging
                     labelsMap[j] = j;
                 }
 
-                // check dimension of all objects and filter them
+                // 1) check dimension of all objects and filter them
+                // 2) update labels remapping array
                 int objectsToRemove = 0;
+                label = 1;
 
                 for ( int j = 1; j <= objectsCount; j++ )
                 {
@@ -323,16 +331,22 @@ namespace AForge.Imaging
                         labelsMap[j] = 0;
                         objectsToRemove++;
                     }
-                }
-
-                // update labels remapping array
-                label = 1;
-                for ( int j = 1; j <= objectsCount; j++ )
-                {
-                    if ( labelsMap[j] != 0 )
+                    else
                     {
                         labelsMap[j] = label;
                         label++;
+                    }
+                }
+
+                // collect remaining rectangles
+                blobsRectangles = new Rectangle[objectsCount - objectsToRemove];
+
+                for ( int j = 1, k = 0; j <= objectsCount; j++ )
+                {
+                    if ( labelsMap[j] != 0 )
+                    {
+                        blobsRectangles[k] = new Rectangle( x1[j], y1[j], x2[j] - x1[j] + 1, y2[j] - y1[j] + 1 );
+                        k++;
                     }
                 }
 
@@ -362,62 +376,11 @@ namespace AForge.Imaging
             if ( objectLabels == null )
                 throw new ApplicationException( "Image should be processed before to collect objects map" );
 
-            int i = 0, label;
+            // collect rectangles, if they are not collected yet
+            if ( blobsRectangles == null )
+                CollectObjectsRectangles( );
 
-            // create object coordinates arrays
-            int[] x1 = new int[objectsCount + 1];
-            int[] y1 = new int[objectsCount + 1];
-            int[] x2 = new int[objectsCount + 1];
-            int[] y2 = new int[objectsCount + 1];
-
-            for ( int j = 1; j <= objectsCount; j++ )
-            {
-                x1[j] = imageWidth;
-                y1[j] = imageHeight;
-            }
-
-            // walk through labels array
-            for ( int y = 0; y < imageHeight; y++ )
-            {
-                for ( int x = 0; x < imageWidth; x++, i++ )
-                {
-                    // get current label
-                    label = objectLabels[i];
-
-                    // skip unlabeled pixels
-                    if ( label == 0 )
-                        continue;
-
-                    // check and update all coordinates
-
-                    if ( x < x1[label] )
-                    {
-                        x1[label] = x;
-                    }
-                    if ( x > x2[label] )
-                    {
-                        x2[label] = x;
-                    }
-                    if ( y < y1[label] )
-                    {
-                        y1[label] = y;
-                    }
-                    if ( y > y2[label] )
-                    {
-                        y2[label] = y;
-                    }
-                }
-            }
-
-            // create rectangles
-            Rectangle[] rects = new Rectangle[objectsCount];
-
-            for ( int j = 1; j <= objectsCount; j++ )
-            {
-                rects[j - 1] = new Rectangle( x1[j], y1[j], x2[j] - x1[j] + 1, y2[j] - y1[j] + 1 );
-            }
-
-            return rects;
+            return blobsRectangles;
         }
 
         /// <summary>
@@ -466,12 +429,92 @@ namespace AForge.Imaging
             if ( objectLabels == null )
                 throw new ApplicationException( "Image should be processed before to collec objects map" );
 
+            // collect rectangles, if they are not collected yet
+            if ( blobsRectangles == null )
+                CollectObjectsRectangles( );
+
             // image size
             int width = imageData.Width;
             int height = imageData.Height;
-            int i = 0, label;
+            int srcStride = imageData.Stride;
 
-            // --- STEP 1 - find each objects coordinates
+            Blob[] objects = new Blob[objectsCount];
+
+            // create each image
+            for ( int k = 0; k < objectsCount; k++ )
+            {
+                int objectWidth  = blobsRectangles[k].Width;
+                int objectHeight = blobsRectangles[k].Height;
+
+                int xmin = blobsRectangles[k].X;
+                int xmax = xmin + objectWidth - 1;
+                int ymin = blobsRectangles[k].Y;
+                int ymax = ymin + objectHeight - 1;
+
+                int label = k + 1;
+
+                // create new image
+                Bitmap dstImg = AForge.Imaging.Image.CreateGrayscaleImage( objectWidth, objectHeight );
+
+                // lock destination bitmap data
+                BitmapData dstData = dstImg.LockBits(
+                    new Rectangle( 0, 0, objectWidth, objectHeight ),
+                    ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed );
+
+                // copy image
+                unsafe
+                {
+                    byte* src = (byte*) imageData.Scan0.ToPointer( ) + ymin * srcStride + xmin;
+                    byte* dst = (byte*) dstData.Scan0.ToPointer( );
+                    int p = ymin * width + xmin;
+
+                    int srcOffset = srcStride - objectWidth;
+                    int dstOffset = dstData.Stride - objectWidth;
+                    int labelsOffset = width - objectWidth;
+
+                    // for each line
+                    for ( int y = ymin; y <= ymax; y++ )
+                    {
+                        // copy each pixel
+                        for ( int x = xmin; x <= xmax; x++, src++, dst++, p++ )
+                        {
+                            if ( objectLabels[p] == label )
+                                *dst = *src;
+                        }
+                        src += srcOffset;
+                        dst += dstOffset;
+                        p += labelsOffset;
+                    }
+                }
+                // unlock destination image
+                dstImg.UnlockBits( dstData );
+
+                objects[k] = new Blob( dstImg, new Point( xmin, ymin ) );
+            }
+
+            return objects;
+        }
+
+        /// <summary>
+        /// Actual objects map building.
+        /// </summary>
+        /// 
+        /// <param name="rawImageData">Raw image data.</param>
+        /// <param name="stride">Length of one image line in bytes.</param>
+        /// 
+        /// <remarks>By the time this method is called, bitmap's pixel format is already
+        /// checked as well as <see cref="imageWidth"/> and <see cref="imageHeight"/>
+        /// members are initialized.</remarks>
+        /// 
+        protected abstract void BuildObjectsMap( IntPtr rawImageData, int stride );
+
+
+        #region Private Methods - Collecting objects' rectangles
+
+        // Collect objects' rectangles
+        private void CollectObjectsRectangles( )
+        {
+            int i = 0, label;
 
             // create object coordinates arrays
             int[] x1 = new int[objectsCount + 1];
@@ -479,16 +522,16 @@ namespace AForge.Imaging
             int[] x2 = new int[objectsCount + 1];
             int[] y2 = new int[objectsCount + 1];
 
-            for ( int k = 1; k <= objectsCount; k++ )
+            for ( int j = 1; j <= objectsCount; j++ )
             {
-                x1[k] = width;
-                y1[k] = height;
+                x1[j] = imageWidth;
+                y1[j] = imageHeight;
             }
 
             // walk through labels array
-            for ( int y = 0; y < height; y++ )
+            for ( int y = 0; y < imageHeight; y++ )
             {
-                for ( int x = 0; x < width; x++, i++ )
+                for ( int x = 0; x < imageWidth; x++, i++ )
                 {
                     // get current label
                     label = objectLabels[i];
@@ -518,74 +561,14 @@ namespace AForge.Imaging
                 }
             }
 
-            // --- STEP 2 - get each object
-            Blob[] objects = new Blob[objectsCount];
+            // create rectangles
+            blobsRectangles = new Rectangle[objectsCount];
 
-            int srcStride = imageData.Stride;
-
-            // create each image
-            for ( int k = 1; k <= objectsCount; k++ )
+            for ( int j = 1; j <= objectsCount; j++ )
             {
-                int xmin = x1[k];
-                int xmax = x2[k];
-                int ymin = y1[k];
-                int ymax = y2[k];
-                int objectWidth = xmax - xmin + 1;
-                int objectHeight = ymax - ymin + 1;
-
-                // create new image
-                Bitmap dstImg = AForge.Imaging.Image.CreateGrayscaleImage( objectWidth, objectHeight );
-
-                // lock destination bitmap data
-                BitmapData dstData = dstImg.LockBits(
-                    new Rectangle( 0, 0, objectWidth, objectHeight ),
-                    ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed );
-
-                // copy image
-                unsafe
-                {
-                    byte* src = (byte*) imageData.Scan0.ToPointer( ) + ymin * srcStride + xmin;
-                    byte* dst = (byte*) dstData.Scan0.ToPointer( );
-                    int p = ymin * width + xmin;
-
-                    int srcOffset = srcStride - objectWidth;
-                    int dstOffset = dstData.Stride - objectWidth;
-                    int labelsOffset = width - objectWidth;
-
-                    // for each line
-                    for ( int y = ymin; y <= ymax; y++ )
-                    {
-                        // copy each pixel
-                        for ( int x = xmin; x <= xmax; x++, src++, dst++, p++ )
-                        {
-                            if ( objectLabels[p] == k )
-                                *dst = *src;
-                        }
-                        src += srcOffset;
-                        dst += dstOffset;
-                        p += labelsOffset;
-                    }
-                }
-                // unlock destination image
-                dstImg.UnlockBits( dstData );
-
-                objects[k - 1] = new Blob( dstImg, new Point( xmin, ymin ) );
+                blobsRectangles[j - 1] = new Rectangle( x1[j], y1[j], x2[j] - x1[j] + 1, y2[j] - y1[j] + 1 );
             }
-
-            return objects;
         }
-
-        /// <summary>
-        /// Actual objects map building.
-        /// </summary>
-        /// 
-        /// <param name="rawImageData">Raw image data.</param>
-        /// <param name="stride">Length of one image line in bytes.</param>
-        /// 
-        /// <remarks>By the time this method is called, bitmap's pixel format is already
-        /// checked as well as <see cref="imageWidth"/> and <see cref="imageHeight"/>
-        /// members are initialized.</remarks>
-        /// 
-        protected abstract void BuildObjectsMap( IntPtr rawImageData, int stride );
+        #endregion
     }
 }
