@@ -47,7 +47,7 @@ namespace AForge.Vision.Motion
         /// Amount of objects found.
         /// </summary>
         /// 
-        int ObjectCount { get; }
+        int ObjectsCount { get; }
 
         /// <summary>
         /// Rectangles of moving objects.

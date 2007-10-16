@@ -19,7 +19,36 @@ namespace AForge.Vision.Motion
     /// ability to count objects using blob counting algorithm.
     /// </summary>
     /// 
-    /// <remarks><para></para></remarks>
+    /// <remarks><para>The motion detector is based on difference of current video frame
+    /// (specified frame) with background frame, which is modeled internally. As the
+    /// first approximation of background frame, the first frame of video stream is used.
+    /// During further video processing the background frame is changing in the direction
+    /// to decrease difference with current video frame (the background frame is moving
+    /// towards current frame).</para>
+    /// <para>To enable moving objects counting the motion detector uses blob counter, which
+    /// is applied to the binary image containing motion regions. The motion detection
+    /// algorithms allows to get amount of moving objects, as well as their position and
+    /// dimension.</para>
+    /// <para>Sample usage:</para>
+    /// <code>
+    /// // create motion detector with motion highligh
+    /// CountingMotionDetector detector =
+    ///     new CountingMotionDetector( true );
+    /// // set minimum objects' size
+    /// detector.MinObjectsWidth  = 10;
+    /// detector.MinObjectsHeight = 10;
+    /// // feed first image to the detector
+    /// detector.ProcessFrame( image );
+    /// // ...
+    /// // feed next image
+    /// detector.ProcessFrame( nextImage );
+    /// // check amount of moving objects
+    /// if ( detector.ObjectsCount > 0 )
+    /// {
+    ///     Rectangle[] objects = detector.ObjectRectangles;
+    /// }
+    /// </code>
+    /// </remarks>
     /// 
     public class CountingMotionDetector : ICountingMotionDetector, IZonesMotionDetector
     {
@@ -110,7 +139,7 @@ namespace AForge.Vision.Motion
         /// 
         /// <remarks><para>Amount of changes in the last processed frame in percents.</para>
         /// <note>This property is based on amount of changed pixels, what it includes noise
-        /// and also objects of all size. For motion alarm the <see cref="ObjectCount"/>
+        /// and also objects of all size. For motion alarm the <see cref="ObjectsCount"/>
         /// property can be used as alternative.</note>
         /// </remarks>
         /// 
@@ -187,7 +216,7 @@ namespace AForge.Vision.Motion
         /// Amount of objects found.
         /// </summary>
         /// 
-        public int ObjectCount
+        public int ObjectsCount
         {
             get
             {
