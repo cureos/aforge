@@ -47,6 +47,9 @@ namespace AForge.Imaging
         // filtering by size is required or nor
         private bool filterBlobs = false;
 
+        // coupled size filtering or not
+        private bool coupledSizeFiltering = false;
+
         // blobs' minimal and maximal size
         private int minWidth    = 1;
         private int minHeight   = 1;
@@ -109,6 +112,25 @@ namespace AForge.Imaging
         {
             get { return filterBlobs; }
             set { filterBlobs = value; }
+        }
+
+        /// <summary>
+        /// Specifies if size filetering should be coupled or not.
+        /// </summary>
+        /// 
+        /// <remarks><para>In uncoupled filtering mode, objects are filtered out in the case if
+        /// their width is smaller than <see cref="MinWidth"/> or height is smaller than 
+        /// <see cref="MinHeight"/>. But in coupled filtering mode, objects are filtered out in
+        /// the case if their width is smaller than <see cref="MinWidth"/> <b>and</b> height is
+        /// smaller than <see cref="MinHeight"/>. In both modes the idea with filtering by objects'
+        /// maximum size is the same as filtering by objects' minimum size.</para>
+        /// <para>Default value is set to <b>false</b>, what means uncoupled filtering by size.</para>
+        /// </remarks>
+        /// 
+        public bool CoupledSizeFiltering
+        {
+            get { return coupledSizeFiltering; }
+            set { coupledSizeFiltering = value; }
         }
 
         /// <summary>
@@ -314,39 +336,52 @@ namespace AForge.Imaging
                     labelsMap[j] = j;
                 }
 
-                // 1) check dimension of all objects and filter them
-                // 2) update labels remapping array
+                // check dimension of all objects and filter them
                 int objectsToRemove = 0;
-                label = 1;
 
                 for ( int j = 1; j <= objectsCount; j++ )
                 {
                     int blobWidth  = x2[j] - x1[j] + 1;
                     int blobHeight = y2[j] - y1[j] + 1;
 
-                    if (
-                        ( blobWidth < minWidth ) || ( blobHeight < minHeight ) ||
-                        ( blobWidth > maxWidth ) || ( blobHeight > maxHeight ) )
+                    if ( coupledSizeFiltering == false )
                     {
-                        labelsMap[j] = 0;
-                        objectsToRemove++;
+                        // uncoupled filtering
+                        if (
+                            ( blobWidth < minWidth ) || ( blobHeight < minHeight ) ||
+                            ( blobWidth > maxWidth ) || ( blobHeight > maxHeight ) )
+                        {
+                            labelsMap[j] = 0;
+                            objectsToRemove++;
+                        }
                     }
                     else
                     {
-                        labelsMap[j] = label;
-                        label++;
+                        // coupled filtering
+                        if (
+                            ( ( blobWidth < minWidth ) && ( blobHeight < minHeight ) ) ||
+                            ( ( blobWidth > maxWidth ) && ( blobHeight > maxHeight ) ) )
+                        {
+                            labelsMap[j] = 0;
+                            objectsToRemove++;
+                        }
                     }
                 }
 
-                // collect remaining rectangles
+                // 1) update labels remapping array
+                // 2) collect remaining rectangles
                 blobsRectangles = new Rectangle[objectsCount - objectsToRemove];
 
-                for ( int j = 1, k = 0; j <= objectsCount; j++ )
+                label = 0;
+                for ( int j = 1; j <= objectsCount; j++ )
                 {
                     if ( labelsMap[j] != 0 )
                     {
-                        blobsRectangles[k] = new Rectangle( x1[j], y1[j], x2[j] - x1[j] + 1, y2[j] - y1[j] + 1 );
-                        k++;
+                        // collect blob
+                        blobsRectangles[label] = new Rectangle( x1[j], y1[j], x2[j] - x1[j] + 1, y2[j] - y1[j] + 1 );
+                        label++;
+                        // update remapping array
+                        labelsMap[j] = label;
                     }
                 }
 
