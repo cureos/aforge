@@ -63,6 +63,72 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
+        /// Specifies if blobs should be filtered.
+        /// </summary>
+        /// 
+        /// <remarks><para>See documentation for <see cref="BlobCounterBase.FilterBlobs"/> property
+        /// of <see cref="BlobCounterBase"/> class for more information.</para></remarks>
+        /// 
+        public bool FilterBlobs
+        {
+            get { return blobCounter.FilterBlobs; }
+            set { blobCounter.FilterBlobs = value; }
+        }
+
+        /// <summary>
+        /// Specifies if size filetering should be coupled or not.
+        /// </summary>
+        /// 
+        /// <remarks><para>See documentation for <see cref="BlobCounterBase.CoupledSizeFiltering"/> property
+        /// of <see cref="BlobCounterBase"/> class for more information.</para></remarks>
+        /// 
+        public bool CoupledSizeFiltering
+        {
+            get { return blobCounter.CoupledSizeFiltering; }
+            set { blobCounter.CoupledSizeFiltering = value; }
+        }
+
+        /// <summary>
+        /// Minimum allowed width of blob.
+        /// </summary>
+        /// 
+        public int MinWidth
+        {
+            get { return blobCounter.MinWidth; }
+            set { blobCounter.MinWidth = value; }
+        }
+
+        /// <summary>
+        /// Minimum allowed height of blob.
+        /// </summary>
+        /// 
+        public int MinHeight
+        {
+            get { return blobCounter.MinHeight; }
+            set { blobCounter.MinHeight = value; }
+        }
+
+        /// <summary>
+        /// Maximum allowed width of blob.
+        /// </summary>
+        /// 
+        public int MaxWidth
+        {
+            get { return blobCounter.MaxWidth; }
+            set { blobCounter.MaxWidth = value; }
+        }
+
+        /// <summary>
+        /// Maximum allowed height of blob.
+        /// </summary>
+        /// 
+        public int MaxHeight
+        {
+            get { return blobCounter.MaxHeight; }
+            set { blobCounter.MaxHeight = value; }
+        }
+
+        /// <summary>
         /// Objects count.
         /// </summary>
         /// 
