@@ -344,7 +344,7 @@ namespace AForge.Video.DirectShow
                 }
 
                 // render pin
-                graph.Render( Tools.GetOutPin( grabberBase, 0 ) );
+                // graph.Render( Tools.GetOutPin( grabberBase, 0 ) );
 
                 // configure sample grabber
                 sampleGrabber.SetBufferSamples( false );
@@ -352,9 +352,9 @@ namespace AForge.Video.DirectShow
                 sampleGrabber.SetCallback( grabber, 1 );
 
                 // configure video window
-                IVideoWindow window = (IVideoWindow) graphObject;
-                window.put_AutoShow( false );
-                window = null;
+                // IVideoWindow window = (IVideoWindow) graphObject;
+                // window.put_AutoShow( false );
+                // window = null;
 
                 // get media control
                 mediaControl = (IMediaControl) graphObject;
