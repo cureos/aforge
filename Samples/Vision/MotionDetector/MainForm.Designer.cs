@@ -54,9 +54,11 @@ namespace MotionDetector
             this.timer = new System.Windows.Forms.Timer( this.components );
             this.statusBar = new System.Windows.Forms.StatusStrip( );
             this.fpsLabel = new System.Windows.Forms.ToolStripStatusLabel( );
-            this.panel1 = new System.Windows.Forms.Panel( );
             this.objectsCountLabel = new System.Windows.Forms.ToolStripStatusLabel( );
+            this.panel1 = new System.Windows.Forms.Panel( );
             this.cameraWindow = new MotionDetector.CameraWindow( );
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator( );
+            this.defineMotionregionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.menuMenu.SuspendLayout( );
             this.statusBar.SuspendLayout( );
             this.panel1.SuspendLayout( );
@@ -145,7 +147,9 @@ namespace MotionDetector
             this.detector3ToolStripMenuItem,
             this.detector4ToolStripMenuItem,
             this.toolStripMenuItem3,
-            this.highlightMotionRegionsToolStripMenuItem} );
+            this.highlightMotionRegionsToolStripMenuItem,
+            this.toolStripMenuItem4,
+            this.defineMotionregionsToolStripMenuItem} );
             this.motionToolStripMenuItem.Name = "motionToolStripMenuItem";
             this.motionToolStripMenuItem.Size = new System.Drawing.Size( 51, 20 );
             this.motionToolStripMenuItem.Text = "&Motion";
@@ -251,6 +255,17 @@ namespace MotionDetector
             this.fpsLabel.Size = new System.Drawing.Size( 150, 17 );
             this.fpsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // objectsCountLabel
+            // 
+            this.objectsCountLabel.BorderSides = ( (System.Windows.Forms.ToolStripStatusLabelBorderSides) ( ( ( ( System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top )
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right )
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom ) ) );
+            this.objectsCountLabel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
+            this.objectsCountLabel.Name = "objectsCountLabel";
+            this.objectsCountLabel.Size = new System.Drawing.Size( 267, 17 );
+            this.objectsCountLabel.Spring = true;
+            this.objectsCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // panel1
             // 
             this.panel1.Controls.Add( this.cameraWindow );
@@ -260,17 +275,6 @@ namespace MotionDetector
             this.panel1.Size = new System.Drawing.Size( 432, 310 );
             this.panel1.TabIndex = 4;
             // 
-            // objectsCountLabel
-            // 
-            this.objectsCountLabel.BorderSides = ( (System.Windows.Forms.ToolStripStatusLabelBorderSides) ( ( ( ( System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top )
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right )
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom ) ) );
-            this.objectsCountLabel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
-            this.objectsCountLabel.Name = "objectsCountLabel";
-            this.objectsCountLabel.Size = new System.Drawing.Size( 236, 17 );
-            this.objectsCountLabel.Spring = true;
-            this.objectsCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // cameraWindow
             // 
             this.cameraWindow.BackColor = System.Drawing.SystemColors.ControlDarkDark;
@@ -279,6 +283,18 @@ namespace MotionDetector
             this.cameraWindow.Name = "cameraWindow";
             this.cameraWindow.Size = new System.Drawing.Size( 320, 240 );
             this.cameraWindow.TabIndex = 1;
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size( 196, 6 );
+            // 
+            // defineMotionregionsToolStripMenuItem
+            // 
+            this.defineMotionregionsToolStripMenuItem.Name = "defineMotionregionsToolStripMenuItem";
+            this.defineMotionregionsToolStripMenuItem.Size = new System.Drawing.Size( 199, 22 );
+            this.defineMotionregionsToolStripMenuItem.Text = "Define motion &regions";
+            this.defineMotionregionsToolStripMenuItem.Click += new System.EventHandler( this.defineMotionregionsToolStripMenuItem_Click );
             // 
             // MainForm
             // 
@@ -333,6 +349,8 @@ namespace MotionDetector
         private System.Windows.Forms.ToolStripMenuItem openVideoFileusingDirectShowToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem detector4ToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel objectsCountLabel;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem defineMotionregionsToolStripMenuItem;
     }
 }
 

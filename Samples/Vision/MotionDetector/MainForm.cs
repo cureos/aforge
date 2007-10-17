@@ -320,6 +320,10 @@ namespace MotionDetector
             {
                 items[i].Checked = ( i == detectorType );
             }
+
+            // enable/disable defining motion zones
+            defineMotionregionsToolStripMenuItem.Enabled =
+                ( ( cameraWindow.Camera != null ) && ( cameraWindow.Camera.LastFrame != null ) && ( detector is IZonesMotionDetector ) );
         }
 
         // Turn on/off motion regions highlight
@@ -349,6 +353,34 @@ namespace MotionDetector
             else
             {
                 objectsCountLabel.Text = "";
+            }
+        }
+
+        // On "Define motion regions" menu item selected
+        private void defineMotionregionsToolStripMenuItem_Click( object sender, EventArgs e )
+        {
+            if ( ( cameraWindow.Camera != null ) && ( cameraWindow.Camera.LastFrame != null ) && ( detector is IZonesMotionDetector ) )
+            {
+                MotionRegionsForm form = new MotionRegionsForm( );
+                IZonesMotionDetector zonesDetector = (IZonesMotionDetector) detector;
+
+                // get last frame from camera
+                cameraWindow.Camera.Lock( );
+                form.VideoFrame = AForge.Imaging.Image.Clone( cameraWindow.Camera.LastFrame );
+                cameraWindow.Camera.Unlock( );
+
+                form.MotionRectangles = zonesDetector.MotionZones;
+
+                // show the dialog
+                if ( form.ShowDialog( this ) == DialogResult.OK )
+                {
+                    Rectangle[] rects = form.MotionRectangles;
+
+                    if ( rects.Length == 0 )
+                        rects = null;
+
+                    zonesDetector.MotionZones = rects;
+                }
             }
         }
     }

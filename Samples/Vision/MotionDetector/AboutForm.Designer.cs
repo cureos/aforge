@@ -59,7 +59,7 @@ namespace MotionDetector
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size( 110, 13 );
             this.label1.TabIndex = 1;
-            this.label1.Text = "Motion Detector 2.2.1";
+            this.label1.Text = "Motion Detector 2.3.0";
             // 
             // label2
             // 
