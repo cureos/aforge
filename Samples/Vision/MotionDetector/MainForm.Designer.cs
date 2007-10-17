@@ -45,6 +45,7 @@ namespace MotionDetector
             this.detector1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.detector2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.detector3ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
+            this.detector4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator( );
             this.highlightMotionRegionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
@@ -54,8 +55,8 @@ namespace MotionDetector
             this.statusBar = new System.Windows.Forms.StatusStrip( );
             this.fpsLabel = new System.Windows.Forms.ToolStripStatusLabel( );
             this.panel1 = new System.Windows.Forms.Panel( );
+            this.objectsCountLabel = new System.Windows.Forms.ToolStripStatusLabel( );
             this.cameraWindow = new MotionDetector.CameraWindow( );
-            this.detector4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.menuMenu.SuspendLayout( );
             this.statusBar.SuspendLayout( );
             this.panel1.SuspendLayout( );
@@ -183,6 +184,13 @@ namespace MotionDetector
             this.detector3ToolStripMenuItem.Text = "Detector &3";
             this.detector3ToolStripMenuItem.Click += new System.EventHandler( this.detector3ToolStripMenuItem_Click );
             // 
+            // detector4ToolStripMenuItem
+            // 
+            this.detector4ToolStripMenuItem.Name = "detector4ToolStripMenuItem";
+            this.detector4ToolStripMenuItem.Size = new System.Drawing.Size( 199, 22 );
+            this.detector4ToolStripMenuItem.Text = "Detector &4";
+            this.detector4ToolStripMenuItem.Click += new System.EventHandler( this.detector4ToolStripMenuItem_Click );
+            // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
@@ -225,7 +233,8 @@ namespace MotionDetector
             // statusBar
             // 
             this.statusBar.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.fpsLabel} );
+            this.fpsLabel,
+            this.objectsCountLabel} );
             this.statusBar.Location = new System.Drawing.Point( 0, 334 );
             this.statusBar.Name = "statusBar";
             this.statusBar.Size = new System.Drawing.Size( 432, 22 );
@@ -233,9 +242,13 @@ namespace MotionDetector
             // 
             // fpsLabel
             // 
+            this.fpsLabel.AutoSize = false;
+            this.fpsLabel.BorderSides = ( (System.Windows.Forms.ToolStripStatusLabelBorderSides) ( ( ( ( System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top )
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right )
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom ) ) );
+            this.fpsLabel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
             this.fpsLabel.Name = "fpsLabel";
-            this.fpsLabel.Size = new System.Drawing.Size( 417, 17 );
-            this.fpsLabel.Spring = true;
+            this.fpsLabel.Size = new System.Drawing.Size( 150, 17 );
             this.fpsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // panel1
@@ -247,6 +260,17 @@ namespace MotionDetector
             this.panel1.Size = new System.Drawing.Size( 432, 310 );
             this.panel1.TabIndex = 4;
             // 
+            // objectsCountLabel
+            // 
+            this.objectsCountLabel.BorderSides = ( (System.Windows.Forms.ToolStripStatusLabelBorderSides) ( ( ( ( System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top )
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right )
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom ) ) );
+            this.objectsCountLabel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
+            this.objectsCountLabel.Name = "objectsCountLabel";
+            this.objectsCountLabel.Size = new System.Drawing.Size( 236, 17 );
+            this.objectsCountLabel.Spring = true;
+            this.objectsCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // cameraWindow
             // 
             this.cameraWindow.BackColor = System.Drawing.SystemColors.ControlDarkDark;
@@ -255,13 +279,6 @@ namespace MotionDetector
             this.cameraWindow.Name = "cameraWindow";
             this.cameraWindow.Size = new System.Drawing.Size( 320, 240 );
             this.cameraWindow.TabIndex = 1;
-            // 
-            // detector4ToolStripMenuItem
-            // 
-            this.detector4ToolStripMenuItem.Name = "detector4ToolStripMenuItem";
-            this.detector4ToolStripMenuItem.Size = new System.Drawing.Size( 199, 22 );
-            this.detector4ToolStripMenuItem.Text = "Detector &4";
-            this.detector4ToolStripMenuItem.Click += new System.EventHandler( this.detector4ToolStripMenuItem_Click );
             // 
             // MainForm
             // 
@@ -315,6 +332,7 @@ namespace MotionDetector
         private System.Windows.Forms.ToolStripMenuItem localVideoCaptureDeviceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openVideoFileusingDirectShowToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem detector4ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel objectsCountLabel;
     }
 }
 

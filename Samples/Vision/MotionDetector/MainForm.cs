@@ -165,6 +165,7 @@ namespace MotionDetector
 
             // create camera
             Camera camera = new Camera( source, detector );
+            camera.NewFrame += new EventHandler( camera_NewFrame );
             // start camera
             camera.Start( );
 
@@ -334,6 +335,20 @@ namespace MotionDetector
 
                 if ( detector != null )
                     detector.HighlightMotionRegions = highlightMotionRegionsToolStripMenuItem.Checked;
+            }
+        }
+
+        // On new frame
+        private void camera_NewFrame( object sender, System.EventArgs e )
+        {
+            if ( detector is ICountingMotionDetector )
+            {
+                ICountingMotionDetector countingDetector = (ICountingMotionDetector) detector;
+                objectsCountLabel.Text = "Objects: " + countingDetector.ObjectsCount.ToString( );
+            }
+            else
+            {
+                objectsCountLabel.Text = "";
             }
         }
     }
