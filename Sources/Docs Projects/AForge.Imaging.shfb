@@ -22,6 +22,7 @@
         <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\mirror.jpg" destPath="" />
         <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\sample2.jpg" destPath="" />
         <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\labeling.jpg" destPath="" />
+        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\blobs_filtering.jpg" destPath="" />
     </additionalContent>
     <contentPlacement>AboveNamespaces</contentPlacement>
     <dependencies>

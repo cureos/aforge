@@ -323,6 +323,7 @@
     <Compile Include="Filters\Noise generation\AdditiveNoise.cs" />
     <Compile Include="Filters\Noise generation\SaltAndPepperNoise.cs" />
     <Compile Include="Filters\Other\AdaptiveSmooth.cs" />
+    <Compile Include="Filters\Other\BlobsFiltering.cs" />
     <Compile Include="Filters\Other\CanvasCrop.cs" />
     <Compile Include="Filters\Other\CanvasFill.cs" />
     <Compile Include="Filters\Other\CanvasMove.cs" />

@@ -22,7 +22,7 @@ namespace AForge.Imaging.Filters
     /// // create filter
     /// ConnectedComponentsLabeling filter = new ConnectedComponentsLabeling( );
     /// // apply the filter
-    /// filter.Apply( image );
+    /// Bitmap newImage = filter.Apply( image );
     /// // check objects count
     /// int objectCount = filter.ObjectCount;
     /// </code>
