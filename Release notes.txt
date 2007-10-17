@@ -1,3 +1,55 @@
+AForge.NET 1.5.1 release notes
+------------------------------
+17.10.2007.
+
+Version updates and fixes:
+
+* Fixed registered issues/requests:
+
+
+* AForge.Imaging
+  - BlobCounterBase class was introduced to serve as a base for different blob counting algorithms.
+
+  - Recursive blob counter was added. This blob counting algorithm is slower than existing one, but due its
+    simplicity can be used for testing other algorithms. Improvements can be done.
+
+  - Blob counter base class is updated to support not only Bitmap and BitmapData, but raw data in unmanaged
+    memory.
+
+  - Blob counter base class is updated to support blobs filtering by size.
+
+  - Drawing class was introduced to keep different drawing routines, which can be applied to BitmapData.
+    Rectangle routine is provided for now only.
+
+  - ConnectedComponentsLabeling filter was updated to support blobs filtering by size.
+
+  - BlobsFiltering filter was introduced to filter objects out of specified size range.
+
+
+* AForge.Vision
+  - ICountingMotionDetector interface was introduced, which describes interface for motion detection algorithms
+    with objects counting support.
+
+  - IZonesMotionDetector interface was introduced, which describes interface for motion detection algorithms
+    with support of motion zones - zones, where motion detection should be done.
+
+  - Counting motion detector was introduced, which allows to count moving objects and retrieve position and
+    dimension of each object.
+
+
+* AForge.Video.DirectShow
+  - VideoCaptureDevice and FileVideoSource classes were updated - Render() method call of IGraphBuilder interface
+    was removed. The method was completing graph with additional filters required for rendering, which were
+    causing video stopping in the case of screen saver or workstation locking. Since we use Sample Grabber and
+    we do our own rendering, the call was not actually required.
+
+
+* Samples
+  - Motion Detector sample was updated to demonstrate counting motion detector and motion zones configuration.
+
+
+
+
 AForge.NET 1.5.0 release notes
 ------------------------------
 16.09.2007.
