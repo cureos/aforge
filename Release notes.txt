@@ -5,6 +5,8 @@ AForge.NET 1.5.1 release notes
 Version updates and fixes:
 
 * Fixed registered issues/requests:
+  - Issue 22: Display change causes video to stop.
+  - Issue 24: Blob detector size limits.
 
 
 * AForge.Imaging
