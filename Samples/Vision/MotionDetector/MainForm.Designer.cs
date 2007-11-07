@@ -48,6 +48,8 @@ namespace MotionDetector
             this.detector4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator( );
             this.highlightMotionRegionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator( );
+            this.defineMotionregionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog( );
@@ -57,8 +59,6 @@ namespace MotionDetector
             this.objectsCountLabel = new System.Windows.Forms.ToolStripStatusLabel( );
             this.panel1 = new System.Windows.Forms.Panel( );
             this.cameraWindow = new MotionDetector.CameraWindow( );
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator( );
-            this.defineMotionregionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.menuMenu.SuspendLayout( );
             this.statusBar.SuspendLayout( );
             this.panel1.SuspendLayout( );
@@ -209,6 +209,18 @@ namespace MotionDetector
             this.highlightMotionRegionsToolStripMenuItem.Text = "Highlight motion regions";
             this.highlightMotionRegionsToolStripMenuItem.Click += new System.EventHandler( this.highlightMotionRegionsToolStripMenuItem_Click );
             // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size( 196, 6 );
+            // 
+            // defineMotionregionsToolStripMenuItem
+            // 
+            this.defineMotionregionsToolStripMenuItem.Name = "defineMotionregionsToolStripMenuItem";
+            this.defineMotionregionsToolStripMenuItem.Size = new System.Drawing.Size( 199, 22 );
+            this.defineMotionregionsToolStripMenuItem.Text = "Define motion &regions";
+            this.defineMotionregionsToolStripMenuItem.Click += new System.EventHandler( this.defineMotionregionsToolStripMenuItem_Click );
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
@@ -226,7 +238,7 @@ namespace MotionDetector
             // 
             // openFileDialog
             // 
-            this.openFileDialog.Filter = "AVI files (*.avi)|*.avi";
+            this.openFileDialog.Filter = "AVI files (*.avi)|*.avi|All files (*.*)|*.*";
             this.openFileDialog.Title = "Opem movie";
             // 
             // timer
@@ -283,18 +295,6 @@ namespace MotionDetector
             this.cameraWindow.Name = "cameraWindow";
             this.cameraWindow.Size = new System.Drawing.Size( 320, 240 );
             this.cameraWindow.TabIndex = 1;
-            // 
-            // toolStripMenuItem4
-            // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size( 196, 6 );
-            // 
-            // defineMotionregionsToolStripMenuItem
-            // 
-            this.defineMotionregionsToolStripMenuItem.Name = "defineMotionregionsToolStripMenuItem";
-            this.defineMotionregionsToolStripMenuItem.Size = new System.Drawing.Size( 199, 22 );
-            this.defineMotionregionsToolStripMenuItem.Text = "Define motion &regions";
-            this.defineMotionregionsToolStripMenuItem.Click += new System.EventHandler( this.defineMotionregionsToolStripMenuItem_Click );
             // 
             // MainForm
             // 
