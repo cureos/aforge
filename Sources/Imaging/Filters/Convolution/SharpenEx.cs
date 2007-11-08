@@ -50,7 +50,7 @@ namespace AForge.Imaging.Filters
         /// </summary>
         /// 
         /// <remarks>Size of Gaussian kernel. Default value is 5. Minimum value is 3.
-        /// Maximum value is 5. The value should be odd.</remarks>
+        /// Maximum value is 21. The value should be odd.</remarks>
         /// 
         public int Size
         {
