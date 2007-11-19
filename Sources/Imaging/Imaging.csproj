@@ -105,6 +105,8 @@
     <Compile Include="ColorConverter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Complex Filters\FrequencyFilter.cs" />
+    <Compile Include="Complex Filters\IComplexFilter.cs" />
     <Compile Include="ComplexImage.cs" />
     <Compile Include="Drawing.cs" />
     <Compile Include="Filters\2 Source filters\Add.cs">
