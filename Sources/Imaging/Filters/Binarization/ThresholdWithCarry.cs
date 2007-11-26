@@ -15,7 +15,25 @@ namespace AForge.Imaging.Filters
     /// Threshold binarization with error carry.
     /// </summary>
     /// 
-    /// <remarks></remarks>
+    /// <remarks><para>The filter is similar to <see cref="Threshold"/> filter in the way,
+    /// that it also uses threshold value for image binarization. Unlike regular threshold
+    /// filter, this filter uses cumulative pixel value in comparing with threshold value.
+    /// If cumulative pixel value is below threshold value, then image pixel becomes black.
+    /// If cumulative pixel value is equal or higher than threshold value, then image pixel
+    /// becomes white and cumulative pixel value is decreased by 255. In the beginning of each
+    /// image line the cumulative value is reset to 0.
+    /// </para>
+    /// <code>
+    /// // create filter
+    /// Threshold filter = new Threshold( 100 );
+    /// // apply the filter
+    /// filter.ApplyInPlace( image );
+    /// </code>
+    /// <para><b>Initial image:</b></para>
+    /// <img src="grayscale.jpg" width="480" height="361" />
+    /// <para><b>Result image:</b></para>
+    /// <img src="threshold_carry.jpg" width="480" height="361" />
+    /// </remarks>
     /// 
     public class ThresholdWithCarry : FilterGrayToGrayPartial
     {

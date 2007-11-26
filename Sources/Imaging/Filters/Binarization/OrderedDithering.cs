@@ -15,6 +15,33 @@ namespace AForge.Imaging.Filters
     /// Binarization with thresholds matrix.
     /// </summary>
     /// 
+    /// <remarks><para>Idea of the filter is the same as idea of <see cref="Threshold"/> filter -
+    /// change pixel value to white, if its intensity is equal or higher than threshold value, or
+    /// to black otherwise. But instead of using single threshold value for all pixel, the filter
+    /// uses matrix of threshold values. Processing image is divided to adjacent windows of matrix
+    /// size each. For pixels binarization inside of each window, corresponding threshold values are
+    /// used from specified threshold matrix.</para>
+    /// <para>Sample usage:</para>
+    /// <code>
+    /// // create binarization matrix
+    /// byte[,] matrix = new byte[4, 4]
+    /// {
+    ///     {  95, 233, 127, 255 },
+    ///     { 159,  31, 191,  63 },
+    ///     { 111, 239,  79, 207 },
+    ///     { 175,  47, 143,  15 }
+    /// };
+    /// // create filter
+    /// OrderedDithering filter = new OrderedDithering( matrix );
+    /// // apply the filter
+    /// filter.ApplyInPlace( image );
+    /// </code>
+    /// <para><b>Initial image:</b></para>
+    /// <img src="grayscale.jpg" width="480" height="361" />
+    /// <para><b>Result image:</b></para>
+    /// <img src="ordered_dithering.jpg" width="480" height="361" />
+    /// </remarks>
+    /// 
     public class OrderedDithering : FilterGrayToGrayPartial
     {
         private int rows = 4;

@@ -27,6 +27,12 @@
         <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\fourier.jpg" destPath="" />
         <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\sample3.jpg" destPath="" />
         <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\frequency_filter.jpg" destPath="" />
+        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\grayscale.jpg" destPath="" />
+        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\threshold.jpg" destPath="" />
+        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\threshold_carry.jpg" destPath="" />
+        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\ordered_dithering.jpg" destPath="" />
+        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\bayer_dithering.jpg" destPath="" />
+        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\floyd_steinberg.jpg" destPath="" />
     </additionalContent>
     <contentPlacement>AboveNamespaces</contentPlacement>
     <dependencies>

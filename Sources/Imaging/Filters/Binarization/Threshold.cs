@@ -15,7 +15,21 @@ namespace AForge.Imaging.Filters
     /// Threshold binarization.
     /// </summary>
     /// 
-    /// <remarks></remarks>
+    /// <remarks><para>The filter does image binarization using specified threshold value. All pixels
+    /// with intensities equal or higher than threshold value are converted to white pixels. All other
+    /// pixels with intensities below threshold value are converted to black pixels.</para>
+    /// <para>Sample usage:</para>
+    /// <code>
+    /// // create filter
+    /// Threshold filter = new Threshold( 100 );
+    /// // apply the filter
+    /// filter.ApplyInPlace( image );
+    /// </code>
+    /// <para><b>Initial image:</b></para>
+    /// <img src="grayscale.jpg" width="480" height="361" />
+    /// <para><b>Result image:</b></para>
+    /// <img src="threshold.jpg" width="480" height="361" />
+    /// </remarks>
     /// 
     public class Threshold : FilterGrayToGrayPartial
     {
