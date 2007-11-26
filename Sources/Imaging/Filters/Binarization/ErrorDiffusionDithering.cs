@@ -15,10 +15,33 @@ namespace AForge.Imaging.Filters
     /// Base class for error diffusion dithering.
     /// </summary>
     /// 
-    /// <remarks>The class is the base class for binarization algorithms based on error diffusion.</remarks>
+    /// <remarks><para>The class is the base class for binarization algorithms based on error diffusion.</para>
+    /// <para>Binarization with error diffusion in its idea is similar with binarization based on thresholding
+    /// of pixels' cumulative value (see <see cref="ThresholdWithCarry"/>). Each pixel is binarized based not only
+    /// on its own value, but on values of some surrounding pixels. During pixel's binarization, its <b>binarization
+    /// error</b> is distributed (diffused) to some neighbor pixels with some coefficients. This error diffusion
+    /// updates neighbor pixels changing their values, what affects their upcoming binarization. Error diffuses
+    /// only on unprocessed neighbor pixels, which are right and bottom pixels usually (in the case if image
+    /// processing happens from upper left corner to bottom right corner). <b>Binarization error</b> equals
+    /// to processing pixel value, if it is below threshold value, or pixel value minus 255 otherwise.</para>
+    /// </remarks>
     /// 
-    public abstract class ErrorDiffusionDithering : FilterGrayToGrayUsingCopyPartial
+    public abstract class ErrorDiffusionDithering : FilterGrayToGrayPartial
     {
+        private byte threshold = 128;
+
+        /// <summary>
+        /// Threshold value.
+        /// </summary>
+        /// 
+        /// <remarks>Default value is 128.</remarks>
+        /// 
+        public byte ThresholdValue
+        {
+            get { return threshold; }
+            set { threshold = value; }
+        }
+
         /// <summary>
         /// Current processing X coordinate.
         /// </summary>
@@ -80,11 +103,10 @@ namespace AForge.Imaging.Filters
         /// Process the filter on the specified image.
         /// </summary>
         ///
-        /// <param name="sourceData">Pointer to source image data (first scan line).</param>
-        /// <param name="destinationData">Destination image data.</param>
+        /// <param name="imageData">Image data.</param>
         /// <param name="rect">Image rectangle for processing by the filter.</param>
         /// 
-        protected override unsafe void ProcessFilter( IntPtr sourceData, BitmapData destinationData, Rectangle rect )
+        protected override unsafe void ProcessFilter( BitmapData imageData, Rectangle rect )
         {
             // processing start and stop X,Y positions
             startX  = rect.Left;
@@ -93,55 +115,44 @@ namespace AForge.Imaging.Filters
             stopY   = startY + rect.Height;
             stopXM1 = stopX - 1;
             stopYM1 = stopY - 1;
-            stride  = destinationData.Stride;
+            stride  = imageData.Stride;
 
             int offset = stride - rect.Width;
 
-            // allocate memory for source copy
-            IntPtr sourceCopy = Win32.LocalAlloc( Win32.MemoryFlags.Fixed, destinationData.Stride * destinationData.Height );
-
-            // copy source image
-            Win32.memcpy( sourceCopy, sourceData, destinationData.Stride * destinationData.Height );
-
+            // pixel value and error value
             int v, error;
 
             // do the job
-            byte* src = (byte*) sourceCopy.ToPointer( );
-            byte* dst = (byte*) destinationData.Scan0.ToPointer( );
+            byte* ptr = (byte*) imageData.Scan0.ToPointer( );
 
-            // allign pointers to the first pixel to process
-            src += ( startY * stride + startX );
-            dst += ( startY * stride + startX );
+            // allign pointer to the first pixel to process
+            ptr += ( startY * stride + startX );
 
             // for each line
             for ( y = startY; y < stopY; y++ )
             {
                 // for each pixels
-                for ( x = startX; x < stopX; x++, src++, dst++ )
+                for ( x = startX; x < stopX; x++, ptr++ )
                 {
-                    v = *src;
+                    v = *ptr;
 
                     // fill the next destination pixel
-                    if ( v < 128 )
+                    if ( v >= threshold )
                     {
-                        *dst = 0;
-                        error = v;
+                        *ptr = 255;
+                        error = v - 255;
                     }
                     else
                     {
-                        *dst = 255;
-                        error = v - 255;
+                        *ptr = 0;
+                        error = v;
                     }
 
                     // do error diffusion
-                    Diffuse( error, src );
+                    Diffuse( error, ptr );
                 }
-                src += offset;
-                dst += offset;
+                ptr += offset;
             }
-
-            // free memory for image copy
-            Win32.LocalFree( sourceCopy );
         }
     }
 }
