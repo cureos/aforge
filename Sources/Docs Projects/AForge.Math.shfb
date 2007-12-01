@@ -39,5 +39,5 @@
     <namingMethod>Guid</namingMethod>
     <syntaxFilters>CSharp</syntaxFilters>
     <missingTags>Summary, Parameter, Returns, AutoDocumentCtors</missingTags>
-    <visibleItems>InheritedMembers, Protected, SealedProtected</visibleItems>
+    <visibleItems>InheritedMembers, Protected</visibleItems>
 </project>
