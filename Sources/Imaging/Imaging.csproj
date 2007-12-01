@@ -175,6 +175,7 @@
     <Compile Include="Filters\Binarization\ErrorDiffusionDithering.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\Binarization\ErrorDiffusionToAdjacentNeighbors.cs" />
     <Compile Include="Filters\Binarization\FloydSteinbergDithering.cs">
       <SubType>Code</SubType>
     </Compile>

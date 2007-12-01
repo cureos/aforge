@@ -69,7 +69,7 @@ namespace AForge.Imaging.Filters
             int ed;	// error diffusion
 
             // calculate error diffusion
-            if ( x < stopXM1 - 1 )
+            if ( x < stopX - 2 )
             {
                 // right + 1 pixel
                 ed = ptr[2] + ( error * 32 ) / 200;
@@ -77,7 +77,7 @@ namespace AForge.Imaging.Filters
                 ptr[2] = (byte) ed;
             }
 
-            if ( y < stopYM1 )
+            if ( y < stopY - 1 )
             {
                 // bottom pixels
                 ptr += stride;
@@ -92,7 +92,7 @@ namespace AForge.Imaging.Filters
                 }
             }
 
-            if ( y < stopYM1 - 1 )
+            if ( y < stopY - 2 )
             {
                 // bottom + 1 pixels
                 ptr += stride;
@@ -107,7 +107,7 @@ namespace AForge.Imaging.Filters
                 }
             }
 
-            if ( y < stopYM1 - 2 )
+            if ( y < stopY - 3 )
             {
                 // bottom + 2 pixels
                 ptr += stride;

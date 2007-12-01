@@ -73,16 +73,6 @@ namespace AForge.Imaging.Filters
         protected int stopY;
 
         /// <summary>
-        /// Processing X stop position minus 1.
-        /// </summary>
-        protected int stopXM1;
-
-        /// <summary>
-        /// Processing Y stop position minus 1. 
-        /// </summary>
-        protected int stopYM1;
-
-        /// <summary>
         /// Processing image's stride (line size).
         /// </summary>
         protected int stride;
@@ -113,8 +103,6 @@ namespace AForge.Imaging.Filters
             startY  = rect.Top;
             stopX   = startX + rect.Width;
             stopY   = startY + rect.Height;
-            stopXM1 = stopX - 1;
-            stopYM1 = stopY - 1;
             stride  = imageData.Stride;
 
             int offset = stride - rect.Width;
