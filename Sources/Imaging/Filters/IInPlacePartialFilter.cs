@@ -20,7 +20,7 @@ namespace AForge.Imaging.Filters
     /// can be applied directly to the source image - only filter, which do not
     /// change image's dimension and pixel format, can be applied directly to the
     /// source image.</para>
-    /// <para>The interface also support partial image filtering, allowing to specify
+    /// <para>The interface also supports partial image filtering, allowing to specify
     /// image rectangle, which should be filtered.</para>
     /// </remarks>
     /// 

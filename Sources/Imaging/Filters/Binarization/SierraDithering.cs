@@ -14,22 +14,44 @@ namespace AForge.Imaging.Filters
     using System.Drawing.Imaging;
 
     /// <summary>
-    /// Dithering using Sierra error diffusion
+    /// Dithering using Sierra error diffusion.
     /// </summary>
     /// 
-    /// <remarks></remarks>
+    /// <remarks><para>The filter represents binarization filter, which is based on
+    /// error diffusion dithering with Sierra coefficients. Error is diffused
+    /// on 10 neighbor pixels with next coefficients:</para>
+    /// <code>
+    ///         | * | 5 | 3 |
+    /// | 2 | 4 | 5 | 4 | 2 |
+    ///     | 2 | 3 | 2 |
     /// 
-    public class SierraDithering : ErrorDiffusionDithering
+    /// / 32
+    /// </code>
+    /// 
+    /// <para>Sample usage:</para>
+    /// <code>
+    /// // create filter
+    /// SierraDithering filter = new SierraDithering( );
+    /// // apply the filter
+    /// filter.ApplyInPlace( image );
+    /// </code>
+    /// <para><b>Initial image:</b></para>
+    /// <img src="grayscale.jpg" width="480" height="361" />
+    /// <para><b>Result image:</b></para>
+    /// <img src="sierra.jpg" width="480" height="361" />
+    /// </remarks>
+    /// 
+    public sealed class SierraDithering : ErrorDiffusionDithering
     {
         private static int[] coef1 = new int[] { 2, 4, 5, 4, 2 };
         private static int[] coef2 = new int[] { 2, 3, 2 };
 
         /// <summary>
-        /// Do error diffusion
+        /// Do error diffusion.
         /// </summary>
         /// 
-        /// <param name="error">Current error value</param>
-        /// <param name="ptr">Pointer to current processing pixel</param>
+        /// <param name="error">Current error value.</param>
+        /// <param name="ptr">Pointer to current processing pixel.</param>
         /// 
         /// <remarks>All parameters of the image and current processing pixel's coordinates
         /// are initialized by base class.</remarks>

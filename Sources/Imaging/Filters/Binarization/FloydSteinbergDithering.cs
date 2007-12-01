@@ -18,8 +18,8 @@ namespace AForge.Imaging.Filters
     /// error diffusion dithering with Floyd-Steinberg coefficients. Error is diffused
     /// on 4 neighbor pixels with next coefficients:</para>
     /// <code>
-    ///      |  * |  7 |
-    /// |  3 |  5 |  1 |
+    ///     | * | 7 |
+    /// | 3 | 5 | 1 |
     /// 
     /// / 16
     /// </code>

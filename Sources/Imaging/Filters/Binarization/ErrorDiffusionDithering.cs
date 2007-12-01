@@ -21,8 +21,8 @@ namespace AForge.Imaging.Filters
     /// on its own value, but on values of some surrounding pixels. During pixel's binarization, its <b>binarization
     /// error</b> is distributed (diffused) to some neighbor pixels with some coefficients. This error diffusion
     /// updates neighbor pixels changing their values, what affects their upcoming binarization. Error diffuses
-    /// only on unprocessed neighbor pixels, which are right and bottom pixels usually (in the case if image
-    /// processing happens from upper left corner to bottom right corner). <b>Binarization error</b> equals
+    /// only on unprocessed yet neighbor pixels, which are right and bottom pixels usually (in the case if image
+    /// processing is done from upper left corner to bottom right corner). <b>Binarization error</b> equals
     /// to processing pixel value, if it is below threshold value, or pixel value minus 255 otherwise.</para>
     /// </remarks>
     /// 

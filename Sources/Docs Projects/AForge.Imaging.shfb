@@ -33,6 +33,11 @@
         <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\ordered_dithering.jpg" destPath="" />
         <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\bayer_dithering.jpg" destPath="" />
         <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\floyd_steinberg.jpg" destPath="" />
+        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\sierra.jpg" destPath="" />
+        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\stucki.jpg" destPath="" />
+        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\burkes.jpg" destPath="" />
+        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\jarvis_judice_ninke.jpg" destPath="" />
+        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\stevenson_arce.jpg" destPath="" />
     </additionalContent>
     <contentPlacement>AboveNamespaces</contentPlacement>
     <dependencies>

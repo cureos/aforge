@@ -14,22 +14,44 @@ namespace AForge.Imaging.Filters
     using System.Drawing.Imaging;
 
     /// <summary>
-    /// Dithering using Stucki error diffusion
+    /// Dithering using Stucki error diffusion.
     /// </summary>
     /// 
-    /// <remarks></remarks>
+    /// <remarks><para>The filter represents binarization filter, which is based on
+    /// error diffusion dithering with Stucki coefficients. Error is diffused
+    /// on 12 neighbor pixels with next coefficients:</para>
+    /// <code>
+    ///         | * | 8 | 4 |
+    /// | 2 | 4 | 8 | 4 | 2 |
+    /// | 1 | 2 | 4 | 2 | 1 |
     /// 
-    public class StuckiDithering : ErrorDiffusionDithering
+    /// / 42
+    /// </code>
+    /// 
+    /// <para>Sample usage:</para>
+    /// <code>
+    /// // create filter
+    /// StuckiDithering filter = new StuckiDithering( );
+    /// // apply the filter
+    /// filter.ApplyInPlace( image );
+    /// </code>
+    /// <para><b>Initial image:</b></para>
+    /// <img src="grayscale.jpg" width="480" height="361" />
+    /// <para><b>Result image:</b></para>
+    /// <img src="stucki.jpg" width="480" height="361" />
+    /// </remarks>
+    ///
+    public sealed class StuckiDithering : ErrorDiffusionDithering
     {
         private static int[] coef1 = new int[] { 2, 4, 8, 4, 2 };
         private static int[] coef2 = new int[] { 1, 2, 4, 2, 1 };
 
         /// <summary>
-        /// Do error diffusion
+        /// Do error diffusion.
         /// </summary>
         /// 
-        /// <param name="error">Current error value</param>
-        /// <param name="ptr">Pointer to current processing pixel</param>
+        /// <param name="error">Current error value.</param>
+        /// <param name="ptr">Pointer to current processing pixel.</param>
         /// 
         /// <remarks>All parameters of the image and current processing pixel's coordinates
         /// are initialized by base class.</remarks>
