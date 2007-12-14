@@ -422,7 +422,7 @@ namespace AForge.Imaging
         /// Get blobs.
         /// </summary>
         /// 
-        /// <param name="image">Source image.</param>
+        /// <param name="image">Source image (24 bpp color or 8 bpp indexed grayscale).</param>
         /// 
         /// <returns>Returns array of blobs.</returns>
         /// 
@@ -435,7 +435,9 @@ namespace AForge.Imaging
             // lock source bitmap data
             BitmapData imageData = image.LockBits(
                 new Rectangle( 0, 0, image.Width, image.Height ),
-                ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed );
+                ImageLockMode.ReadOnly,
+                ( image.PixelFormat == PixelFormat.Format8bppIndexed ) ?
+                    PixelFormat.Format8bppIndexed : PixelFormat.Format24bppRgb );
 
             // process image
             Blob[] blobs = GetObjects( imageData );
@@ -450,7 +452,7 @@ namespace AForge.Imaging
         /// Get blobs.
         /// </summary>
         /// 
-        /// <param name="imageData">Source image data.</param>
+        /// <param name="imageData">Source image data (24 bpp color or 8 bpp indexed grayscale).</param>
         /// 
         /// <returns>Returns array of blobs.</returns>
         /// 
@@ -462,16 +464,23 @@ namespace AForge.Imaging
         {
             // check if objects map was collected
             if ( objectLabels == null )
-                throw new ApplicationException( "Image should be processed before to collec objects map" );
+                throw new ApplicationException( "Image should be processed before to collect objects map" );
+
+            if (
+                ( imageData.PixelFormat != PixelFormat.Format24bppRgb ) &&
+                ( imageData.PixelFormat != PixelFormat.Format8bppIndexed )
+                )
+                throw new ArgumentException( "The method can be applied to graysclae (8bpp indexed) or color (24bpp) image only" );
 
             // collect rectangles, if they are not collected yet
             if ( blobsRectangles == null )
                 CollectObjectsRectangles( );
 
             // image size
-            int width = imageData.Width;
+            int width  = imageData.Width;
             int height = imageData.Height;
             int srcStride = imageData.Stride;
+            int pixelSize = ( imageData.PixelFormat == PixelFormat.Format8bppIndexed ) ? 1 : 3;
 
             Blob[] objects = new Blob[objectsCount];
 
@@ -489,32 +498,43 @@ namespace AForge.Imaging
                 int label = k + 1;
 
                 // create new image
-                Bitmap dstImg = AForge.Imaging.Image.CreateGrayscaleImage( objectWidth, objectHeight );
+                Bitmap dstImg = ( imageData.PixelFormat == PixelFormat.Format8bppIndexed ) ?
+                    AForge.Imaging.Image.CreateGrayscaleImage( objectWidth, objectHeight ) :
+                    new Bitmap( objectWidth, objectHeight, PixelFormat.Format24bppRgb );
 
                 // lock destination bitmap data
                 BitmapData dstData = dstImg.LockBits(
                     new Rectangle( 0, 0, objectWidth, objectHeight ),
-                    ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed );
+                    ImageLockMode.ReadOnly, imageData.PixelFormat );
 
                 // copy image
                 unsafe
                 {
-                    byte* src = (byte*) imageData.Scan0.ToPointer( ) + ymin * srcStride + xmin;
+                    byte* src = (byte*) imageData.Scan0.ToPointer( ) + ymin * srcStride + xmin * pixelSize;
                     byte* dst = (byte*) dstData.Scan0.ToPointer( );
                     int p = ymin * width + xmin;
 
-                    int srcOffset = srcStride - objectWidth;
-                    int dstOffset = dstData.Stride - objectWidth;
+                    int srcOffset = srcStride - objectWidth * pixelSize;
+                    int dstOffset = dstData.Stride - objectWidth * pixelSize;
                     int labelsOffset = width - objectWidth;
 
                     // for each line
                     for ( int y = ymin; y <= ymax; y++ )
                     {
                         // copy each pixel
-                        for ( int x = xmin; x <= xmax; x++, src++, dst++, p++ )
+                        for ( int x = xmin; x <= xmax; x++, p++, dst += pixelSize, src += pixelSize )
                         {
                             if ( objectLabels[p] == label )
+                            {
+                                // copy pixel
                                 *dst = *src;
+
+                                if ( pixelSize > 1 )
+                                {
+                                    dst[1] = src[1];
+                                    dst[2] = src[2];
+                                }
+                            }
                         }
                         src += srcOffset;
                         dst += dstOffset;
