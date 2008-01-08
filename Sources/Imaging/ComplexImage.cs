@@ -15,7 +15,7 @@ namespace AForge.Imaging
     using AForge.Imaging.ComplexFilters;
 
     /// <summary>
-    /// Complex imageþ
+    /// Complex image.
     /// </summary>
     /// 
     /// <remarks><para>The class is used to keep image represented in complex numbers sutable for Fourier
@@ -92,8 +92,8 @@ namespace AForge.Imaging
         /// <param name="height">Image height.</param>
         /// 
         /// <remarks>The constractor is protected, what makes it imposible to instantiate this
-        /// class directly. To create an instance of this class <see cref="FromBitmap"/> method
-        /// should be used.</remarks>
+        /// class directly. To create an instance of this class <see cref="FromBitmap(Bitmap)"/> or
+        /// <see cref="FromBitmap(BitmapData)"/> method should be used.</remarks>
         ///
         protected ComplexImage( int width, int height )
         {
@@ -133,21 +133,55 @@ namespace AForge.Imaging
         /// Create complex image from grayscale bitmap.
         /// </summary>
         /// 
-        /// <param name="srcImage">Source grayscale bitmap.</param>
+        /// <param name="image">Source grayscale bitmap (8 bpp indexed).</param>
         /// 
         /// <returns>Returns an instance of complex image.</returns>
         /// 
-        public static ComplexImage FromBitmap( Bitmap srcImage )
+        /// <exception cref="ArgumentException">The source image has incorrect pixel format.</exception>
+        /// 
+        public static ComplexImage FromBitmap( Bitmap image )
         {
-            // get source image size
-            int width   = srcImage.Width;
-            int height  = srcImage.Height;
-
             // check image format
-            if ( srcImage.PixelFormat != PixelFormat.Format8bppIndexed )
+            if ( image.PixelFormat != PixelFormat.Format8bppIndexed )
             {
                 throw new ArgumentException( "Source image can be graysclae (8bpp indexed) image only" );
             }
+
+            // lock source bitmap data
+            BitmapData imageData = image.LockBits(
+                new Rectangle( 0, 0, image.Width, image.Height ),
+                ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed );
+
+            ComplexImage complexImage = FromBitmap( imageData );
+
+            // unlock source images
+            image.UnlockBits( imageData );
+
+            return complexImage;
+        }
+
+        /// <summary>
+        /// Create complex image from grayscale bitmap.
+        /// </summary>
+        /// 
+        /// <param name="imageData">Source image data (8 bpp indexed).</param>
+        /// 
+        /// <returns>Returns an instance of complex image.</returns>
+        /// 
+        /// <exception cref="ArgumentException">The source image has incorrect pixel format.</exception>
+        /// 
+        public static ComplexImage FromBitmap( BitmapData imageData )
+        {
+            // check image format
+            if ( imageData.PixelFormat != PixelFormat.Format8bppIndexed )
+            {
+                throw new ArgumentException( "Source image can be graysclae (8bpp indexed) image only" );
+            }
+
+            // get source image size
+            int width  = imageData.Width;
+            int height = imageData.Height;
+            int offset = imageData.Stride - width;
 
             // check image size
             if ( ( !Tools.IsPowerOf2( width ) ) || ( !Tools.IsPowerOf2( height ) ) )
@@ -156,20 +190,13 @@ namespace AForge.Imaging
             }
 
             // create new complex image
-            ComplexImage dstImage = new ComplexImage( width, height );
-            Complex[,] data = dstImage.data;
-
-            // lock source bitmap data
-            BitmapData srcData = srcImage.LockBits(
-                new Rectangle( 0, 0, width, height ),
-                ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed );
-
-            int offset = srcData.Stride - width;
+            ComplexImage complexImage = new ComplexImage( width, height );
+            Complex[,] data = complexImage.data;
 
             // do the job
             unsafe
             {
-                byte* src = (byte*) srcData.Scan0.ToPointer( );
+                byte* src = (byte*) imageData.Scan0.ToPointer( );
 
                 // for each line
                 for ( int y = 0; y < height; y++ )
@@ -182,10 +209,8 @@ namespace AForge.Imaging
                     src += offset;
                 }
             }
-            // unlock source images
-            srcImage.UnlockBits( srcData );
 
-            return dstImage;
+            return complexImage;
         }
 
         /// <summary>
@@ -278,10 +303,10 @@ namespace AForge.Imaging
         }
 
         /// <summary>
-        /// Performs frequency filter
+        /// Performs frequency filter.
         /// </summary>
         /// 
-        /// <param name="range">Frequency range to keep</param>
+        /// <param name="range">Frequency range to keep.</param>
         /// 
         /// <remarks>Frequency filter zeros all values which frequencies are
         /// outside of the spefied range.</remarks>
