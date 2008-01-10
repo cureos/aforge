@@ -31,7 +31,7 @@ namespace AForge.Imaging.Filters
     /// and create the binary image with the new threshold.</item>item>
     /// </list>
     /// </para>
-    /// <para>See also: Digital Image Processing, Gonzalez/Woods. Ch.10 page:599.</para>
+    /// <para>See also: <b>Digital Image Processing, Gonzalez/Woods. Ch.10 page:599</b>.</para>
     /// <para>Sample usage:</para>
     /// <code>
     /// // create filter
@@ -96,72 +96,66 @@ namespace AForge.Imaging.Filters
         /// 
         protected override unsafe void ProcessFilter( BitmapData imageData, Rectangle rect )
         {
-            int startX  = rect.Left;
+            // get start and stop X-Y coordinates
+            int startX = rect.Left;
             int startY  = rect.Top;
             int stopX   = startX + rect.Width;
             int stopY   = startY + rect.Height;
             int offset  = imageData.Stride - rect.Width;
 
-            // amount of object pixels and their summary value
-            int objectValue = 0;
-            int objectPixels = 0;
+            // histogram array
+            int[] integerHistogram = new int[256];
 
-            // amount of background pixels and their summary value
-            int backgroundValue = 0;
-            int backgroundPixels = 0;
+            // collect histogram first
+            byte* ptr = (byte*) imageData.Scan0.ToPointer( );
 
-            // new threshold value
-            byte newThreshold = 0;
+            // allign pointer to the first pixel to process
+            ptr += ( startY * imageData.Stride + startX );
 
-            bool firstPass = true;
+            // for each line	
+            for ( int y = startY; y < stopY; y++ )
+            {
+                // for each pixel
+                for ( int x = startX; x < stopX; x++, ptr++ )
+                {
+                    integerHistogram[*ptr]++;
+                }
+                ptr += offset;
+            }
+
+            // old threshold value
+            byte oldThreshold = 0;
 
             do
             {
-                objectValue = 0;
-                objectPixels = 0;
-                backgroundValue = 0;
-                backgroundPixels = 0;
+                oldThreshold = threshold;
 
-                // do the job
-                byte* ptr = (byte*)imageData.Scan0.ToPointer( );
+                // object's mean and amount of object's pixels
+                double meanObject = 0;
+                int objectPixels = 0;
 
-                // allign pointer to the first pixel to process
-                ptr += ( startY * imageData.Stride + startX );
+                // background's mean and amount of background's pixels
+                double meanBackground = 0;
+                int backgroundPixels = 0;
 
-                if ( !firstPass )
-                    threshold = newThreshold;
-
-                firstPass = false;
-
-                // for each line	
-                for ( int y = startY; y < stopY; y++ )
+                for ( int t = 0; t < threshold; t++ )
                 {
-                    // for each pixel
-                    for ( int x = startX; x < stopX; x++, ptr++ )
-                    {
-                        if ( *ptr >= threshold )
-                        {
-                            objectValue += *ptr;
-                            objectPixels++;
-                        }
-                        else
-                        {
-                            backgroundValue += *ptr;
-                            backgroundPixels++;
-                        }
-                    }
-                    ptr += offset;
+                    meanBackground += (double) t * integerHistogram[t];
+                    backgroundPixels += integerHistogram[t];
                 }
+                // calculate object pixels
+                for ( int t = threshold; t < 256; t++ )
+                {
+                    meanObject += (double) t * integerHistogram[t];
+                    objectPixels += integerHistogram[t];
+                }
+                meanBackground /= backgroundPixels;
+                meanObject /= objectPixels;
 
-                // mean object and background values
-				double meanObject = ( objectPixels == 0 ) ? 0 : (double) objectValue / objectPixels;
-				double meanBackground = ( backgroundPixels == 0 ) ? 0 : (double) backgroundValue / backgroundPixels;
 				// calculate new threshold value
-                newThreshold = (byte) ( ( meanBackground + meanObject ) / 2 );
+                threshold = (byte) ( ( meanBackground + meanObject ) / 2 );
             }
-            while ( Math.Abs( threshold - newThreshold ) > minError );
-
-            threshold = newThreshold;
+            while ( Math.Abs( oldThreshold - threshold ) > minError );
 
             // process image data using base filter
             base.ProcessFilter( imageData, rect );
