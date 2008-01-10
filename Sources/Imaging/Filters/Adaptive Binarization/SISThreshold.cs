@@ -28,7 +28,7 @@ namespace AForge.Imaging.Filters
         /// <remarks>The property is read only and represents the value, which
         /// was automaticaly calculated using image statistics.</remarks>
         /// 
-        public byte Threshold
+        public byte ThresholdValue
         {
             get { return threshold; }
         }
