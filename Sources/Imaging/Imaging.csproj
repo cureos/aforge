@@ -130,6 +130,7 @@
     <Compile Include="Filters\2 Source filters\Subtract.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\Adaptive Binarization\OtsuThreshold.cs" />
     <Compile Include="Filters\Adaptive Binarization\SISThreshold.cs">
       <SubType>Code</SubType>
     </Compile>
