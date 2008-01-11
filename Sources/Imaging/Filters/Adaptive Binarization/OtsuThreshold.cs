@@ -1,10 +1,7 @@
 // AForge Image Processing Library
 // AForge.NET framework
 //
-// Copyright © Markus Falkensteiner, 2007
-// mfalkensteiner@gmx.at
-//
-// Andrew Kirillov
+// Copyright © Andrew Kirillov, 2005-2008
 // andrew.kirillov@gmail.com
 //
 
