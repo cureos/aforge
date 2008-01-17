@@ -131,7 +131,7 @@ namespace AForge.Video.DirectShow.Internals
     /// 
     [ComVisible( false ),
     StructLayout( LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Unicode )]
-    internal class PinInfo
+    internal struct PinInfo
     {
         /// <summary>
         /// Owning filter.
@@ -148,6 +148,23 @@ namespace AForge.Video.DirectShow.Internals
         /// </summary>
         [MarshalAs( UnmanagedType.ByValTStr, SizeConst = 128 )]
         public string Name;
+    }
+
+    // FILTER_INFO
+    [ComVisible( false ),
+    StructLayout( LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Unicode )]
+    internal struct FilterInfo
+    {
+        /// <summary>
+        /// Filter's name.
+        /// </summary>
+        [MarshalAs( UnmanagedType.ByValTStr, SizeConst = 128 )]
+        public string Name;
+
+        /// <summary>
+        /// Owning graph.
+        /// </summary>
+        public IFilterGraph FilterGraph;
     }
 
     // VIDEOINFOHEADE

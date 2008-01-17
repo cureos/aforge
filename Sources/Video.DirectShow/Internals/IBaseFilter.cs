@@ -127,12 +127,12 @@ namespace AForge.Video.DirectShow.Internals
         /// Notifies the filter that it has joined or left the filter graph.
         /// </summary>
         /// 
-        /// <param name="filterInfo">Pointer to <b>FilterInfo</b> structure</param>
+        /// <param name="filterInfo">Pointer to <b>FilterInfo</b> structure.</param>
         /// 
         /// <returns>Return's <b>HRESULT</b> error code.</returns>
         /// 
         [PreserveSig]
-        int QueryFilterInfo( [Out] FilterInfo filterInfo );
+        int QueryFilterInfo( [Out] out FilterInfo filterInfo );
 
         /// <summary>
         /// Retrieves information about the filter.

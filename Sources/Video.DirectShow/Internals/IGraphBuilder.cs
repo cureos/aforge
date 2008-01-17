@@ -53,7 +53,7 @@ namespace AForge.Video.DirectShow.Internals
         /// <returns>Return's <b>HRESULT</b> error code.</returns>
         /// 
         [PreserveSig]
-        int EnumFilters( [Out] out IntPtr enumerator );
+        int EnumFilters( [Out] out IEnumFilters enumerator );
 
         /// <summary>
         /// Finds a filter that was added with a specified name.
@@ -155,7 +155,7 @@ namespace AForge.Video.DirectShow.Internals
         /// </summary>
         /// 
         /// <param name="fileName">Specifies the name of the file to load.</param>
-        /// <param name="filterName">[in] Specifies a name for the source filter.</param>
+        /// <param name="filterName">Specifies a name for the source filter.</param>
         /// <param name="filter">Variable that receives the interface of the source filter.</param>
         /// 
         /// <returns>Return's <b>HRESULT</b> error code.</returns>

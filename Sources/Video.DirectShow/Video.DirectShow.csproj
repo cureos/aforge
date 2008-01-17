@@ -45,6 +45,7 @@
     <Compile Include="FileVideoSource.cs" />
     <Compile Include="Internals\IBaseFilter.cs" />
     <Compile Include="Internals\ICreateDevEnum.cs" />
+    <Compile Include="Internals\IEnumFilters.cs" />
     <Compile Include="Internals\IEnumPins.cs" />
     <Compile Include="Internals\IFileSourceFilter.cs" />
     <Compile Include="Internals\IFilterGraph.cs" />

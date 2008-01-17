@@ -86,7 +86,7 @@ namespace AForge.Video.DirectShow.Internals
         /// <returns>Return's <b>HRESULT</b> error code.</returns>
         /// 
         [PreserveSig]
-        int QueryPinInfo( [Out, MarshalAs( UnmanagedType.LPStruct )] PinInfo pinInfo );
+        int QueryPinInfo( [Out] out PinInfo pinInfo );
 
         /// <summary>
         /// Retrieves the direction for this pin.
