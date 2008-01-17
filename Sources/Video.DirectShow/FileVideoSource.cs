@@ -54,6 +54,8 @@ namespace AForge.Video.DirectShow
         private int framesReceived;
         // recieved byte count
         private int bytesReceived;
+        // prevent freezing
+        private bool preventFreezing = false;
 
         private Thread thread = null;
         private ManualResetEvent stopEvent = null;
@@ -156,6 +158,31 @@ namespace AForge.Video.DirectShow
                 }
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Prevent video freezing after screen saver and workstation lock or not.
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// <para>The value specifies if the class should prevent video freezing during and
+        /// after screen saver or workstation lock. To prevent freezing the <i>DirectShow</i> graph
+        /// should not contain  <i>Renderer</i> filter, which is added by <i>Render()</i> method
+        /// of graph. However, in some cases it may be required to call <i>Render()</i> method of graph, since
+        /// it may add some more filters, which may be required for playing video. So, the property is
+        /// a trade off - it is possible to prevent video freezing skipping adding renderer filter or
+        /// it is possible to keep renderer filter, but video may freeze during screen saver.</para>
+        /// <para>Default value of this property is set to <b>false</b> for file video source.</para>
+        /// <para><note>The property may become obsolete in the future if approach to disable freezing
+        /// and adding all required filters is found.</note></para>
+        /// <para><note>The property should be set before calling <see cref="Start"/> method
+        /// of the class.</note></para>
+        /// </remarks>
+        /// 
+        public bool PreventFreezing
+        {
+            get { return preventFreezing; }
+            set { preventFreezing = value; }
         }
 
         /// <summary>
@@ -345,18 +372,22 @@ namespace AForge.Video.DirectShow
                     mediaType.Dispose( );
                 }
 
-                // render pin
-                // graph.Render( Tools.GetOutPin( grabberBase, 0 ) );
+                // let's do rendering, if we don't need to prevent freezing
+                if ( !preventFreezing )
+                {
+                    // render pin
+                    graph.Render( Tools.GetOutPin( grabberBase, 0 ) );
+
+                    // configure video window
+                    IVideoWindow window = (IVideoWindow) graphObject;
+                    window.put_AutoShow( false );
+                    window = null;
+                }
 
                 // configure sample grabber
                 sampleGrabber.SetBufferSamples( false );
                 sampleGrabber.SetOneShot( false );
                 sampleGrabber.SetCallback( grabber, 1 );
-
-                // configure video window
-                // IVideoWindow window = (IVideoWindow) graphObject;
-                // window.put_AutoShow( false );
-                // window = null;
 
                 // get media control
                 mediaControl = (IMediaControl) graphObject;
