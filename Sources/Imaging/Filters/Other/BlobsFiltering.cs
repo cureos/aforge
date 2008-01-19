@@ -126,6 +126,7 @@ namespace AForge.Imaging.Filters
         /// 
         public BlobsFiltering( int minWidth, int minHeight, int maxWidth, int maxHeight, bool coupledSizeFiltering )
         {
+            blobCounter.FilterBlobs = true;
             blobCounter.MinWidth  = minWidth;
             blobCounter.MinHeight = minHeight;
             blobCounter.MaxWidth  = maxWidth;
