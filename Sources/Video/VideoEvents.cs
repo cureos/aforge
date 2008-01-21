@@ -10,7 +10,7 @@ namespace AForge.Video
     using System;
 
     /// <summary>
-    /// Delegate for new event handler.
+    /// Delegate for new frame event handler.
     /// </summary>
     /// 
     /// <param name="sender">Sender object.</param>

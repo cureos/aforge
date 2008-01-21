@@ -7,14 +7,14 @@
 namespace AForge.Video.VFW
 {
     using System;
-	using System.Drawing;
-	using System.Drawing.Imaging;
-	using System.Runtime.InteropServices;
+    using System.Drawing;
+    using System.Drawing.Imaging;
+    using System.Runtime.InteropServices;
     using AForge;
 
-	/// <summary>
-	/// AVI files reading using Video for Windows.
-	/// </summary>
+    /// <summary>
+    /// AVI files reading using Video for Windows.
+    /// </summary>
     /// 
     /// <remarks><para>The class allows to read AVI files using Video for Windows API.</para>
     /// <para>Sample usage:</para>
@@ -34,47 +34,47 @@ namespace AForge.Video.VFW
     /// </code>
     /// </remarks>
     /// 
-	public class AVIReader : IDisposable
-	{
+    public class AVIReader : IDisposable
+    {
         // AVI file
-		private IntPtr file;
+        private IntPtr file;
         // video stream
-		private IntPtr stream;
+        private IntPtr stream;
         // get frame object
-		private IntPtr getFrame;
+        private IntPtr getFrame;
 
         // width of video frames
-		private int width;
+        private int width;
         // height of vide frames
-		private int height;
+        private int height;
         // current position in video stream
-		private int position;
+        private int position;
         // starting position in video stream
-		private int start;
+        private int start;
         // length of video stream
-		private int length;
+        private int length;
         // frame rate
-		private float rate;
+        private float rate;
         // codec used for video compression
-		private string codec;
+        private string codec;
 
         /// <summary>
         /// Width of video frames.
         /// </summary>
         /// 
-		public int Width
-		{
-			get { return width; }
-		}
+        public int Width
+        {
+            get { return width; }
+        }
 
         /// <summary>
         /// Height of video frames.
         /// </summary>
         /// 
-		public int Height
-		{
-			get { return height; }
-		}
+        public int Height
+        {
+            get { return height; }
+        }
 
         /// <summary>
         /// Current position in video stream.
@@ -82,11 +82,11 @@ namespace AForge.Video.VFW
         /// 
         /// <remarks>Setting position outside of video range, will lead to reseting position to the start.</remarks>
         /// 
-		public int Position
-		{
-			get { return position; }
-			set { position = ( ( value < start ) || ( value >= start + length ) ) ? start : value; }
-		}
+        public int Position
+        {
+            get { return position; }
+            set { position = ( ( value < start ) || ( value >= start + length ) ) ? start : value; }
+        }
 
         /// <summary>
         /// Starting position of video stream.
@@ -119,10 +119,10 @@ namespace AForge.Video.VFW
         /// Codec used for video compression.
         /// </summary>
         /// 
-		public string Codec
-		{
-			get { return codec; }
-		}
+        public string Codec
+        {
+            get { return codec; }
+        }
 
 
         /// <summary>
@@ -131,19 +131,19 @@ namespace AForge.Video.VFW
         /// 
         /// <remarks>Initializes Video for Windows library.</remarks>
         /// 
-		public AVIReader( )
-		{
-			Win32.AVIFileInit( );
-		}
+        public AVIReader( )
+        {
+            Win32.AVIFileInit( );
+        }
 
         /// <summary>
         /// Destroys the instance of the <see cref="AVIReader"/> class.
         /// </summary>
         /// 
-		~AVIReader( )
-		{
-			Dispose( false );
-		}
+        ~AVIReader( )
+        {
+            Dispose( false );
+        }
 
         /// <summary>
         /// Dispose the object.
@@ -152,29 +152,29 @@ namespace AForge.Video.VFW
         /// <remarks>Frees unmanaged resources used by the object. The object becomes unusable
         /// after that.</remarks>
         /// 
-		public void Dispose( )
-		{
-			Dispose( true );
-			// remove me from the Finalization queue 
-			GC.SuppressFinalize( this );
-		}
+        public void Dispose( )
+        {
+            Dispose( true );
+            // remove me from the Finalization queue 
+            GC.SuppressFinalize( this );
+        }
 
         /// <summary>
-        /// Dispose the object
+        /// Dispose the object.
         /// </summary>
         /// 
         /// <param name="disposing">Indicates if disposing was initiated manually.</param>
         /// 
-		protected virtual void Dispose( bool disposing )
-		{
-			if ( disposing )
-			{
-				// dispose managed resources
-			}
+        protected virtual void Dispose( bool disposing )
+        {
+            if ( disposing )
+            {
+                // dispose managed resources
+            }
             // close current AVI file if any opened and uninitialize AVI library
-			Close( );
-			Win32.AVIFileExit( );
-		}
+            Close( );
+            Win32.AVIFileExit( );
+        }
 
         /// <summary>
         /// Open AVI file.
@@ -185,10 +185,10 @@ namespace AForge.Video.VFW
         /// <remarks>This method throws <see cref="System.ApplicationException"/> in the case
         /// of failure.</remarks>
         /// 
-		public void Open( string fileName )
-		{
-			// close previous file
-			Close( );
+        public void Open( string fileName )
+        {
+            // close previous file
+            Close( );
 
             lock ( this )
             {
@@ -204,22 +204,22 @@ namespace AForge.Video.VFW
                 Win32.AVISTREAMINFO info = new Win32.AVISTREAMINFO( );
                 Win32.AVIStreamInfo( stream, ref info, Marshal.SizeOf( info ) );
 
-                width = info.rectFrame.right;
-                height = info.rectFrame.bottom;
+                width    = info.rectFrame.right;
+                height   = info.rectFrame.bottom;
                 position = info.start;
-                start = info.start;
-                length = info.length;
-                rate = (float) info.rate / (float) info.scale;
-                codec = Win32.decode_mmioFOURCC( info.handler );
+                start    = info.start;
+                length   = info.length;
+                rate     = (float) info.rate / (float) info.scale;
+                codec    = Win32.decode_mmioFOURCC( info.handler );
 
                 // prepare decompressor
                 Win32.BITMAPINFOHEADER bitmapInfoHeader = new Win32.BITMAPINFOHEADER( );
 
-                bitmapInfoHeader.size = Marshal.SizeOf( bitmapInfoHeader.GetType( ) );
-                bitmapInfoHeader.width = width;
-                bitmapInfoHeader.height = height;
-                bitmapInfoHeader.planes = 1;
-                bitmapInfoHeader.bitCount = 24;
+                bitmapInfoHeader.size        = Marshal.SizeOf( bitmapInfoHeader.GetType( ) );
+                bitmapInfoHeader.width       = width;
+                bitmapInfoHeader.height      = height;
+                bitmapInfoHeader.planes      = 1;
+                bitmapInfoHeader.bitCount    = 24;
                 bitmapInfoHeader.compression = 0; // BI_RGB
 
                 // get frame object
@@ -231,14 +231,14 @@ namespace AForge.Video.VFW
                         throw new ApplicationException( "Failed initializing decompressor" );
                 }
             }
-		}
+        }
 
         /// <summary>
         /// Close video file
         /// </summary>
         /// 
-		public void Close( )
-		{
+        public void Close( )
+        {
             lock ( this )
             {
                 // release get frame object
@@ -262,7 +262,7 @@ namespace AForge.Video.VFW
                     file = IntPtr.Zero;
                 }
             }
-		}
+        }
 
         /// <summary>
         /// Get next frame of opened video stream.
@@ -274,7 +274,7 @@ namespace AForge.Video.VFW
         /// of failure.</remarks>
         /// 
         public Bitmap GetNextFrame( )
-		{
+        {
             lock ( this )
             {
                 // get frame at specified position
@@ -332,6 +332,6 @@ namespace AForge.Video.VFW
 
                 return image;
             }
-		}
-	}
+        }
+    }
 }

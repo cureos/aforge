@@ -15,7 +15,7 @@ namespace AForge.Controls
 	using AForge;
 
 	/// <summary>
-	/// Chart control
+	/// Chart control.
 	/// </summary>
 	/// 
 	/// <remarks>The chart control allows to display multiple charts at time
@@ -24,20 +24,20 @@ namespace AForge.Controls
 	public class Chart : System.Windows.Forms.Control
 	{
 		/// <summary>
-		/// Chart series type enumeration
+		/// Chart series type enumeration.
 		/// </summary>
 		public enum SeriesType
 		{
 			/// <summary>
-			/// Line style
+			/// Line style.
 			/// </summary>
 			Line,
 			/// <summary>
-			/// Dots style
+			/// Dots style.
 			/// </summary>
 			Dots,
 			/// <summary>
-			/// Connected dots style
+			/// Connected dots style.
 			/// </summary>
 			ConnectedDots
 		}
@@ -62,10 +62,10 @@ namespace AForge.Controls
 		private DoubleRange	rangeY = new DoubleRange( 0, 1 );
 
 		/// <summary>
-		/// Chart's X range
+		/// Chart's X range.
 		/// </summary>
 		/// 
-		/// <remarks>The value sets the X's range of data to be displayed on the chart</remarks>
+		/// <remarks>The value sets the X's range of data to be displayed on the chart.</remarks>
 		/// 
 		public DoubleRange RangeX
 		{
@@ -78,10 +78,10 @@ namespace AForge.Controls
 		}
 
 		/// <summary>
-		/// Chart's Y range
+		/// Chart's Y range.
 		/// </summary>
 		/// 
-		/// <remarks>The value sets the Y's range of data to be displayed on the chart</remarks>
+		/// <remarks>The value sets the Y's range of data to be displayed on the chart.</remarks>
 		///
 		public DoubleRange RangeY
 		{
@@ -99,8 +99,9 @@ namespace AForge.Controls
 		private System.ComponentModel.Container components = null;
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Chart"/> class
+		/// Initializes a new instance of the <see cref="Chart"/> class.
 		/// </summary>
+        /// 
 		public Chart( )
 		{
 			// This call is required by the Windows.Forms Form Designer.
@@ -112,7 +113,7 @@ namespace AForge.Controls
 		}
 
 		/// <summary>
-		/// Clean up any resources being used.
+        /// Dispose the object.
 		/// </summary>
 		protected override void Dispose( bool disposing )
 		{
@@ -140,10 +141,10 @@ namespace AForge.Controls
 		#endregion
 
 		/// <summary>
-		/// Paint the control with all available data series
+		/// Paint the control.
 		/// </summary>
 		/// 
-		/// <param name="pe">Data for Paint event</param>
+		/// <param name="pe">Data for Paint event.</param>
 		/// 
 		protected override void OnPaint( PaintEventArgs pe )
 		{
@@ -265,13 +266,13 @@ namespace AForge.Controls
 		}
 
 		/// <summary>
-		/// Add data series to the chart
+		/// Add data series to the chart.
 		/// </summary>
 		/// 
-		/// <param name="name">Data series name</param>
-		/// <param name="color">Data series color</param>
-		/// <param name="type">Data series type</param>
-		/// <param name="width">Width (depends on the data series type, see remarks)</param>
+		/// <param name="name">Data series name.</param>
+		/// <param name="color">Data series color.</param>
+		/// <param name="type">Data series type.</param>
+		/// <param name="width">Width (depends on the data series type, see remarks).</param>
 		/// 
 		/// <remarks>Adds new empty data series to the collection of data series. To update this
 		/// series the <see cref="UpdateDataSeries"/> method should be used.<br /><br />
@@ -289,14 +290,14 @@ namespace AForge.Controls
 		}
 
 		/// <summary>
-		/// Add data series to the chart
+		/// Add data series to the chart.
 		/// </summary>
 		/// 
-		/// <param name="name">Data series name</param>
-		/// <param name="color">Data series color</param>
-		/// <param name="type">Data series type</param>
-		/// <param name="width">Width (depends on the data series type, see remarks)</param>
-		/// <param name="updateYRange">Specifies if <see cref="RangeY"/> should be updated</param>
+		/// <param name="name">Data series name.</param>
+		/// <param name="color">Data series color.</param>
+		/// <param name="type">Data series type.</param>
+		/// <param name="width">Width (depends on the data series type, see remarks).</param>
+		/// <param name="updateYRange">Specifies if <see cref="RangeY"/> should be updated.</param>
 		/// 
 		/// <remarks>Adds new empty data series to the collection of data series. The <b>updateYRange</b>
 		/// parameter specifies if the data series can affect displayable Y range.</remarks>
@@ -315,11 +316,11 @@ namespace AForge.Controls
 		}
 
 		/// <summary>
-		/// Update data series on the chart
+		/// Update data series on the chart.
 		/// </summary>
 		/// 
-		/// <param name="name">Data series name to update</param>
-		/// <param name="data">Data series values</param>
+		/// <param name="name">Data series name to update.</param>
+		/// <param name="data">Data series values.</param>
 		/// 
 		public void UpdateDataSeries( string name, double[,] data )
 		{
@@ -336,10 +337,10 @@ namespace AForge.Controls
 		}
 
 		/// <summary>
-		/// Remove data series from the chart
+		/// Remove data series from the chart.
 		/// </summary>
 		/// 
-		/// <param name="name">Data series name</param>
+		/// <param name="name">Data series name.</param>
 		/// 
 		public void RemoveDataSeries( string name )
 		{
@@ -350,7 +351,7 @@ namespace AForge.Controls
 		}
 
 		/// <summary>
-		/// Remove all data series from the chart
+		/// Remove all data series from the chart.
 		/// </summary>
 		public void RemoveAllDataSeries( )
 		{
@@ -361,7 +362,7 @@ namespace AForge.Controls
 		}
 
 		/// <summary>
-		/// displayable Y range
+		/// Update Y range.
 		/// </summary>
 		private void UpdateYRange( )
 		{

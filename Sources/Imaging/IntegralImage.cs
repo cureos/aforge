@@ -28,6 +28,7 @@ namespace AForge.Imaging
     ///          i=0  j=0
     /// </code>
     /// <para><note>The class uses 32-bit integers to represent integral image.</note></para>
+    /// <para><note>The class processes only grayscale (8 bpp indexed) images.</note></para>
     /// <para>Sample usage:</para>
     /// <code>
     /// // create integral image
@@ -86,7 +87,7 @@ namespace AForge.Imaging
         /// Construct integral image from source grayscale image.
         /// </summary>
         /// 
-        /// <param name="image">Source grayscale image (8 bpp indexed).</param>
+        /// <param name="image">Source grayscale image.</param>
         /// 
         /// <returns>Returns integral image.</returns>
         /// 
@@ -97,7 +98,7 @@ namespace AForge.Imaging
             // check image format
             if ( image.PixelFormat != PixelFormat.Format8bppIndexed )
             {
-                throw new ArgumentException( "Source image can be graysclae (8bpp indexed) image only" );
+                throw new ArgumentException( "Source image can be graysclae (8 bpp indexed) image only" );
             }
 
             // lock source image
@@ -118,7 +119,7 @@ namespace AForge.Imaging
         /// Construct integral image from source grayscale image.
         /// </summary>
         /// 
-        /// <param name="imageData">Source image data (8 bpp indexed).</param>
+        /// <param name="imageData">Source image data.</param>
         /// 
         /// <returns>Returns integral image.</returns>
         /// 
@@ -129,7 +130,7 @@ namespace AForge.Imaging
             // check image format
             if ( imageData.PixelFormat != PixelFormat.Format8bppIndexed )
             {
-                throw new ArgumentException( "Source image can be graysclae (8bpp indexed) image only" );
+                throw new ArgumentException( "Source image can be graysclae (8 bpp indexed) image only" );
             }
 
             // get source image size

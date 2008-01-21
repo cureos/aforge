@@ -257,7 +257,7 @@ namespace AForge.Vision.Motion
                 height = image.Height;
                 frameSize = width * height;
 
-                // alocate memory for previous and current frames
+                // alocate memory for background and current frames
                 backgroundFrame = Marshal.AllocHGlobal( frameSize );
                 currentFrame = Marshal.AllocHGlobal( frameSize );
                 // temporary buffer

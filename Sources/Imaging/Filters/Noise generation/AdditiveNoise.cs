@@ -17,7 +17,7 @@ namespace AForge.Imaging.Filters
     /// </summary>
     /// 
     /// <remarks><para>The filter adds random value to each pixel of the source image.
-    /// The distribution of random values can be specified by <see cref="Generator">random generator</see>
+    /// The distribution of random values can be specified by <see cref="Generator">random generator</see>.
     /// </para>
     /// <para>Sample usage:</para>
     /// <code>

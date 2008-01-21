@@ -124,7 +124,7 @@ namespace AForge.Imaging
 		}
 
         /// <summary>
-        /// Value wich specifies if the image is color or grayscale
+        /// Value wich specifies if the processed image was color or grayscale.
         /// </summary>
         /// 
         public bool IsGrayscale
