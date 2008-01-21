@@ -1,6 +1,6 @@
-﻿<project schemaVersion="1.3.3.1">
+﻿<project schemaVersion="1.6.0.2">
     <assemblies>
-        <assembly assemblyPath="D:\Andrew\AForge\trunk\Release\AForge.Imaging.dll" xmlCommentsPath="D:\Andrew\AForge\trunk\Release\AForge.Imaging.xml" commentsOnly="False" />
+        <assembly assemblyPath="..\..\Release\AForge.Imaging.dll" xmlCommentsPath="..\..\Release\AForge.Imaging.xml" commentsOnly="False" />
     </assemblies>
     <namespaceSummaries>
         <namespaceSummaryItem name="" isDocumented="False" />
@@ -10,66 +10,74 @@
         <namespaceSummaryItem name="AForge.Imaging.Textures" isDocumented="True">The &lt;b&gt;AForge.Imaging.Textures&lt;/b&gt; namespace contains collection of classes, which generate different textures.</namespaceSummaryItem>
     </namespaceSummaries>
     <additionalContent>
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\color_remapping.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\sample1.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\sepia.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\levels_linear.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\erosion.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\dilatation.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\additive_noise.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\salt_noise.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\canvas_crop.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\rotate_channels.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\mirror.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\sample2.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\labeling.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\blobs_filtering.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\fourier.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\sample3.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\frequency_filter.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\grayscale.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\threshold.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\threshold_carry.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\ordered_dithering.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\bayer_dithering.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\floyd_steinberg.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\sierra.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\stucki.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\burkes.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\jarvis_judice_ninke.jpg" destPath="" />
-        <contentItem sourcePath="D:\Andrew\AForge\trunk\Sources\Imaging\Images\stevenson_arce.jpg" destPath="" />
+        <contentItem sourcePath="..\Imaging\Images\additive_noise.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\bayer_dithering.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\blobs_filtering.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\burkes.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\canvas_crop.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\color_remapping.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\dilatation.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\erosion.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\floyd_steinberg.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\fourier.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\frequency_filter.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\grayscale.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\jarvis_judice_ninke.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\labeling.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\levels_linear.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\mirror.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\ordered_dithering.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\rotate_channels.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\salt_noise.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\sample1.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\sample2.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\sample3.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\sepia.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\sierra.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\stevenson_arce.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\stucki.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\threshold.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\threshold_carry.jpg" destPath="" excludeItems="False" />
     </additionalContent>
-    <contentPlacement>AboveNamespaces</contentPlacement>
     <dependencies>
-        <dependencyItem depPath="D:\Andrew\AForge\trunk\Release\AForge.dll" />
-        <dependencyItem depPath="D:\Andrew\AForge\trunk\Release\AForge.Math.dll" />
+        <dependencyItem depPath="..\..\Release\AForge.dll" />
+        <dependencyItem depPath="..\..\Release\AForge.Math.dll" />
     </dependencies>
-    <projectSummary />
-    <sandcastlePath />
-    <hhcPath />
-    <hxcompPath />
-    <outputPath>..\..\Docs\</outputPath>
-    <helpFileFormat>HtmlHelp1x</helpFileFormat>
-    <cleanIntermediates>True</cleanIntermediates>
-    <purgeDuplicateTopics>True</purgeDuplicateTopics>
-    <cppCommentsFixup>False</cppCommentsFixup>
-    <frameworkVersion>2.0.50727</frameworkVersion>
-    <binaryTOC>True</binaryTOC>
-    <includeFavorites>False</includeFavorites>
-    <preliminary>False</preliminary>
-    <rootNSContainer>False</rootNSContainer>
-    <helpTitle>AForge.Imaging Class Library</helpTitle>
-    <htmlHelpName>AForge.Imaging</htmlHelpName>
-    <language>en-US</language>
-    <copyrightHref />
-    <copyrightText />
-    <feedbackEMailAddress />
-    <headerText />
-    <projectLinks>Local</projectLinks>
-    <sdkLinks>None</sdkLinks>
-    <presentationStyle>Prototype</presentationStyle>
-    <namingMethod>Guid</namingMethod>
-    <syntaxFilters>CSharp</syntaxFilters>
-    <missingTags>Summary, Parameter, Returns, AutoDocumentCtors</missingTags>
-    <visibleItems>InheritedMembers, Protected</visibleItems>
+    <ProjectSummary />
+    <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace</MissingTags>
+    <VisibleItems>InheritedMembers, Protected</VisibleItems>
+    <HtmlHelp1xCompilerPath path="" />
+    <HtmlHelp2xCompilerPath path="" />
+    <OutputPath>..\..\Docs\</OutputPath>
+    <SandcastlePath path="" />
+    <WorkingPath path="" />
+    <CleanIntermediates>True</CleanIntermediates>
+    <KeepLogFile>True</KeepLogFile>
+    <HelpFileFormat>HtmlHelp1x</HelpFileFormat>
+    <PurgeDuplicateTopics>True</PurgeDuplicateTopics>
+    <CppCommentsFixup>False</CppCommentsFixup>
+    <FrameworkVersion>2.0.50727</FrameworkVersion>
+    <BinaryTOC>True</BinaryTOC>
+    <IncludeFavorites>False</IncludeFavorites>
+    <Preliminary>False</Preliminary>
+    <RootNamespaceContainer>True</RootNamespaceContainer>
+    <RootNamespaceTitle />
+    <HelpTitle>AForge.Imaging Class Library</HelpTitle>
+    <HtmlHelpName>AForge.Imaging</HtmlHelpName>
+    <Language>en-US</Language>
+    <CopyrightHref />
+    <CopyrightText />
+    <FeedbackEMailAddress>aforge.net@gmail.com</FeedbackEMailAddress>
+    <HeaderText />
+    <FooterText />
+    <ProjectLinkType>Local</ProjectLinkType>
+    <SdkLinkType>None</SdkLinkType>
+    <SdkLinkTarget>Blank</SdkLinkTarget>
+    <PresentationStyle>vs2005</PresentationStyle>
+    <NamingMethod>Guid</NamingMethod>
+    <SyntaxFilters>CSharp</SyntaxFilters>
+    <ShowFeedbackControl>False</ShowFeedbackControl>
+    <ContentPlacement>AboveNamespaces</ContentPlacement>
+    <ContentSiteMap path="" />
+    <TopicFileTransform path="" />
 </project>

@@ -1,42 +1,50 @@
-﻿<project schemaVersion="1.3.3.1">
+﻿<project schemaVersion="1.6.0.2">
     <assemblies>
-        <assembly assemblyPath="D:\Andrew\AForge\trunk\Release\AForge.Video.VFW.dll" xmlCommentsPath="D:\Andrew\AForge\trunk\Release\AForge.Video.VFW.xml" commentsOnly="False" />
+        <assembly assemblyPath="..\..\Release\AForge.Video.VFW.dll" xmlCommentsPath="..\..\Release\AForge.Video.VFW.xml" commentsOnly="False" />
     </assemblies>
     <namespaceSummaries>
         <namespaceSummaryItem name="" isDocumented="False" />
         <namespaceSummaryItem name="AForge.Video.VFW" isDocumented="True">The &lt;b&gt;AForge.Video.VFW&lt;/b&gt; namespace contains &lt;i&gt;Video for Windows&lt;/i&gt; related classes.</namespaceSummaryItem>
     </namespaceSummaries>
-    <contentPlacement>AboveNamespaces</contentPlacement>
     <dependencies>
-        <dependencyItem depPath="D:\Andrew\AForge\trunk\Release\AForge.Video.dll" />
-        <dependencyItem depPath="D:\Andrew\AForge\trunk\Release\AForge.dll" />
+        <dependencyItem depPath="..\..\Release\AForge.Video.dll" />
+        <dependencyItem depPath="..\..\Release\AForge.dll" />
     </dependencies>
-    <projectSummary />
-    <sandcastlePath />
-    <hhcPath />
-    <hxcompPath />
-    <outputPath>..\..\Docs\</outputPath>
-    <helpFileFormat>HtmlHelp1x</helpFileFormat>
-    <cleanIntermediates>True</cleanIntermediates>
-    <purgeDuplicateTopics>True</purgeDuplicateTopics>
-    <cppCommentsFixup>False</cppCommentsFixup>
-    <frameworkVersion>2.0.50727</frameworkVersion>
-    <binaryTOC>True</binaryTOC>
-    <includeFavorites>False</includeFavorites>
-    <preliminary>False</preliminary>
-    <rootNSContainer>False</rootNSContainer>
-    <helpTitle>AForge.Video.VFW Class Library</helpTitle>
-    <htmlHelpName>AForge.Video.VFW</htmlHelpName>
-    <language>en-US</language>
-    <copyrightHref />
-    <copyrightText />
-    <feedbackEMailAddress />
-    <headerText />
-    <projectLinks>Local</projectLinks>
-    <sdkLinks>None</sdkLinks>
-    <presentationStyle>Prototype</presentationStyle>
-    <namingMethod>Guid</namingMethod>
-    <syntaxFilters>CSharp</syntaxFilters>
-    <missingTags>Summary, Parameter, Returns, AutoDocumentCtors</missingTags>
-    <visibleItems>InheritedMembers, Protected</visibleItems>
+    <ProjectSummary />
+    <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace</MissingTags>
+    <VisibleItems>InheritedMembers, Protected</VisibleItems>
+    <HtmlHelp1xCompilerPath path="" />
+    <HtmlHelp2xCompilerPath path="" />
+    <OutputPath>..\..\Docs\</OutputPath>
+    <SandcastlePath path="" />
+    <WorkingPath path="" />
+    <CleanIntermediates>True</CleanIntermediates>
+    <KeepLogFile>True</KeepLogFile>
+    <HelpFileFormat>HtmlHelp1x</HelpFileFormat>
+    <PurgeDuplicateTopics>True</PurgeDuplicateTopics>
+    <CppCommentsFixup>False</CppCommentsFixup>
+    <FrameworkVersion>2.0.50727</FrameworkVersion>
+    <BinaryTOC>True</BinaryTOC>
+    <IncludeFavorites>False</IncludeFavorites>
+    <Preliminary>False</Preliminary>
+    <RootNamespaceContainer>True</RootNamespaceContainer>
+    <RootNamespaceTitle />
+    <HelpTitle>AForge.Video.VFW Class Library</HelpTitle>
+    <HtmlHelpName>AForge.Video.VFW</HtmlHelpName>
+    <Language>en-US</Language>
+    <CopyrightHref />
+    <CopyrightText />
+    <FeedbackEMailAddress>aforge.net@gmail.com</FeedbackEMailAddress>
+    <HeaderText />
+    <FooterText />
+    <ProjectLinkType>Local</ProjectLinkType>
+    <SdkLinkType>None</SdkLinkType>
+    <SdkLinkTarget>Blank</SdkLinkTarget>
+    <PresentationStyle>vs2005</PresentationStyle>
+    <NamingMethod>Guid</NamingMethod>
+    <SyntaxFilters>CSharp</SyntaxFilters>
+    <ShowFeedbackControl>False</ShowFeedbackControl>
+    <ContentPlacement>AboveNamespaces</ContentPlacement>
+    <ContentSiteMap path="" />
+    <TopicFileTransform path="" />
 </project>
