@@ -370,6 +370,7 @@
     <Compile Include="Filters\YCbCr Filters\YCbCrReplaceChannel.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="HorizontalIntensityStatistics.cs" />
     <Compile Include="HoughCircleTransformation.cs" />
     <Compile Include="Image.cs">
       <SubType>Code</SubType>
@@ -389,6 +390,7 @@
     <Compile Include="Textures\TextileTexture.cs" />
     <Compile Include="Textures\Texture.cs" />
     <Compile Include="Textures\WoodTexture.cs" />
+    <Compile Include="VerticalIntensityStatistics.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AForge.Imaging.snk" />

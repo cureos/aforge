@@ -38,6 +38,8 @@
         <contentItem sourcePath="..\Imaging\Images\stucki.jpg" destPath="" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\threshold.jpg" destPath="" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\threshold_carry.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\hor_histogram.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\ver_histogram.jpg" destPath="" excludeItems="False" />
     </additionalContent>
     <dependencies>
         <dependencyItem depPath="..\..\Release\AForge.dll" />
