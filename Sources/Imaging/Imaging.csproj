@@ -372,6 +372,7 @@
     </Compile>
     <Compile Include="HorizontalIntensityStatistics.cs" />
     <Compile Include="HoughCircleTransformation.cs" />
+    <Compile Include="ICornersDetector.cs" />
     <Compile Include="Image.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -382,6 +383,7 @@
     <Compile Include="Interpolation.cs" />
     <Compile Include="HoughLineTransformation.cs" />
     <Compile Include="MemoryManager.cs" />
+    <Compile Include="MoravecCornersDetector.cs" />
     <Compile Include="RecursiveBlobCounter.cs" />
     <Compile Include="Textures\CloudsTexture.cs" />
     <Compile Include="Textures\ITextureGenerator.cs" />
