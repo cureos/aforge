@@ -23,7 +23,7 @@ namespace AForge.Vision.Motion
     /// towards current frame).</para>
     /// <para>Sample usage:</para>
     /// <code>
-    /// // create motion detector with noise suppresion and motion highligh
+    /// // create motion detector with noise suppresion and motion highlight
     /// BackgroundModelingHighPrecisionMotionDetector detector =
     ///     new BackgroundModelingHighPrecisionMotionDetector( true, true );
     /// // highligh motion edges only

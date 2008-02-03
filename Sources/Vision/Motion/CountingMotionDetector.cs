@@ -31,7 +31,7 @@ namespace AForge.Vision.Motion
     /// dimension.</para>
     /// <para>Sample usage:</para>
     /// <code>
-    /// // create motion detector with motion highligh
+    /// // create motion detector with motion highlight
     /// CountingMotionDetector detector =
     ///     new CountingMotionDetector( true );
     /// // set minimum objects' size

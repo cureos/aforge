@@ -23,7 +23,7 @@ namespace AForge.Vision.Motion
     /// not only reduces the amount of data, but also removes noise.</para>
     /// <para>Sample usage:</para>
     /// <code>
-    /// // create motion detector with motion highligh
+    /// // create motion detector with motion highlight
     /// BackgroundModelingLowPrecisionMotionDetector detector =
     ///     new BackgroundModelingLowPrecisionMotionDetector( true );
     /// // highligh motion edges only
