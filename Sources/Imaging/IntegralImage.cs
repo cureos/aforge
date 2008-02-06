@@ -29,6 +29,11 @@ namespace AForge.Imaging
     /// </code>
     /// <para><note>The class uses 32-bit integers to represent integral image.</note></para>
     /// <para><note>The class processes only grayscale (8 bpp indexed) images.</note></para>
+    /// <para><note>This class contains two versions of each method: safe and unsafe. Safe methods do
+    /// checks of provided coordinates and ensure that these coordinates belong to the image, what makes
+    /// these methods slower. Unsafe methods do not do coordinates' checks and rely that these
+    /// coordinates belong to the image, what makes these methods faster.</note></para>
+    /// 
     /// <para>Sample usage:</para>
     /// <code>
     /// // create integral image
@@ -173,10 +178,14 @@ namespace AForge.Imaging
         /// 
         /// <returns>Returns sum of pixels in the specified rectangle.</returns>
         /// 
-        /// <remarks>Both specified points are included into the rectangle calculation rectangle.</remarks>
+        /// <remarks><para>Both specified points are included into the rectangle calculation rectangle.</para></remarks>
         /// 
         public uint GetRectangleSum( int x1, int y1, int x2, int y2 )
         {
+            // check if requested rectangle is out of the image
+            if ( ( x2 < 0 ) || ( y2 < 0 ) || ( x1 >= width ) || ( y1 >= height ) )
+                return 0;
+
             if ( x1 < 0 ) x1 = 0;
             if ( y1 < 0 ) y1 = 0;
 
@@ -190,6 +199,27 @@ namespace AForge.Imaging
         }
 
         /// <summary>
+        /// Calculate sum of pixels in the specified rectangle without checking it's coordinates.
+        /// </summary>
+        /// 
+        /// <param name="x1">X coordinate of left-top rectangle's corner.</param>
+        /// <param name="y1">Y coordinate of left-top rectangle's corner.</param>
+        /// <param name="x2">X coordinate of right-bottom rectangle's corner.</param>
+        /// <param name="y2">Y coordinate of right-bottom rectangle's corner.</param>
+        /// 
+        /// <returns>Returns sum of pixels in the specified rectangle.</returns>
+        /// 
+        /// <remarks><para>Both specified points are included into the rectangle calculation rectangle.</para></remarks>
+        /// 
+        public uint GetRectangleSumUnsafe( int x1, int y1, int x2, int y2 )
+        {
+            x2++;
+            y2++;
+
+            return integralImage[y2, x2] + integralImage[y1, x1] - integralImage[y2, x1] - integralImage[y1, x2];
+        }
+        
+        /// <summary>
         /// Calculate sum of pixels in the specified rectangle.
         /// </summary>
         /// 
@@ -199,14 +229,34 @@ namespace AForge.Imaging
         /// 
         /// <returns>Returns sum of pixels in the specified rectangle.</returns>
         /// 
-        /// <remarks>The method calculates sum of pixels in square rectangle with
+        /// <remarks><para>The method calculates sum of pixels in square rectangle with
         /// odd width and height. In the case if it is required to calculate sum of
-        /// 3x3 rectangle, then it is required to specify its center and radius equal to 1.
+        /// 3x3 rectangle, then it is required to specify its center and radius equal to 1.</para>
         /// </remarks>
         /// 
         public uint GetRectangleSum( int x, int y, int radius )
         {
             return GetRectangleSum( x - radius, y - radius, x + radius, y + radius );
+        }
+
+        /// <summary>
+        /// Calculate sum of pixels in the specified rectangle without checking it's coordinates.
+        /// </summary>
+        /// 
+        /// <param name="x">X coordinate of central point of the rectangle.</param>
+        /// <param name="y">Y coordinate of central point of the rectangle.</param>
+        /// <param name="radius">Radius of the rectangle.</param>
+        /// 
+        /// <returns>Returns sum of pixels in the specified rectangle.</returns>
+        /// 
+        /// <remarks><para>The method calculates sum of pixels in square rectangle with
+        /// odd width and height. In the case if it is required to calculate sum of
+        /// 3x3 rectangle, then it is required to specify its center and radius equal to 1.</para>
+        /// </remarks>
+        /// 
+        public uint GetRectangleSumUnsafe( int x, int y, int radius )
+        {
+            return GetRectangleSumUnsafe( x - radius, y - radius, x + radius, y + radius );
         }
 
         /// <summary>
@@ -224,6 +274,10 @@ namespace AForge.Imaging
         /// 
         public float GetRectangleMean( int x1, int y1, int x2, int y2 )
         {
+            // check if requested rectangle is out of the image
+            if ( ( x2 < 0 ) || ( y2 < 0 ) || ( x1 >= width ) || ( y1 >= height ) )
+                return 0;
+
             if ( x1 < 0 ) x1 = 0;
             if ( y1 < 0 ) y1 = 0;
 
@@ -239,7 +293,30 @@ namespace AForge.Imaging
         }
 
         /// <summary>
-        /// CCalculate mean value of pixels in the specified rectangle.
+        /// Calculate mean value of pixels in the specified rectangle without checking it's coordinates.
+        /// </summary>
+        /// 
+        /// <param name="x1">X coordinate of left-top rectangle's corner.</param>
+        /// <param name="y1">Y coordinate of left-top rectangle's corner.</param>
+        /// <param name="x2">X coordinate of right-bottom rectangle's corner.</param>
+        /// <param name="y2">Y coordinate of right-bottom rectangle's corner.</param>
+        /// 
+        /// <returns>Returns mean value of pixels in the specified rectangle.</returns>
+        /// 
+        /// <remarks>Both specified points are included into the rectangle calculation rectangle.</remarks>
+        /// 
+        public float GetRectangleMeanUnsafe( int x1, int y1, int x2, int y2 )
+        {
+            x2++;
+            y2++;
+
+            // return sum divided by actual rectangles size
+            return (float) ( (double) ( integralImage[y2, x2] + integralImage[y1, x1] - integralImage[y2, x1] - integralImage[y1, x2] ) /
+                (double) ( ( x2 - x1 ) * ( y2 - y1 ) ) );
+        }
+
+        /// <summary>
+        /// Calculate mean value of pixels in the specified rectangle.
         /// </summary>
         /// 
         /// <param name="x">X coordinate of central point of the rectangle.</param>
@@ -256,6 +333,26 @@ namespace AForge.Imaging
         public float GetRectangleMean( int x, int y, int radius )
         {
             return GetRectangleMean( x - radius, y - radius, x + radius, y + radius );
+        }
+
+        /// <summary>
+        /// Calculate mean value of pixels in the specified rectangle without checking it's coordinates.
+        /// </summary>
+        /// 
+        /// <param name="x">X coordinate of central point of the rectangle.</param>
+        /// <param name="y">Y coordinate of central point of the rectangle.</param>
+        /// <param name="radius">Radius of the rectangle.</param>
+        /// 
+        /// <returns>Returns mean value of pixels in the specified rectangle.</returns>
+        /// 
+        /// <remarks>The method calculates mean value of pixels in square rectangle with
+        /// odd width and height. In the case if it is required to calculate mean value of
+        /// 3x3 rectangle, then it is required to specify its center and radius equal to 1.
+        /// </remarks>
+        /// 
+        public float GetRectangleMeanUnsafe( int x, int y, int radius )
+        {
+            return GetRectangleMeanUnsafe( x - radius, y - radius, x + radius, y + radius );
         }
     }
 }
