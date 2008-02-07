@@ -26,10 +26,91 @@ namespace AForge.Imaging
         private Drawing( ) { }
 
         /// <summary>
-        /// Draw rectangle on image.
+        /// Fill rectangle on the specified image.
         /// </summary>
         /// 
-        /// <param name="imageData">Image data.</param>
+        /// <param name="imageData">Source image data.</param>
+        /// <param name="rectangle">Rectangle's coordinates to fill.</param>
+        /// <param name="color">Rectangle's color.</param>
+        /// 
+        public static unsafe void FillRectangle( BitmapData imageData, Rectangle rectangle, Color color )
+        {
+            // check pixel format
+            if (
+                ( imageData.PixelFormat != PixelFormat.Format24bppRgb ) &&
+                ( imageData.PixelFormat != PixelFormat.Format8bppIndexed )
+                )
+            {
+                throw new ArgumentException( "Source image can be graysclae (8 bpp indexed) or color (24 bpp) image only" );
+            }
+
+            // image dimension
+            int imageWidth  = imageData.Width;
+            int imageHeight = imageData.Height;
+            int stride      = imageData.Stride;
+
+            // rectangle dimension and position
+            int rectX1 = rectangle.X;
+            int rectY1 = rectangle.Y;
+            int rectX2 = rectangle.X + rectangle.Width - 1;
+            int rectY2 = rectangle.Y + rectangle.Height - 1;
+
+            // check if rectangle is in the image
+            if ( ( rectX1 >= imageWidth ) || ( rectY1 >= imageHeight ) || ( rectX2 < 0 ) || ( rectY2 < 0 ) )
+            {
+                // nothing to draw
+                return;
+            }
+
+            int startX  = Math.Max( 0, rectX1 );
+            int stopX   = Math.Min( imageWidth - 1, rectX2 );
+            int startY  = Math.Max( 0, rectY1 );
+            int stopY   = Math.Min( imageHeight - 1, rectY2 );
+
+            // do the job
+            byte* ptr = (byte*) imageData.Scan0.ToPointer( ) + startY * stride + startX *
+                ( ( imageData.PixelFormat == PixelFormat.Format8bppIndexed ) ? 1 : 3 );
+
+            if ( imageData.PixelFormat == PixelFormat.Format8bppIndexed )
+            {
+                // grayscale image
+                byte gray = (byte) ( 0.2125 * color.R + 0.7154 * color.G + 0.0721 * color.B );
+
+                int fillWidth = stopX - startX + 1;
+
+                for ( int y = startY; y <= stopY; y++ )
+                {
+                    AForge.Win32.memset( ptr, gray, fillWidth );
+                    ptr += stride;
+                }
+            }
+            else
+            {
+                // color image
+                byte red    = color.R;
+                byte green  = color.G;
+                byte blue   = color.B;
+
+                int offset = stride - ( stopX - startX + 1) * 3;
+
+                for ( int y = startY; y <= stopY; y++ )
+                {
+                    for ( int x = startX; x <= stopX; x++, ptr += 3 )
+                    {
+                        ptr[RGB.R] = red;
+                        ptr[RGB.G] = green;
+                        ptr[RGB.B] = blue;
+                    }
+                    ptr += offset;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Draw rectangle on the specified image.
+        /// </summary>
+        /// 
+        /// <param name="imageData">Source image data.</param>
         /// <param name="rectangle">Rectangle's coordinates to draw.</param>
         /// <param name="color">Rectangle's color.</param>
         /// 
@@ -40,7 +121,9 @@ namespace AForge.Imaging
                 ( imageData.PixelFormat != PixelFormat.Format24bppRgb ) &&
                 ( imageData.PixelFormat != PixelFormat.Format8bppIndexed )
                 )
-                throw new ArgumentException( "The function can be applied to graysclae (8bpp indexed) or color (24bpp) image only" );
+            {
+                throw new ArgumentException( "Source image can be graysclae (8 bpp indexed) or color (24 bpp) image only" );
+            }
 
             // image dimension
             int imageWidth  = imageData.Width;
