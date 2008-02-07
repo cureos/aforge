@@ -337,6 +337,7 @@
     <Compile Include="Filters\Other\ConservativeSmoothing.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\Other\CornersMarker.cs" />
     <Compile Include="Filters\Other\Jitter.cs">
       <SubType>Code</SubType>
     </Compile>

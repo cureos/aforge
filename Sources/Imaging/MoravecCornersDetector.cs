@@ -19,6 +19,8 @@ namespace AForge.Imaging
     /// <remarks><para>The class implements Moravec corners detector. For information about algorithm's
     /// details its <a href="http://www.cim.mcgill.ca/~dparks/CornerDetector/mainMoravec.htm">description</a>
     /// should be studied.</para>
+    /// <para><note>Due to limitations of Moravec corners detector (anisotropic response, etc.) its usage is limited
+    /// to certain cases only.</note></para>
     /// <para><note>The class processes only grayscale (8 bpp indexed) and color (24 bpp) images.</note></para>
     /// <para>Sample usage:</para>
     /// <code>
@@ -70,7 +72,8 @@ namespace AForge.Imaging
         /// </summary>
         /// 
         /// <remarks><para>The value is used to filter uninteresting points - points which have value below
-        /// specified threshold value are treated as not corners candidates.</para>
+        /// specified threshold value are treated as not corners candidates. Increasing this value decreases
+        /// the amount of detected point.</para>
         /// <para>Default value is set to <b>500</b>.</para>
         /// </remarks>
         /// 
