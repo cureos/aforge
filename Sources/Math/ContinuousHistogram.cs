@@ -9,7 +9,7 @@ namespace AForge.Math
     using System;
 
     /// <summary>
-    /// Histogram for continuous random values
+    /// Histogram for continuous random values.
     /// </summary>
     /// 
     /// <remarks>The class also works with integer arrays as <see cref="Histogram"/> class.
@@ -17,151 +17,99 @@ namespace AForge.Math
     /// 
     public class ContinuousHistogram
     {
-		private int[] values;
-		private DoubleRange	range;
+        private int[] values;
+        private DoubleRange range;
 
-		private double	mean;
-		private double	stdDev;
-		private double	median;
-		private double	min;
-		private double	max;
-		private int		total;
+        private double  mean;
+        private double  stdDev;
+        private double  median;
+        private double  min;
+        private double  max;
+        private int     total;
 
         /// <summary>
-        /// Values of the histogram
+        /// Values of the histogram.
         /// </summary>
         /// 
         public int[] Values
-		{
-			get { return values; }
-		}
+        {
+            get { return values; }
+        }
 
         /// <summary>
-        /// Range of random values
+        /// Range of random values.
         /// </summary>
         /// 
         public DoubleRange Range
-		{
-			get { return range; }
-		}
+        {
+            get { return range; }
+        }
 
         /// <summary>
-        /// Mean value
+        /// Mean value.
         /// </summary>
         /// 
         public double Mean
-		{
-			get { return mean; }
-		}
+        {
+            get { return mean; }
+        }
 
         /// <summary>
-        /// Standard deviation
+        /// Standard deviation.
         /// </summary>
         /// 
         public double StdDev
-		{
-			get { return stdDev; }
-		}
+        {
+            get { return stdDev; }
+        }
 
         /// <summary>
-        /// Median value
+        /// Median value.
         /// </summary>
         /// 
         public double Median
-		{
-			get { return median; }
-		}
+        {
+            get { return median; }
+        }
 
         /// <summary>
-        /// Minimum value
+        /// Minimum value.
         /// </summary>
         /// 
         /// <remarks>Minimum value of the histogram with non zero
         /// hits count.</remarks>
         /// 
         public double Min
-		{
-			get { return min; }
-		}
+        {
+            get { return min; }
+        }
 
         /// <summary>
-        /// Maximum value
+        /// Maximum value.
         /// </summary>
         /// 
         /// <remarks>Maximum value of the histogram with non zero
         /// hits count.</remarks>
         /// 
         public double Max
-		{
-			get { return max; }
-		}
+        {
+            get { return max; }
+        }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContinuousHistogram"/> class
+        /// Initializes a new instance of the <see cref="ContinuousHistogram"/> class.
         /// </summary>
         /// 
-        /// <param name="values">Values of the histogram</param>
-        /// <param name="range">Range of random values</param>
+        /// <param name="values">Values of the histogram.</param>
+        /// <param name="range">Range of random values.</param>
         /// 
         public ContinuousHistogram( int[] values, DoubleRange range )
-		{
-			this.values = values;
-			this.range  = range;
+        {
+            this.values = values;
+            this.range = range;
 
-            int hits;
-			int i, n = values.Length;
-			int nM1 = n - 1;
-
-            double rangeLength = range.Length;
-            double rangeMin = range.Min;
-
-			max = 0;
-			min = n;
-
-			// calculate mean, min, max
-			for ( i = 0; i < n; i++ )
-			{
-                hits = values[i];
-
-                if ( hits != 0 )
-				{
-					// max
-					if ( i > max )
-						max = i;
-					// min
-					if ( i < min )
-						min = i;
-				}
-
-				// accumulate total value
-                total += hits;
-				// accumulate mean value
-                mean += ( ( (double) i / nM1 ) * rangeLength + rangeMin ) * hits;
-			}
-			mean /= total;
-
-            min = ( min / nM1 ) * rangeLength + rangeMin;
-            max = ( max / nM1 ) * rangeLength + rangeMin;
-
-			// calculate stadard deviation
-			for ( i = 0; i < n; i++ )
-			{
-				hits = values[i];
-				stdDev += Math.Pow( ( ( (double) i / nM1 ) * rangeLength + rangeMin ) - mean, 2 ) * hits;
-			}
-			stdDev = Math.Sqrt( stdDev / total );
-			
-			// calculate median
-			int m, halfTotal = total / 2;
-
-			for ( m = 0, hits = 0; m < n; m++ )
-			{
-				hits += values[m];
-				if ( hits >= halfTotal )
-					break;
-			}
-			median = ( (double) m / nM1 ) * rangeLength + rangeMin;
-		}
+            Update( );
+        }
 
         /// <summary>
         /// Get range around median containing specified percentage of values
@@ -172,31 +120,97 @@ namespace AForge.Math
         /// <returns>Returns the range which containes specifies percentage
         /// of values.</returns>
         /// 
-		public DoubleRange GetRange( double percent )
-		{
-			int min, max, hits;
-			int h = (int)( total * ( percent + ( 1 - percent ) / 2 ) );
-			int n = values.Length;
-			int nM1 = n - 1;
+        public DoubleRange GetRange( double percent )
+        {
+            int min, max, hits;
+            int h = (int) ( total * ( percent + ( 1 - percent ) / 2 ) );
+            int n = values.Length;
+            int nM1 = n - 1;
 
-			// skip left portion
-			for ( min = 0, hits = total; min < n; min++ )
-			{
-				hits -= values[min];
-				if ( hits < h )
-					break;
-			}
-			// skip right portion
-			for ( max = nM1, hits = total;  max >= 0; max-- )
-			{
-				hits -= values[max];
-				if ( hits < h )
-					break;
-			}
-			// return range between left and right boundaries
-			return new DoubleRange(
+            // skip left portion
+            for ( min = 0, hits = total; min < n; min++ )
+            {
+                hits -= values[min];
+                if ( hits < h )
+                    break;
+            }
+            // skip right portion
+            for ( max = nM1, hits = total; max >= 0; max-- )
+            {
+                hits -= values[max];
+                if ( hits < h )
+                    break;
+            }
+            // return range between left and right boundaries
+            return new DoubleRange(
                 ( (double) min / nM1 ) * range.Length + range.Min,
                 ( (double) max / nM1 ) * range.Length + range.Min );
-		}
+        }
+
+        /// <summary>
+        /// Update statistical value of the histogram.
+        /// </summary>
+        /// 
+        /// <remarks>The method recalculates statistical values of the histogram, like mean,
+        /// standard deviation, etc. The method should be called only in the case if histogram
+        /// values were retrieved through <see cref="Values"/> property and updated after that.
+        /// </remarks>
+        /// 
+        public void Update( )
+        {
+            int hits;
+            int i, n = values.Length;
+            int nM1 = n - 1;
+
+            double rangeLength = range.Length;
+            double rangeMin = range.Min;
+
+            max = 0;
+            min = n;
+
+            // calculate mean, min, max
+            for ( i = 0; i < n; i++ )
+            {
+                hits = values[i];
+
+                if ( hits != 0 )
+                {
+                    // max
+                    if ( i > max )
+                        max = i;
+                    // min
+                    if ( i < min )
+                        min = i;
+                }
+
+                // accumulate total value
+                total += hits;
+                // accumulate mean value
+                mean += ( ( (double) i / nM1 ) * rangeLength + rangeMin ) * hits;
+            }
+            mean /= total;
+
+            min = ( min / nM1 ) * rangeLength + rangeMin;
+            max = ( max / nM1 ) * rangeLength + rangeMin;
+
+            // calculate stadard deviation
+            for ( i = 0; i < n; i++ )
+            {
+                hits = values[i];
+                stdDev += Math.Pow( ( ( (double) i / nM1 ) * rangeLength + rangeMin ) - mean, 2 ) * hits;
+            }
+            stdDev = Math.Sqrt( stdDev / total );
+
+            // calculate median
+            int m, halfTotal = total / 2;
+
+            for ( m = 0, hits = 0; m < n; m++ )
+            {
+                hits += values[m];
+                if ( hits >= halfTotal )
+                    break;
+            }
+            median = ( (double) m / nM1 ) * rangeLength + rangeMin;
+        }
     }
 }
