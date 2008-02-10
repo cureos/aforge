@@ -6,19 +6,19 @@
 
 namespace AForge.Imaging.Filters
 {
-	using System.Drawing;
-	using System.Drawing.Imaging;
+    using System.Drawing;
+    using System.Drawing.Imaging;
 
-	/// <summary>
-	/// Shrink an image
-	/// </summary>
+    /// <summary>
+    /// Shrink an image
+    /// </summary>
     /// 
     /// <remarks>Removes pixels with specified color from image bounds
     /// reducing image size.</remarks>
     /// 
     public class Shrink : FilterAnyToAnyNew
-	{
-		private Color colorToRemove = Color.FromArgb( 0, 0, 0 );
+    {
+        private Color colorToRemove = Color.FromArgb( 0, 0, 0 );
         // top-left coordinates of the object (calculated by CalculateNewImageSize())
         private int minX, minY;
 
@@ -26,17 +26,17 @@ namespace AForge.Imaging.Filters
         /// Color to remove
         /// </summary>
         /// 
-		public Color ColorToRemove
-		{
-			get { return colorToRemove; }
-			set { colorToRemove = value; }
-		}
+        public Color ColorToRemove
+        {
+            get { return colorToRemove; }
+            set { colorToRemove = value; }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Shrink"/> class
         /// </summary>
         /// 
-		public Shrink( ) { }
+        public Shrink( ) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Shrink"/> class
@@ -45,9 +45,9 @@ namespace AForge.Imaging.Filters
         /// <param name="colorToRemove">Color to remove</param>
         /// 
         public Shrink( Color colorToRemove )
-		{
-			this.colorToRemove = colorToRemove;
-		}
+        {
+            this.colorToRemove = colorToRemove;
+        }
 
         /// <summary>
         /// Calculates new image size
@@ -63,7 +63,7 @@ namespace AForge.Imaging.Filters
             int width = sourceData.Width;
             int height = sourceData.Height;
             int offset = sourceData.Stride -
-                ( ( sourceData .PixelFormat == PixelFormat.Format8bppIndexed ) ? width : width * 3 );
+                ( ( sourceData.PixelFormat == PixelFormat.Format8bppIndexed ) ? width : width * 3 );
 
             // color to remove
             byte r = colorToRemove.R;
@@ -148,12 +148,12 @@ namespace AForge.Imaging.Filters
         protected override unsafe void ProcessFilter( BitmapData sourceData, BitmapData destinationData )
         {
             // get destination image size
-            int newWidth = destinationData.Width;
+            int newWidth  = destinationData.Width;
             int newHeight = destinationData.Height;
 
             int srcStride = sourceData.Stride;
             int dstStride = destinationData.Stride;
-            int copySize = destinationData.Width;
+            int copySize  = destinationData.Width;
 
             // do the job
             byte* src = (byte*) sourceData.Scan0.ToPointer( );
@@ -179,5 +179,5 @@ namespace AForge.Imaging.Filters
                 src += srcStride;
             }
         }
-	}
+    }
 }

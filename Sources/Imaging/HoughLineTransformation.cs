@@ -207,7 +207,9 @@ namespace AForge.Imaging
 		{
             // check image format
             if ( image.PixelFormat != PixelFormat.Format8bppIndexed )
-                throw new ArgumentException( "Pixel format of source image should be 8 bpp indexed" );
+            {
+                throw new ArgumentException( "Source image can be binary (8 bpp indexed) image only" );
+            }
 
             // lock source image
             BitmapData imageData = image.LockBits(
@@ -230,12 +232,14 @@ namespace AForge.Imaging
         public void ProcessImage( BitmapData imageData )
         {
             if ( imageData.PixelFormat != PixelFormat.Format8bppIndexed )
-                throw new ArgumentException( "Pixel format of source image should be 8 bpp indexed" );
+            {
+                throw new ArgumentException( "Source image can be binary (8 bpp indexed) image only" );
+            }
 
 			// get source image size
 			int width       = imageData.Width;
             int height      = imageData.Height;
-            int srcOffset   = imageData.Stride - width;
+            int offset      = imageData.Stride - width;
 			int halfWidth   = width / 2;
 			int halfHeight  = height / 2;
 			int toWidth     = width - halfWidth;
@@ -272,7 +276,7 @@ namespace AForge.Imaging
 							}
 						}
 					}
-					src += srcOffset;
+					src += offset;
 				}
 			}
 
