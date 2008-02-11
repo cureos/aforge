@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachineLearning", "MachineL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vision", "Vision\Vision.csproj", "{CE9E6267-459A-452C-9DA4-0EA7F54C3303}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lego", "Robotics.Lego\Lego.csproj", "{F56FE364-ABAE-44B3-A939-900EB994FB9B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{CE9E6267-459A-452C-9DA4-0EA7F54C3303}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE9E6267-459A-452C-9DA4-0EA7F54C3303}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE9E6267-459A-452C-9DA4-0EA7F54C3303}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F56FE364-ABAE-44B3-A939-900EB994FB9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F56FE364-ABAE-44B3-A939-900EB994FB9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F56FE364-ABAE-44B3-A939-900EB994FB9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F56FE364-ABAE-44B3-A939-900EB994FB9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
