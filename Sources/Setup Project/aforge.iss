@@ -28,6 +28,8 @@ Name: "iplab"; Description: "Image Processing Lab"; Types: full custom
 [Files]
 Source: "Files\Copyright.txt"; DestDir: "{app}"; Components: libs
 Source: "Files\Release notes.txt"; DestDir: "{app}"; Components: libs
+Source: "Files\GPL.txt"; DestDir: "{app}"; Components: libs
+Source: "Files\License.txt"; DestDir: "{app}"; Components: libs
 Source: "Files\Release\*"; DestDir: "{app}\Release"; Components: libs
 Source: "Files\Docs\*"; DestDir: "{app}\Docs"; Components: docs
 Source: "Files\Sources\*"; DestDir: "{app}\Sources"; Components: sources; Flags: recursesubdirs
