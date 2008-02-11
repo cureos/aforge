@@ -1,3 +1,86 @@
+AForge.NET 1.6.0 release notes
+------------------------------
+11.02.2008.
+
+
+Version updates and fixes:
+
+* Fixed registered issues/requests:
+  - Issue 32: Impossible to play some video files with Video.DirectShow.
+  - Issue 33: Extending of Complex Image.
+  - Issue 36: Stevenson-Arce dithering is useless.
+  - Issue 39: Extracting blobs from color image.
+
+* General
+  - AForge.NET framework's license is updated and clarified. The license concentrates not on commercial
+    vs. not-commercial software but on open vs. closed software. The framework is provided under dual
+    license: GPL v2 for free and LGPL for a fee. Please, refer to License.txt document for more
+    details.
+
+  - AForge.Robotics.Lego library introduced, which provides classes to manipulate Lego
+    NXT Mindstorm device. Test application is added to samples collection.
+
+  - Documentation projects were updated for new versions of Sandcastle and Sandcastle Help File Builder.
+
+
+* AForge.Imaging
+  - Otsu thresholding is added (N. Otsu, "A threshold selection method from gray-level histograms",
+    IEEE Trans. Systems, Man and Cybernetics 9(1), pp. 62–66, 19790).
+
+  - Added initial implementation of Integral Image (P. Viola and M. J. Jones, "Robust real-time face detection",
+    Int. Journal of Computer Vision 57(2), pp. 137–154, 2004).
+    TODO: Some more methods are going to be added, which calculate features described by Viola and Jones.
+
+  - Moravec corners detector is added (http://www.cim.mcgill.ca/~dparks/CornerDetector/mainMoravec.htm).
+
+  - Horizontal and Vertical Intensity Statistics classes are added to the AForge.Imaging namespace. These classes
+    provide information about horizontal and vertical distribution of pixel intensities.
+
+  - Corners Marker filter added, which highlights corder of objects on the specified image using provided
+    corners detection algorithm.
+
+  - ComplexImage is extended with public property, which gives access to complex image's data. It gives
+    possibility to implement additional classes to do filtering on ComplexImage.
+
+  - IComplexFilter interface provided for filters, which work on complex Fourier transformed images.
+    Frequency filter is moved out of ComplexImage to separate class.
+
+  - Documentation has improved for binarization filters.
+
+  - Stevenson-Arce dithering class is marked as obsolete since it is supposed to work with hexagonal pixel
+    lattices. The filter is left for educational purpose.
+
+  - BlobCounterBase class allows to extract blobs not only from binary/grayscale images, but from color
+    images as well. Useful in the case if color image was grayscaled, thresholded, processed by blob counter
+    and then it is required to extract blob from original image.
+
+  - Iterative Threshold's performance improved by using image histogram instead of scanning entire image on
+    each iteration.
+
+  - FillRectangle() method added to Drawing class for filling rectangles on locked image.
+
+
+* AForge.Math
+  - Added Update() method to histogram classes, so it is possible to recalculate statistical values after
+    direct changes in Values array of histogram.
+
+  
+* AForge.Video.DirectShow
+  - Fixed the issue that it was not possible to play some videos. The issue was cause by fixing issue 22
+    (1.5.1 version). Removing call of graph's Render() method solves the issue with freezing video after screen
+    saver, but introduces another issue when playing some video files. The Render() method is adding not only
+    renderer filter, but some other filters, which may be required. To configure this, a new property was
+    introduced - PreventFreezing, which allows to select what is required - freezing preventing removing Render()
+    call or not preventing leaving it.
+
+
+* AForge.Controls
+  - Histogram control is added to AForge.Controls namespace, which is originally taken from IPLab application,
+    but extended with vertical histograms support.
+
+
+
+
 AForge.NET 1.5.1 release notes
 ------------------------------
 17.10.2007.
