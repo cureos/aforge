@@ -13,6 +13,44 @@ namespace AForge.Robotics.Lego.NXT
     /// Manipulation of Lego Mindstorms NXT device.
     /// </summary>
     /// 
+    /// <remarks>
+    /// <para>The class allows to manipulate with Lego Mindstorms NXT device,
+    /// setting/getting its motors' state, getting information about sensors'
+    /// values and retrieving generic information about the NXT brick.</para>
+    /// 
+    /// <para>Sample usage:</para>
+    /// <code>
+    /// // create an instance of communication interface for NXT device
+    /// SerialCommunication nxtCommunication = new SerialCommunication( "COM1" );
+    /// // create an instance of NXT brick
+    /// NXTBrick nxt = new NXTBrick( nxtCommunication );
+    /// // connect to the device
+    /// if ( nxt.Connect( ) == CommunicationStatus.Success )
+    /// {
+    ///     // run motor A
+    ///     MotorState motorState = new MotorState( );
+    /// 
+    ///     motorState.Power      = 60;
+    ///     motorState.TurnRatio  = 50;
+    ///     motorState.Mode       = MotorMode.On;
+    ///     motorState.Regulation = RegulationMode.Idle;
+    ///     motorState.RunState   = RunState.Running;
+    ///     motorState.TachoLimit = 1000;
+    /// 
+    ///     nxt.SetMotorState( OutputPort.MotorA, motorState );
+    /// 
+    ///     // get input value from sensor 1
+    ///     InputValues inputValues;
+    /// 
+    ///     if ( nxt.GetInputValues( InputPort.Port1, out inputValues ) == CommunicationStatus.Success )
+    ///     {
+    ///         // ...
+    ///     }
+    ///     // ...
+    /// }
+    /// </code>
+    /// </remarks>
+    /// 
     public class NXTBrick
     {
         // communication interfaced used for communication with NXT brick
