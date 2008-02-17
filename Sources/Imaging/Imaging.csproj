@@ -303,6 +303,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Filters\IInPlacePartialFilter.cs" />
+    <Compile Include="Filters\IlluminationCorrection\FlatFieldCorrection.cs" />
     <Compile Include="Filters\MaskedFilter.cs" />
     <Compile Include="Filters\Median.cs">
       <SubType>Code</SubType>

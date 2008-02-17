@@ -41,6 +41,12 @@ namespace AForge.Imaging.Filters
     /// filter.ApplyInPlace( sourceImage );
     /// </code>
     /// 
+    /// <para><b>Source image:</b></para>
+    /// <img src="sample4.jpg" width="480" height="387" />
+    /// <para><b>Background image:</b></para>
+    /// <img src="bg.jpg" width="480" height="387" />
+    /// <para><b>Result image:</b></para>
+    /// <img src="flat_field.jpg" width="480" height="387" />
     /// </remarks>
     /// 
     public class FlatFieldCorrection : FilterAnyToAny
