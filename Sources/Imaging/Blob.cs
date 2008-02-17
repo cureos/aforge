@@ -116,6 +116,7 @@ namespace AForge.Imaging
 					// dispose managed resources
 					image.Dispose( );
 				}
+                disposed = true;
 			}
 		}
 	}
