@@ -124,6 +124,10 @@ namespace AForge.Imaging.Filters
         /// <param name="maxHeight">Maximum allowed height of blob.</param>
         /// <param name="coupledSizeFiltering">Specifies if size filetering should be coupled or not.</param>
         /// 
+        /// <remarks><para>For information about coupled filtering mode see documentation for
+        /// <see cref="BlobCounterBase.CoupledSizeFiltering"/> property of <see cref="BlobCounterBase"/>
+        /// class.</para></remarks>
+        /// 
         public BlobsFiltering( int minWidth, int minHeight, int maxWidth, int maxHeight, bool coupledSizeFiltering )
         {
             blobCounter.FilterBlobs = true;
