@@ -1,7 +1,7 @@
 // AForge Image Processing Library
 // AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2005-2007
+// Copyright © Andrew Kirillov, 2005-2008
 // andrew.kirillov@gmail.com
 //
 
@@ -33,8 +33,8 @@ namespace AForge.Imaging
     /// foreach ( Blob blob in blobs )
     /// {
     ///     // ...
-    ///     // blob.Location - location of the blob
-    ///     // blob.Image - blob`s image
+    ///     // blob.Rectangle - blob's rectangle
+    ///     // blob.Image - blob's image
     /// }
     /// </code>
     /// </remarks>
@@ -396,7 +396,7 @@ namespace AForge.Imaging
         }
 
         /// <summary>
-        /// Get objects rectangles.
+        /// Get objects' rectangles.
         /// </summary>
         /// 
         /// <returns>Returns array of objects rectangles.</returns>
@@ -416,6 +416,39 @@ namespace AForge.Imaging
                 CollectObjectsRectangles( );
 
             return blobsRectangles;
+        }
+
+        /// <summary>
+        /// Get objects' information.
+        /// </summary>
+        /// 
+        /// <returns>Returns array of partially initialized blobs (without <see cref="Blob.Image"/> property initialized.</returns>
+        /// 
+        /// <remarks><para>By the amount of provided information, the method is between <see cref="GetObjectRectangles"/> and
+        /// <see cref="GetObjects( BitmapData )"/> methods. The method provides array of blobs without initialized their image.
+        /// Blob's image may be extracted later using <see cref="ExtractBlobsImage( Bitmap, Blob )"/>
+        /// or <see cref="ExtractBlobsImage( BitmapData, Blob )"/> method.
+        /// </para></remarks>
+        /// 
+        public Blob[] GetObjectInformation( )
+        {
+            // check if objects map was collected
+            if ( objectLabels == null )
+                throw new ApplicationException( "Image should be processed before to collect objects map" );
+
+            // collect rectangles, if they are not collected yet
+            if ( blobsRectangles == null )
+                CollectObjectsRectangles( );
+
+            Blob[] blobs = new Blob[objectsCount];
+
+            // create each blob
+            for ( int k = 0; k < objectsCount; k++ )
+            {
+                blobs[k] = new Blob( k + 1, blobsRectangles[k] );
+            }
+
+            return blobs;
         }
 
         /// <summary>
@@ -456,9 +489,9 @@ namespace AForge.Imaging
         /// 
         /// <returns>Returns array of blobs.</returns>
         /// 
-        /// <remarks>The method returns array of blobs. Before calling the
+        /// <remarks><para>The method returns array of blobs. Before calling the
         /// method, the <see cref="ProcessImage(Bitmap)"/> or <see cref="ProcessImage(BitmapData)"/>
-        /// method should be called, which will build objects map.</remarks>
+        /// method should be called, which will build objects map.</para></remarks>
         /// 
         public Blob[] GetObjects( BitmapData imageData )
         {
@@ -505,7 +538,7 @@ namespace AForge.Imaging
                 // lock destination bitmap data
                 BitmapData dstData = dstImg.LockBits(
                     new Rectangle( 0, 0, objectWidth, objectHeight ),
-                    ImageLockMode.ReadOnly, imageData.PixelFormat );
+                    ImageLockMode.ReadWrite, imageData.PixelFormat );
 
                 // copy image
                 unsafe
@@ -544,10 +577,121 @@ namespace AForge.Imaging
                 // unlock destination image
                 dstImg.UnlockBits( dstData );
 
-                objects[k] = new Blob( dstImg, new Point( xmin, ymin ) );
+                objects[k] = new Blob( label, new Rectangle( xmin, ymin, objectWidth, objectHeight ), dstImg );
             }
-
             return objects;
+        }
+
+        /// <summary>
+        /// Extract blob's image.
+        /// </summary>
+        /// 
+        /// <param name="image">Source image to extract blob's image from.</param>
+        /// <param name="blob">Blob which is required to extracå image of.</param>
+        /// 
+        /// <remarks><para>The method is used to extract image of partially initialized blob, which
+        /// was provided by <see cref="GetObjectInformation"/> method.</para></remarks>
+        /// 
+        public void ExtractBlobsImage( Bitmap image, Blob blob )
+        {
+            // lock source bitmap data
+            BitmapData imageData = image.LockBits(
+                new Rectangle( 0, 0, image.Width, image.Height ),
+                ImageLockMode.ReadOnly,
+                ( image.PixelFormat == PixelFormat.Format8bppIndexed ) ?
+                    PixelFormat.Format8bppIndexed : PixelFormat.Format24bppRgb );
+
+            // process image
+            ExtractBlobsImage( imageData, blob );
+
+            // unlock source images
+            image.UnlockBits( imageData );
+        }
+
+        /// <summary>
+        /// Extract blob's image.
+        /// </summary>
+        /// 
+        /// <param name="imageData">Source image data to extract blob's image from.</param>
+        /// <param name="blob">Blob which is required to extracå image of.</param>
+        /// 
+        /// <remarks><para>The method is used to extract image of partially initialized blob, which
+        /// was provided by <see cref="GetObjectInformation"/> method.</para></remarks>
+        /// 
+        public void ExtractBlobsImage( BitmapData imageData, Blob blob )
+        {
+            // check if objects map was collected
+            if ( objectLabels == null )
+                throw new ApplicationException( "Image should be processed before to collect objects map" );
+
+            if (
+                ( imageData.PixelFormat != PixelFormat.Format24bppRgb ) &&
+                ( imageData.PixelFormat != PixelFormat.Format8bppIndexed )
+                )
+                throw new ArgumentException( "The method can be applied to graysclae (8bpp indexed) or color (24bpp) image only" );
+
+            // image size
+            int width  = imageData.Width;
+            int height = imageData.Height;
+            int srcStride = imageData.Stride;
+            int pixelSize = ( imageData.PixelFormat == PixelFormat.Format8bppIndexed ) ? 1 : 3;
+
+            int objectWidth  = blob.Rectangle.Width;
+            int objectHeight = blob.Rectangle.Height;
+
+            int xmin = blob.Rectangle.Left;
+            int xmax = xmin + objectWidth - 1;
+            int ymin = blob.Rectangle.Top;
+            int ymax = ymin + objectHeight - 1;
+
+            int label = blob.ID;
+
+            // create new image
+            blob.Image = ( imageData.PixelFormat == PixelFormat.Format8bppIndexed ) ?
+                AForge.Imaging.Image.CreateGrayscaleImage( objectWidth, objectHeight ) :
+                new Bitmap( objectWidth, objectHeight, PixelFormat.Format24bppRgb );
+
+            // lock destination bitmap data
+            BitmapData dstData = blob.Image.LockBits(
+                new Rectangle( 0, 0, objectWidth, objectHeight ),
+                ImageLockMode.ReadWrite, imageData.PixelFormat );
+
+            // copy image
+            unsafe
+            {
+                byte* src = (byte*) imageData.Scan0.ToPointer( ) + ymin * srcStride + xmin * pixelSize;
+                byte* dst = (byte*) dstData.Scan0.ToPointer( );
+                int p = ymin * width + xmin;
+
+                int srcOffset = srcStride - objectWidth * pixelSize;
+                int dstOffset = dstData.Stride - objectWidth * pixelSize;
+                int labelsOffset = width - objectWidth;
+
+                // for each line
+                for ( int y = ymin; y <= ymax; y++ )
+                {
+                    // copy each pixel
+                    for ( int x = xmin; x <= xmax; x++, p++, dst += pixelSize, src += pixelSize )
+                    {
+                        if ( objectLabels[p] == label )
+                        {
+                            // copy pixel
+                            *dst = *src;
+
+                            if ( pixelSize > 1 )
+                            {
+                                dst[1] = src[1];
+                                dst[2] = src[2];
+                            }
+                        }
+                    }
+                    src += srcOffset;
+                    dst += dstOffset;
+                    p += labelsOffset;
+                }
+            }
+            // unlock destination image
+            blob.Image.UnlockBits( dstData );
         }
 
         /// <summary>
