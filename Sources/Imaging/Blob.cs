@@ -15,11 +15,15 @@ namespace AForge.Imaging
     /// Image's blob.
     /// </summary>
     /// 
-    /// <remarks>The class represents a blob - part of another images. The
+    /// <remarks><para>The class represents a blob - part of another images. The
     /// class encapsulates the blob itself and information about its position
-    /// in parent image.</remarks>
+    /// in parent image.</para>
     /// 
-    public class Blob : IDisposable
+    /// <para><note>The class is not responsible for blob's image disposing, so it should be
+    /// done manually when it is required.</note></para>
+    /// </remarks>
+    /// 
+    public class Blob
     {
         // blob's image
         private Bitmap image;
@@ -27,9 +31,6 @@ namespace AForge.Imaging
         private Rectangle rect;
         // blob's ID in the original image
         private int id;
-
-        // disposed flag
-        private bool disposed = false;
 
         /// <summary>
         /// Blob's image.
@@ -91,45 +92,6 @@ namespace AForge.Imaging
             this.id = id;
             this.rect = rect;
             this.image = image;
-        }
-
-        /// <summary>
-        /// Class destructor.
-        /// </summary>
-        ~Blob( )
-        {
-            Dispose( false );
-        }
-
-        /// <summary>
-        /// Dispose the object.
-        /// </summary>
-        public void Dispose( )
-        {
-            Dispose( true );
-            // prevent finalization for this object since it was disposed manually
-            GC.SuppressFinalize( this );
-        }
-
-        /// <summary>
-        /// Object disposing routine.
-        /// </summary>
-        /// 
-        /// <param name="disposing"><b>True</b> if the method is called from
-        /// <see cref="AForge.Imaging.Blob.Dispose()"/> method, <b>false</b> if the method is called
-        /// from destructor.</param>
-        /// 
-        protected virtual void Dispose( bool disposing )
-        {
-            if ( !disposed )
-            {
-                if ( ( disposing ) && ( image != null ) )
-                {
-                    // dispose managed resources
-                    image.Dispose( );
-                }
-                disposed = true;
-            }
         }
     }
 }
