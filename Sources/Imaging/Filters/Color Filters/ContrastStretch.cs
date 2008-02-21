@@ -23,6 +23,10 @@ namespace AForge.Imaging.Filters
     /// concerned allows. It differs from the more sophisticated <seealso cref="HistogramEqualization">histogram equalization</seealso>
     /// in that it can only apply a linear scaling function to the image pixel values.</para>
     /// 
+    /// <para>The result of this filter may be achieved by using <see cref="ImageStatistics"/> class, which allows to
+    /// get pixels' intensities histogram, and <see cref="LevelsLinear"/> filter, which does linear correction
+    /// of pixel's intensities.</para>
+    /// 
     /// <para><note>The class processes only grayscale (8 bpp indexed) and color (24 bpp) images.</note></para>
     /// 
     /// <para>Sample usage:</para>
