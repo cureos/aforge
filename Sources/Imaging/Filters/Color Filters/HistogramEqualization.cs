@@ -34,7 +34,7 @@ namespace AForge.Imaging.Filters
     /// </code>
     /// 
     /// <para><b>Source image:</b></para>
-    /// <img src="grayscale.jpg" width="480" height="387" />
+    /// <img src="sample5.jpg" width="480" height="387" />
     /// <para><b>Result image:</b></para>
     /// <img src="equalized.jpg" width="480" height="387" />
     /// </remarks>
