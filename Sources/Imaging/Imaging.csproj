@@ -230,6 +230,7 @@
     <Compile Include="Filters\Color Filters\GrayscaleY.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filters\Color Filters\HistogramEqualization.cs" />
     <Compile Include="Filters\Color Filters\Invert.cs">
       <SubType>Code</SubType>
     </Compile>
