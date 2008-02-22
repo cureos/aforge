@@ -12,6 +12,38 @@ namespace AForge.Imaging
     using System.Drawing.Imaging;
 
     /// <summary>
+    /// Possible object orders.
+    /// </summary>
+    /// 
+    /// <remarks>The enumeration defines possible sorting orders of objects, found by blob
+    /// counting classes.</remarks>
+    /// 
+    public enum ObjectsOrder
+    {
+        /// <summary>
+        /// Unsorted order (as it is collected by algorithm).
+        /// </summary>
+        None,
+
+        /// <summary>
+        /// Objects are sorted by size in descending order (big objects go first).
+        /// </summary>
+        Size,
+
+        /// <summary>
+        /// Objects are sorted by Y coordinate, then by X coordinate in ascending order
+        /// (smaller coordinates go first).
+        /// </summary>
+        YX,
+
+        /// <summary>
+        /// Objects are sorted by X coordinate, then by Y coordinate in ascending order
+        /// (smaller coordinates go first).
+        /// </summary>
+        XY
+    }
+
+    /// <summary>
     /// Base class for differnt blob counting algorithms.
     /// </summary>
     /// 
@@ -43,6 +75,9 @@ namespace AForge.Imaging
     {
         // blobs' rectangles
         Rectangle[] blobsRectangles = null;
+
+        // objects' sort order
+        private ObjectsOrder objectsOrder = ObjectsOrder.None;
 
         // filtering by size is required or nor
         private bool filterBlobs = false;
@@ -95,6 +130,20 @@ namespace AForge.Imaging
         public int[] ObjectLabels
         {
             get { return objectLabels; }
+        }
+
+        /// <summary>
+        /// Objects sort order.
+        /// </summary>
+        /// 
+        /// <remarks><para>The property specifies objects' sort order, which are provided
+        /// by <see cref="GetObjectRectangles"/>, <see cref="GetObjectInformation"/>, etc.
+        /// </para></remarks>
+        /// 
+        public ObjectsOrder ObjectsOrder
+        {
+            get { return objectsOrder; }
+            set { objectsOrder = value; }
         }
 
         /// <summary>
@@ -415,6 +464,14 @@ namespace AForge.Imaging
             if ( blobsRectangles == null )
                 CollectObjectsRectangles( );
 
+            // do we need to sort the list?
+            if ( objectsOrder != ObjectsOrder.None )
+            {
+                Rectangle[] rects = (Rectangle[]) blobsRectangles.Clone( );
+                Array.Sort( rects, new RectanglesSorter( objectsOrder ) );
+                return rects;
+            }
+
             return blobsRectangles;
         }
 
@@ -446,6 +503,12 @@ namespace AForge.Imaging
             for ( int k = 0; k < objectsCount; k++ )
             {
                 blobs[k] = new Blob( k + 1, blobsRectangles[k] );
+            }
+
+            // sort blobs
+            if ( objectsOrder != ObjectsOrder.None )
+            {
+                Array.Sort( blobs, new RectanglesSorter( objectsOrder ) );
             }
 
             return blobs;
@@ -579,6 +642,14 @@ namespace AForge.Imaging
 
                 objects[k] = new Blob( label, new Rectangle( xmin, ymin, objectWidth, objectHeight ), dstImg );
             }
+
+            // sort blobs
+            if ( objectsOrder != ObjectsOrder.None )
+            {
+                Array.Sort( objects, new RectanglesSorter( objectsOrder ) );
+            }
+
+
             return objects;
         }
 
@@ -768,6 +839,41 @@ namespace AForge.Imaging
                 blobsRectangles[j - 1] = new Rectangle( x1[j], y1[j], x2[j] - x1[j] + 1, y2[j] - y1[j] + 1 );
             }
         }
+
+        // Rectangles' and blobs' sorter
+        private class RectanglesSorter : System.Collections.IComparer
+        {
+            private ObjectsOrder order;
+
+            public RectanglesSorter( ObjectsOrder order )
+            {
+                this.order = order;
+            }
+
+            public int Compare( Object x, Object y )
+            {
+                Rectangle xRect = ( x is Rectangle ) ? (Rectangle) x : ( (Blob) x ).Rectangle;
+                Rectangle yRect = ( y is Rectangle ) ? (Rectangle) y : ( (Blob) y ).Rectangle;
+
+                switch ( order )
+                {
+                    case ObjectsOrder.Size: // sort by size
+
+                        // the order is changed to descending
+                        return ( yRect.Width * yRect.Height - xRect.Width * xRect.Height );
+
+                    case ObjectsOrder.YX:   // YX order
+
+                        return ( ( xRect.Y * 100000 + xRect.X ) - ( yRect.Y * 100000 + yRect.X ) );
+
+                    case ObjectsOrder.XY:   // XY order
+
+                        return ( ( xRect.X * 100000 + xRect.Y ) - ( yRect.X * 100000 + yRect.Y ) );
+                }
+                return 0;
+            }
+        }
+
         #endregion
     }
 }
