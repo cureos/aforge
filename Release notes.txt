@@ -1,3 +1,43 @@
+AForge.NET 1.6.1 release notes
+------------------------------
+25.02.2008.
+
+
+Version updates and fixes:
+
+* Fixed registered issues/requests:
+  - Issue 15: Save trained network to stream
+  - Issue 31: Provide blobs ordering functionality for Blob Counter
+  - Issue 48: Extracting particular blob
+  - Issue 49: Extracting of the biggest blob
+
+
+* AForge.Imaging
+  - Flat Field Correction filter is added.
+
+  - BlobCounterBase class is extended with two additional methods: GetObjectInformation(), which allows
+    to collect blobs without initialized image, and ExtractBlobsImage(), which allows to extract blob's
+    image. Blob class got new additional ID property.
+
+  - Blob class is changed so it does not implement IDisposable interface any more. Use is responsible for
+    blob's image disposing.
+
+  - ExtractBiggestBlob filter is introduced, which extracts the biggest blob from the provided source
+    image (or from original image if appropriate property is set).
+
+  - Histogram Equalization filter is added.
+
+  - Contrast Stretch filter is added.
+
+  - ObjectsOrder property is added to BlobCounterBase class, which allows to select objects' sort order.
+
+
+* AForge.Neuro
+  - Save() and Load() methods are added to Network class, which allow to serialize/deserialize neural network.
+
+
+
+
 AForge.NET 1.6.0 release notes
 ------------------------------
 11.02.2008.
