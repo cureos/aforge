@@ -12,16 +12,22 @@
     <additionalContent>
         <contentItem sourcePath="..\Imaging\Images\additive_noise.jpg" destPath="" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\bayer_dithering.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\bg.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\biggest_blob.jpg" destPath="" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\blobs_filtering.jpg" destPath="" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\burkes.jpg" destPath="" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\canvas_crop.jpg" destPath="" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\color_remapping.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\contrast_stretch.jpg" destPath="" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\dilatation.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\equalized.jpg" destPath="" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\erosion.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\flat_field.jpg" destPath="" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\floyd_steinberg.jpg" destPath="" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\fourier.jpg" destPath="" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\frequency_filter.jpg" destPath="" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\grayscale.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\hor_histogram.jpg" destPath="" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\jarvis_judice_ninke.jpg" destPath="" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\labeling.jpg" destPath="" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\levels_linear.jpg" destPath="" excludeItems="False" />
@@ -32,13 +38,14 @@
         <contentItem sourcePath="..\Imaging\Images\sample1.jpg" destPath="" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\sample2.jpg" destPath="" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\sample3.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\sample4.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\sample5.jpg" destPath="" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\sepia.jpg" destPath="" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\sierra.jpg" destPath="" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\stevenson_arce.jpg" destPath="" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\stucki.jpg" destPath="" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\threshold.jpg" destPath="" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\threshold_carry.jpg" destPath="" excludeItems="False" />
-        <contentItem sourcePath="..\Imaging\Images\hor_histogram.jpg" destPath="" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\ver_histogram.jpg" destPath="" excludeItems="False" />
     </additionalContent>
     <dependencies>
