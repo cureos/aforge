@@ -49,7 +49,7 @@ namespace AForge.Imaging
     /// 
     /// <remarks><para>The class is abstract and serves as a base for different blob counting algorithms.
     /// Classes, which inherit from this base class, require to implement <see cref="BuildObjectsMap"/>
-    /// method, which does actual building objects labels map.</para>
+    /// method, which does actual building of object's label's map.</para>
     /// <para>Sample usage:</para>
     /// <code>
     /// // create an instance of blob counter algorithm
@@ -448,7 +448,7 @@ namespace AForge.Imaging
         /// Get objects' rectangles.
         /// </summary>
         /// 
-        /// <returns>Returns array of objects rectangles.</returns>
+        /// <returns>Returns array of objects' rectangles.</returns>
         /// 
         /// <remarks>The method returns array of objects rectangles. Before calling the
         /// method, the <see cref="ProcessImage(Bitmap)"/> or <see cref="ProcessImage(BitmapData)"/>
@@ -479,13 +479,34 @@ namespace AForge.Imaging
         /// Get objects' information.
         /// </summary>
         /// 
-        /// <returns>Returns array of partially initialized blobs (without <see cref="Blob.Image"/> property initialized.</returns>
+        /// <returns>Returns array of partially initialized blobs (without <see cref="Blob.Image"/> property initialized).</returns>
         /// 
         /// <remarks><para>By the amount of provided information, the method is between <see cref="GetObjectRectangles"/> and
         /// <see cref="GetObjects( BitmapData )"/> methods. The method provides array of blobs without initialized their image.
         /// Blob's image may be extracted later using <see cref="ExtractBlobsImage( Bitmap, Blob )"/>
         /// or <see cref="ExtractBlobsImage( BitmapData, Blob )"/> method.
         /// </para></remarks>
+        /// 
+        /// <example>
+        /// <code>
+        /// // create blob counter and process image
+        /// BlobCounter bc = new BlobCounter( sourceImage );
+        /// // specify sort order
+        /// bc.ObjectsOrder = ObjectsOrder.Size;
+        /// // get objects' information (blobs without image)
+        /// Blob[] blobs = bc.GetObjectInformation( );
+        /// // process blobs
+        /// foreach ( Blob blob in blobs )
+        /// {
+        ///     // check blob's properties
+        ///     if ( blob.Rectangle.Width > 50 )
+        ///     {
+        ///         // the blob looks interesting, let's extract it
+        ///         bc.ExtractBlobsImage( sourceImage, blob );
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
         /// 
         public Blob[] GetObjectInformation( )
         {
