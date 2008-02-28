@@ -1,3 +1,21 @@
+AForge.NET 1.6.2 release notes
+------------------------------
+28.02.2008.
+
+
+Version updates and fixes:
+
+* Fixed registered issues/requests:
+  - Issue 52: Canny edge detector gives wrong result  
+
+
+* AForge.Imaging
+  - Canny Edge Detector is fixed to use floating point gradients array to correct non-maximum suppression
+    and location of edge points.
+
+
+
+
 AForge.NET 1.6.1 release notes
 ------------------------------
 25.02.2008.
