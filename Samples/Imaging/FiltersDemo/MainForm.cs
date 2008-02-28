@@ -193,6 +193,7 @@ namespace FiltersDemo
             // openFileItem
             // 
             this.openFileItem.Index = 0;
+            this.openFileItem.Shortcut = System.Windows.Forms.Shortcut.CtrlO;
             this.openFileItem.Text = "&Open";
             this.openFileItem.Click += new System.EventHandler( this.openFileItem_Click );
             // 
