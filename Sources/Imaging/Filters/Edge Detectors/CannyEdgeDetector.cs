@@ -1,4 +1,5 @@
 // AForge Image Processing Library
+// AForge.NET framework
 //
 // Copyright © Andrew Kirillov, 2005-2007
 // andrew.kirillov@gmail.com
@@ -10,17 +11,17 @@ namespace AForge.Imaging.Filters
     using System.Drawing.Imaging;
 
     /// <summary>
-    /// Canny edge detector
+    /// Canny edge detector.
     /// </summary>
     /// 
     /// <remarks></remarks>
     /// 
     public class CannyEdgeDetector : FilterColorToGray
     {
-        private IFilter         grayscaleFilter = new GrayscaleBT709( );
-        private GaussianBlur    gaussianFilter = new GaussianBlur( );
-        private byte            lowThreshold = 20;
-        private byte            highThreshold = 100;
+        private IFilter grayscaleFilter = new GrayscaleBT709( );
+        private GaussianBlur gaussianFilter = new GaussianBlur( );
+        private byte lowThreshold = 20;
+        private byte highThreshold = 100;
 
         // Sobel kernels
         private static int[,] xKernel = new int[,]
@@ -37,7 +38,7 @@ namespace AForge.Imaging.Filters
 		};
 
         /// <summary>
-        /// Low threshold
+        /// Low threshold.
         /// </summary>
         /// 
         public byte LowThreshold
@@ -47,7 +48,7 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// High threshold
+        /// High threshold.
         /// </summary>
         /// 
         public byte HighThreshold
@@ -57,10 +58,10 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Gaussian sigma
+        /// Gaussian sigma.
         /// </summary>
         /// 
-        /// <remarks>The value is for Gaussian bluring</remarks>
+        /// <remarks>The value is for Gaussian bluring.</remarks>
         /// 
         public double GaussianSigma
         {
@@ -69,10 +70,10 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Gaussian size
+        /// Gaussian size.
         /// </summary>
         /// 
-        /// <remarks>Size of Gaussian kernel</remarks>
+        /// <remarks>Size of Gaussian kernel.</remarks>
         /// 
         public int GaussianSize
         {
@@ -81,17 +82,17 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CannyEdgeDetector"/> class
+        /// Initializes a new instance of the <see cref="CannyEdgeDetector"/> class.
         /// </summary>
         /// 
         public CannyEdgeDetector( ) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CannyEdgeDetector"/> class
+        /// Initializes a new instance of the <see cref="CannyEdgeDetector"/> class.
         /// </summary>
         /// 
-        /// <param name="lowThreshold">Low threshold</param>
-        /// <param name="highThreshold">High threshold</param>
+        /// <param name="lowThreshold">Low threshold.</param>
+        /// <param name="highThreshold">High threshold.</param>
         /// 
         public CannyEdgeDetector( byte lowThreshold, byte highThreshold )
         {
@@ -100,12 +101,12 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CannyEdgeDetector"/> class
+        /// Initializes a new instance of the <see cref="CannyEdgeDetector"/> class.
         /// </summary>
         /// 
-        /// <param name="lowThreshold">Low threshold</param>
-        /// <param name="highThreshold">High threshold</param>
-        /// <param name="sigma">Gaussian sigma</param>
+        /// <param name="lowThreshold">Low threshold.</param>
+        /// <param name="highThreshold">High threshold.</param>
+        /// <param name="sigma">Gaussian sigma.</param>
         /// 
         public CannyEdgeDetector( byte lowThreshold, byte highThreshold, double sigma )
         {
@@ -115,21 +116,21 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Process the filter on the specified image
+        /// Process the filter on the specified image.
         /// </summary>
         /// 
-        /// <param name="sourceData">Source image data</param>
-        /// <param name="destinationData">Destination image data</param>
+        /// <param name="sourceData">Source image data.</param>
+        /// <param name="destinationData">Destination image data.</param>
         /// 
         protected override unsafe void ProcessFilter( BitmapData sourceData, BitmapData destinationData )
         {
             // get width and height
-            int width       = sourceData.Width;
-            int height      = sourceData.Height;
-            int widthM1     = width - 1;
-            int heightM1    = height - 1;
-            int stride      = destinationData.Stride;
-            int offset      = stride - width;
+            int width    = sourceData.Width;
+            int height   = sourceData.Height;
+            int widthM1  = width - 1;
+            int heightM1 = height - 1;
+            int stride   = destinationData.Stride;
+            int offset   = stride - width;
 
             // loop and array indexes
             int i, j, ir;
@@ -137,7 +138,7 @@ namespace AForge.Imaging.Filters
             double v, gx, gy;
             //
             double orientation, toAngle = 180.0 / System.Math.PI;
-            byte leftPixel = 0, rightPixel = 0;
+            float leftPixel = 0, rightPixel = 0;
 
             // orientation array
             byte[] orients = new byte[width * height];
@@ -164,9 +165,12 @@ namespace AForge.Imaging.Filters
                     new Rectangle( 0, 0, width, height ),
                     ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed );
 
+            // gradients array
+            float[,] gradients = new float[width, height];
+            float maxGradient = float.NegativeInfinity;
+
             // do the job
             byte* src = (byte*) blurredData.Scan0.ToPointer( ) + stride;
-            byte* dst = (byte*) destinationData.Scan0.ToPointer( ) + stride;
             int p = width;
 
             // STEP 3 - calculate magnitude and edge orientation
@@ -175,11 +179,10 @@ namespace AForge.Imaging.Filters
             for ( int y = 1; y < heightM1; y++ )
             {
                 src++;
-                dst++;
                 p++;
 
                 // for each pixel
-                for ( int x = 1; x < widthM1; x++, src++, dst++, p++ )
+                for ( int x = 1; x < widthM1; x++, src++, p++ )
                 {
                     gx = gy = 0;
                     // for each kernel row
@@ -197,12 +200,13 @@ namespace AForge.Imaging.Filters
                         }
                     }
                     // get gradient value
-                    *dst = (byte) Math.Min( Math.Abs( gx ) + Math.Abs( gy ), 255 );
+                    gradients[x, y] = (float) Math.Sqrt( gx * gx + gy * gy );
+                    maxGradient = Math.Max( maxGradient, gradients[x, y] );
 
                     // --- get orientation
                     if ( gx == 0 )
                     {
-                        // can not devide by zero
+                        // can not divide by zero
                         orientation = ( gy == 0 ) ? 0 : 90;
                     }
                     else
@@ -236,12 +240,11 @@ namespace AForge.Imaging.Filters
                     orients[p] = (byte) orientation;
                 }
                 src += ( offset + 1 );
-                dst += ( offset + 1 );
                 p++;
             }
 
             // STEP 4 - suppres non maximums
-            dst = (byte*) destinationData.Scan0.ToPointer( ) + stride;
+            byte* dst = (byte*) destinationData.Scan0.ToPointer( ) + stride;
             p = width;
 
             // for each line
@@ -257,26 +260,30 @@ namespace AForge.Imaging.Filters
                     switch ( orients[p] )
                     {
                         case 0:
-                            leftPixel = dst[-1];
-                            rightPixel = dst[1];
+                            leftPixel  = gradients[x - 1, y];
+                            rightPixel = gradients[x + 1, y];
                             break;
                         case 45:
-                            leftPixel = dst[stride - 1];
-                            rightPixel = dst[-stride + 1];
+                            leftPixel  = gradients[x - 1, y + 1];
+                            rightPixel = gradients[x + 1, y - 1];
                             break;
                         case 90:
-                            leftPixel = dst[stride];
-                            rightPixel = dst[-stride];
+                            leftPixel  = gradients[x, y + 1];
+                            rightPixel = gradients[x, y - 1];
                             break;
                         case 135:
-                            leftPixel = dst[stride + 1];
-                            rightPixel = dst[-stride - 1];
+                            leftPixel  = gradients[x + 1, y + 1];
+                            rightPixel = gradients[x - 1, y - 1];
                             break;
                     }
                     // compare current pixels value with adjacent pixels
-                    if ( ( *dst < leftPixel ) || ( *dst < rightPixel ) )
+                    if ( ( gradients[x, y] < leftPixel ) || ( gradients[x, y] < rightPixel ) )
                     {
                         *dst = 0;
+                    }
+                    else
+                    {
+                        *dst = (byte) ( gradients[x, y] / maxGradient * 255 );
                     }
                 }
                 dst += ( offset + 1 );
