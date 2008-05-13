@@ -166,7 +166,7 @@ namespace AForge.Imaging
 						l[(int) ( hsl.Luminance * 255 )]++;
 						pixels++;
 
-						if ( ( hsl.Hue != 0.0 ) || ( hsl.Luminance != 0.0 ) || ( hsl.Saturation != 0.0 ) )
+						if ( hsl.Luminance != 0.0 )
 						{
 							swb[(int) ( hsl.Saturation * 255 )]++;
 							lwb[(int) ( hsl.Luminance * 255 )]++;
