@@ -23,6 +23,8 @@ namespace MotionDetector
 {
     public partial class MainForm : Form
     {
+        // opened video source
+        private IVideoSource videoSource = null;
         // motion detector
         private IMotionDetector detector = null;
         // motion detector's type
@@ -178,6 +180,8 @@ namespace MotionDetector
             // start timer
             timer.Start( );
 
+            videoSource = source;
+
             this.Cursor = Cursors.Default;
         }
 
@@ -209,6 +213,8 @@ namespace MotionDetector
                 // reset motion detector
                 if ( detector != null )
                     detector.Reset( );
+
+                videoSource = null;
             }
         }
 
@@ -381,6 +387,22 @@ namespace MotionDetector
 
                     zonesDetector.MotionZones = rects;
                 }
+            }
+        }
+
+        // On opening of Tools menu
+        private void toolsToolStripMenuItem_DropDownOpening( object sender, EventArgs e )
+        {
+            localVideoCaptureSettingsToolStripMenuItem.Enabled =
+                ( ( videoSource != null ) && ( videoSource is VideoCaptureDevice ) );
+        }
+
+        // Display properties of local capture device
+        private void localVideoCaptureSettingsToolStripMenuItem_Click( object sender, EventArgs e )
+        {
+            if ( ( videoSource != null ) && ( videoSource is VideoCaptureDevice ) )
+            {
+                ( (VideoCaptureDevice) videoSource ).DisplayPropertyPage( this.Handle );
             }
         }
     }

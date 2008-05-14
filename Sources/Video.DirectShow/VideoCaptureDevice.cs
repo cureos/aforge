@@ -297,6 +297,43 @@ namespace AForge.Video.DirectShow
         }
 
         /// <summary>
+        /// Display property window for the video capture device providing its configuration
+        /// capabilities.
+        /// </summary>
+        /// 
+        /// <param name="parentWindow">Handle of parent window.</param>
+        /// 
+        public void DisplayPropertyPage( IntPtr parentWindow )
+        {
+            // check source
+            if ( ( deviceMoniker == null ) || ( deviceMoniker == string.Empty ) )
+                throw new ArgumentException( "Video source is not specified" );
+
+            // create source device's object
+            object sourceObject = FilterInfo.CreateFilter( deviceMoniker );
+            if ( sourceObject == null )
+                throw new ApplicationException( "Failed creating device object for moniker" );
+
+            // retrieve ISpecifyPropertyPages interface of the device
+            ISpecifyPropertyPages pPropPages = (ISpecifyPropertyPages) sourceObject;
+
+            // get property pages from the property bag
+            CAUUID caGUID;
+            pPropPages.GetPages( out caGUID );
+
+            // get filter info
+            FilterInfo filterInfo = new FilterInfo( deviceMoniker );
+
+            //Create and display the OlePropertyFrame
+            // object device = sourceObject;
+            Win32.OleCreatePropertyFrame( parentWindow, 0, 0, filterInfo.Name, 1, ref sourceObject, caGUID.cElems, caGUID.pElems, 0, 0, IntPtr.Zero );
+
+            // release COM objects
+            Marshal.FreeCoTaskMem( caGUID.pElems );
+            Marshal.ReleaseComObject( sourceObject );
+        }
+
+        /// <summary>
         /// Worker thread.
         /// </summary>
         /// 
@@ -448,7 +485,7 @@ namespace AForge.Video.DirectShow
         }
 
         //
-        // Vodeo grabber
+        // Video grabber
         //
         private class Grabber : ISampleGrabberCB
         {

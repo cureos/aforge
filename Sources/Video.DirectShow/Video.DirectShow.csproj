@@ -55,6 +55,7 @@
     <Compile Include="Internals\IPropertyBag.cs" />
     <Compile Include="Internals\ISampleGrabber.cs" />
     <Compile Include="Internals\ISampleGrabberCB.cs" />
+    <Compile Include="Internals\ISpecifyPropertyPages.cs" />
     <Compile Include="Internals\IVideoWindow.cs" />
     <Compile Include="Internals\Structures.cs" />
     <Compile Include="Internals\Tools.cs" />
