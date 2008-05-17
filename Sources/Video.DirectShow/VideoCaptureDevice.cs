@@ -1,7 +1,7 @@
 // AForge Direct Show Library
 // AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2007
+// Copyright © Andrew Kirillov, 2007-2008
 // andrew.kirillov@gmail.com
 //
 
@@ -56,8 +56,10 @@ namespace AForge.Video.DirectShow
         private int framesReceived;
         // recieved byte count
         private int bytesReceived;
-        // prevent freezing
-        private bool preventFreezing = true;
+        // specifies desired size of captured frames
+        private Size desiredFrameSize = new Size( 0, 0 );
+        // specifies desired capture frame rate
+        private int desiredFrameRate = 0;
 
         private Thread thread = null;
         private ManualResetEvent stopEvent = null;
@@ -163,28 +165,41 @@ namespace AForge.Video.DirectShow
         }
 
         /// <summary>
-        /// Prevent video freezing after screen saver and workstation lock or not.
+        /// Desired size of captured frames.
         /// </summary>
         /// 
-        /// <remarks>
-        /// <para>The value specifies if the class should prevent video freezing during and
-        /// after screen saver or workstation lock. To prevent freezing the <i>DirectShow</i> graph
-        /// should not contain  <i>Renderer</i> filter, which is added by <i>Render()</i> method
-        /// of graph. However, in some cases it may be required to call <i>Render()</i> method of graph, since
-        /// it may add some more filters, which may be required for playing video. So, the property is
-        /// a trade off - it is possible to prevent video freezing skipping adding renderer filter or
-        /// it is possible to keep renderer filter, but video may freeze during screen saver.</para>
-        /// <para>Default value of this property is set to <b>true</b> for capture device.</para>
-        /// <para><note>The property may become obsolete in the future if approach to disable freezing
-        /// and adding all required filters is found.</note></para>
-        /// <para><note>The property should be set before calling <see cref="Start"/> method
-        /// of the class.</note></para>
-        /// </remarks>
+        /// <remarks><para>The property sets desired frame size. However capture
+        /// device may not always provide frame with configured size due to the fact
+        /// that the size is not supported by it.</para>
+        /// <para>If the property is set to size (0, 0), then capture device uses its own
+        /// default frame size configuration.</para>
+        /// <para>Default value of the property is set to (0, 0).</para>
+        /// <para><note>The property should be configured before video source is started
+        /// to take effect.</note></para></remarks>
         /// 
-        public bool PreventFreezing
+        public Size DesiredFrameSize
         {
-            get { return preventFreezing; }
-            set { preventFreezing = value; }
+            get { return desiredFrameSize; }
+            set { desiredFrameSize = value; }
+        }
+
+        /// <summary>
+        /// Desired capture frame rate.
+        /// </summary>
+        /// 
+        /// <remarks><para>The property sets desired capture frame rate. However capture
+        /// device may not always provide the exact configured frame rate due to its
+        /// capabilities, system performance, etc.</para>
+        /// <para>If the property is set to 0, then capture device uses its own default
+        /// frame rate.</para>
+        /// <para>Default value of the property is set to 0.</para>
+        /// <para><note>The property should be configured before video source is started
+        /// to take effect.</note></para></remarks>
+        /// 
+        public int DesiredFrameRate
+        {
+            get { return desiredFrameRate; }
+            set { desiredFrameRate = value; }
         }
 
         /// <summary>
@@ -343,12 +358,14 @@ namespace AForge.Video.DirectShow
             Grabber grabber = new Grabber( this );
 
             // objects
+            object captureGraphObject = null;
             object graphObject = null;
             object sourceObject = null;
             object grabberObject = null;
 
             // interfaces
-            IGraphBuilder   graph = null;
+            ICaptureGraphBuilder2 captureGraph = null;
+            IFilterGraph2   graph = null;
             IBaseFilter     sourceBase = null;
             IBaseFilter     grabberBase = null;
             ISampleGrabber  sampleGrabber = null;
@@ -356,14 +373,26 @@ namespace AForge.Video.DirectShow
 
             try
             {
-                // get type for filter graph
-                Type type = Type.GetTypeFromCLSID( Clsid.FilterGraph );
+                // get type of capture graph builder
+                Type type = Type.GetTypeFromCLSID( Clsid.CaptureGraphBuilder2 );
+                if ( type == null )
+                    throw new ApplicationException( "Failed creating capture graph builder" );
+
+                // create capture graph builder
+                captureGraphObject = Activator.CreateInstance( type );
+                captureGraph = (ICaptureGraphBuilder2) captureGraphObject;
+
+                // get type of filter graph
+                type = Type.GetTypeFromCLSID( Clsid.FilterGraph );
                 if ( type == null )
                     throw new ApplicationException( "Failed creating filter graph" );
 
                 // create filter graph
                 graphObject = Activator.CreateInstance( type );
-                graph = (IGraphBuilder) graphObject;
+                graph = (IFilterGraph2) graphObject;
+
+                // set filter graph to the capture graph builder
+                captureGraph.SetFiltergraph( (IGraphBuilder) graph );
 
                 // create source device's object
                 sourceObject = FilterInfo.CreateFilter( deviceMoniker );
@@ -373,7 +402,7 @@ namespace AForge.Video.DirectShow
                 // get base filter interface of source device
                 sourceBase = (IBaseFilter) sourceObject;
 
-                // get type for sample grabber
+                // get type of sample grabber
                 type = Type.GetTypeFromCLSID( Clsid.SampleGrabber );
                 if ( type == null )
                     throw new ApplicationException( "Failed creating sample grabber" );
@@ -390,14 +419,56 @@ namespace AForge.Video.DirectShow
                 // set media type
                 AMMediaType mediaType = new AMMediaType( );
                 mediaType.MajorType = MediaType.Video;
-                mediaType.SubType = MediaSubType.RGB24;
+                mediaType.SubType   = MediaSubType.RGB24;
+
                 sampleGrabber.SetMediaType( mediaType );
 
-                // connect pins
-                if ( graph.Connect( Tools.GetOutPin( sourceBase, 0 ), Tools.GetInPin( grabberBase, 0 ) ) < 0 )
-                    throw new ApplicationException( "Failed connecting filters" );
+                // configure sample grabber
+                sampleGrabber.SetBufferSamples( false );
+                sampleGrabber.SetOneShot( false );
+                sampleGrabber.SetCallback( grabber, 1 );
 
-				// get media type
+                // check if it is required to change capture settings
+                if ( ( desiredFrameRate != 0 ) || ( ( desiredFrameSize.Width != 0 ) && ( desiredFrameSize.Height != 0 ) ) )
+                {
+                    object streamConfigObject;
+                    // get stream configuration object
+                    captureGraph.FindInterface( PinCategory.Capture, MediaType.Video, sourceBase, typeof( IAMStreamConfig ).GUID, out streamConfigObject );
+
+                    if ( streamConfigObject != null )
+                    {
+                        IAMStreamConfig streamConfig = (IAMStreamConfig) streamConfigObject;
+
+                        // get current format
+                        streamConfig.GetFormat( out mediaType );
+                        VideoInfoHeader infoHeader = (VideoInfoHeader) Marshal.PtrToStructure( mediaType.FormatPtr, typeof( VideoInfoHeader ) );
+
+                        // change frame size if required
+                        if ( ( desiredFrameSize.Width != 0 ) && ( desiredFrameSize.Height != 0 ) )
+                        {
+                            infoHeader.BmiHeader.Width  = desiredFrameSize.Width;
+                            infoHeader.BmiHeader.Height = desiredFrameSize.Height;
+                        }
+                        // change frame rate if required
+                        if ( desiredFrameRate != 0 )
+                        {
+                            infoHeader.AverageTimePerFrame = 10000000 / desiredFrameRate;
+                        }
+
+                        // Copy the media structure back
+                        Marshal.StructureToPtr( infoHeader, mediaType.FormatPtr, false );
+
+                        // set the new format
+                        streamConfig.SetFormat( mediaType );
+
+                        mediaType.Dispose( );
+                    }
+                }
+
+                // render source device on sample grabber
+                captureGraph.RenderStream( PinCategory.Capture, MediaType.Video, sourceBase, null, grabberBase );
+
+                // get media type
                 if ( sampleGrabber.GetConnectedMediaType( mediaType ) == 0 )
                 {
                     VideoInfoHeader vih = (VideoInfoHeader) Marshal.PtrToStructure( mediaType.FormatPtr, typeof( VideoInfoHeader ) );
@@ -406,23 +477,6 @@ namespace AForge.Video.DirectShow
                     grabber.Height = vih.BmiHeader.Height;
                     mediaType.Dispose( );
                 }
-
-                // let's do rendering, if we don't need to prevent freezing
-                if ( !preventFreezing )
-                {
-                    // render pin
-                    graph.Render( Tools.GetOutPin( grabberBase, 0 ) );
-
-                    // configure video window
-                    IVideoWindow window = (IVideoWindow) graphObject;
-                    window.put_AutoShow( false );
-                    window = null;
-                }
-
-                // configure sample grabber
-                sampleGrabber.SetBufferSamples( false );
-                sampleGrabber.SetOneShot( false );
-                sampleGrabber.SetCallback( grabber, 1 );
 
                 // get media control
                 mediaControl = (IMediaControl) graphObject;
@@ -447,6 +501,7 @@ namespace AForge.Video.DirectShow
             finally
             {
                 // release all objects
+                captureGraph    = null;
                 graph           = null;
                 sourceBase      = null;
                 grabberBase     = null;
@@ -467,6 +522,11 @@ namespace AForge.Video.DirectShow
                 {
                     Marshal.ReleaseComObject( grabberObject );
                     grabberObject = null;
+                }
+                if ( captureGraphObject != null )
+                {
+                    Marshal.ReleaseComObject( captureGraphObject );
+                    captureGraphObject = null;
                 }
             }
         }
@@ -517,7 +577,7 @@ namespace AForge.Video.DirectShow
                 return 0;
             }
 
-			// Callback method that receives a pointer to the sample buffer
+            // Callback method that receives a pointer to the sample buffer
             public int BufferCB( double sampleTime, IntPtr buffer, int bufferLen )
             {
                 // create new image

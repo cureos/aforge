@@ -44,6 +44,15 @@ namespace AForge.Video.DirectShow.Internals
             new Guid( 0xC1F400A0, 0x3F08, 0x11D3, 0x9F, 0x0B, 0x00, 0x60, 0x08, 0x03, 0x9E, 0x37 );
 
         /// <summary>
+        /// Capture graph builder.
+        /// </summary>
+        /// 
+        /// <remarks>Equals to CLSID_CaptureGraphBuilder2.</remarks>
+        /// 
+        public static readonly Guid CaptureGraphBuilder2 =
+            new Guid( 0xBF87B6E1, 0x8C27, 0x11D0, 0xB3, 0xF0, 0x00, 0xAA, 0x00, 0x37, 0x61, 0xC5 );
+
+        /// <summary>
         /// Async reader.
         /// </summary>
         /// 
@@ -222,4 +231,20 @@ namespace AForge.Video.DirectShow.Internals
             new Guid( 0x3DB80F90, 0x9412, 0x11D1, 0xAD, 0xED, 0x00, 0x00, 0xF8, 0x75, 0x4B, 0x99 );
     }
 
+    /// <summary>
+    /// DirectShow pin categories.
+    /// </summary>
+    /// 
+    [ComVisible( false )]
+    internal class PinCategory
+    {
+        /// <summary>
+        /// Capture pin.
+        /// </summary>
+        /// 
+        /// <remarks>Equals to PIN_CATEGORY_CAPTURE.</remarks>
+        /// 
+        public static readonly Guid Capture =
+            new Guid( 0xFB6C4281, 0x0353, 0x11D1, 0x90, 0x5F, 0x00, 0x00, 0xC0, 0xCC, 0x16, 0xBA );
+    }
 }
