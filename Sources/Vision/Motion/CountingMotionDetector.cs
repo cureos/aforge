@@ -384,7 +384,7 @@ namespace AForge.Vision.Motion
             // 2 - threshold the difference
             // 3 - calculate amount of motion pixels
             // ( the code duplication is done with optimization reason )
-            if ( motionZones == null )
+            if ( ( motionZones == null ) || ( motionZones.Length == 0 ) )
             {
                 for ( int i = 0; i < frameSize; i++, backFrame++, currFrame++ )
                 {
@@ -398,7 +398,7 @@ namespace AForge.Vision.Motion
             }
             else
             {
-                lock ( motionZones )
+                lock (this)
                 {
                     byte* zones = (byte*) zonesFrame.ToPointer( );
 
@@ -420,9 +420,9 @@ namespace AForge.Vision.Motion
                 blobCounter.ProcessImage( currentFrame, width, height, width );
             }
 
-            if ( ( highlightMotionZones == true ) && ( motionZones != null ) )
+            if ( ( highlightMotionZones == true ) && ( motionZones != null ) && ( motionZones.Length != 0 ) )
             {
-                lock ( motionZones )
+                lock (this)
                 {
                     foreach ( Rectangle rect in motionZones )
                     {
@@ -485,17 +485,17 @@ namespace AForge.Vision.Motion
         /// 
         private unsafe void CreateMotionZoneFrame( )
         {
-            lock ( motionZones )
+            lock (this)
             {
                 // free motion zones frame if required
-                if ( ( motionZones == null ) && ( zonesFrame != IntPtr.Zero ) )
+                if ( ( ( motionZones == null ) || ( motionZones.Length == 0 ) ) && ( zonesFrame != IntPtr.Zero ) )
                 {
                     Marshal.FreeHGlobal( zonesFrame );
                     zonesFrame = IntPtr.Zero;
                 }
 
                 // create motion zones frame only in the case if background frame exists
-                if ( ( motionZones != null ) && ( backgroundFrame != IntPtr.Zero ) )
+                if ( ( motionZones != null ) && ( motionZones.Length != 0 ) && ( backgroundFrame != IntPtr.Zero ) )
                 {
                     if ( zonesFrame == IntPtr.Zero )
                     {
