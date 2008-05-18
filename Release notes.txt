@@ -1,3 +1,46 @@
+AForge.NET 1.6.3 release notes
+------------------------------
+18.05.2008.
+
+
+Version updates and fixes:
+
+* Fixed registered issues/requests:
+  - Issue 41: Setting dimension of video captured from camera
+  - Issue 47: Add methods to display video device PIN and settings
+  - Issue 54: Aforge.Imaging in 1.6.2 is broken
+  - Issue 55: HighPrecisionBackgroundModeling with Noise Suppression Off and Highlight Motion Region On
+  - Issue 59: Check if we need to use motionZones or not after we used them before.
+  - Issue 61: ArgumentNullException thrown in CountingMotionDetector.CreateMotionZoneFrame()
+  - Issue 62: ImageStatisticsHSL's check for black pixel isn't proper.
+
+
+* AForge.Imaging
+  - Small tuning of HSL image statistics class - to check if pixel is black it is required to check only
+    luminance component (all non-black pixels will form non-zero luminance).
+
+
+* AForge.Vision
+  - HighPrecisionBackgroundModeling class is fixed to handle correctly the case when noise suppression is
+    off and motion edges highlighting is on.
+
+  - Added more checks to handle the case when user passes motion zones array with 0 elements.
+
+  - Motion zone routines are updated to lock motion detector object (this) instead of motionZones variable
+    since it may be null and lead to exception.
+
+
+* AForge.Video.DirectShow
+  - Added functionality to display property page of video capture device, which allows changing its
+    settings provided by driver (contrast, brightness, frame size, etc).
+
+  - VideoCaptureDevice class is extended with DesiredFrameRate and DesiredFrameSize properties, which
+    allow to configure frame rate and size. Class is reworked to create capture graph using ICaptureGraphBuilder2
+    interface. The PreventFreezing property is dropped since it is no longer required with new class implementation.
+
+
+
+
 AForge.NET 1.6.2 release notes
 ------------------------------
 28.02.2008.
