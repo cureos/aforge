@@ -100,7 +100,11 @@ namespace AForge.Vision.Motion
         public bool HighlightMotionEdges
         {
             get { return highlighMotionEdges; }
-            set { highlighMotionEdges = value; }
+            set
+            {
+                highlighMotionEdges = value;
+                AllocateOrFreeTempFrame( );
+            }
         }
 
         /// <summary>
@@ -119,18 +123,7 @@ namespace AForge.Vision.Motion
             set
             {
                 suppressNoise = value;
-
-                // allocate temporary frame if required
-                if ( ( suppressNoise ) && ( tempFrame == IntPtr.Zero ) && ( backgroundFrame != IntPtr.Zero ) )
-                {
-                    tempFrame = Marshal.AllocHGlobal( width * height );
-                }
-
-                // frame temporary frame if required
-                if ( ( !suppressNoise ) && ( tempFrame != IntPtr.Zero ) )
-                {
-                    Marshal.FreeHGlobal( tempFrame );
-                }
+                AllocateOrFreeTempFrame( );
             }
         }
 
@@ -261,7 +254,7 @@ namespace AForge.Vision.Motion
                 backgroundFrame = Marshal.AllocHGlobal( frameSize );
                 currentFrame = Marshal.AllocHGlobal( frameSize );
                 // temporary buffer
-                if ( suppressNoise )
+                if ( suppressNoise | highlighMotionEdges )
                 {
                     tempFrame = Marshal.AllocHGlobal( frameSize );
                 }
@@ -481,6 +474,22 @@ namespace AForge.Vision.Motion
             }
 
             framesCounter = 0;
+        }
+
+        // Check if temp frame should be allocated or freed
+        private void AllocateOrFreeTempFrame( )
+        {
+            // allocate temporary frame if required
+            if ( ( suppressNoise | highlighMotionEdges ) && ( tempFrame == IntPtr.Zero ) && ( backgroundFrame != IntPtr.Zero ) )
+            {
+                tempFrame = Marshal.AllocHGlobal( width * height );
+            }
+
+            // frame temporary frame if required
+            if ( ( !suppressNoise ) && ( !highlighMotionEdges ) && ( tempFrame != IntPtr.Zero ) )
+            {
+                Marshal.FreeHGlobal( tempFrame );
+            }
         }
     }
 }
