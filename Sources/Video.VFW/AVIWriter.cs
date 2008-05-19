@@ -242,8 +242,8 @@ namespace AForge.Video.VFW
                 options.handler = Win32.mmioFOURCC( codec );
                 options.quality = quality;
 
-                //
-                // Win32.AVISaveOptions(stream, ref opts, IntPtr.Zero);
+                // uncomment if video settings dialog is required to show
+                // Win32.AVISaveOptions( stream, ref options );
 
                 // create compressed stream
                 if ( Win32.AVIMakeCompressedStream( out streamCompressed, stream, ref options, IntPtr.Zero ) != 0 )

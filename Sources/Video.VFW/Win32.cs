@@ -723,7 +723,7 @@ namespace AForge.Video.VFW
         /// </summary>
         /// 
         /// <param name="stream">Stream to configure.</param>
-        /// <param name="options">Stream options</param>
+        /// <param name="options">Stream options.</param>
         /// 
         /// <returns>Returns TRUE if the user pressed OK, FALSE for CANCEL, or an error otherwise.</returns>
         /// 
