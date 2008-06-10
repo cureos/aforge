@@ -132,7 +132,7 @@ namespace AForge.Imaging
                 ( image.PixelFormat != PixelFormat.Format24bppRgb )
                 )
             {
-                throw new ArgumentException( "Source image can be graysclae (8 bpp indexed) or color (24 bpp) image only" );
+                throw new ArgumentException( "Source image can be grayscale (8 bpp indexed) or color (24 bpp) image only" );
             }
 
             // lock source image
@@ -167,7 +167,7 @@ namespace AForge.Imaging
                 ( imageData.PixelFormat != PixelFormat.Format24bppRgb )
                 )
             {
-                throw new ArgumentException( "Source image can be graysclae (8 bpp indexed) or color (24 bpp) image only" );
+                throw new ArgumentException( "Source image can be grayscale (8 bpp indexed) or color (24 bpp) image only" );
             }
 
             // get source image size
