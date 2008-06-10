@@ -390,6 +390,7 @@
     <Compile Include="MemoryManager.cs" />
     <Compile Include="MoravecCornersDetector.cs" />
     <Compile Include="RecursiveBlobCounter.cs" />
+    <Compile Include="SusanCornersDetector.cs" />
     <Compile Include="Textures\CloudsTexture.cs" />
     <Compile Include="Textures\ITextureGenerator.cs" />
     <Compile Include="Textures\LabyrinthTexture.cs" />
