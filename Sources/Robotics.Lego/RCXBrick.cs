@@ -24,6 +24,37 @@ namespace AForge.Robotics.Lego
     /// 
     public class RCXBrick
     {
+        /// <summary>
+        /// Enumeration of sound type playable by Lego RCX brick.
+        /// </summary>
+        public enum SoundType
+        {
+            /// <summary>
+            /// Blip sound.
+            /// </summary>
+            Blip,
+            /// <summary>
+            /// Double beep spund.
+            /// </summary>
+            BeepBeep,
+            /// <summary>
+            /// Downward tones sound.
+            /// </summary>
+            DownwardTones,
+            /// <summary>
+            /// Upward tones sound.
+            /// </summary>
+            UpwardTones,
+            /// <summary>
+            /// Low buzz sound.
+            /// </summary>
+            LowBuzz,
+            /// <summary>
+            /// Fast upward tones sound.
+            /// </summary>
+            FastUpwardTones,
+        }
+
         // Ghost communication stack
         private IntPtr stack;
 
@@ -111,14 +142,45 @@ namespace AForge.Robotics.Lego
         /// </summary>
         /// 
         /// <remarks><para>
-        /// <note>The check is done by sending command with <b>0x18</b> opcode.</note>
+        /// <note>The check is done by sending command with <b>0x10</b> opcode.</note>
         /// </para></remarks>
         /// 
         /// <returns>Returns <b>true</b> if device is alive or <b>false</b> otherwise.</returns>
         /// 
         public bool IsAlive( )
         {
-            return SendCommand( new byte[] { 0x18 }, new byte[1], 1 );
+            return SendCommand( new byte[] { 0x10 }, new byte[1], 1 );
+        }
+
+        /// <summary>
+        /// Play one of supported souns.
+        /// </summary>
+        /// 
+        /// <param name="type">Sound type to play.</param>
+        /// 
+        /// <returns>Returns <b>true</b> if command was executed successfully or <b>false</b> otherwise.</returns>
+        /// 
+        public bool PlaySound( SoundType type )
+        {
+            return SendCommand( new byte[] { 0x51, (byte) type }, new byte[1], 1 ); ;
+        }
+
+        /// <summary>
+        /// Play tone of specified frequency.
+        /// </summary>
+        /// 
+        /// <param name="frequency">Tone frequency in Hz.</param>
+        /// <param name="duration">Tone duration in 1/100ths of a second.</param>
+        /// 
+        /// <returns>Returns <b>true</b> if command was executed successfully or <b>false</b> otherwise.</returns>
+        /// 
+        public bool PlayTone( short frequency, byte duration )
+        {
+            return SendCommand( new byte[] { 0x23,
+                (byte) ( frequency & 0xFF ),
+                (byte) ( frequency >> 16 ),
+                duration },
+                new byte[1], 1 ); ;
         }
 
         /// <summary>
@@ -134,7 +196,7 @@ namespace AForge.Robotics.Lego
         /// 
         /// <exception cref="ArgumentException">Reply buffer size is smaller than the reply data size.</exception>
         /// <exception cref="ApplicationException">Reply does not correspond to command (first byte of reply
-        /// should be complement (bitwise NOT) to first byte of command.</exception>
+        /// should be complement (bitwise NOT) to the first byte of command orred with 0x08.</exception>
         /// 
         protected bool SendCommand( byte[] command, byte[] reply, int expectedReplyLen )
         {
@@ -177,7 +239,7 @@ namespace AForge.Robotics.Lego
                         if ( GhostAPI.PBK_SUCCEEDED( status ) )
                         {
                             // check that reply corresponds ещ command
-                            if ( command[0] != (byte) ~reply[0] )
+                            if ( ( command[0] | 0x08 ) != (byte) ~reply[0] )
                                 throw new ApplicationException( "Reply does not correspond to command" );
 
                             for ( int i = 0; i < replyLen; i++)
