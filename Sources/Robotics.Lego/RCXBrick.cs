@@ -55,6 +55,91 @@ namespace AForge.Robotics.Lego
             FastUpwardTones,
         }
 
+        /// <summary>
+        /// Enumeration of RCX brick sensors.
+        /// </summary>
+        public enum Sensor
+        {
+            /// <summary>
+            /// First sensor.
+            /// </summary>
+            First,
+            /// <summary>
+            /// Second sensor.
+            /// </summary>
+            Second,
+            /// <summary>
+            /// Third sensor.
+            /// </summary>
+            Third
+        }
+
+        /// <summary>
+        /// Enumeration of RCX brick sensor types.
+        /// </summary>
+        public enum SensorType
+        {
+            /// <summary>
+            /// Raw sensor.
+            /// </summary>
+            Raw,
+            /// <summary>
+            /// Touch sensor (default mode is boolean).
+            /// </summary>
+            Touch,
+            /// <summary>
+            /// Temperature sensor (default mode is temperature in °C).
+            /// </summary>
+            Temperatur,
+            /// <summary>
+            /// Light sensor (default mode is percentage).
+            /// </summary>
+            Light,
+            /// <summary>
+            /// Rotation sensor (default mode is angle).
+            /// </summary>
+            Rotation
+        }
+
+        /// <summary>
+        /// Enumeration of RCX brick sensor modes.
+        /// </summary>
+        public enum SensorMode
+        {
+            /// <summary>
+            /// Raw mode - value in [0, 1023].
+            /// </summary>
+            Raw,
+            /// <summary>
+            /// Boolean - either 0 or 1.
+            /// </summary>
+            Boolean,
+            /// <summary>
+            /// Number of boolean transitions.
+            /// </summary>
+            EdgeCount,
+            /// <summary>
+            /// Number of boolean transitions divided by two.
+            /// </summary>
+            PulseCount,
+            /// <summary>
+            /// Raw value scaled to [0, 100].
+            /// </summary>
+            Percentage,
+            /// <summary>
+            /// Temperature in °C - 1/10ths of a degree, [-19.8, 69.5].  
+            /// </summary>
+            TemperatureC,
+            /// <summary>
+            /// Temperature in °F - 1/10ths of a degree, [-3.6, 157.1].  
+            /// </summary>
+            TemperatureF,
+            /// <summary>
+            /// Angle - 1/16ths of a rotation, represented as a signed short.
+            /// </summary>
+            Angle
+        }
+
         // Ghost communication stack
         private IntPtr stack;
 
@@ -184,6 +269,102 @@ namespace AForge.Robotics.Lego
         }
 
         /// <summary>
+        /// Get version information of RCX brick.
+        /// </summary>
+        /// 
+        /// <param name="romVersion">ROM version number.</param>
+        /// <param name="firmwareVersion">Firmware version number.</param>
+        /// 
+        /// <returns>Returns <b>true</b> if command was executed successfully or <b>false</b> otherwise.</returns>
+        /// 
+        public bool GetVersion( out string romVersion, out string firmwareVersion )
+        {
+            byte[] reply = new byte[9];
+
+            if ( SendCommand( new byte[] { 0x15, 1, 3, 5, 7, 11 }, reply, 9 ) )
+            {
+                romVersion = string.Format( "{0}.{1}",
+                    reply[2] | ( reply[1] << 8 ),
+                    reply[4] | ( reply[3] << 8 ) );
+                firmwareVersion = string.Format( "{0}.{1}",
+                    reply[6] | ( reply[5] << 8 ),
+                    reply[8] | ( reply[7] << 8 ) );
+                return true;
+            }
+
+            romVersion = null;
+            firmwareVersion = null;
+
+            return false;
+        }
+
+        /// <summary>
+        /// Get sensor's value.
+        /// </summary>
+        /// 
+        /// <param name="sensor">Sensor to get value of.</param>
+        /// <param name="value">Retrieved sensor's value (units depend on current
+        /// sensor's type and mode).</param>
+        /// 
+        /// <returns>Returns <b>true</b> if command was executed successfully or <b>false</b> otherwise.</returns>
+        /// 
+        public bool GetSensorValue( Sensor sensor, out short value )
+        {
+            byte[] reply = new byte[3];
+
+            if ( SendCommand( new byte[] { 0x12, 9, (byte) sensor }, reply, 3 ) )
+            {
+                value = (short) ( reply[1] | ( reply[2] << 8 ) );
+                return true;
+            }
+
+            value = 0;
+
+            return false;
+        }
+
+        /// <summary>
+        /// Set sensor's type.
+        /// </summary>
+        /// 
+        /// <param name="sensor">Sensor to set type of.</param>
+        /// <param name="type">Sensor type to set.</param>
+        /// 
+        /// <returns>Returns <b>true</b> if command was executed successfully or <b>false</b> otherwise.</returns>
+        /// 
+        public bool SetSensorType( Sensor sensor, SensorType type )
+        {
+            return SendCommand( new byte[] { 0x32, (byte) sensor, (byte) type }, new byte[1], 1 );
+        }
+
+        /// <summary>
+        /// Set sensor's mode.
+        /// </summary>
+        /// 
+        /// <param name="sensor">Sensor to set mode of.</param>
+        /// <param name="mode">Sensor mode to set.</param>
+        /// 
+        /// <returns>Returns <b>true</b> if command was executed successfully or <b>false</b> otherwise.</returns>
+        /// 
+        public bool SetSensorMode( Sensor sensor, SensorMode mode )
+        {
+            return SendCommand( new byte[] { 0x42, (byte) sensor, (byte) ( (byte) mode << 5 ) }, new byte[1], 1 );
+        }
+
+        /// <summary>
+        /// Clear the counter associated with the specified sensor by setting it to a value of zero.
+        /// </summary>
+        /// 
+        /// <param name="sensor">Sensor to clear value of.</param>
+        /// 
+        /// <returns>Returns <b>true</b> if command was executed successfully or <b>false</b> otherwise.</returns>
+        /// 
+        public bool ClearSensor( Sensor sensor )
+        {
+            return SendCommand( new byte[] { 0xD1, (byte) sensor }, new byte[1], 1 );
+        }
+
+        /// <summary>
         /// Send command to Lego RCX brick.
         /// </summary>
         /// 
@@ -242,7 +423,7 @@ namespace AForge.Robotics.Lego
                             if ( ( command[0] | 0x08 ) != (byte) ~reply[0] )
                                 throw new ApplicationException( "Reply does not correspond to command" );
 
-                            for ( int i = 0; i < replyLen; i++)
+                            for ( int i = 0; i < replyLen; i++ )
                                 System.Diagnostics.Debug.Write( reply[i].ToString( "X2" ) + " " );
                             System.Diagnostics.Debug.WriteLine( "" );
 
