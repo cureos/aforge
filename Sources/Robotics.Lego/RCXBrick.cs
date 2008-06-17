@@ -140,6 +140,47 @@ namespace AForge.Robotics.Lego
             Angle
         }
 
+        /// <summary>
+        /// Enumeration of RCX brick motors.
+        /// </summary>
+        [Flags]
+        public enum Motor
+        {
+            /// <summary>
+            /// Motor A.
+            /// </summary>
+            A = 1,
+            /// <summary>
+            /// Motor B.
+            /// </summary>
+            B = 2,
+            /// <summary>
+            /// Motor C.
+            /// </summary>
+            C = 4,
+
+            /// <summary>
+            /// Motors A and B.
+            /// </summary>
+            AB = 3,
+            /// <summary>
+            /// Motors A and C.
+            /// </summary>
+            AC = 5,
+            /// <summary>
+            /// Motors B and C.
+            /// </summary>
+            BC = 6,
+            /// <summary>
+            /// Motors A, B and C.
+            /// </summary>
+            ABC = 7,
+            /// <summary>
+            /// All motors (A, B and C).
+            /// </summary>
+            All = 7
+        }
+
         // Ghost communication stack
         private IntPtr stack;
 
@@ -226,10 +267,6 @@ namespace AForge.Robotics.Lego
         /// Check if the RCX brick is alive and responds to messages.
         /// </summary>
         /// 
-        /// <remarks><para>
-        /// <note>The check is done by sending command with <b>0x10</b> opcode.</note>
-        /// </para></remarks>
-        /// 
         /// <returns>Returns <b>true</b> if device is alive or <b>false</b> otherwise.</returns>
         /// 
         public bool IsAlive( )
@@ -299,6 +336,54 @@ namespace AForge.Robotics.Lego
         }
 
         /// <summary>
+        /// Get battery power of RCX brick.
+        /// </summary>
+        /// 
+        /// <param name="power">RCX brick's battery power in millivolts.</param>
+        /// 
+        /// <returns>Returns <b>true</b> if command was executed successfully or <b>false</b> otherwise.</returns>
+        /// 
+        public bool GetBatteryPower( out int power )
+        {
+            byte[] reply = new byte[3];
+
+            if ( SendCommand( new byte[] { 0x30 }, reply, 3 ) )
+            {
+                power = reply[1] | ( reply[2] << 8 );
+                return true;
+            }
+
+            power = 0;
+
+            return false;
+        }
+
+        /// <summary>
+        /// Set current time for the RCX brick.
+        /// </summary>
+        /// 
+        /// <param name="hours">Hours, [0..23].</param>
+        /// <param name="minutes">Minutes, [0..59].</param>
+        /// 
+        /// <returns>Returns <b>true</b> if command was executed successfully or <b>false</b> otherwise.</returns>
+        /// 
+        public bool SetTime( byte hours, byte minutes )
+        {
+            return SendCommand( new byte[] { 0x22, hours, minutes }, new byte[1], 1 );
+        }
+
+        /// <summary>
+        /// Turn off the RCX brick.
+        /// </summary>
+        /// 
+        /// <returns>Returns <b>true</b> if command was executed successfully or <b>false</b> otherwise.</returns>
+        /// 
+        public bool PowerOff( )
+        {
+            return SendCommand( new byte[] { 0x60 }, new byte[1], 1 );
+        }
+
+        /// <summary>
         /// Get sensor's value.
         /// </summary>
         /// 
@@ -365,6 +450,66 @@ namespace AForge.Robotics.Lego
         }
 
         /// <summary>
+        /// Turn on/off specified motors.
+        /// </summary>
+        /// 
+        /// <param name="motors">Motors to turn on/off.</param>
+        /// <param name="on">True to turn motors on, otherwise false.</param>
+        /// 
+        /// <returns>Returns <b>true</b> if command was executed successfully or <b>false</b> otherwise.</returns>
+        /// 
+        public bool SetMotorOn( Motor motors, bool on )
+        {
+            return SendCommand( new byte[] { 0x21,
+                (byte) ( (byte) motors | ( on ? 0x80 : 0x40 ) )  },
+                new byte[1], 1 );
+        }
+
+        /// <summary>
+        /// Set power of specified motors.
+        /// </summary>
+        /// 
+        /// <param name="motors">Motors to set power of.</param>
+        /// <param name="power">Power level to set, [0..7].</param>
+        /// 
+        /// <returns>Returns <b>true</b> if command was executed successfully or <b>false</b> otherwise.</returns>
+        /// 
+        public bool SetMotorPower( Motor motors, byte power )
+        {
+            return SendCommand( new byte[] { 0x13, (byte) motors, 2, Math.Min( power, (byte) 7 ) },
+                new byte[1], 1 );
+        }
+
+        /// <summary>
+        /// Set direction of specified motors.
+        /// </summary>
+        /// 
+        /// <param name="motors">Motors to set direction of.</param>
+        /// <param name="isForward">True to set forward direction, false to set backward.</param>
+        /// 
+        /// <returns>Returns <b>true</b> if command was executed successfully or <b>false</b> otherwise.</returns>
+        /// 
+        public bool SetMotorDirection( Motor motors, bool isForward )
+        {
+            return SendCommand( new byte[] { 0xE1,
+                (byte) ( (byte) motors | ( isForward ? 0x80 : 0 ) )  },
+                new byte[1], 1 );
+        }
+
+        /// <summary>
+        /// Set transmitter's range.
+        /// </summary>
+        /// 
+        /// <param name="isLongRange">True is long range should be set, otherwise false.</param>
+        /// 
+        /// <returns>Returns <b>true</b> if command was executed successfully or <b>false</b> otherwise.</returns>
+        /// 
+        public bool SetTransmitterRange( bool isLongRange )
+        {
+            return SendCommand( new byte[] { 0x31, (byte) ( ( isLongRange) ? 1 : 0 ) }, new byte[1], 1 );
+        }
+
+        /// <summary>
         /// Send command to Lego RCX brick.
         /// </summary>
         /// 
@@ -422,10 +567,6 @@ namespace AForge.Robotics.Lego
                             // check that reply corresponds ещ command
                             if ( ( command[0] | 0x08 ) != (byte) ~reply[0] )
                                 throw new ApplicationException( "Reply does not correspond to command" );
-
-                            for ( int i = 0; i < replyLen; i++ )
-                                System.Diagnostics.Debug.Write( reply[i].ToString( "X2" ) + " " );
-                            System.Diagnostics.Debug.WriteLine( "" );
 
                             result = true;
                         }
