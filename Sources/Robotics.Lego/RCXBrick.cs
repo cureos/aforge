@@ -16,9 +16,40 @@ namespace AForge.Robotics.Lego
     /// </summary>
     /// 
     /// <remarks>
-    /// 
+    /// <para>The class allows to manipulate with Lego Mindstorms RCX device,
+    /// setting its motors' state, getting information about sensors'
+    /// values and performing some other manipulations.</para>
+    /// <para><img src="rcx.jpg" width="312" height="251" /></para>
     /// 
     /// <para><note>Only communication through USB IR tower is supported at this point.</note></para>
+    /// 
+    /// <para>Sample usage:</para>
+    /// <code>
+    /// // create an instance of RCX brick
+    /// RCXBrick rcx = new RCXBrick( );
+    /// // connect to the device
+    /// if ( rcx.Connect( ) )
+    /// {
+    ///     // set forward direction of motor A
+    ///     rcx.SetMotorDirection( RCXBrick.Motor.A, true );
+    ///     // set power of motor
+    ///     rcx.SetMotorPower( RCXBrick.Motor.A, 1 );
+    ///     // turm motor on
+    ///     rcx.SetMotorOn( RCXBrick.Motor.A, true );
+    ///     // ...
+    ///     // turn off motors A, B and C
+    ///     rcx.SetMotorOn( RCXBrick.Motor.ABC, false );
+    /// 
+    ///     // get first sensor's value
+    ///     short value;
+    ///
+    ///     if ( rcx.GetSensorValue( RCXBrick.Sensor.First, out value ) )
+    ///     {
+    ///
+    ///     }
+    ///     // ...
+    /// }
+    /// </code>
     /// 
     /// </remarks>
     /// 
@@ -500,7 +531,7 @@ namespace AForge.Robotics.Lego
         /// Set transmitter's range.
         /// </summary>
         /// 
-        /// <param name="isLongRange">True is long range should be set, otherwise false.</param>
+        /// <param name="isLongRange">True if long range should be set, otherwise false.</param>
         /// 
         /// <returns>Returns <b>true</b> if command was executed successfully or <b>false</b> otherwise.</returns>
         /// 

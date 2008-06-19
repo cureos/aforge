@@ -4,8 +4,13 @@
     </assemblies>
     <namespaceSummaries>
         <namespaceSummaryItem name="" isDocumented="False" />
-        <namespaceSummaryItem name="AForge.Robotics.Lego.NXT" isDocumented="True">The &lt;b&gt;AForge.Robotics.Lego&lt;/b&gt; namespace contains set of classes, which allow to communicate with Lego Mindstorm NXT brick sending different commands to it and manipulate the device.</namespaceSummaryItem>
+        <namespaceSummaryItem name="AForge.Robotics.Lego" isDocumented="True">The &lt;b&gt;AForge.Robotics.Lego&lt;/b&gt; namespace contains set of classes, which allow to manipulate different Lego Mindstorm robotics devices. The list of supported devices includes Lego Minstorm RCX and Lego Mindstorm NXT.</namespaceSummaryItem>
+        <namespaceSummaryItem name="AForge.Robotics.Lego.Internals" isDocumented="True" />
+        <namespaceSummaryItem name="AForge.Robotics.Lego.NXT" isDocumented="True">The &lt;b&gt;AForge.Robotics.Lego.NXT&lt;/b&gt; namespace contains set of classes, which allow to communicate with Lego Mindstorm NXT brick sending different commands to it and manipulate the device.</namespaceSummaryItem>
     </namespaceSummaries>
+    <additionalContent>
+        <contentItem sourcePath="..\Robotics.Lego\Images\rcx.jpg" destPath="" excludeItems="False" />
+    </additionalContent>
     <ProjectSummary />
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace</MissingTags>
     <VisibleItems>InheritedMembers, Protected</VisibleItems>
