@@ -313,10 +313,6 @@ namespace AForge.Imaging
                     {
                         cornersList.Add( new Point( x, y ) );
                     }
-                    else
-                    {
-                        susanMap[y, x] = 0;
-                    }
                 }
             }
 
