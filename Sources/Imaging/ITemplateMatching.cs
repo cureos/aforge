@@ -1,0 +1,45 @@
+// AForge Image Processing Library
+// AForge.NET framework
+//
+// Copyright © Andrew Kirillov, 2005-2008
+// andrew.kirillov@gmail.com
+//
+
+namespace AForge.Imaging
+{
+    using System;
+    using System.Drawing;
+    using System.Drawing.Imaging;
+
+    /// <summary>
+    /// Template matching algorithm's interface.
+    /// </summary>
+    /// 
+    /// <remarks><para>The interface specifies set of methods, which should be implemented by different
+    /// template matching algorithms.</para></remarks>
+    /// 
+    public interface ITemplateMatching
+    {
+        /// <summary>
+        /// Process image looking for matchings with specified template.
+        /// </summary>
+        /// 
+        /// <param name="image">Source image to process.</param>
+        /// <param name="template">Template image to search for.</param>
+        /// 
+        /// <returns>Returns array of found matchings.</returns>
+        /// 
+        Matching[] ProcessImage( Bitmap image, Bitmap template );
+
+        /// <summary>
+        /// Process image looking for matchings with specified template.
+        /// </summary>
+        /// 
+        /// <param name="imageData">Source image data to process.</param>
+        /// <param name="templateData">Template image to search for.</param>
+        /// 
+        /// <returns>Returns array of found matchings.</returns>
+        /// 
+        Matching[] ProcessImage( BitmapData imageData, BitmapData templateData );
+    }
+}

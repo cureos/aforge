@@ -294,10 +294,10 @@ namespace AForge.Imaging
                 {
                     int currentValue = susanMap[y, x];
 
-                    // for each windows' rows
+                    // for each windows' row
                     for ( int i = -2; ( currentValue != 0 ) && ( i <= 2 ); i++ )
                     {
-                        // for each windows' pixels
+                        // for each windows' pixel
                         for ( int j = -2; j <= 2; j++ )
                         {
                             if ( susanMap[y + i, x + j] > currentValue )

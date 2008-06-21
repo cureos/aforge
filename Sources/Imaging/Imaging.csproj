@@ -109,6 +109,7 @@
     <Compile Include="Complex Filters\IComplexFilter.cs" />
     <Compile Include="ComplexImage.cs" />
     <Compile Include="Drawing.cs" />
+    <Compile Include="ExhaustiveTemplateMatching.cs" />
     <Compile Include="Filters\2 Source filters\Add.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -387,6 +388,8 @@
     <Compile Include="IntegralImage.cs" />
     <Compile Include="Interpolation.cs" />
     <Compile Include="HoughLineTransformation.cs" />
+    <Compile Include="ITemplateMatching.cs" />
+    <Compile Include="Matching.cs" />
     <Compile Include="MemoryManager.cs" />
     <Compile Include="MoravecCornersDetector.cs" />
     <Compile Include="RecursiveBlobCounter.cs" />
