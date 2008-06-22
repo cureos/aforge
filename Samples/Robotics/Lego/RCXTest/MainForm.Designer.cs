@@ -39,28 +39,28 @@ namespace RCXTest
             this.romVersionBox = new System.Windows.Forms.TextBox( );
             this.label1 = new System.Windows.Forms.Label( );
             this.groupBox3 = new System.Windows.Forms.GroupBox( );
-            this.soundTypeCombo = new System.Windows.Forms.ComboBox( );
             this.playButton = new System.Windows.Forms.Button( );
+            this.soundTypeCombo = new System.Windows.Forms.ComboBox( );
             this.groupBox4 = new System.Windows.Forms.GroupBox( );
-            this.sensorCombo = new System.Windows.Forms.ComboBox( );
-            this.getValueButton = new System.Windows.Forms.Button( );
-            this.label4 = new System.Windows.Forms.Label( );
-            this.valueBox = new System.Windows.Forms.TextBox( );
-            this.clearSensorButton = new System.Windows.Forms.Button( );
-            this.label5 = new System.Windows.Forms.Label( );
-            this.sensorTypeCombo = new System.Windows.Forms.ComboBox( );
-            this.setSensorTypeButton = new System.Windows.Forms.Button( );
-            this.label6 = new System.Windows.Forms.Label( );
-            this.sensorModeCombo = new System.Windows.Forms.ComboBox( );
             this.setSensorModeButton = new System.Windows.Forms.Button( );
+            this.sensorModeCombo = new System.Windows.Forms.ComboBox( );
+            this.label6 = new System.Windows.Forms.Label( );
+            this.setSensorTypeButton = new System.Windows.Forms.Button( );
+            this.sensorTypeCombo = new System.Windows.Forms.ComboBox( );
+            this.label5 = new System.Windows.Forms.Label( );
+            this.clearSensorButton = new System.Windows.Forms.Button( );
+            this.valueBox = new System.Windows.Forms.TextBox( );
+            this.label4 = new System.Windows.Forms.Label( );
+            this.getValueButton = new System.Windows.Forms.Button( );
+            this.sensorCombo = new System.Windows.Forms.ComboBox( );
             this.groupBox5 = new System.Windows.Forms.GroupBox( );
-            this.motorCombo = new System.Windows.Forms.ComboBox( );
-            this.label7 = new System.Windows.Forms.Label( );
-            this.directionCombo = new System.Windows.Forms.ComboBox( );
-            this.label8 = new System.Windows.Forms.Label( );
-            this.powerCombo = new System.Windows.Forms.ComboBox( );
-            this.motorOnButton = new System.Windows.Forms.Button( );
             this.motorOffButton = new System.Windows.Forms.Button( );
+            this.motorOnButton = new System.Windows.Forms.Button( );
+            this.powerCombo = new System.Windows.Forms.ComboBox( );
+            this.label8 = new System.Windows.Forms.Label( );
+            this.directionCombo = new System.Windows.Forms.ComboBox( );
+            this.label7 = new System.Windows.Forms.Label( );
+            this.motorCombo = new System.Windows.Forms.ComboBox( );
             this.turnDeviceOffButton = new System.Windows.Forms.Button( );
             this.groupBox1.SuspendLayout( );
             this.groupBox2.SuspendLayout( );
@@ -178,6 +178,17 @@ namespace RCXTest
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Sound";
             // 
+            // playButton
+            // 
+            this.playButton.Enabled = false;
+            this.playButton.Location = new System.Drawing.Point( 125, 19 );
+            this.playButton.Name = "playButton";
+            this.playButton.Size = new System.Drawing.Size( 75, 23 );
+            this.playButton.TabIndex = 5;
+            this.playButton.Text = "&Play";
+            this.playButton.UseVisualStyleBackColor = true;
+            this.playButton.Click += new System.EventHandler( this.playButton_Click );
+            // 
             // soundTypeCombo
             // 
             this.soundTypeCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -193,17 +204,6 @@ namespace RCXTest
             this.soundTypeCombo.Name = "soundTypeCombo";
             this.soundTypeCombo.Size = new System.Drawing.Size( 110, 21 );
             this.soundTypeCombo.TabIndex = 5;
-            // 
-            // playButton
-            // 
-            this.playButton.Enabled = false;
-            this.playButton.Location = new System.Drawing.Point( 125, 19 );
-            this.playButton.Name = "playButton";
-            this.playButton.Size = new System.Drawing.Size( 75, 23 );
-            this.playButton.TabIndex = 5;
-            this.playButton.Text = "&Play";
-            this.playButton.UseVisualStyleBackColor = true;
-            this.playButton.Click += new System.EventHandler( this.playButton_Click );
             // 
             // groupBox4
             // 
@@ -225,101 +225,16 @@ namespace RCXTest
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Sensor";
             // 
-            // sensorCombo
+            // setSensorModeButton
             // 
-            this.sensorCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.sensorCombo.FormattingEnabled = true;
-            this.sensorCombo.Items.AddRange( new object[] {
-            "First",
-            "Second",
-            "Third"} );
-            this.sensorCombo.Location = new System.Drawing.Point( 6, 19 );
-            this.sensorCombo.Name = "sensorCombo";
-            this.sensorCombo.Size = new System.Drawing.Size( 110, 21 );
-            this.sensorCombo.TabIndex = 0;
-            // 
-            // getValueButton
-            // 
-            this.getValueButton.Enabled = false;
-            this.getValueButton.Location = new System.Drawing.Point( 125, 19 );
-            this.getValueButton.Name = "getValueButton";
-            this.getValueButton.Size = new System.Drawing.Size( 75, 23 );
-            this.getValueButton.TabIndex = 1;
-            this.getValueButton.Text = "&Get value";
-            this.getValueButton.UseVisualStyleBackColor = true;
-            this.getValueButton.Click += new System.EventHandler( this.getValueButton_Click );
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point( 10, 53 );
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size( 37, 13 );
-            this.label4.TabIndex = 2;
-            this.label4.Text = "Value:";
-            // 
-            // valueBox
-            // 
-            this.valueBox.Location = new System.Drawing.Point( 50, 50 );
-            this.valueBox.Name = "valueBox";
-            this.valueBox.ReadOnly = true;
-            this.valueBox.Size = new System.Drawing.Size( 65, 20 );
-            this.valueBox.TabIndex = 3;
-            // 
-            // clearSensorButton
-            // 
-            this.clearSensorButton.Enabled = false;
-            this.clearSensorButton.Location = new System.Drawing.Point( 125, 49 );
-            this.clearSensorButton.Name = "clearSensorButton";
-            this.clearSensorButton.Size = new System.Drawing.Size( 75, 23 );
-            this.clearSensorButton.TabIndex = 4;
-            this.clearSensorButton.Text = "C&lear";
-            this.clearSensorButton.UseVisualStyleBackColor = true;
-            this.clearSensorButton.Click += new System.EventHandler( this.clearSensorButton_Click );
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point( 10, 103 );
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size( 34, 13 );
-            this.label5.TabIndex = 5;
-            this.label5.Text = "Type:";
-            // 
-            // sensorTypeCombo
-            // 
-            this.sensorTypeCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.sensorTypeCombo.FormattingEnabled = true;
-            this.sensorTypeCombo.Items.AddRange( new object[] {
-            "Raw",
-            "Touch",
-            "Temperature",
-            "Light",
-            "Rotation"} );
-            this.sensorTypeCombo.Location = new System.Drawing.Point( 50, 100 );
-            this.sensorTypeCombo.Name = "sensorTypeCombo";
-            this.sensorTypeCombo.Size = new System.Drawing.Size( 90, 21 );
-            this.sensorTypeCombo.TabIndex = 6;
-            // 
-            // setSensorTypeButton
-            // 
-            this.setSensorTypeButton.Enabled = false;
-            this.setSensorTypeButton.Location = new System.Drawing.Point( 150, 99 );
-            this.setSensorTypeButton.Name = "setSensorTypeButton";
-            this.setSensorTypeButton.Size = new System.Drawing.Size( 50, 23 );
-            this.setSensorTypeButton.TabIndex = 7;
-            this.setSensorTypeButton.Text = "Set";
-            this.setSensorTypeButton.UseVisualStyleBackColor = true;
-            this.setSensorTypeButton.Click += new System.EventHandler( this.setSensorTypeButton_Click );
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point( 10, 133 );
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size( 37, 13 );
-            this.label6.TabIndex = 8;
-            this.label6.Text = "Mode:";
+            this.setSensorModeButton.Enabled = false;
+            this.setSensorModeButton.Location = new System.Drawing.Point( 150, 129 );
+            this.setSensorModeButton.Name = "setSensorModeButton";
+            this.setSensorModeButton.Size = new System.Drawing.Size( 50, 23 );
+            this.setSensorModeButton.TabIndex = 10;
+            this.setSensorModeButton.Text = "Set";
+            this.setSensorModeButton.UseVisualStyleBackColor = true;
+            this.setSensorModeButton.Click += new System.EventHandler( this.setSensorModeButton_Click );
             // 
             // sensorModeCombo
             // 
@@ -339,16 +254,101 @@ namespace RCXTest
             this.sensorModeCombo.Size = new System.Drawing.Size( 90, 21 );
             this.sensorModeCombo.TabIndex = 9;
             // 
-            // setSensorModeButton
+            // label6
             // 
-            this.setSensorModeButton.Enabled = false;
-            this.setSensorModeButton.Location = new System.Drawing.Point( 150, 129 );
-            this.setSensorModeButton.Name = "setSensorModeButton";
-            this.setSensorModeButton.Size = new System.Drawing.Size( 50, 23 );
-            this.setSensorModeButton.TabIndex = 10;
-            this.setSensorModeButton.Text = "Set";
-            this.setSensorModeButton.UseVisualStyleBackColor = true;
-            this.setSensorModeButton.Click += new System.EventHandler( this.setSensorModeButton_Click );
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point( 10, 133 );
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size( 37, 13 );
+            this.label6.TabIndex = 8;
+            this.label6.Text = "Mode:";
+            // 
+            // setSensorTypeButton
+            // 
+            this.setSensorTypeButton.Enabled = false;
+            this.setSensorTypeButton.Location = new System.Drawing.Point( 150, 99 );
+            this.setSensorTypeButton.Name = "setSensorTypeButton";
+            this.setSensorTypeButton.Size = new System.Drawing.Size( 50, 23 );
+            this.setSensorTypeButton.TabIndex = 7;
+            this.setSensorTypeButton.Text = "Set";
+            this.setSensorTypeButton.UseVisualStyleBackColor = true;
+            this.setSensorTypeButton.Click += new System.EventHandler( this.setSensorTypeButton_Click );
+            // 
+            // sensorTypeCombo
+            // 
+            this.sensorTypeCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.sensorTypeCombo.FormattingEnabled = true;
+            this.sensorTypeCombo.Items.AddRange( new object[] {
+            "Raw",
+            "Touch",
+            "Temperature",
+            "Light",
+            "Rotation"} );
+            this.sensorTypeCombo.Location = new System.Drawing.Point( 50, 100 );
+            this.sensorTypeCombo.Name = "sensorTypeCombo";
+            this.sensorTypeCombo.Size = new System.Drawing.Size( 90, 21 );
+            this.sensorTypeCombo.TabIndex = 6;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point( 10, 103 );
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size( 34, 13 );
+            this.label5.TabIndex = 5;
+            this.label5.Text = "Type:";
+            // 
+            // clearSensorButton
+            // 
+            this.clearSensorButton.Enabled = false;
+            this.clearSensorButton.Location = new System.Drawing.Point( 125, 49 );
+            this.clearSensorButton.Name = "clearSensorButton";
+            this.clearSensorButton.Size = new System.Drawing.Size( 75, 23 );
+            this.clearSensorButton.TabIndex = 4;
+            this.clearSensorButton.Text = "C&lear";
+            this.clearSensorButton.UseVisualStyleBackColor = true;
+            this.clearSensorButton.Click += new System.EventHandler( this.clearSensorButton_Click );
+            // 
+            // valueBox
+            // 
+            this.valueBox.Location = new System.Drawing.Point( 50, 50 );
+            this.valueBox.Name = "valueBox";
+            this.valueBox.ReadOnly = true;
+            this.valueBox.Size = new System.Drawing.Size( 65, 20 );
+            this.valueBox.TabIndex = 3;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point( 10, 53 );
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size( 37, 13 );
+            this.label4.TabIndex = 2;
+            this.label4.Text = "Value:";
+            // 
+            // getValueButton
+            // 
+            this.getValueButton.Enabled = false;
+            this.getValueButton.Location = new System.Drawing.Point( 125, 19 );
+            this.getValueButton.Name = "getValueButton";
+            this.getValueButton.Size = new System.Drawing.Size( 75, 23 );
+            this.getValueButton.TabIndex = 1;
+            this.getValueButton.Text = "&Get value";
+            this.getValueButton.UseVisualStyleBackColor = true;
+            this.getValueButton.Click += new System.EventHandler( this.getValueButton_Click );
+            // 
+            // sensorCombo
+            // 
+            this.sensorCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.sensorCombo.FormattingEnabled = true;
+            this.sensorCombo.Items.AddRange( new object[] {
+            "First",
+            "Second",
+            "Third"} );
+            this.sensorCombo.Location = new System.Drawing.Point( 6, 19 );
+            this.sensorCombo.Name = "sensorCombo";
+            this.sensorCombo.Size = new System.Drawing.Size( 110, 21 );
+            this.sensorCombo.TabIndex = 0;
             // 
             // groupBox5
             // 
@@ -366,48 +366,27 @@ namespace RCXTest
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Motor";
             // 
-            // motorCombo
+            // motorOffButton
             // 
-            this.motorCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.motorCombo.FormattingEnabled = true;
-            this.motorCombo.Items.AddRange( new object[] {
-            "Motor A",
-            "Motor B",
-            "Motor C"} );
-            this.motorCombo.Location = new System.Drawing.Point( 10, 20 );
-            this.motorCombo.Name = "motorCombo";
-            this.motorCombo.Size = new System.Drawing.Size( 130, 21 );
-            this.motorCombo.TabIndex = 0;
+            this.motorOffButton.Enabled = false;
+            this.motorOffButton.Location = new System.Drawing.Point( 80, 125 );
+            this.motorOffButton.Name = "motorOffButton";
+            this.motorOffButton.Size = new System.Drawing.Size( 60, 23 );
+            this.motorOffButton.TabIndex = 6;
+            this.motorOffButton.Text = "O&ff";
+            this.motorOffButton.UseVisualStyleBackColor = true;
+            this.motorOffButton.Click += new System.EventHandler( this.motorOffButton_Click );
             // 
-            // label7
+            // motorOnButton
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point( 10, 53 );
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size( 52, 13 );
-            this.label7.TabIndex = 1;
-            this.label7.Text = "Direction:";
-            // 
-            // directionCombo
-            // 
-            this.directionCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.directionCombo.FormattingEnabled = true;
-            this.directionCombo.Items.AddRange( new object[] {
-            "Forward",
-            "Backward"} );
-            this.directionCombo.Location = new System.Drawing.Point( 65, 50 );
-            this.directionCombo.Name = "directionCombo";
-            this.directionCombo.Size = new System.Drawing.Size( 75, 21 );
-            this.directionCombo.TabIndex = 2;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point( 10, 83 );
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size( 40, 13 );
-            this.label8.TabIndex = 3;
-            this.label8.Text = "Power:";
+            this.motorOnButton.Enabled = false;
+            this.motorOnButton.Location = new System.Drawing.Point( 10, 125 );
+            this.motorOnButton.Name = "motorOnButton";
+            this.motorOnButton.Size = new System.Drawing.Size( 60, 23 );
+            this.motorOnButton.TabIndex = 5;
+            this.motorOnButton.Text = "O&n";
+            this.motorOnButton.UseVisualStyleBackColor = true;
+            this.motorOnButton.Click += new System.EventHandler( this.motorOnButton_Click );
             // 
             // powerCombo
             // 
@@ -427,27 +406,49 @@ namespace RCXTest
             this.powerCombo.Size = new System.Drawing.Size( 75, 21 );
             this.powerCombo.TabIndex = 4;
             // 
-            // motorOnButton
+            // label8
             // 
-            this.motorOnButton.Enabled = false;
-            this.motorOnButton.Location = new System.Drawing.Point( 10, 125 );
-            this.motorOnButton.Name = "motorOnButton";
-            this.motorOnButton.Size = new System.Drawing.Size( 60, 23 );
-            this.motorOnButton.TabIndex = 5;
-            this.motorOnButton.Text = "O&n";
-            this.motorOnButton.UseVisualStyleBackColor = true;
-            this.motorOnButton.Click += new System.EventHandler( this.motorOnButton_Click );
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point( 10, 83 );
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size( 40, 13 );
+            this.label8.TabIndex = 3;
+            this.label8.Text = "Power:";
             // 
-            // motorOffButton
+            // directionCombo
             // 
-            this.motorOffButton.Enabled = false;
-            this.motorOffButton.Location = new System.Drawing.Point( 80, 125 );
-            this.motorOffButton.Name = "motorOffButton";
-            this.motorOffButton.Size = new System.Drawing.Size( 60, 23 );
-            this.motorOffButton.TabIndex = 6;
-            this.motorOffButton.Text = "O&ff";
-            this.motorOffButton.UseVisualStyleBackColor = true;
-            this.motorOffButton.Click += new System.EventHandler( this.motorOffButton_Click );
+            this.directionCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.directionCombo.FormattingEnabled = true;
+            this.directionCombo.Items.AddRange( new object[] {
+            "Forward",
+            "Backward"} );
+            this.directionCombo.Location = new System.Drawing.Point( 65, 50 );
+            this.directionCombo.Name = "directionCombo";
+            this.directionCombo.Size = new System.Drawing.Size( 75, 21 );
+            this.directionCombo.TabIndex = 2;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point( 10, 53 );
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size( 52, 13 );
+            this.label7.TabIndex = 1;
+            this.label7.Text = "Direction:";
+            // 
+            // motorCombo
+            // 
+            this.motorCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.motorCombo.FormattingEnabled = true;
+            this.motorCombo.Items.AddRange( new object[] {
+            "Motor A",
+            "Motor B",
+            "Motor C",
+            "Motor A+C"} );
+            this.motorCombo.Location = new System.Drawing.Point( 10, 20 );
+            this.motorCombo.Name = "motorCombo";
+            this.motorCombo.Size = new System.Drawing.Size( 130, 21 );
+            this.motorCombo.TabIndex = 0;
             // 
             // turnDeviceOffButton
             // 

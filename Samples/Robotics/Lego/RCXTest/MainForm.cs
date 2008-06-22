@@ -24,7 +24,9 @@ namespace RCXTest
 
         // available motors
         private static RCXBrick.Motor[] motors = new RCXBrick.Motor[] {
-            RCXBrick.Motor.A, RCXBrick.Motor.B, RCXBrick.Motor.C };
+            RCXBrick.Motor.A, RCXBrick.Motor.B, RCXBrick.Motor.C,
+            RCXBrick.Motor.AC
+        };
 
         // Constructor
         public MainForm( )
