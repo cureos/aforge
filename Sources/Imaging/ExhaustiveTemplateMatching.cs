@@ -43,6 +43,9 @@ namespace AForge.Imaging
     /// <para>The class also can be used to get similarity level between two image of the same
     /// size, which can be useful to get information how different/similar are images:</para>
     /// <code>
+    /// // create template matching algorithm's instance
+    /// // use zero similarity to make sure algorithm will provide anything
+    /// ExhaustiveTemplateMatching tm = new ExhaustiveTemplateMatching( 0 );
     /// // compare two images
     /// Matching[] matchings = tm.ProcessImage( image1, image2 );
     /// // check similarity level
@@ -74,6 +77,12 @@ namespace AForge.Imaging
             get { return similarityThreshold; }
             set { similarityThreshold = Math.Min( 1, Math.Max( 0, value ) ); }
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Matching"/> class.
+        /// </summary>
+        /// 
+        public ExhaustiveTemplateMatching( ) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Matching"/> class.
@@ -176,6 +185,9 @@ namespace AForge.Imaging
             // maximum possible difference with template
             int max = templateWidth * templateHeight * pixelSize * 255;
 
+            // integer similarity threshold
+            int threshold = (int) ( similarityThreshold * max );
+
             // do the job
             unsafe
             {
@@ -217,7 +229,11 @@ namespace AForge.Imaging
                             tpl += templateOffset;
                         }
 
-                        map[y + 2, x + 2] = max - dif;
+                        // templates similarity
+                        int sim = max - dif;
+
+                        if ( sim >= threshold )
+                            map[y + 2, x + 2] = sim;
                     }
                 }
             }
@@ -250,15 +266,9 @@ namespace AForge.Imaging
                     // check if this point is really interesting
                     if ( currentValue != 0 )
                     {
-                        float similarity = (float) currentValue / max;
-
-                        // check its similarity passes threshold
-                        if ( similarity >= similarityThreshold )
-                        {
-                            matchingsList.Add( new Matching(
-                                new Rectangle( x - 2, y - 2, templateWidth, templateHeight ),
-                                similarity ) );
-                        }
+                        matchingsList.Add( new Matching(
+                            new Rectangle( x - 2, y - 2, templateWidth, templateHeight ),
+                            (float) currentValue / max ) );
                     }
                 }
             }
