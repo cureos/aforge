@@ -23,6 +23,9 @@ namespace AForge.Robotics.Lego
     /// 
     /// <para><note>Only communication through USB IR tower is supported at this point.</note></para>
     /// 
+    /// <para><note>The class uses GhostAPI to communicate with Lego RCX device, so its
+    /// libraries should be placed into applications folder.</note></para>
+    /// 
     /// <para>Sample usage:</para>
     /// <code>
     /// // create an instance of RCX brick
