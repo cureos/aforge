@@ -38,12 +38,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Internals\GhostAPI.cs" />
-    <Compile Include="NXT\InputValues.cs" />
-    <Compile Include="NXT\INXTCommunicationInterface.cs" />
-    <Compile Include="NXT\MotorState.cs" />
-    <Compile Include="NXT\NXTBrick.cs" />
-    <Compile Include="NXT\NXTDefines.cs" />
-    <Compile Include="NXT\SerialCommunication.cs" />
+    <Compile Include="Internals\INXTCommunicationInterface.cs" />
+    <Compile Include="Internals\NXTCommands.cs" />
+    <Compile Include="Internals\RCXCommands.cs" />
+    <Compile Include="Internals\SerialCommunication.cs" />
+    <Compile Include="NXTBrick.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RCXBrick.cs" />
   </ItemGroup>

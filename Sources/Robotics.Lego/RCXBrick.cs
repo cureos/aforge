@@ -48,7 +48,7 @@ namespace AForge.Robotics.Lego
     ///
     ///     if ( rcx.GetSensorValue( RCXBrick.Sensor.First, out value ) )
     ///     {
-    ///
+    ///         // ...
     ///     }
     ///     // ...
     /// }
@@ -58,6 +58,8 @@ namespace AForge.Robotics.Lego
     /// 
     public class RCXBrick
     {
+        #region Embedded type
+
         /// <summary>
         /// Enumeration of sound type playable by Lego RCX brick.
         /// </summary>
@@ -90,7 +92,7 @@ namespace AForge.Robotics.Lego
         }
 
         /// <summary>
-        /// Enumeration of RCX brick sensors.
+        /// Enumeration of RCX brick sensor ports.
         /// </summary>
         public enum Sensor
         {
@@ -175,7 +177,7 @@ namespace AForge.Robotics.Lego
         }
 
         /// <summary>
-        /// Enumeration of RCX brick motors.
+        /// Enumeration of RCX brick motor ports.
         /// </summary>
         [Flags]
         public enum Motor
@@ -192,7 +194,6 @@ namespace AForge.Robotics.Lego
             /// Motor C.
             /// </summary>
             C = 4,
-
             /// <summary>
             /// Motors A and B.
             /// </summary>
@@ -215,8 +216,19 @@ namespace AForge.Robotics.Lego
             All = 7
         }
 
+        #endregion
+
         // Ghost communication stack
         private IntPtr stack;
+
+        /// <summary>
+        /// Check if connection to RCX brick is established.
+        /// </summary>
+        /// 
+        public bool IsConnected
+        {
+            get { return ( stack != IntPtr.Zero ); }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RCXBrick"/> class.
@@ -241,6 +253,10 @@ namespace AForge.Robotics.Lego
         /// 
         /// <returns>Returns <b>true</b> on successful connection or <b>false</b>
         /// otherwise.</returns>
+        /// 
+        /// <remarks>If connection to RCX brick was established before the call, existing connection will be reused.
+        /// If it is required to force reconnection, then <see cref="Disconnect"/> method should be called before.
+        /// </remarks>
         /// 
         public bool Connect( )
         {
@@ -288,6 +304,7 @@ namespace AForge.Robotics.Lego
         /// <summary>
         /// Disconnnect from Lego RCX brick.
         /// </summary>
+        /// 
         public void Disconnect( )
         {
             if ( stack != IntPtr.Zero )
@@ -305,11 +322,11 @@ namespace AForge.Robotics.Lego
         /// 
         public bool IsAlive( )
         {
-            return SendCommand( new byte[] { 0x10 }, new byte[1], 1 );
+            return SendCommand( new byte[] { (byte) RCXCommand.IsAlive }, new byte[1], 1 );
         }
 
         /// <summary>
-        /// Play one of supported souns.
+        /// Play one of supported sounds.
         /// </summary>
         /// 
         /// <param name="type">Sound type to play.</param>
@@ -318,7 +335,7 @@ namespace AForge.Robotics.Lego
         /// 
         public bool PlaySound( SoundType type )
         {
-            return SendCommand( new byte[] { 0x51, (byte) type }, new byte[1], 1 ); ;
+            return SendCommand( new byte[] { (byte) RCXCommand.PlaySound, (byte) type }, new byte[1], 1 ); ;
         }
 
         /// <summary>
@@ -332,7 +349,7 @@ namespace AForge.Robotics.Lego
         /// 
         public bool PlayTone( short frequency, byte duration )
         {
-            return SendCommand( new byte[] { 0x23,
+            return SendCommand( new byte[] { (byte) RCXCommand.PlayTone,
                 (byte) ( frequency & 0xFF ),
                 (byte) ( frequency >> 16 ),
                 duration },
@@ -352,7 +369,7 @@ namespace AForge.Robotics.Lego
         {
             byte[] reply = new byte[9];
 
-            if ( SendCommand( new byte[] { 0x15, 1, 3, 5, 7, 11 }, reply, 9 ) )
+            if ( SendCommand( new byte[] { (byte) RCXCommand.GetVersions, 1, 3, 5, 7, 11 }, reply, 9 ) )
             {
                 romVersion = string.Format( "{0}.{1}",
                     reply[2] | ( reply[1] << 8 ),
@@ -381,7 +398,7 @@ namespace AForge.Robotics.Lego
         {
             byte[] reply = new byte[3];
 
-            if ( SendCommand( new byte[] { 0x30 }, reply, 3 ) )
+            if ( SendCommand( new byte[] { (byte) RCXCommand.GetBatteryPower }, reply, 3 ) )
             {
                 power = reply[1] | ( reply[2] << 8 );
                 return true;
@@ -403,7 +420,7 @@ namespace AForge.Robotics.Lego
         /// 
         public bool SetTime( byte hours, byte minutes )
         {
-            return SendCommand( new byte[] { 0x22, hours, minutes }, new byte[1], 1 );
+            return SendCommand( new byte[] { (byte) RCXCommand.SetTime, hours, minutes }, new byte[1], 1 );
         }
 
         /// <summary>
@@ -414,7 +431,7 @@ namespace AForge.Robotics.Lego
         /// 
         public bool PowerOff( )
         {
-            return SendCommand( new byte[] { 0x60 }, new byte[1], 1 );
+            return SendCommand( new byte[] { (byte) RCXCommand.PowerOff }, new byte[1], 1 );
         }
 
         /// <summary>
@@ -431,7 +448,7 @@ namespace AForge.Robotics.Lego
         {
             byte[] reply = new byte[3];
 
-            if ( SendCommand( new byte[] { 0x12, 9, (byte) sensor }, reply, 3 ) )
+            if ( SendCommand( new byte[] { (byte) RCXCommand.GetValue, 9, (byte) sensor }, reply, 3 ) )
             {
                 value = (short) ( reply[1] | ( reply[2] << 8 ) );
                 return true;
@@ -453,7 +470,8 @@ namespace AForge.Robotics.Lego
         /// 
         public bool SetSensorType( Sensor sensor, SensorType type )
         {
-            return SendCommand( new byte[] { 0x32, (byte) sensor, (byte) type }, new byte[1], 1 );
+            return SendCommand( new byte[] { (byte) RCXCommand.SetSensorType,
+                (byte) sensor, (byte) type }, new byte[1], 1 );
         }
 
         /// <summary>
@@ -467,7 +485,8 @@ namespace AForge.Robotics.Lego
         /// 
         public bool SetSensorMode( Sensor sensor, SensorMode mode )
         {
-            return SendCommand( new byte[] { 0x42, (byte) sensor, (byte) ( (byte) mode << 5 ) }, new byte[1], 1 );
+            return SendCommand( new byte[] { (byte) RCXCommand.SetSensorMore,
+                (byte) sensor, (byte) ( (byte) mode << 5 ) }, new byte[1], 1 );
         }
 
         /// <summary>
@@ -480,7 +499,8 @@ namespace AForge.Robotics.Lego
         /// 
         public bool ClearSensor( Sensor sensor )
         {
-            return SendCommand( new byte[] { 0xD1, (byte) sensor }, new byte[1], 1 );
+            return SendCommand( new byte[] { (byte) RCXCommand.ClearSensorValue,
+                (byte) sensor }, new byte[1], 1 );
         }
 
         /// <summary>
@@ -494,9 +514,8 @@ namespace AForge.Robotics.Lego
         /// 
         public bool SetMotorOn( Motor motors, bool on )
         {
-            return SendCommand( new byte[] { 0x21,
-                (byte) ( (byte) motors | ( on ? 0x80 : 0x40 ) )  },
-                new byte[1], 1 );
+            return SendCommand( new byte[] { (byte) RCXCommand.SetMotorOnOff,
+                (byte) ( (byte) motors | ( on ? 0x80 : 0x40 ) )  }, new byte[1], 1 );
         }
 
         /// <summary>
@@ -510,8 +529,8 @@ namespace AForge.Robotics.Lego
         /// 
         public bool SetMotorPower( Motor motors, byte power )
         {
-            return SendCommand( new byte[] { 0x13, (byte) motors, 2, Math.Min( power, (byte) 7 ) },
-                new byte[1], 1 );
+            return SendCommand( new byte[] { (byte) RCXCommand.SetMotorPower,
+                (byte) motors, 2, Math.Min( power, (byte) 7 ) }, new byte[1], 1 );
         }
 
         /// <summary>
@@ -525,13 +544,12 @@ namespace AForge.Robotics.Lego
         /// 
         public bool SetMotorDirection( Motor motors, bool isForward )
         {
-            return SendCommand( new byte[] { 0xE1,
-                (byte) ( (byte) motors | ( isForward ? 0x80 : 0 ) )  },
-                new byte[1], 1 );
+            return SendCommand( new byte[] { (byte) RCXCommand.SetMotorDirection,
+                (byte) ( (byte) motors | ( isForward ? 0x80 : 0 ) ) }, new byte[1], 1 );
         }
 
         /// <summary>
-        /// Set transmitter's range.
+        /// Set IR transmitter's range.
         /// </summary>
         /// 
         /// <param name="isLongRange">True if long range should be set, otherwise false.</param>
@@ -540,11 +558,12 @@ namespace AForge.Robotics.Lego
         /// 
         public bool SetTransmitterRange( bool isLongRange )
         {
-            return SendCommand( new byte[] { 0x31, (byte) ( ( isLongRange) ? 1 : 0 ) }, new byte[1], 1 );
+            return SendCommand( new byte[] { (byte) RCXCommand.SetTransmitterRange,
+                (byte) ( ( isLongRange) ? 1 : 0 ) }, new byte[1], 1 );
         }
 
         /// <summary>
-        /// Send command to Lego RCX brick.
+        /// Send command to Lego RCX brick and read reply.
         /// </summary>
         /// 
         /// <param name="command">Command to send.</param>
@@ -554,15 +573,23 @@ namespace AForge.Robotics.Lego
         /// <returns>Returns <b>true</b> if the command was sent successfully and reply was
         /// received, otherwise <b>false</b>.</returns>
         /// 
+        /// <exception cref="NullReferenceException">Communication can not be performed, because connection with
+        /// RCX brick was not established yet.</exception>
         /// <exception cref="ArgumentException">Reply buffer size is smaller than the reply data size.</exception>
         /// <exception cref="ApplicationException">Reply does not correspond to command (first byte of reply
-        /// should be complement (bitwise NOT) to the first byte of command orred with 0x08.</exception>
+        /// should be complement (bitwise NOT) to the first byte of command orred with 0x08).</exception>
         /// 
         protected bool SendCommand( byte[] command, byte[] reply, int expectedReplyLen )
         {
             bool result = false;
             uint status;
             IntPtr queue;
+
+            // check if GhostAPI stack was created (if device is connected)
+            if ( stack == IntPtr.Zero )
+            {
+                throw new NullReferenceException( "Not connected to RCX brick" );
+            }
 
             // create command queue
             status = GhostAPI.GhCreateCommandQueue( out queue );
@@ -598,7 +625,7 @@ namespace AForge.Robotics.Lego
 
                         if ( GhostAPI.PBK_SUCCEEDED( status ) )
                         {
-                            // check that reply corresponds ещ command
+                            // check that reply corresponds to command
                             if ( ( command[0] | 0x08 ) != (byte) ~reply[0] )
                                 throw new ApplicationException( "Reply does not correspond to command" );
 

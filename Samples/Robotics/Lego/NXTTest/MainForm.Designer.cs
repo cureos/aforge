@@ -547,7 +547,7 @@ namespace NXTTest
             this.powerUpDown.Size = new System.Drawing.Size( 60, 20 );
             this.powerUpDown.TabIndex = 5;
             this.powerUpDown.Value = new decimal( new int[] {
-            60,
+            70,
             0,
             0,
             0} );
@@ -651,7 +651,7 @@ namespace NXTTest
             this.sensorModeCombo.Items.AddRange( new object[] {
             "Raw",
             "Boolean",
-            "Transition CNT",
+            "Transition Counter",
             "Periodic Counter",
             "PCT Full Scale",
             "Celsius",

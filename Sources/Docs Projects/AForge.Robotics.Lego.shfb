@@ -10,6 +10,7 @@
     </namespaceSummaries>
     <additionalContent>
         <contentItem sourcePath="..\Robotics.Lego\Images\rcx.jpg" destPath="" excludeItems="False" />
+        <contentItem sourcePath="..\Robotics.Lego\Images\nxt.jpg" destPath="" excludeItems="False" />
     </additionalContent>
     <ProjectSummary />
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace</MissingTags>

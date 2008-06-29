@@ -11,6 +11,13 @@ namespace AForge.Robotics.Lego.Internals
     using System.Text;
     using System.Runtime.InteropServices;
 
+    /// <summary>
+    /// GhostAPI wrapper class.
+    /// </summary>
+    /// 
+    /// <remarks><para>GhostAPI is a library provided by Lego, to communicate with its
+    /// RCX robotics kit.</para></remarks>
+    /// 
     internal class GhostAPI
     {
         /// <summary>

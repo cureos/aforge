@@ -28,7 +28,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AForge.Robotics.Lego, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5f361631ec856b74, processorArchitecture=MSIL">
+    <Reference Include="AForge.Robotics.Lego, Version=1.6.0.0, Culture=neutral, PublicKeyToken=5f361631ec856b74, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Release\AForge.Robotics.Lego.dll</HintPath>
     </Reference>

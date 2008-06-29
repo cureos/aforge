@@ -1,11 +1,11 @@
 // AForge Lego Robotics Library
 // AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2007
+// Copyright © Andrew Kirillov, 2007-2008
 // andrew.kirillov@gmail.com
 //
 
-namespace AForge.Robotics.Lego.NXT
+namespace AForge.Robotics.Lego.Internals
 {
     using System;
     using System.IO;
@@ -15,7 +15,7 @@ namespace AForge.Robotics.Lego.NXT
     /// Implementation of serial communication interface with LEGO Mindstorm NXT brick.
     /// </summary>
     /// 
-    public class SerialCommunication : INXTCommunicationInterface
+    internal class SerialCommunication : INXTCommunicationInterface
     {
         // serial port for communication with NXT brick
         SerialPort port = null;
@@ -34,7 +34,6 @@ namespace AForge.Robotics.Lego.NXT
         public string PortName
         {
             get { return port.PortName; }
-            set { port.PortName = value; }
         }
 
         /// <summary>
@@ -79,14 +78,14 @@ namespace AForge.Robotics.Lego.NXT
         /// Connect to NXT brick.
         /// </summary>
         /// 
-        /// <returns>Returns <see cref="CommunicationStatus.Success"/> if connection was done successfully, or
-        /// <see cref="CommunicationStatus.Failed"/> otherwise.</returns>
+        /// <returns>Returns <b>true</b> if connection was established successfully or <b>false</b>
+        /// otherwise.</returns>
         /// 
-        /// <remarks>If communication interface is connected before the call, existing connection will be reused.
+        /// <remarks>If communication interface was connected before the call, existing connection will be reused.
         /// If it is required to force reconnection, then <see cref="Disconnect"/> method should be called before.
         /// </remarks>
         /// 
-        public CommunicationStatus Connect( )
+        public bool Connect( )
         {
             if ( !port.IsOpen )
             {
@@ -97,10 +96,10 @@ namespace AForge.Robotics.Lego.NXT
                 }
                 catch
                 {
-                    return CommunicationStatus.Failed;
+                    return false;
                 }
             }
-            return CommunicationStatus.Success;
+            return true;
         }
 
         /// <summary>
@@ -120,13 +119,13 @@ namespace AForge.Robotics.Lego.NXT
         /// 
         /// <param name="message">Buffer containing the message to send.</param>
         /// 
+        /// <returns>Returns <b>true</b> if message was sent successfully or <b>false</b>
+        /// otherwise.</returns>
+        /// 
         /// <remarks>This method assumes that message starts from the start of the
         /// specified buffer and occupies entire buffer.</remarks>
         /// 
-        /// <returns>Returns <see cref="CommunicationStatus.Success"/> if message was sent successfully, or
-        /// another value describing error.</returns>
-        /// 
-        public CommunicationStatus SendMessage( byte[] message )
+        public bool SendMessage( byte[] message )
         {
             return SendMessage( message, 0, message.Length );
         }
@@ -138,13 +137,13 @@ namespace AForge.Robotics.Lego.NXT
         /// <param name="message">Buffer containing the message to send.</param>
         /// <param name="length">Length of the message to send.</param>
         /// 
+        /// <returns>Returns <b>true</b> if message was sent successfully or <b>false</b>
+        /// otherwise.</returns>
+        /// 
         /// <remarks>This method assumes that message starts from the start of the
         /// specified buffer.</remarks>
         /// 
-        /// <returns>Returns <see cref="CommunicationStatus.Success"/> if message was sent successfully, or
-        /// another value describing error.</returns>
-        /// 
-        public CommunicationStatus SendMessage( byte[] message, int length )
+        public bool SendMessage( byte[] message, int length )
         {
             return SendMessage( message, 0, length );
         }
@@ -157,21 +156,21 @@ namespace AForge.Robotics.Lego.NXT
         /// <param name="offset">Offset of the message in the buffer.</param>
         /// <param name="length">Length of the message to send.</param>
         /// 
-        /// <returns>Returns <see cref="CommunicationStatus.Success"/> if message was sent successfully, or
-        /// another value describing error.</returns>
+        /// <returns>Returns <b>true</b> if message was sent successfully or <b>false</b>
+        /// otherwise.</returns>
         /// 
-        public CommunicationStatus SendMessage( byte[] message, int offset, int length )
+        public bool SendMessage( byte[] message, int offset, int length )
         {
             // check connection status
             if ( !port.IsOpen )
             {
-                return CommunicationStatus.NotConnected;
+                throw new NullReferenceException( "Serial port is not opened" );
             }
 
             // check message size
             if ( length > MaxMessageSize )
             {
-                return CommunicationStatus.TooBigMessage;
+                throw new ArgumentException( "Too large message" );
             }
 
             try
@@ -182,57 +181,49 @@ namespace AForge.Robotics.Lego.NXT
                 // send actual message
                 port.Write( message, offset, length );
             }
-            catch ( TimeoutException )
+            catch
             {
-                return CommunicationStatus.Timeout;
-            }
-            catch ( IOException )
-            {
-                return CommunicationStatus.Failed;
+                return false;
             }
 
-            return CommunicationStatus.Success;
+            return true;
         }
 
         /// <summary>
         /// Read message from NXT brick over the communication interface.
         /// </summary>
         /// 
-        /// <param name="buffer">Buffer used for reading message.</param>
+        /// <param name="buffer">Buffer to use for message reading.</param>
         /// <param name="length">On successful return the variable keeps message length.</param>
         /// 
-        /// <returns>Returns <see cref="CommunicationStatus.Success"/> if message was read successfully, or
-        /// another value describing error.</returns>
+        /// <returns>Returns <b>true</b> if message was read successfully or <b>false</b>
+        /// otherwise.</returns>
         /// 
-        /// <remarks><note>In the case if <see cref="CommunicationStatus.TooSmallBuffer"/> error code was returned,
-        /// the message is discarded, so it is not possible to re-read it with subsequent read.</note></remarks>
-        /// 
-        public CommunicationStatus ReadMessage( byte[] buffer, ref int length )
+        public bool ReadMessage( byte[] buffer, out int length )
         {
-            return ReadMessage( buffer, 0, ref length );
+            return ReadMessage( buffer, 0, out length );
         }
 
         /// <summary>
         /// Read message from NXT brick over the communication interface.
         /// </summary>
         /// 
-        /// <param name="buffer">Buffer used for reading message.</param>
+        /// <param name="buffer">Buffer to use for message reading.</param>
         /// <param name="offset">Offset in the buffer for message.</param>
         /// <param name="length">On successful return the variable keeps message length.</param>
         /// 
-        /// <returns>Returns <see cref="CommunicationStatus.Success"/> if message was read successfully, or
-        /// another value describing error.</returns>
+        /// <returns>Returns <b>true</b> if message was read successfully or <b>false</b>
+        /// otherwise.</returns>
         /// 
-        /// <remarks><note>In the case if <see cref="CommunicationStatus.TooSmallBuffer"/> error code was returned,
-        /// the message is discarded, so it is not possible to re-read it with subsequent read.</note></remarks>
-        /// 
-        public CommunicationStatus ReadMessage( byte[] buffer, int offset, ref int length )
+        public bool ReadMessage( byte[] buffer, int offset, out int length )
         {
             // check connection status
             if ( !port.IsOpen )
             {
-                return CommunicationStatus.NotConnected;
+                throw new NullReferenceException( "Serial port is not opened" );
             }
+
+            length = 0;
 
             try
             {
@@ -250,7 +241,7 @@ namespace AForge.Robotics.Lego.NXT
                         port.ReadByte( );
                         toRead--;
                     }
-                    return CommunicationStatus.TooSmallBuffer;
+                    throw new ArgumentException( "Reply buffer is too small" );
                 }
                 // read the message
                 length = port.Read( buffer, offset, toRead );
@@ -261,16 +252,12 @@ namespace AForge.Robotics.Lego.NXT
                     length++;
                 }
             }
-            catch ( TimeoutException )
+            catch
             {
-                return CommunicationStatus.Timeout;
-            }
-            catch ( IOException )
-            {
-                return CommunicationStatus.Failed;
+                return false;
             }
 
-            return CommunicationStatus.Success;
+            return true;
         }
     }
 }

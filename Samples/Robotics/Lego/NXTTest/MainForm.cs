@@ -13,38 +13,44 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-using AForge.Robotics.Lego.NXT;
+using AForge.Robotics.Lego;
 
 namespace NXTTest
 {
     public partial class MainForm : Form
     {
-        // communication interface for NXT device
-        private SerialCommunication nxtCommunication = new SerialCommunication( "COM1" );
         // NXT brick
-        private NXTBrick nxt = null;
+        private NXTBrick nxt = new NXTBrick( );
         // rugulation modes
-        private RegulationMode[] regulationModes = new RegulationMode[]
-            { RegulationMode.Idle, RegulationMode.Speed, RegulationMode.Sync };
+        private NXTBrick.MotorRegulationMode[] regulationModes = new NXTBrick.MotorRegulationMode[] {
+            NXTBrick.MotorRegulationMode.Idle,
+            NXTBrick.MotorRegulationMode.Speed,
+            NXTBrick.MotorRegulationMode.Sync };
         // run states
-        private RunState[] runStates = new RunState[]
-            { RunState.Idle, RunState.RampUp, RunState.Running, RunState.RampDown };
+        private NXTBrick.MotorRunState[] runStates = new NXTBrick.MotorRunState[] {
+            NXTBrick.MotorRunState.Idle,
+            NXTBrick.MotorRunState.RampUp,
+            NXTBrick.MotorRunState.Running,
+            NXTBrick.MotorRunState.RampDown };
         // sensor types
-        private SensorType[] sensorTypes = new SensorType[]
-            { SensorType.NoSensor, SensorType.Switch, SensorType.Temperature, SensorType.Reflection,
-              SensorType.Angle, SensorType.LightActive, SensorType.LightInactive, SensorType.SoundDB,
-              SensorType.SoundDBA, SensorType.Custom, SensorType.Lowspeed, SensorType.Lowspeed9V };
+        private NXTBrick.SensorType[] sensorTypes = new NXTBrick.SensorType[] {
+            NXTBrick.SensorType.NoSensor, NXTBrick.SensorType.Switch,
+            NXTBrick.SensorType.Temperature, NXTBrick.SensorType.Reflection,
+            NXTBrick.SensorType.Angle, NXTBrick.SensorType.LightActive,
+            NXTBrick.SensorType.LightInactive, NXTBrick.SensorType.SoundDB,
+            NXTBrick.SensorType.SoundDBA, NXTBrick.SensorType.Custom,
+            NXTBrick.SensorType.Lowspeed, NXTBrick.SensorType.Lowspeed9V };
         // sensor modes
-        private SensorMode[] sensorModes = new SensorMode[]
-            { SensorMode.Raw, SensorMode.Boolean, SensorMode.TransitionCNT, SensorMode.PeriodicCounter,
-              SensorMode.PCTFullScale, SensorMode.Celsius, SensorMode.Fahrenheit, SensorMode.AngleSteps };
+        private NXTBrick.SensorMode[] sensorModes = new NXTBrick.SensorMode[] {
+            NXTBrick.SensorMode.Raw, NXTBrick.SensorMode.Boolean,
+            NXTBrick.SensorMode.TransitionCounter, NXTBrick.SensorMode.PeriodicCounter,
+            NXTBrick.SensorMode.PCTFullScale, NXTBrick.SensorMode.Celsius,
+            NXTBrick.SensorMode.Fahrenheit, NXTBrick.SensorMode.AngleSteps };
 
         // Constructor
         public MainForm( )
         {
             InitializeComponent( );
-
-            nxt = new NXTBrick( nxtCommunication );
 
             // setup defaults
             portBox.Text = "COM8";
@@ -59,9 +65,7 @@ namespace NXTTest
         // On "Connect" button click
         private void connectButton_Click( object sender, EventArgs e )
         {
-            nxtCommunication.PortName = portBox.Text;
-
-            if ( nxt.Connect( ) == CommunicationStatus.Success )
+            if ( nxt.Connect( portBox.Text ) )
             {
                 System.Diagnostics.Debug.WriteLine( "Connected successfully" );
 
@@ -120,10 +124,10 @@ namespace NXTTest
         {
             // ------------------------------------------------
             // get NXT version
-            string firmwareVersion = null;
-            string protocolVersion = null;
+            string firmwareVersion;
+            string protocolVersion;
 
-            if ( nxt.GetFirmwareVersion( ref protocolVersion, ref firmwareVersion ) == CommunicationStatus.Success )
+            if ( nxt.GetVersion( out protocolVersion, out firmwareVersion ) )
             {
                 firmwareBox.Text = firmwareVersion;
                 protocolBox.Text = protocolVersion;
@@ -135,12 +139,12 @@ namespace NXTTest
 
             // ------------------------------------------------
             // get device information
-            string deviceName = null;
-            byte[] btAddress = new byte[7];
-            int btSignalStrength = 0;
-            int freeUserFlesh = 0;
+            string deviceName;
+            byte[] btAddress;
+            int btSignalStrength;
+            int freeUserFlesh;
 
-            if ( nxt.GetDeviceInformation( ref deviceName, ref btAddress, ref btSignalStrength, ref freeUserFlesh ) == CommunicationStatus.Success )
+            if ( nxt.GetDeviceInformation( out deviceName, out btAddress, out btSignalStrength, out freeUserFlesh ) )
             {
                 deviceNameBox.Text = deviceName;
 
@@ -165,9 +169,9 @@ namespace NXTTest
 
             // ------------------------------------------------
             // get battery level
-            int batteryLevel = 0;
+            int batteryLevel;
 
-            if ( nxt.GetBatteryLevel( ref batteryLevel ) == CommunicationStatus.Success )
+            if ( nxt.GetBatteryPower( out batteryLevel ) )
             {
                 batteryLevelBox.Text = batteryLevel.ToString( );
             }
@@ -178,21 +182,21 @@ namespace NXTTest
         }
 
         // Returns selected motor
-        private OutputPort GetSelectedMotor( )
+        private NXTBrick.Motor GetSelectedMotor( )
         {
-            return (OutputPort) motorCombo.SelectedIndex;
+            return (NXTBrick.Motor) motorCombo.SelectedIndex;
         }
 
         // Returns selected input port
-        private InputPort GetSelectedInputPort( )
+        private NXTBrick.Sensor GetSelectedSensor( )
         {
-            return (InputPort) inputPortCombo.SelectedIndex;
+            return (NXTBrick.Sensor) inputPortCombo.SelectedIndex;
         }
 
         // On motor "Reset" button click
         private void resetMotorButton_Click( object sender, EventArgs e )
         {
-            if ( nxt.ResetMotorPosition( GetSelectedMotor( ) ) != CommunicationStatus.Success )
+            if ( nxt.ResetMotorPosition( GetSelectedMotor( ) ) != true )
             {
                 System.Diagnostics.Debug.WriteLine( "Failed reseting motor" );
             }
@@ -201,14 +205,14 @@ namespace NXTTest
         // On motor "Set state" button click
         private void setMotorStateButton_Click( object sender, EventArgs e )
         {
-            MotorState motorState = new MotorState( );
+            NXTBrick.MotorState motorState = new NXTBrick.MotorState( );
 
             // prepare motor's state to set
             motorState.Power = (sbyte) powerUpDown.Value;
             motorState.TurnRatio = (sbyte) turnRatioUpDown.Value;
-            motorState.Mode = ( ( modeOnCheck.Checked ) ? MotorMode.On : MotorMode.None ) |
-                ( ( modeBrakeCheck.Checked ) ? MotorMode.Brake : MotorMode.None ) |
-                ( ( modeRegulatedBox.Checked ) ? MotorMode.Regulated : MotorMode.None );
+            motorState.Mode = ( ( modeOnCheck.Checked ) ? NXTBrick.MotorMode.On : NXTBrick.MotorMode.None ) |
+                ( ( modeBrakeCheck.Checked ) ? NXTBrick.MotorMode.Brake : NXTBrick.MotorMode.None ) |
+                ( ( modeRegulatedBox.Checked ) ? NXTBrick.MotorMode.Regulated : NXTBrick.MotorMode.None );
             motorState.Regulation = regulationModes[regulationModeCombo.SelectedIndex];
             motorState.RunState = runStates[runStateCombo.SelectedIndex];
             // tacho limit
@@ -223,7 +227,7 @@ namespace NXTTest
             }
 
             // set motor's state
-            if ( nxt.SetMotorState( GetSelectedMotor( ), motorState ) != CommunicationStatus.Success )
+            if ( nxt.SetMotorState( GetSelectedMotor( ), motorState ) != true )
             {
                 System.Diagnostics.Debug.WriteLine( "Failed setting motor state" );
             }
@@ -232,10 +236,10 @@ namespace NXTTest
         // On motor "Get state" button click
         private void getMotorStateButton_Click( object sender, EventArgs e )
         {
-            MotorState motorState;
+            NXTBrick.MotorState motorState;
 
             // get motor's state
-            if ( nxt.GetMotorState( GetSelectedMotor( ), out motorState ) == CommunicationStatus.Success )
+            if ( nxt.GetMotorState( GetSelectedMotor( ), out motorState ) )
             {
                 tachoCountBox.Text = motorState.TachoCount.ToString( );
                 blockTachoCountBox.Text = motorState.BlockTachoCount.ToString( );
@@ -250,19 +254,19 @@ namespace NXTTest
         // On "Get input" button click
         private void getInputButton_Click( object sender, EventArgs e )
         {
-            InputValues inputValues;
+            NXTBrick.SensorValues sensorValues;
 
             // get input values
-            if ( nxt.GetInputValues( GetSelectedInputPort( ), out inputValues ) == CommunicationStatus.Success )
+            if ( nxt.GetSensorValue( GetSelectedSensor( ), out sensorValues ) )
             {
-                validCheck.Checked      = inputValues.IsValid;
-                calibratedCheck.Checked = inputValues.IsCalibrated;
-                sensorTypeBox.Text      = inputValues.SensorType.ToString( );
-                sensorModeBox.Text      = inputValues.SensorMode.ToString( );
-                rawInputBox.Text        = inputValues.Raw.ToString( );
-                normalizedInputBox.Text = inputValues.Normalized.ToString( );
-                scaledInputBox.Text     = inputValues.Scaled.ToString( );
-                calibratedInputBox.Text = inputValues.Calibrated.ToString( );
+                validCheck.Checked      = sensorValues.IsValid;
+                calibratedCheck.Checked = sensorValues.IsCalibrated;
+                sensorTypeBox.Text      = sensorValues.SensorType.ToString( );
+                sensorModeBox.Text      = sensorValues.SensorMode.ToString( );
+                rawInputBox.Text        = sensorValues.Raw.ToString( );
+                normalizedInputBox.Text = sensorValues.Normalized.ToString( );
+                scaledInputBox.Text     = sensorValues.Scaled.ToString( );
+                calibratedInputBox.Text = sensorValues.Calibrated.ToString( );
             }
             else
             {
@@ -273,9 +277,9 @@ namespace NXTTest
         // On "Set mode" button click
         private void setInputModeButton_Click( object sender, EventArgs e )
         {
-            if ( nxt.SetInputMode( GetSelectedInputPort( ),
+            if ( nxt.SetSensorMode( GetSelectedSensor( ),
                 sensorTypes[sensorTypeCombo.SelectedIndex],
-                sensorModes[sensorModeCombo.SelectedIndex] ) != CommunicationStatus.Success )
+                sensorModes[sensorModeCombo.SelectedIndex] ) != true )
             {
                 System.Diagnostics.Debug.WriteLine( "Failed setting input mode" );
             }
