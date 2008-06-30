@@ -252,16 +252,18 @@ namespace AForge.Imaging
             }
         }
 
+
+
         /// <summary>
         /// Draw a line on the specified image.
         /// </summary>
         /// 
         /// <param name="imageData">Source image data.</param>
         /// <param name="point1">The first point to connect.</param>
-        /// <param name="point1">The second point to connect.</param>
+        /// <param name="point2">The second point to connect.</param>
         /// <param name="color">Line's color.</param>
         /// 
-        public static unsafe void Line( BitmapData imageData, Point point1, Point point1, Color color )
+        public static unsafe void Line( BitmapData imageData, Point point1, Point point2, Color color )
         {
             // check pixel format
             if (
@@ -288,12 +290,24 @@ namespace AForge.Imaging
                 return;
             }
 
-            // TODO: Clip the line so the coordinates are within image.
-            // For now : if outside, project the point on the closest border
-            int startX = Math.Min( imageWidth - 1, Math.Max( 0, point1.X ) );
-            int startY = Math.Min( imageHeight - 1, Math.Max( 0, point1.Y ) );
-            int stopX = Math.Min( imageWidth - 1, Math.Max( 0, point2.X ) );
-            int stopY = Math.Min( imageHeight - 1, Math.Max( 0, point2.Y ) );
+            CheckEndPoint( imageWidth, imageHeight, point1, ref point2 );
+            CheckEndPoint( imageWidth, imageHeight, point2, ref point1 );
+
+            // check again if there is something to draw
+            if (
+                ( ( point1.X < 0 ) && ( point2.X < 0 ) ) ||
+                ( ( point1.Y < 0 ) && ( point2.Y < 0 ) ) ||
+                ( ( point1.X >= imageWidth ) && ( point2.X >= imageWidth ) ) ||
+                ( ( point1.Y >= imageHeight ) && ( point2.Y >= imageHeight ) ) )
+            {
+                // nothing to draw
+                return;
+            }
+
+            int startX = point1.X;
+            int startY = point1.Y;
+            int stopX  = point2.X;
+            int stopY  = point2.Y;
       
             // compute pixel for grayscale image
             byte gray = 0;
@@ -366,6 +380,50 @@ namespace AForge.Imaging
                     }
                 }
             }
-        }    
+        }
+
+
+        // Check end point and make sure it is in the image
+        private static void CheckEndPoint( int width, int height, Point start, ref Point end )
+        {
+            if ( end.X >= width )
+            {
+                int newEndX = width - 1;
+
+                double c = (double) ( newEndX - start.X ) / ( end.X - start.X );
+
+                end.Y = (int) ( start.Y + c * ( end.Y - start.Y ) );
+
+                end.X = newEndX;
+            }
+
+            if ( end.Y >= height )
+            {
+                int newEndY = height - 1;
+
+                double c = (double) ( newEndY - start.Y ) / ( end.Y - start.Y );
+
+                end.X = (int) ( start.X + c * ( end.X - start.X ) );
+
+                end.Y = newEndY;
+            }
+
+            if ( end.X < 0 )
+            {
+                double c = (double) ( 0 - start.X ) / ( end.X - start.X );
+
+                end.Y = (int) ( start.Y + c * ( end.Y - start.Y ) );
+                end.X = 0;
+            }
+
+            if ( end.Y < 0 )
+            {
+                double c = (double) ( 0 - start.Y ) / ( end.Y - start.Y );
+
+                end.X = (int) ( start.X + c * ( end.X - start.X ) );
+
+                end.Y = 0;
+            }
+        }
     }
 }
