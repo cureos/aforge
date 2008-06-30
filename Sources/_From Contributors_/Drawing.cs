@@ -257,19 +257,19 @@ namespace AForge.Imaging
         /// </summary>
         /// 
         /// <param name="imageData">Source image data.</param>
-        /// <param name="pt1">The first point to connect.</param>
-        /// <param name="pt2">The second point to connect.</param>
+        /// <param name="point1">The first point to connect.</param>
+        /// <param name="point1">The second point to connect.</param>
         /// <param name="color">Line's color.</param>
         /// 
-        public static unsafe void Line(BitmapData imageData, Point pt1, Point pt2, Color color)
+        public static unsafe void Line( BitmapData imageData, Point point1, Point point1, Color color )
         {
             // check pixel format
             if (
-                (imageData.PixelFormat != PixelFormat.Format24bppRgb) &&
-                (imageData.PixelFormat != PixelFormat.Format8bppIndexed)
+                ( imageData.PixelFormat != PixelFormat.Format24bppRgb ) &&
+                ( imageData.PixelFormat != PixelFormat.Format8bppIndexed )
                 )
             {
-                throw new ArgumentException("Source image can be graysclae (8 bpp indexed) or color (24 bpp) image only");
+                throw new ArgumentException( "Source image can be graysclae (8 bpp indexed) or color (24 bpp) image only" );
             }
 
             // image dimension
@@ -277,61 +277,58 @@ namespace AForge.Imaging
             int imageHeight = imageData.Height;
             int stride = imageData.Stride;
 
-            
-            
-            // TODO: use a segment/rectangle intersection algorithm.
-            // for now : not all cases are handled.
-            if (    ((pt1.X < 0 ) && (pt2.X < 0)) || 
-                    ((pt1.Y < 0 ) && (pt2.Y < 0)) ||
-                    ((pt1.X >= imageWidth ) && (pt2.X >= imageWidth)) ||
-                    ((pt1.Y >= imageHeight ) && (pt2.Y >= imageHeight))  )
+            // check if there is something to draw
+            if (
+                ( ( point1.X < 0 ) && ( point2.X < 0 ) ) ||
+                ( ( point1.Y < 0 ) && ( point2.Y < 0 ) ) ||
+                ( ( point1.X >= imageWidth ) && ( point2.X >= imageWidth ) ) ||
+                ( ( point1.Y >= imageHeight ) && ( point2.Y >= imageHeight ) ) )
             {
                 // nothing to draw
                 return;
             }
 
-
             // TODO: Clip the line so the coordinates are within image.
             // For now : if outside, project the point on the closest border
-            int startX  = Math.Min(imageWidth - 1, Math.Max(0, pt1.X));
-            int startY  = Math.Min(imageHeight - 1, Math.Max(0, pt1.Y));
-            int stopX   = Math.Min(imageWidth - 1, Math.Max(0, pt2.X));
-            int stopY   = Math.Min(imageHeight - 1, Math.Max(0, pt2.Y));
+            int startX = Math.Min( imageWidth - 1, Math.Max( 0, point1.X ) );
+            int startY = Math.Min( imageHeight - 1, Math.Max( 0, point1.Y ) );
+            int stopX = Math.Min( imageWidth - 1, Math.Max( 0, point2.X ) );
+            int stopY = Math.Min( imageHeight - 1, Math.Max( 0, point2.Y ) );
       
-
-
-            // Compute pixel for grayscale image
+            // compute pixel for grayscale image
             byte gray = 0;
-            if (imageData.PixelFormat == PixelFormat.Format8bppIndexed)
+            if ( imageData.PixelFormat == PixelFormat.Format8bppIndexed )
             {
-                gray = (byte)(0.2125 * color.R + 0.7154 * color.G + 0.0721 * color.B);
+                gray = (byte)( 0.2125 * color.R + 0.7154 * color.G + 0.0721 * color.B );
             }
  
-
-            // Draw the line
+            // draw the line
             int dx = stopX - startX;
             int dy = stopY - startY;
 
-            if (Math.Abs(dx) >= Math.Abs(dy))
+            if ( Math.Abs( dx ) >= Math.Abs( dy ) )
             {
-                // The line is more horizontal, we'll plot along the x axis.
-                float slope = (float)dy / (float)dx;
-                int coeff = (dx > 0) ? 1 : -1;
+                // the line is more horizontal, we'll plot along the X axis
+                float slope = (float) dy / (float) dx;
+                int step = ( dx > 0 ) ? 1 : -1;
+
+                // correct dx so last point is included as well
+                dx += step;
                 
-                for (int x = 0; x != dx; x += coeff)
+                for ( int x = 0; x != dx; x += step )
                 {
                     int px = startX + x;
-                    int py = (int)((float)startY + (slope * (float)x));
+                    int py = (int)( (float) startY + ( slope * (float) x ) );
 
-                    if (imageData.PixelFormat == PixelFormat.Format8bppIndexed)
+                    if ( imageData.PixelFormat == PixelFormat.Format8bppIndexed )
                     {
-                        byte* ptr = (byte*)imageData.Scan0.ToPointer() + py * stride + px;
+                        byte* ptr = (byte*) imageData.Scan0.ToPointer( ) + py * stride + px;
                         
                         *ptr = gray;
                     }
                     else
                     {
-                        byte* ptr = (byte*)imageData.Scan0.ToPointer() + py * stride + px * 3;
+                        byte* ptr = (byte*) imageData.Scan0.ToPointer( ) + py * stride + px * 3;
 
                         ptr[RGB.R] = color.R;
                         ptr[RGB.G] = color.G;
@@ -341,24 +338,27 @@ namespace AForge.Imaging
             }
             else
             {
-                // The line is more vertical, we'll plot along the y axis.
-                float slope = (float)dx / (float)dy;
-                int coeff = (dy > 0) ? 1 : -1;
+                // the line is more vertical, we'll plot along the y axis.
+                float slope = (float) dx / (float) dy;
+                int step = ( dy > 0 ) ? 1 : -1;
 
-                for (int y = 0; y != dy; y += coeff)
+                // correct dy so last point is included as well
+                dy += step;
+
+                for ( int y = 0; y != dy; y += step )
                 {
-                    int px = (int)((float)startX + (slope * (float)y));
+                    int px = (int)( (float) startX + ( slope * (float) y ) );
                     int py = startY + y;
 
-                    if (imageData.PixelFormat == PixelFormat.Format8bppIndexed)
+                    if ( imageData.PixelFormat == PixelFormat.Format8bppIndexed )
                     {
-                        byte* ptr = (byte*)imageData.Scan0.ToPointer() + py * stride + px;
+                        byte* ptr = (byte*) imageData.Scan0.ToPointer( ) + py * stride + px;
                         
                         *ptr = gray;
                     }
                     else
                     {
-                        byte* ptr = (byte*)imageData.Scan0.ToPointer() + py * stride + px * 3;
+                        byte* ptr = (byte*) imageData.Scan0.ToPointer( ) + py * stride + px * 3;
 
                         ptr[RGB.R] = color.R;
                         ptr[RGB.G] = color.G;
@@ -366,13 +366,6 @@ namespace AForge.Imaging
                     }
                 }
             }
-        }
-
-        // TODO:
-        // DrawLines, DrawPolygon, DrawRectangles
-        // DrawArc, DrawCurve, DrawEllipse
-        // DrawString,
-        // FillEllipse, FillPolygon...
-    
+        }    
     }
 }
