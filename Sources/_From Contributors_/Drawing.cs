@@ -252,8 +252,6 @@ namespace AForge.Imaging
             }
         }
 
-
-
         /// <summary>
         /// Draw a line on the specified image.
         /// </summary>
@@ -265,6 +263,8 @@ namespace AForge.Imaging
         /// 
         public static unsafe void Line( BitmapData imageData, Point point1, Point point2, Color color )
         {
+            // TODO: faster line drawing algorithm may be implemented with integer math
+
             // check pixel format
             if (
                 ( imageData.PixelFormat != PixelFormat.Format24bppRgb ) &&
@@ -328,20 +328,27 @@ namespace AForge.Imaging
 
                 // correct dx so last point is included as well
                 dx += step;
-                
-                for ( int x = 0; x != dx; x += step )
-                {
-                    int px = startX + x;
-                    int py = (int)( (float) startY + ( slope * (float) x ) );
 
-                    if ( imageData.PixelFormat == PixelFormat.Format8bppIndexed )
+                if ( imageData.PixelFormat == PixelFormat.Format8bppIndexed )
+                {
+                    // grayscale image
+                    for ( int x = 0; x != dx; x += step )
                     {
+                        int px = startX + x;
+                        int py = (int) ( (float) startY + ( slope * (float) x ) );
+
                         byte* ptr = (byte*) imageData.Scan0.ToPointer( ) + py * stride + px;
-                        
                         *ptr = gray;
                     }
-                    else
+                }
+                else
+                {
+                    // color image
+                    for ( int x = 0; x != dx; x += step )
                     {
+                        int px = startX + x;
+                        int py = (int) ( (float) startY + ( slope * (float) x ) );
+
                         byte* ptr = (byte*) imageData.Scan0.ToPointer( ) + py * stride + px * 3;
 
                         ptr[RGB.R] = color.R;
@@ -359,19 +366,26 @@ namespace AForge.Imaging
                 // correct dy so last point is included as well
                 dy += step;
 
-                for ( int y = 0; y != dy; y += step )
+                if ( imageData.PixelFormat == PixelFormat.Format8bppIndexed )
                 {
-                    int px = (int)( (float) startX + ( slope * (float) y ) );
-                    int py = startY + y;
-
-                    if ( imageData.PixelFormat == PixelFormat.Format8bppIndexed )
+                    // grayscale image
+                    for ( int y = 0; y != dy; y += step )
                     {
+                        int px = (int) ( (float) startX + ( slope * (float) y ) );
+                        int py = startY + y;
+
                         byte* ptr = (byte*) imageData.Scan0.ToPointer( ) + py * stride + px;
-                        
                         *ptr = gray;
                     }
-                    else
+                }
+                else
+                {
+                    // color image
+                    for ( int y = 0; y != dy; y += step )
                     {
+                        int px = (int) ( (float) startX + ( slope * (float) y ) );
+                        int py = startY + y;
+
                         byte* ptr = (byte*) imageData.Scan0.ToPointer( ) + py * stride + px * 3;
 
                         ptr[RGB.R] = color.R;
