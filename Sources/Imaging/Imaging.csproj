@@ -109,6 +109,7 @@
     <Compile Include="Complex Filters\IComplexFilter.cs" />
     <Compile Include="ComplexImage.cs" />
     <Compile Include="Drawing.cs" />
+    <Compile Include="ExhaustiveBlockMatching.cs" />
     <Compile Include="ExhaustiveTemplateMatching.cs" />
     <Compile Include="Filters\2 Source filters\Add.cs">
       <SubType>Code</SubType>
@@ -378,6 +379,7 @@
     </Compile>
     <Compile Include="HorizontalIntensityStatistics.cs" />
     <Compile Include="HoughCircleTransformation.cs" />
+    <Compile Include="IBlockMatching.cs" />
     <Compile Include="ICornersDetector.cs" />
     <Compile Include="Image.cs">
       <SubType>Code</SubType>
