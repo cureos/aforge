@@ -12,7 +12,7 @@ namespace AForge.Imaging.Filters
 	/// 
 	/// <remarks></remarks>
 	/// 
-	public sealed class Mean : Correlation
+    public sealed class Mean : Convolution
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Mean"/> class

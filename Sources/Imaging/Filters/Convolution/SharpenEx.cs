@@ -21,7 +21,7 @@ namespace AForge.Imaging.Filters
     /// 
     public class SharpenEx : IFilter, IInPlaceFilter, IInPlacePartialFilter
     {
-        private Correlation filter;
+        private Convolution filter;
         private double      sigma = 1.4;
         private int         size = 5;
 
@@ -232,7 +232,7 @@ namespace AForge.Imaging.Filters
             }
 
             // create filter
-            filter = new Correlation( kernel );
+            filter = new Convolution( kernel );
         }
         #endregion
     }

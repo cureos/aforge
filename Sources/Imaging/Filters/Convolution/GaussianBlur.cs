@@ -19,7 +19,7 @@ namespace AForge.Imaging.Filters
     /// 
     public sealed class GaussianBlur : IFilter, IInPlaceFilter, IInPlacePartialFilter
     {
-        private Correlation filter;
+        private Convolution filter;
         private double      sigma = 1.4;
         private int         size = 5;
 
@@ -61,7 +61,7 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Correlation"/> class.
+        /// Initializes a new instance of the <see cref="GaussianBlur"/> class.
         /// </summary>
         /// 
         public GaussianBlur( )
@@ -70,7 +70,7 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Correlation"/> class.
+        /// Initializes a new instance of the <see cref="GaussianBlur"/> class.
         /// </summary>
         /// 
         /// <param name="sigma">Gaussian sigma value.</param>
@@ -81,7 +81,7 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Correlation"/> class.
+        /// Initializes a new instance of the <see cref="GaussianBlur"/> class.
         /// </summary>
         /// 
         /// <param name="sigma">Gaussian sigma value.</param>
@@ -198,7 +198,7 @@ namespace AForge.Imaging.Filters
             // create kernel
             int[,] kernel = gaus.KernelDiscret2D( size );
             // create filter
-            filter = new Correlation( kernel );
+            filter = new Convolution( kernel );
         }
         #endregion
     }

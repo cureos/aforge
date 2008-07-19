@@ -255,9 +255,6 @@
     <Compile Include="Filters\Convolution\Convolution.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Filters\Convolution\Correlation.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Filters\Convolution\Edges.cs">
       <SubType>Code</SubType>
     </Compile>

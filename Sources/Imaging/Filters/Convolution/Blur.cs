@@ -12,7 +12,7 @@ namespace AForge.Imaging.Filters
 	/// 
 	/// <remarks></remarks>
 	/// 
-	public sealed class Blur : Correlation
+    public sealed class Blur : Convolution
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Blur"/> class

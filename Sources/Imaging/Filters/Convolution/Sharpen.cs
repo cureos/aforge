@@ -12,7 +12,7 @@ namespace AForge.Imaging.Filters
 	/// 
 	/// <remarks></remarks>
 	/// 
-	public sealed class Sharpen : Correlation
+    public sealed class Sharpen : Convolution
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Sharpen"/> class

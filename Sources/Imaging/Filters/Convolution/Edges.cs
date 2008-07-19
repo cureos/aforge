@@ -12,7 +12,7 @@ namespace AForge.Imaging.Filters
 	/// 
 	/// <remarks></remarks>
 	/// 
-	public sealed class Edges : Correlation
+    public sealed class Edges : Convolution
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Edges"/> class
