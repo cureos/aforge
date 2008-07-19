@@ -11,45 +11,143 @@ namespace AForge.Imaging.Filters
 	using System.Drawing.Imaging;
 
 	/// <summary>
-	/// Convolution filter
+	/// Convolution filter.
 	/// </summary>
 	/// 
 	/// <remarks></remarks>
 	/// 
     public class Convolution : FilterAnyToAnyUsingCopyPartial
 	{
-        /// <summary>
-        /// Processing kernel.
-        /// </summary>
-        protected int[,] kernel;
+        // convolution kernel
+        private int[,] kernel;
+        // division factor
+        private int divisor = 1;
+        // kernel size
+        private int size;
+        // use dynamic divisor for edges
+        private bool dynamicDivisorForEdges = true;
 
         /// <summary>
-        /// Kernel size.
-        /// </summary>
-        protected int size;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Convolution"/> class.
+        /// Convolution kernel.
         /// </summary>
         /// 
-        protected Convolution( ) { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Convolution"/> class.
-        /// </summary>
+        /// <remarks>
+        /// <para><note>Convolution kernel must be square and its width/height
+        /// should be odd and should be in the range [3, 25].</note></para>
         /// 
-        /// <param name="kernel">Processing kernel.</param>
+        /// <para><note>Setting convolution kernel through this property does not
+        /// affect <see cref="Divisor"/> - it is not recalculated automatically.</note></para>
+        /// </remarks>
         /// 
-        public Convolution( int[,] kernel )
+        /// <exception cref="ArgumentException">Invalid kernel size is specified.</exception>
+        /// 
+        public int[,] Kernel
         {
-            int s = kernel.GetLength( 0 );
+            get { return kernel; }
+            set
+            {
+                int s = value.GetLength( 0 );
 
-            // check kernel size
-            if ( ( s != kernel.GetLength( 1 ) ) || ( s < 3 ) || ( s > 25 ) || ( s % 2 == 0 ) )
-                throw new ArgumentException( );
+                // check kernel size
+                if ( ( s != value.GetLength( 1 ) ) || ( s < 3 ) || ( s > 25 ) || ( s % 2 == 0 ) )
+                    throw new ArgumentException( "Invalid kernel size" );
 
-            this.kernel = kernel;
-            this.size = s;
+                this.kernel = value;
+                this.size = s;
+            }
+        }
+
+        /// <summary>
+        /// Division factor.
+        /// </summary>
+        /// 
+        /// <remarks><para>The value is used to divide convolution - weighted sum
+        /// of pixels is divided by this value.</para>
+        /// 
+        /// <para><note>The value may calculated automatically in the case if constructor
+        /// with one parameter is used (<see cref="Convolution( int[,] )"/>).</note></para>
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentException">Divisor can not be equal to zero.</exception>
+        /// 
+        public int Divisor
+        {
+            get { return divisor; }
+            set
+            {
+                if ( value == 0 )
+                    throw new ArgumentException( "Divisor can not be equal to zero" );
+                divisor = value;
+            }
+        }
+
+        /// <summary>
+        /// Use dynamic divisor for edges or not.
+        /// </summary>
+        /// 
+        /// <remarks><para>The property specifies how to handle edges. If it is set to
+        /// <b>false</b>, then the same divisor (which is specified by <see cref="Divisor"/>
+        /// property or calculated automatically) will be applied both for non-edge regions
+        /// and for edge regions. If the value is set to <b>true</b>, then dynamically
+        /// calculated divisor will be used for edge regions, which is sum of those kernel
+        /// elements, which are taken into account for particular processed image
+        /// (are not outside image).</para>
+        /// 
+        /// <para>Default value is set to <b>true</b>.</para>
+        /// </remarks>
+        /// 
+        public bool DynamicDivisorForEdges
+        {
+            get { return dynamicDivisorForEdges; }
+            set { dynamicDivisorForEdges = value; }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Convolution"/> class.
+        /// </summary>
+        /// 
+        /// <param name="kernel">Convolution kernel.</param>
+        /// 
+        /// <remarks><para>Using this constructor (specifying only convolution kernel),
+        /// <see cref="Divisor">division factor</see> will be calculated automatically
+        /// summing all kernel values. In the case if kernel's sum equals to zero,
+        /// division factor will be assigned to 1.</para></remarks>
+        /// 
+        /// <exception cref="ArgumentException">Invalid kernel size is specified. Kernel must be
+        /// square, its width/height should be odd and should be in the range [3, 25].</exception>
+        /// 
+        public Convolution( int[,] kernel ) :
+            this( kernel, 1 )
+        {
+            divisor = 0;
+
+            // calculate divisor
+            for ( int i = 0, n = kernel.GetLength( 0 ); i < n; i++ )
+            {
+                for ( int j = 0, k = kernel.GetLength( 1 ); j < k; j++ )
+                {
+                    divisor += kernel[i, j];
+                }
+            }
+            if ( divisor == 0 )
+                divisor = 1;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Convolution"/> class.
+        /// </summary>
+        /// 
+        /// <param name="kernel">Convolution kernel.</param>
+        /// <param name="divisor">Divisor, used used to divide wheighted sum.</param>
+        /// 
+        /// <exception cref="ArgumentException">Invalid kernel size is specified. Kernel must be
+        /// square, its width/height should be odd and should be in the range [3, 25].</exception>
+        /// <exception cref="ArgumentException">Divisor can not be equal to zero.</exception>
+        /// 
+        public Convolution( int[,] kernel, int divisor )
+        {
+            Kernel = kernel;
+            Divisor = divisor;
         }
 
         /// <summary>
@@ -80,6 +178,11 @@ namespace AForge.Imaging.Filters
             // color sums
             long r, g, b, div;
 
+            // kernel size
+            int kernelSize = size * size;
+            // number of kernel elements taken into account
+            int processedKernelSize;
+
             byte* src = (byte*) sourceData.ToPointer( );
             byte* dst = (byte*) destinationData.Scan0.ToPointer( );
             byte* p;
@@ -99,7 +202,7 @@ namespace AForge.Imaging.Filters
                     // for each pixel
                     for ( int x = startX; x < stopX; x++, src++, dst++ )
                     {
-                        g = div = 0;
+                        g = div = processedKernelSize = 0;
 
                         // for each kernel row
                         for ( i = 0; i < size; i++ )
@@ -130,7 +233,24 @@ namespace AForge.Imaging.Filters
 
                                     div += k;
                                     g += k * src[ir * stride + jr];
+                                    processedKernelSize++;
                                 }
+                            }
+                        }
+
+                        // check if all kernel elements were processed
+                        if ( processedKernelSize == kernelSize )
+                        {
+                            // all kernel elements are processed - we are not on the edge
+                            div = divisor;
+                        }
+                        else
+                        {
+                            // we are on edge. do we need to use dynamic divisor or not?
+                            if ( !dynamicDivisorForEdges )
+                            {
+                                // do
+                                div = divisor;
                             }
                         }
 
@@ -155,7 +275,7 @@ namespace AForge.Imaging.Filters
                     // for each pixel
                     for ( int x = startX; x < stopX; x++, src += 3, dst += 3 )
                     {
-                        r = g = b = div = 0;
+                        r = g = b = div = processedKernelSize = 0;
 
                         // for each kernel row
                         for ( i = 0; i < size; i++ )
@@ -190,7 +310,25 @@ namespace AForge.Imaging.Filters
                                     r += k * p[RGB.R];
                                     g += k * p[RGB.G];
                                     b += k * p[RGB.B];
+
+                                    processedKernelSize++;
                                 }
+                            }
+                        }
+
+                        // check if all kernel elements were processed
+                        if ( processedKernelSize == kernelSize )
+                        {
+                            // all kernel elements are processed - we are not on the edge
+                            div = divisor;
+                        }
+                        else
+                        {
+                            // we are on edge. do we need to use dynamic divisor or not?
+                            if ( !dynamicDivisorForEdges )
+                            {
+                                // do
+                                div = divisor;
                             }
                         }
 
