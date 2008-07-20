@@ -16,7 +16,8 @@ namespace AForge.Imaging
     /// </summary>
     /// 
     /// <remarks><para>The interface specifies set of methods, which should be implemented by different
-    /// template matching algorithms.</para></remarks>
+    /// template matching algorithms - algorithms, which search for the given template in specified
+    /// image.</para></remarks>
     /// 
     public interface ITemplateMatching
     {
@@ -29,7 +30,7 @@ namespace AForge.Imaging
         /// 
         /// <returns>Returns array of found matchings.</returns>
         /// 
-        Matching[] ProcessImage( Bitmap image, Bitmap template );
+        TemplateMatch[] ProcessImage( Bitmap image, Bitmap template );
 
         /// <summary>
         /// Process image looking for matchings with specified template.
@@ -40,6 +41,6 @@ namespace AForge.Imaging
         /// 
         /// <returns>Returns array of found matchings.</returns>
         /// 
-        Matching[] ProcessImage( BitmapData imageData, BitmapData templateData );
+        TemplateMatch[] ProcessImage( BitmapData imageData, BitmapData templateData );
     }
 }

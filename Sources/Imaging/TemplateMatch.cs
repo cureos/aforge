@@ -11,11 +11,11 @@ namespace AForge.Imaging
     using System.Drawing;
 
     /// <summary>
-    /// Matching class keeps information about found template matching. The class is
+    /// Template match class keeps information about found template matching. The class is
     /// used with template matching algorithms implementing <see cref="ITemplateMatching"/>
     /// interface.
     /// </summary>
-    public class Matching
+    public class TemplateMatch
     {
         private Rectangle rect;
         private float similarity;
@@ -37,13 +37,13 @@ namespace AForge.Imaging
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Matching"/> class.
+        /// Initializes a new instance of the <see cref="TemplateMatch"/> class.
         /// </summary>
         /// 
         /// <param name="rect">Rectangle of the matching area.</param>
         /// <param name="similarity">Similarity between template and found matching, [0..1].</param>
         /// 
-        public Matching( Rectangle rect, float similarity )
+        public TemplateMatch( Rectangle rect, float similarity )
         {
             this.rect = rect;
             this.similarity = similarity;

@@ -27,12 +27,12 @@ namespace AForge.Imaging
     /// // create template matching algorithm's instance
     /// ExhaustiveTemplateMatching tm = new ExhaustiveTemplateMatching( 0.9 );
     /// // find all matchings with specified above similarity
-    /// Matching[] matchings = tm.ProcessImage( sourceImage, templateImage );
+    /// TemplateMatch[] matchings = tm.ProcessImage( sourceImage, templateImage );
     /// // highlight found matchings
     /// BitmapData data = sourceImage.LockBits(
     ///     new Rectangle( 0, 0, sourceImage.Width, sourceImage.Height ),
     ///     ImageLockMode.ReadWrite, sourceImage.PixelFormat );
-    /// foreach ( Matching m in matchings )
+    /// foreach ( TemplateMatch m in matchings )
     /// {
     ///     Drawing.Rectangle( data, m.Rectangle, Color.White );
     ///     // do something else with matching
@@ -47,7 +47,7 @@ namespace AForge.Imaging
     /// // use zero similarity to make sure algorithm will provide anything
     /// ExhaustiveTemplateMatching tm = new ExhaustiveTemplateMatching( 0 );
     /// // compare two images
-    /// Matching[] matchings = tm.ProcessImage( image1, image2 );
+    /// TemplateMatch[] matchings = tm.ProcessImage( image1, image2 );
     /// // check similarity level
     /// if ( matchings[0].Similarity > 0.95 )
     /// {
@@ -79,13 +79,13 @@ namespace AForge.Imaging
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Matching"/> class.
+        /// Initializes a new instance of the <see cref="ExhaustiveTemplateMatching"/> class.
         /// </summary>
         /// 
         public ExhaustiveTemplateMatching( ) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Matching"/> class.
+        /// Initializes a new instance of the <see cref="ExhaustiveTemplateMatching"/> class.
         /// </summary>
         /// 
         /// <param name="similarityThreshold">Similarity threshold.</param>
@@ -105,7 +105,7 @@ namespace AForge.Imaging
         /// <returns>Returns array of found matchings. The array is sorted by similarity
         /// of found matchings in descending order.</returns>
         /// 
-        public Matching[] ProcessImage( Bitmap image, Bitmap template )
+        public TemplateMatch[] ProcessImage( Bitmap image, Bitmap template )
         {
             // check image format
             if (
@@ -131,7 +131,7 @@ namespace AForge.Imaging
                 ImageLockMode.ReadOnly, template.PixelFormat );
 
             // process the image
-            Matching[] matchings = ProcessImage( imageData, templateData );
+            TemplateMatch[] matchings = ProcessImage( imageData, templateData );
 
             // unlock images
             image.UnlockBits( imageData );
@@ -150,7 +150,7 @@ namespace AForge.Imaging
         /// <returns>Returns array of found matchings. The array is sorted by similarity
         /// of found matchings in descending order.</returns>
         /// 
-        public Matching[] ProcessImage( BitmapData imageData, BitmapData templateData )
+        public TemplateMatch[] ProcessImage( BitmapData imageData, BitmapData templateData )
         {
             // check image format
             if (
@@ -162,9 +162,9 @@ namespace AForge.Imaging
             }
 
             // get source and template image size
-            int sourceWidth = imageData.Width;
-            int sourceHeight = imageData.Height;
-            int templateWidth = templateData.Width;
+            int sourceWidth    = imageData.Width;
+            int sourceHeight   = imageData.Height;
+            int templateWidth  = templateData.Width;
             int templateHeight = templateData.Height;
 
             // check template's size
@@ -239,7 +239,7 @@ namespace AForge.Imaging
             }
 
             // collect interesting points - only those points, which are local maximums
-            List<Matching> matchingsList = new List<Matching>( );
+            List<TemplateMatch> matchingsList = new List<TemplateMatch>( );
 
             // for each row
             for ( int y = 2, maxY = mapHeight + 2; y < maxY; y++ )
@@ -266,7 +266,7 @@ namespace AForge.Imaging
                     // check if this point is really interesting
                     if ( currentValue != 0 )
                     {
-                        matchingsList.Add( new Matching(
+                        matchingsList.Add( new TemplateMatch(
                             new Rectangle( x - 2, y - 2, templateWidth, templateHeight ),
                             (float) currentValue / max ) );
                     }
@@ -274,7 +274,7 @@ namespace AForge.Imaging
             }
 
             // convert list to array
-            Matching[] matchings = new Matching[matchingsList.Count];
+            TemplateMatch[] matchings = new TemplateMatch[matchingsList.Count];
             matchingsList.CopyTo( matchings );
             // sort in descending order
             Array.Sort( matchings, new MatchingsSorter( ) );
@@ -287,7 +287,7 @@ namespace AForge.Imaging
         {
             public int Compare( Object x, Object y )
             {
-                float diff = ( (Matching) y ).Similarity - ( (Matching) x ).Similarity;
+                float diff = ( (TemplateMatch) y ).Similarity - ( (TemplateMatch) x ).Similarity;
 
                 return ( diff > 0 ) ? 1 : ( diff < 0 ) ? -1 : 0;
             }
