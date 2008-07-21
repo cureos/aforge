@@ -11,7 +11,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany( "AForge" )]
 [assembly: AssemblyProduct( "AForge.Imaging" )]
-[assembly: AssemblyCopyright( "AForge.NET © 2007" )]
+[assembly: AssemblyCopyright( "AForge.NET © 2008" )]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 
@@ -26,5 +26,5 @@ using System.Runtime.CompilerServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("1.6.3.0")]
-[assembly: AssemblyFileVersion( "1.6.3.0" )]
+[assembly: AssemblyVersion("1.7.0.0")]
+[assembly: AssemblyFileVersion( "1.7.0.0" )]

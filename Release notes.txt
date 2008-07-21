@@ -1,3 +1,50 @@
+AForge.NET 1.7.0 release notes
+------------------------------
+21.07.2008.
+
+
+Version updates and fixes:
+
+* Fixed registered issues/requests:
+  - Issue 26: Template Matching  
+  - Issue 60: Convolution with Kernels that sum up to 0 do not work correctly  
+
+
+* General
+  - Support for Lego RCX Mindstorm robotics kit is introduced. RCX test/demo application is provided.
+
+
+* AForge.Imaging
+  - SUSAN corners detector is implemented.
+
+  - ITemplateMatching interface is introduced for template matching algorithms. As a first class, which
+    implements this interface, an ExhaustiveTemplateMatching class is provided, which implements
+    exhaustive search algorithm. It can be used to search for a template in search image or to compare
+    two images.
+
+  - IBlockMatching interface is introduced for blcok matching algorithms. As a first class, which
+    implements this interface, an ExhaustiveBlockMatching class is provided, which does exhaustive
+    search of blocks from source image in search image within specified radius.
+
+  - Drawing class is extended to draw lines.
+
+  - Convolution filter is updated to allow specification of divisor, so convolution could be divided not
+    only by automatically calculated divisor, but by custom divisor as well.
+
+  - Correlation filter is removed to avoid any confusion. The filter was doing the same as convolution
+    filter, but with mirrored/flipped kernel.
+
+
+* AForge.Robotics.Lego
+  - RCXBrick class introduced, which provide functionality to perform some manipulations with Lego RCX
+    Mindstorm brick.
+
+  - NXTBrick is moved to Lego nampespace from Lego.NXT. Its interface is refactored a bit to have more
+    common with RCXBrick class.
+
+
+
+
 AForge.NET 1.6.3 release notes
 ------------------------------
 18.05.2008.
