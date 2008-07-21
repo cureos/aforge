@@ -39,13 +39,10 @@ namespace AForge.Imaging
         /// <param name="sourceImage">Source image with reference points.</param>
         /// <param name="coordinates">Array of reference points to be matched.</param>
         /// <param name="searchImage">Image in which the reference points will be looked for.</param>
-        /// <param name="relative"><b>True</b> if results should be given as relative displacement, <b>false</b> for absolute coordinates.</param>
         /// 
-        /// <returns>Returns array of relative displacements or absolute coordinates. In the case if
-        /// reference point was skipped and no matching was found for it, the returned array
-        /// may have a corresponding point with both coordinate set to <see cref="int.MaxValue"/>.</returns>
+        /// <returns>Returns array of found block matches.</returns>
         /// 
-        Point[] ProcessImage( Bitmap sourceImage, Point[] coordinates, Bitmap searchImage, bool relative );
+        BlockMatch[] ProcessImage( Bitmap sourceImage, Point[] coordinates, Bitmap searchImage );
 
         /// <summary>
         /// Process images matching blocks between them.
@@ -54,12 +51,9 @@ namespace AForge.Imaging
         /// <param name="sourceImageData">Source image with reference points.</param>
         /// <param name="coordinates">Array of reference points to be matched.</param>
         /// <param name="searchImageData">Image in which the reference points will be looked for.</param>
-        /// <param name="relative"><b>True</b> if results should be given as relative displacement, <b>false</b> for absolute coordinates.</param>
         /// 
-        /// <returns>Returns array of relative displacements or absolute coordinates. In the case if
-        /// reference point was skipped and no matching was found for it, the returned array
-        /// may have a corresponding point with both coordinate set to <see cref="int.MaxValue"/>.</returns>
+        /// <returns>Returns array of found block matches.</returns>
         /// 
-        Point[] ProcessImage( BitmapData sourceImageData, Point[] coordinates, BitmapData searchImageData, bool relative );
+        BlockMatch[] ProcessImage( BitmapData sourceImageData, Point[] coordinates, BitmapData searchImageData );
     }
 }

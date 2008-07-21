@@ -40,22 +40,26 @@ namespace AForge.Imaging
     /// // create block matching algorithm's instance
     /// ExhaustiveBlockMatching bm = new ExhaustiveBlockMatching( 8, 12 );
     /// // process images searching for block matchings
-    /// Point[] newPoints = bm.ProcessImage( sourceImage, coordinates, searchImage, false );
+    /// Point[] newPoints = bm.ProcessImage( sourceImage, points, searchImage, false );
     /// 
     /// // draw displacement vectors
     /// BitmapData data = sourceImage.LockBits(
     ///     new Rectangle( 0, 0, sourceImage.Width, sourceImage.Height ),
     ///     ImageLockMode.ReadWrite, sourceImage.PixelFormat );
     /// 
-    /// for ( int i = 0; i &lt; newPoints.Length; i++ )
+    /// foreach ( BlockMatch match in matches )
     /// {
-    ///     if ( newPoints[i].X != int.MaxValue )
+    ///     // highlight the original point in source image
+    ///     Drawing.FillRectangle( data,
+    ///         new Rectangle( match.SourcePoint.X - 1, match.SourcePoint.Y - 1, 3, 3 ),
+    ///         Color.Yellow );
+    ///     // draw line to the point in search image
+    ///     Drawing.Line( data, match.SourcePoint, match.MatchPoint, Color.Red );
+    /// 
+    ///     // check similarity
+    ///     if ( match.Similarity > 0.98f )
     ///     {
-    ///         // highlight the original point in source image
-    ///         Drawing.FillRectangle( data,
-    ///             new Rectangle( points[i].X - 1, points[i].Y - 1, 3, 3 ), Color.Yellow );
-    ///         // draw line to the point in search image
-    ///         Drawing.Line( data, points[i], newPoints[i], Color.Red );
+    ///         // process block with high similarity somehow special
     ///     }
     /// }
     /// 
@@ -76,6 +80,8 @@ namespace AForge.Imaging
         private int blockSize = 16;
         // search radius (maximum shift from base position, in all 4 directions) 
         private int searchRadius = 12;
+        // blocks' similarity threshold
+        private float similarityThreshold = 0.9f;
 
         /// <summary>
         /// Search radius.
@@ -113,6 +119,24 @@ namespace AForge.Imaging
         }
 
         /// <summary>
+        /// Similarity threshold, [0..1].
+        /// </summary>
+        /// 
+        /// <remarks><para>The property sets the minimal acceptable similarity between blocks
+        /// in source and search images. If similarity is lower than this value,
+        /// then the candidate block in search image is not treated as a match for the block
+        /// in source image.
+        /// </para>
+        /// <para>Default value is set to <b>0.9</b>.</para>
+        /// </remarks>
+        /// 
+        public float SimilarityThreshold
+        {
+            get { return similarityThreshold; }
+            set { similarityThreshold = Math.Min( 1, Math.Max( 0, value ) ); }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ExhaustiveBlockMatching"/> class.
         /// </summary>
         public ExhaustiveBlockMatching( ) { }
@@ -137,17 +161,15 @@ namespace AForge.Imaging
         /// <param name="sourceImage">Source image with reference points.</param>
         /// <param name="coordinates">Array of reference points to be matched.</param>
         /// <param name="searchImage">Image in which the reference points will be looked for.</param>
-        /// <param name="relative"><b>True</b> if results should be given as relative displacement, <b>false</b> for absolute coordinates.</param>
         /// 
-        /// <returns>Returns array of relative displacements or absolute coordinates. In the case if
-        /// reference point was skipped and no matching was found for it, the returned array
-        /// may have a corresponding point with both coordinate set to <see cref="int.MaxValue"/>.</returns>
+        /// <returns>Returns array of found block matches. The array is sorted by similarity
+        /// of found matches in descending order.</returns>
         /// 
         /// <exception cref="ArgumentException">Source images sizes must match.</exception>
         /// <exception cref="ArgumentException">Source images can be grayscale (8 bpp indexed) or color (24 bpp) image only.</exception>
         /// <exception cref="ArgumentException">Source and search images must have same pixel format.</exception>
         /// 
-        public Point[] ProcessImage( Bitmap sourceImage, Point[] coordinates, Bitmap searchImage, bool relative )
+        public BlockMatch[] ProcessImage( Bitmap sourceImage, Point[] coordinates, Bitmap searchImage )
         {
             // source images sizes must match.
             if ( ( sourceImage.Width != searchImage.Width ) || ( sourceImage.Height != searchImage.Height ) )
@@ -171,13 +193,13 @@ namespace AForge.Imaging
                 ImageLockMode.ReadOnly, searchImage.PixelFormat );
 
             // process the image
-            Point[] matches = ProcessImage( sourceImageData, coordinates, searchImageData, relative );
+            BlockMatch[] matchings = ProcessImage( sourceImageData, coordinates, searchImageData );
 
             // unlock image
             sourceImage.UnlockBits( sourceImageData );
             searchImage.UnlockBits( searchImageData );
 
-            return matches;
+            return matchings;
         }
 
         /// <summary>
@@ -187,17 +209,15 @@ namespace AForge.Imaging
         /// <param name="sourceImageData">Source image with reference points.</param>
         /// <param name="coordinates">Array of reference points to be matched.</param>
         /// <param name="searchImageData">Image in which the reference points will be looked for.</param>
-        /// <param name="relative"><b>True</b> if results should be given as relative displacement, <b>false</b> for absolute coordinates.</param>
         /// 
-        /// <returns>Returns array of relative displacements or absolute coordinates. In the case if
-        /// reference point was skipped and no matching was found for it, the returned array
-        /// may have a corresponding point with both coordinate set to <see cref="int.MaxValue"/>.</returns>
+        /// <returns>Returns array of found block matches. The array is sorted by similarity
+        /// of found matches in descending order.</returns>
         /// 
         /// <exception cref="ArgumentException">Source images sizes must match.</exception>
         /// <exception cref="ArgumentException">Source images can be grayscale (8 bpp indexed) or color (24 bpp) image only.</exception>
         /// <exception cref="ArgumentException">Source and search images must have same pixel format.</exception>
         /// 
-        public Point[] ProcessImage( BitmapData sourceImageData, Point[] coordinates, BitmapData searchImageData, bool relative )
+        public BlockMatch[] ProcessImage( BitmapData sourceImageData, Point[] coordinates, BitmapData searchImageData )
         {
             // source images sizes must match.
             if ( ( sourceImageData.Width != searchImageData.Width ) || ( sourceImageData.Height != searchImageData.Height ) )
@@ -213,8 +233,8 @@ namespace AForge.Imaging
 
             int pointsCount = coordinates.Length;
 
-            // output array
-            Point[] matches = new Point[pointsCount];
+            // found matches
+            List<BlockMatch> matchingsList = new List<BlockMatch>( );
 
             // get source image size
             int width  = sourceImageData.Width;
@@ -227,6 +247,12 @@ namespace AForge.Imaging
             int searchWindowSize = 2 * searchRadius;
             int blockLineSize = blockSize * pixelSize;
             int blockOffset = stride - ( blockSize * pixelSize );
+
+            // maximum possible difference of blocks
+            int maxDiff = blockSize * blockSize * pixelSize * 255;
+
+            // integer similarity threshold
+            int threshold = (int) ( similarityThreshold * maxDiff );
 
             // do the job
             unsafe
@@ -247,8 +273,6 @@ namespace AForge.Imaging
                         )
                     {
                         // skip point
-                        matches[iPoint].X = int.MaxValue;
-                        matches[iPoint].Y = int.MaxValue;
                         continue;
                     }
 
@@ -257,14 +281,8 @@ namespace AForge.Imaging
                     int searchStartY = refPointY - blockRadius - searchRadius;
 
                     // output match 
-                    int bestMatchX = 0;
-                    int bestMatchY = 0;
-
-                    if ( !relative )
-                    {
-                        bestMatchX = refPointX;
-                        bestMatchY = refPointY;
-                    }
+                    int bestMatchX = refPointX;
+                    int bestMatchY = refPointY;
 
                     // Exhaustive Search Algorithm - we test each location within the search window
                     int minError = int.MaxValue;
@@ -302,7 +320,14 @@ namespace AForge.Imaging
                                 for ( int blockCol = 0; blockCol < blockLineSize; blockCol++, ptrSourceBlock++, ptrSearchBlock++ )
                                 {
                                     int diff = *ptrSourceBlock - *ptrSearchBlock;
-                                    error += diff * diff;
+                                    if ( diff > 0 )
+                                    {
+                                        error += diff;
+                                    }
+                                    else
+                                    {
+                                        error -= diff;
+                                    }
                                 }
 
                                 // move to the next row
@@ -316,25 +341,42 @@ namespace AForge.Imaging
                                 minError = error;
 
                                 // keep best match so far
-                                if ( relative )
-                                {
-                                    bestMatchX = blockSearchX + blockRadius - refPointX;
-                                    bestMatchY = blockSearchY + blockRadius - refPointY;
-                                }
-                                else
-                                {
-                                    bestMatchX = blockSearchX + blockRadius;
-                                    bestMatchY = blockSearchY + blockRadius;
-                                }
+                                bestMatchX = blockSearchX + blockRadius;
+                                bestMatchY = blockSearchY + blockRadius;
                             }
                         }
                     }
 
-                    matches[iPoint].X = bestMatchX;
-                    matches[iPoint].Y = bestMatchY;
+                    // calculate blocks' similarity and compare it with threshold
+                    int blockSimilarity = maxDiff - minError;
+
+                    if ( blockSimilarity >= threshold )
+                    {
+                        matchingsList.Add( new BlockMatch(
+                            new Point( refPointX, refPointY ), new Point( bestMatchX, bestMatchY ),
+                            (float) blockSimilarity / maxDiff ) );
+                    }
                 }
             }
-            return matches;
+
+            // convert list to array
+            BlockMatch[] matchings = new BlockMatch[matchingsList.Count];
+            matchingsList.CopyTo( matchings );
+            // sort in descending order
+            Array.Sort( matchings, new MatchingsSorter( ) );
+
+            return matchings;
+        }
+
+        // Sorter of found matchings
+        private class MatchingsSorter : System.Collections.IComparer
+        {
+            public int Compare( Object x, Object y )
+            {
+                float diff = ( (BlockMatch) y ).Similarity - ( (BlockMatch) x ).Similarity;
+
+                return ( diff > 0 ) ? 1 : ( diff < 0 ) ? -1 : 0;
+            }
         }
     }
 }

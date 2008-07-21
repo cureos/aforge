@@ -102,6 +102,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BlobCounterBase.cs" />
+    <Compile Include="BlockMatch.cs" />
     <Compile Include="ColorConverter.cs">
       <SubType>Code</SubType>
     </Compile>
