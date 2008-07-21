@@ -65,11 +65,11 @@ namespace AForge.Imaging
         /// Similarity threshold, [0..1].
         /// </summary>
         /// 
-        /// <remarks><para>The property sets the minimal similarity between template
+        /// <remarks><para>The property sets the minimal acceptable similarity between template
         /// and potential found candidate. If similarity is lower than this value,
         /// then object is not treated as matching with template.
         /// </para>
-        /// <para>Default value is set to 0.9.</para>
+        /// <para>Default value is set to <b>0.9</b>.</para>
         /// </remarks>
         /// 
         public float SimilarityThreshold
@@ -102,8 +102,8 @@ namespace AForge.Imaging
         /// <param name="image">Source image to process.</param>
         /// <param name="template">Template image to search for.</param>
         /// 
-        /// <returns>Returns array of found matchings. The array is sorted by similarity
-        /// of found matchings in descending order.</returns>
+        /// <returns>Returns array of found template matches. The array is sorted by similarity
+        /// of found matches in descending order.</returns>
         /// 
         public TemplateMatch[] ProcessImage( Bitmap image, Bitmap template )
         {
@@ -147,8 +147,8 @@ namespace AForge.Imaging
         /// <param name="imageData">Source image data to process.</param>
         /// <param name="templateData">Template image to search for.</param>
         /// 
-        /// <returns>Returns array of found matchings. The array is sorted by similarity
-        /// of found matchings in descending order.</returns>
+        /// <returns>Returns array of found template matches. The array is sorted by similarity
+        /// of found matches in descending order.</returns>
         /// 
         public TemplateMatch[] ProcessImage( BitmapData imageData, BitmapData templateData )
         {
@@ -183,10 +183,10 @@ namespace AForge.Imaging
             int[,] map = new int[mapHeight + 4, mapWidth + 4];
 
             // maximum possible difference with template
-            int max = templateWidth * templateHeight * pixelSize * 255;
+            int maxDiff = templateWidth * templateHeight * pixelSize * 255;
 
             // integer similarity threshold
-            int threshold = (int) ( similarityThreshold * max );
+            int threshold = (int) ( similarityThreshold * maxDiff );
 
             // do the job
             unsafe
@@ -230,7 +230,7 @@ namespace AForge.Imaging
                         }
 
                         // templates similarity
-                        int sim = max - dif;
+                        int sim = maxDiff - dif;
 
                         if ( sim >= threshold )
                             map[y + 2, x + 2] = sim;
@@ -268,7 +268,7 @@ namespace AForge.Imaging
                     {
                         matchingsList.Add( new TemplateMatch(
                             new Rectangle( x - 2, y - 2, templateWidth, templateHeight ),
-                            (float) currentValue / max ) );
+                            (float) currentValue / maxDiff ) );
                     }
                 }
             }

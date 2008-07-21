@@ -11,7 +11,7 @@ namespace AForge.Imaging
     using System.Drawing;
 
     /// <summary>
-    /// Template match class keeps information about found template matching. The class is
+    /// Template match class keeps information about found template match. The class is
     /// used with template matching algorithms implementing <see cref="ITemplateMatching"/>
     /// interface.
     /// </summary>
