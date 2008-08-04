@@ -25,7 +25,7 @@ namespace AForge.Imaging
     /// <para>Sample usage:</para>
     /// <code>
     /// // create template matching algorithm's instance
-    /// ExhaustiveTemplateMatching tm = new ExhaustiveTemplateMatching( 0.9 );
+    /// ExhaustiveTemplateMatching tm = new ExhaustiveTemplateMatching( 0.9f );
     /// // find all matchings with specified above similarity
     /// TemplateMatch[] matchings = tm.ProcessImage( sourceImage, templateImage );
     /// // highlight found matchings
@@ -41,7 +41,7 @@ namespace AForge.Imaging
     /// </code>
     /// 
     /// <para>The class also can be used to get similarity level between two image of the same
-    /// size, which can be useful to get information how different/similar are images:</para>
+    /// size, which can be useful to get information how about different/similar are images:</para>
     /// <code>
     /// // create template matching algorithm's instance
     /// // use zero similarity to make sure algorithm will provide anything

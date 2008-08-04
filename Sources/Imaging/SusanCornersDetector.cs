@@ -21,7 +21,7 @@ namespace AForge.Imaging
     /// 
     /// <remarks><para>The class implements Susan corners detector, which is described by
     /// S.M. Smith in: <b>S.M. Smith, "SUSAN - a new approach to low level image processing",
-    /// Internal Technical Report TR95SMS1, Defence Research Agency, Chobham Lane, Chertsey,
+    /// Internal Technical Report TR95SMS1, Defense Research Agency, Chobham Lane, Chertsey,
     /// Surrey, UK, 1995</b>.</para>
     /// 
     /// <para><note>Some implementation notes:
