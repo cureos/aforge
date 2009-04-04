@@ -500,37 +500,40 @@ namespace AForge.Video.DirectShow
             // Callback method that receives a pointer to the sample buffer
             public int BufferCB( double sampleTime, IntPtr buffer, int bufferLen )
             {
-                // create new image
-                System.Drawing.Bitmap image = new Bitmap( width, height, PixelFormat.Format24bppRgb );
-
-                // lock bitmap data
-                BitmapData imageData = image.LockBits(
-                    new Rectangle( 0, 0, width, height ),
-                    ImageLockMode.ReadWrite,
-                    PixelFormat.Format24bppRgb );
-
-                // copy image data
-                int srcStride = imageData.Stride;
-                int dstStride = imageData.Stride;
-
-                int dst = imageData.Scan0.ToInt32( ) + dstStride * ( height - 1 );
-                int src = buffer.ToInt32( );
-
-                for ( int y = 0; y < height; y++ )
+                if ( parent.NewFrame != null )
                 {
-                    Win32.memcpy( dst, src, srcStride );
-                    dst -= dstStride;
-                    src += srcStride;
+                    // create new image
+                    System.Drawing.Bitmap image = new Bitmap( width, height, PixelFormat.Format24bppRgb );
+
+                    // lock bitmap data
+                    BitmapData imageData = image.LockBits(
+                        new Rectangle( 0, 0, width, height ),
+                        ImageLockMode.ReadWrite,
+                        PixelFormat.Format24bppRgb );
+
+                    // copy image data
+                    int srcStride = imageData.Stride;
+                    int dstStride = imageData.Stride;
+
+                    int dst = imageData.Scan0.ToInt32( ) + dstStride * ( height - 1 );
+                    int src = buffer.ToInt32( );
+
+                    for ( int y = 0; y < height; y++ )
+                    {
+                        Win32.memcpy( dst, src, srcStride );
+                        dst -= dstStride;
+                        src += srcStride;
+                    }
+
+                    // unlock bitmap data
+                    image.UnlockBits( imageData );
+
+                    // notify parent
+                    parent.OnNewFrame( image );
+
+                    // release the image
+                    image.Dispose( );
                 }
-
-                // unlock bitmap data
-                image.UnlockBits( imageData );
-
-                // notify parent
-                parent.OnNewFrame( image );
-
-                // release the image
-                image.Dispose( );
 
                 return 0;
             }
