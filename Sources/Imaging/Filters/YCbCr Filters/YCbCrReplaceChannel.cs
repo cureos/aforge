@@ -101,7 +101,7 @@ namespace AForge.Imaging.Filters
         /// only one channel image is allowed: managed or unmanaged.</note></para>
         /// </remarks>
         /// 
-        /// <exception cref="InvalidImageProperties">Channel image should be 8bpp indexed image (grayscale).</exception>
+        /// <exception cref="InvalidImagePropertiesException">Channel image should be 8bpp indexed image (grayscale).</exception>
         /// 
         public Bitmap ChannelImage
         {
@@ -113,7 +113,7 @@ namespace AForge.Imaging.Filters
                     throw new NullReferenceException( "Channel image was not specified." );
                 // check for valid format
                 if ( value.PixelFormat != PixelFormat.Format8bppIndexed )
-                    throw new InvalidImageProperties( "Channel image should be 8bpp indexed image (grayscale)." );
+                    throw new InvalidImagePropertiesException( "Channel image should be 8bpp indexed image (grayscale)." );
 
                 channelImage = value;
                 unmanagedChannelImage = null;
@@ -129,7 +129,7 @@ namespace AForge.Imaging.Filters
         /// only one channel image is allowed: managed or unmanaged.</note></para>
         /// </remarks>
         /// 
-        /// <exception cref="InvalidImageProperties">Channel image should be 8bpp indexed image (grayscale).</exception>
+        /// <exception cref="InvalidImagePropertiesException">Channel image should be 8bpp indexed image (grayscale).</exception>
         /// 
         public UnmanagedImage UnmanagedChannelImage
         {
@@ -142,7 +142,7 @@ namespace AForge.Imaging.Filters
 
                 // check for valid format
                 if ( value.PixelFormat != PixelFormat.Format8bppIndexed )
-                    throw new InvalidImageProperties( "Channel image should be 8bpp indexed image (grayscale)." );
+                    throw new InvalidImagePropertiesException( "Channel image should be 8bpp indexed image (grayscale)." );
 
                 channelImage = null;
                 unmanagedChannelImage = value;
@@ -191,7 +191,7 @@ namespace AForge.Imaging.Filters
         /// <param name="image">Source image data.</param>
         /// <param name="rect">Image rectangle for processing by the filter.</param>
         /// 
-        /// <exception cref="InvalidImageProperties">Channel image size does not match source
+        /// <exception cref="InvalidImagePropertiesException">Channel image size does not match source
         /// image size.</exception>
         ///
         protected override unsafe void ProcessFilter( UnmanagedImage image, Rectangle rect )
@@ -217,7 +217,7 @@ namespace AForge.Imaging.Filters
             {
                 // check channel's image dimension
                 if ( ( width != channelImage.Width ) || ( height != channelImage.Height ) )
-                    throw new InvalidImageProperties( "Channel image size does not match source image size." );
+                    throw new InvalidImagePropertiesException( "Channel image size does not match source image size." );
 
                 // lock channel image
                 chData = channelImage.LockBits(
@@ -231,7 +231,7 @@ namespace AForge.Imaging.Filters
             {
                 // check channel's image dimension
                 if ( ( width != unmanagedChannelImage.Width ) || ( height != unmanagedChannelImage.Height ) )
-                    throw new InvalidImageProperties( "Channel image size does not match source image size." );
+                    throw new InvalidImagePropertiesException( "Channel image size does not match source image size." );
 
                 ch = (byte*) unmanagedChannelImage.ImageData;
                 chStride = unmanagedChannelImage.Stride;

@@ -118,7 +118,7 @@ namespace AForge.Imaging
         /// 
         /// <param name="image">Image to gather statistics about.</param>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Source pixel format is not supported.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Source pixel format is not supported.</exception>
         /// 
         public ImageStatisticsHSL( Bitmap image )
         {
@@ -147,7 +147,7 @@ namespace AForge.Imaging
         /// 
         /// <param name="imageData">Image data to gather statistics about.</param>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Source pixel format is not supported.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Source pixel format is not supported.</exception>
         /// 
         public ImageStatisticsHSL( BitmapData imageData )
         {
@@ -160,7 +160,7 @@ namespace AForge.Imaging
         /// 
         /// <param name="image">Unmanaged image to gather statistics about.</param>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Source pixel format is not supported.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Source pixel format is not supported.</exception>
         /// 
         public ImageStatisticsHSL( UnmanagedImage image )
         {
@@ -242,7 +242,7 @@ namespace AForge.Imaging
                 ( pixelFormat != PixelFormat.Format32bppRgb ) &&
                 ( pixelFormat != PixelFormat.Format32bppArgb ) )
             {
-                throw new UnsupportedImageFormat( "Source pixel format is not supported." );
+                throw new UnsupportedImageFormatException( "Source pixel format is not supported." );
             }
         }
     }

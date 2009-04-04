@@ -59,7 +59,7 @@ namespace AForge.Imaging.Filters
         /// <remarks>The method keeps the source image unchanged and returns the
         /// the result of image processing filter as new image.</remarks>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         ///
         public Bitmap Apply( Bitmap image )
         {
@@ -97,7 +97,7 @@ namespace AForge.Imaging.Filters
 		/// of image processing filter as new image. The source image data are kept
 		/// unchanged.</remarks>
 		///
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         ///
         public Bitmap Apply( BitmapData imageData )
         {
@@ -147,7 +147,7 @@ namespace AForge.Imaging.Filters
         /// <remarks>The method keeps the source image unchanged and returns the
         /// the result of image processing filter as new image.</remarks>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         ///
         public UnmanagedImage Apply( UnmanagedImage image )
         {
@@ -178,9 +178,9 @@ namespace AForge.Imaging.Filters
         /// <see cref="FormatTransalations"/> property for information about pixel format conversions).</note></para>
         /// </remarks>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the source image.</exception>
-        /// <exception cref="InvalidImageProperties">Incorrect destination pixel format.</exception>
-        /// <exception cref="InvalidImageProperties">Destination image has wrong width and/or height.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
+        /// <exception cref="InvalidImagePropertiesException">Incorrect destination pixel format.</exception>
+        /// <exception cref="InvalidImagePropertiesException">Destination image has wrong width and/or height.</exception>
         ///
         public void Apply( UnmanagedImage sourceImage, UnmanagedImage destinationImage )
         {
@@ -190,13 +190,13 @@ namespace AForge.Imaging.Filters
             // ensure destination image has correct format
             if ( destinationImage.PixelFormat != FormatTransalations[sourceImage.PixelFormat] )
             {
-                throw new InvalidImageProperties( "Destination pixel format is specified incorrectly." );
+                throw new InvalidImagePropertiesException( "Destination pixel format is specified incorrectly." );
             }
 
             // ensure destination image has correct size
             if ( ( destinationImage.Width != sourceImage.Width ) || ( destinationImage.Height != sourceImage.Height ) )
             {
-                throw new InvalidImageProperties( "Destination image must have the same width and height as source image." );
+                throw new InvalidImagePropertiesException( "Destination image must have the same width and height as source image." );
             }
 
             // process the filter
@@ -211,7 +211,7 @@ namespace AForge.Imaging.Filters
         /// 
         /// <remarks>The method applies the filter directly to the provided source image.</remarks>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         /// 
         public void ApplyInPlace( Bitmap image )
         {
@@ -227,7 +227,7 @@ namespace AForge.Imaging.Filters
         /// 
         /// <remarks>The method applies the filter directly to the provided source image.</remarks>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         ///
         public void ApplyInPlace( BitmapData imageData )
         {
@@ -243,7 +243,7 @@ namespace AForge.Imaging.Filters
         /// 
         /// <remarks>The method applies the filter directly to the provided source unmanaged image.</remarks>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         ///
         public void ApplyInPlace( UnmanagedImage image )
         {
@@ -260,7 +260,7 @@ namespace AForge.Imaging.Filters
         /// 
         /// <remarks>The method applies the filter directly to the provided source image.</remarks>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         /// 
         public void ApplyInPlace( Bitmap image, Rectangle rect )
         {
@@ -290,7 +290,7 @@ namespace AForge.Imaging.Filters
         /// 
         /// <remarks>The method applies the filter directly to the provided source image.</remarks>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         ///
         public void ApplyInPlace( BitmapData imageData, Rectangle rect )
         {
@@ -307,7 +307,7 @@ namespace AForge.Imaging.Filters
         /// 
         /// <remarks>The method applies the filter directly to the provided source image.</remarks>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         /// 
         public void ApplyInPlace( UnmanagedImage image, Rectangle rect )
         {
@@ -349,7 +349,7 @@ namespace AForge.Imaging.Filters
         private void CheckSourceFormat( PixelFormat pixelFormat )
         {
             if ( !FormatTransalations.ContainsKey( pixelFormat ) )
-                throw new UnsupportedImageFormat( "Source pixel format is not supported by the filter." );
+                throw new UnsupportedImageFormatException( "Source pixel format is not supported by the filter." );
         }
     }
 }

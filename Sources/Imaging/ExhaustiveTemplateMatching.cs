@@ -107,8 +107,8 @@ namespace AForge.Imaging
         /// <returns>Returns array of found template matches. The array is sorted by similarity
         /// of found matches in descending order.</returns>
         /// 
-        /// <exception cref="UnsupportedImageFormat">The source image has incorrect pixel format.</exception>
-        /// <exception cref="InvalidImageProperties">Template image is bigger than source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">The source image has incorrect pixel format.</exception>
+        /// <exception cref="InvalidImagePropertiesException">Template image is bigger than source image.</exception>
         /// 
         public TemplateMatch[] ProcessImage( Bitmap image, Bitmap template )
         {
@@ -126,8 +126,8 @@ namespace AForge.Imaging
         /// <returns>Returns array of found template matches. The array is sorted by similarity
         /// of found matches in descending order.</returns>
         /// 
-        /// <exception cref="UnsupportedImageFormat">The source image has incorrect pixel format.</exception>
-        /// <exception cref="InvalidImageProperties">Template image is bigger than source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">The source image has incorrect pixel format.</exception>
+        /// <exception cref="InvalidImagePropertiesException">Template image is bigger than source image.</exception>
         /// 
         public TemplateMatch[] ProcessImage( Bitmap image, Bitmap template, Rectangle searchZone )
         {
@@ -137,13 +137,13 @@ namespace AForge.Imaging
                   ( image.PixelFormat != PixelFormat.Format24bppRgb ) ) ||
                 ( image.PixelFormat != template.PixelFormat ) )
             {
-                throw new UnsupportedImageFormat( "Unsupported pixel format of the source or template image." );
+                throw new UnsupportedImageFormatException( "Unsupported pixel format of the source or template image." );
             }
 
             // check template's size
             if ( ( template.Width > image.Width ) || ( template.Height > image.Height ) )
             {
-                throw new InvalidImageProperties( "Template's size should be smaller or equal to source image's size." );
+                throw new InvalidImagePropertiesException( "Template's size should be smaller or equal to source image's size." );
             }
 
             // lock source and template images
@@ -184,8 +184,8 @@ namespace AForge.Imaging
         /// <returns>Returns array of found template matches. The array is sorted by similarity
         /// of found matches in descending order.</returns>
         /// 
-        /// <exception cref="UnsupportedImageFormat">The source image has incorrect pixel format.</exception>
-        /// <exception cref="InvalidImageProperties">Template image is bigger than source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">The source image has incorrect pixel format.</exception>
+        /// <exception cref="InvalidImagePropertiesException">Template image is bigger than source image.</exception>
         /// 
         public TemplateMatch[] ProcessImage( BitmapData imageData, BitmapData templateData )
         {
@@ -204,8 +204,8 @@ namespace AForge.Imaging
         /// <returns>Returns array of found template matches. The array is sorted by similarity
         /// of found matches in descending order.</returns>
         /// 
-        /// <exception cref="UnsupportedImageFormat">The source image has incorrect pixel format.</exception>
-        /// <exception cref="InvalidImageProperties">Template image is bigger than source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">The source image has incorrect pixel format.</exception>
+        /// <exception cref="InvalidImagePropertiesException">Template image is bigger than source image.</exception>
         /// 
         public TemplateMatch[] ProcessImage( BitmapData imageData, BitmapData templateData, Rectangle searchZone )
         {
@@ -222,8 +222,8 @@ namespace AForge.Imaging
         /// <returns>Returns array of found template matches. The array is sorted by similarity
         /// of found matches in descending order.</returns>
         /// 
-        /// <exception cref="UnsupportedImageFormat">The source image has incorrect pixel format.</exception>
-        /// <exception cref="InvalidImageProperties">Template image is bigger than source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">The source image has incorrect pixel format.</exception>
+        /// <exception cref="InvalidImagePropertiesException">Template image is bigger than source image.</exception>
         ///
         public TemplateMatch[] ProcessImage( UnmanagedImage image, UnmanagedImage template )
         {
@@ -241,8 +241,8 @@ namespace AForge.Imaging
         /// <returns>Returns array of found template matches. The array is sorted by similarity
         /// of found matches in descending order.</returns>
         /// 
-        /// <exception cref="UnsupportedImageFormat">The source image has incorrect pixel format.</exception>
-        /// <exception cref="InvalidImageProperties">Template image is bigger than search zone.</exception>
+        /// <exception cref="UnsupportedImageFormatException">The source image has incorrect pixel format.</exception>
+        /// <exception cref="InvalidImagePropertiesException">Template image is bigger than search zone.</exception>
         ///
         public TemplateMatch[] ProcessImage( UnmanagedImage image, UnmanagedImage template, Rectangle searchZone )
         {
@@ -252,7 +252,7 @@ namespace AForge.Imaging
                   ( image.PixelFormat != PixelFormat.Format24bppRgb ) ) ||
                 ( image.PixelFormat != template.PixelFormat ) )
             {
-                throw new UnsupportedImageFormat( "Unsupported pixel format of the source or template image." );
+                throw new UnsupportedImageFormatException( "Unsupported pixel format of the source or template image." );
             }
 
             // clip search zone
@@ -272,7 +272,7 @@ namespace AForge.Imaging
             // check template's size
             if ( ( templateWidth > sourceWidth ) || ( templateHeight > sourceHeight ) )
             {
-                throw new InvalidImageProperties( "Template's size should be smaller or equal to search zone." );
+                throw new InvalidImagePropertiesException( "Template's size should be smaller or equal to search zone." );
             }
 
             int pixelSize = ( image.PixelFormat == PixelFormat.Format8bppIndexed ) ? 1 : 3;

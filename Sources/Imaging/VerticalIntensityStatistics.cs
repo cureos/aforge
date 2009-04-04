@@ -109,7 +109,7 @@ namespace AForge.Imaging
         /// 
         /// <param name="image">Source image.</param>
         ///
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         /// 
         public VerticalIntensityStatistics( Bitmap image )
         {
@@ -124,7 +124,7 @@ namespace AForge.Imaging
                 ( image.PixelFormat != PixelFormat.Format64bppArgb )
                 )
             {
-                throw new UnsupportedImageFormat( "Unsupported pixel format of the source image." );
+                throw new UnsupportedImageFormatException( "Unsupported pixel format of the source image." );
             }
 
             // lock bitmap data
@@ -150,7 +150,7 @@ namespace AForge.Imaging
         /// 
         /// <param name="imageData">Source image data.</param>
         ///
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         /// 
         public VerticalIntensityStatistics( BitmapData imageData )
             : this( new UnmanagedImage( imageData ) )
@@ -163,7 +163,7 @@ namespace AForge.Imaging
         /// 
         /// <param name="image">Source unmanaged image.</param>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         /// 
         public VerticalIntensityStatistics( UnmanagedImage image )
         {
@@ -178,7 +178,7 @@ namespace AForge.Imaging
                 ( image.PixelFormat != PixelFormat.Format64bppArgb )
                 )
             {
-                throw new UnsupportedImageFormat( "Unsupported pixel format of the source image." );
+                throw new UnsupportedImageFormatException( "Unsupported pixel format of the source image." );
             }
 
             // gather statistics

@@ -127,7 +127,7 @@ namespace AForge.Imaging.Filters
         /// 
         /// <param name="image">Source image data.</param>
         ///
-        /// <exception cref="InvalidImageProperties">Source and overlay images have different pixel formats and/or size.</exception>
+        /// <exception cref="InvalidImagePropertiesException">Source and overlay images have different pixel formats and/or size.</exception>
         /// <exception cref="NullReferenceException">Overlay image is not set.</exception>
         ///
         protected override unsafe void ProcessFilter( UnmanagedImage image )
@@ -142,11 +142,11 @@ namespace AForge.Imaging.Filters
             {
                 // source image and overlay must have same pixel format
                 if ( pixelFormat != overlayImage.PixelFormat )
-                    throw new InvalidImageProperties( "Source and overlay images must have same pixel format." );
+                    throw new InvalidImagePropertiesException( "Source and overlay images must have same pixel format." );
 
                 // check overlay image size
                 if ( ( width != overlayImage.Width ) || ( height != overlayImage.Height ) )
-                    throw new InvalidImageProperties( "Overlay image size must be equal to source image size." );
+                    throw new InvalidImagePropertiesException( "Overlay image size must be equal to source image size." );
 
                 // lock overlay image
                 BitmapData ovrData = overlayImage.LockBits(
@@ -167,11 +167,11 @@ namespace AForge.Imaging.Filters
             {
                 // source image and overlay must have same pixel format
                 if ( pixelFormat != unmanagedOverlayImage.PixelFormat )
-                    throw new InvalidImageProperties( "Source and overlay images must have same pixel format." );
+                    throw new InvalidImagePropertiesException( "Source and overlay images must have same pixel format." );
 
                 // check overlay image size
                 if ( ( width != unmanagedOverlayImage.Width ) || ( height != unmanagedOverlayImage.Height ) )
-                    throw new InvalidImageProperties( "Overlay image size must be equal to source image size." );
+                    throw new InvalidImagePropertiesException( "Overlay image size must be equal to source image size." );
 
                 ProcessFilter( image, unmanagedOverlayImage );
             }

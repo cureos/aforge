@@ -167,9 +167,9 @@ namespace AForge.Imaging
         /// <returns>Returns array of found block matches. The array is sorted by similarity
         /// of found matches in descending order.</returns>
         /// 
-        /// <exception cref="InvalidImageProperties">Source and search images sizes must match.</exception>
+        /// <exception cref="InvalidImagePropertiesException">Source and search images sizes must match.</exception>
         /// <exception cref="ArgumentException">Source images can be grayscale (8 bpp indexed) or color (24 bpp) image only.</exception>
-        /// <exception cref="InvalidImageProperties">Source and search images must have same pixel format.</exception>
+        /// <exception cref="InvalidImagePropertiesException">Source and search images must have same pixel format.</exception>
         /// 
         public BlockMatch[] ProcessImage( Bitmap sourceImage, Point[] coordinates, Bitmap searchImage )
         {
@@ -211,8 +211,8 @@ namespace AForge.Imaging
         /// <returns>Returns array of found block matches. The array is sorted by similarity
         /// of found matches in descending order.</returns>
         /// 
-        /// <exception cref="InvalidImageProperties">Source and search images sizes must match.</exception>
-        /// <exception cref="UnsupportedImageFormat">Source images can be grayscale (8 bpp indexed) or color (24 bpp) image only.</exception>
+        /// <exception cref="InvalidImagePropertiesException">Source and search images sizes must match.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Source images can be grayscale (8 bpp indexed) or color (24 bpp) image only.</exception>
         /// <exception cref="ArgumentException">Source and search images must have same pixel format.</exception>
         /// 
         public BlockMatch[] ProcessImage( BitmapData sourceImageData, Point[] coordinates, BitmapData searchImageData )
@@ -231,23 +231,23 @@ namespace AForge.Imaging
         /// <returns>Returns array of found block matches. The array is sorted by similarity
         /// of found matches in descending order.</returns>
         /// 
-        /// <exception cref="InvalidImageProperties">Source and search images sizes must match.</exception>
-        /// <exception cref="UnsupportedImageFormat">Source images can be grayscale (8 bpp indexed) or color (24 bpp) image only.</exception>
+        /// <exception cref="InvalidImagePropertiesException">Source and search images sizes must match.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Source images can be grayscale (8 bpp indexed) or color (24 bpp) image only.</exception>
         /// <exception cref="ArgumentException">Source and search images must have same pixel format.</exception>
         /// 
         public BlockMatch[] ProcessImage( UnmanagedImage sourceImage, Point[] coordinates, UnmanagedImage searchImage )
         {
             // source images sizes must match.
             if ( ( sourceImage.Width != searchImage.Width ) || ( sourceImage.Height != searchImage.Height ) )
-                throw new InvalidImageProperties( "Source and search images sizes must match" );
+                throw new InvalidImagePropertiesException( "Source and search images sizes must match" );
 
             // sources images must be graysclae or color.
             if ( ( sourceImage.PixelFormat != PixelFormat.Format8bppIndexed ) && ( sourceImage.PixelFormat != PixelFormat.Format24bppRgb ) )
-                throw new UnsupportedImageFormat( "Source images can be graysclae (8 bpp indexed) or color (24 bpp) image only" );
+                throw new UnsupportedImageFormatException( "Source images can be graysclae (8 bpp indexed) or color (24 bpp) image only" );
 
             // source images must have the same pixel format.
             if ( sourceImage.PixelFormat != searchImage.PixelFormat )
-                throw new InvalidImageProperties( "Source and search images must have same pixel format" );
+                throw new InvalidImagePropertiesException( "Source and search images must have same pixel format" );
 
             int pointsCount = coordinates.Length;
 

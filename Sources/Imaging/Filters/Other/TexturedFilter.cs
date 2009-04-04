@@ -171,8 +171,8 @@ namespace AForge.Imaging.Filters
         /// images and produce color 24 bpp or grayscale 8 bppp images as result.</para>
         /// </remarks>
         /// 
-        /// <exception cref="UnsupportedImageFormat">The specified filter does not support 24 bpp color images.</exception>
-        /// <exception cref="UnsupportedImageFormat">The specified filter does not produce image of supported format.</exception>
+        /// <exception cref="UnsupportedImageFormatException">The specified filter does not support 24 bpp color images.</exception>
+        /// <exception cref="UnsupportedImageFormatException">The specified filter does not produce image of supported format.</exception>
         /// <exception cref="ArgumentException">The specified filter does not implement IFilterInformation interface.</exception>
         /// 
         public IFilter Filter1
@@ -184,11 +184,11 @@ namespace AForge.Imaging.Filters
                 {
                     IFilterInformation info = (IFilterInformation) value;
                     if ( !info.FormatTransalations.ContainsKey( PixelFormat.Format24bppRgb ) )
-                        throw new UnsupportedImageFormat( "The specified filter does not support 24 bpp color images." );
+                        throw new UnsupportedImageFormatException( "The specified filter does not support 24 bpp color images." );
                     if (
                         ( info.FormatTransalations[PixelFormat.Format24bppRgb] != PixelFormat.Format24bppRgb ) &&
                         ( info.FormatTransalations[PixelFormat.Format24bppRgb] != PixelFormat.Format8bppIndexed ) )
-                        throw new UnsupportedImageFormat( "The specified filter does not produce image of supported format." );
+                        throw new UnsupportedImageFormatException( "The specified filter does not produce image of supported format." );
                 }
                 else
                 {
@@ -212,8 +212,8 @@ namespace AForge.Imaging.Filters
         /// is used as a second image for the merge.</note></para>
         /// </remarks>
         /// 
-        /// <exception cref="UnsupportedImageFormat">The specified filter does not support 24 bpp color images.</exception>
-        /// <exception cref="UnsupportedImageFormat">The specified filter does not produce image of supported format.</exception>
+        /// <exception cref="UnsupportedImageFormatException">The specified filter does not support 24 bpp color images.</exception>
+        /// <exception cref="UnsupportedImageFormatException">The specified filter does not produce image of supported format.</exception>
         /// <exception cref="ArgumentException">The specified filter does not implement IFilterInformation interface.</exception>
         /// 
         public IFilter Filter2
@@ -225,11 +225,11 @@ namespace AForge.Imaging.Filters
                 {
                     IFilterInformation info = (IFilterInformation) value;
                     if ( !info.FormatTransalations.ContainsKey( PixelFormat.Format24bppRgb ) )
-                        throw new UnsupportedImageFormat( "The specified filter does not support 24 bpp color images." );
+                        throw new UnsupportedImageFormatException( "The specified filter does not support 24 bpp color images." );
                     if (
                         ( info.FormatTransalations[PixelFormat.Format24bppRgb] != PixelFormat.Format24bppRgb ) &&
                         ( info.FormatTransalations[PixelFormat.Format24bppRgb] != PixelFormat.Format8bppIndexed ) )
-                        throw new UnsupportedImageFormat( "The specified filter does not produce image of supported format." );
+                        throw new UnsupportedImageFormatException( "The specified filter does not produce image of supported format." );
                 }
                 else
                 {
@@ -309,7 +309,7 @@ namespace AForge.Imaging.Filters
         /// <param name="sourceData">Source image data.</param>
         /// <param name="destinationData">Destination image data.</param>
         /// 
-        /// <exception cref="InvalidImageProperties">Texture size does not match image size.</exception>
+        /// <exception cref="InvalidImagePropertiesException">Texture size does not match image size.</exception>
         /// <exception cref="ApplicationException">Filters should not change image dimension.</exception>
         /// 
         protected override unsafe void ProcessFilter( UnmanagedImage sourceData, UnmanagedImage destinationData )
@@ -330,7 +330,7 @@ namespace AForge.Imaging.Filters
                 if ( ( texture.GetLength( 0 ) != height ) || ( texture.GetLength( 1 ) != width ) )
                 {
                     // sorry, but source image must have the same dimension as texture
-                    throw new InvalidImageProperties( "Texture size does not match image size." );
+                    throw new InvalidImagePropertiesException( "Texture size does not match image size." );
                 }
             }
 

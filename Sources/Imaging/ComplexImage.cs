@@ -139,15 +139,15 @@ namespace AForge.Imaging
         /// 
         /// <returns>Returns an instance of complex image.</returns>
         /// 
-        /// <exception cref="UnsupportedImageFormat">The source image has incorrect pixel format.</exception>
-        /// <exception cref="InvalidImageProperties">Image width and height should be power of 2.</exception>
+        /// <exception cref="UnsupportedImageFormatException">The source image has incorrect pixel format.</exception>
+        /// <exception cref="InvalidImagePropertiesException">Image width and height should be power of 2.</exception>
         /// 
         public static ComplexImage FromBitmap( Bitmap image )
         {
             // check image format
             if ( image.PixelFormat != PixelFormat.Format8bppIndexed )
             {
-                throw new UnsupportedImageFormat( "Source image can be graysclae (8bpp indexed) image only." );
+                throw new UnsupportedImageFormatException( "Source image can be graysclae (8bpp indexed) image only." );
             }
 
             // lock source bitmap data
@@ -178,15 +178,15 @@ namespace AForge.Imaging
         /// 
         /// <returns>Returns an instance of complex image.</returns>
         /// 
-        /// <exception cref="UnsupportedImageFormat">The source image has incorrect pixel format.</exception>
-        /// <exception cref="InvalidImageProperties">Image width and height should be power of 2.</exception>
+        /// <exception cref="UnsupportedImageFormatException">The source image has incorrect pixel format.</exception>
+        /// <exception cref="InvalidImagePropertiesException">Image width and height should be power of 2.</exception>
         /// 
         public static ComplexImage FromBitmap( BitmapData imageData )
         {
             // check image format
             if ( imageData.PixelFormat != PixelFormat.Format8bppIndexed )
             {
-                throw new UnsupportedImageFormat( "Source image can be graysclae (8bpp indexed) image only." );
+                throw new UnsupportedImageFormatException( "Source image can be graysclae (8bpp indexed) image only." );
             }
 
             // get source image size
@@ -197,7 +197,7 @@ namespace AForge.Imaging
             // check image size
             if ( ( !Tools.IsPowerOf2( width ) ) || ( !Tools.IsPowerOf2( height ) ) )
             {
-                throw new InvalidImageProperties( "Image width and height should be power of 2." );
+                throw new InvalidImagePropertiesException( "Image width and height should be power of 2." );
             }
 
             // create new complex image

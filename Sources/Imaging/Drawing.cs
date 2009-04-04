@@ -36,7 +36,7 @@ namespace AForge.Imaging
         /// <param name="rectangle">Rectangle's coordinates to fill.</param>
         /// <param name="color">Rectangle's color.</param>
         /// 
-        /// <exception cref="UnsupportedImageFormat">The source image has incorrect pixel format.</exception>
+        /// <exception cref="UnsupportedImageFormatException">The source image has incorrect pixel format.</exception>
         /// 
         public static unsafe void FillRectangle( BitmapData imageData, Rectangle rectangle, Color color )
         {
@@ -51,7 +51,7 @@ namespace AForge.Imaging
         /// <param name="rectangle">Rectangle's coordinates to fill.</param>
         /// <param name="color">Rectangle's color.</param>
         /// 
-        /// <exception cref="UnsupportedImageFormat">The source image has incorrect pixel format.</exception>
+        /// <exception cref="UnsupportedImageFormatException">The source image has incorrect pixel format.</exception>
         /// 
         public static unsafe void FillRectangle( UnmanagedImage image, Rectangle rectangle, Color color )
         {
@@ -128,7 +128,7 @@ namespace AForge.Imaging
         /// <param name="rectangle">Rectangle's coordinates to draw.</param>
         /// <param name="color">Rectangle's color.</param>
         /// 
-        /// <exception cref="UnsupportedImageFormat">The source image has incorrect pixel format.</exception>
+        /// <exception cref="UnsupportedImageFormatException">The source image has incorrect pixel format.</exception>
         /// 
         public static unsafe void Rectangle( BitmapData imageData, Rectangle rectangle, Color color )
         {
@@ -143,7 +143,7 @@ namespace AForge.Imaging
         /// <param name="rectangle">Rectangle's coordinates to draw.</param>
         /// <param name="color">Rectangle's color.</param>
         /// 
-        /// <exception cref="UnsupportedImageFormat">The source image has incorrect pixel format.</exception>
+        /// <exception cref="UnsupportedImageFormatException">The source image has incorrect pixel format.</exception>
         /// 
         public static unsafe void Rectangle( UnmanagedImage image, Rectangle rectangle, Color color )
         {
@@ -287,7 +287,7 @@ namespace AForge.Imaging
         /// <param name="point2">The second point to connect.</param>
         /// <param name="color">Line's color.</param>
         /// 
-        /// <exception cref="UnsupportedImageFormat">The source image has incorrect pixel format.</exception>
+        /// <exception cref="UnsupportedImageFormatException">The source image has incorrect pixel format.</exception>
         /// 
         public static unsafe void Line( BitmapData imageData, Point point1, Point point2, Color color )
         {
@@ -303,7 +303,7 @@ namespace AForge.Imaging
         /// <param name="point2">The second point to connect.</param>
         /// <param name="color">Line's color.</param>
         /// 
-        /// <exception cref="UnsupportedImageFormat">The source image has incorrect pixel format.</exception>
+        /// <exception cref="UnsupportedImageFormatException">The source image has incorrect pixel format.</exception>
         /// 
         public static unsafe void Line( UnmanagedImage image, Point point1, Point point2, Color color )
         {
@@ -446,7 +446,7 @@ namespace AForge.Imaging
                 ( format != PixelFormat.Format32bppRgb )
                 )
             {
-                throw new UnsupportedImageFormat( "Unsupported pixel format of the source image." );
+                throw new UnsupportedImageFormatException( "Unsupported pixel format of the source image." );
             }
         }
 

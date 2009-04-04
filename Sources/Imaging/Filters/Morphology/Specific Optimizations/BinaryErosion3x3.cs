@@ -62,7 +62,7 @@ namespace AForge.Imaging.Filters
         /// <param name="destinationData">Destination image data.</param>
         /// <param name="rect">Image rectangle for processing by the filter.</param>
         /// 
-        /// <exception cref="InvalidImageProperties">Processing rectangle mast be at least 3x3 in size.</exception>
+        /// <exception cref="InvalidImagePropertiesException">Processing rectangle mast be at least 3x3 in size.</exception>
         /// 
         protected override unsafe void ProcessFilter( UnmanagedImage sourceData, UnmanagedImage destinationData, Rectangle rect )
         {
@@ -70,7 +70,7 @@ namespace AForge.Imaging.Filters
 
             if ( ( rect.Width < 3 ) || ( rect.Height < 3 ) )
             {
-                throw new InvalidImageProperties( "Processing rectangle mast be at least 3x3 in size." );
+                throw new InvalidImagePropertiesException( "Processing rectangle mast be at least 3x3 in size." );
             }
 
             // processing start and stop X,Y positions

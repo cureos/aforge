@@ -162,14 +162,14 @@ namespace AForge.Imaging
         /// 
         /// <returns>Returns document's skew angle.</returns>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         /// 
         public double GetSkewAngle( Bitmap image )
         {
             // check image format
             if ( image.PixelFormat != PixelFormat.Format8bppIndexed )
             {
-                throw new UnsupportedImageFormat( "Unsupported pixel format of the source image." );
+                throw new UnsupportedImageFormatException( "Unsupported pixel format of the source image." );
             }
 
             // lock source image
@@ -201,7 +201,7 @@ namespace AForge.Imaging
         /// 
         /// <returns>Returns document's skew angle.</returns>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         /// 
         public double GetSkewAngle( BitmapData imageData )
         {
@@ -216,13 +216,13 @@ namespace AForge.Imaging
         /// 
         /// <returns>Returns document's skew angle.</returns>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         /// 
         public double GetSkewAngle( UnmanagedImage image )
         {
             if ( image.PixelFormat != PixelFormat.Format8bppIndexed )
             {
-                throw new UnsupportedImageFormat( "Unsupported pixel format of the source image." );
+                throw new UnsupportedImageFormatException( "Unsupported pixel format of the source image." );
             }
 
             // init hough transformation settings

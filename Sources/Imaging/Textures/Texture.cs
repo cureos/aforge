@@ -89,7 +89,7 @@ namespace AForge.Imaging.Textures
         /// 
         /// <returns>Returns texture as 2D float array.</returns>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Only grayscale (8 bpp indexed images) are supported.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Only grayscale (8 bpp indexed images) are supported.</exception>
         /// 
         public static float[,] FromBitmap( Bitmap image )
         {
@@ -115,7 +115,7 @@ namespace AForge.Imaging.Textures
         /// 
         /// <returns>Returns texture as 2D float array.</returns>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Only grayscale (8 bpp indexed images) are supported.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Only grayscale (8 bpp indexed images) are supported.</exception>
         /// 
         public static float[,] FromBitmap( BitmapData imageData )
         {
@@ -130,13 +130,13 @@ namespace AForge.Imaging.Textures
         /// 
         /// <returns>Returns texture as 2D float array.</returns>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Only grayscale (8 bpp indexed images) are supported.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Only grayscale (8 bpp indexed images) are supported.</exception>
         /// 
         public static float[,] FromBitmap( UnmanagedImage image )
         {
             // check source image
             if ( image.PixelFormat != PixelFormat.Format8bppIndexed )
-                throw new UnsupportedImageFormat( "Only grayscale (8 bpp indexed images) are supported." );
+                throw new UnsupportedImageFormatException( "Only grayscale (8 bpp indexed images) are supported." );
 
             // get source image dimension
             int width  = image.Width;

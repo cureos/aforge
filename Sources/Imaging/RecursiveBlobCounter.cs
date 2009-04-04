@@ -99,7 +99,7 @@ namespace AForge.Imaging
         /// 
         /// <remarks>The method supports only 8 bpp indexed grayscale image.</remarks>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         /// 
         protected override void BuildObjectsMap( UnmanagedImage image )
         {
@@ -109,7 +109,7 @@ namespace AForge.Imaging
             // check pixel format
             if ( image.PixelFormat != PixelFormat.Format8bppIndexed )
             {
-                throw new UnsupportedImageFormat( "Unsupported pixel format of the source image." );
+                throw new UnsupportedImageFormatException( "Unsupported pixel format of the source image." );
             }
 
             // allocate temporary labels array

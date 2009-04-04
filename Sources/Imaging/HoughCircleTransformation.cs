@@ -210,14 +210,14 @@ namespace AForge.Imaging
         /// 
         /// <param name="image">Source image to process.</param>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         /// 
         public void ProcessImage( Bitmap image )
         {
             // check image format
             if ( image.PixelFormat != PixelFormat.Format8bppIndexed )
             {
-                throw new UnsupportedImageFormat( "Unsupported pixel format of the source image." );
+                throw new UnsupportedImageFormatException( "Unsupported pixel format of the source image." );
             }
 
             // lock source image
@@ -243,7 +243,7 @@ namespace AForge.Imaging
         /// 
         /// <param name="imageData">Source image data to process.</param>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         /// 
         public void ProcessImage( BitmapData imageData )
         {
@@ -256,13 +256,13 @@ namespace AForge.Imaging
         /// 
         /// <param name="image">Source unmanaged image to process.</param>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         /// 
         public void ProcessImage( UnmanagedImage image )
         {
             if ( image.PixelFormat != PixelFormat.Format8bppIndexed )
             {
-                throw new UnsupportedImageFormat( "Unsupported pixel format of the source image." );
+                throw new UnsupportedImageFormatException( "Unsupported pixel format of the source image." );
             }
 
             // get source image size

@@ -195,7 +195,7 @@ namespace AForge.Imaging.Filters
                     // check background image
                     if ( ( width != backgroundImage.Width ) || ( height != backgroundImage.Height ) || ( image.PixelFormat != backgroundImage.PixelFormat ) )
                     {
-                        throw new InvalidImageProperties( "Source image and background images must have the same size and pixel format" );
+                        throw new InvalidImagePropertiesException( "Source image and background images must have the same size and pixel format" );
                     }
 
                     // lock background image

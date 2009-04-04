@@ -82,7 +82,7 @@ namespace AForge.Imaging.Filters
         /// the filter.</note></para>
         /// </remarks>
         /// 
-        /// <exception cref="InvalidImageProperties">In the case if destination image has incorrect
+        /// <exception cref="InvalidImagePropertiesException">In the case if destination image has incorrect
         /// size.</exception>
         /// 
         void Apply( UnmanagedImage sourceImage, UnmanagedImage destinationImage );

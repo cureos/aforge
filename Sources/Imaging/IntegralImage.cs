@@ -105,14 +105,14 @@ namespace AForge.Imaging
         /// 
         /// <returns>Returns integral image.</returns>
         /// 
-        /// <exception cref="UnsupportedImageFormat">The source image has incorrect pixel format.</exception>
+        /// <exception cref="UnsupportedImageFormatException">The source image has incorrect pixel format.</exception>
         /// 
         public static IntegralImage FromBitmap( Bitmap image )
         {
             // check image format
             if ( image.PixelFormat != PixelFormat.Format8bppIndexed )
             {
-                throw new UnsupportedImageFormat( "Source image can be graysclae (8 bpp indexed) image only." );
+                throw new UnsupportedImageFormatException( "Source image can be graysclae (8 bpp indexed) image only." );
             }
 
             // lock source image
@@ -137,7 +137,7 @@ namespace AForge.Imaging
         /// 
         /// <returns>Returns integral image.</returns>
         /// 
-        /// <exception cref="UnsupportedImageFormat">The source image has incorrect pixel format.</exception>
+        /// <exception cref="UnsupportedImageFormatException">The source image has incorrect pixel format.</exception>
         /// 
         public static IntegralImage FromBitmap( BitmapData imageData )
         {
@@ -152,7 +152,7 @@ namespace AForge.Imaging
         /// 
         /// <returns>Returns integral image.</returns>
         /// 
-        /// <exception cref="UnsupportedImageFormat">The source image has incorrect pixel format.</exception>
+        /// <exception cref="UnsupportedImageFormatException">The source image has incorrect pixel format.</exception>
         /// 
         public static IntegralImage FromBitmap( UnmanagedImage image )
         {

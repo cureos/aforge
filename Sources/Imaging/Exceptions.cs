@@ -18,30 +18,30 @@ namespace AForge.Imaging
     /// not support the format.</para>
     /// </remarks>
     /// 
-    public class UnsupportedImageFormat : ArgumentException
+    public class UnsupportedImageFormatException : ArgumentException
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UnsupportedImageFormat"/> class.
+        /// Initializes a new instance of the <see cref="UnsupportedImageFormatException"/> class.
         /// </summary>
-        public UnsupportedImageFormat( ) { }
+        public UnsupportedImageFormatException( ) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UnsupportedImageFormat"/> class.
+        /// Initializes a new instance of the <see cref="UnsupportedImageFormatException"/> class.
         /// </summary>
         /// 
         /// <param name="message">Message providing some additional information.</param>
         /// 
-        public UnsupportedImageFormat( string message ) :
+        public UnsupportedImageFormatException( string message ) :
             base( message ) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UnsupportedImageFormat"/> class.
+        /// Initializes a new instance of the <see cref="UnsupportedImageFormatException"/> class.
         /// </summary>
         /// 
         /// <param name="message">Message providing some additional information.</param>
         /// <param name="paramName">Name of the invalid parameter.</param>
         /// 
-        public UnsupportedImageFormat( string message, string paramName ) :
+        public UnsupportedImageFormatException( string message, string paramName ) :
             base( message, paramName ) { }
     }
 
@@ -54,30 +54,30 @@ namespace AForge.Imaging
     /// particular image processing routine.</para>
     /// </remarks>
     /// 
-    public class InvalidImageProperties : ArgumentException
+    public class InvalidImagePropertiesException : ArgumentException
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidImageProperties"/> class.
+        /// Initializes a new instance of the <see cref="InvalidImagePropertiesException"/> class.
         /// </summary>
-        public InvalidImageProperties( ) { }
+        public InvalidImagePropertiesException( ) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidImageProperties"/> class.
+        /// Initializes a new instance of the <see cref="InvalidImagePropertiesException"/> class.
         /// </summary>
         /// 
         /// <param name="message">Message providing some additional information.</param>
         /// 
-        public InvalidImageProperties( string message ) :
+        public InvalidImagePropertiesException( string message ) :
             base( message ) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidImageProperties"/> class.
+        /// Initializes a new instance of the <see cref="InvalidImagePropertiesException"/> class.
         /// </summary>
         /// 
         /// <param name="message">Message providing some additional information.</param>
         /// <param name="paramName">Name of the invalid parameter.</param>
         /// 
-        public InvalidImageProperties( string message, string paramName ) :
+        public InvalidImagePropertiesException( string message, string paramName ) :
             base( message, paramName ) { }
     }
 }

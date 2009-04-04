@@ -324,7 +324,7 @@ namespace AForge.Imaging
         /// 
         /// <remarks><para>Processes the image and builds objects map, which is used later to extracts blobs.</para></remarks>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         /// 
         public void ProcessImage( Bitmap image )
         {
@@ -353,7 +353,7 @@ namespace AForge.Imaging
         /// 
         /// <remarks><para>Processes the image and builds objects map, which is used later to extracts blobs.</para></remarks>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         /// 
         public void ProcessImage( BitmapData imageData )
         {
@@ -369,7 +369,7 @@ namespace AForge.Imaging
         /// 
         /// <remarks><para>Processes the image and builds objects map, which is used later to extracts blobs.</para></remarks>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the source image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         /// 
         public void ProcessImage( UnmanagedImage image )
         {
@@ -616,7 +616,7 @@ namespace AForge.Imaging
         /// <para>The method supports 24 bpp color and 8 bpp indexed grayscale images.</para>
         /// </remarks>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the provided image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the provided image.</exception>
         /// <exception cref="ApplicationException">No image was processed before, so objects
         /// can not be collected.</exception>
         /// 
@@ -661,7 +661,7 @@ namespace AForge.Imaging
         /// <para>The method supports 24 bpp color and 8 bpp indexed grayscale images.</para>
         /// </remarks>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the provided image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the provided image.</exception>
         /// <exception cref="ApplicationException">No image was processed before, so objects
         /// can not be collected.</exception>
         /// 
@@ -690,7 +690,7 @@ namespace AForge.Imaging
         /// <para>The method supports 24 bpp color and 8 bpp indexed grayscale images.</para>
         /// </remarks>
         ///
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the provided image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the provided image.</exception>
         /// <exception cref="ApplicationException">No image was processed before, so objects
         /// can not be collected.</exception>
         /// 
@@ -704,7 +704,7 @@ namespace AForge.Imaging
                 ( image.PixelFormat != PixelFormat.Format24bppRgb ) &&
                 ( image.PixelFormat != PixelFormat.Format8bppIndexed )
                 )
-                throw new UnsupportedImageFormat( "Unsupported pixel format of the provided image." );
+                throw new UnsupportedImageFormatException( "Unsupported pixel format of the provided image." );
 
             // collect rectangles, if they are not collected yet
             if ( blobsRectangles == null )
@@ -819,7 +819,7 @@ namespace AForge.Imaging
         /// <para>The method supports 24 bpp color and 8 bpp indexed grayscale images.</para>
         /// </remarks>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the provided image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the provided image.</exception>
         /// <exception cref="ApplicationException">No image was processed before, so blob
         /// can not be extracted.</exception>
         /// 
@@ -862,7 +862,7 @@ namespace AForge.Imaging
         /// <para>The method supports 24 bpp color and 8 bpp indexed grayscale images.</para>
         /// </remarks>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the provided image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the provided image.</exception>
         /// <exception cref="ApplicationException">No image was processed before, so blob
         /// can not be extracted.</exception>
         /// 
@@ -891,7 +891,7 @@ namespace AForge.Imaging
         /// <para>The method supports 24 bpp color and 8 bpp indexed grayscale images.</para>
         /// </remarks>
         /// 
-        /// <exception cref="UnsupportedImageFormat">Unsupported pixel format of the provided image.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the provided image.</exception>
         /// <exception cref="ApplicationException">No image was processed before, so blob
         /// can not be extracted.</exception>
         /// 
@@ -905,7 +905,7 @@ namespace AForge.Imaging
                 ( image.PixelFormat != PixelFormat.Format24bppRgb ) &&
                 ( image.PixelFormat != PixelFormat.Format8bppIndexed )
                 )
-                throw new UnsupportedImageFormat( "Unsupported pixel format of the provided image." );
+                throw new UnsupportedImageFormatException( "Unsupported pixel format of the provided image." );
 
             // image size
             int width  = image.Width;
