@@ -36,7 +36,7 @@ namespace AForge.Imaging.Filters
     ///             { -1,  1,  1 },
     ///             {  0,  1,  2 } };
     /// // create filter
-    /// Convolution filter = new Convolution( );
+    /// Convolution filter = new Convolution( kernel );
     /// // apply the filter
     /// filter.ApplyInPlace( image );
     /// </code>
