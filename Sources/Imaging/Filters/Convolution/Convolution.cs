@@ -19,7 +19,8 @@ namespace AForge.Imaging.Filters
     /// <remarks><para>The filter implements convolution operator, which calculates each pixel
     /// of the result image as weighted sum of the correspond pixel and its neighbors in the source
     /// image. The weights are set by <see cref="Kernel">convolution kernel</see>. The weighted
-    /// sum is divided by <see cref="Divisor"/> before putting it into result image.</para>
+    /// sum is divided by <see cref="Divisor"/> before putting it into result image and also
+    /// may be thresholded using <see cref="Threshold"/> value.</para>
     /// 
     /// <para>Convolution is a simple mathematical operation which is fundamental to many common
     /// image processing filters. Depending on the type of provided kernel, the filter may produce
@@ -53,6 +54,8 @@ namespace AForge.Imaging.Filters
         private int[,] kernel;
         // division factor
         private int divisor = 1;
+        // threshold to add to weighted sum
+        private int threshold = 0;
         // kernel size
         private int size;
         // use dynamic divisor for edges
@@ -121,6 +124,23 @@ namespace AForge.Imaging.Filters
                     throw new ArgumentException( "Divisor can not be equal to zero." );
                 divisor = value;
             }
+        }
+
+        /// <summary>
+        /// Threshold to add to weighted sum.
+        /// </summary>
+        /// 
+        /// <remarks><para>The property specifies threshold value, which is added each weighted
+        /// sum of pixels. The value is added right after division was done by <see cref="Divisor"/>
+        /// value.</para>
+        /// 
+        /// <para>Default value is set to <b>0</b>.</para>
+        /// </remarks>
+        /// 
+        public int Threshold
+        {
+            get { return threshold; }
+            set { threshold = value; }
         }
 
         /// <summary>
@@ -322,6 +342,7 @@ namespace AForge.Imaging.Filters
                             {
                                 g /= div;
                             }
+                            g += threshold;
                             *dst = (byte) ( ( g > 255 ) ? 255 : ( ( g < 0 ) ? 0 : g ) );
                         }
                         src += srcOffset;
@@ -402,6 +423,10 @@ namespace AForge.Imaging.Filters
                                 g /= div;
                                 b /= div;
                             }
+                            r += threshold;
+                            g += threshold;
+                            b += threshold;
+
                             dst[RGB.R] = (byte) ( ( r > 255 ) ? 255 : ( ( r < 0 ) ? 0 : r ) );
                             dst[RGB.G] = (byte) ( ( g > 255 ) ? 255 : ( ( g < 0 ) ? 0 : g ) );
                             dst[RGB.B] = (byte) ( ( b > 255 ) ? 255 : ( ( b < 0 ) ? 0 : b ) );
@@ -497,6 +522,7 @@ namespace AForge.Imaging.Filters
                             {
                                 g /= div;
                             }
+                            g += threshold;
                             *dst = (ushort) ( ( g > 65535 ) ? 65535 : ( ( g < 0 ) ? 0 : g ) );
                         }
                     }
@@ -576,6 +602,10 @@ namespace AForge.Imaging.Filters
                                 g /= div;
                                 b /= div;
                             }
+                            r += threshold;
+                            g += threshold;
+                            b += threshold;
+
                             dst[RGB.R] = (ushort) ( ( r > 65535 ) ? 65535 : ( ( r < 0 ) ? 0 : r ) );
                             dst[RGB.G] = (ushort) ( ( g > 65535 ) ? 65535 : ( ( g < 0 ) ? 0 : g ) );
                             dst[RGB.B] = (ushort) ( ( b > 65535 ) ? 65535 : ( ( b < 0 ) ? 0 : b ) );
