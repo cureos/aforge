@@ -106,17 +106,19 @@ namespace AForge.Imaging.Filters
             int width = sourceData.Width;
             int height = sourceData.Height;
 
-            // destination image dimension
-            int xmin = Math.Max( 0, Math.Min( width - 1, rect.Left ) );
-            int ymin = Math.Max( 0, Math.Min( height - 1, rect.Top ) );
-            int xmax = Math.Min( width - 1, xmin + rect.Width - 1 + ( ( rect.Left < 0 ) ? rect.Left : 0 ) );
-            int ymax = Math.Min( height - 1, ymin + rect.Height - 1 + ( ( rect.Top < 0 ) ? rect.Top : 0 ) );
-            int dstWidth = xmax - xmin + 1;
+            // validate rectangle
+            Rectangle srcRect = rect;
+            srcRect.Intersect( new Rectangle( 0, 0, sourceData.Width, sourceData.Height ) );
+
+            int xmin = srcRect.Left;
+            int ymin = srcRect.Top;
+            int ymax = srcRect.Bottom - 1;
+            int copyWidth = srcRect.Width;
 
             int srcStride = sourceData.Stride;
             int dstStride = destinationData.Stride;
-            int pixelSize = Image.GetPixelFormatSize( sourceData.PixelFormat );
-            int copySize  = dstWidth * pixelSize;
+            int pixelSize = Image.GetPixelFormatSize( sourceData.PixelFormat ) / 8;
+            int copySize  = copyWidth * pixelSize;
 
             // do the job
             byte* src = (byte*) sourceData.ImageData.ToPointer( ) + ymin * srcStride + xmin * pixelSize;
