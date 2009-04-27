@@ -29,7 +29,7 @@ namespace AForge.Imaging.Filters
     /// <para>Sample usage:</para>
     /// <code>
     /// // create filter
-    /// SaturationCorrection filter = new SaturationCorrection( -0.15 );
+    /// BrightnessCorrection filter = new BrightnessCorrection( -0.15 );
     /// // apply the filter
     /// filter.ApplyInPlace( image );
     /// </code>
