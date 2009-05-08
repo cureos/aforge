@@ -66,7 +66,7 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// RGB channel to replace.
+        /// ARGB channel to replace.
         /// </summary>
         /// 
         /// <remarks><para>Default value is set to <see cref="AForge.Imaging.RGB.R"/>.</para></remarks>
@@ -79,9 +79,8 @@ namespace AForge.Imaging.Filters
             set
             {
                 if (
-                    ( value != RGB.R ) &&
-                    ( value != RGB.G ) &&
-                    ( value != RGB.B )
+                    ( value != RGB.R ) && ( value != RGB.G ) &&
+                    ( value != RGB.B ) && ( value != RGB.A )
                     )
                 {
                     throw new ArgumentException( "Invalid channel is specified." );
@@ -164,7 +163,7 @@ namespace AForge.Imaging.Filters
         /// Initializes a new instance of the <see cref="ReplaceChannel"/> class.
         /// </summary>
         /// 
-        /// <param name="channel">RGB channel to replace.</param>
+        /// <param name="channel">ARGB channel to replace.</param>
         /// <param name="channelImage">Channel image to use for replacement.</param>
         /// 
         public ReplaceChannel( short channel, Bitmap channelImage ) : this( )
@@ -198,9 +197,17 @@ namespace AForge.Imaging.Filters
         /// image size.</exception>
         /// <exception cref="InvalidImagePropertiesException">Channel image's format does not correspond to format of the source image.</exception>
         ///
+        /// <exception cref="InvalidImagePropertiesException">Can not replace alpha channel of none ARGB image. The
+        /// exception is throw, when alpha channel is requested to be replaced in RGB image.</exception>
+        /// 
         protected override unsafe void ProcessFilter( UnmanagedImage image, Rectangle rect )
         {
             int pixelSize = Image.GetPixelFormatSize( image.PixelFormat ) / 8;
+
+            if ( ( channel == RGB.A ) && ( pixelSize != 4 ) && ( pixelSize != 8 ) )
+            {
+                throw new InvalidImagePropertiesException( "Can not replace alpha channel of none ARGB image." );
+            }
 
             int width   = image.Width;
             int height  = image.Height;

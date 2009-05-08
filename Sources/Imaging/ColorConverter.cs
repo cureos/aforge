@@ -37,6 +37,11 @@ namespace AForge.Imaging
         public const short B = 0;
 
         /// <summary>
+        /// Index of alpha component for ARGB images.
+        /// </summary>
+        public const short A = 3;
+
+        /// <summary>
         /// Red component.
         /// </summary>
         public byte Red;

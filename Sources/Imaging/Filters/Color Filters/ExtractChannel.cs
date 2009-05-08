@@ -55,7 +55,7 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// RGB channel to extract.
+        /// ARGB channel to extract.
         /// </summary>
         /// 
         /// <remarks><para>Default value is set to <see cref="AForge.Imaging.RGB.R"/>.</para></remarks>
@@ -68,9 +68,8 @@ namespace AForge.Imaging.Filters
             set
             {
                 if (
-                    ( value != RGB.R ) &&
-                    ( value != RGB.G ) &&
-                    ( value != RGB.B )
+                    ( value != RGB.R ) && ( value != RGB.G ) &&
+                    ( value != RGB.B ) && ( value != RGB.A )
                     )
                 {
                     throw new ArgumentException( "Invalid channel is specified." );
@@ -97,7 +96,7 @@ namespace AForge.Imaging.Filters
         /// Initializes a new instance of the <see cref="ExtractChannel"/> class.
         /// </summary>
         /// 
-        /// <param name="channel">RGB channel to extract.</param>
+        /// <param name="channel">ARGB channel to extract.</param>
         /// 
         public ExtractChannel( short channel ) : this( )
         {
@@ -111,6 +110,9 @@ namespace AForge.Imaging.Filters
         /// <param name="sourceData">Source image data.</param>
         /// <param name="destinationData">Destination image data.</param>
         /// 
+        /// <exception cref="InvalidImagePropertiesException">Can not extract alpha channel from none ARGB image. The
+        /// exception is throw, when alpha channel is requested from RGB image.</exception>
+        /// 
         protected override unsafe void ProcessFilter( UnmanagedImage sourceData, UnmanagedImage destinationData )
         {
             // get width and height
@@ -118,6 +120,11 @@ namespace AForge.Imaging.Filters
             int height = sourceData.Height;
 
             int pixelSize = Image.GetPixelFormatSize( sourceData.PixelFormat ) / 8;
+
+            if ( ( channel == RGB.A ) && ( pixelSize != 4 ) && ( pixelSize != 8 ) )
+            {
+                throw new InvalidImagePropertiesException( "Can not extract alpha channel from none ARGB image." );
+            }
 
             if ( pixelSize <= 4 )
             {
