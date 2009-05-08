@@ -163,6 +163,9 @@ namespace AForge.Imaging.Filters
                     ushort* src = (ushort*) ( srcBase + y * srcStride );
                     ushort* dst = (ushort*) ( dstBase + y * dstStride );
 
+                    // allign source pointer to the required channel
+                    src += channel;
+
                     // for each pixel
                     for ( int x = 0; x < width; x++, src += pixelSize, dst++ )
                     {
