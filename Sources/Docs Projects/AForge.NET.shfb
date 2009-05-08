@@ -14,8 +14,8 @@
         <assembly assemblyPath="..\..\Release\AForge.Video.DirectShow.dll" xmlCommentsPath="..\..\Release\AForge.Video.DirectShow.xml" commentsOnly="False" />
         <assembly assemblyPath="..\..\Release\AForge.Video.dll" xmlCommentsPath="..\..\Release\AForge.Video.xml" commentsOnly="False" />
         <assembly assemblyPath="..\..\Release\AForge.Video.VFW.dll" xmlCommentsPath="..\..\Release\AForge.Video.VFW.xml" commentsOnly="False" />
-        <assembly assemblyPath="..\..\Externals\TeRK\Glacier2.dll" xmlCommentsPath="" commentsOnly="False" />
-        <assembly assemblyPath="..\..\Externals\TeRK\Ice.dll" xmlCommentsPath="" commentsOnly="False" />
+        <assembly assemblyPath="..\..\Release\Glacier2.dll" xmlCommentsPath="" commentsOnly="False" />
+        <assembly assemblyPath="..\..\Release\Ice.dll" xmlCommentsPath="" commentsOnly="False" />
         <assembly assemblyPath="..\..\Externals\TeRK\TeRK.dll" xmlCommentsPath="" commentsOnly="False" />
     </assemblies>
     <namespaceSummaries>
