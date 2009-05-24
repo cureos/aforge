@@ -42,8 +42,14 @@ namespace AForge.Neuro
         /// Sigmoid's alpha value.
         /// </summary>
         /// 
-        /// <remarks>The value determines steepness of the function. Default value is <b>2</b>.
+        /// <remarks><para>The value determines steepness of the function. Increasing value of
+        /// this property changes sigmoid to look more like a threshold function. Decreasing
+        /// value of this property makes sigmoid to be very smooth (slowly growing from its
+        /// minimum value to its maximum value).</para>
+        ///
+        /// <para>Default value is set to <b>2</b>.</para>
         /// </remarks>
+        /// 
         public double Alpha
         {
             get { return alpha; }
