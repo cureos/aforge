@@ -182,6 +182,7 @@
         <contentItem sourcePath="..\Imaging\Images\thinning.png" destPath="img\imaging\" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\simple_skeletonization.png" destPath="img\imaging\" excludeItems="False" />
         <contentItem sourcePath="..\Robotics.TeRK\Images\qwerk_board.jpg" destPath="img\robotics\" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\posterization.png" destPath="img\imaging\" excludeItems="False" />
     </additionalContent>
     <ProjectSummary>&lt;b&gt;AForge.NET&lt;/b&gt; is a C# framework designed for developers and researchers in the fields of Computer Vision and Artificial Intelligence - image processing, computer vision, neural networks, genetic algorithms, machine learning, etc. </ProjectSummary>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace, TypeParameter</MissingTags>

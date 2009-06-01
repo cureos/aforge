@@ -111,6 +111,7 @@
     <Compile Include="Filters\Color Filters\ReplaceChannel.cs" />
     <Compile Include="Filters\Color Filters\RotateChannels.cs" />
     <Compile Include="Filters\Color Filters\Sepia.cs" />
+    <Compile Include="Filters\Color Segmentation\SimplePosterization.cs" />
     <Compile Include="Filters\Convolution\Blur.cs" />
     <Compile Include="Filters\Convolution\Convolution.cs" />
     <Compile Include="Filters\Convolution\Edges.cs" />
