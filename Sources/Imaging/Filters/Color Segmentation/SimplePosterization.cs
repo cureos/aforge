@@ -166,6 +166,14 @@ namespace AForge.Imaging.Filters
                 0 : ( ( fillingType == PosterizationFillingType.Max ) ?
                 posterizationInterval - 1 : posterizationInterval / 2 );
 
+            // calculate mapping array
+            byte[] map = new byte[256];
+
+            for ( int i = 0; i < 256; i++ )
+            {
+                map[i] = (byte) ( ( i / posterizationInterval ) * posterizationInterval + posterizationOffset );
+            }
+
             // do the job
             byte* ptr = (byte*) image.ImageData.ToPointer( );
 
@@ -181,7 +189,7 @@ namespace AForge.Imaging.Filters
                     // for each pixel in line
                     for ( int x = startX; x < stopX; x++, ptr++ )
                     {
-                        *ptr = (byte) ( ( *ptr / posterizationInterval ) * posterizationInterval + posterizationOffset );
+                        *ptr = map[*ptr];
                     }
                     ptr += offset;
                 }
@@ -194,9 +202,9 @@ namespace AForge.Imaging.Filters
                     // for each pixel in line
                     for ( int x = startX; x < stopX; x++, ptr += pixelSize )
                     {
-                        ptr[RGB.R] = (byte) ( ( ptr[RGB.R] / posterizationInterval ) * posterizationInterval + posterizationOffset );
-                        ptr[RGB.G] = (byte) ( ( ptr[RGB.G] / posterizationInterval ) * posterizationInterval + posterizationOffset );
-                        ptr[RGB.B] = (byte) ( ( ptr[RGB.B] / posterizationInterval ) * posterizationInterval + posterizationOffset );
+                        ptr[RGB.R] = map[ptr[RGB.R]];
+                        ptr[RGB.G] = map[ptr[RGB.G]];
+                        ptr[RGB.B] = map[ptr[RGB.B]];
                     }
                     ptr += offset;
                 }
