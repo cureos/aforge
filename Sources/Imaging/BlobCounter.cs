@@ -19,7 +19,7 @@ namespace AForge.Imaging
     /// binary images using connected components labeling algorithm.</para>
     /// 
     /// <para><note>The algorithm treats all black pixels as background, but not an object.
-    /// This means that all objects, which could be located be the algorithm, should have other
+    /// This means that all objects, which could be located by the algorithm, should have other
     /// than black color.</note></para>
     /// 
     /// <para>For blobs' searching the class supports only 8 bpp indexed grayscale images. 

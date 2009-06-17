@@ -20,7 +20,7 @@ namespace AForge.Imaging
     /// algorithm.</para>
     /// 
     /// <para><note>The algorithm treats all black pixels as background, but not an object.
-    /// This means that all objects, which could be located be the algorithm, should have other
+    /// This means that all objects, which could be located by the algorithm, should have other
     /// than black color.</note></para>
     /// 
     /// <para><note>Since this algorithm is based on recursion, it is
