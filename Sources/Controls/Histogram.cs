@@ -169,11 +169,13 @@ namespace AForge.Controls
         /// Logarithmic view or not.
         /// </summary>
         /// 
-        /// <remarks>In the case if logarihmic view is selected, then the control
-        /// will display base 10 logarithm of values.</remarks>
+        /// <remarks><para>In the case if logarihmic view is selected, then the control
+        /// will display base 10 logarithm of values.</para>
+        /// 
+        /// <para>By default the property is set to <b>false</b> - none logarithmic view.</para></remarks>
         /// 
         [DefaultValue( false )]
-        public bool LogarithmicView
+        public bool IsLogarithmicView
         {
             get { return logarithmic; }
             set
@@ -193,7 +195,7 @@ namespace AForge.Controls
         /// <para>By default the property is set to <b>false</b> - horizontal view.</para></remarks>
         ///
         [DefaultValue( false )]
-        public bool Vertical
+        public bool IsVertical
         {
             get { return vertical; }
             set
