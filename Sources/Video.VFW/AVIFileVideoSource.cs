@@ -19,7 +19,7 @@ namespace AForge.Video.VFW
 	/// AVI file video source.
 	/// </summary>
     /// 
-    /// <remarks><para>The video source read AVI files using Video for Windows.</para>
+    /// <remarks><para>The video source reads AVI files using Video for Windows.</para>
     /// 
     /// <para>Sample usage:</para>
     /// <code>
@@ -32,6 +32,14 @@ namespace AForge.Video.VFW
     /// // ...
     /// // signal to stop
     /// source.SignalToStop( );
+    /// 
+    /// // New frame event handler, which is invoked on each new available video frame
+    /// private void video_NewFrame( object sender, NewFrameEventArgs eventArgs )
+    /// {
+    ///     // get new frame
+    ///     Bitmap bitmap = eventArgs.Frame;
+    ///     // process the frame
+    /// }
     /// </code>
     /// </remarks>
     /// 
@@ -78,7 +86,7 @@ namespace AForge.Video.VFW
         /// </summary>
         /// 
         /// <remarks>The property sets the interval in milliseconds betwen frames. If the property is
-        /// set to 100, then the dóûired frame rate will be 10 frames per second. Default value is 0 -
+        /// set to 100, then the desired frame rate will be 10 frames per second. Default value is 0 -
         /// get new frames as fast as possible.</remarks>
         /// 
         public int FrameInterval

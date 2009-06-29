@@ -35,6 +35,7 @@ namespace AForge.Video.DirectShow
     /// videoSource.SignalToStop( );
     /// // ...
     /// 
+    /// // New frame event handler, which is invoked on each new available video frame
     /// private void video_NewFrame( object sender, NewFrameEventArgs eventArgs )
     /// {
     ///     // get new frame
