@@ -50,6 +50,8 @@ namespace MotionDetector
             this.highlightMotionRegionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator( );
             this.defineMotionregionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
+            this.localVideoCaptureSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog( );
@@ -58,9 +60,7 @@ namespace MotionDetector
             this.fpsLabel = new System.Windows.Forms.ToolStripStatusLabel( );
             this.objectsCountLabel = new System.Windows.Forms.ToolStripStatusLabel( );
             this.panel1 = new System.Windows.Forms.Panel( );
-            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
-            this.localVideoCaptureSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
-            this.cameraWindow = new MotionDetector.CameraWindow( );
+            this.videoSourcePlayer = new AForge.Controls.VideoSourcePlayer( );
             this.menuMenu.SuspendLayout( );
             this.statusBar.SuspendLayout( );
             this.panel1.SuspendLayout( );
@@ -224,6 +224,22 @@ namespace MotionDetector
             this.defineMotionregionsToolStripMenuItem.Text = "Define motion &regions";
             this.defineMotionregionsToolStripMenuItem.Click += new System.EventHandler( this.defineMotionregionsToolStripMenuItem_Click );
             // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.localVideoCaptureSettingsToolStripMenuItem} );
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size( 48, 20 );
+            this.toolsToolStripMenuItem.Text = "&Tools";
+            this.toolsToolStripMenuItem.DropDownOpening += new System.EventHandler( this.toolsToolStripMenuItem_DropDownOpening );
+            // 
+            // localVideoCaptureSettingsToolStripMenuItem
+            // 
+            this.localVideoCaptureSettingsToolStripMenuItem.Name = "localVideoCaptureSettingsToolStripMenuItem";
+            this.localVideoCaptureSettingsToolStripMenuItem.Size = new System.Drawing.Size( 225, 22 );
+            this.localVideoCaptureSettingsToolStripMenuItem.Text = "Local &Video Capture Settings";
+            this.localVideoCaptureSettingsToolStripMenuItem.Click += new System.EventHandler( this.localVideoCaptureSettingsToolStripMenuItem_Click );
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
@@ -283,37 +299,24 @@ namespace MotionDetector
             // 
             // panel1
             // 
-            this.panel1.Controls.Add( this.cameraWindow );
+            this.panel1.Controls.Add( this.videoSourcePlayer );
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point( 0, 24 );
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size( 432, 310 );
             this.panel1.TabIndex = 4;
             // 
-            // toolsToolStripMenuItem
+            // videoSourcePlayer
             // 
-            this.toolsToolStripMenuItem.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.localVideoCaptureSettingsToolStripMenuItem} );
-            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size( 48, 20 );
-            this.toolsToolStripMenuItem.Text = "&Tools";
-            this.toolsToolStripMenuItem.DropDownOpening += new System.EventHandler( this.toolsToolStripMenuItem_DropDownOpening );
-            // 
-            // localVideoCaptureSettingsToolStripMenuItem
-            // 
-            this.localVideoCaptureSettingsToolStripMenuItem.Name = "localVideoCaptureSettingsToolStripMenuItem";
-            this.localVideoCaptureSettingsToolStripMenuItem.Size = new System.Drawing.Size( 225, 22 );
-            this.localVideoCaptureSettingsToolStripMenuItem.Text = "Local &Video Capture Settings";
-            this.localVideoCaptureSettingsToolStripMenuItem.Click += new System.EventHandler( this.localVideoCaptureSettingsToolStripMenuItem_Click );
-            // 
-            // cameraWindow
-            // 
-            this.cameraWindow.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.cameraWindow.Camera = null;
-            this.cameraWindow.Location = new System.Drawing.Point( 52, 28 );
-            this.cameraWindow.Name = "cameraWindow";
-            this.cameraWindow.Size = new System.Drawing.Size( 320, 240 );
-            this.cameraWindow.TabIndex = 1;
+            this.videoSourcePlayer.AutoSizeControl = true;
+            this.videoSourcePlayer.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.videoSourcePlayer.ForeColor = System.Drawing.Color.White;
+            this.videoSourcePlayer.Location = new System.Drawing.Point( 55, 34 );
+            this.videoSourcePlayer.Name = "videoSourcePlayer";
+            this.videoSourcePlayer.Size = new System.Drawing.Size( 322, 242 );
+            this.videoSourcePlayer.TabIndex = 0;
+            this.videoSourcePlayer.VideoSource = null;
+            this.videoSourcePlayer.NewFrame += new AForge.Controls.VideoSourcePlayer.NewFrameHandler( this.videoSourcePlayer_NewFrame );
             // 
             // MainForm
             // 
@@ -327,7 +330,6 @@ namespace MotionDetector
             this.MainMenuStrip = this.menuMenu;
             this.Name = "MainForm";
             this.Text = "Motion Detector";
-            this.SizeChanged += new System.EventHandler( this.MainForm_SizeChanged );
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler( this.MainForm_FormClosing );
             this.menuMenu.ResumeLayout( false );
             this.menuMenu.PerformLayout( );
@@ -350,7 +352,6 @@ namespace MotionDetector
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
-        private CameraWindow cameraWindow;
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.StatusStrip statusBar;
         private System.Windows.Forms.ToolStripStatusLabel fpsLabel;
@@ -372,6 +373,7 @@ namespace MotionDetector
         private System.Windows.Forms.ToolStripMenuItem defineMotionregionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem localVideoCaptureSettingsToolStripMenuItem;
+        private AForge.Controls.VideoSourcePlayer videoSourcePlayer;
     }
 }
 

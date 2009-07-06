@@ -44,8 +44,6 @@ namespace MotionDetector
         public MainForm( )
         {
             InitializeComponent( );
-
-            cameraWindow.AutoSizeControl = true;
         }
 
         // Application's main form is closing
@@ -165,14 +163,9 @@ namespace MotionDetector
             // close previous video source
             CloseVideoSource( );
 
-            // create camera
-            Camera camera = new Camera( source, detector );
-            camera.NewFrame += new EventHandler( camera_NewFrame );
-            // start camera
-            camera.Start( );
-
-            // attach camera to camera window
-            cameraWindow.Camera = camera;
+            // start new video source
+            videoSourcePlayer.VideoSource = source;
+            videoSourcePlayer.Start( );
 
             // reset statistics
             statIndex = statReady = 0;
@@ -188,45 +181,51 @@ namespace MotionDetector
         // Close current video source
         private void CloseVideoSource( )
         {
-            Camera camera = cameraWindow.Camera;
+            // set busy cursor
+            this.Cursor = Cursors.WaitCursor;
 
-            if ( camera != null )
+            // stop current video source
+            videoSourcePlayer.SignalToStop( );
+
+            // wait 2 seconds until camera stops
+            for ( int i = 0; ( i < 20 ) && ( videoSourcePlayer.IsRunning ); i++ )
             {
-                // stop timer
-                timer.Stop( );
+                Thread.Sleep( 100 );
+            }
+            if ( videoSourcePlayer.IsRunning )
+                videoSourcePlayer.Stop( );
 
-                // detach camera from camera window
-                cameraWindow.Camera = null;
-                Application.DoEvents( );
+            // stop timer
+            timer.Stop( );
 
-                // signal camera to stop
-                camera.SignalToStop( );
-                // wait 2 seconds until camera stops
-                for ( int i = 0; ( i < 20 ) && ( camera.IsRunning ); i++ )
-                {
-                    Thread.Sleep( 100 );
-                }
-                if ( camera.IsRunning )
-                    camera.Stop( );
-                camera = null;
+            // reset motion detector
+            if ( detector != null )
+                detector.Reset( );
 
-                // reset motion detector
+            this.Cursor = Cursors.Default;
+        }
+
+        // New frame received by the player
+        private void videoSourcePlayer_NewFrame( object sender, ref Bitmap image )
+        {
+            lock ( this )
+            {
                 if ( detector != null )
-                    detector.Reset( );
-
-                videoSource = null;
+                {
+                    double motionLevel = detector.ProcessFrame( image );
+                }
             }
         }
 
         // On timer event - gather statistics
         private void timer_Tick( object sender, EventArgs e )
         {
-            Camera camera = cameraWindow.Camera;
+            IVideoSource videoSource = videoSourcePlayer.VideoSource;
 
-            if ( camera != null )
+            if ( videoSource != null )
             {
                 // get number of frames for the last second
-                statCount[statIndex] = camera.FramesReceived;
+                statCount[statIndex] = videoSource.FramesReceived;
 
                 // increment indexes
                 if ( ++statIndex >= statLength )
@@ -247,12 +246,6 @@ namespace MotionDetector
 
                 fpsLabel.Text = fps.ToString( "F2" ) + " fps";
             }
-        }
-
-        // Main window resized
-        private void MainForm_SizeChanged( object sender, EventArgs e )
-        {
-            cameraWindow.UpdatePosition( );
         }
 
         // Turn off motion detection
@@ -296,19 +289,9 @@ namespace MotionDetector
         // Set motion detector
         private void SetMotionDetector( AForge.Vision.Motion.MotionDetector detector )
         {
-            this.detector = detector;
-
-            // set motion detector to camera
-            Camera camera = cameraWindow.Camera;
-
-            if ( camera != null )
+            lock ( this )
             {
-                camera.Lock( );
-                camera.MotionDetector = detector;
-
-                // reset statistics
-                statIndex = statReady = 0;
-                camera.Unlock( );
+                this.detector = detector;
             }
         }
 
@@ -404,5 +387,6 @@ namespace MotionDetector
                 ( (VideoCaptureDevice) videoSource ).DisplayPropertyPage( this.Handle );
             }
         }
+
     }
 }
