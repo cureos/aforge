@@ -163,6 +163,9 @@ namespace AForge.Imaging
         /// <param name="rgb">Source color in <b>RGB</b> color space.</param>
         /// <param name="hsl">Destination color in <b>HSL</b> color space.</param>
         /// 
+        /// <remarks><para>See <a href="http://en.wikipedia.org/wiki/HSI_color_space#Conversion_from_RGB_to_HSL_or_HSV">HSL and HSV Wiki</a>
+        /// for information about the algorithm to convert from RGB to HSL.</para></remarks>
+        /// 
         public static void FromRGB( RGB rgb, HSL hsl )
         {
             double r = ( rgb.Red / 255.0 );
@@ -185,20 +188,23 @@ namespace AForge.Imaging
             else
             {
                 // get saturation value
-                hsl.Saturation = ( hsl.Luminance < 0.5 ) ? ( delta / ( max + min ) ) : ( delta / ( 2 - max - min ) );
+                hsl.Saturation = ( hsl.Luminance <= 0.5 ) ? ( delta / ( max + min ) ) : ( delta / ( 2 - max - min ) );
 
                 // get hue value
-                double del_r = ( ( ( max - r ) / 6 ) + ( delta / 2 ) ) / delta;
-                double del_g = ( ( ( max - g ) / 6 ) + ( delta / 2 ) ) / delta;
-                double del_b = ( ( ( max - b ) / 6 ) + ( delta / 2 ) ) / delta;
                 double hue;
 
                 if ( r == max )
-                    hue = del_b - del_g;
+                {
+                    hue = ( ( g - b ) / 6 ) / delta;
+                }
                 else if ( g == max )
-                    hue = ( 1.0 / 3 ) + del_r - del_b;
+                {
+                    hue = ( 1.0 / 3 ) + ( ( b - r ) / 6 ) / delta; 
+                }
                 else
-                    hue = ( 2.0 / 3 ) + del_g - del_r;
+                {
+                    hue = ( 2.0 / 3 ) + ( ( r - g ) / 6 ) / delta;
+                }
 
                 // correct hue if needed
                 if ( hue < 0 )
