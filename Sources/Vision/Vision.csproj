@@ -52,7 +52,7 @@
     <Compile Include="Motion\MotionAreaHighlighting.cs" />
     <Compile Include="Motion\MotionDetector.cs" />
     <Compile Include="Motion\SimpleBackgroundModelingDetector.cs" />
-    <Compile Include="Motion\TwoFrameDifferenceDetector.cs" />
+    <Compile Include="Motion\TwoFramesDifferenceDetector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
