@@ -145,6 +145,12 @@ namespace AForge.Controls
                         videoSource.VideoSourceError -= new VideoSourceErrorEventHandler( videoSource_VideoSourceError );
                     }
 
+                    if ( currentFrame != null )
+                    {
+                        currentFrame.Dispose( );
+                        currentFrame = null;
+                    }
+
                     videoSource = value;
 
                     // atach events
