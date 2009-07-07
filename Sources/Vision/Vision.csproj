@@ -39,6 +39,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AForge, Version=2.0.0.0, Culture=neutral, PublicKeyToken=c1db6ff4eaa06aeb, processorArchitecture=MSIL" />
     <Reference Include="AForge.Imaging, Version=2.0.0.0, Culture=neutral, PublicKeyToken=ba8ddea9676ca48b, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -50,6 +51,7 @@
     <Compile Include="Motion\IMotionProcessing.cs" />
     <Compile Include="Motion\MotionAreaHighlighting.cs" />
     <Compile Include="Motion\MotionDetector.cs" />
+    <Compile Include="Motion\SimpleBackgroundModelingDetector.cs" />
     <Compile Include="Motion\TwoFrameDifferenceDetector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

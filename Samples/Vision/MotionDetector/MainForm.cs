@@ -188,7 +188,7 @@ namespace MotionDetector
             videoSourcePlayer.SignalToStop( );
 
             // wait 2 seconds until camera stops
-            for ( int i = 0; ( i < 20 ) && ( videoSourcePlayer.IsRunning ); i++ )
+            for ( int i = 0; ( i < 50 ) && ( videoSourcePlayer.IsRunning ); i++ )
             {
                 Thread.Sleep( 100 );
             }
@@ -259,15 +259,14 @@ namespace MotionDetector
         private void detector1ToolStripMenuItem_Click( object sender, EventArgs e )
         {
             detectorType = 1;
-            SetMotionDetector( new AForge.Vision.Motion.MotionDetector( new TwoFrameDifferenceDetector( ), new MotionAreaHighlighting( ) ) );
+            SetMotionDetector( new AForge.Vision.Motion.MotionDetector( new TwoFramesDifferenceDetector( ), new MotionAreaHighlighting( ) ) );
         }
 
         // Turn on motion detector type #2 - high precision background modeling
         private void detector2ToolStripMenuItem_Click( object sender, EventArgs e )
         {
-/*            detectorType = 2;
-            SetMotionDetector( new BackgroundModelingHighPrecisionMotionDetector(
-                highlightMotionRegionsToolStripMenuItem.Checked, true ) ); */
+            detectorType = 2;
+            SetMotionDetector( new AForge.Vision.Motion.MotionDetector( new SimpleBackgroundModelingDetector( ), new MotionAreaHighlighting( ) ) );
         }
 
         // Turn on motion detector type #3 - low precision background modeling
