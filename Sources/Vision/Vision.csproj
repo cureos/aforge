@@ -47,9 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Motion\CustomFrameDifferenceDetector.cs" />
     <Compile Include="Motion\IMotionDetector.cs" />
     <Compile Include="Motion\IMotionProcessing.cs" />
     <Compile Include="Motion\MotionAreaHighlighting.cs" />
+    <Compile Include="Motion\MotionBorderHighlighting.cs" />
     <Compile Include="Motion\MotionDetector.cs" />
     <Compile Include="Motion\SimpleBackgroundModelingDetector.cs" />
     <Compile Include="Motion\TwoFramesDifferenceDetector.cs" />

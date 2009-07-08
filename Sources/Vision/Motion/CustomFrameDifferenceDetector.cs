@@ -2,11 +2,11 @@
 {
     using System;
     using System.Drawing.Imaging;
-    
+
     using AForge.Imaging;
     using AForge.Imaging.Filters;
 
-    public class TwoFramesDifferenceDetector : IMotionDetector
+    public class CustomFrameDifferenceDetector : IMotionDetector
     {
         // frame's dimension
         private int width;
@@ -14,7 +14,7 @@
         private int frameSize;
 
         // previous frame of video stream
-        private UnmanagedImage previousFrame;
+        private UnmanagedImage backgroundFrame;
         // current frame of video sream
         private UnmanagedImage motionFrame;
         // temporary buffer used for suppressing noise
@@ -70,38 +70,18 @@
             get { return motionFrame; }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TwoFramesDifferenceDetector"/> class.
-        /// </summary>
-        /// 
-        public TwoFramesDifferenceDetector( )
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TwoFramesDifferenceDetector"/> class.
-        /// </summary>
-        /// 
-        /// <param name="suppressNoise">Suppress noise in video frames or not.</param>
-        /// 
-        public TwoFramesDifferenceDetector( bool suppressNoise )
-        {
-            this.suppressNoise = suppressNoise;
-        }
-
-
         public unsafe void ProcessFrame( UnmanagedImage videoFrame )
         {
             // check previous frame
-            if ( previousFrame == null )
+            if ( backgroundFrame == null )
             {
                 // save image dimension
                 width  = videoFrame.Width;
                 height = videoFrame.Height;
 
                 // alocate memory for previous and current frames
-                previousFrame = UnmanagedImage.Create( width, height, PixelFormat.Format8bppIndexed );
-                motionFrame   = UnmanagedImage.Create( width, height, PixelFormat.Format8bppIndexed );
+                backgroundFrame = UnmanagedImage.Create( width, height, PixelFormat.Format8bppIndexed );
+                motionFrame     = UnmanagedImage.Create( width, height, PixelFormat.Format8bppIndexed );
 
                 frameSize = motionFrame.Stride * height;
 
@@ -112,7 +92,7 @@
                 }
 
                 // convert source frame to grayscale
-                grayFilter.Apply( videoFrame, previousFrame );
+                grayFilter.Apply( videoFrame, backgroundFrame );
 
                 return;
             }
@@ -124,21 +104,20 @@
             // convert current image to grayscale
             grayFilter.Apply( videoFrame, motionFrame );
 
-            // pointers to previous and current frames
-            byte* prevFrame = (byte*) previousFrame.ImageData.ToPointer( );
-            byte* currFrame = (byte*) motionFrame.ImageData.ToPointer( );
-            // difference value
+            // pointers to background and current frames
+            byte* backFrame;
+            byte* currFrame;
             int diff;
+
+            backFrame = (byte*) backgroundFrame.ImageData.ToPointer( );
+            currFrame = (byte*) motionFrame.ImageData.ToPointer( );
 
             // 1 - get difference between frames
             // 2 - threshold the difference
-            // 3 - copy current frame to previous frame
-            for ( int i = 0; i < frameSize; i++, prevFrame++, currFrame++ )
+            for ( int i = 0; i < frameSize; i++, backFrame++, currFrame++ )
             {
                 // difference
-                diff = (int) *currFrame - (int) *prevFrame;
-                // copy current frame to previous
-                *prevFrame = *currFrame;
+                diff = (int) *currFrame - (int) *backFrame;
                 // treshold
                 *currFrame = ( ( diff >= differenceThreshold ) || ( diff <= differenceThresholdNeg ) ) ? (byte) 255 : (byte) 0;
             }
@@ -162,10 +141,10 @@
 
         public void Reset( )
         {
-            if ( previousFrame != null )
+            if ( backgroundFrame != null )
             {
-                previousFrame.Dispose( );
-                previousFrame = null;
+                backgroundFrame.Dispose( );
+                backgroundFrame = null;
             }
 
             if ( motionFrame != null )

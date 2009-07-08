@@ -266,7 +266,8 @@ namespace MotionDetector
         private void detector2ToolStripMenuItem_Click( object sender, EventArgs e )
         {
             detectorType = 2;
-            SetMotionDetector( new AForge.Vision.Motion.MotionDetector( new SimpleBackgroundModelingDetector( ), new MotionAreaHighlighting( ) ) );
+//            SetMotionDetector( new AForge.Vision.Motion.MotionDetector( new SimpleBackgroundModelingDetector( ), new MotionAreaHighlighting( ) ) );
+            SetMotionDetector( new AForge.Vision.Motion.MotionDetector( new SimpleBackgroundModelingDetector( ), new MotionBorderHighlighting( ) ) );
         }
 
         // Turn on motion detector type #3 - low precision background modeling
