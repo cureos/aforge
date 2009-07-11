@@ -1,4 +1,12 @@
-﻿namespace AForge.Vision.Motion
+﻿// AForge Vision Library
+// AForge.NET framework
+// http://www.aforgenet.com/framework/
+//
+// Copyright © Andrew Kirillov, 2005-2009
+// andrew.kirillov@aforgenet.com
+//
+
+namespace AForge.Vision.Motion
 {
     using System;
     using System.Drawing;
@@ -6,10 +14,81 @@
 
     using AForge.Imaging;
 
+    /// <summary>
+    /// Motion processing algorithm, which highlights border of motion areas.
+    /// </summary>
+    /// 
+    /// <remarks><para>The aim of this motion processing algorithm is to highlight
+    /// borders of motion areas with the <see cref="HighlightColor">specified color</see>.
+    /// </para>
+    /// 
+    /// <para>Sample usage:</para>
+    /// <code>
+    /// // create motion detector
+    /// MotionDetector detector = new MotionDetector(
+    ///     /* motion detection algorithm */,
+    ///     new MotionBorderHighlighting( ) );
+    /// 
+    /// // continuously feed video frame to motion detector
+    /// while ( ... )
+    /// {
+    ///     // process new video frame and check motion level
+    ///     detector.ProcessFrame( videoFrame );
+    /// }
+    /// </code>
+    /// </remarks>
+    /// 
+    /// <seealso cref="MotionDetector"/>
+    /// <seealso cref="IMotionDetector"/>
+    /// 
     public class MotionBorderHighlighting : IMotionProcessing
     {
         private Color highlightColor = Color.Red;
 
+        /// <summary>
+        /// Color used to highlight motion regions.
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// <para>Default value is set to <b>red</b> color.</para>
+        /// </remarks>
+        /// 
+        public Color HighlightColor
+        {
+            get { return highlightColor; }
+            set { highlightColor = value; }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MotionBorderHighlighting"/> class.
+        /// </summary>
+        /// 
+        public MotionBorderHighlighting( ) { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MotionBorderHighlighting"/> class.
+        /// </summary>
+        /// 
+        /// <param name="highlightColor">Color used to highlight motion regions.</param>
+        /// 
+        public MotionBorderHighlighting( Color highlightColor )
+        {
+            this.highlightColor = highlightColor;
+        }
+
+        /// <summary>
+        /// Process video and motion frames doing further post processing after
+        /// performed motion detection.
+        /// </summary>
+        /// 
+        /// <param name="videoFrame">Original video frame.</param>
+        /// <param name="motionFrame">Motion frame provided by motion detection
+        /// algorithm (see <see cref="IMotionDetection"/>).</param>
+        /// 
+        /// <remarks><para>Processes provided motion frame and highlights borders of motion areas
+        /// on the original video frame with <see cref="HighlightColor">specified color</see>.</para>
+        /// </remarks>
+        ///
         public unsafe void ProcessFrame( UnmanagedImage videoFrame, UnmanagedImage motionFrame )
         {
             int width  = videoFrame.Width;
@@ -51,6 +130,14 @@
             }
         }
 
+        /// <summary>
+        /// Reset internal state of motion processing algorithm.
+        /// </summary>
+        /// 
+        /// <remarks><para>The method allows to reset internal state of motion processing
+        /// algorithm and prepare it for processing of next video stream or to restart
+        /// the algorithm.</para></remarks>
+        ///
         public void Reset( )
         {
         }
