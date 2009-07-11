@@ -54,7 +54,7 @@ namespace AForge.Video.VFW
         // frame interval in milliseconds
         private int frameInterval = 0;
         // get frame interval from source or use manually specified
-        private bool frameIntervalFromSource = false;
+        private bool frameIntervalFromSource = true;
 
 		private Thread thread = null;
 		private ManualResetEvent stopEvent = null;
@@ -85,9 +85,14 @@ namespace AForge.Video.VFW
         /// Frame interval.
         /// </summary>
         /// 
-        /// <remarks>The property sets the interval in milliseconds betwen frames. If the property is
-        /// set to 100, then the desired frame rate will be 10 frames per second. Default value is 0 -
-        /// get new frames as fast as possible.</remarks>
+        /// <remarks><para>The property sets the interval in milliseconds between frames. If the property is
+        /// set to 100, then the desired frame rate will be 10 frames per second.</para>
+        /// 
+        /// <para><note>Setting this property to 0 leads to no delay between video frames - frames
+        /// are read as fast as possible.</note></para>
+        /// 
+        /// <para>Default value is set to <b>0</b>0.</para>
+        /// </remarks>
         /// 
         public int FrameInterval
         {
@@ -99,6 +104,15 @@ namespace AForge.Video.VFW
         /// Get frame interval from source or use manually specified.
         /// </summary>
         /// 
+        /// <remarks><para>The property specifies which frame rate to use for video playing.
+        /// If the property is set to <see langword="true"/>, then video is played
+        /// with original frame rate, which is set in source AVI file. If the property is
+        /// set to <see langword="false"/>, then custom frame rate is used, which is
+        /// calculated based on the manually specified <see cref="FrameInterval">frame interval</see>.</para>
+        /// 
+        /// <para>Default value is set to <see langword="true"/>.</para>
+        /// </remarks>
+        /// 
         public bool FrameIntervalFromSource
         {
             get { return frameIntervalFromSource; }
@@ -109,7 +123,7 @@ namespace AForge.Video.VFW
         /// Video source.
         /// </summary>
         /// 
-        /// <remarks>Video file name.</remarks>
+        /// <remarks><para>Video file name to play.</para></remarks>
         /// 
         public virtual string Source
 		{
