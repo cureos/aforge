@@ -182,6 +182,53 @@ namespace AForge.Imaging
         }
 
         /// <summary>
+        /// Copy unmanaged image.
+        /// </summary>
+        /// 
+        /// <param name="destImage">Destination image to copy this image to.</param>
+        /// 
+        /// <remarks><para>The method copies current unmanaged image to the specified image.
+        /// Size and pixel format of the destination image must be exactly the same.</para></remarks>
+        /// 
+        /// <exception cref="InvalidImagePropertiesException">Destination image has different size or pixel format.</exception>
+        /// 
+        public void Copy( UnmanagedImage destImage )
+        {
+            if (
+                ( width != destImage.width ) || ( height != destImage.height ) ||
+                ( pixelFormat != destImage.pixelFormat ) )
+            {
+                throw new InvalidImagePropertiesException( "Destination image has different size or pixel format." );
+            }
+
+            if ( stride == destImage.stride )
+            {
+                // copy entire image
+                AForge.SystemTools.CopyUnmanagedMemory( destImage.imageData, imageData, stride * height );
+            }
+            else
+            {
+                unsafe
+                {
+                    int dstStride = destImage.stride;
+                    int copyLength = ( stride < dstStride ) ? stride : dstStride;
+
+                    byte* src = (byte*) imageData.ToPointer( );
+                    byte* dst = (byte*) destImage.imageData.ToPointer( );
+
+                    // copy line by line
+                    for ( int i = 0; i < height; i++ )
+                    {
+                        AForge.SystemTools.CopyUnmanagedMemory( dst, src, copyLength );
+
+                        dst += dstStride;
+                        src += stride;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Allocate new image in unmanaged memory.
         /// </summary>
         /// 
