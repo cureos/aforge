@@ -205,6 +205,8 @@ namespace MotionDetector
             this.Cursor = Cursors.Default;
         }
 
+        int counter = 0;
+
         // New frame received by the player
         private void videoSourcePlayer_NewFrame( object sender, ref Bitmap image )
         {
@@ -213,6 +215,17 @@ namespace MotionDetector
                 if ( detector != null )
                 {
                     double motionLevel = detector.ProcessFrame( image );
+
+                    if ( counter == 10 )
+                    {
+                        CustomFrameDifferenceDetector cd = (CustomFrameDifferenceDetector) detector.MotionDetectionAlgorthm;
+
+                        cd.SetBackgroundFrame( image );
+
+                        counter = 0;
+                    }
+
+                    counter++;
                 }
             }
         }
@@ -266,8 +279,8 @@ namespace MotionDetector
         private void detector2ToolStripMenuItem_Click( object sender, EventArgs e )
         {
             detectorType = 2;
-            SetMotionDetector( new AForge.Vision.Motion.MotionDetector( new SimpleBackgroundModelingDetector( ), new BlobCountingObjectsProcessing( ) ) );
-            //SetMotionDetector( new AForge.Vision.Motion.MotionDetector( new CustomFrameDifferenceDetector( ), new BlobCountingObjectsProcessing( ) ) );
+            //SetMotionDetector( new AForge.Vision.Motion.MotionDetector( new SimpleBackgroundModelingDetector( ), new BlobCountingObjectsProcessing( ) ) );
+            SetMotionDetector( new AForge.Vision.Motion.MotionDetector( new CustomFrameDifferenceDetector( ), new MotionAreaHighlighting( ) ) );
         }
 
         // Turn on motion detector type #3 - low precision background modeling
