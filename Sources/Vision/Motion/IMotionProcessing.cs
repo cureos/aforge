@@ -15,9 +15,9 @@ namespace AForge.Vision.Motion
     /// Interface of motion processing algorithm.
     /// </summary>
     ///
-    /// <remarks><para>The interfaces specifies methods, which should be implemented
+    /// <remarks><para>The interface specifies methods, which should be implemented
     /// by all motion processng algorithms - algorithm which perform further post processing
-    /// of detected motion, which is done by motion detection algorithms (see <see cref="IMotionDetection"/>).
+    /// of detected motion, which is done by motion detection algorithms (see <see cref="IMotionDetector"/>).
     /// </para></remarks>
     /// 
     /// <seealso cref="MotionDetector"/>
@@ -32,7 +32,7 @@ namespace AForge.Vision.Motion
         /// 
         /// <param name="videoFrame">Original video frame.</param>
         /// <param name="motionFrame">Motion frame provided by motion detection
-        /// algorithm (see <see cref="IMotionDetection"/>).</param>
+        /// algorithm (see <see cref="IMotionDetector"/>).</param>
         /// 
         /// <remarks><para>The method does father post processing of detected motion.
         /// Type of motion post processing is specified by specific implementation

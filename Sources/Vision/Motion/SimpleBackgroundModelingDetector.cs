@@ -1,4 +1,12 @@
-﻿namespace AForge.Vision.Motion
+﻿// AForge Vision Library
+// AForge.NET framework
+// http://www.aforgenet.com/framework/
+//
+// Copyright © Andrew Kirillov, 2005-2009
+// andrew.kirillov@aforgenet.com
+//
+
+namespace AForge.Vision.Motion
 {
     using System;
     using System.Drawing.Imaging;
@@ -61,13 +69,28 @@
         /// Motion level value, [0, 1].
         /// </summary>
         /// 
-        /// <remarks>Amount of changes in the last processed frame.</remarks>
+        /// <remarks><para>Amount of changes in the last processed frame. For example, if value of
+        /// this property equals to 0.1, then it means that last processed frame has 10% difference
+        /// with modeled background frame.</para>
+        /// </remarks>
         /// 
         public double MotionLevel
         {
             get { return (double) pixelsChanged / ( width * height ); }
         }
 
+        /// <summary>
+        /// Motion frame containing detected areas of motion.
+        /// </summary>
+        /// 
+        /// <remarks><para>Motion frame is a grayscale image, which shows areas of detected motion.
+        /// All black pixels in the motion frame correspond to areas, where no motion is
+        /// detected. But white pixels correspond to areas, where motion is detected.</para>
+        /// 
+        /// <para><note>The property is set to <see langword="null"/> after processing of the first
+        /// video frame by the algorithm.</note></para>
+        /// </remarks>
+        ///
         public UnmanagedImage MotionFrame
         {
             get { return motionFrame; }
@@ -75,7 +98,7 @@
 
         public unsafe void ProcessFrame( UnmanagedImage videoFrame )
         {
-            // check previous frame
+            // check background frame
             if ( backgroundFrame == null )
             {
                 // save image dimension
@@ -164,7 +187,15 @@
             }
         }
 
-
+        /// <summary>
+        /// Reset motion detector to initial state.
+        /// </summary>
+        /// 
+        /// <remarks><para>Resets internal state and variables of motion detection algorithm.
+        /// Usually this is required to do before processing new video source, but
+        /// may be also done at any time to restart motion detection algorithm.</para>
+        /// </remarks>
+        /// 
         public void Reset( )
         {
             if ( backgroundFrame != null )

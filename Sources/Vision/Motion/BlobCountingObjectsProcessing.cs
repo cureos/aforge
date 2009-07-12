@@ -18,7 +18,7 @@ namespace AForge.Vision.Motion
     /// Motion processing algorithm, which counts separate moving objects and highlights them.
     /// </summary>
     /// 
-    /// <remarks><para>The aim of the motion processing algorithm is to count separate objects
+    /// <remarks><para>The aim of this motion processing algorithm is to count separate objects
     /// in the motion frame, which is provided by <see cref="IMotionDetector">motion detection algorithm</see>.
     /// In the case if <see cref="HighlightMotionRegions"/> property is set to <see langword="true"/>,
     /// found objects are also highlighted on the original video frame. The algorithm
@@ -34,7 +34,7 @@ namespace AForge.Vision.Motion
     /// // create motion detector
     /// MotionDetector detector = new MotionDetector( motionDetector, motionProcessing );
     /// 
-    /// // continuously feed video frame to motion detector
+    /// // continuously feed video frames to motion detector
     /// while ( ... )
     /// {
     ///     // process new video frame and check motion level
@@ -236,7 +236,7 @@ namespace AForge.Vision.Motion
         /// 
         /// <param name="videoFrame">Original video frame.</param>
         /// <param name="motionFrame">Motion frame provided by motion detection
-        /// algorithm (see <see cref="IMotionDetection"/>).</param>
+        /// algorithm (see <see cref="IMotionDetector"/>).</param>
         /// 
         /// <remarks><para>Processes provided motion frames and counts number of separate
         /// objects, which size satisfies <see cref="MinObjectsWidth"/> and <see cref="MinObjectsHeight"/>

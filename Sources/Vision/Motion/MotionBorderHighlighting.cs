@@ -29,10 +29,10 @@ namespace AForge.Vision.Motion
     ///     /* motion detection algorithm */,
     ///     new MotionBorderHighlighting( ) );
     /// 
-    /// // continuously feed video frame to motion detector
+    /// // continuously feed video frames to motion detector
     /// while ( ... )
     /// {
-    ///     // process new video frame and check motion level
+    ///     // process new video frame
     ///     detector.ProcessFrame( videoFrame );
     /// }
     /// </code>
@@ -83,7 +83,7 @@ namespace AForge.Vision.Motion
         /// 
         /// <param name="videoFrame">Original video frame.</param>
         /// <param name="motionFrame">Motion frame provided by motion detection
-        /// algorithm (see <see cref="IMotionDetection"/>).</param>
+        /// algorithm (see <see cref="IMotionDetector"/>).</param>
         /// 
         /// <remarks><para>Processes provided motion frame and highlights borders of motion areas
         /// on the original video frame with <see cref="HighlightColor">specified color</see>.</para>
