@@ -9,11 +9,55 @@
 namespace AForge.Vision.Motion
 {
     using System;
+    using System.Drawing;
     using System.Drawing.Imaging;
 
     using AForge.Imaging;
     using AForge.Imaging.Filters;
 
+    /// <summary>
+    /// Motion detector based on difference with predefined background frame.
+    /// </summary>
+    /// 
+    /// <remarks><para>The class implements motion detection algorithm, which is based on
+    /// deffirence of current video frame with predefined background frame. The <see cref="MotionFrame">difference frame</see>
+    /// is thresholded and the <see cref="MotionLevel">amount of difference pixels</see> is calculated.
+    /// To suppress stand-alone noisy pixels erosion morphological operator may be applied, which
+    /// is controlled by <see cref="SuppressNoise"/> property.</para>
+    /// 
+    /// <para><note>In the case if precise motion area's borders are required (for example,
+    /// for further motion post processing), then <see cref="KeepObjectsEdges"/> property
+    /// may be used to restore borders after noise suppression.</note></para>
+    /// 
+    /// <para><note>In the case if custom background frame is not specified by using
+    /// <see cref="SetBackgroundFrame(Bitmap)"/> method, the algorithm takes first video frame
+    /// as a background frame and calculates difference of further video frames with it.</note></para>
+    /// 
+    /// <para>Unlike <see cref="TwoFramesDifferenceDetector"/> motion detection algorithm, this algorithm
+    /// allows to identify quite clearly all objects, which are not part of the background (scene) -
+    /// most likely moving objects.</para>
+    /// 
+    /// <para>Sample usage:</para>
+    /// <code>
+    /// // create motion detector
+    /// MotionDetector detector = new MotionDetector(
+    ///     new CustomFrameDifferenceDetector( ),
+    ///     new MotionAreaHighlighting( ) );
+    /// 
+    /// // continuously feed video frames to motion detector
+    /// while ( ... )
+    /// {
+    ///     // process new video frame and check motion level
+    ///     if ( detector.ProcessFrame( videoFrame ) > 0.15 )
+    ///     {
+    ///         // ring alarm or do somethng else
+    ///     }
+    /// }
+    /// </code>
+    /// </remarks>
+    /// 
+    /// <seealso cref="MotionDetector"/>
+    /// 
     public class CustomFrameDifferenceDetector : IMotionDetector
     {
         // frame's dimension
@@ -30,9 +74,11 @@ namespace AForge.Vision.Motion
         // number of pixels changed in the new frame of video stream
         private int pixelsChanged;
 
+        private bool manuallySetBackgroundFrame = false;
+
         // suppress noise
-        private bool suppressNoise = true;
-        private bool keepObjectEdges = true;
+        private bool suppressNoise   = true;
+        private bool keepObjectEdges = false;
 
         // threshold values
         private int differenceThreshold    =  15;
@@ -60,8 +106,11 @@ namespace AForge.Vision.Motion
             get { return differenceThreshold; }
             set
             {
-                differenceThreshold = Math.Max( 1, Math.Min( 255, value ) );
-                differenceThresholdNeg = -differenceThreshold;
+                lock ( this )
+                {
+                    differenceThreshold = Math.Max( 1, Math.Min( 255, value ) );
+                    differenceThresholdNeg = -differenceThreshold;
+                }
             }
         }
 
@@ -76,7 +125,13 @@ namespace AForge.Vision.Motion
         /// 
         public double MotionLevel
         {
-            get { return (double) pixelsChanged / ( width * height ); }
+            get
+            {
+                lock ( this )
+                {
+                    return (double) pixelsChanged / ( width * height );
+                }
+            }
         }
 
         /// <summary>
@@ -88,12 +143,22 @@ namespace AForge.Vision.Motion
         /// detected. But white pixels correspond to areas, where motion is detected.</para>
         /// 
         /// <para><note>The property is set to <see langword="null"/> after processing of the first
-        /// video frame by the algorithm in the case if custom background frame was not set manually.</note></para>
+        /// video frame by the algorithm in the case if custom background frame was not set manually
+        /// by using <see cref="SetBackgroundFrame(Bitmap)"/> method (it will be not <see langword="null"/>
+        /// after second call in this case). If correct custom background
+        /// was set then the property should bet set to estimated motion frame after
+        /// <see cref="ProcessFrame"/> method call.</note></para>
         /// </remarks>
         ///
         public UnmanagedImage MotionFrame
         {
-            get { return motionFrame; }
+            get
+            {
+                lock ( this )
+                {
+                    return motionFrame;
+                }
+            }
         }
 
         /// <summary>
@@ -114,7 +179,7 @@ namespace AForge.Vision.Motion
             get { return suppressNoise; }
             set
             {
-                lock ( erosionFilter )
+                lock ( this )
                 {
                     suppressNoise = value;
 
@@ -142,7 +207,7 @@ namespace AForge.Vision.Motion
         /// to restore objects' edges after noise suppression by applying 3x3 dilatation
         /// image processing filter.</para>
         /// 
-        /// <para>Default value is set to <see langword="true"/>.</para>
+        /// <para>Default value is set to <see langword="false"/>.</para>
         /// 
         /// <para><note>Turning the value on leads to more processing time of video frame.</note></para>
         /// </remarks>
@@ -150,7 +215,13 @@ namespace AForge.Vision.Motion
         public bool KeepObjectsEdges
         {
             get { return keepObjectEdges; }
-            set { keepObjectEdges = value; }
+            set
+            {
+                lock ( this )
+                {
+                    keepObjectEdges = value;
+                }
+            }
         }
 
         /// <summary>
@@ -170,6 +241,19 @@ namespace AForge.Vision.Motion
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="CustomFrameDifferenceDetector"/> class.
+        /// </summary>
+        /// 
+        /// <param name="suppressNoise">Suppress noise in video frames or not (see <see cref="SuppressNoise"/> property).</param>
+        /// <param name="keepObjectEdges">Restore objects edges after noise suppression or not (see <see cref="KeepObjectsEdges"/> property).</param>
+        /// 
+        public CustomFrameDifferenceDetector( bool suppressNoise, bool keepObjectEdges )
+        {
+            this.suppressNoise   = suppressNoise;
+            this.keepObjectEdges = keepObjectEdges;
+        }
+
+        /// <summary>
         /// Process new video frame.
         /// </summary>
         /// 
@@ -183,76 +267,83 @@ namespace AForge.Vision.Motion
         /// 
         public unsafe void ProcessFrame( UnmanagedImage videoFrame )
         {
-            // check background frame
-            if ( motionFrame == null )
+            lock ( this )
             {
-                // save image dimension
-                width  = videoFrame.Width;
-                height = videoFrame.Height;
+                // check background frame
+                if ( backgroundFrame == null )
+                {
+                    // save image dimension
+                    width  = videoFrame.Width;
+                    height = videoFrame.Height;
 
-                // alocate memory for previous and current frames
-                backgroundFrame = UnmanagedImage.Create( width, height, PixelFormat.Format8bppIndexed );
-                motionFrame     = UnmanagedImage.Create( width, height, PixelFormat.Format8bppIndexed );
+                    // alocate memory for background frame
+                    backgroundFrame = UnmanagedImage.Create( width, height, PixelFormat.Format8bppIndexed );
+                    frameSize = backgroundFrame.Stride * height;
 
-                frameSize = motionFrame.Stride * height;
+                    // convert source frame to grayscale
+                    grayFilter.Apply( videoFrame, backgroundFrame );
 
-                // temporary buffer
+                    return;
+                }
+
+                // check image dimension
+                if ( ( videoFrame.Width != width ) || ( videoFrame.Height != height ) )
+                    return;
+
+                // check motion frame
+                if ( motionFrame == null )
+                {
+                    motionFrame = UnmanagedImage.Create( width, height, PixelFormat.Format8bppIndexed );
+
+                    // temporary buffer
+                    if ( suppressNoise )
+                    {
+                        tempFrame = UnmanagedImage.Create( width, height, PixelFormat.Format8bppIndexed );
+                    }
+                }
+
+                // convert current image to grayscale
+                grayFilter.Apply( videoFrame, motionFrame );
+
+                // pointers to background and current frames
+                byte* backFrame;
+                byte* currFrame;
+                int diff;
+
+                backFrame = (byte*) backgroundFrame.ImageData.ToPointer( );
+                currFrame = (byte*) motionFrame.ImageData.ToPointer( );
+
+                // 1 - get difference between frames
+                // 2 - threshold the difference
+                for ( int i = 0; i < frameSize; i++, backFrame++, currFrame++ )
+                {
+                    // difference
+                    diff = (int) *currFrame - (int) *backFrame;
+                    // treshold
+                    *currFrame = ( ( diff >= differenceThreshold ) || ( diff <= differenceThresholdNeg ) ) ? (byte) 255 : (byte) 0;
+                }
+
                 if ( suppressNoise )
                 {
-                    tempFrame = UnmanagedImage.Create( width, height, PixelFormat.Format8bppIndexed );
-                }
-
-                // convert source frame to grayscale
-                grayFilter.Apply( videoFrame, backgroundFrame );
-
-                return;
-            }
-
-            // check image dimension
-            if ( ( videoFrame.Width != width ) || ( videoFrame.Height != height ) )
-                return;
-
-            // convert current image to grayscale
-            grayFilter.Apply( videoFrame, motionFrame );
-
-            // pointers to background and current frames
-            byte* backFrame;
-            byte* currFrame;
-            int diff;
-
-            backFrame = (byte*) backgroundFrame.ImageData.ToPointer( );
-            currFrame = (byte*) motionFrame.ImageData.ToPointer( );
-
-            // 1 - get difference between frames
-            // 2 - threshold the difference
-            for ( int i = 0; i < frameSize; i++, backFrame++, currFrame++ )
-            {
-                // difference
-                diff = (int) *currFrame - (int) *backFrame;
-                // treshold
-                *currFrame = ( ( diff >= differenceThreshold ) || ( diff <= differenceThresholdNeg ) ) ? (byte) 255 : (byte) 0;
-            }
-
-            if ( suppressNoise )
-            {
-                // suppress noise and calculate motion amount
-                AForge.SystemTools.CopyUnmanagedMemory( tempFrame.ImageData, motionFrame.ImageData, frameSize );
-                erosionFilter.Apply( tempFrame, motionFrame );
-
-                if ( keepObjectEdges )
-                {
+                    // suppress noise and calculate motion amount
                     AForge.SystemTools.CopyUnmanagedMemory( tempFrame.ImageData, motionFrame.ImageData, frameSize );
-                    dilatationFilter.Apply( tempFrame, motionFrame );
+                    erosionFilter.Apply( tempFrame, motionFrame );
+
+                    if ( keepObjectEdges )
+                    {
+                        AForge.SystemTools.CopyUnmanagedMemory( tempFrame.ImageData, motionFrame.ImageData, frameSize );
+                        dilatationFilter.Apply( tempFrame, motionFrame );
+                    }
                 }
-            }
 
-            // calculate amount of motion pixels
-            pixelsChanged = 0;
-            byte* motion = (byte*) motionFrame.ImageData.ToPointer( );
+                // calculate amount of motion pixels
+                pixelsChanged = 0;
+                byte* motion = (byte*) motionFrame.ImageData.ToPointer( );
 
-            for ( int i = 0; i < frameSize; i++, motion++ )
-            {
-                pixelsChanged += ( *motion & 1 );
+                for ( int i = 0; i < frameSize; i++, motion++ )
+                {
+                    pixelsChanged += ( *motion & 1 );
+                }
             }
         }
 
@@ -261,47 +352,116 @@ namespace AForge.Vision.Motion
         /// </summary>
         /// 
         /// <remarks><para>Resets internal state and variables of motion detection algorithm.
-        /// Usually this is required to do before processing new video source, but
+        /// Usually this is required to be done before processing new video source, but
         /// may be also done at any time to restart motion detection algorithm.</para>
+        /// 
+        /// <para><note>In the case if custom background frame was set using
+        /// <see cref="SetBackgroundFrame(Bitmap)"/> method, this method does not reset it.
+        /// The method resets only automatically generated background frame.
+        /// </note></para>
         /// </remarks>
         /// 
         public void Reset( )
         {
-            if ( backgroundFrame != null )
-            {
-                backgroundFrame.Dispose( );
-                backgroundFrame = null;
-            }
-
-            if ( motionFrame != null )
-            {
-                motionFrame.Dispose( );
-                motionFrame = null;
-            }
-
-            if ( tempFrame != null )
-            {
-                tempFrame.Dispose( );
-                tempFrame = null;
-            }
+            // clear background frame only in the case it was not set manually
+            Reset( false );
         }
 
-        public void SetBackgroundFrame( UnmanagedImage backgroundFrame )
+        // Reset motion detector to initial state
+        private  void Reset( bool force )
         {
             lock ( this )
             {
-                // reset motion detection algorithm
-                Reset( );
+                if (
+                    ( backgroundFrame != null ) &&
+                    ( ( force == true ) || ( manuallySetBackgroundFrame == false ) )
+                    )
+                {
+                    backgroundFrame.Dispose( );
+                    backgroundFrame = null;
+                }
 
+                if ( motionFrame != null )
+                {
+                    motionFrame.Dispose( );
+                    motionFrame = null;
+                }
+
+                if ( tempFrame != null )
+                {
+                    tempFrame.Dispose( );
+                    tempFrame = null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Set background frame.
+        /// </summary>
+        /// 
+        /// <param name="backgroundFrame">Background frame to set.</param>
+        /// 
+        /// <remarks><para>The method sets background frame, which will be used to calculate
+        /// difference with.</para></remarks>
+        /// 
+        public void SetBackgroundFrame( Bitmap backgroundFrame )
+        {
+            BitmapData data = backgroundFrame.LockBits(
+                new Rectangle( 0, 0, backgroundFrame.Width, backgroundFrame.Height ),
+                ImageLockMode.ReadOnly, backgroundFrame.PixelFormat );
+
+            try
+            {
+                SetBackgroundFrame( data );
+            }
+            finally
+            {
+                backgroundFrame.UnlockBits( data );
+            }
+        }
+
+        /// <summary>
+        /// Set background frame.
+        /// </summary>
+        /// 
+        /// <param name="backgroundFrame">Background frame to set.</param>
+        /// 
+        /// <remarks><para>The method sets background frame, which will be used to calculate
+        /// difference with.</para></remarks>
+        /// 
+        public void SetBackgroundFrame( BitmapData backgroundFrame )
+        {
+            SetBackgroundFrame( new UnmanagedImage( backgroundFrame ) );
+        }
+
+        /// <summary>
+        /// Set background frame.
+        /// </summary>
+        /// 
+        /// <param name="backgroundFrame">Background frame to set.</param>
+        /// 
+        /// <remarks><para>The method sets background frame, which will be used to calculate
+        /// difference with.</para></remarks>
+        /// 
+        public void SetBackgroundFrame( UnmanagedImage backgroundFrame )
+        {
+            // reset motion detection algorithm
+            Reset( true );
+
+            lock ( this )
+            {
                 // save image dimension
                 width  = backgroundFrame.Width;
                 height = backgroundFrame.Height;
 
                 // alocate memory for previous and current frames
                 this.backgroundFrame = UnmanagedImage.Create( width, height, PixelFormat.Format8bppIndexed );
-                backgroundFrame.Copy( this.backgroundFrame );
-
                 frameSize = this.backgroundFrame.Stride * height;
+
+                // convert source frame to grayscale
+                grayFilter.Apply( backgroundFrame, this.backgroundFrame );
+
+                manuallySetBackgroundFrame = true;
             }
         }
     }

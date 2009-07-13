@@ -66,7 +66,7 @@ namespace AForge.Vision.Motion
         /// </summary>
         /// 
         /// <remarks><para>Resets internal state and variables of motion detection algorithm.
-        /// Usually this is required to do before processing new video source, but
+        /// Usually this is required to be done before processing new video source, but
         /// may be also done at any time to restart motion detection algorithm.</para>
         /// </remarks>
         /// 

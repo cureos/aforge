@@ -15,7 +15,7 @@ namespace AForge.Vision.Motion
     using AForge.Imaging.Filters;
 
     /// <summary>
-    /// Motion detector based on two frames difference.
+    /// Motion detector based on two continues frames difference.
     /// </summary>
     /// 
     /// <remarks><para>The class implements the simplest motion detection algorithm, which is
@@ -92,8 +92,11 @@ namespace AForge.Vision.Motion
             get { return differenceThreshold; }
             set
             {
-                differenceThreshold = Math.Max( 1, Math.Min( 255, value ) );
-                differenceThresholdNeg = -differenceThreshold;
+                lock ( this )
+                {
+                    differenceThreshold = Math.Max( 1, Math.Min( 255, value ) );
+                    differenceThresholdNeg = -differenceThreshold;
+                }
             }
         }
 
@@ -108,7 +111,13 @@ namespace AForge.Vision.Motion
         /// 
         public double MotionLevel
         {
-            get { return (double) pixelsChanged / ( width * height ); }
+            get
+            {
+                lock ( this )
+                {
+                    return (double) pixelsChanged / ( width * height );
+                }
+            }
         }
 
         /// <summary>
@@ -125,7 +134,13 @@ namespace AForge.Vision.Motion
         ///
         public UnmanagedImage MotionFrame
         {
-            get { return motionFrame; }
+            get
+            {
+                lock ( this )
+                {
+                    return motionFrame;
+                }
+            }
         }
 
         /// <summary>
@@ -146,7 +161,7 @@ namespace AForge.Vision.Motion
             get { return suppressNoise; }
             set
             {
-                lock ( erosionFilter )
+                lock ( this )
                 {
                     suppressNoise = value;
 
@@ -197,74 +212,74 @@ namespace AForge.Vision.Motion
         /// 
         public unsafe void ProcessFrame( UnmanagedImage videoFrame )
         {
-            // check previous frame
-            if ( previousFrame == null )
+            lock ( this )
             {
-                // save image dimension
-                width  = videoFrame.Width;
-                height = videoFrame.Height;
-
-                // alocate memory for previous and current frames
-                previousFrame = UnmanagedImage.Create( width, height, PixelFormat.Format8bppIndexed );
-                motionFrame   = UnmanagedImage.Create( width, height, PixelFormat.Format8bppIndexed );
-
-                frameSize = motionFrame.Stride * height;
-
-                // temporary buffer
-                if ( suppressNoise )
+                // check previous frame
+                if ( previousFrame == null )
                 {
-                    tempFrame = UnmanagedImage.Create( width, height, PixelFormat.Format8bppIndexed );
+                    // save image dimension
+                    width = videoFrame.Width;
+                    height = videoFrame.Height;
+
+                    // alocate memory for previous and current frames
+                    previousFrame = UnmanagedImage.Create( width, height, PixelFormat.Format8bppIndexed );
+                    motionFrame = UnmanagedImage.Create( width, height, PixelFormat.Format8bppIndexed );
+
+                    frameSize = motionFrame.Stride * height;
+
+                    // temporary buffer
+                    if ( suppressNoise )
+                    {
+                        tempFrame = UnmanagedImage.Create( width, height, PixelFormat.Format8bppIndexed );
+                    }
+
+                    // convert source frame to grayscale
+                    grayFilter.Apply( videoFrame, previousFrame );
+
+                    return;
                 }
 
-                // convert source frame to grayscale
-                grayFilter.Apply( videoFrame, previousFrame );
+                // check image dimension
+                if ( ( videoFrame.Width != width ) || ( videoFrame.Height != height ) )
+                    return;
 
-                return;
-            }
+                // convert current image to grayscale
+                grayFilter.Apply( videoFrame, motionFrame );
 
-            // check image dimension
-            if ( ( videoFrame.Width != width ) || ( videoFrame.Height != height ) )
-                return;
+                // pointers to previous and current frames
+                byte* prevFrame = (byte*) previousFrame.ImageData.ToPointer( );
+                byte* currFrame = (byte*) motionFrame.ImageData.ToPointer( );
+                // difference value
+                int diff;
 
-            // convert current image to grayscale
-            grayFilter.Apply( videoFrame, motionFrame );
+                // 1 - get difference between frames
+                // 2 - threshold the difference
+                // 3 - copy current frame to previous frame
+                for ( int i = 0; i < frameSize; i++, prevFrame++, currFrame++ )
+                {
+                    // difference
+                    diff = (int) *currFrame - (int) *prevFrame;
+                    // copy current frame to previous
+                    *prevFrame = *currFrame;
+                    // treshold
+                    *currFrame = ( ( diff >= differenceThreshold ) || ( diff <= differenceThresholdNeg ) ) ? (byte) 255 : (byte) 0;
+                }
 
-            // pointers to previous and current frames
-            byte* prevFrame = (byte*) previousFrame.ImageData.ToPointer( );
-            byte* currFrame = (byte*) motionFrame.ImageData.ToPointer( );
-            // difference value
-            int diff;
-
-            // 1 - get difference between frames
-            // 2 - threshold the difference
-            // 3 - copy current frame to previous frame
-            for ( int i = 0; i < frameSize; i++, prevFrame++, currFrame++ )
-            {
-                // difference
-                diff = (int) *currFrame - (int) *prevFrame;
-                // copy current frame to previous
-                *prevFrame = *currFrame;
-                // treshold
-                *currFrame = ( ( diff >= differenceThreshold ) || ( diff <= differenceThresholdNeg ) ) ? (byte) 255 : (byte) 0;
-            }
-
-            lock ( erosionFilter )
-            {
                 if ( suppressNoise )
                 {
                     // suppress noise and calculate motion amount
                     AForge.SystemTools.CopyUnmanagedMemory( tempFrame.ImageData, motionFrame.ImageData, frameSize );
                     erosionFilter.Apply( tempFrame, motionFrame );
                 }
-            }
 
-            // calculate amount of motion pixels
-            pixelsChanged = 0;
-            byte* motion = (byte*) motionFrame.ImageData.ToPointer( );
+                // calculate amount of motion pixels
+                pixelsChanged = 0;
+                byte* motion = (byte*) motionFrame.ImageData.ToPointer( );
 
-            for ( int i = 0; i < frameSize; i++, motion++ )
-            {
-                pixelsChanged += ( *motion & 1 );
+                for ( int i = 0; i < frameSize; i++, motion++ )
+                {
+                    pixelsChanged += ( *motion & 1 );
+                }
             }
         }
 
@@ -273,28 +288,31 @@ namespace AForge.Vision.Motion
         /// </summary>
         /// 
         /// <remarks><para>Resets internal state and variables of motion detection algorithm.
-        /// Usually this is required to do before processing new video source, but
+        /// Usually this is required to be done before processing new video source, but
         /// may be also done at any time to restart motion detection algorithm.</para>
         /// </remarks>
         /// 
         public void Reset( )
         {
-            if ( previousFrame != null )
+            lock ( this )
             {
-                previousFrame.Dispose( );
-                previousFrame = null;
-            }
+                if ( previousFrame != null )
+                {
+                    previousFrame.Dispose( );
+                    previousFrame = null;
+                }
 
-            if ( motionFrame != null )
-            {
-                motionFrame.Dispose( );
-                motionFrame = null;
-            }
+                if ( motionFrame != null )
+                {
+                    motionFrame.Dispose( );
+                    motionFrame = null;
+                }
 
-            if ( tempFrame != null )
-            {
-                tempFrame.Dispose( );
-                tempFrame = null;
+                if ( tempFrame != null )
+                {
+                    tempFrame.Dispose( );
+                    tempFrame = null;
+                }
             }
         }
     }

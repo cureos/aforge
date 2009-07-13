@@ -12,6 +12,16 @@ namespace AForge.Vision.Motion
         private IMotionDetector detector;
         private IMotionProcessing processor;
 
+        public IMotionDetector MotionDetectionAlgorthm
+        {
+            get { return detector; }
+        }
+        public IMotionProcessing MotionProcessingAlgorithm
+        {
+            get { return processor; }
+        }
+
+
         public MotionDetector( IMotionDetector detector ) : this( detector, null ) { }
 
         public MotionDetector( IMotionDetector detector, IMotionProcessing processor )
