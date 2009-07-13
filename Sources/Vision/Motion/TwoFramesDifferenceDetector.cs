@@ -171,7 +171,7 @@ namespace AForge.Vision.Motion
                         tempFrame = UnmanagedImage.Create( width, height, PixelFormat.Format8bppIndexed );
                     }
 
-                    // frame temporary frame if required
+                    // check if temporary frame is not required
                     if ( ( !suppressNoise ) && ( tempFrame != null ) )
                     {
                         tempFrame.Dispose( );

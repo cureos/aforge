@@ -20,7 +20,7 @@ namespace AForge.Vision.Motion
     /// </summary>
     /// 
     /// <remarks><para>The class implements motion detection algorithm, which is based on
-    /// deffirence of current video frame with predefined background frame. The <see cref="MotionFrame">difference frame</see>
+    /// difference of current video frame with predefined background frame. The <see cref="MotionFrame">difference frame</see>
     /// is thresholded and the <see cref="MotionLevel">amount of difference pixels</see> is calculated.
     /// To suppress stand-alone noisy pixels erosion morphological operator may be applied, which
     /// is controlled by <see cref="SuppressNoise"/> property.</para>
@@ -167,7 +167,8 @@ namespace AForge.Vision.Motion
         /// 
         /// <remarks><para>The value specifies if additional filtering should be
         /// done to suppress standalone noisy pixels by applying 3x3 erosion image processing
-        /// filter.</para>
+        /// filter. See <see cref="KeepObjectsEdges"/> property, if it is required to restore
+        /// edges of objects, which are not noise.</para>
         /// 
         /// <para>Default value is set to <see langword="true"/>.</para>
         /// 
@@ -189,7 +190,7 @@ namespace AForge.Vision.Motion
                         tempFrame = UnmanagedImage.Create( width, height, PixelFormat.Format8bppIndexed );
                     }
 
-                    // frame temporary frame if required
+                    // check if temporary frame is not required
                     if ( ( !suppressNoise ) && ( tempFrame != null ) )
                     {
                         tempFrame.Dispose( );
