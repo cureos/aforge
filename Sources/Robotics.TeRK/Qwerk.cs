@@ -25,6 +25,10 @@ namespace AForge.Robotics.TeRK
     /// 
     /// <para><img src="img/robotics/qwerk_board.jpg" width="192" height="201" /></para>
     /// 
+    /// <para><note>Since TeRK project, which is the software core of Qwerk board, is
+    /// based on <a href="http://www.zeroc.com/ice.html">Internet Communication Engine (ICE)</a>,
+    /// the ICE runtime should be installed in order to use Qwerk classes.</note></para>
+    /// 
     /// <para>Sample usage:</para>
     /// <code>
     /// Qwerk qwerk = new Qwerk( );
