@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Motion\BlobCountingObjectsProcessing.cs" />
     <Compile Include="Motion\CustomFrameDifferenceDetector.cs" />
+    <Compile Include="Motion\GridMotionAreaProcessing.cs" />
     <Compile Include="Motion\IMotionDetector.cs" />
     <Compile Include="Motion\IMotionProcessing.cs" />
     <Compile Include="Motion\MotionAreaHighlighting.cs" />
