@@ -26,6 +26,10 @@ namespace AForge.Vision.Motion
     /// only to <see cref="AForge.Imaging.UnmanagedImage"/>, but to .NET's <see cref="Bitmap"/> class
     /// as well.</para>
     /// 
+    /// <para>In addition to wrapping of motion detection and processing algorthms, the class provides
+    /// some additional functionality. Using <see cref="MotionZones"/> property it is possible to specify
+    /// set of rectangular zones to observe - only motion in these zones is counted and post procesed.</para>
+    /// 
     /// <para>Sample usage:</para>
     /// <code>
     /// // create motion detector
@@ -50,6 +54,13 @@ namespace AForge.Vision.Motion
         private IMotionDetector   detector;
         private IMotionProcessing processor;
 
+        // motion detectoin zones
+        private Rectangle[] motionZones = null;
+        // image of motion zones
+        private UnmanagedImage zonesFrame;
+        // size of video frame
+        private int videoWidth, videoHeight;
+
         /// <summary>
         /// Motion detection algorithm to apply to each video frame.
         /// </summary>
@@ -63,7 +74,13 @@ namespace AForge.Vision.Motion
         public IMotionDetector MotionDetectionAlgorthm
         {
             get { return detector; }
-            set { detector = null; }
+            set
+            {
+                lock ( this )
+                {
+                    detector = value;
+                }
+            }
         }
 
         /// <summary>
@@ -81,7 +98,35 @@ namespace AForge.Vision.Motion
         public IMotionProcessing MotionProcessingAlgorithm
         {
             get { return processor; }
-            set { processor = null; }
+            set
+            {
+                lock ( this )
+                {
+                    processor = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Set of zones to detect motion in.
+        /// </summary>
+        /// 
+        /// <remarks><para>The property keeps array of rectangular zones, which are observed for motion detection.
+        /// Motion outside of these zones is ignored.</para>
+        /// 
+        /// <para>In the case if this property is set, the <see cref="ProcessFrame(UnmanagedImage)"/> method
+        /// will filter out all motion witch was detected by motion detection algorithm, but is not
+        /// located in the specified zones.</para>
+        /// </remarks>
+        /// 
+        public Rectangle[] MotionZones
+        {
+            get { return motionZones; }
+            set
+            {
+                motionZones = value;
+                CreateMotionZonesFrame( );
+            }
         }
 
         /// <summary>
@@ -169,19 +214,64 @@ namespace AForge.Vision.Motion
         /// <see cref="IMotionDetector.MotionFrame">motion frame</see>. After this it applies motion processing algorithm
         /// (if it was set) to do further post processing, like highlighting motion areas, counting moving
         /// objects, etc.</para>
+        /// 
+        /// <para><note>In the case if <see cref="MotionZones"/> property is set, this method will perform
+        /// motion filtering right after motion algorithm is done and before passing motion frame to motion
+        /// processing algorithm. The method does filtering right on the motion frame, which is produced
+        /// by motion detection algorithm. At the same time the method recalculates motion level and returns
+        /// new value, which takes motion zones into account (but the new value is not set back to motion detection
+        /// algorithm' <see cref="IMotionDetector.MotionLevel"/> property).
+        /// </note></para>
         /// </remarks>
         /// 
         public float ProcessFrame( UnmanagedImage videoFrame )
         {
-            // call motion detection
-            detector.ProcessFrame( videoFrame );
-            // call motion post processing
-            if ( ( processor != null ) && ( detector.MotionFrame != null ) )
+            lock ( this )
             {
-                processor.ProcessFrame( videoFrame, detector.MotionFrame );
-            }
+                videoWidth = videoFrame.Width;
+                videoHeight = videoFrame.Height;
 
-            return detector.MotionLevel;
+                float motionLevel = 0;
+                // call motion detection
+                detector.ProcessFrame( videoFrame );
+                motionLevel = detector.MotionLevel;
+
+                // check if motion zones are specified
+                if ( motionZones != null )
+                {
+                    if ( zonesFrame == null )
+                    {
+                        CreateMotionZonesFrame( );
+                    }
+
+                    if ( ( videoWidth == zonesFrame.Width ) && ( videoHeight == zonesFrame.Height ) )
+                    {
+                        unsafe
+                        {
+                            // pointers to background and current frames
+                            byte* zonesPtr  = (byte*) zonesFrame.ImageData.ToPointer( );
+                            byte* motionPtr = (byte*) detector.MotionFrame.ImageData.ToPointer( );
+
+                            motionLevel = 0;
+
+                            for ( int i = 0, frameSize = zonesFrame.Stride * videoHeight; i < frameSize; i++, zonesPtr++, motionPtr++ )
+                            {
+                                *motionPtr &= *zonesPtr;
+                                motionLevel += ( *motionPtr & 1 );
+                            }
+                            motionLevel /= ( videoWidth * videoHeight );
+                        }
+                    }
+                }
+
+                // call motion post processing
+                if ( ( processor != null ) && ( detector.MotionFrame != null ) )
+                {
+                    processor.ProcessFrame( videoFrame, detector.MotionFrame );
+                }
+
+                return motionLevel;
+            }
         }
 
         /// <summary>
@@ -194,10 +284,64 @@ namespace AForge.Vision.Motion
         /// 
         public void Reset( )
         {
-            detector.Reset( );
-            if ( processor != null )
+            lock ( this )
             {
-                processor.Reset( );
+                detector.Reset( );
+                if ( processor != null )
+                {
+                    processor.Reset( );
+                }
+
+                videoWidth  = 0;
+                videoHeight = 0;
+
+                if ( zonesFrame != null )
+                {
+                    zonesFrame.Dispose( );
+                    zonesFrame = null;
+                }
+            }
+        }
+
+        // Create motion zones' image
+        private unsafe void CreateMotionZonesFrame( )
+        {
+            lock ( this )
+            {
+                // free previous motion zones frame
+                if ( zonesFrame != null )
+                {
+                    zonesFrame.Dispose( );
+                    zonesFrame = null;
+                }
+
+                // create motion zones frame only in the case if the algorithm has processed at least one frame
+                if ( ( motionZones != null ) && ( motionZones.Length != 0 ) && ( videoWidth != 0 ) )
+                {
+                    zonesFrame = UnmanagedImage.Create( videoWidth, videoHeight, PixelFormat.Format8bppIndexed );
+
+                    Rectangle imageRect = new Rectangle( 0, 0, videoWidth, videoHeight );
+
+                    // draw all motion zones on motion frame
+                    foreach ( Rectangle rect in motionZones )
+                    {
+                        rect.Intersect( imageRect );
+
+                        // rectangle's dimenstion
+                        int rectWidth  = rect.Width;
+                        int rectHeight = rect.Height;
+
+                        // start pointer
+                        int stride = zonesFrame.Stride;
+                        byte* ptr = (byte*) zonesFrame.ImageData.ToPointer( ) + rect.Y * stride + rect.X;
+
+                        for ( int y = 0; y < rectHeight; y++ )
+                        {
+                            AForge.SystemTools.SetUnmanagedMemory( ptr, 255, rectWidth );
+                            ptr += stride;
+                        }
+                    }
+                }
             }
         }
     }

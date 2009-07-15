@@ -257,8 +257,8 @@ namespace AForge.Vision.Motion
                 // get current grid's row
                 yCell = y / cellHeight;
                 // correct row number if image was not divided by grid equally
-                if ( yCell == gridHeight )
-                    yCell--;
+                if ( yCell >= gridHeight )
+                    yCell = gridHeight - 1;
 
                 for ( int x = 0; x < width; x++, motion++ )
                 {
@@ -267,8 +267,8 @@ namespace AForge.Vision.Motion
                         // get current grid's collumn
                         xCell = x / cellWidth;
                         // correct column number if image was not divided by grid equally
-                        if ( xCell == gridWidth )
-                            xCell--;
+                        if ( xCell >= gridWidth )
+                            xCell = gridWidth - 1;
 
                         motionGrid[yCell, xCell]++;
                     }
@@ -310,14 +310,14 @@ namespace AForge.Vision.Motion
                 for ( int y = 0; y < height; y++ )
                 {
                     yCell = y / cellHeight;
-                    if ( yCell == gridHeight )
-                        yCell--;
+                    if ( yCell >= gridHeight )
+                        yCell = gridHeight - 1;
 
-                    for ( int x = 0; x < width; x++, motion++, src += 3 )
+                    for ( int x = 0; x < width; x++, src += 3 )
                     {
                         xCell = x / cellWidth;
-                        if ( xCell == gridWidth )
-                            xCell--;
+                        if ( xCell >= gridWidth )
+                            xCell = gridWidth - 1;
 
                         if ( ( motionGrid[yCell, xCell] > motionAmountToHighlight ) && ( ( ( x + y ) & 1 ) == 0 ) )
                         {
