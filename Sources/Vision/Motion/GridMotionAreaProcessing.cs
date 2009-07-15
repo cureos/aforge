@@ -14,12 +14,61 @@ namespace AForge.Vision.Motion
 
     using AForge.Imaging;
 
+    /// <summary>
+    /// Motion processing algorithm, which performs grid processing of motion frame.
+    /// </summary>
+    /// 
+    /// <remarks><para>The aim of this motion processing algorithm is to do grid processing
+    /// of motion frame. This means that entire motion frame is divided by a grid into
+    /// certain amount of cells and the motion level is calculated for each cell. The
+    /// information about each cell's motion level may be retrieved using <see cref="MotionGrid"/>
+    /// property.</para>
+    /// 
+    /// <para><para>In addition the algorithm can highlight those cells, which have motion
+    /// level above the specified threshold (see <see cref="MotionAmountToHighlight"/>
+    /// property). To enable this it is required to set <see cref="HighlightMotionGrid"/>
+    /// property to <see langword="true"/>.</para></para>
+    /// 
+    /// <para>Sample usage:</para>
+    /// <code>
+    /// // create instance of motion detection algorithm
+    /// IMotionDetector motionDetector = new ... ;
+    /// // create instance of motion processing algorithm
+    /// GridMotionAreaProcessing motionProcessing = new GridMotionAreaProcessing( 16, 16 );
+    /// // create motion detector
+    /// MotionDetector detector = new MotionDetector( motionDetector, motionProcessing );
+    /// 
+    /// // continuously feed video frames to motion detector
+    /// while ( ... )
+    /// {
+    ///     // process new video frame
+    ///     detector.ProcessFrame( videoFrame );
+    ///     
+    ///     // check motion level in 5th row 8th column
+    ///     if ( motionProcessing.MotionGrid[5, 8] > 0.15 )
+    ///     {
+    ///         // ...
+    ///     }
+    /// }
+    /// </code>
+    /// </remarks>
+    /// 
+    /// <seealso cref="MotionDetector"/>
+    /// <seealso cref="IMotionDetector"/>
+    /// 
     public class GridMotionAreaProcessing : IMotionProcessing
     {
+        // color used for highlighting motion grid
         private Color highlightColor = Color.Red;
+        // highlight motion grid or not
+        private bool highlightMotionGrid = true;
+
+        private float motionAmountToHighlight = 0.15f;
 
         private int gridWidth  = 16;
         private int gridHeight = 16;
+
+        private float[,] motionGrid = null;
 
         /// <summary>
         /// Color used to highlight motion regions.
@@ -35,17 +84,155 @@ namespace AForge.Vision.Motion
             set { highlightColor = value; }
         }
 
-        public GridMotionAreaProcessing( )
+        /// <summary>
+        /// Highlight motion regions or not.
+        /// </summary>
+        /// 
+        /// <remarks><para>The property specifies if motion grid should be highlighted -
+        /// if cell, which have motion level above the
+        /// <see cref="MotionAmountToHighlight">specified value</see>, should be highlighted.</para>
+        /// 
+        /// <para>Default value is set to <see langword="true"/>.</para>
+        ///
+        /// <para><note>Turning the value on leads to additional processing time of video frame.</note></para>
+        /// </remarks>
+        /// 
+        public bool HighlightMotionGrid
         {
+            get { return highlightMotionGrid; }
+            set { highlightMotionGrid = value; }
         }
 
-        public GridMotionAreaProcessing( int gridWidth, int gridHeight )
+        /// <summary>
+        /// Motion amount to highlight cell.
+        /// </summary>
+        /// 
+        /// <remarks><para>The property specifies motion level threshold for highlighting grid's
+        /// cells. If motion level of a certain cell is higher than this value, then the cell
+        /// is highlighted.</para>
+        /// 
+        /// <para>Default value is set to <b>0.15</b>.</para>
+        /// </remarks>
+        /// 
+        public float MotionAmountToHighlight
         {
-            this.gridWidth  = gridWidth;
-            this.gridHeight = gridHeight;
+            get { return motionAmountToHighlight; }
+            set { motionAmountToHighlight = value; }
+        }
+        
+        /// <summary>
+        /// Motion levels of each grid's cell.
+        /// </summary>
+        /// 
+        /// <remarks><para>The property represents an array of size
+        /// <see cref="GridHeight"/>x<see cref="GridWidth"/>, which keeps motion level
+        /// of each grid's cell. If certain cell has motion level equal to 0.2, then it
+        /// means that this cell has 20% of changes.</para>
+        /// </remarks>
+        /// 
+        public float[,] MotionGrid
+        {
+            get { return motionGrid; }
         }
 
+        /// <summary>
+        /// Width of motion grid, [2, 64].
+        /// </summary>
+        /// 
+        /// <remarks><para>The property specifies motion grid's width - number of grid' columns.</para>
+        ///
+        /// <para>Default value is set to <b>16</b>.</para>
+        /// </remarks>
+        /// 
+        public int GridWidth
+        {
+            get { return gridWidth; }
+            set
+            {
+                gridWidth = Math.Min( 64, Math.Max( 2, value ) );
+                motionGrid = new float[gridHeight, gridWidth];
+            }
+        }
 
+        /// <summary>
+        /// Height of motion grid, [2, 64].
+        /// </summary>
+        /// 
+        /// <remarks><para>The property specifies motion grid's height - number of grid' rows.</para>
+        ///
+        /// <para>Default value is set to <b>16</b>.</para>
+        /// </remarks>
+        /// 
+        public int GridHeight
+        {
+            get { return gridHeight; }
+            set
+            {
+                gridHeight = Math.Min( 64, Math.Max( 2, value ) );
+                motionGrid = new float[gridHeight, gridWidth];
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GridMotionAreaProcessing"/> class.
+        /// </summary>
+        /// 
+        public GridMotionAreaProcessing( ) : this( 16, 16 ) { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GridMotionAreaProcessing"/> class.
+        /// </summary>
+        /// 
+        /// <param name="gridWidth">Width of motion grid (see <see cref="GridWidth"/> property).</param>
+        /// <param name="gridHeight">Height of motion grid (see <see cref="GridHeight"/> property).</param>
+        /// 
+        public GridMotionAreaProcessing( int gridWidth, int gridHeight ) : this( gridWidth, gridWidth, true ) { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GridMotionAreaProcessing"/> class.
+        /// </summary>
+        /// 
+        /// <param name="gridWidth">Width of motion grid (see <see cref="GridWidth"/> property).</param>
+        /// <param name="gridHeight">Height of motion grid (see <see cref="GridHeight"/> property).</param>
+        /// <param name="highlightMotionGrid">Highlight motion regions or not (see <see cref="HighlightMotionGrid"/> property).</param>
+        ///
+        public GridMotionAreaProcessing( int gridWidth, int gridHeight, bool highlightMotionGrid )
+            : this( gridWidth, gridHeight, highlightMotionGrid, 0.15f ) { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GridMotionAreaProcessing"/> class.
+        /// </summary>
+        /// 
+        /// <param name="gridWidth">Width of motion grid (see <see cref="GridWidth"/> property).</param>
+        /// <param name="gridHeight">Height of motion grid (see <see cref="GridHeight"/> property).</param>
+        /// <param name="highlightMotionGrid">Highlight motion regions or not (see <see cref="HighlightMotionGrid"/> property).</param>
+        /// <param name="motionAmountToHighlight">Motion amount to highlight cell (see <see cref="MotionAmountToHighlight"/> property).</param>
+        ///
+        public GridMotionAreaProcessing( int gridWidth, int gridHeight, bool highlightMotionGrid, float motionAmountToHighlight )
+        {
+            this.gridWidth  = Math.Min( 64, Math.Max( 2, gridWidth ) );
+            this.gridHeight = Math.Min( 64, Math.Max( 2, gridHeight ) );
+
+            motionGrid = new float[gridHeight, gridWidth];
+
+            this.highlightMotionGrid = highlightMotionGrid;
+            this.motionAmountToHighlight = motionAmountToHighlight;
+        }
+
+        /// <summary>
+        /// Process video and motion frames doing further post processing after
+        /// performed motion detection.
+        /// </summary>
+        /// 
+        /// <param name="videoFrame">Original video frame.</param>
+        /// <param name="motionFrame">Motion frame provided by motion detection
+        /// algorithm (see <see cref="IMotionDetector"/>).</param>
+        /// 
+        /// <remarks><para>Processes provided motion frame and calculates motion level
+        /// for each grid's cell. In the case if <see cref="HighlightMotionGrid"/> property is
+        /// set to <see langword="true"/>, the cell with motion level above threshold are
+        /// highlighted.</para></remarks>
+        ///
         public unsafe void ProcessFrame( UnmanagedImage videoFrame, UnmanagedImage motionFrame )
         {
             int width  = videoFrame.Width;
@@ -57,75 +244,91 @@ namespace AForge.Vision.Motion
             int cellWidth  = width  / gridWidth;
             int cellHeight = height / gridHeight;
 
+            // temporary variables
+            int xCell, yCell;
+
+            // process motion frame calculating amount of changed pixels
+            // in each grid's cell
             byte* motion = (byte*) motionFrame.ImageData.ToPointer( );
-
             int motionOffset = motionFrame.Stride - width;
-
-            double[,] motionAmout = new double[cellHeight, cellWidth];
 
             for ( int y = 0; y < height; y++ )
             {
-                int yCell = y / cellHeight;
+                // get current grid's row
+                yCell = y / cellHeight;
+                // correct row number if image was not divided by grid equally
                 if ( yCell == gridHeight )
                     yCell--;
 
                 for ( int x = 0; x < width; x++, motion++ )
                 {
-                    int xCell = x / cellWidth;
-                    if ( xCell == gridWidth )
-                        xCell--;
-
                     if ( *motion != 0 )
                     {
-                        motionAmout[yCell, xCell]++;
+                        // get current grid's collumn
+                        xCell = x / cellWidth;
+                        // correct column number if image was not divided by grid equally
+                        if ( xCell == gridWidth )
+                            xCell--;
+
+                        motionGrid[yCell, xCell]++;
                     }
                 }
                 motion += motionOffset;
             }
+
+            // update motion grid converting absolute number of changed
+            // pixel to relative for each cell
+            int gridHeightM1 = gridHeight - 1;
+            int gridWidthM1  = gridWidth  - 1;
+
+            int lastRowHeight   = height - cellHeight * gridHeightM1;
+            int lastColumnWidth = width - cellWidth   * gridWidthM1;
 
             for ( int y = 0; y < gridHeight; y++ )
             {
-                int ch = ( y != gridHeight - 1 ) ? cellHeight : ( height - cellHeight * y );
+                int ch = ( y != gridHeightM1 ) ? cellHeight : lastRowHeight;
 
                 for ( int x = 0; x < gridWidth; x++ )
                 {
-                    int cw = ( x != gridWidth - 1 ) ? cellWidth : ( width - cellWidth * x );
+                    int cw = ( x != gridWidthM1 ) ? cellWidth : lastColumnWidth;
 
-                    motionAmout[y, x] /= ( cw * ch );
+                    motionGrid[y, x] /= ( cw * ch );
                 }
             }
 
-            byte* src = (byte*) videoFrame.ImageData.ToPointer( );
-            int srcOffset = videoFrame.Stride - width * 3;
-
-            byte fillR = highlightColor.R;
-            byte fillG = highlightColor.G;
-            byte fillB = highlightColor.B;
-
-            for ( int y = 0; y < height; y++ )
+            if ( highlightMotionGrid )
             {
-                int yCell = y / cellHeight;
-                if ( yCell == gridHeight )
-                    yCell--;
+                // highlight motion grid - cells, which have enough motion
 
-                for ( int x = 0; x < width; x++, motion++, src += 3 )
+                byte* src = (byte*) videoFrame.ImageData.ToPointer( );
+                int srcOffset = videoFrame.Stride - width * 3;
+
+                byte fillR = highlightColor.R;
+                byte fillG = highlightColor.G;
+                byte fillB = highlightColor.B;
+
+                for ( int y = 0; y < height; y++ )
                 {
-                    int xCell = x / cellWidth;
-                    if ( xCell == gridWidth )
-                        xCell--;
+                    yCell = y / cellHeight;
+                    if ( yCell == gridHeight )
+                        yCell--;
 
-
-                    if ( ( motionAmout[yCell, xCell] > 0.15 ) && ( ( ( x + y ) & 1 ) == 0 ) )
+                    for ( int x = 0; x < width; x++, motion++, src += 3 )
                     {
-                        src[RGB.R] = fillR;
-                        src[RGB.G] = fillG;
-                        src[RGB.B] = fillB;
-                    }
-                }
-                src += srcOffset;
-                motion += motionOffset;
-            }
+                        xCell = x / cellWidth;
+                        if ( xCell == gridWidth )
+                            xCell--;
 
+                        if ( ( motionGrid[yCell, xCell] > motionAmountToHighlight ) && ( ( ( x + y ) & 1 ) == 0 ) )
+                        {
+                            src[RGB.R] = fillR;
+                            src[RGB.G] = fillG;
+                            src[RGB.B] = fillB;
+                        }
+                    }
+                    src += srcOffset;
+                }
+            }
         }
 
         /// <summary>

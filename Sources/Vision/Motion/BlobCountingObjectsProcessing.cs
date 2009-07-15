@@ -38,7 +38,7 @@ namespace AForge.Vision.Motion
     /// while ( ... )
     /// {
     ///     // process new video frame and check motion level
-    ///     if ( detector.ProcessFrame( videoFrame ) > 0.15 )
+    ///     if ( detector.ProcessFrame( videoFrame ) > 0.02 )
     ///     {
     ///         // check number of detected objects
     ///         if ( motionProcessing.ObjectsCount > 1 )
@@ -238,7 +238,7 @@ namespace AForge.Vision.Motion
         /// <param name="motionFrame">Motion frame provided by motion detection
         /// algorithm (see <see cref="IMotionDetector"/>).</param>
         /// 
-        /// <remarks><para>Processes provided motion frames and counts number of separate
+        /// <remarks><para>Processes provided motion frame and counts number of separate
         /// objects, which size satisfies <see cref="MinObjectsWidth"/> and <see cref="MinObjectsHeight"/>
         /// properties. In the case if <see cref="HighlightMotionRegions"/> property is
         /// set to <see langword="true"/>, the found object are also highlighted on the

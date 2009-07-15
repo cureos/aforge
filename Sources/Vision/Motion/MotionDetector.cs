@@ -37,7 +37,7 @@ namespace AForge.Vision.Motion
     /// while ( ... )
     /// {
     ///     // process new video frame and check motion level
-    ///     if ( detector.ProcessFrame( videoFrame ) > 0.15 )
+    ///     if ( detector.ProcessFrame( videoFrame ) > 0.02 )
     ///     {
     ///         // ring alarm or do somethng else
     ///     }
@@ -118,9 +118,9 @@ namespace AForge.Vision.Motion
         /// <remarks><para>See <see cref="ProcessFrame(UnmanagedImage)"/> for additional details.</para>
         /// </remarks>
         /// 
-        public double ProcessFrame( Bitmap videoFrame )
+        public float ProcessFrame( Bitmap videoFrame )
         {
-            double motionLevel = 0;
+            float motionLevel = 0;
 
             BitmapData videoData = videoFrame.LockBits(
                 new Rectangle( 0, 0, videoFrame.Width, videoFrame.Height ),
@@ -150,7 +150,7 @@ namespace AForge.Vision.Motion
         /// <remarks><para>See <see cref="ProcessFrame(UnmanagedImage)"/> for additional details.</para>
         /// </remarks>
         ///
-        public double ProcessFrame( BitmapData videoFrame )
+        public float ProcessFrame( BitmapData videoFrame )
         {
             return ProcessFrame( new UnmanagedImage( videoFrame ) );
         }
@@ -171,7 +171,7 @@ namespace AForge.Vision.Motion
         /// objects, etc.</para>
         /// </remarks>
         /// 
-        public double ProcessFrame( UnmanagedImage videoFrame )
+        public float ProcessFrame( UnmanagedImage videoFrame )
         {
             // call motion detection
             detector.ProcessFrame( videoFrame );

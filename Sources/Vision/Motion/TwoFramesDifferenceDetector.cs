@@ -39,7 +39,7 @@ namespace AForge.Vision.Motion
     /// while ( ... )
     /// {
     ///     // process new video frame and check motion level
-    ///     if ( detector.ProcessFrame( videoFrame ) > 0.15 )
+    ///     if ( detector.ProcessFrame( videoFrame ) > 0.02 )
     ///     {
     ///         // ring alarm or do somethng else
     ///     }
@@ -109,13 +109,13 @@ namespace AForge.Vision.Motion
         /// with previous frame.</para>
         /// </remarks>
         /// 
-        public double MotionLevel
+        public float MotionLevel
         {
             get
             {
                 lock ( this )
                 {
-                    return (double) pixelsChanged / ( width * height );
+                    return (float) pixelsChanged / ( width * height );
                 }
             }
         }

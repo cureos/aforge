@@ -267,7 +267,7 @@ namespace MotionDetector
         {
             detectorType = 2;
             //SetMotionDetector( new AForge.Vision.Motion.MotionDetector( new SimpleBackgroundModelingDetector( ), new BlobCountingObjectsProcessing( ) ) );
-            SetMotionDetector( new AForge.Vision.Motion.MotionDetector( new TwoFramesDifferenceDetector( ), new GridMotionAreaProcessing( 16, 16 ) ) );
+            SetMotionDetector( new AForge.Vision.Motion.MotionDetector( new SimpleBackgroundModelingDetector( ), new GridMotionAreaProcessing( 5, 5 ) ) );
         }
 
         // Turn on motion detector type #3 - low precision background modeling

@@ -39,7 +39,7 @@ namespace AForge.Vision.Motion
         /// (however it is up to specific implementation to decide how to compare specified frame).</para>
         /// </remarks>
         /// 
-        double MotionLevel { get; }
+        float MotionLevel { get; }
 
         /// <summary>
         /// Motion frame containing detected areas of motion.

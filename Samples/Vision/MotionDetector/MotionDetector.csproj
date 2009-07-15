@@ -93,7 +93,6 @@
     <Compile Include="AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Camera.cs" />
     <Compile Include="DefineRegionsControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -123,10 +122,6 @@
     <EmbeddedResource Include="AboutForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>AboutForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CameraWindow.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>CameraWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MotionRegionsForm.resx">
       <DependentUpon>MotionRegionsForm.cs</DependentUpon>
@@ -165,12 +160,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="CameraWindow.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="CameraWindow.Designer.cs">
-      <DependentUpon>CameraWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="URLForm.cs">
       <SubType>Form</SubType>
