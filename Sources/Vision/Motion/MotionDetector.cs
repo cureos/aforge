@@ -228,7 +228,10 @@ namespace AForge.Vision.Motion
         {
             lock ( this )
             {
-                videoWidth = videoFrame.Width;
+                if ( detector == null )
+                    return 0;
+
+                videoWidth  = videoFrame.Width;
                 videoHeight = videoFrame.Height;
 
                 float motionLevel = 0;
