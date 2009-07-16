@@ -289,7 +289,10 @@ namespace AForge.Vision.Motion
         {
             lock ( this )
             {
-                detector.Reset( );
+                if ( detector != null )
+                {
+                    detector.Reset( );
+                }
                 if ( processor != null )
                 {
                     processor.Reset( );
