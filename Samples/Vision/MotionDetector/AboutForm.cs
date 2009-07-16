@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace MotionDetector
+namespace MotionDetectorSample
 {
     public partial class AboutForm : Form
     {
@@ -15,8 +15,8 @@ namespace MotionDetector
             InitializeComponent( );
 
             // initialize links
-            emailLabel.Links.Add( 0, emailLabel.Text.Length, "mailto:andrew.kirillov@gmail.com" );
-            aforgeLabel.Links.Add( 0, aforgeLabel.Text.Length, "http://code.google.com/p/aforge/" );
+            emailLabel.Links.Add( 0, emailLabel.Text.Length, "mailto:andrew.kirillov@aforgenet.com" );
+            aforgeLabel.Links.Add( 0, aforgeLabel.Text.Length, "http://www.aforgenet.com/framework/" );
         }
 
         // Link clicked

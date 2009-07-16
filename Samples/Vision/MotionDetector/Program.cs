@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace MotionDetector
+namespace MotionDetectorSample
 {
     static class Program
     {

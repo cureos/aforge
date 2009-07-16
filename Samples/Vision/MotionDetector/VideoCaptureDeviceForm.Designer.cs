@@ -1,4 +1,4 @@
-namespace MotionDetector
+namespace MotionDetectorSample
 {
     partial class VideoCaptureDeviceForm
     {

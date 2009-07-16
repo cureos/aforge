@@ -1,4 +1,4 @@
-namespace MotionDetector
+namespace MotionDetectorSample
 {
     partial class AboutForm
     {
@@ -59,7 +59,7 @@ namespace MotionDetector
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size( 110, 13 );
             this.label1.TabIndex = 1;
-            this.label1.Text = "Motion Detector 2.3.0";
+            this.label1.Text = "Motion Detector 2.4.0";
             // 
             // label2
             // 
@@ -85,12 +85,12 @@ namespace MotionDetector
             // emailLabel
             // 
             this.emailLabel.AutoSize = true;
-            this.emailLabel.Location = new System.Drawing.Point( 85, 110 );
+            this.emailLabel.Location = new System.Drawing.Point( 75, 110 );
             this.emailLabel.Name = "emailLabel";
-            this.emailLabel.Size = new System.Drawing.Size( 132, 13 );
+            this.emailLabel.Size = new System.Drawing.Size( 153, 13 );
             this.emailLabel.TabIndex = 5;
             this.emailLabel.TabStop = true;
-            this.emailLabel.Text = "andrew.kirillov@gmail.com";
+            this.emailLabel.Text = "andrew.kirillov@aforgenet.com";
             this.emailLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler( this.LinkClicked );
             // 
             // label3
@@ -100,17 +100,17 @@ namespace MotionDetector
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size( 192, 13 );
             this.label3.TabIndex = 4;
-            this.label3.Text = "Copyright © 2005-2007, Andrew Kirillov";
+            this.label3.Text = "Copyright © 2005-2009, Andrew Kirillov";
             // 
             // aforgeLabel
             // 
             this.aforgeLabel.AutoSize = true;
-            this.aforgeLabel.Location = new System.Drawing.Point( 66, 60 );
+            this.aforgeLabel.Location = new System.Drawing.Point( 55, 60 );
             this.aforgeLabel.Name = "aforgeLabel";
-            this.aforgeLabel.Size = new System.Drawing.Size( 171, 13 );
+            this.aforgeLabel.Size = new System.Drawing.Size( 192, 13 );
             this.aforgeLabel.TabIndex = 3;
             this.aforgeLabel.TabStop = true;
-            this.aforgeLabel.Text = "http://code.google.com/p/aforge/";
+            this.aforgeLabel.Text = "http://www.aforgenet.com/framework/";
             this.aforgeLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler( this.LinkClicked );
             // 
             // okButton

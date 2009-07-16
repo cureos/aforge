@@ -1,4 +1,4 @@
-namespace MotionDetector
+namespace MotionDetectorSample
 {
     partial class MainForm
     {
@@ -40,15 +40,16 @@ namespace MotionDetector
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator( );
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.motionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
-            this.noneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
+            this.motionDetectionAlgorithmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
+            this.noneToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem( );
+            this.twoFramesDifferenceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
+            this.simpleBackgroundModelingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
+            this.motionProcessingAlgorithmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
+            this.noneToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem( );
+            this.motionBorderHighlightingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
+            this.blobCountingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
+            this.gridMotionAreaProcessingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator( );
-            this.detector1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
-            this.detector2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
-            this.detector3ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
-            this.detector4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator( );
-            this.highlightMotionRegionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator( );
             this.defineMotionregionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.localVideoCaptureSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
@@ -61,6 +62,7 @@ namespace MotionDetector
             this.objectsCountLabel = new System.Windows.Forms.ToolStripStatusLabel( );
             this.panel1 = new System.Windows.Forms.Panel( );
             this.videoSourcePlayer = new AForge.Controls.VideoSourcePlayer( );
+            this.motionAreaHighlightingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.menuMenu.SuspendLayout( );
             this.statusBar.SuspendLayout( );
             this.panel1.SuspendLayout( );
@@ -143,84 +145,95 @@ namespace MotionDetector
             // motionToolStripMenuItem
             // 
             this.motionToolStripMenuItem.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.noneToolStripMenuItem,
+            this.motionDetectionAlgorithmToolStripMenuItem,
+            this.motionProcessingAlgorithmToolStripMenuItem,
             this.toolStripMenuItem2,
-            this.detector1ToolStripMenuItem,
-            this.detector2ToolStripMenuItem,
-            this.detector3ToolStripMenuItem,
-            this.detector4ToolStripMenuItem,
-            this.toolStripMenuItem3,
-            this.highlightMotionRegionsToolStripMenuItem,
-            this.toolStripMenuItem4,
             this.defineMotionregionsToolStripMenuItem} );
             this.motionToolStripMenuItem.Name = "motionToolStripMenuItem";
             this.motionToolStripMenuItem.Size = new System.Drawing.Size( 58, 20 );
             this.motionToolStripMenuItem.Text = "&Motion";
             this.motionToolStripMenuItem.DropDownOpening += new System.EventHandler( this.motionToolStripMenuItem_DropDownOpening );
             // 
-            // noneToolStripMenuItem
+            // motionDetectionAlgorithmToolStripMenuItem
             // 
-            this.noneToolStripMenuItem.Name = "noneToolStripMenuItem";
-            this.noneToolStripMenuItem.Size = new System.Drawing.Size( 208, 22 );
-            this.noneToolStripMenuItem.Text = "&None";
-            this.noneToolStripMenuItem.Click += new System.EventHandler( this.noneToolStripMenuItem_Click );
+            this.motionDetectionAlgorithmToolStripMenuItem.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.noneToolStripMenuItem1,
+            this.twoFramesDifferenceToolStripMenuItem,
+            this.simpleBackgroundModelingToolStripMenuItem} );
+            this.motionDetectionAlgorithmToolStripMenuItem.Name = "motionDetectionAlgorithmToolStripMenuItem";
+            this.motionDetectionAlgorithmToolStripMenuItem.Size = new System.Drawing.Size( 230, 22 );
+            this.motionDetectionAlgorithmToolStripMenuItem.Text = "Motion Detection Algorithm";
+            // 
+            // noneToolStripMenuItem1
+            // 
+            this.noneToolStripMenuItem1.Name = "noneToolStripMenuItem1";
+            this.noneToolStripMenuItem1.Size = new System.Drawing.Size( 231, 22 );
+            this.noneToolStripMenuItem1.Text = "None";
+            this.noneToolStripMenuItem1.Click += new System.EventHandler( this.noneToolStripMenuItem1_Click );
+            // 
+            // twoFramesDifferenceToolStripMenuItem
+            // 
+            this.twoFramesDifferenceToolStripMenuItem.Name = "twoFramesDifferenceToolStripMenuItem";
+            this.twoFramesDifferenceToolStripMenuItem.Size = new System.Drawing.Size( 231, 22 );
+            this.twoFramesDifferenceToolStripMenuItem.Text = "Two Frames Difference";
+            this.twoFramesDifferenceToolStripMenuItem.Click += new System.EventHandler( this.twoFramesDifferenceToolStripMenuItem_Click );
+            // 
+            // simpleBackgroundModelingToolStripMenuItem
+            // 
+            this.simpleBackgroundModelingToolStripMenuItem.Name = "simpleBackgroundModelingToolStripMenuItem";
+            this.simpleBackgroundModelingToolStripMenuItem.Size = new System.Drawing.Size( 231, 22 );
+            this.simpleBackgroundModelingToolStripMenuItem.Text = "Simple Background Modeling";
+            this.simpleBackgroundModelingToolStripMenuItem.Click += new System.EventHandler( this.simpleBackgroundModelingToolStripMenuItem_Click );
+            // 
+            // motionProcessingAlgorithmToolStripMenuItem
+            // 
+            this.motionProcessingAlgorithmToolStripMenuItem.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.noneToolStripMenuItem2,
+            this.motionAreaHighlightingToolStripMenuItem,
+            this.motionBorderHighlightingToolStripMenuItem,
+            this.blobCountingToolStripMenuItem,
+            this.gridMotionAreaProcessingToolStripMenuItem} );
+            this.motionProcessingAlgorithmToolStripMenuItem.Name = "motionProcessingAlgorithmToolStripMenuItem";
+            this.motionProcessingAlgorithmToolStripMenuItem.Size = new System.Drawing.Size( 230, 22 );
+            this.motionProcessingAlgorithmToolStripMenuItem.Text = "Motion Processing Algorithm";
+            // 
+            // noneToolStripMenuItem2
+            // 
+            this.noneToolStripMenuItem2.Name = "noneToolStripMenuItem2";
+            this.noneToolStripMenuItem2.Size = new System.Drawing.Size( 225, 22 );
+            this.noneToolStripMenuItem2.Text = "None";
+            this.noneToolStripMenuItem2.Click += new System.EventHandler( this.noneToolStripMenuItem2_Click );
+            // 
+            // motionBorderHighlightingToolStripMenuItem
+            // 
+            this.motionBorderHighlightingToolStripMenuItem.Name = "motionBorderHighlightingToolStripMenuItem";
+            this.motionBorderHighlightingToolStripMenuItem.Size = new System.Drawing.Size( 225, 22 );
+            this.motionBorderHighlightingToolStripMenuItem.Text = "Motion Border Highlighting";
+            this.motionBorderHighlightingToolStripMenuItem.Click += new System.EventHandler( this.motionBorderHighlightingToolStripMenuItem_Click );
+            // 
+            // blobCountingToolStripMenuItem
+            // 
+            this.blobCountingToolStripMenuItem.Name = "blobCountingToolStripMenuItem";
+            this.blobCountingToolStripMenuItem.Size = new System.Drawing.Size( 225, 22 );
+            this.blobCountingToolStripMenuItem.Text = "Blob Counting Processing";
+            this.blobCountingToolStripMenuItem.Click += new System.EventHandler( this.blobCountingToolStripMenuItem_Click );
+            // 
+            // gridMotionAreaProcessingToolStripMenuItem
+            // 
+            this.gridMotionAreaProcessingToolStripMenuItem.Name = "gridMotionAreaProcessingToolStripMenuItem";
+            this.gridMotionAreaProcessingToolStripMenuItem.Size = new System.Drawing.Size( 225, 22 );
+            this.gridMotionAreaProcessingToolStripMenuItem.Text = "Grid Motion Area Processing";
+            this.gridMotionAreaProcessingToolStripMenuItem.Click += new System.EventHandler( this.gridMotionAreaProcessingToolStripMenuItem_Click );
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size( 205, 6 );
-            // 
-            // detector1ToolStripMenuItem
-            // 
-            this.detector1ToolStripMenuItem.Name = "detector1ToolStripMenuItem";
-            this.detector1ToolStripMenuItem.Size = new System.Drawing.Size( 208, 22 );
-            this.detector1ToolStripMenuItem.Text = "Detector &1";
-            this.detector1ToolStripMenuItem.Click += new System.EventHandler( this.detector1ToolStripMenuItem_Click );
-            // 
-            // detector2ToolStripMenuItem
-            // 
-            this.detector2ToolStripMenuItem.Name = "detector2ToolStripMenuItem";
-            this.detector2ToolStripMenuItem.Size = new System.Drawing.Size( 208, 22 );
-            this.detector2ToolStripMenuItem.Text = "Detector &2";
-            this.detector2ToolStripMenuItem.Click += new System.EventHandler( this.detector2ToolStripMenuItem_Click );
-            // 
-            // detector3ToolStripMenuItem
-            // 
-            this.detector3ToolStripMenuItem.Name = "detector3ToolStripMenuItem";
-            this.detector3ToolStripMenuItem.Size = new System.Drawing.Size( 208, 22 );
-            this.detector3ToolStripMenuItem.Text = "Detector &3";
-            this.detector3ToolStripMenuItem.Click += new System.EventHandler( this.detector3ToolStripMenuItem_Click );
-            // 
-            // detector4ToolStripMenuItem
-            // 
-            this.detector4ToolStripMenuItem.Name = "detector4ToolStripMenuItem";
-            this.detector4ToolStripMenuItem.Size = new System.Drawing.Size( 208, 22 );
-            this.detector4ToolStripMenuItem.Text = "Detector &4";
-            this.detector4ToolStripMenuItem.Click += new System.EventHandler( this.detector4ToolStripMenuItem_Click );
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size( 205, 6 );
-            // 
-            // highlightMotionRegionsToolStripMenuItem
-            // 
-            this.highlightMotionRegionsToolStripMenuItem.Checked = true;
-            this.highlightMotionRegionsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.highlightMotionRegionsToolStripMenuItem.Name = "highlightMotionRegionsToolStripMenuItem";
-            this.highlightMotionRegionsToolStripMenuItem.Size = new System.Drawing.Size( 208, 22 );
-            this.highlightMotionRegionsToolStripMenuItem.Text = "Highlight motion regions";
-            this.highlightMotionRegionsToolStripMenuItem.Click += new System.EventHandler( this.highlightMotionRegionsToolStripMenuItem_Click );
-            // 
-            // toolStripMenuItem4
-            // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size( 205, 6 );
+            this.toolStripMenuItem2.Size = new System.Drawing.Size( 227, 6 );
             // 
             // defineMotionregionsToolStripMenuItem
             // 
             this.defineMotionregionsToolStripMenuItem.Name = "defineMotionregionsToolStripMenuItem";
-            this.defineMotionregionsToolStripMenuItem.Size = new System.Drawing.Size( 208, 22 );
+            this.defineMotionregionsToolStripMenuItem.Size = new System.Drawing.Size( 230, 22 );
             this.defineMotionregionsToolStripMenuItem.Text = "Define motion &regions";
             this.defineMotionregionsToolStripMenuItem.Click += new System.EventHandler( this.defineMotionregionsToolStripMenuItem_Click );
             // 
@@ -318,6 +331,13 @@ namespace MotionDetector
             this.videoSourcePlayer.VideoSource = null;
             this.videoSourcePlayer.NewFrame += new AForge.Controls.VideoSourcePlayer.NewFrameHandler( this.videoSourcePlayer_NewFrame );
             // 
+            // motionAreaHighlightingToolStripMenuItem
+            // 
+            this.motionAreaHighlightingToolStripMenuItem.Name = "motionAreaHighlightingToolStripMenuItem";
+            this.motionAreaHighlightingToolStripMenuItem.Size = new System.Drawing.Size( 225, 22 );
+            this.motionAreaHighlightingToolStripMenuItem.Text = "Motion Area Highlighting";
+            this.motionAreaHighlightingToolStripMenuItem.Click += new System.EventHandler( this.motionAreaHighlightingToolStripMenuItem_Click );
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
@@ -358,22 +378,24 @@ namespace MotionDetector
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ToolStripMenuItem openJPEGURLToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openMJPEGURLToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem noneToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem detector1ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem detector2ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem detector3ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
-        private System.Windows.Forms.ToolStripMenuItem highlightMotionRegionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem localVideoCaptureDeviceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openVideoFileusingDirectShowToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem detector4ToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel objectsCountLabel;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem defineMotionregionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem localVideoCaptureSettingsToolStripMenuItem;
         private AForge.Controls.VideoSourcePlayer videoSourcePlayer;
+        private System.Windows.Forms.ToolStripMenuItem motionDetectionAlgorithmToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem noneToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem twoFramesDifferenceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem simpleBackgroundModelingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem motionProcessingAlgorithmToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem noneToolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem motionBorderHighlightingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem blobCountingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem gridMotionAreaProcessingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem motionAreaHighlightingToolStripMenuItem;
     }
 }
 

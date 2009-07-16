@@ -1,8 +1,9 @@
-// AForge.NET Framework
 // Motion Detection sample application
+// AForge.NET Framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007
-// andrew.kirillov@gmail.com
+// Copyright © Andrew Kirillov, 2005-2009
+// andrew.kirillov@aforgenet.com
 //
 
 using System;
@@ -19,16 +20,19 @@ using AForge.Video.VFW;
 using AForge.Video.DirectShow;
 using AForge.Vision.Motion;
 
-namespace MotionDetector
+namespace MotionDetectorSample
 {
     public partial class MainForm : Form
     {
         // opened video source
         private IVideoSource videoSource = null;
         // motion detector
-        private AForge.Vision.Motion.MotionDetector detector = null;
-        // motion detector's type
-        private int detectorType = 0;
+        MotionDetector detector = new MotionDetector(
+            new TwoFramesDifferenceDetector( ),
+            new MotionAreaHighlighting( ) );
+        // motion detection and processing algorithm
+        private int motionDetectionType = 1;
+        private int motionProcessingType = 1;
 
         // statistics length
         private const int statLength = 15;
@@ -249,99 +253,106 @@ namespace MotionDetector
         }
 
         // Turn off motion detection
-        private void noneToolStripMenuItem_Click( object sender, EventArgs e )
+        private void noneToolStripMenuItem1_Click( object sender, EventArgs e )
         {
-            detectorType = 0;
-            SetMotionDetector( null );
+            motionDetectionType = 0;
+            SetMotionDetectionAlgorithm( null );
         }
 
-        // Turn on motion detector type #1 - two frames difference
-        private void detector1ToolStripMenuItem_Click( object sender, EventArgs e )
+        // Set Two Frames Difference motion detection algorithm
+        private void twoFramesDifferenceToolStripMenuItem_Click( object sender, EventArgs e )
         {
-            detectorType = 1;
-            SetMotionDetector( new AForge.Vision.Motion.MotionDetector( new TwoFramesDifferenceDetector( ), new MotionAreaHighlighting( ) ) );
+            motionDetectionType = 1;
+            SetMotionDetectionAlgorithm( new TwoFramesDifferenceDetector( ) );
         }
 
-        // Turn on motion detector type #2 - high precision background modeling
-        private void detector2ToolStripMenuItem_Click( object sender, EventArgs e )
+        // Set Simple Background Modeling motion detection algorithm
+        private void simpleBackgroundModelingToolStripMenuItem_Click( object sender, EventArgs e )
         {
-            detectorType = 2;
-            //SetMotionDetector( new AForge.Vision.Motion.MotionDetector( new SimpleBackgroundModelingDetector( ), new BlobCountingObjectsProcessing( ) ) );
-            SetMotionDetector( new AForge.Vision.Motion.MotionDetector( new SimpleBackgroundModelingDetector( ), new GridMotionAreaProcessing( 5, 5 ) ) );
+            motionDetectionType = 2;
+            SetMotionDetectionAlgorithm( new SimpleBackgroundModelingDetector( true, true ) );
         }
 
-        // Turn on motion detector type #3 - low precision background modeling
-        private void detector3ToolStripMenuItem_Click( object sender, EventArgs e )
+        // Turn off motion prcessing
+        private void noneToolStripMenuItem2_Click( object sender, EventArgs e )
         {
-/*            detectorType = 3;
-            SetMotionDetector( new BackgroundModelingLowPrecisionMotionDetector(
-                highlightMotionRegionsToolStripMenuItem.Checked ) ); */
+            motionProcessingType = 0;
+            SetMotionProcessingAlgorithm( null );
         }
 
-        // Turn on motion detector type #4 - counting motion detector
-        private void detector4ToolStripMenuItem_Click( object sender, EventArgs e )
+        // Set motion area highlighting
+        private void motionAreaHighlightingToolStripMenuItem_Click( object sender, EventArgs e )
         {
-/*            detectorType = 4;
-            SetMotionDetector( new CountingMotionDetector(
-                highlightMotionRegionsToolStripMenuItem.Checked ) ); */
+            motionProcessingType = 1;
+            SetMotionProcessingAlgorithm( new MotionAreaHighlighting( ) );
         }
 
-        // Set motion detector
-        private void SetMotionDetector( AForge.Vision.Motion.MotionDetector detector )
+        // Set motion borders highlighting
+        private void motionBorderHighlightingToolStripMenuItem_Click( object sender, EventArgs e )
+        {
+            motionProcessingType = 2;
+            SetMotionProcessingAlgorithm( new MotionBorderHighlighting( ) );
+        }
+
+        // Set objects' counter
+        private void blobCountingToolStripMenuItem_Click( object sender, EventArgs e )
+        {
+            motionProcessingType = 3;
+            SetMotionProcessingAlgorithm( new BlobCountingObjectsProcessing( ) );
+        }
+
+        // Set grid motion processing
+        private void gridMotionAreaProcessingToolStripMenuItem_Click( object sender, EventArgs e )
+        {
+            motionProcessingType = 4;
+            SetMotionProcessingAlgorithm( new GridMotionAreaProcessing( 32, 32 ) );
+        }
+
+        // Set new motion detection algorithm
+        private void SetMotionDetectionAlgorithm( IMotionDetector detectionAlgorithm )
         {
             lock ( this )
             {
-                this.detector = detector;
+                detector.MotionDetectionAlgorthm = detectionAlgorithm;
+            }
+        }
+
+        // Set new motion processing algorithm
+        private void SetMotionProcessingAlgorithm( IMotionProcessing processingAlgorithm )
+        {
+            lock ( this )
+            {
+                detector.MotionProcessingAlgorithm = processingAlgorithm;
             }
         }
 
         // Motion menu is opening
         private void motionToolStripMenuItem_DropDownOpening( object sender, EventArgs e )
         {
-            ToolStripMenuItem[] items = new ToolStripMenuItem[]
-			{
-				noneToolStripMenuItem, detector1ToolStripMenuItem, detector2ToolStripMenuItem,
-                detector3ToolStripMenuItem, detector4ToolStripMenuItem
-			};
-
-            for ( int i = 0; i < items.Length; i++ )
+            ToolStripMenuItem[] motionDetectionItems = new ToolStripMenuItem[]
             {
-                items[i].Checked = ( i == detectorType );
+                noneToolStripMenuItem1, twoFramesDifferenceToolStripMenuItem,
+                simpleBackgroundModelingToolStripMenuItem
+            };
+            ToolStripMenuItem[] motionProcessingItems = new ToolStripMenuItem[]
+            {
+                noneToolStripMenuItem2, motionAreaHighlightingToolStripMenuItem,
+                motionBorderHighlightingToolStripMenuItem, blobCountingToolStripMenuItem,
+                gridMotionAreaProcessingToolStripMenuItem
+            };
+
+            for ( int i = 0; i < motionDetectionItems.Length; i++ )
+            {
+                motionDetectionItems[i].Checked = ( i == motionDetectionType );
+            }
+            for ( int i = 0; i < motionProcessingItems.Length; i++ )
+            {
+                motionProcessingItems[i].Checked = ( i == motionProcessingType );
             }
 
             // enable/disable defining motion zones
 //            defineMotionregionsToolStripMenuItem.Enabled =
 //                ( ( cameraWindow.Camera != null ) && ( cameraWindow.Camera.LastFrame != null ) && ( detector is IZonesMotionDetector ) );
-        }
-
-        // Turn on/off motion regions highlight
-        private void highlightMotionRegionsToolStripMenuItem_Click( object sender, EventArgs e )
-        {
-/*            highlightMotionRegionsToolStripMenuItem.Checked = !highlightMotionRegionsToolStripMenuItem.Checked;
-
-            // update motion detector
-            Camera camera = cameraWindow.Camera;
-            if ( camera != null )
-            {
-                IMotionDetector detector = camera.MotionDetector;
-
-                if ( detector != null )
-                    detector.HighlightMotionRegions = highlightMotionRegionsToolStripMenuItem.Checked;
-            }*/
-        }
-
-        // On new frame
-        private void camera_NewFrame( object sender, System.EventArgs e )
-        {
-/*            if ( detector is ICountingMotionDetector )
-            {
-                ICountingMotionDetector countingDetector = (ICountingMotionDetector) detector;
-                objectsCountLabel.Text = "Objects: " + countingDetector.ObjectsCount.ToString( );
-            }
-            else
-            {
-                objectsCountLabel.Text = "";
-            }*/
         }
 
         // On "Define motion regions" menu item selected
@@ -387,6 +398,5 @@ namespace MotionDetector
                 ( (VideoCaptureDevice) videoSource ).DisplayPropertyPage( this.Handle );
             }
         }
-
     }
 }
