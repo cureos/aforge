@@ -310,6 +310,23 @@ namespace AForge.Controls
             }
         }
 
+        /// <summary>
+        /// Get clone of current video frame displayed by the control.
+        /// </summary>
+        /// 
+        /// <returns>Returns clone of the video frame, which is currently displayed
+        /// by the control - the last video frame received from video source. If the
+        /// control did not receive any video frames yet, then the method returns
+        /// <see langword="null"/>.</returns>
+        /// 
+        public Bitmap GetCurrentVideoFrame( )
+        {
+            lock ( this )
+            {
+                return ( currentFrame == null ) ? null : (Bitmap) currentFrame.Clone( );
+            }
+        }
+
         // Paing control
         private void VideoSourcePlayer_Paint( object sender, PaintEventArgs e )
         {
