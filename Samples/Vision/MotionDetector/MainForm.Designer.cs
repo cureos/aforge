@@ -32,11 +32,11 @@ namespace MotionDetectorSample
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( MainForm ) );
             this.menuMenu = new System.Windows.Forms.MenuStrip( );
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
+            this.openVideoFileusingDirectShowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
+            this.localVideoCaptureDeviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.openJPEGURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.openMJPEGURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
-            this.localVideoCaptureDeviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
-            this.openVideoFileusingDirectShowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator( );
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.motionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
@@ -46,6 +46,7 @@ namespace MotionDetectorSample
             this.simpleBackgroundModelingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.motionProcessingAlgorithmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.noneToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem( );
+            this.motionAreaHighlightingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.motionBorderHighlightingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.blobCountingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.gridMotionAreaProcessingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
@@ -62,7 +63,9 @@ namespace MotionDetectorSample
             this.objectsCountLabel = new System.Windows.Forms.ToolStripStatusLabel( );
             this.panel1 = new System.Windows.Forms.Panel( );
             this.videoSourcePlayer = new AForge.Controls.VideoSourcePlayer( );
-            this.motionAreaHighlightingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
+            this.alarmTimer = new System.Windows.Forms.Timer( this.components );
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator( );
+            this.showMotionHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.menuMenu.SuspendLayout( );
             this.statusBar.SuspendLayout( );
             this.panel1.SuspendLayout( );
@@ -83,62 +86,62 @@ namespace MotionDetectorSample
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.openToolStripMenuItem,
+            this.openVideoFileusingDirectShowToolStripMenuItem,
+            this.localVideoCaptureDeviceToolStripMenuItem,
             this.openJPEGURLToolStripMenuItem,
             this.openMJPEGURLToolStripMenuItem,
-            this.localVideoCaptureDeviceToolStripMenuItem,
-            this.openVideoFileusingDirectShowToolStripMenuItem,
+            this.openToolStripMenuItem,
             this.toolStripMenuItem1,
             this.exitToolStripMenuItem} );
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size( 37, 20 );
             this.fileToolStripMenuItem.Text = "&File";
             // 
-            // openToolStripMenuItem
+            // openVideoFileusingDirectShowToolStripMenuItem
             // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.ShortcutKeys = ( (System.Windows.Forms.Keys) ( ( System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O ) ) );
-            this.openToolStripMenuItem.Size = new System.Drawing.Size( 257, 22 );
-            this.openToolStripMenuItem.Text = "&Open";
-            this.openToolStripMenuItem.Click += new System.EventHandler( this.openToolStripMenuItem_Click );
+            this.openVideoFileusingDirectShowToolStripMenuItem.Name = "openVideoFileusingDirectShowToolStripMenuItem";
+            this.openVideoFileusingDirectShowToolStripMenuItem.ShortcutKeys = ( (System.Windows.Forms.Keys) ( ( System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O ) ) );
+            this.openVideoFileusingDirectShowToolStripMenuItem.Size = new System.Drawing.Size( 270, 22 );
+            this.openVideoFileusingDirectShowToolStripMenuItem.Text = "&Open";
+            this.openVideoFileusingDirectShowToolStripMenuItem.Click += new System.EventHandler( this.openVideoFileusingDirectShowToolStripMenuItem_Click );
+            // 
+            // localVideoCaptureDeviceToolStripMenuItem
+            // 
+            this.localVideoCaptureDeviceToolStripMenuItem.Name = "localVideoCaptureDeviceToolStripMenuItem";
+            this.localVideoCaptureDeviceToolStripMenuItem.Size = new System.Drawing.Size( 270, 22 );
+            this.localVideoCaptureDeviceToolStripMenuItem.Text = "Local &Video Capture Device";
+            this.localVideoCaptureDeviceToolStripMenuItem.Click += new System.EventHandler( this.localVideoCaptureDeviceToolStripMenuItem_Click );
             // 
             // openJPEGURLToolStripMenuItem
             // 
             this.openJPEGURLToolStripMenuItem.Name = "openJPEGURLToolStripMenuItem";
-            this.openJPEGURLToolStripMenuItem.Size = new System.Drawing.Size( 257, 22 );
+            this.openJPEGURLToolStripMenuItem.Size = new System.Drawing.Size( 270, 22 );
             this.openJPEGURLToolStripMenuItem.Text = "Open JPEG &URL";
             this.openJPEGURLToolStripMenuItem.Click += new System.EventHandler( this.openJPEGURLToolStripMenuItem_Click );
             // 
             // openMJPEGURLToolStripMenuItem
             // 
             this.openMJPEGURLToolStripMenuItem.Name = "openMJPEGURLToolStripMenuItem";
-            this.openMJPEGURLToolStripMenuItem.Size = new System.Drawing.Size( 257, 22 );
+            this.openMJPEGURLToolStripMenuItem.Size = new System.Drawing.Size( 270, 22 );
             this.openMJPEGURLToolStripMenuItem.Text = "Open &MJPEG URL";
             this.openMJPEGURLToolStripMenuItem.Click += new System.EventHandler( this.openMJPEGURLToolStripMenuItem_Click );
             // 
-            // localVideoCaptureDeviceToolStripMenuItem
+            // openToolStripMenuItem
             // 
-            this.localVideoCaptureDeviceToolStripMenuItem.Name = "localVideoCaptureDeviceToolStripMenuItem";
-            this.localVideoCaptureDeviceToolStripMenuItem.Size = new System.Drawing.Size( 257, 22 );
-            this.localVideoCaptureDeviceToolStripMenuItem.Text = "Local &Video Capture Device";
-            this.localVideoCaptureDeviceToolStripMenuItem.Click += new System.EventHandler( this.localVideoCaptureDeviceToolStripMenuItem_Click );
-            // 
-            // openVideoFileusingDirectShowToolStripMenuItem
-            // 
-            this.openVideoFileusingDirectShowToolStripMenuItem.Name = "openVideoFileusingDirectShowToolStripMenuItem";
-            this.openVideoFileusingDirectShowToolStripMenuItem.Size = new System.Drawing.Size( 257, 22 );
-            this.openVideoFileusingDirectShowToolStripMenuItem.Text = "Open video &file (using DirectShow)";
-            this.openVideoFileusingDirectShowToolStripMenuItem.Click += new System.EventHandler( this.openVideoFileusingDirectShowToolStripMenuItem_Click );
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size( 270, 22 );
+            this.openToolStripMenuItem.Text = "Open video file (using VFW interface)";
+            this.openToolStripMenuItem.Click += new System.EventHandler( this.openToolStripMenuItem_Click );
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size( 254, 6 );
+            this.toolStripMenuItem1.Size = new System.Drawing.Size( 267, 6 );
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size( 257, 22 );
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size( 270, 22 );
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler( this.exitToolStripMenuItem_Click );
             // 
@@ -148,7 +151,9 @@ namespace MotionDetectorSample
             this.motionDetectionAlgorithmToolStripMenuItem,
             this.motionProcessingAlgorithmToolStripMenuItem,
             this.toolStripMenuItem2,
-            this.defineMotionregionsToolStripMenuItem} );
+            this.defineMotionregionsToolStripMenuItem,
+            this.toolStripMenuItem3,
+            this.showMotionHistoryToolStripMenuItem} );
             this.motionToolStripMenuItem.Name = "motionToolStripMenuItem";
             this.motionToolStripMenuItem.Size = new System.Drawing.Size( 58, 20 );
             this.motionToolStripMenuItem.Text = "&Motion";
@@ -203,6 +208,13 @@ namespace MotionDetectorSample
             this.noneToolStripMenuItem2.Size = new System.Drawing.Size( 225, 22 );
             this.noneToolStripMenuItem2.Text = "None";
             this.noneToolStripMenuItem2.Click += new System.EventHandler( this.noneToolStripMenuItem2_Click );
+            // 
+            // motionAreaHighlightingToolStripMenuItem
+            // 
+            this.motionAreaHighlightingToolStripMenuItem.Name = "motionAreaHighlightingToolStripMenuItem";
+            this.motionAreaHighlightingToolStripMenuItem.Size = new System.Drawing.Size( 225, 22 );
+            this.motionAreaHighlightingToolStripMenuItem.Text = "Motion Area Highlighting";
+            this.motionAreaHighlightingToolStripMenuItem.Click += new System.EventHandler( this.motionAreaHighlightingToolStripMenuItem_Click );
             // 
             // motionBorderHighlightingToolStripMenuItem
             // 
@@ -331,12 +343,22 @@ namespace MotionDetectorSample
             this.videoSourcePlayer.VideoSource = null;
             this.videoSourcePlayer.NewFrame += new AForge.Controls.VideoSourcePlayer.NewFrameHandler( this.videoSourcePlayer_NewFrame );
             // 
-            // motionAreaHighlightingToolStripMenuItem
+            // alarmTimer
             // 
-            this.motionAreaHighlightingToolStripMenuItem.Name = "motionAreaHighlightingToolStripMenuItem";
-            this.motionAreaHighlightingToolStripMenuItem.Size = new System.Drawing.Size( 225, 22 );
-            this.motionAreaHighlightingToolStripMenuItem.Text = "Motion Area Highlighting";
-            this.motionAreaHighlightingToolStripMenuItem.Click += new System.EventHandler( this.motionAreaHighlightingToolStripMenuItem_Click );
+            this.alarmTimer.Interval = 200;
+            this.alarmTimer.Tick += new System.EventHandler( this.alarmTimer_Tick );
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size( 227, 6 );
+            // 
+            // showMotionHistoryToolStripMenuItem
+            // 
+            this.showMotionHistoryToolStripMenuItem.Name = "showMotionHistoryToolStripMenuItem";
+            this.showMotionHistoryToolStripMenuItem.Size = new System.Drawing.Size( 230, 22 );
+            this.showMotionHistoryToolStripMenuItem.Text = "Show motion history";
+            this.showMotionHistoryToolStripMenuItem.Click += new System.EventHandler( this.showMotionHistoryToolStripMenuItem_Click );
             // 
             // MainForm
             // 
@@ -396,6 +418,9 @@ namespace MotionDetectorSample
         private System.Windows.Forms.ToolStripMenuItem blobCountingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem gridMotionAreaProcessingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem motionAreaHighlightingToolStripMenuItem;
+        private System.Windows.Forms.Timer alarmTimer;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem showMotionHistoryToolStripMenuItem;
     }
 }
 

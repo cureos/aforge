@@ -11,10 +11,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 
+using AForge.Imaging;
 using AForge.Video;
 using AForge.Video.VFW;
 using AForge.Video.DirectShow;
@@ -43,6 +45,11 @@ namespace MotionDetectorSample
         // statistics array
         private int[] statCount = new int[statLength];
 
+        // counter used for flashing
+        private int flash = 0;
+        private float motionAlarmLevel = 0.015f;
+
+        private List<float> motionHistory = new List<float>( );
 
         // Constructor
         public MainForm( )
@@ -174,8 +181,9 @@ namespace MotionDetectorSample
             // reset statistics
             statIndex = statReady = 0;
 
-            // start timer
+            // start timers
             timer.Start( );
+            alarmTimer.Start( );
 
             videoSource = source;
 
@@ -199,13 +207,17 @@ namespace MotionDetectorSample
             if ( videoSourcePlayer.IsRunning )
                 videoSourcePlayer.Stop( );
 
-            // stop timer
+            // stop timers
             timer.Stop( );
+            alarmTimer.Stop( );
+
+            motionHistory.Clear( );
 
             // reset motion detector
             if ( detector != null )
                 detector.Reset( );
 
+            videoSourcePlayer.BorderColor = Color.Black;
             this.Cursor = Cursors.Default;
         }
 
@@ -216,9 +228,84 @@ namespace MotionDetectorSample
             {
                 if ( detector != null )
                 {
-                    double motionLevel = detector.ProcessFrame( image );
+                    float motionLevel = detector.ProcessFrame( image );
+
+                    if ( motionLevel > motionAlarmLevel )
+                    {
+                        // flash for 2 seconds
+                        flash = (int) ( 2 * ( 1000 / alarmTimer.Interval ) );
+                    }
+
+                    // check objects' count
+                    if ( detector.MotionProcessingAlgorithm is BlobCountingObjectsProcessing )
+                    {
+                        BlobCountingObjectsProcessing countingDetector = (BlobCountingObjectsProcessing) detector.MotionProcessingAlgorithm;
+                        objectsCountLabel.Text = "Objects: " + countingDetector.ObjectsCount.ToString( );
+                    }
+                    else
+                    {
+                        objectsCountLabel.Text = "";
+                    }
+
+                    // accumulate history
+                    motionHistory.Add( motionLevel );
+                    if ( motionHistory.Count > 300 )
+                    {
+                        motionHistory.RemoveAt( 0 );
+                    }
+
+                    if ( showMotionHistoryToolStripMenuItem.Checked )
+                        DrawMotionHistory( image );
                 }
             }
+        }
+
+        // Draw motion history
+        private void DrawMotionHistory( Bitmap image )
+        {
+            Color greenColor  = Color.FromArgb( 128, 0, 255, 0);
+            Color yellowColor = Color.FromArgb( 128, 255, 255, 0 );
+            Color redColor    = Color.FromArgb( 128, 255, 0, 0 );
+
+            BitmapData bitmapData = image.LockBits( new Rectangle( 0, 0, image.Width, image.Height ),
+                ImageLockMode.ReadWrite, image.PixelFormat );
+
+            int t1 = (int) ( motionAlarmLevel * 500 );
+            int t2 = (int) ( 0.075 * 500 );
+
+            for ( int i = 1, n = motionHistory.Count; i <= n; i++ )
+            {
+                int motionBarLength = (int) ( motionHistory[n - i] * 500 );
+
+                if ( motionBarLength == 0 )
+                    continue;
+
+                if ( motionBarLength > 50 )
+                    motionBarLength = 50;
+
+                Drawing.Line( bitmapData,
+                    new Point( image.Width - i, image.Height - 1 ),
+                    new Point( image.Width - i, image.Height - 1 - motionBarLength ),
+                    greenColor );
+
+                if ( motionBarLength > t1 )
+                {
+                    Drawing.Line( bitmapData,
+                        new Point( image.Width - i, image.Height - 1 - t1 ),
+                        new Point( image.Width - i, image.Height - 1 - motionBarLength ),
+                        yellowColor );
+                }
+
+                if ( motionBarLength > t2 )
+                {
+                    Drawing.Line( bitmapData,
+                        new Point( image.Width - i, image.Height - 1 - t2 ),
+                        new Point( image.Width - i, image.Height - 1 - motionBarLength ),
+                        redColor );
+                }
+            }
+
+            image.UnlockBits( bitmapData );
         }
 
         // On timer event - gather statistics
@@ -273,7 +360,7 @@ namespace MotionDetectorSample
             SetMotionDetectionAlgorithm( new SimpleBackgroundModelingDetector( true, true ) );
         }
 
-        // Turn off motion prcessing
+        // Turn off motion processing
         private void noneToolStripMenuItem2_Click( object sender, EventArgs e )
         {
             motionProcessingType = 0;
@@ -314,6 +401,18 @@ namespace MotionDetectorSample
             lock ( this )
             {
                 detector.MotionDetectionAlgorthm = detectionAlgorithm;
+                motionHistory.Clear( );
+
+                if ( detectionAlgorithm is TwoFramesDifferenceDetector )
+                {
+                    if (
+                        ( detector.MotionProcessingAlgorithm is MotionBorderHighlighting ) ||
+                        ( detector.MotionProcessingAlgorithm is BlobCountingObjectsProcessing ) )
+                    {
+                        motionProcessingType = 1;
+                        SetMotionProcessingAlgorithm( new MotionAreaHighlighting( ) );
+                    }
+                }
             }
         }
 
@@ -350,37 +449,42 @@ namespace MotionDetectorSample
                 motionProcessingItems[i].Checked = ( i == motionProcessingType );
             }
 
-            // enable/disable defining motion zones
-//            defineMotionregionsToolStripMenuItem.Enabled =
-//                ( ( cameraWindow.Camera != null ) && ( cameraWindow.Camera.LastFrame != null ) && ( detector is IZonesMotionDetector ) );
+            // enable/disable some motion processing algorithm depending on detection algorithm
+            bool enabled = ( motionDetectionType != 1 );
+            motionBorderHighlightingToolStripMenuItem.Enabled = enabled;
+            blobCountingToolStripMenuItem.Enabled = enabled;
         }
 
         // On "Define motion regions" menu item selected
         private void defineMotionregionsToolStripMenuItem_Click( object sender, EventArgs e )
         {
-/*            if ( ( cameraWindow.Camera != null ) && ( cameraWindow.Camera.LastFrame != null ) && ( detector is IZonesMotionDetector ) )
+            if ( videoSourcePlayer.VideoSource != null )
             {
-                MotionRegionsForm form = new MotionRegionsForm( );
-                IZonesMotionDetector zonesDetector = (IZonesMotionDetector) detector;
+                Bitmap currentVideoFrame = videoSourcePlayer.GetCurrentVideoFrame( );
 
-                // get last frame from camera
-                cameraWindow.Camera.Lock( );
-                form.VideoFrame = AForge.Imaging.Image.Clone( cameraWindow.Camera.LastFrame );
-                cameraWindow.Camera.Unlock( );
-
-                form.MotionRectangles = zonesDetector.MotionZones;
-
-                // show the dialog
-                if ( form.ShowDialog( this ) == DialogResult.OK )
+                if ( currentVideoFrame != null )
                 {
-                    Rectangle[] rects = form.MotionRectangles;
+                    MotionRegionsForm form = new MotionRegionsForm( );
+                    form.VideoFrame = currentVideoFrame;
+                    form.MotionRectangles = detector.MotionZones;
 
-                    if ( rects.Length == 0 )
-                        rects = null;
+                    // show the dialog
+                    if ( form.ShowDialog( this ) == DialogResult.OK )
+                    {
+                        Rectangle[] rects = form.MotionRectangles;
 
-                    zonesDetector.MotionZones = rects;
+                        if ( rects.Length == 0 )
+                            rects = null;
+
+                        detector.MotionZones = rects;
+                    }
+
+                    return;
                 }
-            }*/
+            }
+
+            MessageBox.Show( "It is required to start video source and receive at least first video frame before setting motion zones.",
+                "Message", MessageBoxButtons.OK, MessageBoxIcon.Information );
         }
 
         // On opening of Tools menu
@@ -397,6 +501,22 @@ namespace MotionDetectorSample
             {
                 ( (VideoCaptureDevice) videoSource ).DisplayPropertyPage( this.Handle );
             }
+        }
+
+        // Timer used for flashing in the case if motion is detected
+        private void alarmTimer_Tick( object sender, EventArgs e )
+        {
+            if ( flash != 0 )
+            {
+                videoSourcePlayer.BorderColor = ( flash % 2 == 1 ) ? Color.Black : Color.Red;
+                flash--;
+            }
+        }
+
+        // Change status of menu item when it is clicked
+        private void showMotionHistoryToolStripMenuItem_Click( object sender, EventArgs e )
+        {
+            showMotionHistoryToolStripMenuItem.Checked = !showMotionHistoryToolStripMenuItem.Checked;
         }
     }
 }
