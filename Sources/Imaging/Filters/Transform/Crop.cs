@@ -102,10 +102,6 @@ namespace AForge.Imaging.Filters
         /// 
         protected override unsafe void ProcessFilter( UnmanagedImage sourceData, UnmanagedImage destinationData )
         {
-            // get source image size
-            int width = sourceData.Width;
-            int height = sourceData.Height;
-
             // validate rectangle
             Rectangle srcRect = rect;
             srcRect.Intersect( new Rectangle( 0, 0, sourceData.Width, sourceData.Height ) );

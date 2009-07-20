@@ -126,7 +126,6 @@ namespace AForge.Imaging.Filters
             int srcStride = source.Stride;
             int dstStride = destination.Stride;
             int srcOffset = srcStride - rect.Width;
-            int dstOffset = dstStride - rect.Width;
 
             int start;
 

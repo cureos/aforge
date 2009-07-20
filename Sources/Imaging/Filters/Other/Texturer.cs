@@ -252,7 +252,7 @@ namespace AForge.Imaging.Filters
                     // process each pixel
                     for ( int i = 0; i < pixelSize; i++, ptr++ )
                     {
-                        *ptr = (byte) Math.Min( 255.0f, ( preserveLevel * *ptr ) + ( filterLevel * *ptr ) * t );
+                        *ptr = (byte) Math.Min( 255.0f, ( preserveLevel * ( *ptr ) ) + ( filterLevel * ( *ptr ) ) * t );
                     }
                 }
                 ptr += offset;

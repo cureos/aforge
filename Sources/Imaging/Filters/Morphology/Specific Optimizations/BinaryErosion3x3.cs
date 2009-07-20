@@ -66,8 +66,6 @@ namespace AForge.Imaging.Filters
         /// 
         protected override unsafe void ProcessFilter( UnmanagedImage sourceData, UnmanagedImage destinationData, Rectangle rect )
         {
-            PixelFormat pixelFormat = sourceData.PixelFormat;
-
             if ( ( rect.Width < 3 ) || ( rect.Height < 3 ) )
             {
                 throw new InvalidImagePropertiesException( "Processing rectangle mast be at least 3x3 in size." );

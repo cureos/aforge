@@ -101,10 +101,6 @@ namespace AForge.Imaging.Filters
             // check pixel format of the source image
             CheckSourceFormat( imageData.PixelFormat );
 
-            // get source width and height
-            int width  = imageData.Width;
-            int height = imageData.Height;
-
             // destination image format
             PixelFormat dstPixelFormat = FormatTransalations[imageData.PixelFormat];
 

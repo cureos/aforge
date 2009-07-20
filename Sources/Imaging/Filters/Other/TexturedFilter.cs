@@ -408,8 +408,8 @@ namespace AForge.Imaging.Filters
                             for ( int i = 0; i < 3; i++, src1++, src2++, dst++ )
                             {
                                 *dst = (byte) Math.Min( 255.0f,
-                                    filterLevel * ( t1 * *src1 + t2 * *src2 ) +
-                                    preserveLevel * *src2 );
+                                    filterLevel * ( t1 * ( *src1 ) + t2 * ( *src2 ) ) +
+                                    preserveLevel * ( *src2 ) );
                             }
                         }
                         src1 += src1Offset;

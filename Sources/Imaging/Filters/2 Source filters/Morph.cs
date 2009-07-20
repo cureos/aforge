@@ -141,7 +141,7 @@ namespace AForge.Imaging.Filters
                 // for each pixel
                 for ( int x = 0; x < lineSize; x++, ptr++, ovr++ )
                 {
-                    *ptr = (byte) ( ( sourcePercent * *ptr ) + ( q * *ovr ) );
+                    *ptr = (byte) ( ( sourcePercent * ( *ptr ) ) + ( q * ( *ovr ) ) );
                 }
                 ptr += offset;
                 ovr += ovrOffset;

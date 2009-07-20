@@ -172,7 +172,7 @@ namespace AForge.Imaging.Filters
                     // for each pixel
                     for ( int x = startX; x < stopX; x++, dst++ )
                     {
-                        *dst = (byte) ( factor * *dst );
+                        *dst = (byte) ( factor * ( *dst ) );
                     }
                     dst += dstOffset;
                 }

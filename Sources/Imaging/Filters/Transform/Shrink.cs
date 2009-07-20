@@ -187,7 +187,7 @@ namespace AForge.Imaging.Filters
 
             int srcStride = sourceData.Stride;
             int dstStride = destinationData.Stride;
-            int copySize  = destinationData.Width;
+            int copySize  = newWidth;
 
             // do the job
             byte* src = (byte*) sourceData.ImageData.ToPointer( );

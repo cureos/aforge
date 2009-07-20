@@ -479,7 +479,7 @@ namespace AForge.Imaging
             int y = radiusToDetect;
             int p = ( 5 - radiusToDetect * 4 ) / 4;
 
-            SetHough—irclePoints( xCenter, yCenter, x, y );
+            SetHoughCirclePoints( xCenter, yCenter, x, y );
 
             while ( x < y )
             {
@@ -493,12 +493,12 @@ namespace AForge.Imaging
                     y--;
                     p += 2 * ( x - y ) + 1;
                 }
-                SetHough—irclePoints( xCenter, yCenter, x, y );
+                SetHoughCirclePoints( xCenter, yCenter, x, y );
             }
         }
 
         // Set circle points
-        private void SetHough—irclePoints( int cx, int cy, int x, int y )
+        private void SetHoughCirclePoints( int cx, int cy, int x, int y )
         {
             if ( x == 0 )
             {
