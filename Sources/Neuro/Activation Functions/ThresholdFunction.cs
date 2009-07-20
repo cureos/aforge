@@ -62,8 +62,6 @@ namespace AForge.Neuro
         ///
         public double Derivative( double x )
         {
-            double y = Function( x );
-
             return 0;
         }
 

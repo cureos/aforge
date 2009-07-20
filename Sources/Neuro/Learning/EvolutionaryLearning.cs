@@ -179,9 +179,6 @@ namespace AForge.Neuro.Learning
             Debug.Assert( activationNetwork != null );
             Debug.Assert( populationSize > 0 );
 
-            DoubleRange range = new DoubleRange( -1, 1 );
-            UniformGenerator generator = new UniformGenerator( range );
-
             // networks's parameters
             this.network = activationNetwork;
             this.numberOfNetworksWeights = CalculateNetworkSize( activationNetwork );
@@ -258,9 +255,6 @@ namespace AForge.Neuro.Learning
             Debug.Assert( output.Length > 0 );
             Debug.Assert( input.Length == output.Length );
             Debug.Assert( network.InputsCount == input.Length );
-
-            int inputSize = input[0].Length;
-            int outputSize = output[0].Length;
 
             // check if it is a first run and create population if so
             if ( population == null )
