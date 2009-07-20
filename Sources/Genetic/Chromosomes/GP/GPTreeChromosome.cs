@@ -267,7 +267,7 @@ namespace AForge.Genetic
                     {
                         // create children's list if it was absent
                         if ( node.Children == null )
-                            node.Children = node.Children = new List<GPTreeNode>( );
+                            node.Children = new List<GPTreeNode>( );
 
                         // check for missing or extra children
                         if ( node.Children.Count != node.Gene.ArgumentsCount )
