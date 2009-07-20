@@ -87,7 +87,6 @@ namespace Player
             form.URLs = new string[]
 				{
 					"http://195.243.185.195/axis-cgi/jpg/image.cgi?camera=1",
-					"http://webcam.mmhk.cz/axis-cgi/jpg/image.cgi?resolution=320x240"
 				};
 
             if ( form.ShowDialog( this ) == DialogResult.OK )
@@ -109,7 +108,6 @@ namespace Player
             form.URLs = new string[]
 				{
 					"http://195.243.185.195/axis-cgi/mjpg/video.cgi?camera=4",
-					"http://129.186.47.239/axis-cgi/mjpg/video.cgi?resolution=352x240",
 					"http://195.243.185.195/axis-cgi/mjpg/video.cgi?camera=3",
 				};
 

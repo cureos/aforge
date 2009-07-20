@@ -96,9 +96,6 @@ namespace MotionDetectorSample
             form.Description = "Enter URL of an updating JPEG from a web camera:";
             form.URLs = new string[]
 				{
-					"http://61.220.38.10/axis-cgi/jpg/image.cgi?camera=1",
-					"http://212.98.46.120/axis-cgi/jpg/image.cgi?resolution=352x240",
-					"http://webcam.mmhk.cz/axis-cgi/jpg/image.cgi?resolution=320x240",
 					"http://195.243.185.195/axis-cgi/jpg/image.cgi?camera=1"
 				};
 
@@ -120,10 +117,8 @@ namespace MotionDetectorSample
             form.Description = "Enter URL of an MJPEG video stream:";
             form.URLs = new string[]
 				{
-					"http://129.186.47.239/axis-cgi/mjpg/video.cgi?resolution=352x240",
 					"http://195.243.185.195/axis-cgi/mjpg/video.cgi?camera=3",
 					"http://195.243.185.195/axis-cgi/mjpg/video.cgi?camera=4",
-                    "http://chipmunk.uvm.edu/cgi-bin/webcam/nph-update.cgi?dummy=garb"
 				};
 
             if ( form.ShowDialog( this ) == DialogResult.OK )
