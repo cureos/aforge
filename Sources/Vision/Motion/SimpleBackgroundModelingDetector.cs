@@ -41,12 +41,18 @@ namespace AForge.Vision.Motion
     /// detection algorithm, this algorithm includes background adaptation feature, which allows it
     /// to update its modeled background frame in order to take scene changes into account.</para>
     /// 
-    /// <para><note>Because of the adaptation feature of the algorithm, the algorithm may adopt
+    /// <para><note>Because of the adaptation feature of the algorithm, it may adopt
     /// to background changes, what <see cref="CustomFrameDifferenceDetector"/> algorithm can not do.
     /// However, if moving object stays on the scene for a while (so algorithm adopts to it and does
     /// not treat it as a new moving object any more) and then starts to move again, the algorithm may
     /// find two moving objects - the true one, which is really moving, and the false one, which does not (the
     /// place, where the object stayed for a while).</note></para>
+    /// 
+    /// <para><note>The algorithm is not applicable to such cases, when moving object resides
+    /// in camera's view most of the time (laptops camera monitoring a person sitting in front of it,
+    /// for example). The algorithm is mostly supposed for cases, when camera monitors some sort
+    /// of static scene, where moving objects appear from time to time - street, road, corridor, etc.
+    /// </note></para>
     /// 
     /// <para>Sample usage:</para>
     /// <code>

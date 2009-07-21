@@ -22,6 +22,11 @@ namespace AForge.Vision.Motion
     /// borders of motion areas with the <see cref="HighlightColor">specified color</see>.
     /// </para>
     /// 
+    /// <para><note>The motion processing algorithm is supposed to be used only with motion detection
+    /// algorithms, which are based on finding difference with background frame
+    /// (see <see cref="SimpleBackgroundModelingDetector"/> and <see cref="CustomFrameDifferenceDetector"/>
+    /// as simple implementations) and allow extract moving objects clearly.</note></para>
+    /// 
     /// <para>Sample usage:</para>
     /// <code>
     /// // create motion detector
