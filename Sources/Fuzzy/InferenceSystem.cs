@@ -113,6 +113,7 @@ namespace AForge.Fuzzy
         // CoNorm operator used in rules
         private ICoNorm conormOperator;
 
+
         /// <summary>
         /// Initializes a new Fuzzy <see cref="InferenceSystem"/>.
         /// </summary>
@@ -134,9 +135,9 @@ namespace AForge.Fuzzy
         /// <param name="defuzzifier">A defuzzyfier method used to evaluate the numeric otput
         /// of the system.</param>
         /// <param name="normOperator">A <see cref="INorm"/> operator used to evaluate the norms
-        /// in the <see cref="InferenceSystem"/>.</param>
+        /// in the <see cref="InferenceSystem"/>. For more information of the norm evaluation see <see cref="Rule"/>.</param>
         /// <param name="conormOperator">A <see cref="ICoNorm"/> operator used to evaluate the
-        /// conorms in the <see cref="InferenceSystem"/>.</param>
+        /// conorms in the <see cref="InferenceSystem"/>. For more information of the conorm evaluation see <see cref="Rule"/>.</param>
         /// 
         public InferenceSystem( Database database, IDefuzzifier defuzzifier, INorm normOperator, ICoNorm conormOperator )
         {
@@ -180,6 +181,34 @@ namespace AForge.Fuzzy
         }
 
         /// <summary>
+        /// Gets one of the <see cref="LinguisticVariable"/> of the <see cref="Database"/>. 
+        /// </summary>
+        /// 
+        /// <param name="variableName">Name of the <see cref="LinguisticVariable"/> to get.</param>
+        /// 
+        /// <exception cref="KeyNotFoundException">The variable indicated in <paramref name="variableName"/>
+        /// was not found in the database.</exception>
+        /// 
+        public LinguisticVariable GetLinguisticVariable( string variableName )
+        {
+           return this.database.GetVariable( variableName );
+        }
+
+        /// <summary>
+        /// Gets one of the Rules of the <see cref="Rulebase"/>. 
+        /// </summary>
+        /// 
+        /// <param name="ruleName">Name of the <see cref="Rule"/> to get.</param>
+        /// 
+        /// <exception cref="KeyNotFoundException">The rule indicated in <paramref name="ruleName"/>
+        /// was not found in the rulebase.</exception>
+        /// 
+        public Rule GetRule( string ruleName )
+        {
+            return this.rulebase.GetRule ( ruleName );
+        }
+
+        /// <summary>
         /// Executes the fuzzy inference, obtaining a numerical output for a choosen output
         /// linguistic variable. 
         /// </summary>
@@ -191,6 +220,26 @@ namespace AForge.Fuzzy
         /// <exception cref="KeyNotFoundException">The variable indicated was not found in the database.</exception>
         /// 
         public double Evaluate( string variableName )
+        {
+            // call the defuzzification on fuzzy output 
+            FuzzyOutput fuzzyOutput = ExecuteInference( variableName );
+            double res = defuzzifier.Defuzzify( fuzzyOutput, normOperator );
+            return res;
+        }
+
+        /// <summary>
+        /// Executes the fuzzy inference, obtaining the <see cref="FuzzyOutput"/> of the system for the required
+        /// <see cref="LinguisticVariable"/>. 
+        /// </summary>
+        /// 
+        /// <param name="variableName">Name of the <see cref="LinguisticVariable"/> to evaluate.</param>
+        /// 
+        /// <returns>A <see cref="FuzzyOutput"/> containing the fuzzy output of the system for the
+        /// <see cref="LinguisticVariable"/> specified in <paramref name="variableName"/>.</returns>
+        /// 
+        /// <exception cref="KeyNotFoundException">The variable indicated was not found in the database.</exception>
+        /// 
+        public FuzzyOutput ExecuteInference( string variableName )
         {
             // gets the variable
             LinguisticVariable lingVar = database.GetVariable( variableName );
@@ -211,9 +260,8 @@ namespace AForge.Fuzzy
                 }
             }
 
-            // call the defuzzification on fuzzy output 
-            double res = defuzzifier.Defuzzify( fuzzyOutput, normOperator );
-            return res;
+            // returns the fuzzy output obtained
+            return fuzzyOutput;
         }
     }
 }

@@ -46,6 +46,7 @@
     <Compile Include="Defuzzification\IDefuzzifier.cs" />
     <Compile Include="FuzzyOutput.cs" />
     <Compile Include="InferenceSystem.cs" />
+    <Compile Include="Membership Functions\SingletonFunction.cs" />
     <Compile Include="Rulebase.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="Operators\MaximumCoNorm.cs" />
@@ -56,10 +57,6 @@
     <Compile Include="Membership Functions\PiecewiseLinearFunction.cs" />
     <Compile Include="Membership Functions\TrapezoidalFunction.cs" />
     <Compile Include="Operators\ProductNorm.cs" />
-    <Compile Include="Operators\IOperator.cs" />
-    <Compile Include="Operators\IUnaryOperator.cs" />
-    <Compile Include="Operators\IHedge.cs" />
-    <Compile Include="Operators\IBinaryOperator.cs" />
     <Compile Include="Operators\ICoNorm.cs" />
     <Compile Include="Operators\INorm.cs" />
     <Compile Include="Operators\MinimumNorm.cs" />

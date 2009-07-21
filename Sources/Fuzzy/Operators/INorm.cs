@@ -19,9 +19,20 @@ namespace AForge.Fuzzy
     /// <remarks><para>All fuzzy operators that act as a Norm must implement this interface.
     /// </para></remarks>
     /// 
-    public interface INorm : IBinaryOperator
+    public interface INorm
     {
-
+        /// <summary>
+        /// Calculates the numerical result of a Norm (AND) operation applied to
+        /// two fuzzy membership values.
+        /// </summary>
+        /// 
+        /// <param name="membershipA">A fuzzy membership value, [0..1].</param>
+        /// <param name="membershipB">A fuzzy membership value, [0..1].</param>
+        /// 
+        /// <returns>The numerical result the operation AND applied to <paramref name="membershipA"/>
+        /// and <paramref name="membershipB"/>.</returns>
+        /// 
+        double Evaluate( double membershipA, double membershipB );
     }
 }
 

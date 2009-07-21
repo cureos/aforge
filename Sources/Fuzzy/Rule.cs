@@ -69,10 +69,27 @@ namespace AForge.Fuzzy
     /// lvStove.AddLabel( fsWarm );
     /// lvStove.AddLabel( fsHot );
     /// 
+    /// // create the linguistic labels (fuzzy sets) that compose the pressure
+    /// TrapezoidalFunction function5 = new TrapezoidalFunction(
+    ///     20, 40, TrapezoidalFunction.EdgeType.Right );
+    /// FuzzySet fsLow = new FuzzySet( "Low", function5 );
+    /// TrapezoidalFunction function6 = new TrapezoidalFunction( 20, 40, 60, 80 );
+    /// FuzzySet fsMedium = new FuzzySet( "Medium", function6 );
+    /// TrapezoidalFunction function7 = new TrapezoidalFunction(
+    ///     60, 80, TrapezoidalFunction.EdgeType.Left );
+    /// FuzzySet fsHigh = new FuzzySet( "High", function7 );
+    /// // create a linguistic variable to represent pressure
+    /// LinguisticVariable lvPressure = new LinguisticVariable( "Pressure", 0, 100 );
+    /// // adding labels to the variable
+    /// lvPressure.AddLabel( fsLow );
+    /// lvPressure.AddLabel( fsMedium );
+    /// lvPressure.AddLabel( fsHigh );
+    /// 
     /// // create a linguistic variable database
     /// Database db = new Database( );
     /// db.AddVariable( lvSteel );
     /// db.AddVariable( lvStove );
+    /// db.AddVariable( lvPressure );
     /// 
     /// // sample rules just to test the expression parsing
     /// Rule r1 = new Rule( db, "Test1", "IF Steel is Cold and Stove is Hot then Pressure is Low" );
@@ -82,7 +99,8 @@ namespace AForge.Fuzzy
     /// // testing the firing strength
     /// lvSteel.NumericInput = 12;
     /// lvStove.NumericInput = 35;
-    /// double result r1.EvaluateFiringStrength( );
+    /// double result = r1.EvaluateFiringStrength( );
+    /// Console.WriteLine( result.ToString( ) );
     /// </code>    
     /// </remarks>
     /// 
