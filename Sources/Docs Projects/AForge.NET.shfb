@@ -14,6 +14,7 @@
         <assembly assemblyPath="..\..\Release\AForge.Video.DirectShow.dll" xmlCommentsPath="..\..\Release\AForge.Video.DirectShow.xml" commentsOnly="False" />
         <assembly assemblyPath="..\..\Release\AForge.Video.dll" xmlCommentsPath="..\..\Release\AForge.Video.xml" commentsOnly="False" />
         <assembly assemblyPath="..\..\Release\AForge.Video.VFW.dll" xmlCommentsPath="..\..\Release\AForge.Video.VFW.xml" commentsOnly="False" />
+        <assembly assemblyPath="..\..\Release\AForge.Vision.dll" xmlCommentsPath="..\..\Release\AForge.Vision.xml" commentsOnly="False" />
         <assembly assemblyPath="..\..\Release\Glacier2.dll" xmlCommentsPath="" commentsOnly="False" />
         <assembly assemblyPath="..\..\Release\Ice.dll" xmlCommentsPath="" commentsOnly="False" />
         <assembly assemblyPath="..\..\Externals\TeRK\TeRK.dll" xmlCommentsPath="" commentsOnly="False" />
@@ -39,6 +40,7 @@
         <namespaceSummaryItem name="AForge.Video" isDocumented="True">The &lt;b&gt;AForge.Video&lt;/b&gt; namespace contains interfaces and classes to access different video sources.</namespaceSummaryItem>
         <namespaceSummaryItem name="AForge.Video.DirectShow" isDocumented="True">The &lt;b&gt;AForge.Video.DirectShow&lt;/b&gt; namespace contains classes, which allow to access video sources using &lt;i&gt;DirectShow&lt;/i&gt; interface.</namespaceSummaryItem>
         <namespaceSummaryItem name="AForge.Video.VFW" isDocumented="True">The &lt;b&gt;AForge.Video.VFW&lt;/b&gt; namespace contains classes, which allow reading and writing of AVI files using &lt;i&gt;Video for Windows&lt;/i&gt; interface.</namespaceSummaryItem>
+        <namespaceSummaryItem name="AForge.Vision.Motion" isDocumented="True">The &lt;b&gt;bAForge.Vision.Motion&lt;/b&gt; namespace contains interfaces and classes used for motion detection and processing in video streams.</namespaceSummaryItem>
         <namespaceSummaryItem name="Glacier2" isDocumented="False" />
         <namespaceSummaryItem name="Ice" isDocumented="False" />
         <namespaceSummaryItem name="IceInternal" isDocumented="False" />
