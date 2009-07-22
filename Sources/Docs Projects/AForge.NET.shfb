@@ -186,7 +186,7 @@
         <contentItem sourcePath="..\Robotics.TeRK\Images\qwerk_board.jpg" destPath="img\robotics\" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\posterization.png" destPath="img\imaging\" excludeItems="False" />
     </additionalContent>
-    <ProjectSummary>&lt;b&gt;AForge.NET&lt;/b&gt; is a C# framework designed for developers and researchers in the fields of Computer Vision and Artificial Intelligence - image processing, computer vision, neural networks, genetic algorithms, machine learning, etc. </ProjectSummary>
+    <ProjectSummary>&lt;b&gt;AForge.NET Framework&lt;/b&gt; is a C# framework designed for developers and researchers in the fields of Computer Vision and Artificial Intelligence - image processing, computer vision, neural networks, genetic algorithms, machine learning, etc. </ProjectSummary>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace, TypeParameter</MissingTags>
     <VisibleItems>InheritedMembers, Protected</VisibleItems>
     <HtmlHelp1xCompilerPath path="" />
@@ -203,8 +203,8 @@
     <IndentHtml>False</IndentHtml>
     <Preliminary>False</Preliminary>
     <RootNamespaceContainer>True</RootNamespaceContainer>
-    <RootNamespaceTitle>AForge.NET</RootNamespaceTitle>
-    <HelpTitle>AForge.NET framework</HelpTitle>
+    <RootNamespaceTitle>AForge.NET Framework</RootNamespaceTitle>
+    <HelpTitle>AForge.NET Framework</HelpTitle>
     <HtmlHelpName>AForge.NET</HtmlHelpName>
     <Language>en-US</Language>
     <CopyrightHref />
