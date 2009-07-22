@@ -1,3 +1,60 @@
+AForge.NET Framework 2.0.0 (final) release notes
+---------------------------------------------
+22.07.2009.
+
+
+Version updates and fixes:
+
+* Fixed registered issues/requests:
+  - Issue 40: Motion detector using predefined background image  
+  - Issue 50: Separating motion frame extraction with its further processing  
+  - Issue 92: Check for subscribers to VideoCaptureDevice.NewFrame event before copying bitmap data  
+  - Issue 94: Request to add Offset to Convolution filter  
+  - Issue 95: Error in AForge.Imaging.Filters.Crop.ProcessFilter()  
+
+
+* AForge.Fuzzy
+  - New class SingletonFunction: new kind of membership function, to represent classical numerical numbers in fuzzy domain.
+
+  - Inference System was modified to allow the user to access the fuzzy output before defuzzyfing.
+
+  - Some other minor updates caused by received feedback.
+
+
+* AForge.Imaging
+  - All exceptions classes, which were introduced in BETA versions, are renamed to Exception ending.
+
+  - Added Threshold property to the Convolution filter, which allows to set value to be added to weighted sum of pixels.
+
+  - Crop filter bug is fixed (the filter was calculating pixel size incorrectly).
+
+  - Fixed pixel size calculation in ContrastStretch filter.
+
+  - ExtractChannel and ReplaceChannel filters are extended to support extraction of alpha channel in addition to RGB channels.
+
+  - Added image processing filter to extract normalized RGB channels.
+
+  - Added SimplePosterization filter.
+
+
+* AForge.Video.DirectShow
+  - Video classes are updated to skip preparing new video frame, if nobody is subscribed for NewFrame
+    event (decreases CPU usage if no subscribed clients).
+
+
+* AForge.Vison
+  - The namespace was completely redesigned to introduce motion detection and motion processing algorithms.
+    In the past both these algorithms were part of each motion detection class, which was not flexible, not reusable
+    and not extendable.
+
+
+* Samples
+  - Motion Detection sample application is updated to use new classes of the redesigned AForge.Vision namespace.
+    Also added feature to show motion history.
+
+
+
+
 AForge.NET Framework 2.0.0 BETA release notes
 ---------------------------------------------
 20.03.2009.

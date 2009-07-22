@@ -2,12 +2,12 @@
 
 [Setup]
 AppName=AForge.NET Framework
-AppVerName=AForge.NET Framework 2.0.0 BETA
+AppVerName=AForge.NET Framework 2.0.0
 AppPublisher=AForge.NET
 AppPublisherURL=http://www.aforgenet.com/framework/
 AppSupportURL=http://www.aforgenet.com/framework/
 AppUpdatesURL=http://www.aforgenet.com/framework/
-DefaultDirName={pf}\AForge.NET Framework
+DefaultDirName={pf}\AForge.NET\Framework
 DefaultGroupName=AForge.NET Framework
 AllowNoIcons=yes
 OutputBaseFilename=setup
