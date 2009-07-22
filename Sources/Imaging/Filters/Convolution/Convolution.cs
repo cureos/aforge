@@ -130,7 +130,7 @@ namespace AForge.Imaging.Filters
         /// Threshold to add to weighted sum.
         /// </summary>
         /// 
-        /// <remarks><para>The property specifies threshold value, which is added each weighted
+        /// <remarks><para>The property specifies threshold value, which is added to each weighted
         /// sum of pixels. The value is added right after division was done by <see cref="Divisor"/>
         /// value.</para>
         /// 

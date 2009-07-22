@@ -22,7 +22,7 @@ Version updates and fixes:
 
 
 * AForge.Imaging
-  - All exceptions classes, which were introduced in BETA versions, are renamed to Exception ending.
+  - All exceptions classes, which were introduced in BETA versions, are renamed to have Exception ending.
 
   - Added Threshold property to the Convolution filter, which allows to set value to be added to weighted sum of pixels.
 
