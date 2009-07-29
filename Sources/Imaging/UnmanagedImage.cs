@@ -103,6 +103,10 @@ namespace AForge.Imaging
         /// 
         /// <param name="bitmapData">Locked bitmap data.</param>
         /// 
+        /// <remarks><note>Unlike <see cref="FromManagedImage(BitmapData)"/> method, this constructor does not make
+        /// copy of managed image. This means that managed image must stay locked for the time of using the instance
+        /// of unamanged image.</note></remarks>
+        /// 
         public UnmanagedImage( BitmapData bitmapData )
         {
             this.imageData   = bitmapData.Scan0;
@@ -395,7 +399,8 @@ namespace AForge.Imaging
         /// <returns>Returns new unmanaged image, which is a copy of source managed image.</returns>
         /// 
         /// <remarks><para>The method creates an exact copy of specified managed image, but allocated
-        /// in unmanaged memory.</para></remarks>
+        /// in unmanaged memory. This means that managed image may be unlocked right after call to this
+        /// method.</para></remarks>
         /// 
         /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of source image.</exception>
         /// 
@@ -420,6 +425,7 @@ namespace AForge.Imaging
             IntPtr dstImageData = System.Runtime.InteropServices.Marshal.AllocHGlobal( imageData.Stride * imageData.Height );
 
             UnmanagedImage image = new UnmanagedImage( dstImageData, imageData.Width, imageData.Height, imageData.Stride, pixelFormat );
+            AForge.SystemTools.CopyUnmanagedMemory( dstImageData, imageData.Scan0, imageData.Stride * imageData.Height );
             image.mustBeDisposed = true;
 
             return image;
