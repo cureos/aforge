@@ -1,8 +1,9 @@
 ﻿// AForge Image Processing Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2008
-// andrew.kirillov@gmail.com
+// Copyright © Andrew Kirillov, 2005-2009
+// andrew.kirillov@aforgenet.com
 //
 
 namespace AForge.Imaging
@@ -19,6 +20,43 @@ namespace AForge.Imaging
     /// <para>The class represents wrapper of an image in unmanaged memory. Using this class
     /// it is possible as to allocate new image in unmanaged memory, as to just wrap provided
     /// pointer to unmanaged memory, where an image is stored.</para>
+    /// 
+    /// <para>Usage of unmanaged images is mostly beneficial when it is required to apply <b>multiple</b>
+    /// image processing routines to a single image. In such scenario usage of .NET managed images 
+    /// usually leads to worse performance, because each routine needs to lock managed image
+    /// before image processing is done and then unlock it after image processing is done. Without
+    /// these lock/unlock there is no way to get direct access to managed image's data, which means
+    /// there is no way to do fast image processing. So, usage of managed images lead to overhead, which
+    /// is caused by locks/unlock. Unmanaged images are represented internally using unmanaged memory
+    /// buffer. This means that it is not required to do any locks/unlocks in order to get access to image
+    /// data (no overhead).</para>
+    /// 
+    /// <para>Sample usage:</para>
+    /// <code>
+    /// // sample 1 - wrapping .NET image into unmanaged without
+    /// // making extra copy of image in memory
+    /// BitmapData imageData = image.LockBits(
+    ///     new Rectangle( 0, 0, image.Width, image.Height ),
+    ///     ImageLockMode.ReadWrite, image.PixelFormat );
+    /// 
+    /// try
+    /// {
+    ///     UnmanagedImage unmanagedImage = new UnmanagedImage( imageData ) );
+    ///     // apply several routines to the unmanaged image
+    /// }
+    /// finally
+    /// {
+    ///     image.UnlockBits( imageData );
+    /// }
+    /// 
+    /// 
+    /// // sample 2 - converting .NET image into unmanaged
+    /// UnmanagedImage unmanagedImage = UnmanagedImage.FromManagedImage( image );
+    /// // apply several routines to the unmanaged image
+    /// ...
+    /// // conver to managed image if it is required to display it at some point of time
+    /// Bitmap managedImage = unmanagedImage.ToManagedImage( );
+    /// </code>
     /// </remarks>
     /// 
     public class UnmanagedImage : IDisposable
