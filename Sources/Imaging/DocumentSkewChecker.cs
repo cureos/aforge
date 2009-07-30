@@ -22,7 +22,7 @@ namespace AForge.Imaging
     ///
     /// <remarks><para>The class implements document's skew checker, which is based
     /// on <see cref="HoughLineTransformation">Hough line transformation</see>. The algorithm
-    /// is based of searching for text base lines - black line of  text lines' bottoms followed
+    /// is based on searching for text base lines - black line of text bottoms' followed
     /// by white line below.</para>
     /// 
     /// <para><note>The routine supposes that a white-background document is provided
