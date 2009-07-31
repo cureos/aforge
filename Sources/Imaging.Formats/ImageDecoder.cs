@@ -54,6 +54,7 @@ namespace AForge.Imaging.Formats
             RegisterDecoder( "pbm", decoder );
             RegisterDecoder( "pgm", decoder );
             RegisterDecoder( "pnm", decoder );
+            RegisterDecoder( "ppm", decoder );
 
             // register FITS file format
             decoder = new FITSCodec( );
