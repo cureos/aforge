@@ -219,6 +219,7 @@ namespace AForge.Robotics.TeRK
                         source = "'::TeRK::VideoStreamerServer':tcp -h " + hostAddress + " -p 10101";
 
                         Ice.ObjectPrx obj = qwerk.iceCommunicator.stringToProxy( source );
+                        obj = obj.ice_timeout( Qwerk.TimeOut );
                         videoStreamer = TeRKIceLib.VideoStreamerServerPrxHelper.checkedCast( obj );
                     }
                     catch ( Ice.ObjectNotExistException )

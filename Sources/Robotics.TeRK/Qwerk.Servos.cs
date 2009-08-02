@@ -81,6 +81,7 @@ namespace AForge.Robotics.TeRK
                     try
                     {
                         Ice.ObjectPrx obj = qwerk.iceCommunicator.stringToProxy( "'::TeRK::ServoController':tcp -h " + hostAddress + " -p 10101" );
+                        obj = obj.ice_timeout( Qwerk.TimeOut );
                         servoController = TeRKIceLib.ServoControllerPrxHelper.checkedCast( obj );
                     }
                     catch ( Ice.ObjectNotExistException )

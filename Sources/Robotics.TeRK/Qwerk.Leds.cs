@@ -95,6 +95,7 @@ namespace AForge.Robotics.TeRK
                     try
                     {
                         Ice.ObjectPrx obj = qwerk.iceCommunicator.stringToProxy( "'::TeRK::LEDController':tcp -h " + hostAddress + " -p 10101" );
+                        obj = obj.ice_timeout( Qwerk.TimeOut );
                         ledController = TeRKIceLib.LEDControllerPrxHelper.checkedCast( obj );
                     }
                     catch ( Ice.ObjectNotExistException )

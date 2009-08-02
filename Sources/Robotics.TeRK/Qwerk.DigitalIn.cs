@@ -63,6 +63,7 @@ namespace AForge.Robotics.TeRK
                     try
                     {
                         Ice.ObjectPrx obj = qwerk.iceCommunicator.stringToProxy( "'::TeRK::DigitalInController':tcp -h " + hostAddress + " -p 10101" );
+                        obj = obj.ice_timeout( Qwerk.TimeOut );
                         digitalInController = TeRKIceLib.DigitalInControllerPrxHelper.checkedCast( obj );
                     }
                     catch ( Ice.ObjectNotExistException )

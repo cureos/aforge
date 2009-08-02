@@ -57,6 +57,9 @@ namespace AForge.Robotics.TeRK
         // host address if connection was established
         private string hostAddress;
 
+        // connection timeout
+        internal const int TimeOut = 2500;
+
         /// <summary>
         /// Qwerk's host address.
         /// </summary>
@@ -109,9 +112,11 @@ namespace AForge.Robotics.TeRK
             {
                 // initialize ICE communication
                 iceCommunicator = Ice.Util.initialize( );
+                
 
                 // get Qwerk object
                 Ice.ObjectPrx obj = iceCommunicator.stringToProxy( "'::TeRK::TerkUser':tcp -h " + hostAddress + " -p 10101" );
+                obj = obj.ice_timeout( TimeOut );
                 qwerk = TeRKIceLib.QwerkPrxHelper.checkedCast( obj );
 
             }

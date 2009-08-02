@@ -66,6 +66,7 @@ namespace AForge.Robotics.TeRK
                     try
                     {
                         Ice.ObjectPrx obj = qwerk.iceCommunicator.stringToProxy( "'::TeRK::MotorController':tcp -h " + hostAddress + " -p 10101" );
+                        obj = obj.ice_timeout( Qwerk.TimeOut );
                         motorController = TeRKIceLib.MotorControllerPrxHelper.checkedCast( obj );
                     }
                     catch ( Ice.ObjectNotExistException )
