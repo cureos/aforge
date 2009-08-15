@@ -79,7 +79,7 @@ namespace AForge.Imaging
         /// pixel (nucleus) and surrounding pixel is not higher than difference threshold,
         /// then that pixel becomes part of USAN.</para>
         /// 
-        /// <para>Increasing this value increases the amount of detected corners.</para>
+        /// <para>Increasing this value decreases the amount of detected corners.</para>
         /// 
         /// <para>Default value is set to <b>25</b>.</para>
         /// </remarks>
