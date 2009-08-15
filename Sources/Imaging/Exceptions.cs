@@ -15,7 +15,8 @@ namespace AForge.Imaging
     /// 
     /// <remarks><para>The unsupported image format exception is thrown in the case when
     /// user passes an image of certain format to an image processing routine, which does
-    /// not support the format.</para>
+    /// not support the format. Check documentation of image the image processing routine
+    /// to discover which formats are supported by the routine.</para>
     /// </remarks>
     /// 
     public class UnsupportedImageFormatException : ArgumentException
