@@ -171,7 +171,7 @@ namespace AForge.Imaging.Filters
 
             for ( int i = 0; i < 256; i++ )
             {
-                map[i] = (byte) ( ( i / posterizationInterval ) * posterizationInterval + posterizationOffset );
+                map[i] = (byte) Math.Min( 255, ( i / posterizationInterval ) * posterizationInterval + posterizationOffset );
             }
 
             // do the job
