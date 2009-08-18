@@ -59,7 +59,7 @@ namespace AForge.Controls
         // last received frame from the video source
         private Bitmap currentFrame = null;
         // last error message provided by video source
-        private string lastErrorMessage = null;
+        private string lastMessage = null;
         // controls border color
         private Color borderColor = Color.Black;
 
@@ -143,6 +143,7 @@ namespace AForge.Controls
                         }
                         videoSource.NewFrame -= new NewFrameEventHandler( videoSource_NewFrame );
                         videoSource.VideoSourceError -= new VideoSourceErrorEventHandler( videoSource_VideoSourceError );
+                        videoSource.PlayingFinished -= new EventHandler( videoSource_PlayingFinished );
                     }
 
                     if ( currentFrame != null )
@@ -158,6 +159,7 @@ namespace AForge.Controls
                     {
                         videoSource.NewFrame += new NewFrameEventHandler( videoSource_NewFrame );
                         videoSource.VideoSourceError += new VideoSourceErrorEventHandler( videoSource_VideoSourceError );
+                        videoSource.PlayingFinished += new EventHandler( videoSource_PlayingFinished );
                     }
 
                     needSizeUpdate = true;
@@ -348,7 +350,7 @@ namespace AForge.Controls
 
                 if ( videoSource != null )
                 {
-                    if ( ( currentFrame != null ) && ( lastErrorMessage == null ) )
+                    if ( ( currentFrame != null ) && ( lastMessage == null ) )
                     {
                         // draw current frame
                         g.DrawImage( currentFrame, rect.X + 1, rect.Y + 1, rect.Width - 2, rect.Height - 2 );
@@ -356,17 +358,13 @@ namespace AForge.Controls
                     }
                     else
                     {
-                        // display status string only in the case if video source is runnning
-                        if ( videoSource.IsRunning )
-                        {
-                            // create font and brush
-                            SolidBrush drawBrush = new SolidBrush( this.ForeColor );
+                        // create font and brush
+                        SolidBrush drawBrush = new SolidBrush( this.ForeColor );
 
-                            g.DrawString( ( lastErrorMessage == null ) ? "Connecting ..." : lastErrorMessage,
-                                this.Font, drawBrush, new PointF( 5, 5 ) );
+                        g.DrawString( ( lastMessage == null ) ? "Connecting ..." : lastMessage,
+                            this.Font, drawBrush, new PointF( 5, 5 ) );
 
-                            drawBrush.Dispose( );
-                        }
+                        drawBrush.Dispose( );
                     }
                 }
 
@@ -414,7 +412,7 @@ namespace AForge.Controls
                 }
 
                 currentFrame = (Bitmap) eventArgs.Frame.Clone( );
-                lastErrorMessage = null;
+                lastMessage = null;
 
                 // notify about the new frame
                 if ( NewFrame != null )
@@ -430,7 +428,15 @@ namespace AForge.Controls
         // Error occured in video source
         private void videoSource_VideoSourceError( object sender, VideoSourceErrorEventArgs eventArgs )
         {
-            lastErrorMessage = eventArgs.Description;
+            lastMessage = eventArgs.Description;
+            Invalidate( );
+        }
+
+        // Video source has finished playing video
+        private void videoSource_PlayingFinished( object sender, EventArgs eventArgs )
+        {
+            lastMessage = "Video has finished";
+            Invalidate( );
         }
 
         // Parent Changed event handler

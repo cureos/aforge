@@ -1,7 +1,7 @@
-// AForge Direct Show Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2008
+// Copyright © Andrew Kirillov, 2005-2009
 // andrew.kirillov@gmail.com
 //
 
@@ -82,6 +82,18 @@ namespace AForge.Video.DirectShow
         /// video source object, for example internal exceptions.</remarks>
         /// 
         public event VideoSourceErrorEventHandler VideoSourceError;
+
+        /// <summary>
+        /// Video playing finished event.
+        /// </summary>
+        /// 
+        /// <remarks><para>The event is fired when playing of video file is finished.</para>
+        /// 
+        /// <para><note>The event is <b>not</b> fired, if the video source is stopped manually
+        /// using <see cref="Stop"/> or <see cref="SignalToStop"/> methods.</note></para>
+        /// </remarks>
+        /// 
+        public event EventHandler PlayingFinished;
 
         /// <summary>
         /// Video source.
@@ -331,6 +343,8 @@ namespace AForge.Video.DirectShow
             IMediaControl       mediaControl = null;
             IFileSourceFilter   fileSource = null;
 
+            IMediaEventEx       mediaEvent = null;
+
             try
             {
                 // get type for filter graph
@@ -407,12 +421,33 @@ namespace AForge.Video.DirectShow
                 // get media control
                 mediaControl = (IMediaControl) graphObject;
 
+                // get media events' interface
+                mediaEvent = (IMediaEventEx) graphObject;
+                int p1, p2;
+                DsEvCode code;
+
                 // run
                 mediaControl.Run( );
 
                 while ( !stopEvent.WaitOne( 0, true ) )
                 {
                     Thread.Sleep( 100 );
+
+                    if ( mediaEvent != null )
+                    {
+                        if ( mediaEvent.GetEvent( out code, out p1, out p2, 0 ) >= 0 )
+                        {
+                            mediaEvent.FreeEventParams( code, p1, p2 );
+
+                            if ( code == DsEvCode.Complete )
+                            {
+                                if ( PlayingFinished != null )
+                                {
+                                    PlayingFinished( this, new EventArgs( ) );
+                                }
+                            }
+                        }
+                    }
                 }
                 mediaControl.StopWhenReady( );
             }
@@ -433,6 +468,7 @@ namespace AForge.Video.DirectShow
                 sampleGrabber   = null;
                 mediaControl    = null;
                 fileSource      = null;
+                mediaEvent      = null;
 
                 if ( graphObject != null )
                 {

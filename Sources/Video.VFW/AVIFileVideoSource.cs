@@ -82,6 +82,18 @@ namespace AForge.Video.VFW
         public event VideoSourceErrorEventHandler VideoSourceError;
 
         /// <summary>
+        /// Video playing finished event.
+        /// </summary>
+        /// 
+        /// <remarks><para>The event is fired when playing of video file is finished.</para>
+        /// 
+        /// <para><note>The event is <b>not</b> fired, if the video source is stopped manually
+        /// using <see cref="Stop"/> or <see cref="SignalToStop"/> methods.</note></para>
+        /// </remarks>
+        /// 
+        public event EventHandler PlayingFinished;
+
+        /// <summary>
         /// Frame interval.
         /// </summary>
         /// 
@@ -351,7 +363,13 @@ namespace AForge.Video.VFW
 
                     // check current position
                     if ( aviReader.Position >= stopPosition )
+                    {
+                        if ( PlayingFinished != null )
+                        {
+                            PlayingFinished( this, new EventArgs( ) );
+                        } 
                         break;
+                    }
 
                     // wait for a while ?
                     if ( interval > 0 )

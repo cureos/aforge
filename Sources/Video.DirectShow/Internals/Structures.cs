@@ -346,8 +346,16 @@ namespace AForge.Video.DirectShow.Internals
         }
     }
 
-    // Added Yves Vander Haeghen, from code by Brian Low
-    // ---------------------------------------------------------------------------------------
+    /// <summary>
+    /// Enumeration of DirectShow event codes.
+    /// </summary>
+    public enum DsEvCode
+    {
+        None,
+        Complete = 0x01,      // EC_COMPLETE
+        //(...) not yet interested in other events
+    }
+
     [Flags, ComVisible( false )]
     internal enum AnalogVideoStandard
     {

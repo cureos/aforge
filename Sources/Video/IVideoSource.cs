@@ -40,6 +40,21 @@ namespace AForge.Video
         event VideoSourceErrorEventHandler VideoSourceError;
 
         /// <summary>
+        /// Video playing finished event.
+        /// </summary>
+        /// 
+        /// <remarks><para>This event is used to notify clients that the playing video has finished.</para>
+        /// 
+        /// <para><note>Some video sources may not support this event and may never fire it. For example,
+        /// if video source works with camera, then most probably this event will not be supported by the
+        /// video source class, since video from cameras usually never finishes. However, video sources which
+        /// work with video files may fire this event when file is done. Check documentation of particular
+        /// video source class to resolve if the event is supported or not.</note></para>
+        /// </remarks>
+        /// 
+        event EventHandler PlayingFinished;
+
+        /// <summary>
         /// Video source.
         /// </summary>
         /// 

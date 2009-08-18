@@ -94,6 +94,16 @@ namespace AForge.Video.DirectShow
         public event VideoSourceErrorEventHandler VideoSourceError;
 
         /// <summary>
+        /// Video playing finished event.
+        /// </summary>
+        /// 
+        /// <remarks><para>The event is not supported by this class, since cameras' feeds are supposed to be
+        /// endless.</para>
+        /// </remarks>
+        /// 
+        public event EventHandler PlayingFinished;
+
+        /// <summary>
         /// Video source.
         /// </summary>
         /// 

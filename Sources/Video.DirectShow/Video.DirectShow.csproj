@@ -75,6 +75,7 @@
     <Compile Include="Internals\IFilterGraph2.cs" />
     <Compile Include="Internals\IGraphBuilder.cs" />
     <Compile Include="Internals\IMediaControl.cs" />
+    <Compile Include="Internals\IMediaEventEx.cs" />
     <Compile Include="Internals\IPin.cs" />
     <Compile Include="Internals\IPropertyBag.cs" />
     <Compile Include="Internals\ISampleGrabber.cs" />
