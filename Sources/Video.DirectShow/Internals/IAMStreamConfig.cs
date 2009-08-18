@@ -68,7 +68,7 @@ namespace AForge.Video.DirectShow.Internals
         int GetStreamCaps(
             [In] int index,
             [Out] out AMMediaType mediaType,
-            [In] IntPtr streamConfigCaps
+            [In, MarshalAs( UnmanagedType.LPStruct )] VideoStreamConfigCaps streamConfigCaps
             );
     }
 }
