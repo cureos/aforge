@@ -88,6 +88,16 @@ namespace AForge.Robotics.TeRK
             public event VideoSourceErrorEventHandler VideoSourceError;
 
             /// <summary>
+            /// Video playing finished event.
+            /// </summary>
+            /// 
+            /// <remarks><para>The event is not supported by this class, since Qwerk video streams are supposed to be
+            /// endless.</para>
+            /// </remarks>
+            /// 
+            public event EventHandler PlayingFinished;
+
+            /// <summary>
             /// Frame interval.
             /// </summary>
             /// 

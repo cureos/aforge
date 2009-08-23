@@ -349,7 +349,7 @@ namespace AForge.Video.DirectShow.Internals
     /// <summary>
     /// Enumeration of DirectShow event codes.
     /// </summary>
-    public enum DsEvCode
+    internal enum DsEvCode
     {
         None,
         Complete = 0x01,      // EC_COMPLETE
