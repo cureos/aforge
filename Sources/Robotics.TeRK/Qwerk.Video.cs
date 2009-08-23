@@ -117,10 +117,7 @@ namespace AForge.Robotics.TeRK
             /// Video source string.
             /// </summary>
             /// 
-            /// <remarks><para><note>The property is available only for reading. Trying to set it
-            /// will generate <see cref="NotImplementedException"/> exception. It exists only to
-            /// implement <see cref="IVideoSource"/> interface</note>.</para>
-            /// 
+            /// <remarks>
             /// <para>The property keeps connection string, which is used to connect to TeRK's video
             /// streaming service.</para>
             /// </remarks>
@@ -128,10 +125,6 @@ namespace AForge.Robotics.TeRK
             public string Source
             {
                 get { return source; }
-                set
-                {
-                    throw new NotImplementedException( "Setting the property is not allowed" );
-                }
             }
 
             /// <summary>
@@ -168,18 +161,6 @@ namespace AForge.Robotics.TeRK
                     bytesReceived = 0;
                     return bytes;
                 }
-            }
-
-            /// <summary>
-            /// User data.
-            /// </summary>
-            /// 
-            /// <remarks>The property allows to associate user data with video source object.</remarks>
-            /// 
-            public object UserData
-            {
-                get { return null; }
-                set { }
             }
 
             /// <summary>

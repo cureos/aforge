@@ -62,8 +62,6 @@ namespace AForge.Video
         // login and password for HTTP authentication
 		private string login = null;
 		private string password = null;
-        // user data associated with the video source
-		private object userData = null;
         // received frames count
 		private int framesReceived;
         // recieved byte count
@@ -229,23 +227,12 @@ namespace AForge.Video
 		}
 
         /// <summary>
-        /// User data.
-        /// </summary>
-        /// 
-        /// <remarks>The property allows to associate user data with video source object.</remarks>
-        /// 
-        public object UserData
-		{
-			get { return userData; }
-			set { userData = value; }
-		}
-
-        /// <summary>
         /// Request timeout value.
         /// </summary>
         /// 
-        /// <remarks>The property sets timeout value in milliseconds for web requests.
-        /// Default value is 10000 milliseconds.</remarks>
+        /// <remarks><para>The property sets timeout value in milliseconds for web requests.</para>
+        /// 
+        /// <para>Default value is set <b>10000</b> milliseconds.</para></remarks>
         /// 
         public int RequestTimeout
         {

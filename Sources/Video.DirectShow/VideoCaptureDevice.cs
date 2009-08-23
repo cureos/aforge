@@ -55,8 +55,6 @@ namespace AForge.Video.DirectShow
     {
         // moniker string of video capture device
         private string deviceMoniker;
-        // user data associated with the video source
-        private object userData = null;
         // received frames count
         private int framesReceived;
         // recieved byte count
@@ -149,18 +147,6 @@ namespace AForge.Video.DirectShow
                 bytesReceived = 0;
                 return bytes;
             }
-        }
-
-        /// <summary>
-        /// User data.
-        /// </summary>
-        /// 
-        /// <remarks>The property allows to associate user data with video source object.</remarks>
-        /// 
-        public object UserData
-        {
-            get { return userData; }
-            set { userData = value; }
         }
 
         /// <summary>

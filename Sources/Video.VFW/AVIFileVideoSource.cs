@@ -47,8 +47,6 @@ namespace AForge.Video.VFW
 	{
         // video file name
 		private string source;
-        // user data associated with the video source
-		private object userData = null;
         // received frames count
 		private int framesReceived;
         // frame interval in milliseconds
@@ -170,18 +168,6 @@ namespace AForge.Video.VFW
         public int BytesReceived
 		{
 			get { return 0; }
-		}
-
-        /// <summary>
-        /// User data.
-        /// </summary>
-        /// 
-        /// <remarks>The property allows to associate user data with video source object.</remarks>
-        /// 
-        public object UserData
-		{
-			get { return userData; }
-			set { userData = value; }
 		}
 
         /// <summary>

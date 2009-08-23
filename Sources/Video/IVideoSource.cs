@@ -62,7 +62,7 @@ namespace AForge.Video
         /// Depending on video source it may be a file name, URL or any other string
         /// describing the video source.</remarks>
         /// 
-        string Source { get; set; }
+        string Source { get; }
 
         /// <summary>
         /// Received frames count.
@@ -83,14 +83,6 @@ namespace AForge.Video
         /// </remarks>
         /// 
         int BytesReceived { get; }
-
-        /// <summary>
-        /// User data.
-        /// </summary>
-        /// 
-        /// <remarks>The property allows to associate user data with video source object.</remarks>
-        /// 
-        object UserData { get; set; }
 
         /// <summary>
         /// State of the video source.
