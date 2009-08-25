@@ -761,21 +761,51 @@ namespace FiltersDemo
         // On Filters->Difference edge detector
         private void differenceEdgesFiltersItem_Click( object sender, System.EventArgs e )
         {
+            // save original image
+            Bitmap originalImage = sourceImage;
+            // get grayscale image
+            IFilter grayscaleFilter = new GrayscaleRMY( );
+            sourceImage = grayscaleFilter.Apply( sourceImage );
+            // apply edge filter
             ApplyFilter( new DifferenceEdgeDetector( ) );
+            // delete grayscale image and restore original
+            sourceImage.Dispose( );
+            sourceImage = originalImage;
+
             differenceEdgesFiltersItem.Checked = true;
         }
 
         // On Filters->Homogenity edge detector
         private void homogenityEdgesFiltersItem_Click( object sender, System.EventArgs e )
         {
+            // save original image
+            Bitmap originalImage = sourceImage;
+            // get grayscale image
+            IFilter grayscaleFilter = new GrayscaleRMY( );
+            sourceImage = grayscaleFilter.Apply( sourceImage );
+            // apply edge filter
             ApplyFilter( new HomogenityEdgeDetector( ) );
+            // delete grayscale image and restore original
+            sourceImage.Dispose( );
+            sourceImage = originalImage;
+
             homogenityEdgesFiltersItem.Checked = true;
         }
 
         // On Filters->Sobel edge detector
         private void sobelEdgesFiltersItem_Click( object sender, System.EventArgs e )
         {
+            // save original image
+            Bitmap originalImage = sourceImage;
+            // get grayscale image
+            IFilter grayscaleFilter = new GrayscaleRMY( );
+            sourceImage = grayscaleFilter.Apply( sourceImage );
+            // apply edge filter
             ApplyFilter( new SobelEdgeDetector( ) );
+            // delete grayscale image and restore original
+            sourceImage.Dispose( );
+            sourceImage = originalImage;
+
             sobelEdgesFiltersItem.Checked = true;
         }
 
