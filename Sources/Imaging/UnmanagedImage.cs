@@ -345,6 +345,7 @@ namespace AForge.Imaging
 
             // allocate memory for the image
             IntPtr imageData = System.Runtime.InteropServices.Marshal.AllocHGlobal( stride * height );
+            AForge.SystemTools.SetUnmanagedMemory( imageData, 0, stride * height );
 
             UnmanagedImage image = new UnmanagedImage( imageData, width, height, stride, pixelFormat );
             image.mustBeDisposed = true;
