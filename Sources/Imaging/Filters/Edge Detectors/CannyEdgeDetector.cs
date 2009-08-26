@@ -345,6 +345,11 @@ namespace AForge.Imaging.Filters
                 dst += dstOffset;
             }
 
+            // STEP 5 - draw black rectangle to remove those pixels, which were not processed
+            // (this needs to be done for those cases, when filter is applied "in place" -
+            //  source image is modified instead of creating new copy)
+            Drawing.Rectangle( destination, rect, Color.Black );
+
             // release blurred image
             blurredImage.Dispose( );
         }
