@@ -91,11 +91,10 @@ namespace AForge.Robotics.TeRK
             /// Video playing finished event.
             /// </summary>
             /// 
-            /// <remarks><para>The event is not supported by this class, since Qwerk video streams are supposed to be
-            /// endless.</para>
+            /// <remarks><para>This event is used to notify clients that the video playing has finished.</para>
             /// </remarks>
             /// 
-            public event EventHandler PlayingFinished;
+            public event PlayingFinishedEventHandler PlayingFinished;
 
             /// <summary>
             /// Frame interval.
@@ -411,6 +410,11 @@ namespace AForge.Robotics.TeRK
                         }
                     }
                 }
+
+                if ( PlayingFinished != null )
+                {
+                    PlayingFinished( this, ReasonToFinishPlaying.StoppedByUser );
+                } 
             }
         }
     }

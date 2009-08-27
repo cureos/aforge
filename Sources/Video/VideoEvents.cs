@@ -1,8 +1,9 @@
 // AForge Video Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2008
-// andrew.kirillov@gmail.com
+// Copyright © Andrew Kirillov, 2005-2009
+// andrew.kirillov@aforgenet.com
 //
 
 namespace AForge.Video
@@ -26,6 +27,34 @@ namespace AForge.Video
     /// <param name="eventArgs">Event arguments.</param>
     /// 
     public delegate void VideoSourceErrorEventHandler( object sender, VideoSourceErrorEventArgs eventArgs );
+
+    /// <summary>
+    /// Delegate for playing finished event handler.
+    /// </summary>
+    /// 
+    /// <param name="sender">Sender object.</param>
+    /// <param name="reason">Reason of finishing video playing.</param>
+    /// 
+    public delegate void PlayingFinishedEventHandler( object sender, ReasonToFinishPlaying reason );
+
+    /// <summary>
+    /// Reason of finishing video playing.
+    /// </summary>
+    /// 
+    /// <remarks><para>When video source class fire the <see cref="IVideoSource.PlayingFinished"/> event, they
+    /// need to specify reason of finishing video playing. For example, it may be end of stream reached.</para></remarks>
+    /// 
+    public enum ReasonToFinishPlaying
+    {
+        /// <summary>
+        /// Video playing has finished because it end was reached.
+        /// </summary>
+        EndOfStreamReached,
+        /// <summary>
+        /// Video playing has finished because it was stopped by user.
+        /// </summary>
+        StoppedByUser
+    }
 
     /// <summary>
     /// Arguments for new frame event from video source.

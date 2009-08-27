@@ -3,7 +3,7 @@
 // http://www.aforgenet.com/framework/
 //
 // Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@gmail.com
+// andrew.kirillov@aforgenet.com
 //
 // Resolution of device's video capabilities was contributed by
 // Yves Vander Haeghen 2009, based on code by Brian Low on CodeProject
@@ -95,11 +95,10 @@ namespace AForge.Video.DirectShow
         /// Video playing finished event.
         /// </summary>
         /// 
-        /// <remarks><para>The event is not supported by this class, since cameras' feeds are supposed to be
-        /// endless.</para>
+        /// <remarks><para>This event is used to notify clients that the video playing has finished.</para>
         /// </remarks>
         /// 
-        public event EventHandler PlayingFinished;
+        public event PlayingFinishedEventHandler PlayingFinished;
 
         /// <summary>
         /// Video source.
@@ -618,6 +617,11 @@ namespace AForge.Video.DirectShow
                     Marshal.ReleaseComObject( captureGraphObject );
                     captureGraphObject = null;
                 }
+            }
+
+            if ( PlayingFinished != null )
+            {
+                PlayingFinished( this, ReasonToFinishPlaying.StoppedByUser );
             }
         }
 

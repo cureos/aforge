@@ -143,7 +143,7 @@ namespace AForge.Controls
                         }
                         videoSource.NewFrame -= new NewFrameEventHandler( videoSource_NewFrame );
                         videoSource.VideoSourceError -= new VideoSourceErrorEventHandler( videoSource_VideoSourceError );
-                        videoSource.PlayingFinished -= new EventHandler( videoSource_PlayingFinished );
+                        videoSource.PlayingFinished -= new PlayingFinishedEventHandler( videoSource_PlayingFinished );
                     }
 
                     if ( currentFrame != null )
@@ -159,7 +159,7 @@ namespace AForge.Controls
                     {
                         videoSource.NewFrame += new NewFrameEventHandler( videoSource_NewFrame );
                         videoSource.VideoSourceError += new VideoSourceErrorEventHandler( videoSource_VideoSourceError );
-                        videoSource.PlayingFinished += new EventHandler( videoSource_PlayingFinished );
+                        videoSource.PlayingFinished += new PlayingFinishedEventHandler( videoSource_PlayingFinished );
                     }
 
                     needSizeUpdate = true;
@@ -433,9 +433,22 @@ namespace AForge.Controls
         }
 
         // Video source has finished playing video
-        private void videoSource_PlayingFinished( object sender, EventArgs eventArgs )
+        private void videoSource_PlayingFinished( object sender, ReasonToFinishPlaying reason )
         {
-            lastMessage = "Video has finished";
+            switch ( reason )
+            {
+                case ReasonToFinishPlaying.EndOfStreamReached:
+                    lastMessage = "Video has finished";
+                    break;
+
+                case ReasonToFinishPlaying.StoppedByUser:
+                    lastMessage = "Video was stopped";
+                    break;
+
+                default:
+                    lastMessage = "Video has finished for unknown reason";
+                    break;
+            }
             Invalidate( );
         }
 

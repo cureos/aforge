@@ -83,13 +83,10 @@ namespace AForge.Video.VFW
         /// Video playing finished event.
         /// </summary>
         /// 
-        /// <remarks><para>The event is fired when playing of video file is finished.</para>
-        /// 
-        /// <para><note>The event is <b>not</b> fired, if the video source is stopped manually
-        /// using <see cref="Stop"/> or <see cref="SignalToStop"/> methods.</note></para>
+        /// <remarks><para>This event is used to notify clients that the video playing has finished.</para>
         /// </remarks>
         /// 
-        public event EventHandler PlayingFinished;
+        public event PlayingFinishedEventHandler PlayingFinished;
 
         /// <summary>
         /// Frame interval.
@@ -313,6 +310,7 @@ namespace AForge.Video.VFW
         /// 
         private void WorkerThread( )
 		{
+            ReasonToFinishPlaying reasonToStop = ReasonToFinishPlaying.StoppedByUser;
             // AVI reader
 			AVIReader aviReader = new AVIReader( );
 
@@ -327,7 +325,7 @@ namespace AForge.Video.VFW
                 // frame interval
                 int interval = ( frameIntervalFromSource ) ? (int) ( 1000 / aviReader.FrameRate ) : frameInterval;
 
-				while ( true )
+                while ( !stopEvent.WaitOne( 0, false ) )
 				{
 					// start time
 					DateTime start = DateTime.Now;
@@ -336,10 +334,6 @@ namespace AForge.Video.VFW
 					Bitmap bitmap = aviReader.GetNextFrame( );
 
 					framesReceived++;
-
-					// need to stop ?
-					if ( stopEvent.WaitOne( 0, false ) )
-						break;
 
 					if ( NewFrame != null )
 						NewFrame( this, new NewFrameEventArgs( bitmap ) );
@@ -350,10 +344,7 @@ namespace AForge.Video.VFW
                     // check current position
                     if ( aviReader.Position >= stopPosition )
                     {
-                        if ( PlayingFinished != null )
-                        {
-                            PlayingFinished( this, new EventArgs( ) );
-                        } 
+                        reasonToStop = ReasonToFinishPlaying.EndOfStreamReached;
                         break;
                     }
 
@@ -386,6 +377,11 @@ namespace AForge.Video.VFW
 
 			aviReader.Dispose( );
 			aviReader = null;
+
+            if ( PlayingFinished != null )
+            {
+                PlayingFinished( this, reasonToStop );
+            } 
 		}
 	}
 }

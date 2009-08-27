@@ -1,8 +1,9 @@
+// AForge Direct Show Library
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
 // Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@gmail.com
+// andrew.kirillov@aforgenet.com
 //
 
 namespace AForge.Video.DirectShow
@@ -85,13 +86,10 @@ namespace AForge.Video.DirectShow
         /// Video playing finished event.
         /// </summary>
         /// 
-        /// <remarks><para>The event is fired when playing of video file is finished.</para>
-        /// 
-        /// <para><note>The event is <b>not</b> fired, if the video source is stopped manually
-        /// using <see cref="Stop"/> or <see cref="SignalToStop"/> methods.</note></para>
+        /// <remarks><para>This event is used to notify clients that the video playing has finished.</para>
         /// </remarks>
         /// 
-        public event EventHandler PlayingFinished;
+        public event PlayingFinishedEventHandler PlayingFinished;
 
         /// <summary>
         /// Video source.
@@ -313,6 +311,8 @@ namespace AForge.Video.DirectShow
         /// 
         private void WorkerThread( )
         {
+            ReasonToFinishPlaying reasonToStop = ReasonToFinishPlaying.StoppedByUser;
+
             // grabber
             Grabber grabber = new Grabber( this );
 
@@ -427,10 +427,8 @@ namespace AForge.Video.DirectShow
 
                             if ( code == DsEvCode.Complete )
                             {
-                                if ( PlayingFinished != null )
-                                {
-                                    PlayingFinished( this, new EventArgs( ) );
-                                }
+                                reasonToStop = ReasonToFinishPlaying.EndOfStreamReached;
+                                break;
                             }
                         }
                     }
@@ -471,6 +469,11 @@ namespace AForge.Video.DirectShow
                     Marshal.ReleaseComObject( grabberObject );
                     grabberObject = null;
                 }
+            }
+
+            if ( PlayingFinished != null )
+            {
+                PlayingFinished( this, reasonToStop );
             }
         }
 

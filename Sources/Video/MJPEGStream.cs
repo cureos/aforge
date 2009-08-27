@@ -1,8 +1,9 @@
 // AForge Video Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2008
-// andrew.kirillov@gmail.com
+// Copyright © Andrew Kirillov, 2005-2009
+// andrew.kirillov@aforgenet.com
 //
 
 namespace AForge.Video
@@ -100,11 +101,10 @@ namespace AForge.Video
         /// Video playing finished event.
         /// </summary>
         /// 
-        /// <remarks><para>The event is not supported by this class, since MJPEG streams are supposed to be
-        /// endless.</para>
+        /// <remarks><para>This event is used to notify clients that the video playing has finished.</para>
         /// </remarks>
         /// 
-        public event EventHandler PlayingFinished;
+        public event PlayingFinishedEventHandler PlayingFinished;
 
         /// <summary>
         /// Use or not separate connection group.
@@ -554,6 +554,11 @@ namespace AForge.Video
 				if ( stopEvent.WaitOne( 0, true ) )
 					break;
 			}
+
+            if ( PlayingFinished != null )
+            {
+                PlayingFinished( this, ReasonToFinishPlaying.StoppedByUser );
+            }
 		}
 	}
 }
