@@ -73,5 +73,22 @@ namespace AForge.Neuro
                     function );
             }
         }
+
+        /// <summary>
+        /// Set new activation function for all neurons of the network.
+        /// </summary>
+        /// 
+        /// <param name="function">Activation function to set.</param>
+        /// 
+        /// <remarks><para>The method sets new activation function for all neurons by calling
+        /// <see cref="ActivationLayer.SetActivationFunction"/> method for each layer of the network.</para></remarks>
+        /// 
+        public void SetActivationFunction( IActivationFunction function )
+        {
+            for ( int i = 0; i < layersCount; i++ )
+            {
+                ( (ActivationLayer) layers[i] ).SetActivationFunction( function );
+            }
+        }
     }
 }

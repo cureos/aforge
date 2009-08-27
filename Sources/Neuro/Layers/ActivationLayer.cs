@@ -51,5 +51,22 @@ namespace AForge.Neuro
             for ( int i = 0; i < neuronsCount; i++ )
                 neurons[i] = new ActivationNeuron( inputsCount, function );
         }
+
+        /// <summary>
+        /// Set new activation function for all neurons of the layer.
+        /// </summary>
+        /// 
+        /// <param name="function">Activation function to set.</param>
+        /// 
+        /// <remarks><para>The methods sets new activation function for each neuron by setting
+        /// their <see cref="ActivationNeuron.ActivationFunction"/> property.</para></remarks>
+        /// 
+        public void SetActivationFunction( IActivationFunction function )
+        {
+            for ( int i = 0; i < neuronsCount; i++ )
+            {
+                ( (ActivationNeuron) neurons[i] ).ActivationFunction = function;
+            }
+        }
     }
 }
