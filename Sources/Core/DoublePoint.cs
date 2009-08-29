@@ -1,8 +1,9 @@
-// AForge Fuzzy Library
+// AForge Core Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2008 
-// andrew.kirillov@gmail.com 
+// Copyright © Andrew Kirillov, 2007-2009
+// andrew.kirillov@aforgenet.com
 //
 // Copyright © Fabio L. Caversan, 2008
 // fabio.caversan@gmail.com

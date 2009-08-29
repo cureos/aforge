@@ -14,6 +14,7 @@ namespace AForge.Robotics.TeRK
     using System.Drawing;
     using System.IO;
     using System.Threading;
+    using AForge;
     using AForge.Video;
 
     public partial class Qwerk

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{631AC093-430F-45F4-BA0C-AF0F0405918A}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -44,13 +44,12 @@
   <ItemGroup>
     <Compile Include="DoublePoint.cs" />
     <Compile Include="DoubleRange.cs" />
+    <Compile Include="Exceptions.cs" />
     <Compile Include="IntRange.cs" />
     <Compile Include="Parallel.cs" />
     <Compile Include="PolishExpression.cs" />
+    <Compile Include="SystemTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SystemTools.cs">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="AForge.snk" />

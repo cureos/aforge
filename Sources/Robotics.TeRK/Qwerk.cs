@@ -11,6 +11,7 @@ using TeRKIceLib = TeRK;
 namespace AForge.Robotics.TeRK
 {
     using System;
+    using AForge;
 
     /// <summary>
     /// Manipulation of Qwerk robotics board.
