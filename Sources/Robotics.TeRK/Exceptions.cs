@@ -18,15 +18,15 @@ namespace AForge.Robotics.TeRK
     /// has failed.</para>
     /// </remarks>
     /// 
-    public class ConnectFailedException : Exception
+    public class ConnectionFailedException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConnectFailedException"/> class.
+        /// Initializes a new instance of the <see cref="ConnectionFailedException"/> class.
         /// </summary>
         /// 
         /// <param name="message">Exception's message.</param>
         /// 
-        public ConnectFailedException( string message ) :
+        public ConnectionFailedException( string message ) :
             base( message ) { }
     }
 

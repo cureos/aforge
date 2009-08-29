@@ -98,7 +98,7 @@ namespace AForge.Robotics.TeRK
         /// 
         /// <param name="hostAddress">Qwerk's address or host name to connect to.</param>
         /// 
-        /// <exception cref="ConnectFailedException">Failed connecting to Qwerk.</exception>
+        /// <exception cref="ConnectionFailedException">Failed connecting to Qwerk.</exception>
         /// <exception cref="ServiceAccessFailedException">Failed accessing to the requested service,
         /// which may be due to the fact that something is wrong with Qwerk device or connection
         /// was initiated not with Qwerk.</exception>
@@ -124,7 +124,7 @@ namespace AForge.Robotics.TeRK
             {
                 Disconnect( );
 
-                throw new ConnectFailedException( "Failed connecting to the requested service." );
+                throw new ConnectionFailedException( "Failed connecting to the requested service." );
             }
 
             // check if qwerk's object was obtained successfully

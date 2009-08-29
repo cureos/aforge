@@ -54,7 +54,7 @@ namespace AForge.Robotics.TeRK
             /// 
             /// <exception cref="NotConnectedException">The passed reference to <see cref="Qwerk"/> object is not connected to
             /// Qwerk board.</exception>
-            /// <exception cref="ConnectFailedException">Failed connecting to the requested service.</exception>
+            /// <exception cref="ConnectionFailedException">Failed connecting to the requested service.</exception>
             /// <exception cref="ServiceAccessFailedException">Failed accessing to the requested service.</exception>
             /// 
             public DigitalOut( Qwerk qwerk )
@@ -77,7 +77,7 @@ namespace AForge.Robotics.TeRK
                     }
                     catch
                     {
-                        throw new ConnectFailedException( "Failed connecting to the requested service." );
+                        throw new ConnectionFailedException( "Failed connecting to the requested service." );
                     }
 
                     if ( digitalOutController == null )
