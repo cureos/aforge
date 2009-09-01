@@ -494,7 +494,15 @@ namespace MotionDetectorSample
         {
             if ( ( videoSource != null ) && ( videoSource is VideoCaptureDevice ) )
             {
-                ( (VideoCaptureDevice) videoSource ).DisplayPropertyPage( this.Handle );
+                try
+                {
+                    ( (VideoCaptureDevice) videoSource ).DisplayPropertyPage( this.Handle );
+                }
+                catch ( NotSupportedException )
+                {
+                    MessageBox.Show( "The video source does not support configuration property page.", "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error );
+                }
             }
         }
 

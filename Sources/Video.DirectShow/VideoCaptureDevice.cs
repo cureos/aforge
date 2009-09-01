@@ -365,6 +365,8 @@ namespace AForge.Video.DirectShow
         /// 
         /// <param name="parentWindow">Handle of parent window.</param>
         /// 
+        /// <exception cref="NotSupportedException">The video source does not support configuration property page.</exception>
+        /// 
         public void DisplayPropertyPage( IntPtr parentWindow )
         {
             // check source
@@ -375,6 +377,11 @@ namespace AForge.Video.DirectShow
             object sourceObject = FilterInfo.CreateFilter( deviceMoniker );
             if ( sourceObject == null )
                 throw new ApplicationException( "Failed creating device object for moniker" );
+
+            if ( !( sourceObject is ISpecifyPropertyPages ) )
+            {
+                throw new NotSupportedException( "The video source does not support configuration property page." );
+            }
 
             // retrieve ISpecifyPropertyPages interface of the device
             ISpecifyPropertyPages pPropPages = (ISpecifyPropertyPages) sourceObject;
