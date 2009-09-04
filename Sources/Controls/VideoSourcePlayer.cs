@@ -162,6 +162,7 @@ namespace AForge.Controls
                         videoSource.PlayingFinished += new PlayingFinishedEventHandler( videoSource_PlayingFinished );
                     }
 
+                    lastMessage = null;
                     needSizeUpdate = true;
                     firstFrameNotProcessed = true;
                     // update the control
