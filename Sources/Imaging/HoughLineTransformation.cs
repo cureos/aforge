@@ -406,16 +406,13 @@ namespace AForge.Imaging
         /// 
         /// <param name="count">Amount of lines to get.</param>
         /// 
-        /// <returns>Returns arrary of most intesive lines. If there are no lines detected,
-        /// <b>null</b> is returned.</returns>
+        /// <returns>Returns array of most intesive lines. If there are no lines detected,
+        /// the returned array has zero length.</returns>
         /// 
         public HoughLine[] GetMostIntensiveLines( int count )
         {
             // lines count
             int n = Math.Min( count, lines.Count );
-
-            if ( n == 0 )
-                return null;
 
             // result array
             HoughLine[] dst = new HoughLine[n];
@@ -431,7 +428,7 @@ namespace AForge.Imaging
         /// <param name="minRelativeIntensity">Minimum relative intesity of lines.</param>
         /// 
         /// <returns>Returns array of lines. If there are no lines detected,
-        /// <b>null</b> is returned.</returns>
+        /// the returned array has zero length.</returns>
         /// 
         public HoughLine[] GetLinesByRelativeIntensity( double minRelativeIntensity )
         {
