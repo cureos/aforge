@@ -110,6 +110,21 @@ namespace AForge.Robotics.Lego.Internals
         GetInputValues = 0x07,
 
         /// <summary>
+        /// Get status of the Low Speed bus.
+        /// </summary>
+        LsGetStatus = 0x0E,
+
+        /// <summary>
+        /// Write to the Low Speed bus.
+        /// </summary>
+        LsWrite = 0x0F,
+
+        /// <summary>
+        /// Read from the Low Speed bus.
+        /// </summary>
+        LsRead = 0x10,
+
+        /// <summary>
         /// Reset input scaled value.
         /// </summary>
         ResetInputScaledValue = 0x08
