@@ -14,7 +14,7 @@ namespace AForge.Video.DirectShow.Internals
 	/// DirectShow class IDs.
 	/// </summary>
     [ComVisible( false )]
-    internal class Clsid
+    internal static class Clsid
     {
         /// <summary>
         /// System device enumerator.

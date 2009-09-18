@@ -18,7 +18,7 @@ namespace AForge.Robotics.Lego.Internals
     /// <remarks><para>GhostAPI is a library provided by Lego, to communicate with its
     /// RCX robotics kit.</para></remarks>
     /// 
-    internal class GhostAPI
+    internal static class GhostAPI
     {
         /// <summary>
         /// Creates Ghost communication stack.

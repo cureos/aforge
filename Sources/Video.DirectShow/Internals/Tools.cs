@@ -14,7 +14,7 @@ namespace AForge.Video.DirectShow.Internals
     /// Some miscellaneous functions.
     /// </summary>
     /// 
-    internal class Tools
+    internal static class Tools
     {
         /// <summary>
         /// Get filter's pin.

@@ -15,7 +15,7 @@ namespace AForge.Video.DirectShow.Internals
     /// Some Win32 API used internally.
     /// </summary>
     /// 
-    internal class Win32
+    internal static class Win32
     {
         /// <summary>
         /// Supplies a pointer to an implementation of <b>IBindCtx</b> (a bind context object).

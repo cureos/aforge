@@ -23,11 +23,8 @@ namespace AForge.Imaging
     /// on grayscale 8 bpp indexed images.</para>
     /// </remarks>
     /// 
-    public class Drawing
+    public static class Drawing
     {
-        // Private constructor to avoid instantiation.
-        private Drawing( ) { }
-
         /// <summary>
         /// Fill rectangle on the specified image.
         /// </summary>

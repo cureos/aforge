@@ -13,7 +13,7 @@ namespace AForge.Video
     /// Some internal utilities for handling arrays.
     /// </summary>
     /// 
-    internal class ByteArrayUtils
+    internal static class ByteArrayUtils
     {
         /// <summary>
         /// Check if the array contains needle at specified position.

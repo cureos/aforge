@@ -16,7 +16,7 @@ namespace AForge.Video.VFW
     /// 
     /// <remarks>The class provides Video for Windows and some other Win32 functions and structurs.</remarks>
     /// 
-    internal class Win32
+    internal static class Win32
     {
         /// <summary>
         /// Copy a block of memory.

@@ -16,7 +16,7 @@ namespace AForge.Math
     /// 
     /// <remarks>The class contains different utility functions.</remarks>
     /// 
-    public class Tools
+    public static class Tools
     {
         /// <summary>
         /// Calculates power of 2.

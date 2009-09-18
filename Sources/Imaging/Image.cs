@@ -19,11 +19,8 @@ namespace AForge.Imaging
     /// <remarks>All methods of this class are static and represent general routines
     /// used by different image processing classes.</remarks>
     /// 
-    public sealed class Image
+    public static class Image
     {
-        // Avoid class instantiation
-        private Image( ) { }
-
         /// <summary>
         /// Check if specified 8 bpp image is grayscale.
         /// </summary>

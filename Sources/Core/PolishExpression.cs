@@ -44,11 +44,8 @@ namespace AForge
     /// </code>
     /// </remarks>
     /// 
-    public class PolishExpression
+    public static class PolishExpression
     {
-        // Private constructor to avoid instances of the class
-        private PolishExpression( ) { }
-
         /// <summary>
         /// Evaluates specified expression.
         /// </summary>

@@ -18,11 +18,8 @@ namespace AForge.Math
     /// <remarks>The class represents collection of simple functions used
     /// in statistics.</remarks>
     /// 
-    public class Statistics
+    public static class Statistics
     {
-        // Private constructor to avoid instantiation
-        private Statistics( ) { }
-
         /// <summary>
         /// Calculate mean value.
         /// </summary>

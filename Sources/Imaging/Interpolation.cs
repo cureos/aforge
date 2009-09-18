@@ -13,7 +13,7 @@ namespace AForge.Imaging
     /// Interpolation routines.
     /// </summary>
     /// 
-    internal class Interpolation
+    internal static class Interpolation
     {
         /// <summary>
         /// Bicubic kernel.

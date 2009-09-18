@@ -20,11 +20,8 @@ namespace AForge
     /// implementation is different on different platform, like .NET and Mono.</para>
     /// </remarks>
     /// 
-    public class SystemTools
+    public static class SystemTools
     {
-        // Private constructor to avoid class instantiation
-        private SystemTools( ) { }
-
         /// <summary>
         /// Copy block of unmanaged memory.
         /// </summary>
