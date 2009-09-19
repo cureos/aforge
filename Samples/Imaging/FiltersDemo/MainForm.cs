@@ -694,8 +694,7 @@ namespace FiltersDemo
             // save original image
             Bitmap originalImage = sourceImage;
             // get grayscale image
-            IFilter grayscaleFilter = new GrayscaleRMY( );
-            sourceImage = grayscaleFilter.Apply( sourceImage );
+            sourceImage = Grayscale.CommonAlgorithms.RMY.Apply( sourceImage );
             // apply threshold filter
             ApplyFilter( new Threshold( ) );
             // delete grayscale image and restore original
@@ -711,8 +710,7 @@ namespace FiltersDemo
             // save original image
             Bitmap originalImage = sourceImage;
             // get grayscale image
-            IFilter grayscaleFilter = new GrayscaleRMY( );
-            sourceImage = grayscaleFilter.Apply( sourceImage );
+            sourceImage = Grayscale.CommonAlgorithms.RMY.Apply( sourceImage );
             // apply threshold filter
             ApplyFilter( new FloydSteinbergDithering( ) );
             // delete grayscale image and restore original
@@ -728,8 +726,7 @@ namespace FiltersDemo
             // save original image
             Bitmap originalImage = sourceImage;
             // get grayscale image
-            IFilter grayscaleFilter = new GrayscaleRMY( );
-            sourceImage = grayscaleFilter.Apply( sourceImage );
+            sourceImage = Grayscale.CommonAlgorithms.RMY.Apply( sourceImage );
             // apply threshold filter
             ApplyFilter( new OrderedDithering( ) );
             // delete grayscale image and restore original
@@ -764,8 +761,7 @@ namespace FiltersDemo
             // save original image
             Bitmap originalImage = sourceImage;
             // get grayscale image
-            IFilter grayscaleFilter = new GrayscaleRMY( );
-            sourceImage = grayscaleFilter.Apply( sourceImage );
+            sourceImage = Grayscale.CommonAlgorithms.RMY.Apply( sourceImage );
             // apply edge filter
             ApplyFilter( new DifferenceEdgeDetector( ) );
             // delete grayscale image and restore original
@@ -781,8 +777,7 @@ namespace FiltersDemo
             // save original image
             Bitmap originalImage = sourceImage;
             // get grayscale image
-            IFilter grayscaleFilter = new GrayscaleRMY( );
-            sourceImage = grayscaleFilter.Apply( sourceImage );
+            sourceImage = Grayscale.CommonAlgorithms.RMY.Apply( sourceImage );
             // apply edge filter
             ApplyFilter( new HomogenityEdgeDetector( ) );
             // delete grayscale image and restore original
@@ -798,8 +793,7 @@ namespace FiltersDemo
             // save original image
             Bitmap originalImage = sourceImage;
             // get grayscale image
-            IFilter grayscaleFilter = new GrayscaleRMY( );
-            sourceImage = grayscaleFilter.Apply( sourceImage );
+            sourceImage = Grayscale.CommonAlgorithms.RMY.Apply( sourceImage );
             // apply edge filter
             ApplyFilter( new SobelEdgeDetector( ) );
             // delete grayscale image and restore original
