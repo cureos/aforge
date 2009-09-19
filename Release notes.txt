@@ -1,3 +1,92 @@
+AForge.NET Framework 2.0.1 release notes
+---------------------------------------------
+19.09.2009.
+
+
+Version updates and fixes:
+
+* Fixed registered issues/requests:
+  - Issue 56: Changing activation functions
+  - Issue 97: Request: Missing an event for when clip is done running
+  - Issue 109: Comments for Hough line transform
+  - Issue 110: GetMostIntensiveLines(count) returns null
+  - Issue 112: Provide binaries as a .zip file
+  
+  
+* AForge
+  - Added zero initialization of allocated unmanaged images, since Marshal.AllocHGlobal() does not
+    care about it.
+    
+  - Moving exceptions, which are related to connections to device, from AForge.Robotics.TeRK to AForge namespace,
+    so they could be reused in other namespaces as well.
+    
+    
+* AForge.Imaging
+  - Fixed UnmanagedImage.FromManagedImage() method - it was allocating unmanaged image, but was not
+    copying managed image to it.
+
+  - Added documentation to UnmanagedImage to clarify its purpose.
+  
+  - Bug fix in SimplePosterization image processing filter.
+  
+  - Added black rectangle drawing in CannyEdgeDetector to remove unprocessed pixels. This is required in
+    the case if the filter is applied in-place.
+    
+  - Created set of predefined common grayscaling algorithms, which are available as read only instances of
+    Grayscale class. These predefined instances are available in Grayscale.CommonAlgorithms class. Old
+    classes like GrayscaleBT709, GrayscaleRMY, GrayscaleY are marked as obsolete.
+    
+  - Both GetMostIntensiveLines() and GetLinesByRelativeIntensity() methods in HoughLineTransformation class
+    were updated to return array of zero length instead of null in the case when there are no lines to return.
+    
+  - Updated documentation to HoughLineTransformation and HoughLine clarifying different aspects of Hough Line
+    transformation. Provided sample code to highlight detected lines. Provided sample image with annotation
+    to clarify meaning of Theta and Radius values of detected Hough lines.
+
+
+* AForge.Imaging.Formats
+  - Added registration of PPM extension as valid image in PNM format.
+  
+  - Added sample images for testing of AForge.Imaging.Formats namespace.
+  
+
+* AForge.Neuro
+  - Added ability to change activation function of neuron/layer/network.
+  
+
+* AForge.Robotics.Lego
+  - Added GetUltrasonicSensorsValue() method for NXT brick to read values of ultrasonic distance sensor.
+  
+
+* AForge.Robotics.TeRK
+  - Added 2500 ms connection timeout to Qwerk classes. QwerkStart sample update to handle lost connection.
+  
+
+* AForge.Video
+  - Added PlayingFinished event to IVideoSource interface. The event is fired in the case video
+    stops by reaching end of video stream or by canceling by user.
+  
+  
+* AForge.Video.DirectShow
+  - Added VideoCapabilities property to VideoCaptureDevice class, which can be used to resolve supported
+    frame sizes and maximum frame rates.
+
+
+* AForge.Vision
+  - MillisecondsPerBackgroundUpdate property is introduced in SimpleBackgroundModelingDetector, which
+    allows to control background update on the base of time intervals, but not on the base of frames'
+    counter. This allows to control background update in the way, which is not affected by variable frame
+    rates. Also the method better handles those case, when video source has very low frame rate (where
+    FramesPerBackgroundUpdate would not perform very well causing very long time to update background).
+    
+    
+* Samples
+  - Fixing FilterDemo application - added grayscaling before edge detectors (all edge detectors
+    require grayscaling).
+
+
+
+
 AForge.NET Framework 2.0.0 (final) release notes
 ---------------------------------------------
 22.07.2009.
