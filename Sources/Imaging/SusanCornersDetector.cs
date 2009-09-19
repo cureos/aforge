@@ -229,8 +229,7 @@ namespace AForge.Imaging
             else
             {
                 // create temporary grayscale image
-                GrayscaleBT709 grayFilter = new GrayscaleBT709( );
-                grayImage = grayFilter.Apply( image );
+                grayImage = Grayscale.CommonAlgorithms.BT709.Apply( image );
             }
 
             int[,] susanMap = new int[height, width];

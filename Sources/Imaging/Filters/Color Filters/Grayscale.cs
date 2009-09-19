@@ -44,10 +44,90 @@ namespace AForge.Imaging.Filters
     ///
     public class Grayscale : BaseFilter
     {
+        /// <summary>
+        /// Set of predefined common grayscaling algorithms, which have aldready initialized
+        /// grayscaling coefficients.
+        /// </summary>
+        public static class CommonAlgorithms
+        {
+            /// <summary>
+            /// Grayscale image using BT709 algorithm.
+            /// </summary>
+            /// 
+            /// <remarks><para>The instance uses <b>BT709</b> algorithm to convert color image
+            /// to grayscale. The conversion coefficients are:
+            /// <list type="bullet">
+            /// <item>Red: 0.2125;</item>
+            /// <item>Green: 0.7154;</item>
+            /// <item>Blue: 0.0721.</item>
+            /// </list></para>
+            /// 
+            /// <para>Sample usage:</para>
+            /// <code>
+            /// // apply the filter
+            /// Bitmap grayImage = Grayscale.CommonAlgorithms.BT709.Apply( image );
+            /// </code>
+            /// </remarks>
+            /// 
+            public static readonly Grayscale BT709 = new Grayscale( 0.2125, 0.7154, 0.0721 );
+
+            /// <summary>
+            /// Grayscale image using R-Y algorithm.
+            /// </summary>
+            /// 
+            /// <remarks><para>The instance uses <b>R-Y</b> algorithm to convert color image
+            /// to grayscale. The conversion coefficients are:
+            /// <list type="bullet">
+            /// <item>Red: 0.5;</item>
+            /// <item>Green: 0.419;</item>
+            /// <item>Blue: 0.081.</item>
+            /// </list></para>
+            /// 
+            /// <para>Sample usage:</para>
+            /// <code>
+            /// // apply the filter
+            /// Bitmap grayImage = Grayscale.CommonAlgorithms.RMY.Apply( image );
+            /// </code>
+            /// </remarks>
+            /// 
+            public static readonly Grayscale RMY = new Grayscale( 0.5000, 0.4190, 0.0810 );
+
+            /// <summary>
+            /// Grayscale image using Y algorithm.
+            /// </summary>
+            /// 
+            /// <remarks><para>The instance uses <b>Y</b> algorithm to convert color image
+            /// to grayscale. The conversion coefficients are:
+            /// <list type="bullet">
+            /// <item>Red: 0.299;</item>
+            /// <item>Green: 0.587;</item>
+            /// <item>Blue: 0.114.</item>
+            /// </list></para>
+            /// 
+            /// <para>Sample usage:</para>
+            /// <code>
+            /// // apply the filter
+            /// Bitmap grayImage = Grayscale.CommonAlgorithms.Y.Apply( image );
+            /// </code>
+            /// </remarks>
+            /// 
+            public static readonly Grayscale Y = new Grayscale( 0.2990, 0.5870, 0.1140 );
+        }
+
         // RGB coefficients for grayscale transformation
-        private double cr;
-        private double cg;
-        private double cb;
+
+        /// <summary>
+        /// Portion of red channel's value to use during conversion from RGB to grayscale.
+        /// </summary>
+        public readonly double RedCoefficient;
+        /// <summary>
+        /// Portion of green channel's value to use during conversion from RGB to grayscale.
+        /// </summary>
+        public readonly double GreenCoefficient;
+        /// <summary>
+        /// Portion of blue channel's value to use during conversion from RGB to grayscale.
+        /// </summary>
+        public readonly double BlueCoefficient;
 
         // private format translation dictionary
         private Dictionary<PixelFormat, PixelFormat> formatTransalations = new Dictionary<PixelFormat, PixelFormat>( );
@@ -70,9 +150,9 @@ namespace AForge.Imaging.Filters
         /// 
         public Grayscale( double cr, double cg, double cb )
         {
-            this.cr = cr;
-            this.cg = cg;
-            this.cb = cb;
+            RedCoefficient   = cr;
+            GreenCoefficient = cg;
+            BlueCoefficient  = cb;
 
             // initialize format translation dictionary
             formatTransalations[PixelFormat.Format24bppRgb]  = PixelFormat.Format8bppIndexed;
@@ -115,7 +195,7 @@ namespace AForge.Imaging.Filters
                     // for each pixel
                     for ( int x = 0; x < width; x++, src += pixelSize, dst++ )
                     {
-                        *dst = (byte) ( cr * src[RGB.R] + cg * src[RGB.G] + cb * src[RGB.B] );
+                        *dst = (byte) ( RedCoefficient * src[RGB.R] + GreenCoefficient * src[RGB.G] + BlueCoefficient * src[RGB.B] );
                     }
                     src += srcOffset;
                     dst += dstOffset;
@@ -138,7 +218,7 @@ namespace AForge.Imaging.Filters
                     // for each pixel
                     for ( int x = 0; x < width; x++, src += pixelSize, dst++ )
                     {
-                        *dst = (ushort) ( cr * src[RGB.R] + cg * src[RGB.G] + cb * src[RGB.B] );
+                        *dst = (ushort) ( RedCoefficient * src[RGB.R] + GreenCoefficient * src[RGB.G] + BlueCoefficient * src[RGB.B] );
                     }
                 }
             }

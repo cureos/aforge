@@ -7,6 +7,7 @@
 
 namespace AForge.Imaging.Filters
 {
+    using System;
     using System.Drawing;
     using System.Drawing.Imaging;
 
@@ -27,6 +28,7 @@ namespace AForge.Imaging.Filters
     /// <seealso cref="GrayscaleRMY"/>
     /// <seealso cref="GrayscaleY"/>
     ///
+    [Obsolete( "Use Grayscale.CommonAlgorithms.BT709 object instead" )]
     public sealed class GrayscaleBT709 : Grayscale
     {
         /// <summary>

@@ -603,7 +603,7 @@ namespace FiltersDemo
         // On Filters->Grayscale item
         private void grayscaleFiltersItem_Click( object sender, System.EventArgs e )
         {
-            ApplyFilter( new GrayscaleBT709( ) );
+            ApplyFilter( Grayscale.CommonAlgorithms.BT709 );
             grayscaleFiltersItem.Checked = true;
         }
 
