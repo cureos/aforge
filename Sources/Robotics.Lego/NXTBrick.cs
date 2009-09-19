@@ -915,9 +915,9 @@ namespace AForge.Robotics.Lego
         /// <para><note>Before using this method it is required to use
         /// <see cref="SetSensorMode"/> method to set sensor's type to
         /// <see cref="SensorType.Lowspeed9V"/> mode. It should be done
-        /// once after NXT brick is powered one. If sensor's type is not set properly,
+        /// once after NXT brick is powered on. If sensor's type is not set properly,
         /// the method will generate an exception. Also after setting sensor's
-        /// type application may need to wait a bit to give device sime time
+        /// type application may need to wait a bit to give device some time
         /// to initialize.</note></para>
         /// </remarks>
         /// 
