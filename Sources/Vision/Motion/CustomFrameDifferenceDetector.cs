@@ -84,8 +84,6 @@ namespace AForge.Vision.Motion
         private int differenceThreshold    =  15;
         private int differenceThresholdNeg = -15;
 
-        // grayscale filter
-        private GrayscaleBT709 grayFilter = new GrayscaleBT709( );
         // binary erosion filter
         private BinaryErosion3x3 erosionFilter = new BinaryErosion3x3( );
         // binary dilatation filter
@@ -282,7 +280,7 @@ namespace AForge.Vision.Motion
                     frameSize = backgroundFrame.Stride * height;
 
                     // convert source frame to grayscale
-                    grayFilter.Apply( videoFrame, backgroundFrame );
+                    Grayscale.CommonAlgorithms.BT709.Apply( videoFrame, backgroundFrame );
 
                     return;
                 }
@@ -304,7 +302,7 @@ namespace AForge.Vision.Motion
                 }
 
                 // convert current image to grayscale
-                grayFilter.Apply( videoFrame, motionFrame );
+                Grayscale.CommonAlgorithms.BT709.Apply( videoFrame, motionFrame );
 
                 // pointers to background and current frames
                 byte* backFrame;
@@ -460,7 +458,7 @@ namespace AForge.Vision.Motion
                 frameSize = this.backgroundFrame.Stride * height;
 
                 // convert source frame to grayscale
-                grayFilter.Apply( backgroundFrame, this.backgroundFrame );
+                Grayscale.CommonAlgorithms.BT709.Apply( backgroundFrame, this.backgroundFrame );
 
                 manuallySetBackgroundFrame = true;
             }

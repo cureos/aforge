@@ -72,8 +72,6 @@ namespace AForge.Vision.Motion
         private int differenceThreshold    =  15;
         private int differenceThresholdNeg = -15;
 
-        // grayscale filter
-        private GrayscaleBT709 grayFilter = new GrayscaleBT709( );
         // binary erosion filter
         private BinaryErosion3x3 erosionFilter = new BinaryErosion3x3( );
 
@@ -234,7 +232,7 @@ namespace AForge.Vision.Motion
                     }
 
                     // convert source frame to grayscale
-                    grayFilter.Apply( videoFrame, previousFrame );
+                    Grayscale.CommonAlgorithms.BT709.Apply( videoFrame, previousFrame );
 
                     return;
                 }
@@ -244,7 +242,7 @@ namespace AForge.Vision.Motion
                     return;
 
                 // convert current image to grayscale
-                grayFilter.Apply( videoFrame, motionFrame );
+                Grayscale.CommonAlgorithms.BT709.Apply( videoFrame, motionFrame );
 
                 // pointers to previous and current frames
                 byte* prevFrame = (byte*) previousFrame.ImageData.ToPointer( );

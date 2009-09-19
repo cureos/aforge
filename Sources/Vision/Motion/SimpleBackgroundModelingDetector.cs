@@ -33,7 +33,8 @@ namespace AForge.Vision.Motion
     /// During further video processing the background frame is constantly updated, so it
     /// changes in the direction to decrease difference with current video frame (the background
     /// frame is moved towards current frame). See <see cref="FramesPerBackgroundUpdate"/>
-    /// property, which controls the rate of background frame update.</para>
+    /// <see cref="MillisecondsPerBackgroundUpdate"/> properties, which control the rate of
+    /// background frame update.</para>
     /// 
     /// <para>Unlike <see cref="TwoFramesDifferenceDetector"/> motion detection algorithm, this algorithm
     /// allows to identify quite clearly all objects, which are not part of the background (scene) -
@@ -102,8 +103,10 @@ namespace AForge.Vision.Motion
         private int framesPerBackgroundUpdate = 2;
         private int framesCounter = 0;
 
-        // grayscale filter
-        private GrayscaleBT709 grayFilter = new GrayscaleBT709( );
+        private int millisecondsPerBackgroundUpdate = 0;
+        private int millisecondsLeftUnprocessed = 0;
+        private DateTime lastTimeMeasurment;
+
         // binary erosion filter
         private BinaryErosion3x3 erosionFilter = new BinaryErosion3x3( );
         // binary dilatation filter
@@ -248,12 +251,57 @@ namespace AForge.Vision.Motion
         /// in the direction to decrease difference with current processing frame.</para>
         /// 
         /// <para>Default value is set to <b>2</b>.</para>
+        /// 
+        /// <para><note>The property has effect only in the case if <see cref="MillisecondsPerBackgroundUpdate"/>
+        /// property is set to <b>0</b>. Otherwise it does not have effect and background
+        /// update is managed according to the <see cref="MillisecondsPerBackgroundUpdate"/>
+        /// property settings.</note></para>
         /// </remarks>
         /// 
         public int FramesPerBackgroundUpdate
         {
             get { return framesPerBackgroundUpdate; }
             set { framesPerBackgroundUpdate = Math.Max( 1, Math.Min( 50, value ) ); }
+        }
+
+        /// <summary>
+        /// Milliseconds per background update, [0, 5000].
+        /// </summary>
+        /// 
+        /// <remarks><para>The value represents alternate way of controlling the speed of modeled
+        /// background adaptation to scene changes. The value sets number of milliseconds, which
+        /// should elapse between two consequent video frames to result in background update
+        /// for one intensity level. For example, if this value is set to 100 milliseconds and
+        /// the amount of time elapsed between two last video frames equals to 350, then background
+        /// frame will be update for 3 intensity levels in the direction to decrease difference
+        /// with current video frame (the remained 50 milliseconds will be added to time difference
+        /// between two next consequent frames, so the accuracy is preserved).</para>
+        /// 
+        /// <para>Unlike background update method controlled using <see cref="FramesPerBackgroundUpdate"/>
+        /// method, the method guided by this property is not affected by changes
+        /// in frame rates. If, for some reasons, a video source starts to provide delays between
+        /// frames (frame rate drops down), the amount of background update still stays consistent.
+        /// When background update is controlled by this property, it is always possible to estimate
+        /// amount of time required to change, for example, absolutely black background (0 intensity
+        /// values) into absolutely white background (255 intensity values). If value of this
+        /// property is set to 100, then it will take approximately 25.5 seconds for such update
+        /// regardless of frame rate.</para>
+        /// 
+        /// <para><note>Background update controlled by this property is slightly slower then
+        /// background update controlled by <see cref="FramesPerBackgroundUpdate"/> property,
+        /// so it has a bit greater impact on performance.</note></para>
+        /// 
+        /// <para><note>If this property is set to 0, then corresponding background updating
+        /// method is not used (turned off), but background update guided by
+        /// <see cref="FramesPerBackgroundUpdate"/> property is used.</note></para>
+        /// 
+        /// <para>Default value is set to <b>0</b>.</para>
+        /// </remarks>
+        /// 
+        public int MillisecondsPerBackgroundUpdate
+        {
+            get { return millisecondsPerBackgroundUpdate; }
+            set { millisecondsPerBackgroundUpdate = Math.Max( 0, Math.Min( 5000, value ) ); }
         }
 
         /// <summary>
@@ -304,8 +352,10 @@ namespace AForge.Vision.Motion
                 // check background frame
                 if ( backgroundFrame == null )
                 {
+                    lastTimeMeasurment = DateTime.Now;
+
                     // save image dimension
-                    width = videoFrame.Width;
+                    width  = videoFrame.Width;
                     height = videoFrame.Height;
 
                     // alocate memory for previous and current frames
@@ -321,7 +371,7 @@ namespace AForge.Vision.Motion
                     }
 
                     // convert source frame to grayscale
-                    grayFilter.Apply( videoFrame, backgroundFrame );
+                    Grayscale.CommonAlgorithms.BT709.Apply( videoFrame, backgroundFrame );
 
                     return;
                 }
@@ -331,7 +381,7 @@ namespace AForge.Vision.Motion
                     return;
 
                 // convert current image to grayscale
-                grayFilter.Apply( videoFrame, motionFrame );
+                Grayscale.CommonAlgorithms.BT709.Apply( videoFrame, motionFrame );
 
                 // pointers to background and current frames
                 byte* backFrame;
@@ -339,9 +389,46 @@ namespace AForge.Vision.Motion
                 int diff;
 
                 // update background frame
-                if ( ++framesCounter == framesPerBackgroundUpdate )
+                if ( millisecondsPerBackgroundUpdate == 0 )
                 {
-                    framesCounter = 0;
+                    // update background frame using frame counter as a base
+                    if ( ++framesCounter == framesPerBackgroundUpdate )
+                    {
+                        framesCounter = 0;
+
+                        backFrame = (byte*) backgroundFrame.ImageData.ToPointer( );
+                        currFrame = (byte*) motionFrame.ImageData.ToPointer( );
+
+                        for ( int i = 0; i < frameSize; i++, backFrame++, currFrame++ )
+                        {
+                            diff = *currFrame - *backFrame;
+                            if ( diff > 0 )
+                            {
+                                ( *backFrame )++;
+                            }
+                            else if ( diff < 0 )
+                            {
+                                ( *backFrame )--;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // update background frame using timer as a base
+
+                    // get current time and calculate difference
+                    DateTime currentTime = DateTime.Now;
+                    TimeSpan timeDff = currentTime - lastTimeMeasurment;
+                    // save current time as the last measurment
+                    lastTimeMeasurment = currentTime;
+
+                    int millisonds = (int) timeDff.TotalMilliseconds + millisecondsLeftUnprocessed;
+
+                    // save remainder so it could be taken into account in the future
+                    millisecondsLeftUnprocessed = millisonds % millisecondsPerBackgroundUpdate;
+                    // get amount for background update 
+                    int updateAmount = (int) ( millisonds / millisecondsPerBackgroundUpdate );
 
                     backFrame = (byte*) backgroundFrame.ImageData.ToPointer( );
                     currFrame = (byte*) motionFrame.ImageData.ToPointer( );
@@ -351,11 +438,11 @@ namespace AForge.Vision.Motion
                         diff = *currFrame - *backFrame;
                         if ( diff > 0 )
                         {
-                            ( *backFrame )++;
+                            ( *backFrame ) += (byte) ( (  diff < updateAmount ) ? diff :  updateAmount );
                         }
                         else if ( diff < 0 )
                         {
-                            ( *backFrame )--;
+                            ( *backFrame ) += (byte) ( ( -diff < updateAmount ) ? diff : -updateAmount );
                         }
                     }
                 }
