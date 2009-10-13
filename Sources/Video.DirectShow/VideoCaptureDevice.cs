@@ -69,6 +69,9 @@ namespace AForge.Video.DirectShow
 
         private VideoCapabilities[] videoCapabilities;
 
+        private bool needToDisplayPropertyPage = false;
+        private IntPtr parentWindowForPropertyPage = IntPtr.Zero;
+
         /// <summary>
         /// New frame event.
         /// </summary>
@@ -282,10 +285,13 @@ namespace AForge.Video.DirectShow
                 // create events
                 stopEvent = new ManualResetEvent( false );
 
-                // create and start new thread
-                thread = new Thread( new ThreadStart( WorkerThread ) );
-                thread.Name = deviceMoniker; // mainly for debugging
-                thread.Start( );
+                lock ( this )
+                {
+                    // create and start new thread
+                    thread = new Thread( new ThreadStart( WorkerThread ) );
+                    thread.Name = deviceMoniker; // mainly for debugging
+                    thread.Start( );
+                }
             }
         }
 
@@ -380,33 +386,59 @@ namespace AForge.Video.DirectShow
             if ( ( deviceMoniker == null ) || ( deviceMoniker == string.Empty ) )
                 throw new ArgumentException( "Video source is not specified" );
 
-            // create source device's object
-            object sourceObject = FilterInfo.CreateFilter( deviceMoniker );
-            if ( sourceObject == null )
-                throw new ApplicationException( "Failed creating device object for moniker" );
-
-            if ( !( sourceObject is ISpecifyPropertyPages ) )
+            lock ( this )
             {
-                throw new NotSupportedException( "The video source does not support configuration property page." );
+                object sourceObject = null;
+                // create source device's object
+                try
+                {
+                    sourceObject = FilterInfo.CreateFilter( deviceMoniker );
+                }
+                catch
+                {
+                }
+
+                if ( sourceObject == null )
+                {
+                    if ( IsRunning )
+                    {
+                        // if we can not create instance of video source object and video is already
+                        // running, then it seems that we deal with those rare camera drivers, which
+                        // do not allow creating more than one instance of source object.
+
+                        // try to pass the request to backgroud thread in this case
+                        parentWindowForPropertyPage = parentWindow;
+                        needToDisplayPropertyPage = true;
+                        return;
+                    }
+                    else
+                    {
+                        throw new ApplicationException( "Failed creating device object for moniker." );
+                    }
+                }
+
+                if ( !( sourceObject is ISpecifyPropertyPages ) )
+                {
+                    throw new NotSupportedException( "The video source does not support configuration property page." );
+                }
+
+                // retrieve ISpecifyPropertyPages interface of the device
+                ISpecifyPropertyPages pPropPages = (ISpecifyPropertyPages) sourceObject;
+
+                // get property pages from the property bag
+                CAUUID caGUID;
+                pPropPages.GetPages( out caGUID );
+
+                // get filter info
+                FilterInfo filterInfo = new FilterInfo( deviceMoniker );
+
+                // create and display the OlePropertyFrame form
+                Win32.OleCreatePropertyFrame( parentWindow, 0, 0, filterInfo.Name, 1, ref sourceObject, caGUID.cElems, caGUID.pElems, 0, 0, IntPtr.Zero );
+
+                // release COM objects
+                Marshal.FreeCoTaskMem( caGUID.pElems );
+                Marshal.ReleaseComObject( sourceObject );
             }
-
-            // retrieve ISpecifyPropertyPages interface of the device
-            ISpecifyPropertyPages pPropPages = (ISpecifyPropertyPages) sourceObject;
-
-            // get property pages from the property bag
-            CAUUID caGUID;
-            pPropPages.GetPages( out caGUID );
-
-            // get filter info
-            FilterInfo filterInfo = new FilterInfo( deviceMoniker );
-
-            //Create and display the OlePropertyFrame
-            // object device = sourceObject;
-            Win32.OleCreatePropertyFrame( parentWindow, 0, 0, filterInfo.Name, 1, ref sourceObject, caGUID.cElems, caGUID.pElems, 0, 0, IntPtr.Zero );
-
-            // release COM objects
-            Marshal.FreeCoTaskMem( caGUID.pElems );
-            Marshal.ReleaseComObject( sourceObject );
         }
 
         /// <summary>
@@ -589,6 +621,33 @@ namespace AForge.Video.DirectShow
                     while ( !stopEvent.WaitOne( 0, true ) )
                     {
                         Thread.Sleep( 100 );
+
+                        if ( needToDisplayPropertyPage )
+                        {
+                            needToDisplayPropertyPage = false;
+
+                            try
+                            {
+                                // retrieve ISpecifyPropertyPages interface of the device
+                                ISpecifyPropertyPages pPropPages = (ISpecifyPropertyPages) sourceObject;
+
+                                // get property pages from the property bag
+                                CAUUID caGUID;
+                                pPropPages.GetPages( out caGUID );
+
+                                // get filter info
+                                FilterInfo filterInfo = new FilterInfo( deviceMoniker );
+
+                                // create and display the OlePropertyFrame
+                                Win32.OleCreatePropertyFrame( parentWindowForPropertyPage, 0, 0, filterInfo.Name, 1, ref sourceObject, caGUID.cElems, caGUID.pElems, 0, 0, IntPtr.Zero );
+
+                                // release COM objects
+                                Marshal.FreeCoTaskMem( caGUID.pElems );
+                            }
+                            catch
+                            {
+                            }
+                        }
                     }
                     mediaControl.StopWhenReady( );
                 }
