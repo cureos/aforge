@@ -1,0 +1,25 @@
+AForge.NET framework building instructions
+==========================================
+
+Each individual library of the framework has its own project file and
+solution file, which allows building any of the libraries independently.
+These individual solution files can be found in the appropriate folders
+of the library.
+
+Note: since this approach requires knowledge of dependencies between
+framework’s libraries, it is supposed mostly for framework developers,
+who work on individual projects.
+
+
+To simplify build process and allow building of entire framework at once,
+there is a main solution file – “Build All.sln”. This allows building all
+libraries in correct order, so no dependency issues arise.
+
+
+Important! Building all libraries right after checking out them from SVN
+or getting them from framework distribution will not work on most systems.
+The AForge.Robotics.TeRK library requires ICE framework to be installed
+(http://www.zeroc.com/ice.html) in order to build it. If you are not aimed
+to build full release of the framework, you may just avoid building TeRK
+library – simply open the “Build All.sln” in VS.NET and remove Robotics
+TeRK project from Solution Explorer.
