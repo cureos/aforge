@@ -38,35 +38,35 @@ namespace AForge.Imaging
         /// </summary>
         /// 
         /// <param name="sourceImage">Source image with reference points.</param>
-        /// <param name="coordinates">Array of reference points to be matched.</param>
+        /// <param name="coordinates">List of reference points to be matched.</param>
         /// <param name="searchImage">Image in which the reference points will be looked for.</param>
         /// 
-        /// <returns>Returns array of found block matches.</returns>
+        /// <returns>Returns list of found block matches.</returns>
         /// 
-        BlockMatch[] ProcessImage( Bitmap sourceImage, Point[] coordinates, Bitmap searchImage );
+        List<BlockMatch> ProcessImage( Bitmap sourceImage, List<IntPoint> coordinates, Bitmap searchImage );
 
         /// <summary>
         /// Process images matching blocks between them.
         /// </summary>
         /// 
         /// <param name="sourceImageData">Source image with reference points.</param>
-        /// <param name="coordinates">Array of reference points to be matched.</param>
+        /// <param name="coordinates">List of reference points to be matched.</param>
         /// <param name="searchImageData">Image in which the reference points will be looked for.</param>
         /// 
-        /// <returns>Returns array of found block matches.</returns>
+        /// <returns>Returns list of found block matches.</returns>
         /// 
-        BlockMatch[] ProcessImage( BitmapData sourceImageData, Point[] coordinates, BitmapData searchImageData );
+        List<BlockMatch> ProcessImage( BitmapData sourceImageData, List<IntPoint> coordinates, BitmapData searchImageData );
 
         /// <summary>
         /// Process images matching blocks between them.
         /// </summary>
         /// 
         /// <param name="sourceImage">Source unmanaged image with reference points.</param>
-        /// <param name="coordinates">Array of reference points to be matched.</param>
+        /// <param name="coordinates">List of reference points to be matched.</param>
         /// <param name="searchImage">Unmanaged image in which the reference points will be looked for.</param>
         /// 
-        /// <returns>Returns array of found block matches.</returns>
+        /// <returns>Returns list of found block matches.</returns>
         /// 
-        BlockMatch[] ProcessImage( UnmanagedImage sourceImage, Point[] coordinates, UnmanagedImage searchImage );
+        List<BlockMatch> ProcessImage( UnmanagedImage sourceImage, List<IntPoint> coordinates, UnmanagedImage searchImage );
     }
 }

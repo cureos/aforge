@@ -46,6 +46,9 @@
     <Compile Include="ContinuousHistogram.cs" />
     <Compile Include="FourierTransform.cs" />
     <Compile Include="Gaussian.cs" />
+    <Compile Include="Geometry\GrahamConvexHall.cs" />
+    <Compile Include="Geometry\IConvexHullAlgorithm.cs" />
+    <Compile Include="Geometry\PointsCloud.cs" />
     <Compile Include="Histogram.cs" />
     <Compile Include="PerlinNoise.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

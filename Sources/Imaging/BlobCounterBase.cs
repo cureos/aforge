@@ -6,14 +6,17 @@
 // andrew.kirillov@aforgenet.com
 //
 // Copyright © Frank Nagl, 2009
+// (adding the code for extracting blobs in original image's size)
 // admin@franknagl.de
 //
 
 namespace AForge.Imaging
 {
     using System;
+    using System.Collections.Generic;
     using System.Drawing;
     using System.Drawing.Imaging;
+    using AForge;
 
     /// <summary>
     /// Possible object orders.
@@ -30,9 +33,15 @@ namespace AForge.Imaging
         None,
 
         /// <summary>
-        /// Objects are sorted by size in descending order (big objects go first).
+        /// Objects are sorted by size in descending order (bigger objects go first).
+        /// Size is calculated as <b>Width * Height</b>.
         /// </summary>
         Size,
+
+        /// <summary>
+        /// Objects are sorted by area in descending order (bigger objects go first).
+        /// </summary>
+        Area,
 
         /// <summary>
         /// Objects are sorted by Y coordinate, then by X coordinate in ascending order
@@ -58,7 +67,7 @@ namespace AForge.Imaging
     /// <para>For blobs' searcing usually all inherited classes accept binary images, which are actually
     /// grayscale thresholded images. But the exact supported format should be checked in particular class,
     /// inheriting from the base class. For blobs' extraction the class supports grayscale (8 bpp indexed)
-    /// and color images (24 bpp).</para>
+    /// and color images (24 and 32 bpp).</para>
     /// 
     /// <para>Sample usage:</para>
     /// <code>
@@ -83,8 +92,8 @@ namespace AForge.Imaging
     /// 
     public abstract class BlobCounterBase
     {
-        // blobs' rectangles
-        Rectangle[] blobsRectangles = null;
+        // found blobs
+        List<Blob> blobs = new List<Blob>( );
 
         // objects' sort order
         private ObjectsOrder objectsOrder = ObjectsOrder.None;
@@ -124,6 +133,10 @@ namespace AForge.Imaging
         /// <summary>
         /// Objects count.
         /// </summary>
+        /// 
+        /// <remarks><para>Number of objects (blobs) found by <see cref="ProcessImage(Bitmap)"/> method.
+        /// </para></remarks>
+        /// 
         public int ObjectsCount
         {
             get { return objectsCount; }
@@ -134,7 +147,7 @@ namespace AForge.Imaging
         /// </summary>
         /// 
         /// <remarks>The array of <b>width</b> * <b>height</b> size, which holds
-        /// labels for all objects. The background is represented with <b>0</b> value,
+        /// labels for all objects. Background is represented with <b>0</b> value,
         /// but objects are represented with labels starting from <b>1</b>.</remarks>
         /// 
         public int[] ObjectLabels
@@ -376,76 +389,29 @@ namespace AForge.Imaging
             imageWidth  = image.Width;
             imageHeight = image.Height;
 
-            // free old blobs' rectangles
-            blobsRectangles = null;
-
             // do actual objects map building
             BuildObjectsMap( image );
+
+            // collect information about blobs
+            CollectObjectsInfo( );
 
             // filter blobs by size if required
             if ( filterBlobs )
             {
-                int i = 0, label;
-
-                // create object coordinates arrays
-                int[] x1 = new int[objectsCount + 1];
-                int[] y1 = new int[objectsCount + 1];
-                int[] x2 = new int[objectsCount + 1];
-                int[] y2 = new int[objectsCount + 1];
-
-                for ( int j = 1; j <= objectsCount; j++ )
-                {
-                    x1[j] = imageWidth;
-                    y1[j] = imageHeight;
-                }
-
-                // walk through labels array
-                for ( int y = 0; y < imageHeight; y++ )
-                {
-                    for ( int x = 0; x < imageWidth; x++, i++ )
-                    {
-                        // get current label
-                        label = objectLabels[i];
-
-                        // skip unlabeled pixels
-                        if ( label == 0 )
-                            continue;
-
-                        // check and update all coordinates
-
-                        if ( x < x1[label] )
-                        {
-                            x1[label] = x;
-                        }
-                        if ( x > x2[label] )
-                        {
-                            x2[label] = x;
-                        }
-                        if ( y < y1[label] )
-                        {
-                            y1[label] = y;
-                        }
-                        if ( y > y2[label] )
-                        {
-                            y2[label] = y;
-                        }
-                    }
-                }
-
                 // labels remapping array
                 int[] labelsMap = new int[objectsCount + 1];
-                for ( int j = 1; j <= objectsCount; j++ )
+                for ( int i = 1; i <= objectsCount; i++ )
                 {
-                    labelsMap[j] = j;
+                    labelsMap[i] = i;
                 }
 
                 // check dimension of all objects and filter them
                 int objectsToRemove = 0;
 
-                for ( int j = 1; j <= objectsCount; j++ )
+                for ( int i = objectsCount - 1; i >= 0; i-- )
                 {
-                    int blobWidth  = x2[j] - x1[j] + 1;
-                    int blobHeight = y2[j] - y1[j] + 1;
+                    int blobWidth  = blobs[i].Rectangle.Width;
+                    int blobHeight = blobs[i].Rectangle.Height;
 
                     if ( coupledSizeFiltering == false )
                     {
@@ -454,8 +420,9 @@ namespace AForge.Imaging
                             ( blobWidth < minWidth ) || ( blobHeight < minHeight ) ||
                             ( blobWidth > maxWidth ) || ( blobHeight > maxHeight ) )
                         {
-                            labelsMap[j] = 0;
+                            labelsMap[i + 1] = 0;
                             objectsToRemove++;
+                            blobs.RemoveAt( i );
                         }
                     }
                     else
@@ -465,36 +432,44 @@ namespace AForge.Imaging
                             ( ( blobWidth < minWidth ) && ( blobHeight < minHeight ) ) ||
                             ( ( blobWidth > maxWidth ) && ( blobHeight > maxHeight ) ) )
                         {
-                            labelsMap[j] = 0;
+                            labelsMap[i + 1] = 0;
                             objectsToRemove++;
+                            blobs.RemoveAt( i );
                         }
                     }
                 }
 
-                // 1) update labels remapping array
-                // 2) collect remaining rectangles
-                blobsRectangles = new Rectangle[objectsCount - objectsToRemove];
-
-                label = 0;
-                for ( int j = 1; j <= objectsCount; j++ )
+                // update labels remapping array
+                int label = 0;
+                for ( int i = 1; i <= objectsCount; i++ )
                 {
-                    if ( labelsMap[j] != 0 )
+                    if ( labelsMap[i] != 0 )
                     {
-                        // collect blob
-                        blobsRectangles[label] = new Rectangle( x1[j], y1[j], x2[j] - x1[j] + 1, y2[j] - y1[j] + 1 );
                         label++;
                         // update remapping array
-                        labelsMap[j] = label;
+                        labelsMap[i] = label;
                     }
                 }
 
                 // repair object labels
-                for ( int j = 0, n = objectLabels.Length; j < n; j++ )
+                for ( int i = 0, n = objectLabels.Length; i < n; i++ )
                 {
-                    objectLabels[j] = labelsMap[objectLabels[j]];
+                    objectLabels[i] = labelsMap[objectLabels[i]];
                 }
 
                 objectsCount -= objectsToRemove;
+
+                // repair IDs
+                for ( int i = 0, n = blobs.Count; i < n; i++ )
+                {
+                    blobs[i].ID = i + 1;
+                }
+            }
+
+            // do we need to sort the list?
+            if ( objectsOrder != ObjectsOrder.None )
+            {
+                blobs.Sort( new BlobsSorter( objectsOrder ) );
             }
         }
 
@@ -518,19 +493,18 @@ namespace AForge.Imaging
             if ( objectLabels == null )
                 throw new ApplicationException( "Image should be processed before to collect objects map." );
 
-            // collect rectangles, if they are not collected yet
-            if ( blobsRectangles == null )
-                CollectObjectsRectangles( );
+            // collect blobs' information
+            if ( blobs == null )
+                CollectObjectsInfo( );
 
-            // do we need to sort the list?
-            if ( objectsOrder != ObjectsOrder.None )
+            Rectangle[] rects = new Rectangle[objectsCount];
+
+            for ( int i = 0; i < objectsCount; i++ )
             {
-                Rectangle[] rects = (Rectangle[]) blobsRectangles.Clone( );
-                Array.Sort( rects, new RectanglesSorter( objectsOrder ) );
-                return rects;
+                rects[i] = blobs[i].Rectangle;
             }
 
-            return blobsRectangles;
+            return rects;
         }
 
         /// <summary>
@@ -566,7 +540,7 @@ namespace AForge.Imaging
         /// </code>
         /// </example>
         /// 
-        /// <exception cref="ApplicationException">No image was processed before, so objects' rectangles
+        /// <exception cref="ApplicationException">No image was processed before, so objects' information
         /// can not be collected.</exception>
         /// 
         public Blob[] GetObjectsInformation( )
@@ -576,24 +550,18 @@ namespace AForge.Imaging
                 throw new ApplicationException( "Image should be processed before to collect objects map." );
 
             // collect rectangles, if they are not collected yet
-            if ( blobsRectangles == null )
-                CollectObjectsRectangles( );
+            if ( blobs == null )
+                CollectObjectsInfo( );
 
-            Blob[] blobs = new Blob[objectsCount];
+            Blob[] blobsToReturn = new Blob[objectsCount];
 
             // create each blob
             for ( int k = 0; k < objectsCount; k++ )
             {
-                blobs[k] = new Blob( k + 1, blobsRectangles[k] );
+                blobsToReturn[k] = new Blob( blobs[k] );
             }
 
-            // sort blobs
-            if ( objectsOrder != ObjectsOrder.None )
-            {
-                Array.Sort( blobs, new RectanglesSorter( objectsOrder ) );
-            }
-
-            return blobs;
+            return blobsToReturn;
         }
 
         /// <summary>
@@ -702,42 +670,44 @@ namespace AForge.Imaging
 
             if (
                 ( image.PixelFormat != PixelFormat.Format24bppRgb ) &&
-                ( image.PixelFormat != PixelFormat.Format8bppIndexed )
+                ( image.PixelFormat != PixelFormat.Format8bppIndexed ) &&
+                ( image.PixelFormat != PixelFormat.Format32bppArgb ) &&
+                ( image.PixelFormat != PixelFormat.Format32bppPArgb )
                 )
                 throw new UnsupportedImageFormatException( "Unsupported pixel format of the provided image." );
 
             // collect rectangles, if they are not collected yet
-            if ( blobsRectangles == null )
-                CollectObjectsRectangles( );
+            if ( blobs == null )
+                CollectObjectsInfo( );
 
             // image size
             int width  = image.Width;
             int height = image.Height;
             int srcStride = image.Stride;
-            int pixelSize = ( image.PixelFormat == PixelFormat.Format8bppIndexed ) ? 1 : 3;
+            int pixelSize = Bitmap.GetPixelFormatSize( image.PixelFormat ) / 8;
 
             Blob[] objects = new Blob[objectsCount];
 
             // create each image
             for ( int k = 0; k < objectsCount; k++ )
             {
-                int objectWidth  = blobsRectangles[k].Width;
-                int objectHeight = blobsRectangles[k].Height;
+                int objectWidth  = blobs[k].Rectangle.Width;
+                int objectHeight = blobs[k].Rectangle.Height;
 
                 int blobImageWidth  = ( extractInOriginalSize ) ? width : objectWidth;
                 int blobImageHeight = ( extractInOriginalSize ) ? height : objectHeight;
 
-                int xmin = blobsRectangles[k].X;
+                int xmin = blobs[k].Rectangle.X;
                 int xmax = xmin + objectWidth - 1;
-                int ymin = blobsRectangles[k].Y;
+                int ymin = blobs[k].Rectangle.Y;
                 int ymax = ymin + objectHeight - 1;
 
-                int label = k + 1;
+                int label = blobs[k].ID;
 
                 // create new image
                 Bitmap dstImg = ( image.PixelFormat == PixelFormat.Format8bppIndexed ) ?
                     AForge.Imaging.Image.CreateGrayscaleImage( blobImageWidth, blobImageHeight ) :
-                    new Bitmap( blobImageWidth, blobImageHeight, PixelFormat.Format24bppRgb );
+                    new Bitmap( blobImageWidth, blobImageHeight, image.PixelFormat );
 
                 // lock destination bitmap data
                 BitmapData dstData = dstImg.LockBits(
@@ -776,6 +746,11 @@ namespace AForge.Imaging
                                 {
                                     dst[1] = src[1];
                                     dst[2] = src[2];
+
+                                    if ( pixelSize > 3 )
+                                    {
+                                        dst[3] = src[3];
+                                    }
                                 }
                             }
                         }
@@ -787,13 +762,9 @@ namespace AForge.Imaging
                 // unlock destination image
                 dstImg.UnlockBits( dstData );
 
-                objects[k] = new Blob( label, new Rectangle( xmin, ymin, objectWidth, objectHeight ), dstImg, extractInOriginalSize );
-            }
-
-            // sort blobs
-            if ( objectsOrder != ObjectsOrder.None )
-            {
-                Array.Sort( objects, new RectanglesSorter( objectsOrder ) );
+                objects[k] = new Blob( blobs[k] );
+                objects[k].Image = dstImg;
+                objects[k].OriginalSize = extractInOriginalSize;
             }
 
             return objects;
@@ -903,7 +874,9 @@ namespace AForge.Imaging
 
             if (
                 ( image.PixelFormat != PixelFormat.Format24bppRgb ) &&
-                ( image.PixelFormat != PixelFormat.Format8bppIndexed )
+                ( image.PixelFormat != PixelFormat.Format8bppIndexed ) &&
+                ( image.PixelFormat != PixelFormat.Format32bppArgb ) &&
+                ( image.PixelFormat != PixelFormat.Format32bppPArgb )
                 )
                 throw new UnsupportedImageFormatException( "Unsupported pixel format of the provided image." );
 
@@ -911,7 +884,7 @@ namespace AForge.Imaging
             int width  = image.Width;
             int height = image.Height;
             int srcStride = image.Stride;
-            int pixelSize = ( image.PixelFormat == PixelFormat.Format8bppIndexed ) ? 1 : 3;
+            int pixelSize = Bitmap.GetPixelFormatSize( image.PixelFormat ) / 8;
 
             int objectWidth  = blob.Rectangle.Width;
             int objectHeight = blob.Rectangle.Height;
@@ -929,7 +902,7 @@ namespace AForge.Imaging
             // create new image
             blob.Image = ( image.PixelFormat == PixelFormat.Format8bppIndexed ) ?
                 AForge.Imaging.Image.CreateGrayscaleImage( blobImageWidth, blobImageHeight ) :
-                new Bitmap( blobImageWidth, blobImageHeight, PixelFormat.Format24bppRgb );
+                new Bitmap( blobImageWidth, blobImageHeight, image.PixelFormat );
             blob.OriginalSize = extractInOriginalSize;
 
             // lock destination bitmap data
@@ -969,6 +942,11 @@ namespace AForge.Imaging
                             {
                                 dst[1] = src[1];
                                 dst[2] = src[2];
+
+                                if ( pixelSize > 3 )
+                                {
+                                    dst[3] = src[3];
+                                }
                             }
                         }
                     }
@@ -979,6 +957,124 @@ namespace AForge.Imaging
             }
             // unlock destination image
             blob.Image.UnlockBits( dstData );
+        }
+
+        /// <summary>
+        /// Get list of points on the left and right edges of the blob.
+        /// </summary>
+        /// 
+        /// <param name="blob">Blob to collect edge points for.</param>
+        /// <param name="leftEdge">List of points on the left edge of the blob.</param>
+        /// <param name="rightEdge">List of points on the right edge of the blob.</param>
+        /// 
+        /// <remarks><para>The method scans each line of the blob and finds the most left and the
+        /// most right points for it adding them to appropriate lists. The method may be very
+        /// useful in conjunction with different routines from <see cref="AForge.Math.Geometry"/>,
+        /// which allow finding convex hull or quadrilateral's corners.</para></remarks>
+        /// 
+        /// <exception cref="ApplicationException">No image was processed before, so blob
+        /// can not be extracted.</exception>
+        /// 
+        public void GetBlobsLeftAndRightEdges( Blob blob, out List<IntPoint> leftEdge, out List<IntPoint> rightEdge )
+        {
+            // check if objects map was collected
+            if ( objectLabels == null )
+                throw new ApplicationException( "Image should be processed before to collect objects map." );
+
+            leftEdge  = new List<IntPoint>( );
+            rightEdge = new List<IntPoint>( );
+
+            int xmin = blob.Rectangle.Left;
+            int xmax = xmin + blob.Rectangle.Width - 1;
+            int ymin = blob.Rectangle.Top;
+            int ymax = ymin + blob.Rectangle.Height - 1;
+
+            int label = blob.ID;
+            
+            // for each line
+            for ( int y = ymin; y <= ymax; y++ )
+            {
+                // scan from left to right
+                int p = y * imageWidth + xmin;
+                for ( int x = xmin; x <= xmax; x++, p++ )
+                {
+                    if ( objectLabels[p] == label )
+                    {
+                        leftEdge.Add( new IntPoint( x, y ) );
+                        break;
+                    }
+                }
+
+                // scan from right to left
+                p = y * imageWidth + xmax;
+                for ( int x = xmax; x >= xmin; x--, p-- )
+                {
+                    if ( objectLabels[p] == label )
+                    {
+                        rightEdge.Add( new IntPoint( x, y ) );
+                        break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get list of points on the top and bottom edges of the blob.
+        /// </summary>
+        /// 
+        /// <param name="blob">Blob to collect edge points for.</param>
+        /// <param name="topEdge">List of points on the top edge of the blob.</param>
+        /// <param name="bottomEdge">List of points on the bottom edge of the blob.</param>
+        /// 
+        /// <remarks><para>The method scans each column of the blob and finds the most top and the
+        /// most bottom points for it adding them to appropriate lists. The method may be very
+        /// useful in conjunction with different routines from <see cref="AForge.Math.Geometry"/>,
+        /// which allow finding convex hull or quadrilateral's corners.</para></remarks>
+        /// 
+        /// <exception cref="ApplicationException">No image was processed before, so blob
+        /// can not be extracted.</exception>
+        /// 
+        public void GetBlobsTopAndBottomEdges( Blob blob, out List<IntPoint> topEdge, out List<IntPoint> bottomEdge )
+        {
+            // check if objects map was collected
+            if ( objectLabels == null )
+                throw new ApplicationException( "Image should be processed before to collect objects map." );
+
+            topEdge    = new List<IntPoint>( );
+            bottomEdge = new List<IntPoint>( );
+
+            int xmin = blob.Rectangle.Left;
+            int xmax = xmin + blob.Rectangle.Width - 1;
+            int ymin = blob.Rectangle.Top;
+            int ymax = ymin + blob.Rectangle.Height - 1;
+
+            int label = blob.ID;
+
+            // for each column
+            for ( int x = xmin; x <= xmax; x++ )
+            {
+                // scan from top to bottom
+                int p = ymin * imageWidth + x;
+                for ( int y = ymin; y <= ymax; y++, p += imageWidth )
+                {
+                    if ( objectLabels[p] == label )
+                    {
+                        topEdge.Add( new IntPoint( x, y ) );
+                        break;
+                    }
+                }
+
+                // scan from bottom to top
+                p = ymax * imageWidth + x;
+                for ( int y = ymax; y >= ymin; y--, p -= imageWidth )
+                {
+                    if ( objectLabels[p] == label )
+                    {
+                        bottomEdge.Add( new IntPoint( x, y ) );
+                        break;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -998,7 +1094,7 @@ namespace AForge.Imaging
         #region Private Methods - Collecting objects' rectangles
 
         // Collect objects' rectangles
-        private void CollectObjectsRectangles( )
+        private void CollectObjectsInfo( )
         {
             int i = 0, label;
 
@@ -1007,6 +1103,10 @@ namespace AForge.Imaging
             int[] y1 = new int[objectsCount + 1];
             int[] x2 = new int[objectsCount + 1];
             int[] y2 = new int[objectsCount + 1];
+
+            int[] area = new int[objectsCount + 1];
+            int[] xc = new int[objectsCount + 1];
+            int[] yc = new int[objectsCount + 1];
 
             for ( int j = 1; j <= objectsCount; j++ )
             {
@@ -1044,47 +1144,59 @@ namespace AForge.Imaging
                     {
                         y2[label] = y;
                     }
+
+                    area[label]++;
+                    xc[label] += x;
+                    yc[label] += y;
                 }
             }
 
-            // create rectangles
-            blobsRectangles = new Rectangle[objectsCount];
+            // create blobs
+            blobs.Clear( );
 
             for ( int j = 1; j <= objectsCount; j++ )
             {
-                blobsRectangles[j - 1] = new Rectangle( x1[j], y1[j], x2[j] - x1[j] + 1, y2[j] - y1[j] + 1 );
+                Blob blob = new Blob( j, new Rectangle( x1[j], y1[j], x2[j] - x1[j] + 1, y2[j] - y1[j] + 1 ) );
+                blob.Area = area[j];
+                blob.Fullness = (double) area[j] / ( ( x2[j] - x1[j] + 1 ) * ( y2[j] - y1[j] + 1 ) );
+                blob.CenterOfGravity = new IntPoint( xc[j] / area[j], yc[j] / area[j] );
+
+                blobs.Add( blob );
             }
         }
 
         // Rectangles' and blobs' sorter
-        private class RectanglesSorter : System.Collections.IComparer
+        private class BlobsSorter : System.Collections.Generic.IComparer<Blob>
         {
             private ObjectsOrder order;
 
-            public RectanglesSorter( ObjectsOrder order )
+            public BlobsSorter( ObjectsOrder order )
             {
                 this.order = order;
             }
 
-            public int Compare( Object x, Object y )
+            public int Compare( Blob a, Blob b )
             {
-                Rectangle xRect = ( x is Rectangle ) ? (Rectangle) x : ( (Blob) x ).Rectangle;
-                Rectangle yRect = ( y is Rectangle ) ? (Rectangle) y : ( (Blob) y ).Rectangle;
+                Rectangle aRect = a.Rectangle;
+                Rectangle bRect = b.Rectangle;
 
                 switch ( order )
                 {
                     case ObjectsOrder.Size: // sort by size
 
                         // the order is changed to descending
-                        return ( yRect.Width * yRect.Height - xRect.Width * xRect.Height );
+                        return ( bRect.Width * bRect.Height - aRect.Width * aRect.Height );
+
+                    case ObjectsOrder.Area: // sort by area
+                        return b.Area - a.Area;
 
                     case ObjectsOrder.YX:   // YX order
 
-                        return ( ( xRect.Y * 100000 + xRect.X ) - ( yRect.Y * 100000 + yRect.X ) );
+                        return ( ( aRect.Y * 100000 + aRect.X ) - ( bRect.Y * 100000 + bRect.X ) );
 
                     case ObjectsOrder.XY:   // XY order
 
-                        return ( ( xRect.X * 100000 + xRect.Y ) - ( yRect.X * 100000 + yRect.Y ) );
+                        return ( ( aRect.X * 100000 + aRect.Y ) - ( bRect.X * 100000 + bRect.Y ) );
                 }
                 return 0;
             }

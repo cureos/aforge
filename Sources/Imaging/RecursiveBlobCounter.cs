@@ -1,7 +1,8 @@
 // AForge Image Processing Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2008
+// Copyright © Andrew Kirillov, 2005-2009
 // andrew.kirillov@aforgenet.com
 //
 
@@ -16,7 +17,7 @@ namespace AForge.Imaging
     /// </summary>
     /// 
     /// <remarks><para>The class counts and extracts stand alone objects in
-    /// binary images using recursive version of connected components labeling
+    /// images using recursive version of connected components labeling
     /// algorithm.</para>
     /// 
     /// <para><note>The algorithm treats all black pixels as background, but not an object.
@@ -30,7 +31,8 @@ namespace AForge.Imaging
     /// faster than <see cref="BlobCounter"/>) to an image with small blobs -
     /// "star sky" image (or small cells, for example, etc).</note></para>
     /// 
-    /// <para>For blobs' searching the class supports only 8 bpp indexed grayscale images. 
+    /// <para>For blobs' searching the class supports 8 bpp indexed grayscale images and
+    /// 24/32 bpp color images. 
     /// See documentation about <see cref="BlobCounterBase"/> for information about which
     /// pixel formats are supported for extraction of blobs.</para>
     /// 
@@ -54,6 +56,7 @@ namespace AForge.Imaging
         // temporary variable
         private int[] tempLabels;
         private int stride;
+        private int pixelSize;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RecursiveBlobCounter"/> class.
@@ -71,7 +74,7 @@ namespace AForge.Imaging
         /// Initializes a new instance of the <see cref="RecursiveBlobCounter"/> class.
         /// </summary>
         /// 
-        /// <param name="image">Binary image to look for objects in.</param>
+        /// <param name="image">Image to look for objects in.</param>
         /// 
         public RecursiveBlobCounter( Bitmap image ) : base( image ) { }
 
@@ -79,7 +82,7 @@ namespace AForge.Imaging
         /// Initializes a new instance of the <see cref="RecursiveBlobCounter"/> class.
         /// </summary>
         /// 
-        /// <param name="imageData">Binary image data to look for objects in.</param>
+        /// <param name="imageData">Image data to look for objects in.</param>
         /// 
         public RecursiveBlobCounter( BitmapData imageData ) : base( imageData ) { }
 
@@ -87,7 +90,7 @@ namespace AForge.Imaging
         /// Initializes a new instance of the <see cref="RecursiveBlobCounter"/> class.
         /// </summary>
         /// 
-        /// <param name="image">Binary unmanaged image to look for objects in.</param>
+        /// <param name="image">Unmanaged image to look for objects in.</param>
         /// 
         public RecursiveBlobCounter( UnmanagedImage image ) : base( image ) { }
 
@@ -97,17 +100,19 @@ namespace AForge.Imaging
         /// 
         /// <param name="image">Unmanaged image to process.</param>
         /// 
-        /// <remarks>The method supports only 8 bpp indexed grayscale image.</remarks>
+        /// <remarks>The method supports 8 bpp indexed grayscale images and 24/32 bpp color images.</remarks>
         /// 
         /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         /// 
         protected override void BuildObjectsMap( UnmanagedImage image )
         {
             this.stride = image.Stride;
-            int offset = stride - imageWidth;
 
             // check pixel format
-            if ( image.PixelFormat != PixelFormat.Format8bppIndexed )
+            if ( ( image.PixelFormat != PixelFormat.Format8bppIndexed ) &&
+                 ( image.PixelFormat != PixelFormat.Format24bppRgb ) &&
+                 ( image.PixelFormat != PixelFormat.Format32bppArgb ) &&
+                 ( image.PixelFormat != PixelFormat.Format32bppPArgb ) )
             {
                 throw new UnsupportedImageFormatException( "Unsupported pixel format of the source image." );
             }
@@ -135,23 +140,49 @@ namespace AForge.Imaging
                 byte* src = (byte*) image.ImageData.ToPointer( );
                 int p = imageWidth + 2 + 1;
 
-                // for each line
-                for ( int y = 0; y < imageHeight; y++ )
+                if ( image.PixelFormat == PixelFormat.Format8bppIndexed )
                 {
-                    // for each pixel
-                    for ( int x = 0; x < imageWidth; x++, src++, p++ )
-                    {
-                        // check for non-labeled pixel
-                        if ( ( *src != 0 ) && ( tempLabels[p] == 0 ) )
-                        {
-                            objectsCount++;
-                            LabelPixel( src, p );
-                        }
-                    }
-                    src += offset;
-                    p += 2;
-                }
+                    int offset = stride - imageWidth;
 
+                    // for each line
+                    for ( int y = 0; y < imageHeight; y++ )
+                    {
+                        // for each pixel
+                        for ( int x = 0; x < imageWidth; x++, src++, p++ )
+                        {
+                            // check for non-labeled pixel
+                            if ( ( *src != 0 ) && ( tempLabels[p] == 0 ) )
+                            {
+                                objectsCount++;
+                                LabelPixel( src, p );
+                            }
+                        }
+                        src += offset;
+                        p += 2;
+                    }
+                }
+                else
+                {
+                    pixelSize = Bitmap.GetPixelFormatSize( image.PixelFormat ) / 8;
+                    int offset = stride - imageWidth * pixelSize;
+
+                    // for each line
+                    for ( int y = 0; y < imageHeight; y++ )
+                    {
+                        // for each pixel
+                        for ( int x = 0; x < imageWidth; x++, src += pixelSize, p++ )
+                        {
+                            // check for non-labeled pixel
+                            if ( ( ( src[RGB.R] | src[RGB.G] | src[RGB.B] ) != 0 ) && ( tempLabels[p] == 0 ) )
+                            {
+                                objectsCount++;
+                                LabelColorPixel( src, p );
+                            }
+                        }
+                        src += offset;
+                        p += 2;
+                    }
+                }
             }
 
             // allocate labels array
@@ -177,6 +208,23 @@ namespace AForge.Imaging
                 LabelPixel( pixel - 1 - stride, labelPointer - 1 - 2 - imageWidth );    // x - 1, y - 1
                 LabelPixel( pixel - stride, labelPointer - 2 - imageWidth );            // x    , y - 1
                 LabelPixel( pixel + 1 - stride, labelPointer + 1 - 2 - imageWidth );    // x + 1, y - 1
+            }
+        }
+
+        private unsafe void LabelColorPixel( byte* pixel, int labelPointer )
+        {
+            if ( ( tempLabels[labelPointer] == 0 ) && ( ( pixel[RGB.R] | pixel[RGB.G] | pixel[RGB.B] ) != 0 ) )
+            {
+                tempLabels[labelPointer] = objectsCount;
+
+                LabelColorPixel( pixel + pixelSize, labelPointer + 1 );                              // x + 1, y
+                LabelColorPixel( pixel + pixelSize + stride, labelPointer + 1 + 2 + imageWidth );    // x + 1, y + 1
+                LabelColorPixel( pixel + stride, labelPointer + 2 + imageWidth );                    // x    , y + 1
+                LabelColorPixel( pixel - pixelSize + stride, labelPointer - 1 + 2 + imageWidth );    // x - 1, y + 1
+                LabelColorPixel( pixel - pixelSize, labelPointer - 1 );                              // x - 1, y
+                LabelColorPixel( pixel - pixelSize - stride, labelPointer - 1 - 2 - imageWidth );    // x - 1, y - 1
+                LabelColorPixel( pixel - stride, labelPointer - 2 - imageWidth );                    // x    , y - 1
+                LabelColorPixel( pixel + pixelSize - stride, labelPointer + 1 - 2 - imageWidth );    // x + 1, y - 1
             }
         }
     }

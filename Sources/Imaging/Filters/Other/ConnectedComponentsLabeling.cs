@@ -1,5 +1,6 @@
 // AForge Image Processing Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
 // Copyright © Andrew Kirillov, 2005-2009
 // andrew.kirillov@aforgenet.com
@@ -16,10 +17,11 @@ namespace AForge.Imaging.Filters
     /// Connected components labeling.
     /// </summary>
     /// 
-    /// <remarks><para>The filter performs labeling of objects in binary image. It colors
-    /// each separate object using different color.</para>
+    /// <remarks><para>The filter performs labeling of objects in the source image. It colors
+    /// each separate object using different color. The image processing filter treats all none
+    /// black pixels as objects' pixels and all black pixel as background.</para>
     /// 
-    /// <para>The filter accepts 8 bpp grayscale images and produces
+    /// <para>The filter accepts 8 bpp grayscale images and 24/32 bpp color images and produces
     /// 24 bpp RGB image.</para>
     ///
     /// <para>Sample usage:</para>
@@ -179,6 +181,9 @@ namespace AForge.Imaging.Filters
         {
             // initialize format translation dictionary
             formatTransalations[PixelFormat.Format8bppIndexed] = PixelFormat.Format24bppRgb;
+            formatTransalations[PixelFormat.Format24bppRgb]    = PixelFormat.Format24bppRgb;
+            formatTransalations[PixelFormat.Format32bppArgb]   = PixelFormat.Format24bppRgb;
+            formatTransalations[PixelFormat.Format32bppPArgb]  = PixelFormat.Format24bppRgb;
         }
 
         /// <summary>
@@ -197,7 +202,7 @@ namespace AForge.Imaging.Filters
             int[] labels = blobCounter.ObjectLabels;
 
             // get width and height
-            int width = sourceData.Width;
+            int width  = sourceData.Width;
             int height = sourceData.Height;
 
             int dstOffset = destinationData.Stride - width * 3;

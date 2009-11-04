@@ -36,12 +36,12 @@ namespace AForge.Imaging
     /// <code>
     /// // collect reference points using corners detector (for example)
     /// SusanCornersDetector scd = new SusanCornersDetector( 30, 18 );
-    /// Point[] points = scd.ProcessImage( sourceImage );
+    /// List&lt;IntPoint;gt; points = scd.ProcessImage( sourceImage );
     /// 
     /// // create block matching algorithm's instance
     /// ExhaustiveBlockMatching bm = new ExhaustiveBlockMatching( 8, 12 );
     /// // process images searching for block matchings
-    /// BlockMatch[] matches = bm.ProcessImage( sourceImage, points, searchImage );
+    /// List&lt;BlockMatch&gt; matches = bm.ProcessImage( sourceImage, points, searchImage );
     /// 
     /// // draw displacement vectors
     /// BitmapData data = sourceImage.LockBits(
@@ -161,17 +161,17 @@ namespace AForge.Imaging
         /// </summary>
         /// 
         /// <param name="sourceImage">Source image with reference points.</param>
-        /// <param name="coordinates">Array of reference points to be matched.</param>
+        /// <param name="coordinates">List of reference points to be matched.</param>
         /// <param name="searchImage">Image in which the reference points will be looked for.</param>
         /// 
-        /// <returns>Returns array of found block matches. The array is sorted by similarity
+        /// <returns>Returns list of found block matches. The list is sorted by similarity
         /// of found matches in descending order.</returns>
         /// 
         /// <exception cref="InvalidImagePropertiesException">Source and search images sizes must match.</exception>
         /// <exception cref="ArgumentException">Source images can be grayscale (8 bpp indexed) or color (24 bpp) image only.</exception>
         /// <exception cref="InvalidImagePropertiesException">Source and search images must have same pixel format.</exception>
         /// 
-        public BlockMatch[] ProcessImage( Bitmap sourceImage, Point[] coordinates, Bitmap searchImage )
+        public List<BlockMatch> ProcessImage( Bitmap sourceImage, List<IntPoint> coordinates, Bitmap searchImage )
         {
             // lock source image
             BitmapData sourceImageData = sourceImage.LockBits(
@@ -182,7 +182,7 @@ namespace AForge.Imaging
                 new Rectangle( 0, 0, searchImage.Width, searchImage.Height ),
                 ImageLockMode.ReadOnly, searchImage.PixelFormat );
 
-            BlockMatch[] matchings;
+            List<BlockMatch> matchings;
 
             try
             {
@@ -205,17 +205,17 @@ namespace AForge.Imaging
         /// </summary>
         /// 
         /// <param name="sourceImageData">Source image with reference points.</param>
-        /// <param name="coordinates">Array of reference points to be matched.</param>
+        /// <param name="coordinates">List of reference points to be matched.</param>
         /// <param name="searchImageData">Image in which the reference points will be looked for.</param>
         /// 
-        /// <returns>Returns array of found block matches. The array is sorted by similarity
+        /// <returns>Returns list of found block matches. The list is sorted by similarity
         /// of found matches in descending order.</returns>
         /// 
         /// <exception cref="InvalidImagePropertiesException">Source and search images sizes must match.</exception>
         /// <exception cref="UnsupportedImageFormatException">Source images can be grayscale (8 bpp indexed) or color (24 bpp) image only.</exception>
         /// <exception cref="ArgumentException">Source and search images must have same pixel format.</exception>
         /// 
-        public BlockMatch[] ProcessImage( BitmapData sourceImageData, Point[] coordinates, BitmapData searchImageData )
+        public List<BlockMatch> ProcessImage( BitmapData sourceImageData, List<IntPoint> coordinates, BitmapData searchImageData )
         {
             return ProcessImage( new UnmanagedImage( sourceImageData ), coordinates, new UnmanagedImage( searchImageData ) );
         }
@@ -225,17 +225,17 @@ namespace AForge.Imaging
         /// </summary>
         /// 
         /// <param name="sourceImage">Source unmanaged image with reference points.</param>
-        /// <param name="coordinates">Array of reference points to be matched.</param>
+        /// <param name="coordinates">List of reference points to be matched.</param>
         /// <param name="searchImage">Unmanaged image in which the reference points will be looked for.</param>
         /// 
-        /// <returns>Returns array of found block matches. The array is sorted by similarity
+        /// <returns>Returns list of found block matches. The list is sorted by similarity
         /// of found matches in descending order.</returns>
         /// 
         /// <exception cref="InvalidImagePropertiesException">Source and search images sizes must match.</exception>
         /// <exception cref="UnsupportedImageFormatException">Source images can be grayscale (8 bpp indexed) or color (24 bpp) image only.</exception>
         /// <exception cref="ArgumentException">Source and search images must have same pixel format.</exception>
         /// 
-        public BlockMatch[] ProcessImage( UnmanagedImage sourceImage, Point[] coordinates, UnmanagedImage searchImage )
+        public List<BlockMatch> ProcessImage( UnmanagedImage sourceImage, List<IntPoint> coordinates, UnmanagedImage searchImage )
         {
             // source images sizes must match.
             if ( ( sourceImage.Width != searchImage.Width ) || ( sourceImage.Height != searchImage.Height ) )
@@ -249,7 +249,7 @@ namespace AForge.Imaging
             if ( sourceImage.PixelFormat != searchImage.PixelFormat )
                 throw new InvalidImagePropertiesException( "Source and search images must have same pixel format" );
 
-            int pointsCount = coordinates.Length;
+            int pointsCount = coordinates.Count;
 
             // found matches
             List<BlockMatch> matchingsList = new List<BlockMatch>( );
@@ -371,27 +371,24 @@ namespace AForge.Imaging
                     if ( blockSimilarity >= threshold )
                     {
                         matchingsList.Add( new BlockMatch(
-                            new Point( refPointX, refPointY ), new Point( bestMatchX, bestMatchY ),
+                            new IntPoint( refPointX, refPointY ), new IntPoint( bestMatchX, bestMatchY ),
                             (float) blockSimilarity / maxDiff ) );
                     }
                 }
             }
 
-            // convert list to array
-            BlockMatch[] matchings = new BlockMatch[matchingsList.Count];
-            matchingsList.CopyTo( matchings );
             // sort in descending order
-            Array.Sort( matchings, new MatchingsSorter( ) );
+            matchingsList.Sort( new MatchingsSorter( ) );
 
-            return matchings;
+            return matchingsList;
         }
 
         // Sorter of found matchings
-        private class MatchingsSorter : System.Collections.IComparer
+        private class MatchingsSorter : System.Collections.Generic.IComparer<BlockMatch>
         {
-            public int Compare( Object x, Object y )
+            public int Compare( BlockMatch x, BlockMatch y )
             {
-                float diff = ( (BlockMatch) y ).Similarity - ( (BlockMatch) x ).Similarity;
+                float diff = y.Similarity - x.Similarity;
 
                 return ( diff > 0 ) ? 1 : ( diff < 0 ) ? -1 : 0;
             }

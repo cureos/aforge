@@ -1,7 +1,8 @@
 // AForge Image Processing Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2008
+// Copyright © Andrew Kirillov, 2005-2009
 // andrew.kirillov@aforgenet.com
 //
 
@@ -33,7 +34,7 @@ namespace AForge.Imaging.Filters
     /// // configure the filter
     /// filter.Tolerance = Color.FromArgb( 150, 92, 92 );
     /// filter.FillColor = Color.FromArgb( 255, 255, 255 );
-    /// filter.StartingPoint = new Point( 150, 100 );
+    /// filter.StartingPoint = new IntPoint( 150, 100 );
     /// // apply the filter
     /// filter.ApplyInPlace( image );
     /// </code>
@@ -69,7 +70,7 @@ namespace AForge.Imaging.Filters
         byte fillR, fillG, fillB;
 
         // starting point to fill from
-        private Point startingPoint = new Point( 0, 0 );
+        private IntPoint startingPoint = new IntPoint( 0, 0 );
         // filling tolerance
         private Color tolerance = Color.FromArgb( 0, 0, 0 );
 
@@ -140,7 +141,7 @@ namespace AForge.Imaging.Filters
         /// <remarks>Default value is set to <b>(0, 0)</b>.</remarks>
         /// </remarks>
         /// 
-        public Point StartingPoint
+        public IntPoint StartingPoint
         {
             get { return startingPoint; }
             set { startingPoint = value; }
@@ -179,7 +180,7 @@ namespace AForge.Imaging.Filters
         protected override unsafe void ProcessFilter( UnmanagedImage image, Rectangle rect )
         {
             // skip, if there is nothing to fill
-            if ( !rect.Contains( startingPoint ) )
+            if ( !rect.Contains( startingPoint.X, startingPoint.Y ) )
                 return;
 
             // save bounding rectangle

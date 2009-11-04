@@ -10,6 +10,7 @@
         <assembly assemblyPath="..\..\Release\AForge.Math.dll" xmlCommentsPath="..\..\Release\AForge.Math.xml" commentsOnly="False" />
         <assembly assemblyPath="..\..\Release\AForge.Neuro.dll" xmlCommentsPath="..\..\Release\AForge.Neuro.xml" commentsOnly="False" />
         <assembly assemblyPath="..\..\Release\AForge.Robotics.Lego.dll" xmlCommentsPath="..\..\Release\AForge.Robotics.Lego.xml" commentsOnly="False" />
+        <assembly assemblyPath="..\..\Release\AForge.Robotics.Surveyor.dll" xmlCommentsPath="..\..\Release\AForge.Robotics.Surveyor.xml" commentsOnly="False" />
         <assembly assemblyPath="..\..\Release\AForge.Robotics.TeRK.dll" xmlCommentsPath="..\..\Release\AForge.Robotics.TeRK.xml" commentsOnly="False" />
         <assembly assemblyPath="..\..\Release\AForge.Video.DirectShow.dll" xmlCommentsPath="..\..\Release\AForge.Video.DirectShow.xml" commentsOnly="False" />
         <assembly assemblyPath="..\..\Release\AForge.Video.dll" xmlCommentsPath="..\..\Release\AForge.Video.xml" commentsOnly="False" />
@@ -31,11 +32,13 @@
         <namespaceSummaryItem name="AForge.Imaging.Formats" isDocumented="True">The &lt;b&gt;AForge.Imaging.Formats&lt;/b&gt; namespace contains interfaces and classes, which are used to handle different image file formats.</namespaceSummaryItem>
         <namespaceSummaryItem name="AForge.Imaging.Textures" isDocumented="True">The &lt;b&gt;AForge.Imaging.Textures&lt;/b&gt; namespace contains collection of classes, which generate different type of textures used for creating different effects.</namespaceSummaryItem>
         <namespaceSummaryItem name="AForge.MachineLearning" isDocumented="True">The &lt;b&gt;AForge.MachineLearning&lt;/b&gt; namespace contains interfaces and classes for different algorithms of machine learning.</namespaceSummaryItem>
-        <namespaceSummaryItem name="AForge.Math" isDocumented="True">The &lt;b&gt;AForge.Math&lt;/b&gt; namespace contains set of math utilities, which are used by other &lt;b&gt;AForge.NET&lt;/b&gt; namespaces or may be used individually.</namespaceSummaryItem>
+        <namespaceSummaryItem name="AForge.Math" isDocumented="True">The &lt;b&gt;AForge.Math.Geometry&lt;/b&gt; namespace contains set of geometry utilities, which are used by other &lt;b&gt;AForge.NET&lt;/b&gt; namespaces or may be used individually.</namespaceSummaryItem>
+        <namespaceSummaryItem name="AForge.Math.Geometry" isDocumented="True">The &lt;b&gt;AForge.Math.Geometry&lt;/b&gt; namespace contains set of geometry utilities, which are used by other &lt;b&gt;AForge.NET&lt;/b&gt; namespaces or may be used individually.</namespaceSummaryItem>
         <namespaceSummaryItem name="AForge.Math.Random" isDocumented="True">The &lt;b&gt;AForge.Math.Random&lt;/b&gt; namespace contains interfaces and classes for random numbers generation.</namespaceSummaryItem>
         <namespaceSummaryItem name="AForge.Neuro" isDocumented="True">The &lt;b&gt;AForge.Neuro&lt;/b&gt; namespace contains interfaces and classes for neural networks computations. The namespace and its sub namespaces contain classes, which allow as creating of popular neural network architectures, as classes to train these networks.</namespaceSummaryItem>
         <namespaceSummaryItem name="AForge.Neuro.Learning" isDocumented="True">The&lt;b&gt;AForge.Neuro.Learning&lt;/b&gt; namespace contains interfaces and classes for neurons and neural networks learning. The namespace contains classes as for supervised learning, as for unsupervised learning.</namespaceSummaryItem>
         <namespaceSummaryItem name="AForge.Robotics.Lego" isDocumented="True">The &lt;b&gt;AForge.Robotics.Lego&lt;/b&gt; namespace contains set of classes, which allow to manipulate different Lego Mindstorm robotics devices. The list of supported devices includes Lego Minstorm RCX and Lego Mindstorm NXT.</namespaceSummaryItem>
+        <namespaceSummaryItem name="AForge.Robotics.Surveyor" isDocumented="True">The &lt;b&gt;AForge.Robotics.Surveyor&lt;/b&gt; namespace contains set of classes, which are aimed to control robotics kits provided by Surveyor company, such as SRV-1 camera/robot and SVS (Stereo Vision System) board.</namespaceSummaryItem>
         <namespaceSummaryItem name="AForge.Robotics.TeRK" isDocumented="True">The &lt;b&gt;AForge.Robotics.TeRK&lt;/b&gt; namespace contains set of classes, which are aimed to control TeRK (&lt;a href="http://www.terk.ri.cmu.edu/"&gt;Telepresence Robot Kit&lt;/a&gt;) based robots, such as Qwerk.</namespaceSummaryItem>
         <namespaceSummaryItem name="AForge.Video" isDocumented="True">The &lt;b&gt;AForge.Video&lt;/b&gt; namespace contains interfaces and classes to access different video sources.</namespaceSummaryItem>
         <namespaceSummaryItem name="AForge.Video.DirectShow" isDocumented="True">The &lt;b&gt;AForge.Video.DirectShow&lt;/b&gt; namespace contains classes, which allow to access video sources using &lt;i&gt;DirectShow&lt;/i&gt; interface.</namespaceSummaryItem>
@@ -186,6 +189,17 @@
         <contentItem sourcePath="..\Robotics.TeRK\Images\qwerk_board.jpg" destPath="img\robotics\" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\posterization.png" destPath="img\imaging\" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\sample15.png" destPath="img\imaging\" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\anaglyph.png" destPath="img\imaging\" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\anaglyph_glasses.png" destPath="img\imaging\" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\sample16_left.png" destPath="img\imaging\" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\sample16_right.png" destPath="img\imaging\" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\quadrilateral_finder.png" destPath="img\imaging\" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\sample17.png" destPath="img\imaging\" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\quadrilateral_bilinear.png" destPath="img\imaging\" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\quadrilateral_nearest.png" destPath="img\imaging\" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\sample18.jpg" destPath="img\imaging\" excludeItems="False" />
+        <contentItem sourcePath="..\Robotics.Surveyor\Images\srv1-robot.jpg" destPath="img\robotics\" excludeItems="False" />
+        <contentItem sourcePath="..\Robotics.Surveyor\Images\svs.jpg" destPath="img\robotics\" excludeItems="False" />
     </additionalContent>
     <ProjectSummary>&lt;b&gt;AForge.NET Framework&lt;/b&gt; is a C# framework designed for developers and researchers in the fields of Computer Vision and Artificial Intelligence - image processing, computer vision, neural networks, genetic algorithms, machine learning, etc. </ProjectSummary>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace, TypeParameter</MissingTags>

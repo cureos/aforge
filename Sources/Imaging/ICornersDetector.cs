@@ -1,15 +1,18 @@
 // AForge Image Processing Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2008
-// andrew.kirillov@gmail.com
+// Copyright © Andrew Kirillov, 2005-2009
+// andrew.kirillov@aforgenet.com
 //
 
 namespace AForge.Imaging
 {
     using System;
+    using System.Collections.Generic;
     using System.Drawing;
     using System.Drawing.Imaging;
+    using AForge;
 
     /// <summary>
     /// Corners detector's interface.
@@ -26,9 +29,9 @@ namespace AForge.Imaging
         /// 
         /// <param name="image">Source image to process.</param>
         /// 
-        /// <returns>Returns array of found corners (X-Y coordinates).</returns>
+        /// <returns>Returns list of found corners (X-Y coordinates).</returns>
         /// 
-        Point[] ProcessImage( Bitmap image );
+        List<IntPoint> ProcessImage( Bitmap image );
 
         /// <summary>
         /// Process image looking for corners.
@@ -36,9 +39,9 @@ namespace AForge.Imaging
         /// 
         /// <param name="imageData">Source image data to process.</param>
         /// 
-        /// <returns>Returns array of found corners (X-Y coordinates).</returns>
+        /// <returns>Returns list of found corners (X-Y coordinates).</returns>
         /// 
-        Point[] ProcessImage( BitmapData imageData );
+        List<IntPoint> ProcessImage( BitmapData imageData );
 
         /// <summary>
         /// Process image looking for corners.
@@ -46,8 +49,8 @@ namespace AForge.Imaging
         /// 
         /// <param name="image">Unmanaged source image to process.</param>
         /// 
-        /// <returns>Returns array of found corners (X-Y coordinates).</returns>
+        /// <returns>Returns list of found corners (X-Y coordinates).</returns>
         /// 
-        Point[] ProcessImage( UnmanagedImage image );
+        List<IntPoint> ProcessImage( UnmanagedImage image );
     }
 }

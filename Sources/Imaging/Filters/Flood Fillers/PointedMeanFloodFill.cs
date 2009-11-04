@@ -39,7 +39,7 @@ namespace AForge.Imaging.Filters
     /// PointedMeanFloodFill filter = new PointedMeanFloodFill( );
     /// // configre the filter
     /// filter.Tolerance = Color.FromArgb( 150, 92, 92 );
-    /// filter.StartingPoint = new Point( 150, 100 );
+    /// filter.StartingPoint = new IntPoint( 150, 100 );
     /// // apply the filter
     /// filter.ApplyInPlace( image );
     /// </code>
@@ -76,7 +76,7 @@ namespace AForge.Imaging.Filters
         int pixelsCount = 0;
 
         // starting point to fill from
-        private Point startingPoint = new Point( 0, 0 );
+        private IntPoint startingPoint = new IntPoint( 0, 0 );
         // filling tolerance
         private Color tolerance = Color.FromArgb( 16, 16, 16 );
 
@@ -128,7 +128,7 @@ namespace AForge.Imaging.Filters
         /// <remarks>Default value is set to <b>(0, 0)</b>.</remarks>
         /// </remarks>
         /// 
-        public Point StartingPoint
+        public IntPoint StartingPoint
         {
             get { return startingPoint; }
             set { startingPoint = value; }
@@ -155,7 +155,7 @@ namespace AForge.Imaging.Filters
         protected override unsafe void ProcessFilter( UnmanagedImage image, Rectangle rect )
         {
             // skip, if there is nothing to fill
-            if ( !rect.Contains( startingPoint ) || ( tolerance == Color.Black ) )
+            if ( !rect.Contains( startingPoint.X, startingPoint.Y ) || ( tolerance == Color.Black ) )
                 return;
 
             // save bounding rectangle

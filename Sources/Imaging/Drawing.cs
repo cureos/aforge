@@ -9,6 +9,7 @@
 namespace AForge.Imaging
 {
     using System;
+    using System.Collections.Generic;
     using System.Drawing;
     using System.Drawing.Imaging;
 
@@ -29,7 +30,7 @@ namespace AForge.Imaging
         /// Fill rectangle on the specified image.
         /// </summary>
         /// 
-        /// <param name="imageData">Source image data.</param>
+        /// <param name="imageData">Source image data to draw on.</param>
         /// <param name="rectangle">Rectangle's coordinates to fill.</param>
         /// <param name="color">Rectangle's color.</param>
         /// 
@@ -44,7 +45,7 @@ namespace AForge.Imaging
         /// Fill rectangle on the specified image.
         /// </summary>
         /// 
-        /// <param name="image">Source unmanaged image.</param>
+        /// <param name="image">Source image to draw on.</param>
         /// <param name="rectangle">Rectangle's coordinates to fill.</param>
         /// <param name="color">Rectangle's color.</param>
         /// 
@@ -121,7 +122,7 @@ namespace AForge.Imaging
         /// Draw rectangle on the specified image.
         /// </summary>
         /// 
-        /// <param name="imageData">Source image data.</param>
+        /// <param name="imageData">Source image data to draw on.</param>
         /// <param name="rectangle">Rectangle's coordinates to draw.</param>
         /// <param name="color">Rectangle's color.</param>
         /// 
@@ -136,7 +137,7 @@ namespace AForge.Imaging
         /// Draw rectangle on the specified image.
         /// </summary>
         /// 
-        /// <param name="image">Source unmanaged image.</param>
+        /// <param name="image">Source image to draw on.</param>
         /// <param name="rectangle">Rectangle's coordinates to draw.</param>
         /// <param name="color">Rectangle's color.</param>
         /// 
@@ -279,14 +280,14 @@ namespace AForge.Imaging
         /// Draw a line on the specified image.
         /// </summary>
         /// 
-        /// <param name="imageData">Source image data.</param>
+        /// <param name="imageData">Source image data to draw on.</param>
         /// <param name="point1">The first point to connect.</param>
         /// <param name="point2">The second point to connect.</param>
         /// <param name="color">Line's color.</param>
         /// 
         /// <exception cref="UnsupportedImageFormatException">The source image has incorrect pixel format.</exception>
         /// 
-        public static unsafe void Line( BitmapData imageData, Point point1, Point point2, Color color )
+        public static unsafe void Line( BitmapData imageData, IntPoint point1, IntPoint point2, Color color )
         {
             Line( new UnmanagedImage( imageData ), point1, point2, color );
         }
@@ -295,14 +296,14 @@ namespace AForge.Imaging
         /// Draw a line on the specified image.
         /// </summary>
         /// 
-        /// <param name="image">Source image data.</param>
+        /// <param name="image">Source image to draw on.</param>
         /// <param name="point1">The first point to connect.</param>
         /// <param name="point2">The second point to connect.</param>
         /// <param name="color">Line's color.</param>
         /// 
         /// <exception cref="UnsupportedImageFormatException">The source image has incorrect pixel format.</exception>
         /// 
-        public static unsafe void Line( UnmanagedImage image, Point point1, Point point2, Color color )
+        public static unsafe void Line( UnmanagedImage image, IntPoint point1, IntPoint point2, Color color )
         {
             // TODO: faster line drawing algorithm may be implemented with integer math
 
@@ -432,6 +433,83 @@ namespace AForge.Imaging
             }
         }
 
+        /// <summary>
+        /// Draw a polygon on the specified image.
+        /// </summary>
+        /// 
+        /// <param name="imageData">Source image data to draw on.</param>
+        /// <param name="points">Points of the polygon to draw.</param>
+        /// <param name="color">Polygon's color.</param>
+        /// 
+        /// <remarks><para>The method draws a polygon by connecting all points from the
+        /// first one to the last one and then connecting the last point with the first one.
+        /// </para></remarks>
+        /// 
+        public static void Polygon( BitmapData imageData, List<IntPoint> points, Color color )
+        {
+            Polygon( new UnmanagedImage( imageData ), points, color );
+        }
+
+        /// <summary>
+        /// Draw a polygon on the specified image.
+        /// </summary>
+        /// 
+        /// <param name="image">Source image to draw on.</param>
+        /// <param name="points">Points of the polygon to draw.</param>
+        /// <param name="color">Polygon's color.</param>
+        /// 
+        /// <remarks><para>The method draws a polygon by connecting all points from the
+        /// first one to the last one and then connecting the last point with the first one.
+        /// </para></remarks>
+        /// 
+        public static void Polygon( UnmanagedImage image, List<IntPoint> points, Color color )
+        {
+            for ( int i = 1, n = points.Count; i < n; i++ )
+            {
+                Line( image, points[i - 1], points[i], color );
+            }
+            Line( image, points[points.Count - 1], points[0], color );
+        }
+
+        /// <summary>
+        /// Draw a polyline on the specified image.
+        /// </summary>
+        /// 
+        /// <param name="imageData">Source image data to draw on.</param>
+        /// <param name="points">Points of the polyline to draw.</param>
+        /// <param name="color">polyline's color.</param>
+        /// 
+        /// <remarks><para>The method draws a polyline by connecting all points from the
+        /// first one to the last one. Unlike <see cref="Polygon( BitmapData, List{IntPoint}, Color )"/>
+        /// method, this method does not connect the last point with the first one.
+        /// </para></remarks>
+        /// 
+        public static void Polyline( BitmapData imageData, List<IntPoint> points, Color color )
+        {
+            Polyline( new UnmanagedImage( imageData ), points, color );
+        }
+
+        /// <summary>
+        /// Draw a polyline on the specified image.
+        /// </summary>
+        /// 
+        /// <param name="image">Source image to draw on.</param>
+        /// <param name="points">Points of the polyline to draw.</param>
+        /// <param name="color">polyline's color.</param>
+        /// 
+        /// <remarks><para>The method draws a polyline by connecting all points from the
+        /// first one to the last one. Unlike <see cref="Polygon( UnmanagedImage, List{IntPoint}, Color )"/>
+        /// method, this method does not connect the last point with the first one.
+        /// </para></remarks>
+        /// 
+        public static void Polyline( UnmanagedImage image, List<IntPoint> points, Color color )
+        {
+            for ( int i = 1, n = points.Count; i < n; i++ )
+            {
+                Line( image, points[i - 1], points[i], color );
+            }
+        }
+
         // Check for supported pixel format
         private static void CheckPixelFormat( PixelFormat format )
         {
@@ -448,7 +526,7 @@ namespace AForge.Imaging
         }
 
         // Check end point and make sure it is in the image
-        private static void CheckEndPoint( int width, int height, Point start, ref Point end )
+        private static void CheckEndPoint( int width, int height, IntPoint start, ref IntPoint end )
         {
             if ( end.X >= width )
             {
@@ -457,7 +535,6 @@ namespace AForge.Imaging
                 double c = (double) ( newEndX - start.X ) / ( end.X - start.X );
 
                 end.Y = (int) ( start.Y + c * ( end.Y - start.Y ) );
-
                 end.X = newEndX;
             }
 
@@ -468,7 +545,6 @@ namespace AForge.Imaging
                 double c = (double) ( newEndY - start.Y ) / ( end.Y - start.Y );
 
                 end.X = (int) ( start.X + c * ( end.X - start.X ) );
-
                 end.Y = newEndY;
             }
 
@@ -485,7 +561,6 @@ namespace AForge.Imaging
                 double c = (double) ( 0 - start.Y ) / ( end.Y - start.Y );
 
                 end.X = (int) ( start.X + c * ( end.X - start.X ) );
-
                 end.Y = 0;
             }
         }

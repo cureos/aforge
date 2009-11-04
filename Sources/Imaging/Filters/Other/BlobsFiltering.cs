@@ -1,8 +1,9 @@
 // AForge Image Processing Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2008
-// andrew.kirillov@gmail.com
+// Copyright © Andrew Kirillov, 2005-2009
+// andrew.kirillov@aforgenet.com
 //
 
 namespace AForge.Imaging.Filters
@@ -16,10 +17,15 @@ namespace AForge.Imaging.Filters
     /// Blobs filtering by size.
     /// </summary>
     /// 
-    /// <remarks><para>The filter performs filtering of blobs by their size in binary image - all
-    /// blobs, which are smaller or bigger then specified limits, are removed from source image.</para>
+    /// <remarks><para>The filter performs filtering of blobs by their size in the specified
+    /// source image - all blobs, which are smaller or bigger then specified limits, are
+    /// removed from the image.</para>
     /// 
-    /// <para>The filter accepts 8 bpp grayscale images for processing.</para>
+    /// <para><note>The image processing filter treats all none black pixels as objects'
+    /// pixels and all black pixel as background.</note></para>
+    /// 
+    /// <para>The filter accepts 8 bpp grayscale images and 24/32
+    /// color images for processing.</para>
     /// 
     /// <para>Sample usage:</para>
     /// <code>
@@ -159,6 +165,9 @@ namespace AForge.Imaging.Filters
             blobCounter.CoupledSizeFiltering = coupledSizeFiltering;
 
             formatTransalations[PixelFormat.Format8bppIndexed] = PixelFormat.Format8bppIndexed;
+            formatTransalations[PixelFormat.Format24bppRgb]    = PixelFormat.Format24bppRgb;
+            formatTransalations[PixelFormat.Format32bppArgb]   = PixelFormat.Format32bppArgb;
+            formatTransalations[PixelFormat.Format32bppPArgb]  = PixelFormat.Format32bppPArgb;
         }
 
         /// <summary>
@@ -176,21 +185,42 @@ namespace AForge.Imaging.Filters
             // get image width and height
             int width  = image.Width;
             int height = image.Height;
-            int offset = image.Stride - width;
 
             // do the job
             byte* ptr = (byte*) image.ImageData.ToPointer( );
 
-            for ( int y = 0, p = 0; y < height; y++ )
+            if ( image.PixelFormat == PixelFormat.Format8bppIndexed )
             {
-                for ( int x = 0; x < width; x++, ptr++, p++ )
+                int offset = image.Stride - width;
+
+                for ( int y = 0, p = 0; y < height; y++ )
                 {
-                    if ( objectsMap[p] == 0 )
+                    for ( int x = 0; x < width; x++, ptr++, p++ )
                     {
-                        *ptr = 0;
+                        if ( objectsMap[p] == 0 )
+                        {
+                            *ptr = 0;
+                        }
                     }
+                    ptr += offset;
                 }
-                ptr += offset;
+            }
+            else
+            {
+                int pixelSize = Bitmap.GetPixelFormatSize( image.PixelFormat ) / 8;
+                int offset = image.Stride - width * pixelSize;
+
+                for ( int y = 0, p = 0; y < height; y++ )
+                {
+                    for ( int x = 0; x < width; x++, ptr += pixelSize, p++ )
+                    {
+                        if ( objectsMap[p] == 0 )
+                        {
+                            ptr[RGB.R] = ptr[RGB.G] = ptr[RGB.B] = 0;
+                        }
+                    }
+                    ptr += offset;
+                }
             }
         }
     }

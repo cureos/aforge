@@ -2,11 +2,11 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
+// Copyright © Andrew Kirillov, 2005-2009
+// andrew.kirillov@aforgenet.com
+//
 // Copyright © Volodymyr Goncharov, 2007
 // volodymyr.goncharov@gmail.com
-//
-// Copyright © Andrew Kirillov, 2007-2009
-// andrew.kirillov@aforgenet.com
 //
 
 namespace AForge.Imaging.Filters
@@ -25,7 +25,7 @@ namespace AForge.Imaging.Filters
     /// <para>Sample usage:</para>
     /// <code>
     /// // create filter
-    /// CanvasMove filter = new CanvasMove( new Point( -50, -50 ), Color.Green );
+    /// CanvasMove filter = new CanvasMove( new IntPoint( -50, -50 ), Color.Green );
     /// // apply the filter
     /// filter.ApplyInPlace( image );
     /// </code>
@@ -45,7 +45,7 @@ namespace AForge.Imaging.Filters
         // gray fill color
         private byte fillGray = 255;
         // point to move to
-        private Point movePoint;
+        private IntPoint movePoint;
 
         // private format translation dictionary
         private Dictionary<PixelFormat, PixelFormat> formatTransalations = new Dictionary<PixelFormat, PixelFormat>( );
@@ -99,7 +99,7 @@ namespace AForge.Imaging.Filters
         /// Point to move the canvas to.
         /// </summary>
         /// 
-        public Point MovePoint
+        public IntPoint MovePoint
         {
             get { return movePoint; }
             set { movePoint = value; }
@@ -120,7 +120,7 @@ namespace AForge.Imaging.Filters
         /// 
         /// <param name="movePoint">Point to move the canvas to.</param>
         /// 
-        public CanvasMove( Point movePoint ) : this( )
+        public CanvasMove( IntPoint movePoint ) : this( )
         {
             this.movePoint = movePoint;
         }
@@ -132,7 +132,7 @@ namespace AForge.Imaging.Filters
         /// <param name="movePoint">Point to move the canvas.</param>
         /// <param name="fillColorRGB">RGB color to use for filling areas empty areas in color images.</param>
         /// 
-        public CanvasMove( Point movePoint, Color fillColorRGB )
+        public CanvasMove( IntPoint movePoint, Color fillColorRGB )
             : this( )
         {
             this.movePoint  = movePoint;
@@ -148,7 +148,7 @@ namespace AForge.Imaging.Filters
         /// <param name="movePoint">Point to move the canvas.</param>
         /// <param name="fillColorGray">Gray color to use for filling empty areas in grayscale images.</param>
         /// 
-        public CanvasMove( Point movePoint, byte fillColorGray )
+        public CanvasMove( IntPoint movePoint, byte fillColorGray )
             : this( )
         {
             this.movePoint = movePoint;
@@ -163,7 +163,7 @@ namespace AForge.Imaging.Filters
         /// <param name="fillColorRGB">RGB color to use for filling areas empty areas in color images.</param>
         /// <param name="fillColorGray">Gray color to use for filling empty areas in grayscale images.</param>
         /// 
-        public CanvasMove( Point movePoint, Color fillColorRGB, byte fillColorGray )
+        public CanvasMove( IntPoint movePoint, Color fillColorRGB, byte fillColorGray )
             : this( )
         {
             this.movePoint  = movePoint;

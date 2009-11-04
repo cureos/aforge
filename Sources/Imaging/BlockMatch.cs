@@ -19,14 +19,14 @@ namespace AForge.Imaging
     /// 
     public class BlockMatch
     {
-        private Point sourcePoint;
-        private Point matchPoint;
+        private IntPoint sourcePoint;
+        private IntPoint matchPoint;
         private float similarity;
 
         /// <summary>
         /// Reference point in source image.
         /// </summary>
-        public Point SourcePoint
+        public IntPoint SourcePoint
         {
             get { return sourcePoint; }
         }
@@ -34,7 +34,7 @@ namespace AForge.Imaging
         /// <summary>
         /// Match point in search image (point of a found match).
         /// </summary>
-        public Point MatchPoint
+        public IntPoint MatchPoint
         {
             get { return matchPoint; }
         }
@@ -55,7 +55,7 @@ namespace AForge.Imaging
         /// <param name="matchPoint">Match point in search image (point of a found match).</param>
         /// <param name="similarity">Similarity between blocks in source and search images, [0..1].</param>
         /// 
-        public BlockMatch( Point sourcePoint, Point matchPoint, float similarity )
+        public BlockMatch( IntPoint sourcePoint, IntPoint matchPoint, float similarity )
         {
             this.sourcePoint = sourcePoint;
             this.matchPoint  = matchPoint;

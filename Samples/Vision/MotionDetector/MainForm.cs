@@ -16,6 +16,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 
+using AForge;
 using AForge.Imaging;
 using AForge.Video;
 using AForge.Video.VFW;
@@ -279,23 +280,23 @@ namespace MotionDetectorSample
                     motionBarLength = 50;
 
                 Drawing.Line( bitmapData,
-                    new Point( image.Width - i, image.Height - 1 ),
-                    new Point( image.Width - i, image.Height - 1 - motionBarLength ),
+                    new IntPoint( image.Width - i, image.Height - 1 ),
+                    new IntPoint( image.Width - i, image.Height - 1 - motionBarLength ),
                     greenColor );
 
                 if ( motionBarLength > t1 )
                 {
                     Drawing.Line( bitmapData,
-                        new Point( image.Width - i, image.Height - 1 - t1 ),
-                        new Point( image.Width - i, image.Height - 1 - motionBarLength ),
+                        new IntPoint( image.Width - i, image.Height - 1 - t1 ),
+                        new IntPoint( image.Width - i, image.Height - 1 - motionBarLength ),
                         yellowColor );
                 }
 
                 if ( motionBarLength > t2 )
                 {
                     Drawing.Line( bitmapData,
-                        new Point( image.Width - i, image.Height - 1 - t2 ),
-                        new Point( image.Width - i, image.Height - 1 - motionBarLength ),
+                        new IntPoint( image.Width - i, image.Height - 1 - t2 ),
+                        new IntPoint( image.Width - i, image.Height - 1 - motionBarLength ),
                         redColor );
                 }
             }

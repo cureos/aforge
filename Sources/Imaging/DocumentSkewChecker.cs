@@ -42,6 +42,7 @@ namespace AForge.Imaging
     /// double angle = skewChecker.GetSkewAngle( documentImage );
     /// // create rotation filter
     /// RotateBilinear rotationFilter = new RotateBilinear( -angle );
+    /// rotationFilter.FillColor = Color.White;
     /// // rotate image applying the filter
     /// Bitmap rotatedImage = rotationFilter.Apply( documentImage );
     /// </code>

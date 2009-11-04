@@ -1,5 +1,6 @@
 // AForge Image Processing Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
 // Copyright © Andrew Kirillov, 2005-2009
 // andrew.kirillov@aforgenet.com
@@ -10,6 +11,8 @@ namespace AForge.Imaging
     using System;
     using System.Drawing;
     using System.Drawing.Imaging;
+    using System.ComponentModel;
+    using AForge;
 
     /// <summary>
     /// Image's blob.
@@ -27,13 +30,19 @@ namespace AForge.Imaging
     {
         // blob's image
         private Bitmap image;
-        // blob's size - as original image or not
+        // blob's image size - as original image or not
         private bool originalSize = false;
 
         // blob's rectangle in the original image
         private Rectangle rect;
         // blob's ID in the original image
         private int id;
+        // area of the blob
+        private int area;
+        // center of gravity
+        private IntPoint cog;
+        // fullness of the blob ( area / ( width * height ) )
+        private double fullness;
 
         /// <summary>
         /// Blob's image.
@@ -43,6 +52,7 @@ namespace AForge.Imaging
         /// the image may be extracted using <see cref="BlobCounterBase.ExtractBlobsImage( Bitmap, Blob, bool )"/>
         /// or <see cref="BlobCounterBase.ExtractBlobsImage( BitmapData, Blob, bool )"/> method.</para></remarks>
         ///
+        [Browsable( false )]
         public Bitmap Image
         {
             get { return image; }
@@ -58,6 +68,7 @@ namespace AForge.Imaging
         /// size of original image. If the property is set to <see langword="false"/>, the blob's
         /// image size equals to size of actual blob.</para></remarks>
         /// 
+        [Browsable( false )]
         public bool OriginalSize
         {
             get { return originalSize; }
@@ -67,6 +78,10 @@ namespace AForge.Imaging
         /// <summary>
         /// Blob's rectangle in the original image.
         /// </summary>
+        /// 
+        /// <remarks><para>The property specifies position of the blob in the original image
+        /// and its size.</para></remarks>
+        /// 
         public Rectangle Rectangle
         {
             get { return rect; }
@@ -75,9 +90,54 @@ namespace AForge.Imaging
         /// <summary>
         /// Blob's ID in the original image.
         /// </summary>
+        [Browsable( false )]
         public int ID
         {
             get { return id; }
+            internal set { id = value; }
+        }
+
+        /// <summary>
+        /// Blob's area.
+        /// </summary>
+        /// 
+        /// <remarks><para>The property equals to blob's area measured in number of pixels
+        /// contained by the blob.</para></remarks>
+        /// 
+        public int Area
+        {
+            get { return area; }
+            internal set { area = value; }
+        }
+
+        /// <summary>
+        /// Blob's fullness, [0, 1].
+        /// </summary>
+        /// 
+        /// <remarks><para>The property equals to blob's fullness, which is calculated
+        /// as <b>Area / ( Width * Height )</b>. If it equals to <b>1</b>, then
+        /// it means that entire blob's rectangle is filled by blob's pixel (no
+        /// blank areas), which is true only for rectangles. If it equals to <b>0.5</b>,
+        /// for example, then it means that only half of the bounding rectangle is filled
+        /// by blob's pixels.</para></remarks>
+        /// 
+        public double Fullness
+        {
+            get { return fullness; }
+            internal set { fullness = value; }
+        }
+
+        /// <summary>
+        /// Blob's center of gravity point.
+        /// </summary>
+        /// 
+        /// <remarks><para>The property keeps center of gravity point, which is calculated as
+        /// mean value of X and Y coordinates of blob's points.</para></remarks>
+        /// 
+        public IntPoint CenterOfGravity
+        {
+            get { return cog; }
+            internal set { cog = value; }
         }
 
         /// <summary>
@@ -91,29 +151,21 @@ namespace AForge.Imaging
         /// image may be extracted later using <see cref="BlobCounterBase.ExtractBlobsImage( Bitmap, Blob, bool )"/>
         /// or <see cref="BlobCounterBase.ExtractBlobsImage( BitmapData, Blob, bool )"/> method.</para></remarks>
         /// 
-        public Blob( int id, Rectangle rect )
+        internal Blob( int id, Rectangle rect )
         {
             this.id   = id;
             this.rect = rect;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Blob"/> class.
-        /// </summary>
-        /// 
-        /// <param name="id">Blob's ID in the original image.</param>
-        /// <param name="rect">Blob's rectangle on the original image.</param>
-        /// <param name="image">Blob's image.</param>
-        /// <param name="originalSize">Specifies blob's <paramref name="image"/> size:
-        /// <see langword="true"/> size of original image, <see langword="false"/> size of
-        /// blob only.</param>
-        /// 
-        public Blob( int id, Rectangle rect, Bitmap image, bool originalSize )
+        // Copy constructur
+        internal Blob( Blob source )
         {
-            this.id    = id;
-            this.rect  = rect;
-            this.image = image;
-            this.originalSize = originalSize;
+            // copy everything except image
+            id   = source.id;
+            rect = source.rect;
+            cog  = source.cog;
+            area = source.area;
+            fullness = source.fullness;
         }
     }
 }
