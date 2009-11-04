@@ -50,13 +50,24 @@
             this.qualityCombo = new System.Windows.Forms.ComboBox( );
             this.label2 = new System.Windows.Forms.Label( );
             this.groupBox5 = new System.Windows.Forms.GroupBox( );
+            this.maxPowerUpDown = new System.Windows.Forms.NumericUpDown( );
+            this.maxPowerLabel = new System.Windows.Forms.Label( );
+            this.minPowerUpDown = new System.Windows.Forms.NumericUpDown( );
+            this.minPowerLabel = new System.Windows.Forms.Label( );
+            this.directControlRadio = new System.Windows.Forms.RadioButton( );
+            this.predefinedCommandsRadio = new System.Windows.Forms.RadioButton( );
+            this.aboutButton = new System.Windows.Forms.Button( );
+            this.turnControl = new QwerkRobotCar.TurnControl( );
             this.srvDriverControl = new SVSTest.SrvDriverControl( );
+            this.manipulatorControl = new QwerkRobotCar.ManipulatorControl( );
             this.groupBox1.SuspendLayout( );
             this.statusStrip.SuspendLayout( );
             this.groupBox2.SuspendLayout( );
             this.groupBox3.SuspendLayout( );
             this.groupBox4.SuspendLayout( );
             this.groupBox5.SuspendLayout( );
+            ( (System.ComponentModel.ISupportInitialize) ( this.maxPowerUpDown ) ).BeginInit( );
+            ( (System.ComponentModel.ISupportInitialize) ( this.minPowerUpDown ) ).BeginInit( );
             this.SuspendLayout( );
             // 
             // groupBox1
@@ -277,7 +288,15 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add( this.maxPowerUpDown );
+            this.groupBox5.Controls.Add( this.maxPowerLabel );
+            this.groupBox5.Controls.Add( this.minPowerUpDown );
+            this.groupBox5.Controls.Add( this.minPowerLabel );
+            this.groupBox5.Controls.Add( this.turnControl );
+            this.groupBox5.Controls.Add( this.directControlRadio );
+            this.groupBox5.Controls.Add( this.predefinedCommandsRadio );
             this.groupBox5.Controls.Add( this.srvDriverControl );
+            this.groupBox5.Controls.Add( this.manipulatorControl );
             this.groupBox5.Location = new System.Drawing.Point( 710, 75 );
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size( 313, 275 );
@@ -285,26 +304,149 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Driving control";
             // 
+            // maxPowerUpDown
+            // 
+            this.maxPowerUpDown.Location = new System.Drawing.Point( 260, 55 );
+            this.maxPowerUpDown.Maximum = new decimal( new int[] {
+            127,
+            0,
+            0,
+            0} );
+            this.maxPowerUpDown.Minimum = new decimal( new int[] {
+            10,
+            0,
+            0,
+            0} );
+            this.maxPowerUpDown.Name = "maxPowerUpDown";
+            this.maxPowerUpDown.Size = new System.Drawing.Size( 45, 20 );
+            this.maxPowerUpDown.TabIndex = 15;
+            this.maxPowerUpDown.Value = new decimal( new int[] {
+            10,
+            0,
+            0,
+            0} );
+            this.maxPowerUpDown.Visible = false;
+            this.maxPowerUpDown.ValueChanged += new System.EventHandler( this.maxPowerUpDown_ValueChanged );
+            // 
+            // maxPowerLabel
+            // 
+            this.maxPowerLabel.AutoSize = true;
+            this.maxPowerLabel.Location = new System.Drawing.Point( 245, 40 );
+            this.maxPowerLabel.Name = "maxPowerLabel";
+            this.maxPowerLabel.Size = new System.Drawing.Size( 62, 13 );
+            this.maxPowerLabel.TabIndex = 14;
+            this.maxPowerLabel.Text = "Max power:";
+            this.maxPowerLabel.Visible = false;
+            // 
+            // minPowerUpDown
+            // 
+            this.minPowerUpDown.Location = new System.Drawing.Point( 10, 55 );
+            this.minPowerUpDown.Maximum = new decimal( new int[] {
+            127,
+            0,
+            0,
+            0} );
+            this.minPowerUpDown.Minimum = new decimal( new int[] {
+            10,
+            0,
+            0,
+            0} );
+            this.minPowerUpDown.Name = "minPowerUpDown";
+            this.minPowerUpDown.Size = new System.Drawing.Size( 45, 20 );
+            this.minPowerUpDown.TabIndex = 13;
+            this.minPowerUpDown.Value = new decimal( new int[] {
+            10,
+            0,
+            0,
+            0} );
+            this.minPowerUpDown.Visible = false;
+            this.minPowerUpDown.ValueChanged += new System.EventHandler( this.minPowerUpDown_ValueChanged );
+            // 
+            // minPowerLabel
+            // 
+            this.minPowerLabel.AutoSize = true;
+            this.minPowerLabel.Location = new System.Drawing.Point( 10, 40 );
+            this.minPowerLabel.Name = "minPowerLabel";
+            this.minPowerLabel.Size = new System.Drawing.Size( 59, 13 );
+            this.minPowerLabel.TabIndex = 12;
+            this.minPowerLabel.Text = "Min power:";
+            this.minPowerLabel.Visible = false;
+            // 
+            // directControlRadio
+            // 
+            this.directControlRadio.AutoSize = true;
+            this.directControlRadio.Location = new System.Drawing.Point( 170, 20 );
+            this.directControlRadio.Name = "directControlRadio";
+            this.directControlRadio.Size = new System.Drawing.Size( 88, 17 );
+            this.directControlRadio.TabIndex = 2;
+            this.directControlRadio.Text = "Direct control";
+            this.directControlRadio.UseVisualStyleBackColor = true;
+            this.directControlRadio.CheckedChanged += new System.EventHandler( this.directControlRadio_CheckedChanged );
+            // 
+            // predefinedCommandsRadio
+            // 
+            this.predefinedCommandsRadio.AutoSize = true;
+            this.predefinedCommandsRadio.Checked = true;
+            this.predefinedCommandsRadio.Location = new System.Drawing.Point( 10, 20 );
+            this.predefinedCommandsRadio.Name = "predefinedCommandsRadio";
+            this.predefinedCommandsRadio.Size = new System.Drawing.Size( 130, 17 );
+            this.predefinedCommandsRadio.TabIndex = 1;
+            this.predefinedCommandsRadio.TabStop = true;
+            this.predefinedCommandsRadio.Text = "Predefined commands";
+            this.predefinedCommandsRadio.UseVisualStyleBackColor = true;
+            // 
+            // aboutButton
+            // 
+            this.aboutButton.Location = new System.Drawing.Point( 948, 12 );
+            this.aboutButton.Name = "aboutButton";
+            this.aboutButton.Size = new System.Drawing.Size( 75, 23 );
+            this.aboutButton.TabIndex = 12;
+            this.aboutButton.Text = "About";
+            this.aboutButton.UseVisualStyleBackColor = true;
+            this.aboutButton.Click += new System.EventHandler( this.aboutButton_Click );
+            // 
+            // turnControl
+            // 
+            this.turnControl.Location = new System.Drawing.Point( 55, 245 );
+            this.turnControl.Name = "turnControl";
+            this.turnControl.Size = new System.Drawing.Size( 200, 23 );
+            this.turnControl.TabIndex = 3;
+            this.turnControl.Text = "turnControl1";
+            this.turnControl.Visible = false;
+            this.turnControl.PositionChanged += new QwerkRobotCar.TurnControl.PositionChangedHandler( this.turnControl_PositionChanged );
+            // 
             // srvDriverControl
             // 
-            this.srvDriverControl.Location = new System.Drawing.Point( 10, 20 );
+            this.srvDriverControl.Location = new System.Drawing.Point( 10, 50 );
             this.srvDriverControl.Name = "srvDriverControl";
-            this.srvDriverControl.Size = new System.Drawing.Size( 291, 200 );
+            this.srvDriverControl.Size = new System.Drawing.Size( 291, 163 );
             this.srvDriverControl.TabIndex = 0;
             this.srvDriverControl.SrvDrivingCommand += new SVSTest.SrvDrivingCommandHandler( this.srvDriverControl_SrvDrivingCommand );
+            // 
+            // manipulatorControl
+            // 
+            this.manipulatorControl.Location = new System.Drawing.Point( 56, 40 );
+            this.manipulatorControl.Name = "manipulatorControl";
+            this.manipulatorControl.Size = new System.Drawing.Size( 200, 200 );
+            this.manipulatorControl.TabIndex = 1;
+            this.manipulatorControl.Text = "manipulatorControl1";
+            this.manipulatorControl.Visible = false;
+            this.manipulatorControl.PositionChanged += new QwerkRobotCar.ManipulatorControl.PositionChangedHandler( this.manipulatorControl_PositionChanged );
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size( 1032, 384 );
+            this.Controls.Add( this.aboutButton );
             this.Controls.Add( this.groupBox5 );
             this.Controls.Add( this.groupBox4 );
             this.Controls.Add( this.groupBox3 );
             this.Controls.Add( this.groupBox2 );
             this.Controls.Add( this.statusStrip );
             this.Controls.Add( this.groupBox1 );
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.HelpButton = true;
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Surveyor SVS Test";
@@ -318,6 +460,9 @@
             this.groupBox4.ResumeLayout( false );
             this.groupBox4.PerformLayout( );
             this.groupBox5.ResumeLayout( false );
+            this.groupBox5.PerformLayout( );
+            ( (System.ComponentModel.ISupportInitialize) ( this.maxPowerUpDown ) ).EndInit( );
+            ( (System.ComponentModel.ISupportInitialize) ( this.minPowerUpDown ) ).EndInit( );
             this.ResumeLayout( false );
             this.PerformLayout( );
 
@@ -347,6 +492,15 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox5;
         private SrvDriverControl srvDriverControl;
+        private QwerkRobotCar.ManipulatorControl manipulatorControl;
+        private System.Windows.Forms.RadioButton directControlRadio;
+        private System.Windows.Forms.RadioButton predefinedCommandsRadio;
+        private QwerkRobotCar.TurnControl turnControl;
+        private System.Windows.Forms.NumericUpDown maxPowerUpDown;
+        private System.Windows.Forms.NumericUpDown minPowerUpDown;
+        private System.Windows.Forms.Label maxPowerLabel;
+        private System.Windows.Forms.Label minPowerLabel;
+        private System.Windows.Forms.Button aboutButton;
     }
 }
 

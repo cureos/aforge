@@ -41,6 +41,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Release\AForge.Imaging.dll</HintPath>
     </Reference>
+    <Reference Include="AForge.Robotics.Surveyor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7ed9f718a0f5b2f6, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Release\AForge.Robotics.Surveyor.dll</HintPath>
+    </Reference>
     <Reference Include="AForge.Video, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cbfb6e07d173c401, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Release\AForge.Video.dll</HintPath>
@@ -53,6 +57,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutForm.Designer.cs">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ManipulatorControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ManipulatorControl.Designer.cs">
+      <DependentUpon>ManipulatorControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="SrvDriverControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -67,6 +83,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ManipulatorControl.resx">
+      <DependentUpon>ManipulatorControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SrvDriverControl.resx">
       <DependentUpon>SrvDriverControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -80,6 +102,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="StereoViewForm.resx">
       <DependentUpon>StereoViewForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TurnControl.resx">
+      <DependentUpon>TurnControl.cs</DependentUpon>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -100,12 +125,12 @@
     <Compile Include="StereoViewForm.Designer.cs">
       <DependentUpon>StereoViewForm.cs</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Sources\Robotics.Surveyor\Robotics.Surveyor.csproj">
-      <Project>{3D9EFCF7-61CD-49DD-9300-9F9C993FB37B}</Project>
-      <Name>Robotics.Surveyor</Name>
-    </ProjectReference>
+    <Compile Include="TurnControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TurnControl.Designer.cs">
+      <DependentUpon>TurnControl.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

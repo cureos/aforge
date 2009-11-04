@@ -422,7 +422,7 @@ namespace AForge.Robotics.Surveyor
         /// <param name="leftSpeed">Left motor's speed, [-127, 127].</param>
         /// <param name="rightSpeed">Right motor's speed, [-127, 127].</param>
         /// <param name="duration">Time duration to run motors measured in number
-        /// of 10 milliseconds (0 for infinity).</param>
+        /// of 10 milliseconds (0 for infinity), [0, 255].</param>
         /// 
         /// <remarks><para>The method sets specified speed to both motors connected to
         /// the SVS board. The maximum absolute speed equals to 127, but the sign specifies
@@ -432,7 +432,7 @@ namespace AForge.Robotics.Surveyor
         /// <exception cref="NotConnectedException">Not connected to SVS. Connect to SVS board before using
         /// this method.</exception>
         /// 
-        public void RunMotors( sbyte leftSpeed, sbyte rightSpeed, byte duration )
+        public void RunMotors( int leftSpeed, int rightSpeed, int duration )
         {
             SafeGetCommunicator1( ).RunMotors( leftSpeed, rightSpeed, duration );
         }
@@ -467,7 +467,7 @@ namespace AForge.Robotics.Surveyor
         /// <exception cref="NotConnectedException">Not connected to SVS. Connect to SVS board before using
         /// this method.</exception>
         /// 
-        public void EnableFailsafeMode( sbyte leftSpeed, sbyte rightSpeed )
+        public void EnableFailsafeMode( int leftSpeed, int rightSpeed )
         {
             SafeGetCommunicator1( ).EnableFailsafeMode( leftSpeed, rightSpeed );
         }

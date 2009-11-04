@@ -700,7 +700,7 @@ namespace AForge.Robotics.Surveyor
         /// <param name="leftSpeed">Left motor's speed, [-127, 127].</param>
         /// <param name="rightSpeed">Right motor's speed, [-127, 127].</param>
         /// <param name="duration">Time duration to run motors measured in number
-        /// of 10 milliseconds (0 for infinity).</param>
+        /// of 10 milliseconds (0 for infinity), [0, 255].</param>
         /// 
         /// <remarks><para>The method provides direct access to motors setting specified,
         /// speed to both motors connected to the SRV-1 robot. The maximum absolute speed
@@ -712,15 +712,17 @@ namespace AForge.Robotics.Surveyor
         /// controlling motors/servos.</note></para>
         /// </remarks>
         /// 
-        public void RunMotors( sbyte leftSpeed, sbyte rightSpeed, byte duration )
+        public void RunMotors( int leftSpeed, int rightSpeed, int duration )
         {
             // check limits
             if ( leftSpeed == -128 )
                 leftSpeed = -127;
             if ( rightSpeed == -128 )
                 rightSpeed = -127;
+            if ( duration > 255 )
+                duration = 255;
 
-            Send( new byte[] { (byte) 'M', (byte) leftSpeed, (byte) rightSpeed, duration } );
+            Send( new byte[] { (byte) 'M', (byte) leftSpeed, (byte) rightSpeed, (byte) duration } );
         }
 
         /// <summary>
@@ -747,7 +749,7 @@ namespace AForge.Robotics.Surveyor
         /// is very useful to instruct robot to stop if no other commands were sent
         /// within 2 seconds (probably lost connection).</para></remarks>
         ///
-        public void EnableFailsafeMode( sbyte leftSpeed, sbyte rightSpeed )
+        public void EnableFailsafeMode( int leftSpeed, int rightSpeed )
         {
             // check limits
             if ( leftSpeed == -128 )

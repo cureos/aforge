@@ -37,12 +37,22 @@ namespace SVSTest
 
         private bool receivedFirstDrivingCommand = false;
         private SRV1.MotorCommand lastMotorCommand;
+
+        // maximum motors' power for 15 sectors 
+        private float[] maxPowers = new float[] { 0.1f, 0.2f, 0.35f, 0.5f, 0.65f, 0.8f, 0.9f, 1.0f,
+            1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
+
+        private int maxMotorPower = 90;
+        private int minMotorPower = 50;
      
         // Class constructor
         public MainForm( )
         {
             InitializeComponent( );
             EnableContols( false );
+
+            minPowerUpDown.Value = minMotorPower;
+            maxPowerUpDown.Value = maxMotorPower;
         }
 
         // On form closing
@@ -54,11 +64,13 @@ namespace SVSTest
         // Enable/disable connection controls
         private void EnableContols( bool enable )
         {
-            connectButton.Enabled    = !enable;
-            disconnectButton.Enabled = enable;
-            qualityCombo.Enabled     = enable;
-            resolutionCombo.Enabled  = enable;
-            srvDriverControl.Enabled = enable;
+            connectButton.Enabled      = !enable;
+            disconnectButton.Enabled   = enable;
+            qualityCombo.Enabled       = enable;
+            resolutionCombo.Enabled    = enable;
+            srvDriverControl.Enabled   = enable;
+            manipulatorControl.Enabled = enable;
+            turnControl.Enabled        = enable;
         }
 
         // On "Connect" button click
@@ -95,7 +107,7 @@ namespace SVSTest
             try
             {
                 svs.Connect( host );
-                //svs.StopMotors( );
+                svs.EnableFailsafeMode( 0, 0 );
 
                 svs.FlipVideo( false );
                 svs.SetQuality( 7 );
@@ -112,6 +124,7 @@ namespace SVSTest
                 rightCameraPlayer.Start( );
 
                 versionLabel.Text = svs.GetVersion( );
+                receivedFirstDrivingCommand = false;
 
                 // reset statistics
                 statIndex = statReady = 0;
@@ -149,6 +162,7 @@ namespace SVSTest
                     rightCameraPlayer.VideoSource = null;
                 }
 
+                svs.StopMotors( );
                 svs.Disconnect( );
 
                 EnableContols( false );
@@ -306,6 +320,132 @@ namespace SVSTest
                     System.Diagnostics.Debug.WriteLine( "## " + ex.Message );
                 }
             }
+        }
+
+        // Switch control type
+        private void directControlRadio_CheckedChanged( object sender, EventArgs e )
+        {
+            bool directControlEnabled = directControlRadio.Checked;
+
+            manipulatorControl.Visible = directControlEnabled;
+            turnControl.Visible = directControlEnabled;
+            minPowerLabel.Visible = directControlEnabled;
+            maxPowerLabel.Visible = directControlEnabled;
+            minPowerUpDown.Visible = directControlEnabled;
+            maxPowerUpDown.Visible = directControlEnabled;
+
+            srvDriverControl.Visible = !directControlEnabled;
+        }
+
+        // Driving with "software joystick"
+        private void manipulatorControl_PositionChanged( float x, float y )
+        {
+            float leftMotorPower = 0f, rightMotorPower = 0f;
+
+            // calculate robot's direction and speed
+            if ( ( x != 0 ) || ( y != 0 ) )
+            {
+                // radius (distance from center)
+                double r = Math.Min( Math.Sqrt( x * x + y * y ), 1.0 );
+                // theta
+                double t = 0;
+
+                // calculate theta
+                if ( x != 0 )
+                {
+                    t = Math.Atan( y / x );
+                    t = t / Math.PI * 180;
+
+                    if ( t < 0 )
+                    {
+                        t = 180.0 + t;
+                    }
+                }
+                else
+                {
+                    t = 90;
+                }
+
+                // index of maximum power
+                int maxPowerIndex = (int) ( t / 180 * maxPowers.Length );
+
+                // check direction to move
+                if ( y > 0 )
+                {
+                    // forward direction
+                    leftMotorPower  = (float) ( r * maxPowers[maxPowers.Length - maxPowerIndex - 1] );
+                    rightMotorPower = (float) ( r * maxPowers[maxPowerIndex] );
+                }
+                else
+                {
+                    // backward direction
+                    leftMotorPower  = (float) ( -r * maxPowers[maxPowerIndex] );
+                    rightMotorPower = (float) ( -r * maxPowers[maxPowers.Length - maxPowerIndex - 1] );
+                }
+            }
+
+            DriveMotors( leftMotorPower, rightMotorPower );
+        }
+
+        // Robot turning on place - opposite directions for motors
+        private void turnControl_PositionChanged( float x )
+        {
+            DriveMotors( x, -x );
+        }
+
+        private void DriveMotors( float leftMotor, float rightMotor )
+        {
+            int leftMotorVelocity  = 0;
+            int rightMotorVelocity = 0;
+
+            // make sure velocities are in [min, max] range
+            int delta = maxMotorPower - minMotorPower;
+
+            if ( leftMotor != 0 )
+            {
+                if ( leftMotor > 0 )
+                    leftMotorVelocity =  minMotorPower + (int) ( delta * leftMotor );
+                else
+                    leftMotorVelocity = -minMotorPower + (int) ( delta * leftMotor );
+            }
+            if ( rightMotor != 0 )
+            {
+                if ( rightMotor > 0 )
+                    rightMotorVelocity =  minMotorPower + (int) ( delta * rightMotor );
+                else
+                    rightMotorVelocity = -minMotorPower + (int) ( delta * rightMotor );
+            }
+
+            System.Diagnostics.Debug.WriteLine( string.Format( "l: {0}, r: {1}", leftMotorVelocity, rightMotorVelocity ) );
+            if ( svs.IsConnected )
+            {
+                try
+                {
+                    svs.RunMotors( leftMotorVelocity, rightMotorVelocity, 0 );
+                }
+                catch ( Exception ex )
+                {
+                    System.Diagnostics.Debug.WriteLine( "## " + ex.Message );
+                }
+            }
+        }
+
+        // Changing motors' power limits
+        private void minPowerUpDown_ValueChanged( object sender, EventArgs e )
+        {
+            minMotorPower = (int) minPowerUpDown.Value;
+        }
+
+        private void maxPowerUpDown_ValueChanged( object sender, EventArgs e )
+        {
+            maxMotorPower = (int) maxPowerUpDown.Value;
+        }
+
+        private void aboutButton_Click( object sender, EventArgs e )
+        {
+            AboutForm form = new AboutForm( );
+
+            form.ShowDialog( );
         }
     }
 }
