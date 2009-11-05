@@ -36,7 +36,7 @@ namespace TSP
 		/// <summary>
 		/// Create new random chromosome (factory method)
 		/// </summary>
-		public override IChromosome CreateOffspring( )
+		public override IChromosome CreateNew( )
 		{
 			return new TSPChromosome( map );
 		}
