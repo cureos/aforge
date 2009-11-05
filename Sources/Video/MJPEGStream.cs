@@ -75,6 +75,8 @@ namespace AForge.Video
 		private ManualResetEvent stopEvent = null;
 		private ManualResetEvent reloadEvent = null;
 
+        private string userAgent = "Mozilla/5.0";
+
         /// <summary>
         /// New frame event.
         /// </summary>
@@ -159,6 +161,25 @@ namespace AForge.Video
 			get { return password; }
 			set { password = value; }
 		}
+
+        /// <summary>
+        /// User agent to specify in HTTP request header.
+        /// </summary>
+        /// 
+        /// <remarks><para>Some IP cameras check what is the requesting user agent and depending
+        /// on it they provide video in different formats or do not provide it at all. The property
+        /// sets the value of user agent string, which is sent to camera in request header.
+        /// </para>
+        /// 
+        /// <para>Default value is set to "Mozilla/5.0". If the value is set to <see langword="null"/>,
+        /// the user agent string is not sent in request header.</para>
+        /// </remarks>
+        /// 
+        public string HttpUserAgent
+        {
+            get { return userAgent; }
+            set { userAgent = value; }
+        }
 
         /// <summary>
         /// Received frames count.
@@ -391,6 +412,11 @@ namespace AForge.Video
 				{
 					// create request
                     request = (HttpWebRequest) WebRequest.Create( source );
+                    // set user agent
+                    if ( userAgent != null )
+                    {
+                        request.UserAgent = userAgent;
+                    }
                     // set timeout value for the request
                     request.Timeout = requestTimeout;
                     // set login and password
