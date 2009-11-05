@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle( "WindowsFormsApplication1" )]
+[assembly: AssemblyTitle( "Blobs Explorer" )]
 [assembly: AssemblyDescription( "" )]
 [assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "" )]
-[assembly: AssemblyProduct( "WindowsFormsApplication1" )]
-[assembly: AssemblyCopyright( "Copyright ©  2009" )]
+[assembly: AssemblyCompany( "AForge" )]
+[assembly: AssemblyProduct( "Blobs Explorer" )]
+[assembly: AssemblyCopyright( "AForge.NET © 2009" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 
