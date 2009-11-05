@@ -1,4 +1,4 @@
-﻿// Surveyor SVS test application
+﻿// Surveyor SRV-1 test application
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
@@ -18,12 +18,11 @@ using AForge.Video;
 using AForge.Controls;
 using AForge.Robotics.Surveyor;
 
-namespace SVSTest
+namespace SRVTest
 {
     public partial class MainForm : Form
     {
-        private SVS svs = new SVS( );
-        private StereoViewForm stereoViewForm;
+        private SRV1 srv = new SRV1( );
 
         // statistics length
         private const int statLength = 15;
@@ -32,8 +31,7 @@ namespace SVSTest
         // ready statistics values
         private int statReady = 0;
         // statistics array
-        private int[] statCount1 = new int[statLength];
-        private int[] statCount2 = new int[statLength];
+        private int[] statCount = new int[statLength];
 
         private bool receivedFirstDrivingCommand = false;
         private SRV1.MotorCommand lastMotorCommand;
@@ -65,6 +63,7 @@ namespace SVSTest
         private void EnableContols( bool enable )
         {
             ipBox.Enabled              = !enable;
+            portUpDown.Enabled         = !enable;
             connectButton.Enabled      = !enable;
             disconnectButton.Enabled   = enable;
             qualityCombo.Enabled       = enable;
@@ -77,7 +76,7 @@ namespace SVSTest
         // On "Connect" button click
         private void connectButton_Click( object sender, EventArgs e )
         {
-            if ( Connect( ipBox.Text ) )
+            if ( Connect( ipBox.Text, (int) portUpDown.Value ) )
             {
                 EnableContols( true );
                 statusLabel.Text = "Connected";
@@ -87,7 +86,7 @@ namespace SVSTest
             }
             else
             {
-                MessageBox.Show( "Failed connecting to SVS.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                MessageBox.Show( "Failed connecting to SRV-1.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
             }
         }
 
@@ -100,31 +99,26 @@ namespace SVSTest
             versionLabel.Text = string.Empty;
         }
 
-        // Connect to SVS
-        private bool Connect( string host )
+        // Connect to SRV-1
+        private bool Connect( string host, int port )
         {
             bool result = true;
 
             try
             {
-                svs.Connect( host );
-                svs.EnableFailsafeMode( 0, 0 );
+                srv.Connect( host, port);
+                srv.EnableFailsafeMode( 0, 0 );
 
-                svs.FlipVideo( false );
-                svs.SetQuality( 7 );
-                svs.SetResolution( SRV1.VideoResolution.Small );
+                srv.FlipVideo( false );
+                srv.SetQuality( 7 );
+                srv.SetResolution( SRV1.VideoResolution.Small );
 
                 // start left camera
-                SRV1Camera leftCamera = svs.GetCamera( SVS.Camera.Left );
-                leftCameraPlayer.VideoSource = leftCamera;
-                leftCameraPlayer.Start( );
+                SRV1Camera camera = srv.GetCamera( );
+                cameraPlayer.VideoSource = camera;
+                cameraPlayer.Start( );
 
-                // start right camera
-                SRV1Camera rightCamera = svs.GetCamera( SVS.Camera.Right );
-                rightCameraPlayer.VideoSource = rightCamera;
-                rightCameraPlayer.Start( );
-
-                versionLabel.Text = svs.GetVersion( );
+                versionLabel.Text = srv.GetVersion( );
                 receivedFirstDrivingCommand = false;
 
                 // reset statistics
@@ -142,29 +136,22 @@ namespace SVSTest
             return result;
         }
 
-        // Disconnect from SVS
+        // Disconnect from SRV-1
         private void Disconnect( )
         {
-            if ( svs.IsConnected )
+            if ( srv.IsConnected )
             {
                 timer.Stop( );
 
-                if ( leftCameraPlayer.VideoSource != null )
+                if ( cameraPlayer.VideoSource != null )
                 {
-                    leftCameraPlayer.VideoSource.SignalToStop( );
-                    leftCameraPlayer.VideoSource.WaitForStop( );
-                    leftCameraPlayer.VideoSource = null;
+                    cameraPlayer.VideoSource.SignalToStop( );
+                    cameraPlayer.VideoSource.WaitForStop( );
+                    cameraPlayer.VideoSource = null;
                 }
 
-                if ( rightCameraPlayer.VideoSource != null )
-                {
-                    rightCameraPlayer.VideoSource.SignalToStop( );
-                    rightCameraPlayer.VideoSource.WaitForStop( );
-                    rightCameraPlayer.VideoSource = null;
-                }
-
-                svs.StopMotors( );
-                svs.Disconnect( );
+                srv.StopMotors( );
+                srv.Disconnect( );
 
                 EnableContols( false );
             }
@@ -174,17 +161,10 @@ namespace SVSTest
         private void timer_Tick( object sender, EventArgs e )
         {
             // update camaeras' FPS
-            if ( ( leftCameraPlayer.VideoSource != null ) || ( rightCameraPlayer.VideoSource != null ) )
+            if ( cameraPlayer.VideoSource != null )
             {
                 // get number of frames for the last second
-                if ( leftCameraPlayer.VideoSource != null )
-                {
-                    statCount1[statIndex] = leftCameraPlayer.VideoSource.FramesReceived;
-                }
-                if ( rightCameraPlayer.VideoSource != null )
-                {
-                    statCount2[statIndex] = rightCameraPlayer.VideoSource.FramesReceived;
-                }
+                statCount[statIndex] = cameraPlayer.VideoSource.FramesReceived;
 
                 // increment indexes
                 if ( ++statIndex >= statLength )
@@ -192,31 +172,27 @@ namespace SVSTest
                 if ( statReady < statLength )
                     statReady++;
 
-                float fps1 = 0;
-                float fps2 = 0;
+                float fps = 0;
 
                 // calculate average value
                 for ( int i = 0; i < statReady; i++ )
                 {
-                    fps1 += statCount1[i];
-                    fps2 += statCount2[i];
+                    fps += statCount[i];
                 }
-                fps1 /= statReady;
-                fps2 /= statReady;
+                fps /= statReady;
 
-                fpsLabel.Text = string.Format( "Left: {0:F2} fps, Right: {1:F2} fps",
-                    fps1, fps2 );
+                fpsLabel.Text = string.Format( "Camera: {0:F2} fps", fps );
             }
         }
 
         // Set video quality
         private void qualityCombo_SelectedIndexChanged( object sender, EventArgs e )
         {
-            if ( svs.IsConnected )
+            if ( srv.IsConnected )
             {
                 try
                 {
-                    svs.SetQuality( qualityCombo.SelectedIndex + 1 );
+                    srv.SetQuality( qualityCombo.SelectedIndex + 1 );
 
                     // reset FPS statistics
                     statIndex = statReady = 0;
@@ -231,7 +207,7 @@ namespace SVSTest
         // Set video resolution
         private void resolutionCombo_SelectedIndexChanged( object sender, EventArgs e )
         {
-            if ( svs.IsConnected )
+            if ( srv.IsConnected )
             {
                 try
                 {
@@ -247,7 +223,7 @@ namespace SVSTest
                             break;
                     }
 
-                    svs.SetResolution( resolution );
+                    srv.SetResolution( resolution );
 
                     // reset FPS statistics
                     statIndex = statReady = 0;
@@ -259,48 +235,20 @@ namespace SVSTest
             }
         }
 
-        // Show window with stereo anaglyph
-        private void showStereoButton_Click( object sender, EventArgs e )
-        {
-            if ( stereoViewForm == null )
-            {
-                stereoViewForm = new StereoViewForm( );
-                stereoViewForm.TopMost = true;
-
-                stereoViewForm.FormClosing += new FormClosingEventHandler( stereoViewForm_OnFormClosing );
-
-                leftCameraPlayer.NewFrame += new VideoSourcePlayer.NewFrameHandler( stereoViewForm.OnNewLeftFrame );
-                rightCameraPlayer.NewFrame += new VideoSourcePlayer.NewFrameHandler( stereoViewForm.OnNewRightFrame );
-            }
-
-            stereoViewForm.Show( );
-
-            stereoViewForm.BringToFront( );
-        }
-
-        private void stereoViewForm_OnFormClosing( object sender, FormClosingEventArgs eventArgs )
-        {
-            leftCameraPlayer.NewFrame -= new VideoSourcePlayer.NewFrameHandler( stereoViewForm.OnNewLeftFrame );
-            rightCameraPlayer.NewFrame -= new VideoSourcePlayer.NewFrameHandler( stereoViewForm.OnNewRightFrame );
-
-            stereoViewForm.FormClosing -= new FormClosingEventHandler( stereoViewForm_OnFormClosing );
-            stereoViewForm = null;
-        }
-
         private void srvDriverControl_SrvDrivingCommand( object sender, SRV1.MotorCommand command )
         {
-            if ( svs.IsConnected )
+            if ( srv.IsConnected )
             {
                 try
                 {
                     if ( !receivedFirstDrivingCommand )
                     {
                         // use one direct control command first
-                        svs.StopMotors( );
+                        srv.StopMotors( );
                     }
 
                     // send new command
-                    svs.ControlMotors( command );
+                    srv.ControlMotors( command );
 
                     if ( ( ( command == SRV1.MotorCommand.DecreaseSpeed ) ||
                            ( command == SRV1.MotorCommand.IncreaseSpeed ) ) &&
@@ -308,7 +256,7 @@ namespace SVSTest
                            ( lastMotorCommand != SRV1.MotorCommand.Stop ) )
                     {
                         // resend last command to get effect of speed increase/decrease
-                        svs.ControlMotors( lastMotorCommand  );
+                        srv.ControlMotors( lastMotorCommand  );
                     }
                     else
                     {
@@ -418,11 +366,11 @@ namespace SVSTest
             }
 
             System.Diagnostics.Debug.WriteLine( string.Format( "l: {0}, r: {1}", leftMotorVelocity, rightMotorVelocity ) );
-            if ( svs.IsConnected )
+            if ( srv.IsConnected )
             {
                 try
                 {
-                    svs.RunMotors( leftMotorVelocity, rightMotorVelocity, 0 );
+                    srv.RunMotors( leftMotorVelocity, rightMotorVelocity, 0 );
                 }
                 catch ( Exception ex )
                 {

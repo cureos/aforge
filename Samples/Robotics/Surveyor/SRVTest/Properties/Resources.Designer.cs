@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SVSTest.Properties {
+namespace SRVTest.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace SVSTest.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SVSTest.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SRVTest.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -60,9 +60,9 @@ namespace SVSTest.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap svs {
+        internal static System.Drawing.Bitmap srv {
             get {
-                object obj = ResourceManager.GetObject("svs", resourceCulture);
+                object obj = ResourceManager.GetObject("srv", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

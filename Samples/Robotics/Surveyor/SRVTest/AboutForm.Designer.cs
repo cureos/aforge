@@ -1,4 +1,4 @@
-﻿namespace SVSTest
+﻿namespace SRVTest
 {
     partial class AboutForm
     {
@@ -94,19 +94,19 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point( 59, 18 );
+            this.label1.Location = new System.Drawing.Point( 54, 18 );
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size( 124, 13 );
+            this.label1.Size = new System.Drawing.Size( 134, 13 );
             this.label1.TabIndex = 1;
-            this.label1.Text = "Surveyor SVS Test 1.0.0";
+            this.label1.Text = "Surveyor SRV-1 Test 1.0.0";
             // 
             // pictureBox1
             // 
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Image = global::SVSTest.Properties.Resources.svs;
-            this.pictureBox1.Location = new System.Drawing.Point( 10, 52 );
+            this.pictureBox1.Image = global::SRVTest.Properties.Resources.srv;
+            this.pictureBox1.Location = new System.Drawing.Point( 10, 37 );
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size( 98, 59 );
+            this.pictureBox1.Size = new System.Drawing.Size( 98, 89 );
             this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
             // 

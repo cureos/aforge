@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle( "SVS Test" )]
+[assembly: AssemblyTitle( "SRV Test" )]
 [assembly: AssemblyDescription( "" )]
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "AForge" )]
-[assembly: AssemblyProduct( "SVS Test" )]
+[assembly: AssemblyProduct( "SRV Test" )]
 [assembly: AssemblyCopyright( "AForge.NET © 2009" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
