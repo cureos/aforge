@@ -1,5 +1,96 @@
+AForge.NET Framework 2.1.0 release notes
+----------------------------------------
+05.11.2009.
+
+
+Version updates and fixes:
+
+* Fixed registered issues/requests:
+  - Issue 106: DisplayPropertyPage problem - Filter can't create twice
+  - Issue 113: DisplayPropertyPage in directshow in vista/Windows 7 fails
+
+
+* General
+  - Added new AForge.Robotics.Surveyor namespace containing classes to manipulate Surveyor's
+    SRV-1 Blackfin robot and SVS (Stereo Vision System) board.
+    
+  - Added new AForge.Math.Geometry namespace containing some geometry related.
+
+
+* AForge
+  - Adding IntPoint structure as alternative to .NET's System.Drawing.Point. DoublePoint is updated
+    to be similar to IntPoint.
+  
+  
+* AForge.Imaging
+  - Added StereoAnaglyph image processing filter to create anaglyph images from 2 images of the
+    same scene taken from a bit different points.
+
+  - Adding Drawing.Polygon() and Drawing.Polyline() for drawing polygons and polylines on unmanaged images.
+  
+  - Added BlobPosition property to ExtractBiggestBlob filter, which tells position of the extracted blob.
+  
+  - Added QuadrilateralFinder class to search for corners of quadrilateral area in the specified image.
+
+  - Added QuadrilateralTransformationNearestNeighbor and QuadrilateralTransformationBilinear classes, which perform
+    quadrilateral area transformation to rectangular.
+    
+  - BlobCounterBase class is extended with GetBlobsLeftAndRightEdges() and GetBlobsTopAndBottomEdges() methods, which
+    provide edge points of a blob. These routines are very useful with new AForge.Math.Geometry routines, which allow
+    finding convex hull and quadrilateral corners.
+    
+  - BlobCounter and RecursiveBlobCounter are updated to be able to process color images as well (24 and 32 bpp).
+   
+  - BlobsFiltering, ExtractBiggestBlob and ConnectedComponentsLabeling classes were updated to support color images.
+  
+  - Added new properties for Blob class: Area, Fullness, CenterOfGravity.
+  
+  - BlobCounterBase is updated to provide sorting by Area.
+  
+   
+* AForge.Math.Geometry
+  - Added PointsCloud tool class, which includes set of method to work with collection of points ("clouds").
+    These methods include: getting furthest point from a reference point; getting furthest point from
+    specified line; finding quadrilateral corners for the specified set of points.
+    
+  - Added Graham scan algorithm for searching convex hull of the specfied set of points.
+
+
+* AForge.Robotics.Surveyor
+  - Added SRV1 class - allows to manipulate Surveyor's SRV-1 Blackfin robot.
+  
+  - Added SVS class - allows to manipulate Surveyor's SVS bard.
+  
+  - Added SRV1Camera class - allows to get continuous video feeds from SRV-1 and SVS robots.
+  
+
+* AForge.Video
+  - Added possibility to configure HTTP User Agent for MJPEG requests. By default it is set
+    to "Mozilla/5.0".
+    
+
+* AForge.Video.DirectShow
+  - In the case if camera's driver does not allow several copies of video source object, we pass the request
+    for displaying property page to background thread, which deals with video capture. Otherwise we create second
+    source object and use it as before. (fixing 106 and 113)
+
+
+* Samples
+  - Added SVS Test sample application, which allows to get video from Surveyor's SVS board,
+    show stereo anaglyphs for it and drive the robot.
+    
+  - Added SRV-1 Test sample application, which allows to get robot's video and drive it.
+  
+  - Added Blobs Explorer sample application, which demonstrates the process of finding separate
+    blobs, getting their properties, convex hull, etc.
+    
+  - Fixed build issue of TSP sample demonstrating Genetic Algorithms.
+
+
+
+
 AForge.NET Framework 2.0.1 release notes
----------------------------------------------
+----------------------------------------
 19.09.2009.
 
 
