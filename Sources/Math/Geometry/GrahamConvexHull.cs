@@ -33,12 +33,12 @@ namespace AForge.Math.Geometry
     /// }
     /// 
     /// // find the convex hull
-    /// IConvexHullAlgorithm hullFinder = new GrahamConvexHall( );
+    /// IConvexHullAlgorithm hullFinder = new GrahamConvexHull( );
     /// List&lt;IntPoint&gt; hull = hullFinder.FindHull( points );
     /// </code>
     /// </remarks>
     /// 
-    public class GrahamConvexHall : IConvexHullAlgorithm
+    public class GrahamConvexHull : IConvexHullAlgorithm
     {
         /// <summary>
         /// Find convex hull for the given set of points.

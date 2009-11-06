@@ -106,7 +106,7 @@ namespace BlobsExplorer
             blobCounter.ProcessImage( this.image );
             blobs = blobCounter.GetObjectsInformation( );
 
-            GrahamConvexHall grahamScan = new GrahamConvexHall( );
+            GrahamConvexHull grahamScan = new GrahamConvexHull( );
 
             foreach ( Blob blob in blobs )
             {
