@@ -35,6 +35,9 @@ Source: "Files\Sources\*"; DestDir: "{app}\Sources"; Components: sources; Flags:
 Source: "Files\Samples\*"; DestDir: "{app}\Samples"; Components: samples; Flags: recursesubdirs
 Source: "Files\Externals\*"; DestDir: "{app}\Externals"; Components: samples; Flags: recursesubdirs
 
+[Registry]
+Root: HKLM; Subkey: "Software\Microsoft\.NETFramework\AssemblyFolders\AForge.NET"; Flags: uninsdeletekey; ValueType: string; ValueData: "{app}\Release"
+
 [Icons]
 Name: "{group}\Documentation"; Filename: "{app}\Docs\AForge.NET.chm"
 Name: "{group}\Project Home"; Filename: "http://www.aforgenet.com/framework/"
