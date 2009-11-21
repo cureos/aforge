@@ -459,10 +459,10 @@ namespace AForge.Robotics.Surveyor
         /// <param name="leftSpeed">Left motor's speed, [-127, 127].</param>
         /// <param name="rightSpeed">Right motor's speed, [-127, 127].</param>
         /// 
-        /// <remarks><para>In the case if fail safe mode is enabled and no commands are sent
-        /// to SRV-1 robot, motors' speed will be set to the specified values. The command
+        /// <remarks><para>In the case if fail safe mode is enabled and no commands are received
+        /// by SVS robot withing 2 seconds, motors' speed will be set to the specified values. The command
         /// is very useful to instruct robot to stop if no other commands were sent
-        /// within 2 seconds (probably lost connection).</para></remarks>
+        /// within 2 last seconds (probably lost connection).</para></remarks>
         /// 
         /// <exception cref="NotConnectedException">Not connected to SVS. Connect to SVS board before using
         /// this method.</exception>

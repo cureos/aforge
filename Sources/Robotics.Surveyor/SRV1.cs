@@ -74,6 +74,16 @@ namespace AForge.Robotics.Surveyor
         /// <para><note>Controlling SRV-1 motors with these commands is only possible
         /// after at least one direct motor command is sent, which is done using <see cref="StopMotors"/> or
         /// <see cref="RunMotors"/> methods.</note></para>
+        /// 
+        /// <para><note>The <b>IncreaseSpeed</b> and <b>DecreaseSpeed</b> commands do not have any effect
+        /// unless another driving command is sent. In other words, these do not increase/decrease speed of
+        /// current operation, but affect speed of all following commands.</note></para>
+        /// 
+        /// <para><note>The <b>RotateLeft</b> and <b>RotateRight</b> commands may be useful only for the original
+        /// <a href="http://www.surveyor.com/SRV_info.html">Surveyor SRV-1 Blackfin Robot</a>.
+        /// For most of other robots, which may have different motors and moving base, these commands
+        /// will not be accurate – will not rotate for 20 degrees.
+        /// </note></para>
         /// </remarks>
         /// 
         public enum MotorCommand
@@ -119,33 +129,17 @@ namespace AForge.Robotics.Surveyor
             /// Robot rotate left 20 degrees.
             /// </summary>
             /// 
-            /// <remarks><para>The command may be useful only for the original
-            /// <a href="http://www.surveyor.com/SRV_info.html">Surveyor SRV-1 Blackfin Robot</a>.
-            /// For most of other robots, which may have different motors and moving base, the command
-            /// will not be accurate – will not rotate for 20 degrees.
-            /// </para></remarks>
-            /// 
             RotateLeft = '0',
 
             /// <summary>
             /// Robot rotate right 20 degrees.
             /// </summary>
             /// 
-            /// <remarks><para>The command may be useful only for the original
-            /// <a href="http://www.surveyor.com/SRV_info.html">Surveyor SRV-1 Blackfin Robot</a>.
-            /// For most of other robots, which may have different motors and moving base, the command
-            /// will not be accurate – will not rotate for 20 degrees.
-            /// </para></remarks>
-            /// 
             RotateRight = '.',
             
             /// <summary>
             /// Increase motors' speed.
             /// </summary>
-            /// 
-            /// <remarks><note>The command does not have any effect unless another driving
-            /// command is sent. In other words, it does not increase speed of current operation,
-            /// but it affects speed of all following commands.</note></remarks>
             ///
             IncreaseSpeed = '+',
 
@@ -153,10 +147,6 @@ namespace AForge.Robotics.Surveyor
             /// Decrease motors' speed.
             /// </summary>
             /// 
-            /// <remarks><note>The command does not have any effect unless another driving
-            /// command is sent. In other words, it does not decrease speed of current operation,
-            /// but it affects speed of all following commands.</note></remarks>
-            ///
             DecreaseSpeed = '-',
         }
 
@@ -744,10 +734,10 @@ namespace AForge.Robotics.Surveyor
         /// <param name="leftSpeed">Left motor's speed, [-127, 127].</param>
         /// <param name="rightSpeed">Right motor's speed, [-127, 127].</param>
         /// 
-        /// <remarks><para>In the case if fail safe mode is enabled and no commands are sent
-        /// to SRV-1 robot, motors' speed will be set to the specified values. The command
+        /// <remarks><para>In the case if fail safe mode is enabled and no commands are received
+        /// by SRV-1 robot withing 2 seconds, motors' speed will be set to the specified values. The command
         /// is very useful to instruct robot to stop if no other commands were sent
-        /// within 2 seconds (probably lost connection).</para></remarks>
+        /// within 2 last seconds (probably lost connection).</para></remarks>
         ///
         public void EnableFailsafeMode( int leftSpeed, int rightSpeed )
         {
