@@ -83,7 +83,7 @@ namespace AForge.Video.DirectShow.Internals
         /// 
         /// <returns>Returns <b>S_OK</b> on success.</returns>
         /// 
-        [DllImport( "olepro32.dll" )]
+        [DllImport( "oleaut32.dll" )]
         public static extern int OleCreatePropertyFrame(
             IntPtr hwndOwner,
             int x,
