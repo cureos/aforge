@@ -21,7 +21,7 @@ namespace AForge.Imaging.Filters
     /// <remarks><para>Contrast stretching (or as it is often called normalization) is a simple image enhancement
     /// technique that attempts to improve the contrast in an image by 'stretching' the range of intensity values
     /// it contains to span a desired range of values, e.g. the the full range of pixel values that the image type
-    /// concerned allows. It differs from the more sophisticated <seealso cref="HistogramEqualization">histogram equalization</seealso>
+    /// concerned allows. It differs from the more sophisticated <see cref="HistogramEqualization">histogram equalization</see>
     /// in that it can only apply a linear scaling function to the image pixel values.</para>
     /// 
     /// <para>The result of this filter may be achieved by using <see cref="ImageStatistics"/> class, which allows to
