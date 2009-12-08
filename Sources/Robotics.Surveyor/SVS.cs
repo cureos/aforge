@@ -571,6 +571,103 @@ namespace AForge.Robotics.Surveyor
         }
 
         /// <summary>
+        /// Read byte from I2C device.
+        /// </summary>
+        /// 
+        /// <param name="camera">SRV-1 Blackfin camera to access I2C device on.</param>
+        /// <param name="deviceID">I2C device ID (7 bit notation).</param>
+        /// <param name="register">I2C device register to read.</param>
+        /// 
+        /// <returns>Returns byte read from the specified register of the specified I2C device.</returns>
+        /// 
+        /// <para><note>The IC2 device ID should be specified in 7 bit notation. This means that low bit of the ID
+        /// is not used for specifying read/write mode as in 8 bit notation. For example, if I2C device IDs are 0x44 for reading
+        /// and 0x45 for writing in 8 bit notation, then it equals to 0x22 device ID in 7 bit notation.
+        /// </note></para>
+        /// 
+        /// <exception cref="NotConnectedException">Not connected to SVS. Connect to SVS board before using
+        /// this method.</exception>
+        /// <exception cref="ConnectionLostException">Connection lost or communicaton failure. Try to reconnect.</exception>
+        /// <exception cref="ApplicationException">Failed parsing response from SRV-1.</exception>
+        /// 
+        public byte I2CReadByte( Camera camera, byte deviceID, byte register )
+        {
+            return GetDirectAccessToSRV1( camera ).I2CReadByte( deviceID, register );
+        }
+
+        /// <summary>
+        /// Read word from I2C device.
+        /// </summary>
+        /// 
+        /// <param name="camera">SRV-1 Blackfin camera to access I2C device on.</param>
+        /// <param name="deviceID">I2C device ID (7 bit notation).</param>
+        /// <param name="register">I2C device register to read.</param>
+        /// 
+        /// <returns>Returns word read from the specified register of the specified I2C device.</returns>
+        /// 
+        /// <exception cref="NotConnectedException">Not connected to SVS. Connect to SVS board before using
+        /// this method.</exception>
+        /// and 0x45 for writing in 8 bit notation, then it equals to 0x22 device ID in 7 bit notation.
+        /// </note></para>
+        /// 
+        /// <exception cref="NotConnectedException">Not connected to SRV-1. Connect to SRV-1 before using
+        /// this method.</exception>
+        /// <exception cref="ConnectionLostException">Connection lost or communicaton failure. Try to reconnect.</exception>
+        /// <exception cref="ApplicationException">Failed parsing response from SRV-1.</exception>
+        /// 
+        public ushort I2CReadWord( Camera camera, byte deviceID, byte register )
+        {
+            return GetDirectAccessToSRV1( camera ).I2CReadWord( deviceID, register );
+        }
+
+        /// <summary>
+        /// Write byte to I2C device.
+        /// </summary>
+        /// 
+        /// <param name="camera">SRV-1 Blackfin camera to access I2C device on.</param>
+        /// <param name="deviceID">I2C device ID (7 bit notation).</param>
+        /// <param name="register">I2C device register to write to.</param>
+        /// <param name="byteToWrite">Byte to write to the specified register of the specified device.</param>
+        /// 
+        /// <para><note>The IC2 device ID should be specified in 7 bit notation. This means that low bit of the ID
+        /// is not used for specifying read/write mode as in 8 bit notation. For example, if I2C device IDs are 0x44 for reading
+        /// and 0x45 for writing in 8 bit notation, then it equals to 0x22 device ID in 7 bit notation.
+        /// </note></para>
+        /// 
+        /// <exception cref="NotConnectedException">Not connected to SVS. Connect to SVS board before using
+        /// this method.</exception>
+        /// <exception cref="ConnectionLostException">Connection lost or communicaton failure. Try to reconnect.</exception>
+        /// 
+        public void I2CWriteByte( Camera camera, byte deviceID, byte register, byte byteToWrite )
+        {
+            GetDirectAccessToSRV1( camera ).I2CWriteByte( deviceID, register, byteToWrite );
+        }
+
+        /// <summary>
+        /// Write two bytes to I2C device.
+        /// </summary>
+        /// 
+        /// <param name="camera">SRV-1 Blackfin camera to access I2C device on.</param>
+        /// <param name="deviceID">I2C device ID (7 bit notation).</param>
+        /// <param name="register">I2C device register to write to.</param>
+        /// <param name="firstByteToWrite">First byte to write to the specified register of the specified device.</param>
+        /// <param name="secondByteToWrite">Second byte to write to the specified register of the specified device.</param>
+        /// 
+        /// <para><note>The IC2 device ID should be specified in 7 bit notation. This means that low bit of the ID
+        /// is not used for specifying read/write mode as in 8 bit notation. For example, if I2C device IDs are 0x44 for reading
+        /// and 0x45 for writing in 8 bit notation, then it equals to 0x22 device ID in 7 bit notation.
+        /// </note></para>
+        /// 
+        /// <exception cref="NotConnectedException">Not connected to SVS. Connect to SVS board before using
+        /// this method.</exception>
+        /// <exception cref="ConnectionLostException">Connection lost or communicaton failure. Try to reconnect.</exception>
+        /// 
+        public void I2CWriteWord( Camera camera, byte deviceID, byte register, byte firstByteToWrite, byte secondByteToWrite )
+        {
+            GetDirectAccessToSRV1( camera ).I2CWriteWord( deviceID, register, firstByteToWrite, secondByteToWrite );
+        }
+
+        /// <summary>
         /// Set video quality for both cameras.
         /// </summary>
         /// 

@@ -915,6 +915,138 @@ namespace AForge.Robotics.Surveyor
             }
         }
 
+        /// <summary>
+        /// Read byte from I2C device.
+        /// </summary>
+        /// 
+        /// <param name="deviceID">I2C device ID (7 bit notation).</param>
+        /// <param name="register">I2C device register to read.</param>
+        /// 
+        /// <returns>Returns byte read from the specified register of the specified I2C device.</returns>
+        /// 
+        /// <para><note>The IC2 device ID should be specified in 7 bit notation. This means that low bit of the ID
+        /// is not used for specifying read/write mode as in 8 bit notation. For example, if I2C device IDs are 0x44 for reading
+        /// and 0x45 for writing in 8 bit notation, then it equals to 0x22 device ID in 7 bit notation.
+        /// </note></para>
+        /// 
+        /// <exception cref="NotConnectedException">Not connected to SRV-1. Connect to SRV-1 before using
+        /// this method.</exception>
+        /// <exception cref="ConnectionLostException">Connection lost or communicaton failure. Try to reconnect.</exception>
+        /// <exception cref="ApplicationException">Failed parsing response from SRV-1.</exception>
+        /// 
+        public byte I2CReadByte( byte deviceID, byte register )
+        {
+            byte[] response = new byte[100];
+
+            int    read = SendAndReceive( new byte[] { (byte) 'i', (byte) 'r', deviceID, register }, response );
+            string str  = System.Text.ASCIIEncoding.ASCII.GetString( response, 0, read );
+
+            try
+            {
+                str = str.Trim( );
+                // split string into separate values
+                string[] strs = str.Split( ' ' );
+
+                return byte.Parse( strs[1] );
+            }
+            catch
+            {
+                throw new ApplicationException( "Failed parsing response from SRV-1." );
+            }
+        }
+
+        /// <summary>
+        /// Read word from I2C device.
+        /// </summary>
+        /// 
+        /// <param name="deviceID">I2C device ID (7 bit notation).</param>
+        /// <param name="register">I2C device register to read.</param>
+        /// 
+        /// <returns>Returns word read from the specified register of the specified I2C device.</returns>
+        /// 
+        /// <para><note>The IC2 device ID should be specified in 7 bit notation. This means that low bit of the ID
+        /// is not used for specifying read/write mode as in 8 bit notation. For example, if I2C device IDs are 0x44 for reading
+        /// and 0x45 for writing in 8 bit notation, then it equals to 0x22 device ID in 7 bit notation.
+        /// </note></para>
+        /// 
+        /// <exception cref="NotConnectedException">Not connected to SRV-1. Connect to SRV-1 before using
+        /// this method.</exception>
+        /// <exception cref="ConnectionLostException">Connection lost or communicaton failure. Try to reconnect.</exception>
+        /// <exception cref="ApplicationException">Failed parsing response from SRV-1.</exception>
+        /// 
+        public ushort I2CReadWord( byte deviceID, byte register )
+        {
+            byte[] response = new byte[100];
+
+            int    read = SendAndReceive( new byte[] { (byte) 'i', (byte) 'R', deviceID, register }, response );
+            string str  = System.Text.ASCIIEncoding.ASCII.GetString( response, 0, read );
+
+            try
+            {
+                str = str.Trim( );
+                // split string into separate values
+                string[] strs = str.Split( ' ' );
+
+                return ushort.Parse( strs[1] );
+            }
+            catch
+            {
+                throw new ApplicationException( "Failed parsing response from SRV-1." );
+            }
+        }
+
+        /// <summary>
+        /// Write byte to I2C device.
+        /// </summary>
+        /// 
+        /// <param name="deviceID">I2C device ID (7 bit notation).</param>
+        /// <param name="register">I2C device register to write to.</param>
+        /// <param name="byteToWrite">Byte to write to the specified register of the specified device.</param>
+        /// 
+        /// <para><note>The IC2 device ID should be specified in 7 bit notation. This means that low bit of the ID
+        /// is not used for specifying read/write mode as in 8 bit notation. For example, if I2C device IDs are 0x44 for reading
+        /// and 0x45 for writing in 8 bit notation, then it equals to 0x22 device ID in 7 bit notation.
+        /// </note></para>
+        /// 
+        /// <exception cref="NotConnectedException">Not connected to SRV-1. Connect to SRV-1 before using
+        /// this method.</exception>
+        /// <exception cref="ConnectionLostException">Connection lost or communicaton failure. Try to reconnect.</exception>
+        /// 
+        public void I2CWriteByte( byte deviceID, byte register, byte byteToWrite )
+        {
+            byte[] response = new byte[100];
+
+            // use SendAndReceive() to make sure the command was executed successfully
+            int read = SendAndReceive( new byte[] { (byte) 'i', (byte) 'W', deviceID, register, byteToWrite }, response );
+        }
+
+        /// <summary>
+        /// Write two bytes to I2C device.
+        /// </summary>
+        /// 
+        /// <param name="deviceID">I2C device ID (7 bit notation).</param>
+        /// <param name="register">I2C device register to write to.</param>
+        /// <param name="firstByteToWrite">First byte to write to the specified register of the specified device.</param>
+        /// <param name="secondByteToWrite">Second byte to write to the specified register of the specified device.</param>
+        /// 
+        /// <para><note>The IC2 device ID should be specified in 7 bit notation. This means that low bit of the ID
+        /// is not used for specifying read/write mode as in 8 bit notation. For example, if I2C device IDs are 0x44 for reading
+        /// and 0x45 for writing in 8 bit notation, then it equals to 0x22 device ID in 7 bit notation.
+        /// </note></para>
+        /// 
+        /// <exception cref="NotConnectedException">Not connected to SRV-1. Connect to SRV-1 before using
+        /// this method.</exception>
+        /// <exception cref="ConnectionLostException">Connection lost or communicaton failure. Try to reconnect.</exception>
+        /// 
+        public void I2CWriteWord( byte deviceID, byte register, byte firstByteToWrite, byte secondByteToWrite )
+        {
+            byte[] response = new byte[100];
+
+            // use SendAndReceive() to make sure the command was executed successfully
+            int read = SendAndReceive( new byte[] { (byte) 'i', (byte) 'W', deviceID, register,
+                firstByteToWrite, secondByteToWrite }, response );
+        }
+
         // portion size to read at once
         private const int readSize = 1024;
 
@@ -951,8 +1083,8 @@ namespace AForge.Robotics.Surveyor
 
                         if ( cr.Request[0] != (byte) 'I' )
                         {
-                            System.Diagnostics.Debug.WriteLine( ">> " +
-                                System.Text.ASCIIEncoding.ASCII.GetString( cr.Request ) );
+                            // System.Diagnostics.Debug.WriteLine( ">> " +
+                            //    System.Text.ASCIIEncoding.ASCII.GetString( cr.Request ) );
                         }
 
                         // send request
@@ -1000,6 +1132,11 @@ namespace AForge.Robotics.Surveyor
                             }
                             else
                             {
+                                // commenting check for new line presence, because not all replies
+                                // which start with '##' have new line in the end.
+                                // this SRV-1 text based protocol drives me crazy.
+
+                                /*
                                 if ( ( cr.BytesRead >= 2 ) &&
                                      ( cr.ResponseBuffer[0] == (byte) '#' ) &&
                                      ( cr.ResponseBuffer[1] == (byte) '#' ) )
@@ -1030,9 +1167,10 @@ namespace AForge.Robotics.Surveyor
                                         bytesToRead = Math.Min( readSize, cr.ResponseBuffer.Length - cr.BytesRead );
 
                                         cr.BytesRead += socket.Receive( cr.ResponseBuffer, cr.BytesRead,
-                                            readSize, SocketFlags.None );
+                                            bytesToRead, SocketFlags.None );
                                     }
                                 }
+                                */
                             }
 
                             // check if there is still something to read
@@ -1043,7 +1181,7 @@ namespace AForge.Robotics.Surveyor
                             }
 
 
-                            //System.Diagnostics.Debug.WriteLine( "<< (" + cr.BytesRead + ") " +
+                            // System.Diagnostics.Debug.WriteLine( "<< (" + cr.BytesRead + ") " +
                             //     System.Text.ASCIIEncoding.ASCII.GetString( cr.ResponseBuffer, 0, Math.Min( 5, cr.BytesRead ) ) );
                         }
                         else
@@ -1091,8 +1229,8 @@ namespace AForge.Robotics.Surveyor
 
                 if ( socket.Available == 0 )
                 {
-                    System.Diagnostics.Debug.WriteLine( "<< (" + read + ") " +
-                         System.Text.ASCIIEncoding.ASCII.GetString( buffer, 0, Math.Min( 100, read ) ) );
+                    // System.Diagnostics.Debug.WriteLine( "<< (" + read + ") " +
+                    //     System.Text.ASCIIEncoding.ASCII.GetString( buffer, 0, Math.Min( 100, read ) ) );
 
                     break;
                 }
