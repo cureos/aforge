@@ -605,12 +605,12 @@ namespace AForge.Robotics.Surveyor
         /// 
         /// <returns>Returns word read from the specified register of the specified I2C device.</returns>
         /// 
-        /// <exception cref="NotConnectedException">Not connected to SVS. Connect to SVS board before using
-        /// this method.</exception>
+        /// <para><note>The IC2 device ID should be specified in 7 bit notation. This means that low bit of the ID
+        /// is not used for specifying read/write mode as in 8 bit notation. For example, if I2C device IDs are 0x44 for reading
         /// and 0x45 for writing in 8 bit notation, then it equals to 0x22 device ID in 7 bit notation.
         /// </note></para>
-        /// 
-        /// <exception cref="NotConnectedException">Not connected to SRV-1. Connect to SRV-1 before using
+        ///
+        /// <exception cref="NotConnectedException">Not connected to SVS. Connect to SVS board before using
         /// this method.</exception>
         /// <exception cref="ConnectionLostException">Connection lost or communicaton failure. Try to reconnect.</exception>
         /// <exception cref="ApplicationException">Failed parsing response from SRV-1.</exception>
