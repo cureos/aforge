@@ -8,6 +8,7 @@
 namespace AForge.Imaging
 {
     using System;
+    using System.IO;
     using System.Drawing;
     using System.Drawing.Imaging;
     using AForge;
@@ -261,6 +262,61 @@ namespace AForge.Imaging
                 // delete old image
                 tmp.Dispose( );
             }
+        }
+
+        /// <summary>
+        /// Load bitmap from file.
+        /// </summary>
+        /// 
+        /// <param name="fileName">File name to load bitmap from.</param>
+        /// 
+        /// <returns>Returns loaded bitmap.</returns>
+        /// 
+        /// <remarks><para>The method is provided as an alternative of <see cref="System.Drawing.Image.FromFile(string)"/>
+        /// method to solve the issues of locked file. The standard .NET's method locks the source file until
+        /// image's object is disposed, so the file can not be deleted or overwritten. This method workarounds the issue and
+        /// does not lock the source file.</para>
+        /// 
+        /// <para>Sample usage:</para>
+        /// <code>
+        /// Bitmap image = AForge.Imaging.Image.FromFile( "test.jpg" );
+        /// </code>
+        /// </remarks>
+        /// 
+        public static System.Drawing.Bitmap FromFile( string fileName )
+        {
+            Bitmap loadedImage = null;
+            FileStream stream = null;
+
+            try
+            {
+                // read image to temporary memory stream
+                stream = File.OpenRead( fileName );
+                MemoryStream memoryStream = new MemoryStream( );
+
+                byte[] buffer = new byte[10000];
+                while ( true )
+                {
+                    int read = stream.Read( buffer, 0, 10000 );
+
+                    if ( read == 0 )
+                        break;
+
+                    memoryStream.Write( buffer, 0, read );
+                }
+
+                loadedImage = (Bitmap) Bitmap.FromStream( memoryStream );
+            }
+            finally
+            {
+                if ( stream != null )
+                {
+                    stream.Close( );
+                    stream.Dispose( );
+                }
+            }
+
+            return loadedImage;
         }
     }
 }
