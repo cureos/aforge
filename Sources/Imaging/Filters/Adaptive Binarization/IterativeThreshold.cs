@@ -107,64 +107,139 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Process the filter on the specified image.
+        /// Calculate binarization threshold for the given image.
         /// </summary>
         /// 
-        /// <param name="image">Source image data.</param>
-        /// <param name="rect">Image rectangle for processing by the filter.</param>
+        /// <param name="image">Image to calculate binarization threshold for.</param>
+        /// <param name="rect">Rectangle to calculate binarization threshold for.</param>
         /// 
-        protected override unsafe void ProcessFilter( UnmanagedImage image, Rectangle rect )
+        /// <returns>Returns binarization threshold.</returns>
+        /// 
+        /// <remarks><para>The method is used to calculate binarization threshold only. The threshold
+        /// later may be applied to the image using <see cref="Threshold"/> image processing filter.</para></remarks>
+        /// 
+        /// <exception cref="UnsupportedImageFormatException">Source pixel format is not supported by the routine. It should
+        /// 8 bpp grayscale (indexed) or 16 bpp grayscale image.</exception>
+        /// 
+        public int CalculateThreshold( Bitmap image, Rectangle rect )
         {
+            int calculatedThreshold = 0;
+
+            // lock source bitmap data
+            BitmapData data = image.LockBits(
+                new Rectangle( 0, 0, image.Width, image.Height ),
+                ImageLockMode.ReadOnly, image.PixelFormat );
+
+            try
+            {
+                calculatedThreshold = CalculateThreshold( data, rect );
+            }
+            finally
+            {
+                // unlock image
+                image.UnlockBits( data );
+            }
+
+            return calculatedThreshold;
+        }
+
+        /// <summary>
+        /// Calculate binarization threshold for the given image.
+        /// </summary>
+        /// 
+        /// <param name="image">Image to calculate binarization threshold for.</param>
+        /// <param name="rect">Rectangle to calculate binarization threshold for.</param>
+        /// 
+        /// <returns>Returns binarization threshold.</returns>
+        /// 
+        /// <remarks><para>The method is used to calculate binarization threshold only. The threshold
+        /// later may be applied to the image using <see cref="Threshold"/> image processing filter.</para></remarks>
+        /// 
+        /// <exception cref="UnsupportedImageFormatException">Source pixel format is not supported by the routine. It should
+        /// 8 bpp grayscale (indexed) or 16 bpp grayscale image.</exception>
+        /// 
+        public int CalculateThreshold( BitmapData image, Rectangle rect )
+        {
+            return CalculateThreshold( new UnmanagedImage( image ), rect );
+        }
+
+        /// <summary>
+        /// Calculate binarization threshold for the given image.
+        /// </summary>
+        /// 
+        /// <param name="image">Image to calculate binarization threshold for.</param>
+        /// <param name="rect">Rectangle to calculate binarization threshold for.</param>
+        /// 
+        /// <returns>Returns binarization threshold.</returns>
+        /// 
+        /// <remarks><para>The method is used to calculate binarization threshold only. The threshold
+        /// later may be applied to the image using <see cref="Threshold"/> image processing filter.</para></remarks>
+        /// 
+        /// <exception cref="UnsupportedImageFormatException">Source pixel format is not supported by the routine. It should
+        /// 8 bpp grayscale (indexed) or 16 bpp grayscale image.</exception>
+        /// 
+        public int CalculateThreshold( UnmanagedImage image, Rectangle rect )
+        {
+            if ( ( image.PixelFormat != PixelFormat.Format8bppIndexed ) &&
+                 ( image.PixelFormat != PixelFormat.Format16bppGrayScale ) )
+                throw new UnsupportedImageFormatException( "Source pixel format is not supported by the routine." );
+
+            int calculatedThreshold = threshold;
+
             // get start and stop X-Y coordinates
-            int startX = rect.Left;
+            int startX  = rect.Left;
             int startY  = rect.Top;
             int stopX   = startX + rect.Width;
             int stopY   = startY + rect.Height;
 
             // histogram array
             int[] integerHistogram = null;
-            int maxThreshold = 256;
+            int maxThreshold = 0;
 
-            if ( image.PixelFormat == PixelFormat.Format8bppIndexed )
+            unsafe
             {
-                integerHistogram = new int[256];
-
-                // collect histogram first
-                byte* ptr = (byte*) image.ImageData.ToPointer( );
-                int offset = image.Stride - rect.Width;
-
-                // allign pointer to the first pixel to process
-                ptr += ( startY * image.Stride + startX );
-
-                // for each line	
-                for ( int y = startY; y < stopY; y++ )
+                if ( image.PixelFormat == PixelFormat.Format8bppIndexed )
                 {
-                    // for each pixel
-                    for ( int x = startX; x < stopX; x++, ptr++ )
+                    integerHistogram = new int[256];
+                    maxThreshold = 256;
+
+                    // collect histogram first
+                    byte* ptr = (byte*) image.ImageData.ToPointer( );
+                    int offset = image.Stride - rect.Width;
+
+                    // allign pointer to the first pixel to process
+                    ptr += ( startY * image.Stride + startX );
+
+                    // for each line	
+                    for ( int y = startY; y < stopY; y++ )
                     {
-                        integerHistogram[*ptr]++;
+                        // for each pixel
+                        for ( int x = startX; x < stopX; x++, ptr++ )
+                        {
+                            integerHistogram[*ptr]++;
+                        }
+                        ptr += offset;
                     }
-                    ptr += offset;
                 }
-            }
-            else
-            {
-                integerHistogram = new int[65536];
-                maxThreshold = 65536;
-
-                // collect histogram first
-                byte* basePtr = (byte*) image.ImageData.ToPointer( ) + startX * 2;
-                int stride = image.Stride;
-
-                // for each line	
-                for ( int y = startY; y < stopY; y++ )
+                else
                 {
-                    ushort* ptr = (ushort*) ( basePtr + y * stride );
+                    integerHistogram = new int[65536];
+                    maxThreshold = 65536;
 
-                    // for each pixel
-                    for ( int x = startX; x < stopX; x++, ptr++ )
+                    // collect histogram first
+                    byte* basePtr = (byte*) image.ImageData.ToPointer( ) + startX * 2;
+                    int stride = image.Stride;
+
+                    // for each line	
+                    for ( int y = startY; y < stopY; y++ )
                     {
-                        integerHistogram[*ptr]++;
+                        ushort* ptr = (ushort*) ( basePtr + y * stride );
+
+                        // for each pixel
+                        for ( int x = startX; x < stopX; x++, ptr++ )
+                        {
+                            integerHistogram[*ptr]++;
+                        }
                     }
                 }
             }
@@ -174,7 +249,7 @@ namespace AForge.Imaging.Filters
 
             do
             {
-                oldThreshold = threshold;
+                oldThreshold = calculatedThreshold;
 
                 // object's mean and amount of object's pixels
                 double meanObject = 0;
@@ -184,13 +259,13 @@ namespace AForge.Imaging.Filters
                 double meanBackground = 0;
                 int backgroundPixels = 0;
 
-                for ( int t = 0; t < threshold; t++ )
+                for ( int t = 0; t < calculatedThreshold; t++ )
                 {
                     meanBackground += (double) t * integerHistogram[t];
                     backgroundPixels += integerHistogram[t];
                 }
                 // calculate object pixels
-                for ( int t = threshold; t < maxThreshold; t++ )
+                for ( int t = calculatedThreshold; t < maxThreshold; t++ )
                 {
                     meanObject += (double) t * integerHistogram[t];
                     objectPixels += integerHistogram[t];
@@ -201,18 +276,33 @@ namespace AForge.Imaging.Filters
                 // calculate new threshold value
                 if ( backgroundPixels == 0 )
                 {
-                    threshold = (int) meanObject;
+                    calculatedThreshold = (int) meanObject;
                 }
                 else if ( objectPixels == 0 )
                 {
-                    threshold = (int) meanBackground;
+                    calculatedThreshold = (int) meanBackground;
                 }
                 else
                 {
-                    threshold = (int) ( ( meanBackground + meanObject ) / 2 );
+                    calculatedThreshold = (int) ( ( meanBackground + meanObject ) / 2 );
                 }
             }
-            while ( Math.Abs( oldThreshold - threshold ) > minError );
+            while ( Math.Abs( oldThreshold - calculatedThreshold ) > minError );
+
+            return calculatedThreshold;
+        }
+
+        /// <summary>
+        /// Process the filter on the specified image.
+        /// </summary>
+        /// 
+        /// <param name="image">Source image data.</param>
+        /// <param name="rect">Image rectangle for processing by the filter.</param>
+        /// 
+        protected override unsafe void ProcessFilter( UnmanagedImage image, Rectangle rect )
+        {
+            // calculate threshold for the given image
+            threshold = CalculateThreshold( image, rect );
 
             // process image data using base filter
             base.ProcessFilter( image, rect );
