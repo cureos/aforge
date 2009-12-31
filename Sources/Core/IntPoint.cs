@@ -101,7 +101,7 @@ namespace AForge
         ///
         public static IntPoint operator -( IntPoint p1, IntPoint p2 )
         {
-            return new IntPoint( p1.X + p2.X, p1.Y + p2.Y );
+            return new IntPoint( p1.X - p2.X, p1.Y - p2.Y );
         }
 
         /// <summary>

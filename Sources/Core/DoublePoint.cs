@@ -104,7 +104,7 @@ namespace AForge
         ///
         public static DoublePoint operator -( DoublePoint p1, DoublePoint p2 )
         {
-            return new DoublePoint( p1.X + p2.X, p1.Y + p2.Y );
+            return new DoublePoint( p1.X - p2.X, p1.Y - p2.Y );
         }
 
         /// <summary>
