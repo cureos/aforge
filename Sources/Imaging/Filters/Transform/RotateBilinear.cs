@@ -125,7 +125,7 @@ namespace AForge.Imaging.Filters
             // destination pixel's coordinate relative to image center
             double cx, cy;
             // coordinates of source points
-            double  ox, oy, dx1, dy1, dx2, dy2;
+            double  ox, oy, tx, ty, dx1, dy1, dx2, dy2;
             int     ox1, oy1, ox2, oy2;
             // width and height decreased by 1
             int ymax = height - 1;
@@ -140,12 +140,18 @@ namespace AForge.Imaging.Filters
                 cy = -halfNewHeight;
                 for ( int y = 0; y < newHeight; y++ )
                 {
+                    // do some pre-calculations of source points' coordinates
+                    // (calculate the part which depends on y-loop, but does not
+                    // depend on x-loop)
+                    tx = angleSin * cy + halfWidth;
+                    ty = angleCos * cy + halfHeight;
+
                     cx = -halfNewWidth;
                     for ( int x = 0; x < newWidth; x++, dst++ )
                     {
                         // coordinates of source point
-                        ox =  angleCos * cx + angleSin * cy + halfWidth;
-                        oy = -angleSin * cx + angleCos * cy + halfHeight;
+                        ox = tx + angleCos * cx;
+                        oy = ty - angleSin * cx;
 
                         // top-left coordinate
                         ox1 = (int) ox;
@@ -191,12 +197,18 @@ namespace AForge.Imaging.Filters
                 cy = -halfNewHeight;
                 for ( int y = 0; y < newHeight; y++ )
                 {
+                    // do some pre-calculations of source points' coordinates
+                    // (calculate the part which depends on y-loop, but does not
+                    // depend on x-loop)
+                    tx = angleSin * cy + halfWidth;
+                    ty = angleCos * cy + halfHeight;
+
                     cx = -halfNewWidth;
                     for ( int x = 0; x < newWidth; x++, dst += 3 )
                     {
                         // coordinates of source point
-                        ox =  angleCos * cx + angleSin * cy + halfWidth;
-                        oy = -angleSin * cx + angleCos * cy + halfHeight;
+                        ox = tx + angleCos * cx;
+                        oy = ty - angleSin * cx;
 
                         // top-left coordinate
                         ox1 = (int) ox;
