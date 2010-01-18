@@ -36,7 +36,7 @@ namespace AForge.Imaging
     /// <code>
     /// // collect reference points using corners detector (for example)
     /// SusanCornersDetector scd = new SusanCornersDetector( 30, 18 );
-    /// List&lt;IntPoint;gt; points = scd.ProcessImage( sourceImage );
+    /// List&lt;IntPoint&gt; points = scd.ProcessImage( sourceImage );
     /// 
     /// // create block matching algorithm's instance
     /// ExhaustiveBlockMatching bm = new ExhaustiveBlockMatching( 8, 12 );
