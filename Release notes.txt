@@ -1,3 +1,57 @@
+AForge.NET Framework 2.1.1 release notes
+----------------------------------------
+24.01.2010.
+
+
+Version updates and fixes:
+
+* Fixed registered issues/requests:
+  - Issue 113: DisplayPropertyPage in directshow in vista/Windows 7 fails  
+  - Issue 114: Division by zero  
+  - Issue 115: Otsu thresholding enhancement  
+  - Issue 116: DoublePoint  
+  - Issue 118: Crash due to missing olepro32.dll  
+  - Issue 121: RotateBilinear optimization  
+
+
+* General
+  - Updating titles of all assemblies, so they look nice if they are registered on the .NET page of "Add Reference"
+    dialog in VS.NET.
+  - Updating install script - after installation of AForge.NET Framework its assemblies will be seen on .NET page
+    of "Add Reference" dialog in VS.NET
+    
+
+* AForge
+  - Fixed operator- for DoublePoint and IntPoint classes.
+  
+
+* AForge.Imaging
+  - Added Image.FromFile() method to workaround the issue of standard .NET method, which locks file until image
+    object is disposed.
+
+  - Added CalculateThreshold() method into 3 adaptive thresholding classes, which allows to calculate threshold
+    only without applying it to image.
+    
+  - Some optimizations are done for RotateBilinear by putting some calculations outside of the x-loop.
+    
+
+* AForge.Robotics.Surveyor
+  - Adding method to access I2C devices connected to SRV-1/SVS robots.
+  
+  - Removing new line check for replies which start with '##'. The SRV-1 protocol is real pain to work with.
+  
+  
+* AForge.Video.DirectShow
+  - Replacing interop usage of olepro32.dll to oleaut32.dll for OleCreatePropertyFrame() API call, so accessing
+    this API call works correctly on Windows 64-bit version.
+
+
+* AForge.Controls
+  - Added check for max equals to zero to avoid painting histogram when there is nothing to paint actually.
+
+  
+
+
 AForge.NET Framework 2.1.0 release notes
 ----------------------------------------
 05.11.2009.

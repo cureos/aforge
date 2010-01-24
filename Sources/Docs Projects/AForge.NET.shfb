@@ -38,7 +38,7 @@
         <namespaceSummaryItem name="AForge.Neuro" isDocumented="True">The &lt;b&gt;AForge.Neuro&lt;/b&gt; namespace contains interfaces and classes for neural networks computations. The namespace and its sub namespaces contain classes, which allow as creating of popular neural network architectures, as classes to train these networks.</namespaceSummaryItem>
         <namespaceSummaryItem name="AForge.Neuro.Learning" isDocumented="True">The&lt;b&gt;AForge.Neuro.Learning&lt;/b&gt; namespace contains interfaces and classes for neurons and neural networks learning. The namespace contains classes as for supervised learning, as for unsupervised learning.</namespaceSummaryItem>
         <namespaceSummaryItem name="AForge.Robotics.Lego" isDocumented="True">The &lt;b&gt;AForge.Robotics.Lego&lt;/b&gt; namespace contains set of classes, which allow to manipulate different Lego Mindstorm robotics devices. The list of supported devices includes Lego Minstorm RCX and Lego Mindstorm NXT.</namespaceSummaryItem>
-        <namespaceSummaryItem name="AForge.Robotics.Surveyor" isDocumented="True">The &lt;b&gt;AForge.Robotics.Surveyor&lt;/b&gt; namespace contains set of classes, which are aimed to control robotics kits provided by Surveyor company, such as SRV-1 camera/robot and SVS (Stereo Vision System) board.</namespaceSummaryItem>
+        <namespaceSummaryItem name="AForge.Robotics.Surveyor" isDocumented="True">The &lt;b&gt;AForge.Robotics.Surveyor&lt;/b&gt; namespace contains set of classes, which are aimed to control robotics kits provided by &lt;a href="http://www.surveyor.com/"&gt;Surveyor&lt;/a&gt; company, such as SRV-1 camera/robot and SVS (Stereo Vision System) board.</namespaceSummaryItem>
         <namespaceSummaryItem name="AForge.Robotics.TeRK" isDocumented="True">The &lt;b&gt;AForge.Robotics.TeRK&lt;/b&gt; namespace contains set of classes, which are aimed to control TeRK (&lt;a href="http://www.terk.ri.cmu.edu/"&gt;Telepresence Robot Kit&lt;/a&gt;) based robots, such as Qwerk.</namespaceSummaryItem>
         <namespaceSummaryItem name="AForge.Video" isDocumented="True">The &lt;b&gt;AForge.Video&lt;/b&gt; namespace contains interfaces and classes to access different video sources.</namespaceSummaryItem>
         <namespaceSummaryItem name="AForge.Video.DirectShow" isDocumented="True">The &lt;b&gt;AForge.Video.DirectShow&lt;/b&gt; namespace contains classes, which allow to access video sources using &lt;i&gt;DirectShow&lt;/i&gt; interface.</namespaceSummaryItem>
@@ -227,7 +227,7 @@
     <FeedbackEMailAddress>documentation@aforgenet.com</FeedbackEMailAddress>
     <FeedbackEMailLinkText>Feedback Contact</FeedbackEMailLinkText>
     <HeaderText />
-    <FooterText>&lt;a href="http://www.aforgenet.com/" target="_blank"&gt;AForge.NET&lt;/a&gt; © 2006-2009</FooterText>
+    <FooterText>&lt;a href="http://www.aforgenet.com/" target="_blank"&gt;AForge.NET&lt;/a&gt; © 2006-2010</FooterText>
     <ProjectLinkType>Local</ProjectLinkType>
     <SdkLinkType>Msdn</SdkLinkType>
     <SdkLinkTarget>Blank</SdkLinkTarget>
