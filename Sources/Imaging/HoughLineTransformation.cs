@@ -449,7 +449,7 @@ namespace AForge.Imaging
                             // for each Theta value
                             for ( int theta = 0; theta < houghHeight; theta++ )
                             {
-                                int radius = (int) ( cosMap[theta] * x - sinMap[theta] * y ) + halfHoughWidth;
+                                int radius = (int) Math.Round( cosMap[theta] * x - sinMap[theta] * y ) + halfHoughWidth;
 
                                 if ( ( radius < 0 ) || ( radius >= houghWidth ) )
                                     continue;
