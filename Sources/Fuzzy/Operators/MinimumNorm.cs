@@ -2,10 +2,10 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2008-2009
+// Copyright © Andrew Kirillov, 2008-2010
 // andrew.kirillov@aforgenet.com
 //
-// Copyright © Fabio L. Caversan, 2008-2009
+// Copyright © Fabio L. Caversan, 2008-2010
 // fabio.caversan@gmail.com
 //
 namespace AForge.Fuzzy
@@ -22,7 +22,7 @@ namespace AForge.Fuzzy
     /// 
     /// <para>Sample usage:</para>
     /// <code>
-    /// // creating 2 fuzzy sets to represent Cool (Temperatura) and Near (Distance)
+    /// // creating 2 fuzzy sets to represent Cool (Temperature) and Near (Distance)
     /// TrapezoidalFunction function1 = new TrapezoidalFunction( 13, 18, 23, 28 );
     /// FuzzySet fsCool = new FuzzySet( "Cool", function1 );
     /// TrapezoidalFunction function2 = new TrapezoidalFunction( 23, 28, 33, 38 );

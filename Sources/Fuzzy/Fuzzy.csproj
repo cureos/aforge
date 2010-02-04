@@ -49,6 +49,8 @@
     <Compile Include="FuzzyOutput.cs" />
     <Compile Include="InferenceSystem.cs" />
     <Compile Include="Membership Functions\SingletonFunction.cs" />
+    <Compile Include="Operators\NotOperator.cs" />
+    <Compile Include="Operators\IUnaryOperator.cs" />
     <Compile Include="Rulebase.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="Operators\MaximumCoNorm.cs" />

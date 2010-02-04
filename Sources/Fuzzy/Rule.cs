@@ -2,10 +2,10 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2008-2009
+// Copyright © Andrew Kirillov, 2008-2010
 // andrew.kirillov@aforgenet.com
 //
-// Copyright © Fabio L. Caversan, 2008-2009
+// Copyright © Fabio L. Caversan, 2008-2010
 // fabio.caversan@gmail.com
 //
 
@@ -120,6 +120,10 @@ namespace AForge.Fuzzy
         private INorm normOperator;
         // the conorm operator
         private ICoNorm conormOperator;
+        // the complement operator
+        private IUnaryOperator notOperator;
+        // the unary operators that the rule parser supports
+        private string unaryOperators = "NOT;VERY";
 
         /// <summary>
         /// The name of the fuzzy rule.
@@ -169,6 +173,7 @@ namespace AForge.Fuzzy
             this.database       = fuzzyDatabase;
             this.normOperator   = normOperator;
             this.conormOperator = coNormOperator;
+            this.notOperator    = new NotOperator( );
 
             // parsing the rule to obtain RPN of the expression
             ParseRule( );
@@ -229,10 +234,15 @@ namespace AForge.Fuzzy
         /// 
         private int Priority( string Operator )
         {
+            // if its unary
+            if ( unaryOperators.IndexOf( Operator ) >= 0 )
+                return 4;
+
             switch ( Operator )
             {
-                case "OR": return 1;
-                case "AND": return 2;
+                case "(": return 1;
+                case "OR": return 2;
+                case "AND": return 3;
             }
             return 0;
         }
@@ -246,7 +256,7 @@ namespace AForge.Fuzzy
         {
             // flag to incicate we are on consequent state
             bool consequent = false;
-            
+
             // tokens like IF and THEN will be searched always in upper case
             string upRule = rule.ToUpper( );
 
@@ -258,7 +268,8 @@ namespace AForge.Fuzzy
 
             // building a list with all the expression (rule) string tokens
             string spacedRule = rule.Replace( "(", " ( " ).Replace( ")", " ) " );
-            string [] tokensList = spacedRule.Split( ' ' );
+            // getting the tokens list
+            string[] tokensList = GetRuleTokens( spacedRule );
 
             // stack to convert to RPN
             Stack<string> s = new Stack<string>( );
@@ -326,12 +337,12 @@ namespace AForge.Fuzzy
                         lastToken = upToken;
                     }
                     // operators
-                    else if ( upToken == "AND" || upToken == "OR" )
+                    else if ( upToken == "AND" || upToken == "OR" || unaryOperators.IndexOf( upToken ) >= 0 )
                     {
                         // if we are on consequent, only variables can be found
                         if ( consequent )
                             throw new ArgumentException( "Linguistic variable expected after a THEN statement." );
-                        
+
                         // pop all the higher priority operators until the stack is empty 
                         while ( ( s.Count > 0 ) && ( Priority( s.Peek( ) ) > Priority( upToken ) ) )
                             rpnTokenList.Add( s.Pop( ) );
@@ -386,6 +397,37 @@ namespace AForge.Fuzzy
         }
 
         /// <summary>
+        /// Performs a preprocessing on the rule, placing unary operators in proper position and breaking the string 
+        /// space separated tokens.
+        /// </summary>
+        /// 
+        /// <param name="rule">Rule in string format.</param>
+        /// 
+        /// <returns>An array of strings with tokens of the rule.</returns>
+        /// 
+        private string[] GetRuleTokens( string rule )
+        {
+            // breaking in tokens
+            string[] tokens = rule.Split( ' ' );
+
+            // looking for unary operators
+            for ( int i = 0; i < tokens.Length; i++ )
+            {
+                // if its unary and there is an "IS" token before, we must change positions
+                if ( ( unaryOperators.IndexOf( tokens[i].ToUpper( ) ) >= 0 ) &&
+                     ( i > 1 ) && ( tokens[i - 1].ToUpper( ) == "IS" ) )
+                {
+                    // placing VAR name
+                    tokens[i - 1] = tokens[i - 2];
+                    tokens[i - 2] = tokens[i];
+                    tokens[i] = "IS";
+                }
+            }
+
+            return tokens;
+        }
+
+        /// <summary>
         /// Evaluates the firing strength of the Rule, the degree of confidence that the consequent of this Rule
         /// must be executed.
         /// </summary>
@@ -410,10 +452,14 @@ namespace AForge.Fuzzy
                 // returns to the stack
                 else
                 {
-                    // Operands
                     double y = s.Pop( );
-                    double x = s.Pop( );
-                    // Operation
+                    double x = 0;
+
+                    // unary pops only one value
+                    if ( unaryOperators.IndexOf( o.ToString( ) ) < 0 )
+                        x = s.Pop( );
+
+                    // operation
                     switch ( o.ToString( ) )
                     {
                         case "AND":
@@ -422,9 +468,11 @@ namespace AForge.Fuzzy
                         case "OR":
                             s.Push( conormOperator.Evaluate( x, y ) );
                             break;
+                        case "NOT":
+                            s.Push( notOperator.Evaluate( y ) );
+                            break;
                     }
                 }
-
             }
 
             // result on the top of stack

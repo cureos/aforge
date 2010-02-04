@@ -474,9 +474,9 @@ namespace FuzzyAGV
             // Going Straight (if can go anywhere)
             IS.NewRule( "Rule 2", "IF FrontalDistance IS Far AND RightDistance IS Far AND LeftDistance IS Far THEN Angle IS Zero" );
             // Near right wall
-            IS.NewRule( "Rule 3", "IF RightDistance IS Near AND LeftDistance IS Medium THEN Angle IS LittleNegative" );
+            IS.NewRule( "Rule 3", "IF RightDistance IS Near AND LeftDistance IS Not Near THEN Angle IS LittleNegative" );
             // Near left wall
-            IS.NewRule( "Rule 4", "IF RightDistance IS Medium AND LeftDistance IS Near THEN Angle IS LittlePositive" );
+            IS.NewRule("Rule 4", "IF RightDistance IS Not Near AND LeftDistance IS Near THEN Angle IS LittlePositive");
             // Near front wall - room at right
             IS.NewRule( "Rule 5", "IF RightDistance IS Far AND FrontalDistance IS Near THEN Angle IS Positive" );
             // Near front wall - room at left
