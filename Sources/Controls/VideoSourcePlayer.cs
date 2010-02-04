@@ -137,10 +137,6 @@ namespace AForge.Controls
                     // detach events
                     if ( videoSource != null )
                     {
-                        if ( videoSource.IsRunning )
-                        {
-                            throw new Exception( "Can not change video source while current is running." );
-                        }
                         videoSource.NewFrame -= new NewFrameEventHandler( videoSource_NewFrame );
                         videoSource.VideoSourceError -= new VideoSourceErrorEventHandler( videoSource_VideoSourceError );
                         videoSource.PlayingFinished -= new PlayingFinishedEventHandler( videoSource_PlayingFinished );
