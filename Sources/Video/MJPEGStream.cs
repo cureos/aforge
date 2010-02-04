@@ -2,8 +2,11 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
+// Copyright © Andrew Kirillov, 2005-2010
 // andrew.kirillov@aforgenet.com
+//
+// Updated by Ivan.Farkas@FL4SaleLive.com, 02/01/2010
+// Fix related to AirLink cameras, which are not accurate with HTTP standard
 //
 
 namespace AForge.Video
@@ -393,7 +396,7 @@ namespace AForge.Video
                 // HTTP web request
 				HttpWebRequest request = null;
                 // web responce
-				WebResponse responce = null;
+				WebResponse response = null;
                 // stream for MJPEG downloading
                 Stream stream = null;
                 // boundary betweeen images
@@ -426,11 +429,12 @@ namespace AForge.Video
 					if ( useSeparateConnectionGroup )
                         request.ConnectionGroupName = GetHashCode( ).ToString( );
 					// get response
-                    responce = request.GetResponse( );
+                    response = request.GetResponse( );
 
 					// check content type
-                    string contentType = responce.ContentType;
-                    if ( contentType.IndexOf( "multipart/x-mixed-replace" ) == -1 )
+                    string contentType = response.ContentType;
+                    string[] contentTypeArray = contentType.Split( '/' );
+                    if ( ! ( ( contentTypeArray[0] == "multipart" ) && ( contentType.Contains( "mixed" ) ) ) )
                     {
                         // provide information to clients
                         if ( VideoSourceError != null )
@@ -440,8 +444,8 @@ namespace AForge.Video
 
                         request.Abort( );
                         request = null;
-                        responce.Close( );
-                        responce = null;
+                        response.Close( );
+                        response = null;
 
                         // need to stop ?
                         if ( stopEvent.WaitOne( 0, true ) )
@@ -451,11 +455,13 @@ namespace AForge.Video
 
 					// get boundary
 					ASCIIEncoding encoding = new ASCIIEncoding( );
-                    boundary = encoding.GetBytes( contentType.Substring( contentType.IndexOf( "boundary=", 0 ) + 9 ) );
+                    string boudaryStr = contentType.Substring( contentType.IndexOf( "boundary=", 0 ) + 9 );
+                    boundary = encoding.GetBytes( boudaryStr );
 					boundaryLen = boundary.Length;
+                    bool boundaryIsChecked = false;
 
 					// get response stream
-                    stream = responce.GetResponseStream( );
+                    stream = response.GetResponseStream( );
 
 					// loop
 					while ( ( !stopEvent.WaitOne( 0, true ) ) && ( !reloadEvent.WaitOne( 0, true ) ) )
@@ -475,6 +481,34 @@ namespace AForge.Video
 
 						// increment received bytes counter
 						bytesReceived += read;
+
+                        // do we need to check boundary ?
+                        if ( !boundaryIsChecked )
+                        {
+                            // some IP cameras, like AirLink, claim that boundary is "myboundary",
+                            // when it is really "--myboundary". this needs to be corrected.
+
+                            pos = ByteArrayUtils.Find( buffer, boundary, 0, todo );
+                            // continue reading if boudary was not found
+                            if ( pos == -1 )
+                                continue;
+
+                            for ( int i = pos - 1; i >= 0; i-- )
+                            {
+                                byte ch = buffer[i];
+
+                                if ( ( ch == (byte) '\n' ) || ( ch == (byte) '\r' ) )
+                                {
+                                    break;
+                                }
+
+                                boudaryStr = (char) ch + boudaryStr;
+                            }
+
+                            boundary = encoding.GetBytes( boudaryStr );
+                            boundaryLen = boundary.Length;
+                            boundaryIsChecked = true;
+                        }
 				
 						// search for image start
 						if ( align == 1 )
@@ -508,7 +542,7 @@ namespace AForge.Video
 								framesReceived ++;
 
 								// image at stop
-								if ( NewFrame != null )
+								if ( ( NewFrame != null ) && ( !stopEvent.WaitOne( 0, true ) ) )
 								{
 									Bitmap bitmap = (Bitmap) Bitmap.FromStream ( new MemoryStream( buffer, start, stop - start ) );
 									// notify client
@@ -569,10 +603,10 @@ namespace AForge.Video
 						stream = null;
 					}
 					// close response
-					if ( responce != null )
+					if ( response != null )
 					{
-                        responce.Close( );
-                        responce = null;
+                        response.Close( );
+                        response = null;
 					}
 				}
 
