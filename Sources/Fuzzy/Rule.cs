@@ -27,10 +27,14 @@ namespace AForge.Fuzzy
     /// <para><b>IF <i>antecedent</i> THEN <i>consequent</i></b></para>
     /// 
     /// <para>The antecedent is composed by a set of fuzzy clauses (see <see cref="Clause"/>) connected
-    /// by fuzzy operations, like <b>AND</b> or <b>OR</b>: </para>
+    /// by fuzzy operations, like <b>AND</b> or <b>OR</b>. The operator <b>NOT</b> can be used to negate expressions: </para>
     /// 
-    /// <para><b>...<i>Clause1</i> AND (<i>Clause2</i> OR <i>Clause3</i>) ...</b></para>
+    /// <para><b>...<i>Clause1</i> AND (<i>Clause2</i> OR <i>Clause3</i>) AND NOT <i>Clause4</i> ...</b></para>
     ///     
+    /// <para> Fuzzy clauses are written in form <i>Variable IS Value</i>. The NOT operator can be used to negate linguistic values as well: 
+    /// 
+    /// <para><b>...<i>Variable1 IS Value1</i> AND <i>Variable2 IS NOT Value2</i> ...</b></para>
+    ///
     /// <para>The consequent is a single of fuzzy clauses (<see cref="Clause"/>). To perform the
     /// linguistic computing, the <see cref="Rule"/> evaluates the clauses and then applies the fuzzy
     /// operators. Once this is done a value representing the confidence in the antecedent being
@@ -92,8 +96,8 @@ namespace AForge.Fuzzy
     /// db.AddVariable( lvPressure );
     /// 
     /// // sample rules just to test the expression parsing
-    /// Rule r1 = new Rule( db, "Test1", "IF Steel is Cold and Stove is Hot then Pressure is Low" );
-    /// Rule r2 = new Rule( db, "Test2", "IF Steel is Cold and (Stove is Warm or Stove is Hot) then Pressure is Medium" );
+    /// Rule r1 = new Rule( db, "Test1", "IF Steel is not Cold and Stove is Hot then Pressure is Low" );
+    /// Rule r2 = new Rule( db, "Test2", "IF Steel is Cold and not (Stove is Warm or Stove is Hot) then Pressure is Medium" );
     /// Rule r3 = new Rule( db, "Test3", "IF Steel is Cold and Stove is Warm or Stove is Hot then Pressure is High" );
     /// 
     /// // testing the firing strength
