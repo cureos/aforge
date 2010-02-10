@@ -14,6 +14,7 @@ using System.Drawing.Imaging;
 using System.Text;
 using System.Windows.Forms;
 
+using AForge;
 using AForge.Imaging;
 using AForge.Imaging.Filters;
 
@@ -119,8 +120,8 @@ namespace HoughTransform
 
                         // draw line on the image
                         Drawing.Line( sourceData,
-                            new Point( (int) x0 + w2, h2 - (int) y0 ),
-                            new Point( (int) x1 + w2, h2 - (int) y1 ),
+                            new IntPoint( (int) x0 + w2, h2 - (int) y0 ),
+                            new IntPoint( (int) x1 + w2, h2 - (int) y1 ),
                             Color.Red ); */
                     }
 
