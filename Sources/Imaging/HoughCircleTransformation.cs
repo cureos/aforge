@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
+// Copyright © Andrew Kirillov, 2005-2010
 // andrew.kirillov@aforgenet.com
 //
 
@@ -369,15 +369,12 @@ namespace AForge.Imaging
         /// <param name="count">Amount of circles to get.</param>
         /// 
         /// <returns>Returns arrary of most intesive circles. If there are no circles detected,
-        /// <b>null</b> is returned.</returns>
+        /// the returned array has zero length.</returns>
         /// 
         public HoughCircle[] GetMostIntensiveCircles( int count )
         {
             // lines count
             int n = Math.Min( count, circles.Count );
-
-            if ( n == 0 )
-                return null;
 
             // result array
             HoughCircle[] dst = new HoughCircle[n];
@@ -392,8 +389,8 @@ namespace AForge.Imaging
         /// 
         /// <param name="minRelativeIntensity">Minimum relative intesity of circles.</param>
         /// 
-        /// <returns>Returns array of circles. If there are no circles detected,
-        /// <b>null</b> is returned.</returns>
+        /// <returns>Returns arrary of most intesive circles. If there are no circles detected,
+        /// the returned array has zero length.</returns>
         /// 
         public HoughCircle[] GetCirclesByRelativeIntensity( double minRelativeIntensity )
         {
