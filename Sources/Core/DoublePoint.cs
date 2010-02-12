@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2009
+// Copyright © Andrew Kirillov, 2007-2010
 // andrew.kirillov@aforgenet.com
 //
 // Copyright © Fabio L. Caversan, 2008
@@ -106,6 +106,80 @@ namespace AForge
         {
             return new DoublePoint( p1.X - p2.X, p1.Y - p2.Y );
         }
+
+        /// <summary>
+        /// Addition operator - adds scalar to the specified point.
+        /// </summary>
+        /// 
+        /// <param name="p">Point to increase coordinates of.</param>
+        /// <param name="valueToAdd">Value to add to coordinates of the specified point.</param>
+        /// 
+        /// <returns>Returns new point which coordinates equal to coordinates of
+        /// the specified point increased by specified value.</returns>
+        /// 
+        public static DoublePoint operator +( DoublePoint p, double valueToAdd )
+        {
+            return new DoublePoint( p.X + valueToAdd, p.Y + valueToAdd );
+        }
+
+        /// <summary>
+        /// Subtraction operator - subtracts scalar from the specified point.
+        /// </summary>
+        /// 
+        /// <param name="p">Point to decrease coordinates of.</param>
+        /// <param name="valueToSubtract">Value to subtract from coordinates of the specified point.</param>
+        /// 
+        /// <returns>Returns new point which coordinates equal to coordinates of
+        /// the specified point decreased by specified value.</returns>
+        /// 
+        public static DoublePoint operator -( DoublePoint p, double valueToSubtract )
+        {
+            return new DoublePoint( p.X - valueToSubtract, p.Y - valueToSubtract );
+        }
+
+        /// <summary>
+        /// Multiplication operator - multiplies coordinates of the specified point by scalar value.
+        /// </summary>
+        /// 
+        /// <param name="p">Point to multiply coordinates of.</param>
+        /// <param name="factor">Multiplication factor.</param>
+        /// 
+        /// <returns>Returns new point which coordinates equal to coordinates of
+        /// the specified point multiplied by specified value.</returns>
+        ///
+        public static DoublePoint operator *( DoublePoint p, double factor )
+        {
+            return new DoublePoint( p.X * factor, p.Y * factor );
+        }
+
+        /// <summary>
+        /// Division operator - divides coordinates of the specified point by scalar value.
+        /// </summary>
+        /// 
+        /// <param name="p">Point to divide coordinates of.</param>
+        /// <param name="factor">Division factor.</param>
+        /// 
+        /// <returns>Returns new point which coordinates equal to coordinates of
+        /// the specified point divided by specified value.</returns>
+        /// 
+        public static DoublePoint operator /( DoublePoint p, double factor )
+        {
+            return new DoublePoint( p.X / factor, p.Y / factor );
+        }
+
+        /// <summary>
+        /// Explicit conversion to <see cref="IntPoint"/>.
+        /// </summary>
+        /// 
+        /// <param name="p">Double precision point to convert to integer point.</param>
+        /// 
+        /// <returns>Returns new integer point which coordinates are explicitly converted
+        /// to integers from coordinates of the specified double precision point.</returns>
+        /// 
+        public static explicit operator IntPoint( DoublePoint p )
+        {
+            return new IntPoint( (int) p.X, (int) p.Y );
+        } 
 
         /// <summary>
         /// Get string representation of the class.

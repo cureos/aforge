@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2009
+// Copyright © Andrew Kirillov, 2007-2010
 // andrew.kirillov@aforgenet.com
 //
 
@@ -102,6 +102,66 @@ namespace AForge
         public static IntPoint operator -( IntPoint p1, IntPoint p2 )
         {
             return new IntPoint( p1.X - p2.X, p1.Y - p2.Y );
+        }
+
+        /// <summary>
+        /// Addition operator - adds scalar to the specified point.
+        /// </summary>
+        /// 
+        /// <param name="p">Point to increase coordinates of.</param>
+        /// <param name="valueToAdd">Value to add to coordinates of the specified point.</param>
+        /// 
+        /// <returns>Returns new point which coordinates equal to coordinates of
+        /// the specified point increased by specified value.</returns>
+        /// 
+        public static IntPoint operator +( IntPoint p, int valueToAdd )
+        {
+            return new IntPoint( p.X + valueToAdd, p.Y + valueToAdd );
+        }
+
+        /// <summary>
+        /// Subtraction operator - subtracts scalar from the specified point.
+        /// </summary>
+        /// 
+        /// <param name="p">Point to decrease coordinates of.</param>
+        /// <param name="valueToSubtract">Value to subtract from coordinates of the specified point.</param>
+        /// 
+        /// <returns>Returns new point which coordinates equal to coordinates of
+        /// the specified point decreased by specified value.</returns>
+        /// 
+        public static IntPoint operator -( IntPoint p, int valueToSubtract )
+        {
+            return new IntPoint( p.X - valueToSubtract, p.Y - valueToSubtract );
+        }
+
+        /// <summary>
+        /// Multiplication operator - multiplies coordinates of the specified point by scalar value.
+        /// </summary>
+        /// 
+        /// <param name="p">Point to multiply coordinates of.</param>
+        /// <param name="factor">Multiplication factor.</param>
+        /// 
+        /// <returns>Returns new point which coordinates equal to coordinates of
+        /// the specified point multiplied by specified value.</returns>
+        ///
+        public static IntPoint operator *( IntPoint p, int factor )
+        {
+            return new IntPoint( p.X * factor, p.Y * factor );
+        }
+
+        /// <summary>
+        /// Division operator - divides coordinates of the specified point by scalar value.
+        /// </summary>
+        /// 
+        /// <param name="p">Point to divide coordinates of.</param>
+        /// <param name="factor">Division factor.</param>
+        /// 
+        /// <returns>Returns new point which coordinates equal to coordinates of
+        /// the specified point divided by specified value.</returns>
+        /// 
+        public static IntPoint operator /( IntPoint p, int factor )
+        {
+            return new IntPoint( p.X / factor, p.Y / factor );
         }
 
         /// <summary>
