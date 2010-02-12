@@ -79,7 +79,7 @@ namespace AForge.Imaging
     /// bc.MinHeight = 5;
     /// // process binary image
     /// bc.ProcessImage( image );
-    /// Blob[] blobs = bc.GetObjects( image );
+    /// Blob[] blobs = bc.GetObjects( image, false );
     /// // process blobs
     /// foreach ( Blob blob in blobs )
     /// {
