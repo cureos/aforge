@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
+// Copyright © Andrew Kirillov, 2005-2010
 // andrew.kirillov@aforgenet.com
 //
 // Copyright © Frank Nagl, 2009
@@ -970,7 +970,11 @@ namespace AForge.Imaging
         /// <remarks><para>The method scans each line of the blob and finds the most left and the
         /// most right points for it adding them to appropriate lists. The method may be very
         /// useful in conjunction with different routines from <see cref="AForge.Math.Geometry"/>,
-        /// which allow finding convex hull or quadrilateral's corners.</para></remarks>
+        /// which allow finding convex hull or quadrilateral's corners.</para>
+        /// 
+        /// <para><note>Both lists of points are sorted by Y coordinate - points with smaller Y
+        /// value go first.</note></para>
+        /// </remarks>
         /// 
         /// <exception cref="ApplicationException">No image was processed before, so blob
         /// can not be extracted.</exception>
@@ -1029,7 +1033,11 @@ namespace AForge.Imaging
         /// <remarks><para>The method scans each column of the blob and finds the most top and the
         /// most bottom points for it adding them to appropriate lists. The method may be very
         /// useful in conjunction with different routines from <see cref="AForge.Math.Geometry"/>,
-        /// which allow finding convex hull or quadrilateral's corners.</para></remarks>
+        /// which allow finding convex hull or quadrilateral's corners.</para>
+        /// 
+        /// <para><note>Both lists of points are sorted by X coordinate - points with smaller X
+        /// value go first.</note></para>
+        /// </remarks>
         /// 
         /// <exception cref="ApplicationException">No image was processed before, so blob
         /// can not be extracted.</exception>
@@ -1075,6 +1083,118 @@ namespace AForge.Imaging
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Get list of object's edge points.
+        /// </summary>
+        /// 
+        /// <param name="blob">Blob to collect edge points for.</param>
+        /// 
+        /// <returns>Returns unsorted list of blob's edge points.</returns>
+        /// 
+        /// <remarks><para>The method scans each row and column of the blob and finds the
+        /// most top/bottom/left/right points. The method returns similar result as if results of
+        /// both <see cref="GetBlobsLeftAndRightEdges"/> and <see cref="GetBlobsTopAndBottomEdges"/>
+        /// methods were combined, but each edge point occurs only once in the list.</para>
+        /// 
+        /// <para><note>Edge points in the returned list are not ordered. This makes the list unusable
+        /// for visualization with methods, which draw polygon or poly-line. But the returned list
+        /// can be used with such algorithms, like convex hull search, shape analyzer, etc.</note></para>
+        /// </remarks>
+        /// 
+        /// <exception cref="ApplicationException">No image was processed before, so blob
+        /// can not be extracted.</exception>
+        /// 
+        public List<IntPoint> GetBlobsEdgePoints( Blob blob )
+        {
+            // check if objects map was collected
+            if ( objectLabels == null )
+                throw new ApplicationException( "Image should be processed before to collect objects map." );
+
+            List<IntPoint> edgePoints = new List<IntPoint>( );
+
+            int xmin = blob.Rectangle.Left;
+            int xmax = xmin + blob.Rectangle.Width - 1;
+            int ymin = blob.Rectangle.Top;
+            int ymax = ymin + blob.Rectangle.Height - 1;
+
+            int label = blob.ID;
+
+            // array of already processed points on left/right edges
+            // (index in these arrays represent Y coordinate, but value - X coordinate)
+            int[] leftProcessedPoints  = new int[blob.Rectangle.Height];
+            int[] rightProcessedPoints = new int[blob.Rectangle.Height];
+
+            // for each line
+            for ( int y = ymin; y <= ymax; y++ )
+            {
+                // scan from left to right
+                int p = y * imageWidth + xmin;
+                for ( int x = xmin; x <= xmax; x++, p++ )
+                {
+                    if ( objectLabels[p] == label )
+                    {
+                        edgePoints.Add( new IntPoint( x, y ) );
+                        leftProcessedPoints[y - ymin] = x;
+                        break;
+                    }
+                }
+
+                // scan from right to left
+                p = y * imageWidth + xmax;
+                for ( int x = xmax; x >= xmin; x--, p-- )
+                {
+                    if ( objectLabels[p] == label )
+                    {
+                        // avoid adding the point we already have
+                        if ( leftProcessedPoints[y - ymin] != x )
+                        {
+                            edgePoints.Add( new IntPoint( x, y ) );
+                        }
+                        rightProcessedPoints[y - ymin] = x;
+                        break;
+                    }
+                }
+            }
+
+            // for each column
+            for ( int x = xmin; x <= xmax; x++ )
+            {
+                // scan from top to bottom
+                int p = ymin * imageWidth + x;
+                for ( int y = ymin, y0 = 0; y <= ymax; y++, y0++, p += imageWidth )
+                {
+                    if ( objectLabels[p] == label )
+                    {
+                        // avoid adding the point we already have
+                        if ( ( leftProcessedPoints[y0] != x ) &&
+                             ( rightProcessedPoints[y0] != x ) )
+                        {
+                            edgePoints.Add( new IntPoint( x, y ) );
+                        }
+                        break;
+                    }
+                }
+
+                // scan from bottom to top
+                p = ymax * imageWidth + x;
+                for ( int y = ymax, y0 = ymax - ymin; y >= ymin; y--, y0--, p -= imageWidth )
+                {
+                    if ( objectLabels[p] == label )
+                    {
+                        // avoid adding the point we already have
+                        if ( ( leftProcessedPoints[y0] != x ) &&
+                             ( rightProcessedPoints[y0] != x ) )
+                        {
+                            edgePoints.Add( new IntPoint( x, y ) );
+                        }
+                        break;
+                    }
+                }
+            }
+
+            return edgePoints;
         }
 
         /// <summary>
