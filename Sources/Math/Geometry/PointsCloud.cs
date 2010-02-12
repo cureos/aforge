@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2009
+// Copyright © Andrew Kirillov, 2007-2010
 // andrew.kirillov@aforgenet.com
 //
 
@@ -53,6 +53,47 @@ namespace AForge.Math.Geometry
             {
                 cloud[i] = cloud[i] + shift;
             }
+        }
+
+        /// <summary>
+        /// Get bounding rectangle of the specified list of points.
+        /// </summary>
+        /// 
+        /// <param name="cloud">Collection of points to get bounding rectangle for.</param>
+        /// <param name="minXY">Point comprised of smallest X and Y coordinates.</param>
+        /// <param name="maxXY">Point comprised of biggest X and Y coordinates.</param>
+        /// 
+        public static void GetBoundingRectangle( List<IntPoint> cloud, out IntPoint minXY, out IntPoint maxXY )
+        {
+            if ( cloud.Count == 0 )
+                throw new ArgumentException( "List of points can not be empty." );
+
+            // take first point as min and max
+            int minX = cloud[0].X;
+            int maxX = cloud[0].X;
+            int minY = cloud[0].Y;
+            int maxY = cloud[0].Y;
+
+            for ( int i = 1, n = cloud.Count; i < n; i++ )
+            {
+                int x = cloud[i].X;
+                int y = cloud[i].Y;
+
+                // check X coordinate
+                if ( x < minX )
+                    minX = x;
+                if ( x > maxX )
+                    maxX = x;
+
+                // check Y coordinate
+                if ( y < minY )
+                    minY = y;
+                if ( y > maxY )
+                    maxY = y;
+            }
+
+            minXY = new IntPoint( minX, minY );
+            maxXY = new IntPoint( maxX, maxY );
         }
 
         /// <summary>
