@@ -165,6 +165,20 @@ namespace AForge
         }
 
         /// <summary>
+        /// Implicit conversion to <see cref="DoublePoint"/>.
+        /// </summary>
+        /// 
+        /// <param name="p">Integer point to convert to double precision point.</param>
+        /// 
+        /// <returns>Returns new double precision point which coordinates are implicitly converted
+        /// to doubles from coordinates of the specified integer point.</returns>
+        /// 
+        public static implicit operator DoublePoint( IntPoint p )
+        {
+            return new DoublePoint( p.X, p.Y );
+        } 
+
+        /// <summary>
         /// Get string representation of the class.
         /// </summary>
         /// 
