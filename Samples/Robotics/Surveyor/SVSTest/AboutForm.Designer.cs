@@ -65,11 +65,11 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point( 39, 93 );
+            this.label3.Location = new System.Drawing.Point( 25, 93 );
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size( 165, 13 );
+            this.label3.Size = new System.Drawing.Size( 192, 13 );
             this.label3.TabIndex = 4;
-            this.label3.Text = "Copyright © 2009, Andrew Kirillov";
+            this.label3.Text = "Copyright © 2009-2010, Andrew Kirillov";
             // 
             // aforgeLabel
             // 
@@ -98,7 +98,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size( 124, 13 );
             this.label1.TabIndex = 1;
-            this.label1.Text = "Surveyor SVS Test 1.0.0";
+            this.label1.Text = "Surveyor SVS Test 1.0.1";
             // 
             // pictureBox1
             // 

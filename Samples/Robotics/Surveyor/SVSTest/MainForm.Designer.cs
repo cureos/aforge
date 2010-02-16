@@ -59,7 +59,7 @@
             this.aboutButton = new System.Windows.Forms.Button( );
             this.turnControl = new QwerkRobotCar.TurnControl( );
             this.srvDriverControl = new SVSTest.SrvDriverControl( );
-            this.manipulatorControl = new QwerkRobotCar.ManipulatorControl( );
+            this.manipulatorControl = new AForge.Controls.ManipulatorControl( );
             this.groupBox1.SuspendLayout( );
             this.statusStrip.SuspendLayout( );
             this.groupBox2.SuspendLayout( );
@@ -431,7 +431,7 @@
             this.manipulatorControl.TabIndex = 1;
             this.manipulatorControl.Text = "manipulatorControl1";
             this.manipulatorControl.Visible = false;
-            this.manipulatorControl.PositionChanged += new QwerkRobotCar.ManipulatorControl.PositionChangedHandler( this.manipulatorControl_PositionChanged );
+            this.manipulatorControl.PositionChanged += new AForge.Controls.ManipulatorControl.PositionChangedHandler( this.manipulatorControl_PositionChanged );
             // 
             // MainForm
             // 
@@ -492,7 +492,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox5;
         private SrvDriverControl srvDriverControl;
-        private QwerkRobotCar.ManipulatorControl manipulatorControl;
+        private AForge.Controls.ManipulatorControl manipulatorControl;
         private System.Windows.Forms.RadioButton directControlRadio;
         private System.Windows.Forms.RadioButton predefinedCommandsRadio;
         private QwerkRobotCar.TurnControl turnControl;

@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2009
+// Copyright © Andrew Kirillov, 2007-2010
 // andrew.kirillov@aforgenet.com
 //
 
@@ -287,39 +287,26 @@ namespace SRVTest
         }
 
         // Driving with "software joystick"
-        private void manipulatorControl_PositionChanged( float x, float y )
+        private void manipulatorControl_PositionChanged( object sender, ManipulatorControl.PositionEventArgs eventArgs )
         {
             float leftMotorPower = 0f, rightMotorPower = 0f;
 
             // calculate robot's direction and speed
-            if ( ( x != 0 ) || ( y != 0 ) )
+            if ( ( eventArgs.X != 0 ) || ( eventArgs.Y != 0 ) )
             {
                 // radius (distance from center)
-                double r = Math.Min( Math.Sqrt( x * x + y * y ), 1.0 );
+                double r = eventArgs.R;
                 // theta
-                double t = 0;
+                double t = eventArgs.Theta;
 
-                // calculate theta
-                if ( x != 0 )
-                {
-                    t = Math.Atan( y / x );
-                    t = t / Math.PI * 180;
-
-                    if ( t < 0 )
-                    {
-                        t = 180.0 + t;
-                    }
-                }
-                else
-                {
-                    t = 90;
-                }
+                if ( t > 180 )
+                    t -= 180;
 
                 // index of maximum power
                 int maxPowerIndex = (int) ( t / 180 * maxPowers.Length );
 
                 // check direction to move
-                if ( y > 0 )
+                if ( eventArgs.Y > 0 )
                 {
                     // forward direction
                     leftMotorPower  = (float) ( r * maxPowers[maxPowers.Length - maxPowerIndex - 1] );

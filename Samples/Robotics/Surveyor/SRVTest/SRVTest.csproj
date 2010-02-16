@@ -63,12 +63,6 @@
     <Compile Include="AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ManipulatorControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ManipulatorControl.Designer.cs">
-      <DependentUpon>ManipulatorControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="SrvDriverControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -85,9 +79,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ManipulatorControl.resx">
-      <DependentUpon>ManipulatorControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SrvDriverControl.resx">
       <DependentUpon>SrvDriverControl.cs</DependentUpon>
