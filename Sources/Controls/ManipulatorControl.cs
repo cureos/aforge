@@ -572,8 +572,8 @@ namespace AForge.Controls
 
                 Invalidate( );
 
-                // notify user after 10 timer ticks
-                ticksBeforeNotificiation = 10;
+                // notify user after 5 timer ticks
+                ticksBeforeNotificiation = 5;
             }
         }
 
