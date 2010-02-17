@@ -421,27 +421,30 @@ namespace AForge.Controls
             areaRadius = areaSize / 2;
 
             // draw area
-            if ( isSquareLook )
+            if ( areaSize > 1 )
             {
-                // square looking control
-                int halfAreaSize = areaSize / 2;
+                if ( isSquareLook )
+                {
+                    // square looking control
+                    int halfAreaSize = areaSize / 2;
 
-                g.FillRectangle( ( !this.Enabled ) ? disabledBrash : topLeftBackgroundBrush, areaMargin, areaMargin, halfAreaSize, halfAreaSize );
-                g.FillRectangle( ( !this.Enabled ) ? disabledBrash : topRightBackgroundBrush, areaMargin + halfAreaSize, areaMargin, areaSize - halfAreaSize, halfAreaSize );
-                g.FillRectangle( ( !this.Enabled ) ? disabledBrash : bottomLeftBackgroundBrush, areaMargin, areaMargin + halfAreaSize, halfAreaSize, areaSize - halfAreaSize );
-                g.FillRectangle( ( !this.Enabled ) ? disabledBrash : bottomRightBackgroundBrush, areaMargin + halfAreaSize, areaMargin + halfAreaSize,
-                    areaSize - halfAreaSize, areaSize - halfAreaSize );
+                    g.FillRectangle( ( !this.Enabled ) ? disabledBrash : topLeftBackgroundBrush, areaMargin, areaMargin, halfAreaSize, halfAreaSize );
+                    g.FillRectangle( ( !this.Enabled ) ? disabledBrash : topRightBackgroundBrush, areaMargin + halfAreaSize, areaMargin, areaSize - halfAreaSize, halfAreaSize );
+                    g.FillRectangle( ( !this.Enabled ) ? disabledBrash : bottomLeftBackgroundBrush, areaMargin, areaMargin + halfAreaSize, halfAreaSize, areaSize - halfAreaSize );
+                    g.FillRectangle( ( !this.Enabled ) ? disabledBrash : bottomRightBackgroundBrush, areaMargin + halfAreaSize, areaMargin + halfAreaSize,
+                        areaSize - halfAreaSize, areaSize - halfAreaSize );
 
-                g.DrawRectangle( borderPen, areaMargin, areaMargin, areaSize - 1, areaSize - 1 );
-            }
-            else
-            {
-                // round looking control
-                g.FillPie( ( this.Enabled ) ? topRightBackgroundBrush : disabledBrash, areaMargin, areaMargin, areaSize - 1, areaSize - 1, 0, -90 );
-                g.FillPie( ( this.Enabled ) ? topLeftBackgroundBrush : disabledBrash, areaMargin, areaMargin, areaSize - 1, areaSize - 1, -90, -90 );
-                g.FillPie( ( this.Enabled ) ? bottomRightBackgroundBrush : disabledBrash, areaMargin, areaMargin, areaSize - 1, areaSize - 1, 0, 90 );
-                g.FillPie( ( this.Enabled ) ? bottomLeftBackgroundBrush : disabledBrash, areaMargin, areaMargin, areaSize - 1, areaSize - 1, 90, 90 );
-                g.DrawEllipse( borderPen, areaMargin, areaMargin, areaSize - 1, areaSize - 1 );
+                    g.DrawRectangle( borderPen, areaMargin, areaMargin, areaSize - 1, areaSize - 1 );
+                }
+                else
+                {
+                    // round looking control
+                    g.FillPie( ( this.Enabled ) ? topRightBackgroundBrush : disabledBrash, areaMargin, areaMargin, areaSize - 1, areaSize - 1, 0, -90 );
+                    g.FillPie( ( this.Enabled ) ? topLeftBackgroundBrush : disabledBrash, areaMargin, areaMargin, areaSize - 1, areaSize - 1, -90, -90 );
+                    g.FillPie( ( this.Enabled ) ? bottomRightBackgroundBrush : disabledBrash, areaMargin, areaMargin, areaSize - 1, areaSize - 1, 0, 90 );
+                    g.FillPie( ( this.Enabled ) ? bottomLeftBackgroundBrush : disabledBrash, areaMargin, areaMargin, areaSize - 1, areaSize - 1, 90, 90 );
+                    g.DrawEllipse( borderPen, areaMargin, areaMargin, areaSize - 1, areaSize - 1 );
+                }
             }
 
             // draw axis or not ?
