@@ -524,7 +524,7 @@ namespace AForge.Robotics.Surveyor
         /// <exception cref="NotConnectedException">Not connected to SVS. Connect to SVS board before using
         /// this method.</exception>
         /// 
-        public void ControlServos( ServosBank servosBank, byte leftServo, byte rightServo )
+        public void ControlServos( ServosBank servosBank, int leftServo, int rightServo )
         {
             switch ( servosBank )
             {
@@ -539,7 +539,7 @@ namespace AForge.Robotics.Surveyor
                     if ( rightServo > 100 )
                         rightServo = 100;
 
-                    SafeGetCommunicator2( ).Send( new byte[] { (byte) 'S', leftServo, rightServo } );
+                    SafeGetCommunicator2( ).Send( new byte[] { (byte) 'S', (byte) leftServo, (byte) rightServo } );
                     break;
 
                 case ServosBank.Bank3:

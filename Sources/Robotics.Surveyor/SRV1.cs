@@ -778,7 +778,7 @@ namespace AForge.Robotics.Surveyor
         /// using 6<sup>th</sup> and 7<sup>th</sup> timers.</note></para>
         /// </remarks>
         /// 
-        public void ControlServos( byte leftServo, byte rightServo )
+        public void ControlServos( int leftServo, int rightServo )
         {
             // check limts
             if ( leftServo > 100 )
@@ -786,7 +786,7 @@ namespace AForge.Robotics.Surveyor
             if ( rightServo > 100 )
                 rightServo = 100;
 
-            Send( new byte[] { (byte) 's', leftServo, rightServo } );
+            Send( new byte[] { (byte) 's', (byte) leftServo, (byte) rightServo } );
         }
 
         /// <summary>
