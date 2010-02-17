@@ -255,7 +255,7 @@ namespace AForge.Robotics.Surveyor
                         // abort camera if it can not be stopped
                         if ( rightCamera.IsRunning )
                         {
-                            leftCamera.Stop( );
+                            rightCamera.Stop( );
                         }
                         rightCamera = null;
                     }
