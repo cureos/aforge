@@ -31,9 +31,8 @@ namespace AForge.Fuzzy
     /// 
     /// <para><b>...<i>Clause1</i> AND (<i>Clause2</i> OR <i>Clause3</i>) AND NOT <i>Clause4</i> ...</b></para>
     ///     
-    /// <para> Fuzzy clauses are written in form <i>Variable IS Value</i>. The NOT operator can be used to negate linguistic values as well: 
-    /// 
-    /// <para><b>...<i>Variable1 IS Value1</i> AND <i>Variable2 IS NOT Value2</i> ...</b></para>
+    /// <para>Fuzzy clauses are written in form <i>Variable IS Value</i>. The NOT operator can be used to negate linguistic values as well:<br />
+    /// <b>...<i>Variable1 IS Value1</i> AND <i>Variable2 IS NOT Value2</i> ...</b></para>
     ///
     /// <para>The consequent is a single of fuzzy clauses (<see cref="Clause"/>). To perform the
     /// linguistic computing, the <see cref="Rule"/> evaluates the clauses and then applies the fuzzy
