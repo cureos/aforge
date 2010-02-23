@@ -174,7 +174,7 @@ namespace AForge.Controls
         /// Initialize joystick with the specified ID.
         /// </summary>
         /// 
-        /// <param name="id">Joystick's ID to initialize, [0, 15]/</param>
+        /// <param name="id">Joystick's ID to initialize, [0, 15].</param>
         /// 
         /// <remarks><para></para></remarks>
         /// 
