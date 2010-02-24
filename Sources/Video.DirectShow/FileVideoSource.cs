@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
+// Copyright © Andrew Kirillov, 2005-2010
 // andrew.kirillov@aforgenet.com
 //
 
@@ -318,7 +318,6 @@ namespace AForge.Video.DirectShow
 
             // objects
             object graphObject = null;
-            object sourceObject = null;
             object grabberObject = null;
 
             // interfaces
@@ -327,7 +326,6 @@ namespace AForge.Video.DirectShow
             IBaseFilter         grabberBase = null;
             ISampleGrabber      sampleGrabber = null;
             IMediaControl       mediaControl = null;
-            IFileSourceFilter   fileSource = null;
 
             IMediaEventEx       mediaEvent = null;
 
@@ -343,15 +341,9 @@ namespace AForge.Video.DirectShow
                 graph = (IGraphBuilder) graphObject;
 
                 // create source device's object
-                type = Type.GetTypeFromCLSID( Clsid.AsyncReader );
-                if ( type == null )
-                    throw new ApplicationException( "Failed creating filter async reader" );
-
-                sourceObject = Activator.CreateInstance( type );
-                sourceBase = (IBaseFilter) sourceObject;
-                fileSource = (IFileSourceFilter) sourceObject;
-
-                fileSource.Load( fileName, null );
+                graph.AddSourceFilter( fileName, "source", out sourceBase );
+                if ( sourceBase == null )
+                    throw new ApplicationException( "Failed creating source filter" );
 
                 // get type for sample grabber
                 type = Type.GetTypeFromCLSID( Clsid.SampleGrabber );
@@ -363,8 +355,7 @@ namespace AForge.Video.DirectShow
                 sampleGrabber = (ISampleGrabber) grabberObject;
                 grabberBase = (IBaseFilter) grabberObject;
 
-                // add source and grabber filters to graph
-                graph.AddFilter( sourceBase, "source" );
+                // add grabber filters to graph
                 graph.AddFilter( grabberBase, "grabber" );
 
                 // set media type
@@ -451,11 +442,9 @@ namespace AForge.Video.DirectShow
             {
                 // release all objects
                 graph           = null;
-                sourceBase      = null;
                 grabberBase     = null;
                 sampleGrabber   = null;
                 mediaControl    = null;
-                fileSource      = null;
                 mediaEvent      = null;
 
                 if ( graphObject != null )
@@ -463,10 +452,10 @@ namespace AForge.Video.DirectShow
                     Marshal.ReleaseComObject( graphObject );
                     graphObject = null;
                 }
-                if ( sourceObject != null )
+                if ( sourceBase != null )
                 {
-                    Marshal.ReleaseComObject( sourceObject );
-                    sourceObject = null;
+                    Marshal.ReleaseComObject( sourceBase );
+                    sourceBase = null;
                 }
                 if ( grabberObject != null )
                 {
