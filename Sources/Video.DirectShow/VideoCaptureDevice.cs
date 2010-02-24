@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright � Andrew Kirillov, 2005-2009
+// Copyright © Andrew Kirillov, 2005-2010
 // andrew.kirillov@aforgenet.com
 //
 // Resolution of device's video capabilities was contributed by
@@ -71,6 +71,9 @@ namespace AForge.Video.DirectShow
 
         private bool needToDisplayPropertyPage = false;
         private IntPtr parentWindowForPropertyPage = IntPtr.Zero;
+
+        // video capture source object
+        object sourceObject = null;
 
         /// <summary>
         /// New frame event.
@@ -247,6 +250,23 @@ namespace AForge.Video.DirectShow
         }
 
         /// <summary>
+        /// Source COM object of camera capture device.
+        /// </summary>
+        /// 
+        /// <remarks><para>The source COM object of camera capture device is exposed for the
+        /// case when user may need get direct access to the object for making some custom
+        /// configuration of camera through DirectShow interface, for example.
+        /// </para>
+        /// 
+        /// <para>If camera is not running, the property is set to <see langword="null"/>.</para>
+        /// </remarks>
+        /// 
+        public object SourceObject
+        {
+            get { return sourceObject; }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="VideoCaptureDevice"/> class.
         /// </summary>
         /// 
@@ -388,42 +408,33 @@ namespace AForge.Video.DirectShow
 
             lock ( this )
             {
-                object sourceObject = null;
+                if ( IsRunning )
+                {
+                    // pass the request to backgroud thread if video source is running
+                    parentWindowForPropertyPage = parentWindow;
+                    needToDisplayPropertyPage = true;
+                    return;
+                }
+
+                object tempSourceObject = null;
+
                 // create source device's object
                 try
                 {
-                    sourceObject = FilterInfo.CreateFilter( deviceMoniker );
+                    tempSourceObject = FilterInfo.CreateFilter( deviceMoniker );
                 }
                 catch
                 {
+                    throw new ApplicationException( "Failed creating device object for moniker." );
                 }
 
-                if ( sourceObject == null )
-                {
-                    if ( IsRunning )
-                    {
-                        // if we can not create instance of video source object and video is already
-                        // running, then it seems that we deal with those rare camera drivers, which
-                        // do not allow creating more than one instance of source object.
-
-                        // try to pass the request to backgroud thread in this case
-                        parentWindowForPropertyPage = parentWindow;
-                        needToDisplayPropertyPage = true;
-                        return;
-                    }
-                    else
-                    {
-                        throw new ApplicationException( "Failed creating device object for moniker." );
-                    }
-                }
-
-                if ( !( sourceObject is ISpecifyPropertyPages ) )
+                if ( !( tempSourceObject is ISpecifyPropertyPages ) )
                 {
                     throw new NotSupportedException( "The video source does not support configuration property page." );
                 }
 
                 // retrieve ISpecifyPropertyPages interface of the device
-                ISpecifyPropertyPages pPropPages = (ISpecifyPropertyPages) sourceObject;
+                ISpecifyPropertyPages pPropPages = (ISpecifyPropertyPages) tempSourceObject;
 
                 // get property pages from the property bag
                 CAUUID caGUID;
@@ -433,11 +444,11 @@ namespace AForge.Video.DirectShow
                 FilterInfo filterInfo = new FilterInfo( deviceMoniker );
 
                 // create and display the OlePropertyFrame form
-                Win32.OleCreatePropertyFrame( parentWindow, 0, 0, filterInfo.Name, 1, ref sourceObject, caGUID.cElems, caGUID.pElems, 0, 0, IntPtr.Zero );
+                Win32.OleCreatePropertyFrame( parentWindow, 0, 0, filterInfo.Name, 1, ref tempSourceObject, caGUID.cElems, caGUID.pElems, 0, 0, IntPtr.Zero );
 
                 // release COM objects
                 Marshal.FreeCoTaskMem( caGUID.pElems );
-                Marshal.ReleaseComObject( sourceObject );
+                Marshal.ReleaseComObject( tempSourceObject );
             }
         }
 
@@ -458,7 +469,6 @@ namespace AForge.Video.DirectShow
             // objects
             object captureGraphObject = null;
             object graphObject = null;
-            object sourceObject = null;
             object grabberObject = null;
 
             // interfaces
