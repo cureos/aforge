@@ -37,21 +37,28 @@ namespace AForge.Video.DirectShow.Internals
                 PinDirection pinDir;
                 int n;
 
-                // get next pin
-                while ( pinsEnum.Next( 1, pin, out n ) == 0 )
+                try
                 {
-                    // query pin`s direction
-                    pin[0].QueryDirection( out pinDir );
-
-                    if ( pinDir == dir )
+                    // get next pin
+                    while ( pinsEnum.Next( 1, pin, out n ) == 0 )
                     {
-                        if ( num == 0 )
-                            return pin[0];
-                        num--;
-                    }
+                        // query pin`s direction
+                        pin[0].QueryDirection( out pinDir );
 
-                    Marshal.ReleaseComObject( pin[0] );
-                    pin[0] = null;
+                        if ( pinDir == dir )
+                        {
+                            if ( num == 0 )
+                                return pin[0];
+                            num--;
+                        }
+
+                        Marshal.ReleaseComObject( pin[0] );
+                        pin[0] = null;
+                    }
+                }
+                finally
+                {
+                    Marshal.ReleaseComObject( pinsEnum );
                 }
             }
             return null;

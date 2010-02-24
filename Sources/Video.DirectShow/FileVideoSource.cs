@@ -374,8 +374,12 @@ namespace AForge.Video.DirectShow
                 sampleGrabber.SetMediaType( mediaType );
 
                 // connect pins
-                if ( graph.Connect( Tools.GetOutPin( sourceBase, 0 ), Tools.GetInPin( grabberBase, 0 ) ) < 0 )
+                IPin outPin = Tools.GetOutPin( sourceBase, 0 );
+                IPin inPin  = Tools.GetInPin( grabberBase, 0 );
+                if ( graph.Connect( outPin, inPin  ) < 0 )
                     throw new ApplicationException( "Failed connecting filters" );
+                Marshal.ReleaseComObject( outPin );
+                Marshal.ReleaseComObject( inPin );
 
                 // get media type
                 if ( sampleGrabber.GetConnectedMediaType( mediaType ) == 0 )
