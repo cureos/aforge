@@ -322,8 +322,8 @@ namespace AForge.Controls
                 if ( tracking )
                 {
                     this.Capture = true;
+                    this.Cursor = Cursors.Hand;
 
-                    System.Diagnostics.Debug.WriteLine( "mouse down" );
                     NotifyClients( );
                     // start time, which is used to notify
                     // about manipulator's position change
@@ -340,6 +340,7 @@ namespace AForge.Controls
             {
                 tracking = false;
                 this.Capture = false;
+                this.Cursor = Cursors.Arrow;
 
                 if ( resetPositionOnMouseRelease )
                 {
