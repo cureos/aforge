@@ -90,7 +90,7 @@ namespace AForge.Math.Random
             this.mean   = mean;
             this.stdDev = stdDev;
 
-            rand = new StandardGenerator( );
+            rand = new StandardGenerator( seed );
         }
 
         /// <summary>
