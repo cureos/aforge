@@ -65,7 +65,7 @@ namespace AForge.Controls
         // size (width and height) of manipulator's area
         private int areaSize = 0;
         private int areaRadius = 0;
-        private int areaMargin = manipulatorSize / 2 + 1;
+        private int areaMargin = manipulatorSize / 2 + 2;
 
         // tracking information
         private bool tracking = false;
