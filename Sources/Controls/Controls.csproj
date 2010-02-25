@@ -51,6 +51,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SliderControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SliderControl.Designer.cs">
+      <DependentUpon>SliderControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Chart.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -95,6 +101,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="SliderControl.resx">
+      <DependentUpon>SliderControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ColorSlider.resx">
       <DependentUpon>ColorSlider.cs</DependentUpon>
     </EmbeddedResource>
