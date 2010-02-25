@@ -505,6 +505,7 @@ namespace AForge.Controls
                     this.Capture = true;
                     this.Cursor = Cursors.Hand;
 
+                    NotifyClients( );
                     // start timer, which is used to notify
                     // about manipulator's position change
                     ticksBeforeNotificiation = -1;
@@ -530,10 +531,7 @@ namespace AForge.Controls
                     manipulatatorY = 0;
                 }
 
-                if ( PositionChanged != null )
-                {
-                    NotifyClients( );
-                }
+                NotifyClients( );
 
                 Invalidate( );
             }
