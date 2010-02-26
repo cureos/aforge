@@ -169,6 +169,7 @@
     <Compile Include="Filters\Other\TexturedFilter.cs" />
     <Compile Include="Filters\Other\TexturedMerge.cs" />
     <Compile Include="Filters\Other\Texturer.cs" />
+    <Compile Include="Filters\Other\WaterWave.cs" />
     <Compile Include="Filters\Smooting\AdaptiveSmooth.cs" />
     <Compile Include="Filters\Smooting\ConservativeSmoothing.cs" />
     <Compile Include="Filters\Smooting\Median.cs" />
