@@ -1209,7 +1209,7 @@ namespace AForge.Robotics.Surveyor
                     finally
                     {
                         // signal about available response to the waiting caller
-                        if ( ( !stopEvent.WaitOne( 0, true ) ) && ( cr.ResponseBuffer != null ) )
+                        if ( ( stopEvent != null ) && ( !stopEvent.WaitOne( 0, true ) ) && ( cr.ResponseBuffer != null ) )
                         {
                             lastRequestWithReply = cr;
                             replyIsAvailable.Set( );
