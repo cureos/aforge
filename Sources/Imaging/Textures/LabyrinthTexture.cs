@@ -23,7 +23,7 @@ namespace AForge.Imaging.Textures
     /// // create texture generator
     /// LabyrinthTexture textureGenerator = new LabyrinthTexture( );
     /// // generate new texture
-    /// float[,] texture = textureGenerator.Generate( 320, 240 )
+    /// float[,] texture = textureGenerator.Generate( 320, 240 );
     /// // convert it to image to visualize
     /// Bitmap textureImage = TextureTools.ToBitmap( texture );
     /// </code>

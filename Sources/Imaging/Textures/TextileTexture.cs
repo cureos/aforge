@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
+// Copyright © Andrew Kirillov, 2005-2010
 // andrew.kirillov@aforgenet.com
 //
 
@@ -23,7 +23,7 @@ namespace AForge.Imaging.Textures
     /// // create texture generator
     /// TextileTexture textureGenerator = new TextileTexture( );
     /// // generate new texture
-    /// float[,] texture = textureGenerator.Generate( 320, 240 )
+    /// float[,] texture = textureGenerator.Generate( 320, 240 );
     /// // convert it to image to visualize
     /// Bitmap textureImage = TextureTools.ToBitmap( texture );
     /// </code>
