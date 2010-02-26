@@ -379,6 +379,20 @@ namespace AForge.Controls
             {
                 manipulatatorX = Math.Max( -1.0f, Math.Min( 1.0f, value.X ) );
                 manipulatatorY = Math.Max( -1.0f, Math.Min( 1.0f, value.Y ) );
+
+                if ( !isSquareLook )
+                {
+                    // get distance from center
+                    double cR = Math.Sqrt( manipulatatorX * manipulatatorX + manipulatatorY * manipulatatorY );
+
+                    // correct point if it is too far away
+                    if ( cR > 1 )
+                    {
+                        double coef = (double) 1 / cR;
+                        manipulatatorX = (float) ( coef * manipulatatorX );
+                        manipulatatorY = (float) ( coef * manipulatatorY );
+                    }
+                }
                 Invalidate( );
                 NotifyClients( );
             }
