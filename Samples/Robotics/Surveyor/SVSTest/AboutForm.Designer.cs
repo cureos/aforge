@@ -98,7 +98,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size( 124, 13 );
             this.label1.TabIndex = 1;
-            this.label1.Text = "Surveyor SVS Test 1.0.1";
+            this.label1.Text = "Surveyor SVS Test 1.0.2";
             // 
             // pictureBox1
             // 

@@ -376,7 +376,7 @@ namespace SVSTest
         }
 
         // Robot turning on place - opposite directions for motors
-        private void turnControl_PositionChanged( float x )
+        private void turnControl_PositionChanged( object sender, float x )
         {
             DriveMotors( x, -x );
         }

@@ -94,9 +94,6 @@
     <EmbeddedResource Include="StereoViewForm.resx">
       <DependentUpon>StereoViewForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TurnControl.resx">
-      <DependentUpon>TurnControl.cs</DependentUpon>
-    </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
@@ -116,12 +113,6 @@
     </Compile>
     <Compile Include="StereoViewForm.Designer.cs">
       <DependentUpon>StereoViewForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TurnControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="TurnControl.Designer.cs">
-      <DependentUpon>TurnControl.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
