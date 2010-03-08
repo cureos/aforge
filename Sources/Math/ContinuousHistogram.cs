@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
+// Copyright © Andrew Kirillov, 2005-2010
 // andrew.kirillov@aforgenet.com
 //
 
@@ -265,8 +265,11 @@ namespace AForge.Math
             double rangeLength = range.Length;
             double rangeMin = range.Min;
 
-            max = 0;
-            min = n;
+            max    = 0;
+            min    = n;
+            mean   = 0;
+            stdDev = 0;
+            total  = 0;
 
             // calculate mean, min, max
             for ( i = 0; i < n; i++ )
