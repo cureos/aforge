@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
+// Copyright © Andrew Kirillov, 2005-2010
 // andrew.kirillov@aforgenet.com
 //
 
@@ -36,7 +36,7 @@ namespace AForge.Math
         /// <para>Sample usage:</para>
         /// <code>
         /// // create histogram array
-        /// int[] histogram = new int[10] { 1, 1, 2, 3, 6, 8, 11, 12, 7, 3 };
+        /// int[] histogram = new int[] { 1, 1, 2, 3, 6, 8, 11, 12, 7, 3 };
         /// // calculate mean value
         /// double mean = Statistics.Mean( histogram );
         /// // output it (5.759)
@@ -78,7 +78,7 @@ namespace AForge.Math
         /// <para>Sample usage:</para>
         /// <code>
         /// // create histogram array
-        /// int[] histogram = new int[10] { 1, 1, 2, 3, 6, 8, 11, 12, 7, 3 };
+        /// int[] histogram = new int[] { 1, 1, 2, 3, 6, 8, 11, 12, 7, 3 };
         /// // calculate standard deviation value
         /// double stdDev = Statistics.StdDev( histogram );
         /// // output it (1.999)
@@ -88,9 +88,8 @@ namespace AForge.Math
         /// 
         public static double StdDev( int[] values )
         {
-            double  mean = Mean( values );
+            double  mean = 0;
             double  stddev = 0;
-            double  centeredValue;
             int     hits;
             int     total = 0;
 
@@ -98,15 +97,16 @@ namespace AForge.Math
             for ( int i = 0, n = values.Length; i < n; i++ )
             {
                 hits = values[i];
-                centeredValue = (double) i - mean;
-
                 // accumulate mean
-                stddev += centeredValue * centeredValue * hits;
+                mean += i * hits;
+                // accumulate std.dev. part
+                stddev += i * i * hits;
                 // accumalate total
                 total += hits;
             }
+            mean /= total;
 
-            return Math.Sqrt( stddev / total );
+            return Math.Sqrt( stddev / total - mean * mean );
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace AForge.Math
         /// <para>Sample usage:</para>
         /// <code>
         /// // create histogram array
-        /// int[] histogram = new int[10] { 1, 1, 2, 3, 6, 8, 11, 12, 7, 3 };
+        /// int[] histogram = new int[] { 1, 1, 2, 3, 6, 8, 11, 12, 7, 3 };
         /// // calculate median value
         /// int median = Statistics.Median( histogram );
         /// // output it (6)
@@ -185,7 +185,7 @@ namespace AForge.Math
         /// <para>Sample usage:</para>
         /// <code>
         /// // create histogram array
-        /// int[] histogram = new int[10] { 1, 1, 2, 3, 6, 8, 11, 12, 7, 3 };
+        /// int[] histogram = new int[] { 1, 1, 2, 3, 6, 8, 11, 12, 7, 3 };
         /// // get 75% range around median
         /// IntRange range = Statistics.GetRange( histogram, 0.75 );
         /// // output it ([4, 8])
