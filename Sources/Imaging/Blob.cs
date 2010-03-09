@@ -43,6 +43,10 @@ namespace AForge.Imaging
         private IntPoint cog;
         // fullness of the blob ( area / ( width * height ) )
         private double fullness;
+        // mean color of the blob
+        private Color colorMean = Color.Black;
+        // color's standard deviation of the blob
+        private Color colorStdDev = Color.Black;
 
         /// <summary>
         /// Blob's image.
@@ -141,6 +145,30 @@ namespace AForge.Imaging
         }
 
         /// <summary>
+        /// Blob's mean color.
+        /// </summary>
+        /// 
+        /// <remarks><para>The property keeps mean color of pixels comprising the blob.</para></remarks>
+        /// 
+        public Color ColorMean
+        {
+            get { return colorMean; }
+            internal set { colorMean = value; }
+        }
+
+        /// <summary>
+        /// Blob color's standard deviation.
+        /// </summary>
+        /// 
+        /// <remarks><para>The property keeps standard deviation of pixels' colors comprising the blob.</para></remarks>
+        /// 
+        public Color ColorStdDev
+        {
+            get { return colorStdDev; }
+            internal set { colorStdDev = value; }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Blob"/> class.
         /// </summary>
         /// 
@@ -166,6 +194,8 @@ namespace AForge.Imaging
             cog  = source.cog;
             area = source.area;
             fullness = source.fullness;
+            colorMean = source.colorMean;
+            colorStdDev = source.colorStdDev;
         }
     }
 }

@@ -393,7 +393,7 @@ namespace AForge.Imaging
             BuildObjectsMap( image );
 
             // collect information about blobs
-            CollectObjectsInfo( );
+            CollectObjectsInfo( image );
 
             // filter blobs by size if required
             if ( filterBlobs )
@@ -493,10 +493,6 @@ namespace AForge.Imaging
             if ( objectLabels == null )
                 throw new ApplicationException( "Image should be processed before to collect objects map." );
 
-            // collect blobs' information
-            if ( blobs == null )
-                CollectObjectsInfo( );
-
             Rectangle[] rects = new Rectangle[objectsCount];
 
             for ( int i = 0; i < objectsCount; i++ )
@@ -548,10 +544,6 @@ namespace AForge.Imaging
             // check if objects map was collected
             if ( objectLabels == null )
                 throw new ApplicationException( "Image should be processed before to collect objects map." );
-
-            // collect rectangles, if they are not collected yet
-            if ( blobs == null )
-                CollectObjectsInfo( );
 
             Blob[] blobsToReturn = new Blob[objectsCount];
 
@@ -675,10 +667,6 @@ namespace AForge.Imaging
                 ( image.PixelFormat != PixelFormat.Format32bppPArgb )
                 )
                 throw new UnsupportedImageFormatException( "Unsupported pixel format of the provided image." );
-
-            // collect rectangles, if they are not collected yet
-            if ( blobs == null )
-                CollectObjectsInfo( );
 
             // image size
             int width  = image.Width;
@@ -1214,7 +1202,7 @@ namespace AForge.Imaging
         #region Private Methods - Collecting objects' rectangles
 
         // Collect objects' rectangles
-        private void CollectObjectsInfo( )
+        private unsafe void CollectObjectsInfo( UnmanagedImage image )
         {
             int i = 0, label;
 
@@ -1225,8 +1213,16 @@ namespace AForge.Imaging
             int[] y2 = new int[objectsCount + 1];
 
             int[] area = new int[objectsCount + 1];
-            int[] xc = new int[objectsCount + 1];
-            int[] yc = new int[objectsCount + 1];
+            long[] xc = new long[objectsCount + 1];
+            long[] yc = new long[objectsCount + 1];
+
+            long[] meanR = new long[objectsCount + 1];
+            long[] meanG = new long[objectsCount + 1];
+            long[] meanB = new long[objectsCount + 1];
+
+            long[] stdDevR = new long[objectsCount + 1];
+            long[] stdDevG = new long[objectsCount + 1];
+            long[] stdDevB = new long[objectsCount + 1];
 
             for ( int j = 1; j <= objectsCount; j++ )
             {
@@ -1234,40 +1230,118 @@ namespace AForge.Imaging
                 y1[j] = imageHeight;
             }
 
-            // walk through labels array
-            for ( int y = 0; y < imageHeight; y++ )
+            byte* src = (byte*) image.ImageData.ToPointer( );
+
+            if ( image.PixelFormat == PixelFormat.Format8bppIndexed )
             {
-                for ( int x = 0; x < imageWidth; x++, i++ )
+                int offset = image.Stride - imageWidth;
+                byte g; // pixel's grey value
+
+                // walk through labels array
+                for ( int y = 0; y < imageHeight; y++ )
                 {
-                    // get current label
-                    label = objectLabels[i];
-
-                    // skip unlabeled pixels
-                    if ( label == 0 )
-                        continue;
-
-                    // check and update all coordinates
-
-                    if ( x < x1[label] )
+                    for ( int x = 0; x < imageWidth; x++, i++, src++ )
                     {
-                        x1[label] = x;
-                    }
-                    if ( x > x2[label] )
-                    {
-                        x2[label] = x;
-                    }
-                    if ( y < y1[label] )
-                    {
-                        y1[label] = y;
-                    }
-                    if ( y > y2[label] )
-                    {
-                        y2[label] = y;
+                        // get current label
+                        label = objectLabels[i];
+
+                        // skip unlabeled pixels
+                        if ( label == 0 )
+                            continue;
+
+                        // check and update all coordinates
+
+                        if ( x < x1[label] )
+                        {
+                            x1[label] = x;
+                        }
+                        if ( x > x2[label] )
+                        {
+                            x2[label] = x;
+                        }
+                        if ( y < y1[label] )
+                        {
+                            y1[label] = y;
+                        }
+                        if ( y > y2[label] )
+                        {
+                            y2[label] = y;
+                        }
+
+                        area[label]++;
+                        xc[label] += x;
+                        yc[label] += y;
+
+                        g = *src;
+                        meanG[label] += g;
+                        stdDevG[label] += g * g;
                     }
 
-                    area[label]++;
-                    xc[label] += x;
-                    yc[label] += y;
+                    src += offset;
+                }
+
+                for ( int j = 1; j <= objectsCount; j++ )
+                {
+                    meanR[j] = meanB[j] = meanG[j];
+                    stdDevR[j] = stdDevB[j] = meanG[j];
+                }
+            }
+            else
+            {
+                // color images
+                int pixelSize = Bitmap.GetPixelFormatSize( image.PixelFormat ) / 8;
+                int offset = image.Stride - imageWidth * pixelSize;
+                byte r, g, b; // RGB value
+
+                // walk through labels array
+                for ( int y = 0; y < imageHeight; y++ )
+                {
+                    for ( int x = 0; x < imageWidth; x++, i++, src += pixelSize )
+                    {
+                        // get current label
+                        label = objectLabels[i];
+
+                        // skip unlabeled pixels
+                        if ( label == 0 )
+                            continue;
+
+                        // check and update all coordinates
+
+                        if ( x < x1[label] )
+                        {
+                            x1[label] = x;
+                        }
+                        if ( x > x2[label] )
+                        {
+                            x2[label] = x;
+                        }
+                        if ( y < y1[label] )
+                        {
+                            y1[label] = y;
+                        }
+                        if ( y > y2[label] )
+                        {
+                            y2[label] = y;
+                        }
+
+                        area[label]++;
+                        xc[label] += x;
+                        yc[label] += y;
+
+                        r = src[RGB.R];
+                        g = src[RGB.G];
+                        b = src[RGB.B];
+
+                        meanR[label] += r;
+                        meanG[label] += g;
+                        meanB[label] += b;
+
+                        stdDevR[label] += r * r;
+                        stdDevG[label] += g * g;
+                        stdDevB[label] += b * b;
+                    }
+
+                    src += offset;
                 }
             }
 
@@ -1276,10 +1350,17 @@ namespace AForge.Imaging
 
             for ( int j = 1; j <= objectsCount; j++ )
             {
+                int blobArea = area[j];
+
                 Blob blob = new Blob( j, new Rectangle( x1[j], y1[j], x2[j] - x1[j] + 1, y2[j] - y1[j] + 1 ) );
-                blob.Area = area[j];
-                blob.Fullness = (double) area[j] / ( ( x2[j] - x1[j] + 1 ) * ( y2[j] - y1[j] + 1 ) );
-                blob.CenterOfGravity = new IntPoint( xc[j] / area[j], yc[j] / area[j] );
+                blob.Area = blobArea;
+                blob.Fullness = (double) blobArea / ( ( x2[j] - x1[j] + 1 ) * ( y2[j] - y1[j] + 1 ) );
+                blob.CenterOfGravity = new IntPoint( (int) ( xc[j] / blobArea ), (int) ( yc[j] / blobArea ) );
+                blob.ColorMean = Color.FromArgb( (byte) ( meanR[j] / blobArea ), (byte) ( meanG[j] / blobArea ), (byte) ( meanB[j] / blobArea ) );
+                blob.ColorStdDev = Color.FromArgb(
+                    (byte) ( Math.Sqrt( stdDevR[j] / blobArea - blob.ColorMean.R * blob.ColorMean.R ) ),
+                    (byte) ( Math.Sqrt( stdDevG[j] / blobArea - blob.ColorMean.G * blob.ColorMean.G ) ),
+                    (byte) ( Math.Sqrt( stdDevB[j] / blobArea - blob.ColorMean.B * blob.ColorMean.B ) ) );
 
                 blobs.Add( blob );
             }
