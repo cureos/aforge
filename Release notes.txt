@@ -39,6 +39,9 @@ Version updates and fixes:
   
   - Added ImageWarp image processing filter, which sets pixels in destination image to values from source image taken
     with specified offset.
+
+  - Added two more properties into Blob class, which are calculated by BlobCounterBase automatically - mean and standard
+    deviation of blob's color.
     
 
 * AForge.Math
@@ -51,9 +54,6 @@ Version updates and fixes:
      calling Update() method.
 
    - Optimizing calculation of standard deviation by doing single pass through histogram array instead of two as it was before.
-
-   - Added two more properties into Blob class, which are calculated by BlobCounterBase automatically - mean and standard
-     deviation of blob's color.
 
 
 * AForge.Fuzzy
@@ -68,7 +68,7 @@ Version updates and fixes:
   - Adding ManipulatorColor to AForge.Controls namespace, so it is no longer required to duplicate sources in every
     robotics sample or other projects.
     
-  - Adding slider control, which allows dragging manipulator in [-1, 1] range.
+  - Adding SliderControl control, which allows dragging manipulator in [-1, 1] range.
     
   - Adding AForge.Controls.Joystick class, which represents a simple wrapper around Win32 joystick API.
   
@@ -76,7 +76,7 @@ Version updates and fixes:
 * AForge.Video
   - Fixing MJPEGStream to skip clients' notification, if the video source was requested to stop.
 
-  - Adding support for AirLink camera, which are not very accurate with HTTP standard (fix contributed by Ivan Farkas).
+  - Adding support for AirLink IP cameras, which are not very accurate with HTTP standard (fix contributed by Ivan Farkas).
 
 
 * AForge.Video.DirectShow
