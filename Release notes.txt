@@ -1,3 +1,105 @@
+AForge.NET Framework 2.1.2 release notes
+----------------------------------------
+10.03.2010.
+
+
+Version updates and fixes:
+
+* Fixed registered issues/requests:
+  - Issue 58: Image Warping  
+  - Issue 122: NOT operator in Fuzzy Library.
+  - Issue 125: DisplayPropertyPage() method brings up locked properties panel
+  - Issue 126: Documentation to BlobCounterBase Class
+  - Issue 127: DirectShow video player cannot play .wmv 
+  - Issue 128: COM objects not freed in DirectShow player
+  - Issue 129: GaussianGenerator constructor ignores the seed value
+
+
+* AForge
+  - Adding addition, subtraction, multiplication and division operators between IntPoint/DoublePoint and scalar values.
+  
+  - Added operator for explicit casting of DoublePoint to IntPoint.
+  
+  - Added operator for implicit casting of IntPoint to DoublePoint, so integer points could be used in operations with
+    double precision points.
+    
+
+* AForge.Imaging
+  - Fixed a rounding bug in Hough Line Transformation, causing unnecessary doubling of the Hough transformation
+    values near zero radius.
+
+  - HoughCircleTransformation is update to return zero length array of circles instead of null in the case if no
+    circles detected.
+    
+  - Added BlobCounterBase.GetBlobsEdgePoints() method, which return unsorted list of blob's edge points. Produces
+    similar result as GetBlobsLeftAndRightEdges() combined with GetBlobsTopAndBottomEdges(), but each point occurs
+    only once in the list. The method is useful for shape analyzers, convex hull routines, etc.    
+    
+  - Adding WaterWave filter - image processing filter implementing simple water wave effect.
+  
+  - Added ImageWarp image processing filter, which sets pixels in destination image to values from source image taken
+    with specified offset.
+    
+
+* AForge.Math
+   - Add PointsCloud.GetBoundingRectangle() method to search for minimum/maximum X/Y coordinates in the specified
+     list of points.
+     
+   - Update constructor of GaussianGenerator to pass specified seed to StandardGenerator, which was previously ignored.
+
+   - Fixed bug in ContinuousHistogram class, which was causing wrong calculation of mean and std.dev. values after
+     calling Update() method.
+
+   - Optimizing calculation of standard deviation by doing single pass through histogram array instead of two as it was before.
+
+   - Added two more properties into Blob class, which are calculated by BlobCounterBase automatically - mean and standard
+     deviation of blob's color.
+
+
+* AForge.Fuzzy
+   - "NOT" operator is implemented for fuzzy rules.
+   
+
+* AForge.Controls
+  - Removing generation of exception in the case if user tries to change video source for VideoSourcePlayer control
+    without stopping currently played. User may want to control video starting and stopping on his own, so control
+    should not add any restrictions regarding this.
+    
+  - Adding ManipulatorColor to AForge.Controls namespace, so it is no longer required to duplicate sources in every
+    robotics sample or other projects.
+    
+  - Adding slider control, which allows dragging manipulator in [-1, 1] range.
+    
+  - Adding AForge.Controls.Joystick class, which represents a simple wrapper around Win32 joystick API.
+  
+    
+* AForge.Video
+  - Fixing MJPEGStream to skip clients' notification, if the video source was requested to stop.
+
+  - Adding support for AirLink camera, which are not very accurate with HTTP standard (fix contributed by Ivan Farkas).
+
+
+* AForge.Video.DirectShow
+  - Fixing some memory leaks (COM objects) in AForge.Video.DirectShow.
+  
+  - Changing the way of displaying camera's property:
+     1) If VideoCaptureDevice is already running, then request for property page displaying is passed to worker thread;
+     2) Otherwise local temporary source object is created to display property page.
+
+  - Using IGraphBuilder.AddSourceFilter( fileName, ... ) method for adding source filter for playing video files
+    instead of creating AsyncReader manually and adding it to the graph. The fix allows playing such video files
+    like WMV, which did not play before with AForge.Video.DirectShow.FileVideoSource.
+  
+  
+* AForge.Robotics.Surveyor
+  - Fixing bug in SVS.Disconnect() method - wrong object was accessed for aborting right camera.
+  
+  - Adding check to make sure stopEvent is not null, which may happen when tread is aborted (solves rare
+    NullReferenceException, which may happen on disconnecting from SRV-1).
+
+
+
+
 AForge.NET Framework 2.1.1 release notes
 ----------------------------------------
 24.01.2010.
