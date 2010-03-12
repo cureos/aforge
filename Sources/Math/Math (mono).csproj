@@ -48,6 +48,7 @@
     <Compile Include="Geometry\GrahamConvexHull.cs" />
     <Compile Include="Geometry\IConvexHullAlgorithm.cs" />
     <Compile Include="Geometry\IShapeOptimizer.cs" />
+    <Compile Include="Geometry\LineStraighteningOptimizer.cs" />
     <Compile Include="Geometry\PointsCloud.cs" />
     <Compile Include="Histogram.cs" />
     <Compile Include="PerlinNoise.cs" />
