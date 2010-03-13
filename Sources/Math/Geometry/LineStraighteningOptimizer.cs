@@ -145,6 +145,10 @@ namespace AForge.Math.Geometry
                         optimizedShape.RemoveAt( pointsInOptimizedHull - 1 );
                         pointsInOptimizedHull--;
                     }
+                    else
+                    {
+                        recentlyRemovedPoints.Clear( );
+                    }
 
                     if ( pointsInOptimizedHull > 3 )
                     {
