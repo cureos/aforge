@@ -21,6 +21,10 @@ namespace AForge.Math.Geometry
     /// by a set of points (corners of convex hull, etc.), and remove some insignificant points from it,
     /// which has little influence on the final shape's look.</para>
     /// 
+    /// <para>The shape optimizing algorithms can be useful in conjunction with such algorithms
+    /// like convex hull searching, which usually may provide many hull points, where some
+    /// of them are insignificant and could be removed.</para>
+    ///
     /// <para>For additional details about shape optimizing algorithms, documentation of
     /// particular algorithm should be studied.</para>
     /// </remarks>

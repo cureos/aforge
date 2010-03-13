@@ -50,7 +50,6 @@ namespace AForge.Math.Geometry
         /// </para>
         /// 
         /// <para>Default value is set to <b>5</b>.</para></remarks>
-        /// </remarks>
         /// 
         public double MaxDistanceToRemove
         {
