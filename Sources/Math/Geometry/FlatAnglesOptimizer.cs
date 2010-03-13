@@ -21,6 +21,9 @@ namespace AForge.Math.Geometry
     /// <see cref="MaxAngleToKeep"/>. The algorithm makes sure there are not obtuse angles in
     /// a shape, which are very close to flat line.</para>
     /// 
+    /// <para>The shape optimizer does not optimize shapes to less than 3 points, so optimized
+    /// shape always will have at least 3 points.</para>
+    ///
     /// <para>
     /// For example, the below circle shape comprised of 65 points, can be optimized to 10 points
     /// by setting <see cref="MaxAngleToKeep"/> to 160.<br />

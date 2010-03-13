@@ -26,6 +26,9 @@ namespace AForge.Math.Geometry
     /// the new shape has reduced amount of points and none of the removed points are further away
     /// from the new shape than the specified limit.</para>
     /// 
+    /// <para>The shape optimizer does not optimize shapes to less than 3 points, so optimized
+    /// shape always will have at least 3 points.</para>
+    ///
     /// <para>
     /// For example, the below circle shape comprised of 65 points, can be optimized to 8 points
     /// by setting <see cref="MaxDistanceToRemove"/> to 10.<br />
