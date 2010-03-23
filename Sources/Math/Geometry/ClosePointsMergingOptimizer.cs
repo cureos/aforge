@@ -105,7 +105,7 @@ namespace AForge.Math.Geometry
                     distance = optimizedShape[pointsInOptimizedHull - 1].DistanceTo( shape[i] );
 
                     if ( ( distance <= maxDistanceToMerge ) &&
-                         ( ( pointsInOptimizedHull > 3 ) || ( i < n - 2 ) ) )
+                         ( pointsInOptimizedHull + ( n - i ) > 3 ) )
                     {
                         // merge
                         optimizedShape[pointsInOptimizedHull - 1] = ( optimizedShape[pointsInOptimizedHull - 1] + shape[i] ) / 2;
