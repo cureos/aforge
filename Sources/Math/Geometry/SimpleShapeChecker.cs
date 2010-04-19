@@ -159,6 +159,10 @@ namespace AForge.Math.Geometry
         /// <returns>Returns <see langword="true"/> if the specified set of points form a
         /// circle shape or <see langword="false"/> otherwise.</returns>
         /// 
+        /// <remarks><para><note>Circle shape must contain at least 8 points to be recognized.
+        /// The method returns <see langword="false"/> always, of number of points in the specified
+        /// shape is less than 8.</note></para></remarks>
+        /// 
         public bool IsCircle( List<IntPoint> edgePoints )
         {
             DoublePoint center;
@@ -178,13 +182,25 @@ namespace AForge.Math.Geometry
         /// <returns>Returns <see langword="true"/> if the specified set of points form a
         /// circle shape or <see langword="false"/> otherwise.</returns>
         /// 
+        /// <remarks><para><note>Circle shape must contain at least 8 points to be recognized.
+        /// The method returns <see langword="false"/> always, of number of points in the specified
+        /// shape is less than 8.</note></para></remarks>
+        /// 
         public bool IsCircle( List<IntPoint> edgePoints, out DoublePoint center, out float radius )
         {
+            // make sure we have at least 8 points for curcle shape
+            if ( edgePoints.Count < 8 )
+            {
+                center = new DoublePoint( 0, 0 );
+                radius = 0;
+                return false;
+            }
+
             // get bounding rectangle of the points list
             IntPoint minXY, maxXY;
             PointsCloud.GetBoundingRectangle( edgePoints, out minXY, out maxXY );
             // get cloud's size
-            IntPoint cloudSize = maxXY - minXY ;
+            IntPoint cloudSize = maxXY - minXY;
             // calculate center point
             center = minXY + (DoublePoint) cloudSize / 2;
 
