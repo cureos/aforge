@@ -38,6 +38,45 @@ namespace AForge.Math.Geometry
     /// specified points.
     /// </para>
     /// 
+    /// <para>Sample usage:</para>
+    /// <code>
+    /// private List&lt;IntPoint&gt; idealCicle = new List&lt;IntPoint&gt;( );
+    /// private List&lt;IntPoint&gt; distorredCircle = new List&lt;IntPoint&gt;( );
+    /// System.Random rand = new System.Random( );
+    ///
+    /// // generate sample circles
+    /// double radius = 100;
+    ///
+    /// for ( int i = 0; i &lt; 360; i += 10 )
+    /// {
+    ///     double angle = (double) i / 180 * System.Math.PI;
+    /// 
+    ///     // add point to ideal circle
+    ///     idealCicle.Add( new IntPoint(
+    ///         (int) ( radius * System.Math.Cos( angle ) ),
+    ///         (int) ( radius * System.Math.Sin( angle ) ) ) );
+    /// 
+    ///     // add a bit distortion for distorred cirlce
+    ///     double distorredRadius = radius + rand.Next( 7 ) - 3;
+    /// 
+    ///     distorredCircle.Add( new IntPoint(
+    ///         (int) ( distorredRadius * System.Math.Cos( angle ) ),
+    ///         (int) ( distorredRadius * System.Math.Sin( angle ) ) ) );
+    /// }
+    /// 
+    /// // check shape
+    /// SimpleShapeChecker shapeChecker = new SimpleShapeChecker( );
+    /// 
+    /// if ( shapeChecker.IsCircle( idealCicle ) )
+    /// {
+    ///     // ...
+    /// }
+    /// 
+    /// if ( shapeChecker.CheckShapeType( distorredCircle ) == ShapeType.Circle )
+    /// {
+    ///     // ...
+    /// }
+    /// </code>
     /// </remarks>
     /// 
     public class SimpleShapeChecker
