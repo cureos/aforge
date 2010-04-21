@@ -285,7 +285,7 @@ namespace AForge.Video
         /// 
         public void Start( )
 		{
-			if ( thread == null )
+			if ( !IsRunning )
 			{
                 // check source
                 if ( ( source == null ) || ( source == string.Empty ) )

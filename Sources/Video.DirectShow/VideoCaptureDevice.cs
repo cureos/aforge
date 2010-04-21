@@ -293,7 +293,7 @@ namespace AForge.Video.DirectShow
         /// 
         public void Start( )
         {
-            if ( thread == null )
+            if ( !IsRunning )
             {
                 // check source
                 if ( ( deviceMoniker == null ) || ( deviceMoniker == string.Empty ) )
