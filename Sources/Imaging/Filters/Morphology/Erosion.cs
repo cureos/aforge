@@ -92,7 +92,7 @@ namespace AForge.Imaging.Filters
         /// <param name="se">Structuring element.</param>
         /// 
         /// <remarks><para>Structuring elemement for the erosion morphological operator
-        /// must be square matrix with odd size in the range of [3, 25].</para></remarks>
+        /// must be square matrix with odd size in the range of [3, 99].</para></remarks>
         /// 
         /// <exception cref="ArgumentException">Invalid size of structuring element.</exception>
         /// 
@@ -102,7 +102,7 @@ namespace AForge.Imaging.Filters
             int s = se.GetLength( 0 );
 
             // check structuring element size
-            if ( ( s != se.GetLength( 1 ) ) || ( s < 3 ) || ( s > 25 ) || ( s % 2 == 0 ) )
+            if ( ( s != se.GetLength( 1 ) ) || ( s < 3 ) || ( s > 99 ) || ( s % 2 == 0 ) )
                 throw new ArgumentException( "Invalid size of structuring element." );
 
             this.se = se;

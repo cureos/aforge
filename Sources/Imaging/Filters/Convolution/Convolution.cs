@@ -78,7 +78,7 @@ namespace AForge.Imaging.Filters
         /// 
         /// <remarks>
         /// <para><note>Convolution kernel must be square and its width/height
-        /// should be odd and should be in the [3, 25] range.</note></para>
+        /// should be odd and should be in the [3, 99] range.</note></para>
         /// 
         /// <para><note>Setting convolution kernel through this property does not
         /// affect <see cref="Divisor"/> - it is not recalculated automatically.</note></para>
@@ -94,7 +94,7 @@ namespace AForge.Imaging.Filters
                 int s = value.GetLength( 0 );
 
                 // check kernel size
-                if ( ( s != value.GetLength( 1 ) ) || ( s < 3 ) || ( s > 25 ) || ( s % 2 == 0 ) )
+                if ( ( s != value.GetLength( 1 ) ) || ( s < 3 ) || ( s > 99 ) || ( s % 2 == 0 ) )
                     throw new ArgumentException( "Invalid kernel size." );
 
                 this.kernel = value;
