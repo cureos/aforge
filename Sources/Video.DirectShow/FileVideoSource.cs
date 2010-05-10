@@ -56,6 +56,8 @@ namespace AForge.Video.DirectShow
         private int bytesReceived;
         // prevent freezing
         private bool preventFreezing = false;
+        // reference clock for the graph - when disabled, graph processes frames ASAP
+        private bool referenceClockEnabled = true;
 
         private Thread thread = null;
         private ManualResetEvent stopEvent = null;
@@ -175,19 +177,40 @@ namespace AForge.Video.DirectShow
         /// a trade off - it is possible to prevent video freezing skipping adding renderer filter or
         /// it is possible to keep renderer filter, but video may freeze during screen saver.</para>
         /// 
-        /// <para>Default value of this property is set to <b>false</b> for file video source.</para>
-        /// 
         /// <para><note>The property may become obsolete in the future when approach to disable freezing
         /// and adding all required filters is found.</note></para>
         /// 
         /// <para><note>The property should be set before calling <see cref="Start"/> method
-        /// of the class.</note></para>
+        /// of the class to have effect.</note></para>
+        /// 
+        /// <para>Default value of this property is set to <b>false</b>.</para>
+        /// 
         /// </remarks>
         /// 
         public bool PreventFreezing
         {
             get { return preventFreezing; }
             set { preventFreezing = value; }
+        }
+
+        /// <summary>
+        /// Enables/disables reference clock on the graph.
+        /// </summary>
+        /// 
+        /// <remarks><para>Disabling reference clocks causes DirectShow graph to run as fast as
+        /// it can process data. When enabled, it will process frames according to presentation
+        /// time of a video file.</para>
+        /// 
+        /// <para><note>The property should be set before calling <see cref="Start"/> method
+        /// of the class to have effect.</note></para>
+        /// 
+        /// <para>Default value of this property is set to <b>true</b>.</para>
+        /// </remarks>
+        /// 
+        public bool ReferenceClockEnabled
+        {
+            get { return referenceClockEnabled; }
+            set { referenceClockEnabled = value;}
         }
 
         /// <summary>
@@ -398,6 +421,13 @@ namespace AForge.Video.DirectShow
                 sampleGrabber.SetBufferSamples( false );
                 sampleGrabber.SetOneShot( false );
                 sampleGrabber.SetCallback( grabber, 1 );
+
+                // disable clock, if someone requested it
+                if ( !referenceClockEnabled )
+                {
+                    IMediaFilter mediaFilter = (IMediaFilter) graphObject;
+                    mediaFilter.SetSyncSource( null );
+                }
 
                 // get media control
                 mediaControl = (IMediaControl) graphObject;

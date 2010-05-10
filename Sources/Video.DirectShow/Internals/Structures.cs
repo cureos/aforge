@@ -168,7 +168,7 @@ namespace AForge.Video.DirectShow.Internals
         public IFilterGraph FilterGraph;
     }
 
-    // VIDEOINFOHEADE
+    // VIDEOINFOHEADER
 
     /// <summary>
     /// The structure describes the bitmap and color information for a video image.
@@ -406,5 +406,26 @@ namespace AForge.Video.DirectShow.Internals
         public long                 MaxFrameInterval;
         public int                  MinBitsPerSecond;
         public int                  MaxBitsPerSecond;
+    }
+
+    /// <summary>
+    /// Specifies a filter's state or the state of the filter graph.
+    /// </summary>
+    public enum FilterState
+    {
+        /// <summary>
+        /// Stopped. The filter is not processing data.
+        /// </summary>
+        State_Stopped,
+
+        /// <summary>
+        /// Paused. The filter is processing data, but not rendering it.
+        /// </summary>
+        State_Paused,
+
+        /// <summary>
+        /// Running. The filter is processing and rendering data.
+        /// </summary>
+        State_Running
     }
 }

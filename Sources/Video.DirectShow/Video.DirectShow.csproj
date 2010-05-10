@@ -53,10 +53,6 @@
     <DocumentationFile>AForge.Video.DirectShow.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AForge.Video, Version=1.4.0.0, Culture=neutral, PublicKeyToken=cbfb6e07d173c401, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Release\AForge.Video.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -76,8 +72,11 @@
     <Compile Include="Internals\IGraphBuilder.cs" />
     <Compile Include="Internals\IMediaControl.cs" />
     <Compile Include="Internals\IMediaEventEx.cs" />
+    <Compile Include="Internals\IMediaFilter.cs" />
+    <Compile Include="Internals\IPersist.cs" />
     <Compile Include="Internals\IPin.cs" />
     <Compile Include="Internals\IPropertyBag.cs" />
+    <Compile Include="Internals\IReferenceClock.cs" />
     <Compile Include="Internals\ISampleGrabber.cs" />
     <Compile Include="Internals\ISampleGrabberCB.cs" />
     <Compile Include="Internals\ISpecifyPropertyPages.cs" />
@@ -117,6 +116,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Video\Video.csproj">
+      <Project>{809725DC-6502-4732-A51C-DEB7FEA12975}</Project>
+      <Name>Video</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
