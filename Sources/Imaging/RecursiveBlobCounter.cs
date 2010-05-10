@@ -20,9 +20,8 @@ namespace AForge.Imaging
     /// images using recursive version of connected components labeling
     /// algorithm.</para>
     /// 
-    /// <para><note>The algorithm treats all black pixels as background, but not an object.
-    /// This means that all objects, which could be located by the algorithm, should have other
-    /// than black color.</note></para>
+    /// <para><note>The algorithm treats all pixels with values less or equal to <see cref="BackgroundThreshold"/>
+    /// as background, but pixels with higher values are treated as objects' pixels.</note></para>
     /// 
     /// <para><note>Since this algorithm is based on recursion, it is
     /// required to be careful with its application to big images with big blobs,
@@ -57,6 +56,27 @@ namespace AForge.Imaging
         private int[] tempLabels;
         private int stride;
         private int pixelSize;
+
+        private int backgroundThreshold = 0;
+
+        /// <summary>
+        /// Background threshold's value.
+        /// </summary>
+        /// 
+        /// <remarks><para>The property sets threshold value for distinguishing between background
+        /// pixel and objects' pixels. All pixel with values less or equal to this property are
+        /// treated as background, but pixels with higher values are treated as objects' pixels.</para>
+        /// 
+        /// <para><note>In the case of colour images a pixel is treated as objects' pixel if any of its
+        /// RGB values are higher than value of this threshold.</note></para>
+        /// 
+        /// <para>Default value is set to <b>0</b>.</para></remarks>
+        /// 
+        public int BackgroundThreshold
+        {
+            get { return backgroundThreshold; }
+            set { backgroundThreshold = Math.Max( 0, Math.Min( 255, value ) ); }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RecursiveBlobCounter"/> class.
@@ -151,7 +171,7 @@ namespace AForge.Imaging
                         for ( int x = 0; x < imageWidth; x++, src++, p++ )
                         {
                             // check for non-labeled pixel
-                            if ( ( *src != 0 ) && ( tempLabels[p] == 0 ) )
+                            if ( ( *src > backgroundThreshold ) && ( tempLabels[p] == 0 ) )
                             {
                                 objectsCount++;
                                 LabelPixel( src, p );
@@ -173,7 +193,12 @@ namespace AForge.Imaging
                         for ( int x = 0; x < imageWidth; x++, src += pixelSize, p++ )
                         {
                             // check for non-labeled pixel
-                            if ( ( ( src[RGB.R] | src[RGB.G] | src[RGB.B] ) != 0 ) && ( tempLabels[p] == 0 ) )
+                            if ( (
+                                    ( src[RGB.R] > backgroundThreshold ) ||
+                                    ( src[RGB.G] > backgroundThreshold ) ||
+                                    ( src[RGB.B] > backgroundThreshold )
+                                  ) && 
+                                ( tempLabels[p] == 0 ) )
                             {
                                 objectsCount++;
                                 LabelColorPixel( src, p );
@@ -196,7 +221,7 @@ namespace AForge.Imaging
 
         private unsafe void LabelPixel( byte* pixel, int labelPointer )
         {
-            if ( ( tempLabels[labelPointer] == 0 ) && ( *pixel != 0 ) )
+            if ( ( tempLabels[labelPointer] == 0 ) && ( *pixel > backgroundThreshold ) )
             {
                 tempLabels[labelPointer] = objectsCount;
 
@@ -213,7 +238,10 @@ namespace AForge.Imaging
 
         private unsafe void LabelColorPixel( byte* pixel, int labelPointer )
         {
-            if ( ( tempLabels[labelPointer] == 0 ) && ( ( pixel[RGB.R] | pixel[RGB.G] | pixel[RGB.B] ) != 0 ) )
+            if ( ( tempLabels[labelPointer] == 0 ) && (
+                ( pixel[RGB.R] > backgroundThreshold ) ||
+                ( pixel[RGB.G] > backgroundThreshold ) ||
+                ( pixel[RGB.B] > backgroundThreshold ) ) )
             {
                 tempLabels[labelPointer] = objectsCount;
 
