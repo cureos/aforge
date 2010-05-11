@@ -107,6 +107,7 @@
     <Compile Include="Filters\Color Filters\HistogramEqualization.cs" />
     <Compile Include="Filters\Color Filters\Invert.cs" />
     <Compile Include="Filters\Color Filters\LevelsLinear.cs" />
+    <Compile Include="Filters\Color Filters\LevelsLinear16bpp.cs" />
     <Compile Include="Filters\Color Filters\ReplaceChannel.cs" />
     <Compile Include="Filters\Color Filters\RotateChannels.cs" />
     <Compile Include="Filters\Color Filters\Sepia.cs" />

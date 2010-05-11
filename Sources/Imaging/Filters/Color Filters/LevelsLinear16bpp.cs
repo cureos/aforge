@@ -15,49 +15,43 @@ namespace AForge.Imaging.Filters
     using AForge;
 
     /// <summary>
-    /// Linear correction of RGB channels.
+    /// Linear correction of RGB channels for images, which have 16 bpp planes (16 bit gray images or 48/64 bit colour images).
     /// </summary>
     /// 
     /// <remarks><para>The filter performs linear correction of RGB channels by mapping specified
-    /// channels' input ranges to output ranges. It is similar to the
-    /// <see cref="ColorRemapping"/>, but the remapping is linear.</para>
+    /// channels' input ranges to output ranges. This version of the filter processes only images
+    /// with 16 bpp colour planes. See <see cref="LevelsLinear"/> for 8 bpp version.</para>
     /// 
-    /// <para>The filter accepts 8 bpp grayscale and 24/32 bpp color images for processing.</para>
+    /// <para>The filter accepts 16 bpp grayscale and 48/64 bpp colour images for processing.</para>
     /// 
     /// <para>Sample usage:</para>
     /// <code>
     /// // create filter
-    /// LevelsLinear filter = new LevelsLinear( );
+    /// LevelsLinear16bpp filter = new LevelsLinear16bpp( );
     /// // set ranges
-    /// filter.InRed   = new IntRange( 30, 230 );
-    /// filter.InGreen = new IntRange( 50, 240 );
-    /// filter.InBlue  = new IntRange( 10, 210 );
+    /// filter.InRed   = new IntRange( 3000, 42000 );
+    /// filter.InGreen = new IntRange( 5000, 37500 );
+    /// filter.InBlue  = new IntRange( 1000, 60000 );
     /// // apply the filter
     /// filter.ApplyInPlace( image );
     /// </code>
-    /// 
-    /// <para><b>Initial image:</b></para>
-    /// <img src="img/imaging/sample1.jpg" width="480" height="361" />
-    /// <para><b>Result image:</b></para>
-    /// <img src="img/imaging/levels_linear.jpg" width="480" height="361" />
     /// </remarks>
     /// 
-    /// <seealso cref="HSLLinear"/>
-    /// <seealso cref="YCbCrLinear"/>
+    /// <seealso cref="LevelsLinear"/>
     /// 
-    public class LevelsLinear : BaseInPlacePartialFilter
+    public class LevelsLinear16bpp : BaseInPlacePartialFilter
     {
-        private IntRange inRed      = new IntRange( 0, 255 );
-        private IntRange inGreen    = new IntRange( 0, 255 );
-        private IntRange inBlue     = new IntRange( 0, 255 );
+        private IntRange inRed   = new IntRange( 0, 65535 );
+        private IntRange inGreen = new IntRange( 0, 65535 );
+        private IntRange inBlue  = new IntRange( 0, 65535 );
 
-        private IntRange outRed     = new IntRange( 0, 255 );
-        private IntRange outGreen   = new IntRange( 0, 255 );
-        private IntRange outBlue    = new IntRange( 0, 255 );
+        private IntRange outRed   = new IntRange( 0, 65535 );
+        private IntRange outGreen = new IntRange( 0, 65535 );
+        private IntRange outBlue  = new IntRange( 0, 65535 );
 
-        private byte[] mapRed       = new byte[256];
-        private byte[] mapGreen     = new byte[256];
-        private byte[] mapBlue      = new byte[256];
+        private ushort[] mapRed   = new ushort[65536];
+        private ushort[] mapGreen = new ushort[65536];
+        private ushort[] mapBlue  = new ushort[65536];
 
         // private format translation dictionary
         private Dictionary<PixelFormat, PixelFormat> formatTransalations = new Dictionary<PixelFormat, PixelFormat>( );
@@ -216,16 +210,16 @@ namespace AForge.Imaging.Filters
         /// <summary>
         /// Initializes a new instance of the <see cref="LevelsLinear"/> class.
         /// </summary>
-        public LevelsLinear( )
+        public LevelsLinear16bpp( )
         {
             CalculateMap( inRed, outRed, mapRed );
             CalculateMap( inGreen, outGreen, mapGreen );
             CalculateMap( inBlue, outBlue, mapBlue );
 
-            formatTransalations[PixelFormat.Format8bppIndexed] = PixelFormat.Format8bppIndexed;
-            formatTransalations[PixelFormat.Format24bppRgb]    = PixelFormat.Format24bppRgb;
-            formatTransalations[PixelFormat.Format32bppRgb]    = PixelFormat.Format32bppRgb;
-            formatTransalations[PixelFormat.Format32bppArgb]   = PixelFormat.Format32bppArgb;
+            formatTransalations[PixelFormat.Format16bppGrayScale] = PixelFormat.Format16bppGrayScale;
+            formatTransalations[PixelFormat.Format48bppRgb]       = PixelFormat.Format48bppRgb;
+            formatTransalations[PixelFormat.Format64bppArgb]      = PixelFormat.Format64bppArgb;
+            formatTransalations[PixelFormat.Format64bppPArgb]     = PixelFormat.Format64bppPArgb;
         }
 
         /// <summary>
@@ -237,7 +231,7 @@ namespace AForge.Imaging.Filters
         ///
         protected override unsafe void ProcessFilter( UnmanagedImage image, Rectangle rect )
         {
-            int pixelSize = Image.GetPixelFormatSize( image.PixelFormat ) / 8;
+            int pixelSize = Image.GetPixelFormatSize( image.PixelFormat ) / 16;
 
             // processing start and stop X,Y positions
             int startX  = rect.Left;
@@ -247,22 +241,20 @@ namespace AForge.Imaging.Filters
             int offset  = image.Stride - rect.Width * pixelSize;
 
             // do the job
-            byte* ptr = (byte*) image.ImageData.ToPointer( );
+            byte* basePtr =(byte*) image.ImageData.ToPointer( );
 
-            // allign pointer to the first pixel to process
-            ptr += ( startY * image.Stride + startX * pixelSize );
-
-            if ( image.PixelFormat == PixelFormat.Format8bppIndexed )
+            if ( image.PixelFormat == PixelFormat.Format16bppGrayScale )
             {
                 // grayscale image
                 for ( int y = startY; y < stopY; y++ )
                 {
+                    ushort* ptr = (ushort*) ( basePtr + y * image.Stride ) + startX;
+
                     for ( int x = startX; x < stopX; x++, ptr++ )
                     {
                         // gray
                         *ptr = mapGreen[*ptr];
                     }
-                    ptr += offset;
                 }
             }
             else
@@ -270,6 +262,8 @@ namespace AForge.Imaging.Filters
                 // RGB image
                 for ( int y = startY; y < stopY; y++ )
                 {
+                    ushort* ptr = (ushort*) ( basePtr + y * image.Stride ) + startX * pixelSize;
+
                     for ( int x = startX; x < stopX; x++, ptr += pixelSize )
                     {
                         // red
@@ -279,7 +273,6 @@ namespace AForge.Imaging.Filters
                         // blue
                         ptr[RGB.B] = mapBlue[ptr[RGB.B]];
                     }
-                    ptr += offset;
                 }
             }
         }
@@ -293,7 +286,7 @@ namespace AForge.Imaging.Filters
         /// <param name="outRange">Output range.</param>
         /// <param name="map">Conversion map.</param>
         /// 
-        private void CalculateMap( IntRange inRange, IntRange outRange, byte[] map )
+        private void CalculateMap( IntRange inRange, IntRange outRange, ushort[] map )
         {
             double k = 0, b = 0;
 
@@ -303,16 +296,16 @@ namespace AForge.Imaging.Filters
                 b = (double) ( outRange.Min ) - k * inRange.Min;
             }
 
-            for ( int i = 0; i < 256; i++ )
+            for ( int i = 0; i < 65536; i++ )
             {
-                byte v = (byte) i;
+                ushort v = (ushort) i;
 
                 if ( v >= inRange.Max )
-                    v = (byte) outRange.Max;
+                    v = (ushort) outRange.Max;
                 else if ( v <= inRange.Min )
-                    v = (byte) outRange.Min;
+                    v = (ushort) outRange.Min;
                 else
-                    v = (byte) ( k * v + b );
+                    v = (ushort) ( k * v + b );
 
                 map[i] = v;
             }
