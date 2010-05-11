@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
+// Copyright © Andrew Kirillov, 2005-2010
 // andrew.kirillov@aforgenet.com
 //
 
@@ -44,7 +44,9 @@ namespace AForge.Imaging
     /// 
     public class BlobCounter : BlobCounterBase
     {
-        private int backgroundThreshold = 0;
+        private byte backgroundThresholdR = 0;
+        private byte backgroundThresholdG = 0;
+        private byte backgroundThresholdB = 0;
 
         /// <summary>
         /// Background threshold's value.
@@ -54,15 +56,22 @@ namespace AForge.Imaging
         /// pixel and objects' pixels. All pixel with values less or equal to this property are
         /// treated as background, but pixels with higher values are treated as objects' pixels.</para>
         /// 
-        /// <para><note>In the case of colour images a pixel is treated as objects' pixel if any of its
-        /// RGB values are higher than value of this threshold.</note></para>
+        /// <para><note>In the case of colour images a pixel is treated as objects' pixel if all of its
+        /// RGB values are higher than corresponding values of this threshold.</note></para>
         /// 
-        /// <para>Default value is set to <b>0</b>.</para></remarks>
+        /// <para><note>For processing grayscale image, set the property with all RGB components eqaul.</note></para>
+        ///
+        /// <para>Default value is set to <b>(0, 0, 0)</b> - black colour.</para></remarks>
         /// 
-        public int BackgroundThreshold
+        public Color BackgroundThreshold
         {
-            get { return backgroundThreshold; }
-            set { backgroundThreshold = Math.Max( 0, Math.Min( 255, value ) ); }
+            get { return Color.FromArgb( backgroundThresholdR, backgroundThresholdG, backgroundThresholdB ); }
+            set
+            {
+                backgroundThresholdR = value.R;
+                backgroundThresholdG = value.G;
+                backgroundThresholdB = value.B;
+            }
         }
 
         /// <summary>
@@ -154,7 +163,7 @@ namespace AForge.Imaging
                     int offset = stride - imageWidth;
 
                     // 1 - for pixels of the first row
-                    if ( *src > backgroundThreshold )
+                    if ( *src > backgroundThresholdG )
                     {
                         objectLabels[p] = ++labelsCount;
                     }
@@ -165,10 +174,10 @@ namespace AForge.Imaging
                     for ( int x = 1; x < imageWidth; x++, src++, p++ )
                     {
                         // check if we need to label current pixel
-                        if ( *src > backgroundThreshold )
+                        if ( *src > backgroundThresholdG )
                         {
                             // check if the previous pixel already was labeled
-                            if ( src[-1] > backgroundThreshold )
+                            if ( src[-1] > backgroundThresholdG )
                             {
                                 // label current pixel, as the previous
                                 objectLabels[p] = objectLabels[p - 1];
@@ -188,15 +197,15 @@ namespace AForge.Imaging
                     {
                         // for the first pixel of the row, we need to check
                         // only upper and upper-right pixels
-                        if ( *src > backgroundThreshold )
+                        if ( *src > backgroundThresholdG )
                         {
                             // check surrounding pixels
-                            if ( src[-stride] > backgroundThreshold )
+                            if ( src[-stride] > backgroundThresholdG )
                             {
                                 // label current pixel, as the above
                                 objectLabels[p] = objectLabels[p - imageWidth];
                             }
-                            else if ( src[1 - stride] > backgroundThreshold )
+                            else if ( src[1 - stride] > backgroundThresholdG )
                             {
                                 // label current pixel, as the above right
                                 objectLabels[p] = objectLabels[p + 1 - imageWidth];
@@ -213,26 +222,26 @@ namespace AForge.Imaging
                         // check left pixel and three upper pixels for the rest of pixels
                         for ( int x = 1; x < imageWidth - 1; x++, src++, p++ )
                         {
-                            if ( *src > backgroundThreshold )
+                            if ( *src > backgroundThresholdG )
                             {
                                 // check surrounding pixels
-                                if ( src[-1] > backgroundThreshold )
+                                if ( src[-1] > backgroundThresholdG )
                                 {
                                     // label current pixel, as the left
                                     objectLabels[p] = objectLabels[p - 1];
                                 }
-                                else if ( src[-1 - stride] > backgroundThreshold )
+                                else if ( src[-1 - stride] > backgroundThresholdG )
                                 {
                                     // label current pixel, as the above left
                                     objectLabels[p] = objectLabels[p - 1 - imageWidth];
                                 }
-                                else if ( src[-stride] > backgroundThreshold )
+                                else if ( src[-stride] > backgroundThresholdG )
                                 {
                                     // label current pixel, as the above
                                     objectLabels[p] = objectLabels[p - imageWidth];
                                 }
 
-                                if ( src[1 - stride] > backgroundThreshold )
+                                if ( src[1 - stride] > backgroundThresholdG )
                                 {
                                     if ( objectLabels[p] == 0 )
                                     {
@@ -293,20 +302,20 @@ namespace AForge.Imaging
 
                         // for the last pixel of the row, we need to check
                         // only upper and upper-left pixels
-                        if ( *src > backgroundThreshold )
+                        if ( *src > backgroundThresholdG )
                         {
                             // check surrounding pixels
-                            if ( src[-1] > backgroundThreshold )
+                            if ( src[-1] > backgroundThresholdG )
                             {
                                 // label current pixel, as the left
                                 objectLabels[p] = objectLabels[p - 1];
                             }
-                            else if ( src[-1 - stride] > backgroundThreshold )
+                            else if ( src[-1 - stride] > backgroundThresholdG )
                             {
                                 // label current pixel, as the above left
                                 objectLabels[p] = objectLabels[p - 1 - imageWidth];
                             }
-                            else if ( src[-stride] > backgroundThreshold )
+                            else if ( src[-stride] > backgroundThresholdG )
                             {
                                 // label current pixel, as the above
                                 objectLabels[p] = objectLabels[p - imageWidth];
@@ -344,14 +353,14 @@ namespace AForge.Imaging
                     for ( int x = 1; x < imageWidth; x++, src += pixelSize, p++ )
                     {
                         // check if we need to label current pixel
-                        if ( ( src[RGB.R] > backgroundThreshold ) ||
-                             ( src[RGB.G] > backgroundThreshold ) ||
-                             ( src[RGB.B] > backgroundThreshold ) )
+                        if ( ( src[RGB.R] > backgroundThresholdR ) &&
+                             ( src[RGB.G] > backgroundThresholdG ) &&
+                             ( src[RGB.B] > backgroundThresholdB ) )
                         {
                             // check if the previous pixel already was labeled
-                            if ( ( src[RGB.R - pixelSize] > backgroundThreshold ) ||
-                                 ( src[RGB.G - pixelSize] > backgroundThreshold ) ||
-                                 ( src[RGB.B - pixelSize] > backgroundThreshold ) )
+                            if ( ( src[RGB.R - pixelSize] > backgroundThresholdR ) &&
+                                 ( src[RGB.G - pixelSize] > backgroundThresholdG ) &&
+                                 ( src[RGB.B - pixelSize] > backgroundThresholdB ) )
                             {
                                 // label current pixel, as the previous
                                 objectLabels[p] = objectLabels[p - 1];
@@ -371,21 +380,21 @@ namespace AForge.Imaging
                     {
                         // for the first pixel of the row, we need to check
                         // only upper and upper-right pixels
-                        if ( ( src[RGB.R] > backgroundThreshold ) ||
-                             ( src[RGB.G] > backgroundThreshold ) ||
-                             ( src[RGB.B] > backgroundThreshold ) )
+                        if ( ( src[RGB.R] > backgroundThresholdR ) &&
+                             ( src[RGB.G] > backgroundThresholdG ) &&
+                             ( src[RGB.B] > backgroundThresholdB ) )
                         {
                             // check surrounding pixels
-                            if ( ( src[RGB.R - stride] > backgroundThreshold ) ||
-                                 ( src[RGB.G - stride] > backgroundThreshold ) ||
-                                 ( src[RGB.B - stride] > backgroundThreshold ) )
+                            if ( ( src[RGB.R - stride] > backgroundThresholdR ) &&
+                                 ( src[RGB.G - stride] > backgroundThresholdG ) &&
+                                 ( src[RGB.B - stride] > backgroundThresholdB ) )
                             {
                                 // label current pixel, as the above
                                 objectLabels[p] = objectLabels[p - imageWidth];
                             }
-                            else if ( ( src[RGB.R - strideM1] > backgroundThreshold ) ||
-                                      ( src[RGB.G - strideM1] > backgroundThreshold ) ||
-                                      ( src[RGB.B - strideM1] > backgroundThreshold ) )
+                            else if ( ( src[RGB.R - strideM1] > backgroundThresholdR ) &&
+                                      ( src[RGB.G - strideM1] > backgroundThresholdG ) &&
+                                      ( src[RGB.B - strideM1] > backgroundThresholdB ) )
                             {
                                 // label current pixel, as the above right
                                 objectLabels[p] = objectLabels[p + 1 - imageWidth];
@@ -402,36 +411,36 @@ namespace AForge.Imaging
                         // check left pixel and three upper pixels for the rest of pixels
                         for ( int x = 1; x < imageWidth - 1; x++, src += pixelSize, p++ )
                         {
-                            if ( ( src[RGB.R] > backgroundThreshold ) ||
-                                 ( src[RGB.G] > backgroundThreshold ) ||
-                                 ( src[RGB.B] > backgroundThreshold ) )
+                            if ( ( src[RGB.R] > backgroundThresholdR ) &&
+                                 ( src[RGB.G] > backgroundThresholdG ) &&
+                                 ( src[RGB.B] > backgroundThresholdB ) )
                             {
                                 // check surrounding pixels
-                                if ( ( src[RGB.R - pixelSize] > backgroundThreshold ) ||
-                                     ( src[RGB.G - pixelSize] > backgroundThreshold ) ||
-                                     ( src[RGB.B - pixelSize] > backgroundThreshold ) )
+                                if ( ( src[RGB.R - pixelSize] > backgroundThresholdR ) &&
+                                     ( src[RGB.G - pixelSize] > backgroundThresholdG ) &&
+                                     ( src[RGB.B - pixelSize] > backgroundThresholdB ) )
                                 {
                                     // label current pixel, as the left
                                     objectLabels[p] = objectLabels[p - 1];
                                 }
-                                else if ( ( src[RGB.R - strideP1] > backgroundThreshold ) ||
-                                          ( src[RGB.G - strideP1] > backgroundThreshold ) ||
-                                          ( src[RGB.B - strideP1] > backgroundThreshold ) )
+                                else if ( ( src[RGB.R - strideP1] > backgroundThresholdR ) &&
+                                          ( src[RGB.G - strideP1] > backgroundThresholdG ) &&
+                                          ( src[RGB.B - strideP1] > backgroundThresholdB ) )
                                 {
                                     // label current pixel, as the above left
                                     objectLabels[p] = objectLabels[p - 1 - imageWidth];
                                 }
-                                else if ( ( src[RGB.R - stride] > backgroundThreshold ) ||
-                                          ( src[RGB.G - stride] > backgroundThreshold ) ||
-                                          ( src[RGB.B - stride] > backgroundThreshold ) )
+                                else if ( ( src[RGB.R - stride] > backgroundThresholdR ) &&
+                                          ( src[RGB.G - stride] > backgroundThresholdG ) &&
+                                          ( src[RGB.B - stride] > backgroundThresholdB ) )
                                 {
                                     // label current pixel, as the above
                                     objectLabels[p] = objectLabels[p - imageWidth];
                                 }
 
-                                if ( ( src[RGB.R - strideM1] > backgroundThreshold ) ||
-                                     ( src[RGB.G - strideM1] > backgroundThreshold ) ||
-                                     ( src[RGB.B - strideM1] > backgroundThreshold ) )
+                                if ( ( src[RGB.R - strideM1] > backgroundThresholdR ) &&
+                                     ( src[RGB.G - strideM1] > backgroundThresholdG ) &&
+                                     ( src[RGB.B - strideM1] > backgroundThresholdB ) )
                                 {
                                     if ( objectLabels[p] == 0 )
                                     {
@@ -492,28 +501,28 @@ namespace AForge.Imaging
 
                         // for the last pixel of the row, we need to check
                         // only upper and upper-left pixels
-                        if ( ( src[RGB.R] > backgroundThreshold ) ||
-                             ( src[RGB.G] > backgroundThreshold ) ||
-                             ( src[RGB.B] > backgroundThreshold ) )
+                        if ( ( src[RGB.R] > backgroundThresholdR ) &&
+                             ( src[RGB.G] > backgroundThresholdG ) &&
+                             ( src[RGB.B] > backgroundThresholdB ) )
                         {
                             // check surrounding pixels
-                            if ( ( src[RGB.R - pixelSize] > backgroundThreshold ) ||
-                                 ( src[RGB.G - pixelSize] > backgroundThreshold ) ||
-                                 ( src[RGB.B - pixelSize] > backgroundThreshold ) )
+                            if ( ( src[RGB.R - pixelSize] > backgroundThresholdR ) &&
+                                 ( src[RGB.G - pixelSize] > backgroundThresholdG ) &&
+                                 ( src[RGB.B - pixelSize] > backgroundThresholdB ) )
                             {
                                 // label current pixel, as the left
                                 objectLabels[p] = objectLabels[p - 1];
                             }
-                            else if ( ( src[RGB.R - strideP1] > backgroundThreshold ) ||
-                                      ( src[RGB.G - strideP1] > backgroundThreshold ) ||
-                                      ( src[RGB.B - strideP1] > backgroundThreshold ) )
+                            else if ( ( src[RGB.R - strideP1] > backgroundThresholdR ) &&
+                                      ( src[RGB.G - strideP1] > backgroundThresholdG ) &&
+                                      ( src[RGB.B - strideP1] > backgroundThresholdB ) )
                             {
                                 // label current pixel, as the above left
                                 objectLabels[p] = objectLabels[p - 1 - imageWidth];
                             }
-                            else if ( ( src[RGB.R - stride] > backgroundThreshold ) ||
-                                      ( src[RGB.G - stride] > backgroundThreshold ) ||
-                                      ( src[RGB.B - stride] > backgroundThreshold ) )
+                            else if ( ( src[RGB.R - stride] > backgroundThresholdR ) &&
+                                      ( src[RGB.G - stride] > backgroundThresholdG ) &&
+                                      ( src[RGB.B - stride] > backgroundThresholdB ) )
                             {
                                 // label current pixel, as the above
                                 objectLabels[p] = objectLabels[p - imageWidth];

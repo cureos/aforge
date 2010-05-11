@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
+// Copyright © Andrew Kirillov, 2005-2010
 // andrew.kirillov@aforgenet.com
 //
 
@@ -57,7 +57,9 @@ namespace AForge.Imaging
         private int stride;
         private int pixelSize;
 
-        private int backgroundThreshold = 0;
+        private byte backgroundThresholdR = 0;
+        private byte backgroundThresholdG = 0;
+        private byte backgroundThresholdB = 0;
 
         /// <summary>
         /// Background threshold's value.
@@ -67,15 +69,22 @@ namespace AForge.Imaging
         /// pixel and objects' pixels. All pixel with values less or equal to this property are
         /// treated as background, but pixels with higher values are treated as objects' pixels.</para>
         /// 
-        /// <para><note>In the case of colour images a pixel is treated as objects' pixel if any of its
-        /// RGB values are higher than value of this threshold.</note></para>
+        /// <para><note>In the case of colour images a pixel is treated as objects' pixel if all of its
+        /// RGB values are higher than corresponding values of this threshold.</note></para>
         /// 
-        /// <para>Default value is set to <b>0</b>.</para></remarks>
+        /// <para><note>For processing grayscale image, set the property with all RGB components eqaul.</note></para>
+        ///
+        /// <para>Default value is set to <b>(0, 0, 0)</b> - black colour.</para></remarks>
         /// 
-        public int BackgroundThreshold
+        public Color BackgroundThreshold
         {
-            get { return backgroundThreshold; }
-            set { backgroundThreshold = Math.Max( 0, Math.Min( 255, value ) ); }
+            get { return Color.FromArgb( backgroundThresholdR, backgroundThresholdG, backgroundThresholdB ); }
+            set
+            {
+                backgroundThresholdR = value.R;
+                backgroundThresholdG = value.G;
+                backgroundThresholdB = value.B;
+            }
         }
 
         /// <summary>
@@ -171,7 +180,7 @@ namespace AForge.Imaging
                         for ( int x = 0; x < imageWidth; x++, src++, p++ )
                         {
                             // check for non-labeled pixel
-                            if ( ( *src > backgroundThreshold ) && ( tempLabels[p] == 0 ) )
+                            if ( ( *src > backgroundThresholdG ) && ( tempLabels[p] == 0 ) )
                             {
                                 objectsCount++;
                                 LabelPixel( src, p );
@@ -194,9 +203,9 @@ namespace AForge.Imaging
                         {
                             // check for non-labeled pixel
                             if ( (
-                                    ( src[RGB.R] > backgroundThreshold ) ||
-                                    ( src[RGB.G] > backgroundThreshold ) ||
-                                    ( src[RGB.B] > backgroundThreshold )
+                                    ( src[RGB.R] > backgroundThresholdR ) &&
+                                    ( src[RGB.G] > backgroundThresholdG ) &&
+                                    ( src[RGB.B] > backgroundThresholdB )
                                   ) && 
                                 ( tempLabels[p] == 0 ) )
                             {
@@ -221,7 +230,7 @@ namespace AForge.Imaging
 
         private unsafe void LabelPixel( byte* pixel, int labelPointer )
         {
-            if ( ( tempLabels[labelPointer] == 0 ) && ( *pixel > backgroundThreshold ) )
+            if ( ( tempLabels[labelPointer] == 0 ) && ( *pixel > backgroundThresholdG ) )
             {
                 tempLabels[labelPointer] = objectsCount;
 
@@ -239,9 +248,9 @@ namespace AForge.Imaging
         private unsafe void LabelColorPixel( byte* pixel, int labelPointer )
         {
             if ( ( tempLabels[labelPointer] == 0 ) && (
-                ( pixel[RGB.R] > backgroundThreshold ) ||
-                ( pixel[RGB.G] > backgroundThreshold ) ||
-                ( pixel[RGB.B] > backgroundThreshold ) ) )
+                ( pixel[RGB.R] > backgroundThresholdR ) &&
+                ( pixel[RGB.G] > backgroundThresholdG ) &&
+                ( pixel[RGB.B] > backgroundThresholdB ) ) )
             {
                 tempLabels[labelPointer] = objectsCount;
 
