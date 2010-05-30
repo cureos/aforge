@@ -69,7 +69,7 @@ namespace AForge.Imaging
         /// pixel and objects' pixels. All pixel with values less or equal to this property are
         /// treated as background, but pixels with higher values are treated as objects' pixels.</para>
         /// 
-        /// <para><note>In the case of colour images a pixel is treated as objects' pixel if all of its
+        /// <para><note>In the case of colour images a pixel is treated as objects' pixel if <b>any</b> of its
         /// RGB values are higher than corresponding values of this threshold.</note></para>
         /// 
         /// <para><note>For processing grayscale image, set the property with all RGB components eqaul.</note></para>
@@ -203,8 +203,8 @@ namespace AForge.Imaging
                         {
                             // check for non-labeled pixel
                             if ( (
-                                    ( src[RGB.R] > backgroundThresholdR ) &&
-                                    ( src[RGB.G] > backgroundThresholdG ) &&
+                                    ( src[RGB.R] > backgroundThresholdR ) ||
+                                    ( src[RGB.G] > backgroundThresholdG ) ||
                                     ( src[RGB.B] > backgroundThresholdB )
                                   ) && 
                                 ( tempLabels[p] == 0 ) )
@@ -248,8 +248,8 @@ namespace AForge.Imaging
         private unsafe void LabelColorPixel( byte* pixel, int labelPointer )
         {
             if ( ( tempLabels[labelPointer] == 0 ) && (
-                ( pixel[RGB.R] > backgroundThresholdR ) &&
-                ( pixel[RGB.G] > backgroundThresholdG ) &&
+                ( pixel[RGB.R] > backgroundThresholdR ) ||
+                ( pixel[RGB.G] > backgroundThresholdG ) ||
                 ( pixel[RGB.B] > backgroundThresholdB ) ) )
             {
                 tempLabels[labelPointer] = objectsCount;
