@@ -91,7 +91,7 @@ namespace AForge.Math.Geometry
                 pointsToProcess[i].K = ( dx == 0 ) ? double.PositiveInfinity : (double) dy / dx;
             }
 
-            // sort point by angle and distance
+            // sort points by angle and distance
             pointsToProcess.Sort( );
 
             List<PointToProcess> convexHullTemp = new List<PointToProcess>( );
@@ -109,8 +109,9 @@ namespace AForge.Math.Geometry
             {
                 PointToProcess newPoint = pointsToProcess[0];
 
-                // skip any point, which has the same slope as the last one
-                if ( newPoint.K == lastPoint.K )
+                // skip any point, which has the same slope as the last one or
+                // has 0 distance to the first point
+                if ( ( newPoint.K == lastPoint.K ) || ( newPoint.Distance == 0 ) )
                 {
                     pointsToProcess.RemoveAt( 0 );
                     continue;
