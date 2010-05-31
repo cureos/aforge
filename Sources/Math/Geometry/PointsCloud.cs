@@ -345,9 +345,18 @@ namespace AForge.Math.Geometry
             // quadrilateral's corners
             List<IntPoint> corners = new List<IntPoint>( );
 
+            // get bounding rectangle of the points list
+            IntPoint minXY, maxXY;
+            PointsCloud.GetBoundingRectangle( cloud, out minXY, out maxXY );
+            // get cloud's size
+            IntPoint cloudSize = maxXY - minXY;
+            // calculate center point
+            IntPoint center = minXY + cloudSize / 2;
+            // acceptable deviation limit
+            double distortionLimit = 0.1 * ( cloudSize.X + cloudSize.Y ) / 2;
+
             // get the furthest point from (0,0)
-            IntPoint point1 = PointsCloud.GetFurthestPoint( cloud,
-                new IntPoint( 0, 0 ) );
+            IntPoint point1 = PointsCloud.GetFurthestPoint( cloud, center );
             // get the furthest point from the first point
             IntPoint point2 = PointsCloud.GetFurthestPoint( cloud, point1 );
 
@@ -368,7 +377,7 @@ namespace AForge.Math.Geometry
             // connecting points 1 and 2, then it is one the same line ...
             // which means corner was not found
 
-            if ( ( distance3 >= 3 ) && ( distance4 >= 3 ) )
+            if ( ( distance3 >= distortionLimit ) && ( distance4 >= distortionLimit ) )
             {
                 corners.Add( point3 );
                 corners.Add( point4 );
@@ -386,7 +395,7 @@ namespace AForge.Math.Geometry
 
                 bool thirdPointIsFound = false;
 
-                if ( ( distance3 >= 3 ) && ( distance4 >= 3 ) )
+                if ( ( distance3 >= distortionLimit ) && ( distance4 >= distortionLimit ) )
                 {
                     if ( point4.DistanceTo( point2 ) > point3.DistanceTo( point2 ) )
                         point3 = point4;
@@ -398,8 +407,7 @@ namespace AForge.Math.Geometry
                     PointsCloud.GetFurthestPointsFromLine( cloud, point2, tempPoint,
                         out point3, out distance3, out point4, out distance4 );
 
-
-                    if ( ( distance3 >= 3 ) && ( distance4 >= 3 ) )
+                    if ( ( distance3 >= distortionLimit ) && ( distance4 >= distortionLimit ) )
                     {
                         if ( point4.DistanceTo( point1 ) > point3.DistanceTo( point1 ) )
                             point3 = point4;
@@ -424,9 +432,9 @@ namespace AForge.Math.Geometry
                     PointsCloud.GetFurthestPointsFromLine( cloud, point1, point3,
                         out tempPoint, out tempDistance, out point4, out distance4 );
 
-                    if ( ( distance4 >= 3 ) && ( tempDistance >= 3 ) )
+                    if ( ( distance4 >= distortionLimit ) && ( tempDistance >= distortionLimit ) )
                     {
-                        if ( tempPoint.DistanceTo( point2 ) > point3.DistanceTo( point2 ) )
+                        if ( tempPoint.DistanceTo( point2 ) > point4.DistanceTo( point2 ) )
                             point4 = tempPoint;
                     }
                     else
@@ -434,7 +442,7 @@ namespace AForge.Math.Geometry
                         PointsCloud.GetFurthestPointsFromLine( cloud, point2, point3,
                             out tempPoint, out tempDistance, out point4, out distance4 );
 
-                        if ( tempPoint.DistanceTo( point1 ) > point3.DistanceTo( point1 ) )
+                        if ( tempPoint.DistanceTo( point1 ) > point4.DistanceTo( point1 ) )
                             point4 = tempPoint;
                     }
 
