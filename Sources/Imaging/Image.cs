@@ -253,6 +253,7 @@ namespace AForge.Imaging
                 ( image.PixelFormat != PixelFormat.Format32bppArgb ) &&
                 ( image.PixelFormat != PixelFormat.Format48bppRgb ) &&
                 ( image.PixelFormat != PixelFormat.Format64bppArgb ) &&
+                ( image.PixelFormat != PixelFormat.Format16bppGrayScale ) &&
                 ( IsGrayscale( image ) == false )
                 )
             {
