@@ -84,8 +84,8 @@ namespace AForge.Imaging
     ///     
     ///     // draw line on the image
     ///     Drawing.Line( sourceData,
-    ///         new Point( (int) x0 + w2, h2 - (int) y0 ),
-    ///         new Point( (int) x1 + w2, h2 - (int) y1 ),
+    ///         new IntPoint( (int) x0 + w2, h2 - (int) y0 ),
+    ///         new IntPoint( (int) x1 + w2, h2 - (int) y1 ),
     ///         Color.Red );
     /// }
     /// </code>
