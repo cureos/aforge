@@ -38,6 +38,10 @@ namespace AForge.Math.Geometry
     /// specified points.
     /// </para>
     /// 
+    /// <para>See also <see cref="AngleError"/> and <see cref="LengthError"/> properties,
+    /// which set acceptable errors for polygon sub type checking done by
+    /// <see cref="CheckPolygonSubType"/> method.</para>
+    /// 
     /// <para>Sample usage:</para>
     /// <code>
     /// private List&lt;IntPoint&gt; idealCicle = new List&lt;IntPoint&gt;( );
@@ -86,12 +90,15 @@ namespace AForge.Math.Geometry
         private float minAcceptableDistortion = 0.5f;
         private float relativeDistortionLimit = 0.03f;
 
+        private float angleError = 7;
+        private float lengthError = 0.1f;
+
         /// <summary>
         /// Minimum value of allowed shapes' distortion.
         /// </summary>
         /// 
         /// <remarks><para>The property sets minimum value for allowed shapes'
-        /// distortion. See documentation to <see cref="SimpleShapeChecker"/>
+        /// distortion (in pixels). See documentation to <see cref="SimpleShapeChecker"/>
         /// class for more details about this property.</para>
         /// 
         /// <para>Default value is set to <b>0.5</b>.</para>
@@ -122,6 +129,49 @@ namespace AForge.Math.Geometry
         {
             get { return relativeDistortionLimit; }
             set { relativeDistortionLimit = Math.Max( 0, Math.Min( 1, value ) ); }
+        }
+
+        /// <summary>
+        /// Maximum allowed angle error in degrees, [0, 20].
+        /// </summary>
+        /// 
+        /// <remarks><para>The value sets maximum allowed difference between two angles to
+        /// treat them as equal. It is used by <see cref="CheckPolygonSubType"/> method to
+        /// check for parallel lines and angles of triangles and quadrilaterals.
+        /// For example, if angle between two lines equals 5 degrees and this properties value
+        /// is set to 7, then two compared lines are treated as parallel.</para>
+        /// 
+        /// <para>Default value is set to <b>7</b>.</para>
+        /// </remarks>
+        /// 
+        public float AngleError
+        {
+            get { return angleError; }
+            set { angleError = Math.Max( 0, Math.Min( 20, value ) ); }
+        }
+
+        /// <summary>
+        /// Maximum allowed difference in sides' length (relative to shapes' size), [0, 1].
+        /// </summary>
+        ///
+        /// <remarks><para>The values sets maximum allowed difference between two sides' length
+        /// to treat them as equal. The error value is set relative to shapes size and measured
+        /// in [0, 1] range, which corresponds to [0%, 100%] range. Absolute length error in pixels
+        /// is calculated as:
+        /// <code lang="none">
+        /// LengthError * ( width + height ) / 2
+        /// </code>
+        /// , where <b>width</b> and <b>height</b> is the size of bounding rectangle for the
+        /// specified shape.
+        /// </para>
+        /// 
+        /// <para>Default value is set to <b>0.1</b> (10%).</para>
+        /// </remarks>
+        ///
+        public float LengthError
+        {
+            get { return lengthError; }
+            set { lengthError = Math.Max( 0, Math.Min( 1, value ) ); }
         }
 
         /// <summary>
@@ -314,6 +364,115 @@ namespace AForge.Math.Geometry
         }
 
         /// <summary>
+        /// Check sub type of a convex polygon.
+        /// </summary>
+        /// 
+        /// <param name="corners">Corners of the convex polygon to check.</param>
+        /// 
+        /// <returns>Return detected sub type of the specified shape.</returns>
+        /// 
+        /// <remarks><para>The method check corners of a convex polygon detecting
+        /// its subtype. Polygon's corners are usually retrieved using <see cref="IsConvexPolygon"/>
+        /// method, but can be any list of 3-4 points (only sub types of triangles and
+        /// quadrilateral are checked).</para>
+        /// 
+        /// <para>See <see cref="AngleError"/> and <see cref="LengthError"/> properties,
+        /// which set acceptable errors for polygon sub type checking.</para>
+        /// </remarks>
+        /// 
+        public PolygonSubType CheckPolygonSubType( List<IntPoint> corners )
+        {
+            PolygonSubType subType = PolygonSubType.Unknown;
+
+            // get bounding rectangle of the points list
+            IntPoint minXY, maxXY;
+            PointsCloud.GetBoundingRectangle( corners, out minXY, out maxXY );
+            // get cloud's size
+            IntPoint cloudSize = maxXY - minXY;
+
+            float maxLengthDiff = lengthError * ( cloudSize.X + cloudSize.Y ) / 2;
+
+            if ( corners.Count == 3 )
+            {
+                // get angles of the triangle
+                float angle1 = GetAngleBetweenLines( corners[0], corners[1], corners[1], corners[2] );
+                float angle2 = GetAngleBetweenLines( corners[1], corners[2], corners[2], corners[0] );
+                float angle3 = GetAngleBetweenLines( corners[2], corners[0], corners[0], corners[1] );
+
+                // check for equilateral triangle
+                if ( ( Math.Abs( angle1 - 60 ) <= angleError ) &&
+                     ( Math.Abs( angle2 - 60 ) <= angleError ) &&
+                     ( Math.Abs( angle3 - 60 ) <= angleError ) )
+                {
+                    subType = PolygonSubType.EquilateralTriangle;
+                }
+                else
+                {
+                    // check for isosceles triangle
+                    if ( ( Math.Abs( angle1 - angle2 ) <= angleError ) ||
+                         ( Math.Abs( angle2 - angle3 ) <= angleError ) ||
+                         ( Math.Abs( angle3 - angle1 ) <= angleError ) )
+                    {
+                        subType = PolygonSubType.IsoscelesTriangle;
+                    }
+
+                    // check for rectangled triangle
+                    if ( ( Math.Abs( angle1 - 90 ) <= angleError ) ||
+                         ( Math.Abs( angle2 - 90 ) <= angleError ) ||
+                         ( Math.Abs( angle3 - 90 ) <= angleError ) )
+                    {
+                        subType = ( subType == PolygonSubType.IsoscelesTriangle ) ?
+                            PolygonSubType.RectangledIsoscelesTriangle : PolygonSubType.RectangledTriangle;
+                    }
+                }
+            }
+            else if ( corners.Count == 4 )
+            {
+                // get angles between 2 pairs of opposite sides
+                float angleBetween1stPair = GetAngleBetweenLines( corners[0], corners[1], corners[2], corners[3] );
+                float angleBetween2ndPair = GetAngleBetweenLines( corners[1], corners[2], corners[3], corners[0] );
+
+                // check 1st pair for parallelism
+                if ( angleBetween1stPair <= angleError )
+                {
+                    subType = PolygonSubType.Trapezoid;
+
+                    // check 2nd pair for parallelism
+                    if ( angleBetween2ndPair <= angleError )
+                    {
+                        subType = PolygonSubType.Parallelogram;
+
+                        // check angle between adjacent sides
+                        if ( Math.Abs( GetAngleBetweenLines( corners[0], corners[1], corners[1], corners[2] ) - 90 ) <= angleError )
+                        {
+                            subType = PolygonSubType.Rectangle;
+                        }
+
+                        // get length of 2 adjacent sides
+                        float side1Length = (float) corners[0].DistanceTo( corners[1] );
+                        float side2Length = (float) corners[0].DistanceTo( corners[3] );
+
+                        if ( Math.Abs( side1Length - side2Length ) <= maxLengthDiff )
+                        {
+                            subType = ( subType == PolygonSubType.Parallelogram ) ?
+                                PolygonSubType.Rhombus : PolygonSubType.Square;
+                        }
+                    }
+                }
+                else
+                {
+                    // check 2nd pair for parallelism - last chence to detect trapezoid
+                    if ( angleBetween2ndPair <= angleError )
+                    {
+                        subType = PolygonSubType.Trapezoid;
+                    }
+                }
+            }
+
+            return subType;
+        }
+
+        /// <summary>
         /// Check if a shape specified by the set of points fits a convex polygon
         /// specified by the set of corners.
         /// </summary>
@@ -395,6 +554,65 @@ namespace AForge.Math.Geometry
         private List<IntPoint> GetShapeCorners( List<IntPoint> edgePoints )
         {
             return shapeOptimizer.OptimizeShape( PointsCloud.FindQuadrilateralCorners( edgePoints ) );
+        }
+
+        // Get angle between two lines
+        private static float GetAngleBetweenLines( IntPoint line1start, IntPoint line1end, IntPoint line2start, IntPoint line2end )
+        {
+            float k1, k2;
+
+            if ( line1start.X != line1end.X )
+            {
+                k1 = (float) ( line1end.Y - line1start.Y ) / ( line1end.X - line1start.X );
+            }
+            else
+            {
+                k1 = float.PositiveInfinity;
+            }
+
+            if ( line2start.X != line2end.X )
+            {
+                k2 = (float) ( line2end.Y - line2start.Y ) / ( line2end.X - line2start.X );
+            }
+            else
+            {
+                k2 = float.PositiveInfinity;
+            }
+
+            // check if lines are parallel
+            if ( k1 == k2 )
+                return 0;
+
+            float angle = 0;
+
+            if ( ( k1 != float.PositiveInfinity ) && ( k2 != float.PositiveInfinity ) )
+            {
+                float tanPhi = ( ( k2 > k1 ) ? ( k2 - k1 ) : ( k1 - k2 ) ) / ( 1 + k1 * k2 );
+                angle = (float) Math.Atan( tanPhi );
+            }
+            else
+            {
+                // one of the lines is parallel to Y axis
+
+                if ( k1 == float.PositiveInfinity )
+                {
+                    angle = (float) ( Math.PI / 2 - Math.Atan( k2 ) * Math.Sign( k2 ) );
+                }
+                else
+                {
+                    angle = (float) ( Math.PI / 2 - Math.Atan( k1 ) * Math.Sign( k1 ) );
+                }
+            }
+
+            // convert radians to degrees
+            angle *= (float) ( 180.0 / Math.PI );
+
+            if ( angle < 0 )
+            {
+                angle = -angle;
+            }
+
+            return angle;
         }
     }
 }
