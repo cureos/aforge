@@ -55,6 +55,7 @@
     <Compile Include="Geometry\PointsCloud.cs" />
     <Compile Include="Geometry\ShapeType.cs" />
     <Compile Include="Geometry\SimpleShapeChecker.cs" />
+    <Compile Include="Geometry\Tools.cs" />
     <Compile Include="Histogram.cs" />
     <Compile Include="PerlinNoise.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

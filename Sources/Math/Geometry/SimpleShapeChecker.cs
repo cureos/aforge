@@ -395,9 +395,9 @@ namespace AForge.Math.Geometry
             if ( corners.Count == 3 )
             {
                 // get angles of the triangle
-                float angle1 = GetAngleBetweenLines( corners[0], corners[1], corners[1], corners[2] );
-                float angle2 = GetAngleBetweenLines( corners[1], corners[2], corners[2], corners[0] );
-                float angle3 = GetAngleBetweenLines( corners[2], corners[0], corners[0], corners[1] );
+                float angle1 = Tools.GetAngleBetweenVectors( corners[0], corners[1], corners[2] );
+                float angle2 = Tools.GetAngleBetweenVectors( corners[1], corners[2], corners[0] );
+                float angle3 = Tools.GetAngleBetweenVectors( corners[2], corners[0], corners[1] );
 
                 // check for equilateral triangle
                 if ( ( Math.Abs( angle1 - 60 ) <= angleError ) &&
@@ -429,8 +429,8 @@ namespace AForge.Math.Geometry
             else if ( corners.Count == 4 )
             {
                 // get angles between 2 pairs of opposite sides
-                float angleBetween1stPair = GetAngleBetweenLines( corners[0], corners[1], corners[2], corners[3] );
-                float angleBetween2ndPair = GetAngleBetweenLines( corners[1], corners[2], corners[3], corners[0] );
+                float angleBetween1stPair = Tools.GetAngleBetweenLines( corners[0], corners[1], corners[2], corners[3] );
+                float angleBetween2ndPair = Tools.GetAngleBetweenLines( corners[1], corners[2], corners[3], corners[0] );
 
                 // check 1st pair for parallelism
                 if ( angleBetween1stPair <= angleError )
@@ -443,7 +443,7 @@ namespace AForge.Math.Geometry
                         subType = PolygonSubType.Parallelogram;
 
                         // check angle between adjacent sides
-                        if ( Math.Abs( GetAngleBetweenLines( corners[0], corners[1], corners[1], corners[2] ) - 90 ) <= angleError )
+                        if ( Math.Abs( Tools.GetAngleBetweenVectors( corners[1], corners[0], corners[2] ) - 90 ) <= angleError )
                         {
                             subType = PolygonSubType.Rectangle;
                         }
@@ -554,65 +554,6 @@ namespace AForge.Math.Geometry
         private List<IntPoint> GetShapeCorners( List<IntPoint> edgePoints )
         {
             return shapeOptimizer.OptimizeShape( PointsCloud.FindQuadrilateralCorners( edgePoints ) );
-        }
-
-        // Get angle between two lines
-        private static float GetAngleBetweenLines( IntPoint line1start, IntPoint line1end, IntPoint line2start, IntPoint line2end )
-        {
-            float k1, k2;
-
-            if ( line1start.X != line1end.X )
-            {
-                k1 = (float) ( line1end.Y - line1start.Y ) / ( line1end.X - line1start.X );
-            }
-            else
-            {
-                k1 = float.PositiveInfinity;
-            }
-
-            if ( line2start.X != line2end.X )
-            {
-                k2 = (float) ( line2end.Y - line2start.Y ) / ( line2end.X - line2start.X );
-            }
-            else
-            {
-                k2 = float.PositiveInfinity;
-            }
-
-            // check if lines are parallel
-            if ( k1 == k2 )
-                return 0;
-
-            float angle = 0;
-
-            if ( ( k1 != float.PositiveInfinity ) && ( k2 != float.PositiveInfinity ) )
-            {
-                float tanPhi = ( ( k2 > k1 ) ? ( k2 - k1 ) : ( k1 - k2 ) ) / ( 1 + k1 * k2 );
-                angle = (float) Math.Atan( tanPhi );
-            }
-            else
-            {
-                // one of the lines is parallel to Y axis
-
-                if ( k1 == float.PositiveInfinity )
-                {
-                    angle = (float) ( Math.PI / 2 - Math.Atan( k2 ) * Math.Sign( k2 ) );
-                }
-                else
-                {
-                    angle = (float) ( Math.PI / 2 - Math.Atan( k1 ) * Math.Sign( k1 ) );
-                }
-            }
-
-            // convert radians to degrees
-            angle *= (float) ( 180.0 / Math.PI );
-
-            if ( angle < 0 )
-            {
-                angle = -angle;
-            }
-
-            return angle;
         }
     }
 }
