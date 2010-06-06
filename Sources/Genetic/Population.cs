@@ -266,12 +266,18 @@ namespace AForge.Genetic
         /// <remarks>Creates new population of specified size. The specified ancestor
         /// becomes first member of the population and is used to create other members
         /// with same parameters, which were used for ancestor's creation.</remarks>
+        /// 
+        /// <exception cref="ArgumentException">Too small population's size was specified. The
+        /// exception is thrown in the case if <paramref name="size"/> is smaller than 2.</exception>
         ///
         public Population( int size,
                            IChromosome ancestor,
                            IFitnessFunction fitnessFunction,
                            ISelectionMethod selectionMethod )
         {
+            if ( size < 2 )
+                throw new ArgumentException( "Too small population's size was specified." );
+
             this.fitnessFunction = fitnessFunction;
             this.selectionMethod = selectionMethod;
             this.size = size;
@@ -540,12 +546,13 @@ namespace AForge.Genetic
         // Find best chromosome in the population so far
         private void FindBestChromosome( )
         {
-            fitnessMax = 0;
-            fitnessSum = 0;
+            bestChromosome = population[0];
+            fitnessMax = bestChromosome.Fitness;
+            fitnessSum = fitnessMax;
 
-            foreach ( IChromosome c in population )
+            for ( int i = 1; i < size; i++ )
             {
-                double fitness = c.Fitness;
+                double fitness = population[i].Fitness;
 
                 // accumulate summary value
                 fitnessSum += fitness;
@@ -554,7 +561,7 @@ namespace AForge.Genetic
                 if ( fitness > fitnessMax )
                 {
                     fitnessMax = fitness;
-                    bestChromosome = c;
+                    bestChromosome = population[i];
                 }
             }
             fitnessAvg = fitnessSum / size;
