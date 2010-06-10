@@ -97,6 +97,31 @@ namespace AForge.Math.Geometry
         }
 
         /// <summary>
+        /// Get center of gravity for the specified list of points.
+        /// </summary>
+        /// 
+        /// <param name="cloud">List of points to calculate center of gravity for.</param>
+        /// 
+        /// <returns>Returns center of gravity (mean X-Y values) for the specified list of points.</returns>
+        /// 
+        public static DoublePoint GetCenterOfGravity( List<IntPoint> cloud )
+        {
+            int numberOfPoints = cloud.Count;
+            double xSum = 0, ySum = 0;
+
+            for ( int i = 1; i < numberOfPoints; i++ )
+            {
+                xSum += cloud[i].X;
+                ySum += cloud[i].Y;
+            }
+
+            xSum /= numberOfPoints;
+            ySum /= numberOfPoints;
+
+            return new DoublePoint( xSum, ySum );
+        }
+
+        /// <summary>
         /// Find furhtest point from the specified point.
         /// </summary>
         /// 
