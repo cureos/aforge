@@ -256,16 +256,14 @@ namespace AForge.Math.Geometry
 
             radius = ( (float) cloudSize.X + cloudSize.Y ) / 4;
 
-            // calculate radius as mean distance between edge points and center
-            float[] distances = new float[edgePoints.Count];
+            // calculate mean distance between provided edge points and estimated circle’s edge
             float meanDistance = 0;
 
             for ( int i = 0, n = edgePoints.Count; i < n; i++ )
             {
-                distances[i] = Math.Abs( (float) center.DistanceTo( edgePoints[i] ) - radius );
-                meanDistance += distances[i];
+                meanDistance += Math.Abs( (float) center.DistanceTo( edgePoints[i] ) - radius );
             }
-            meanDistance /= distances.Length;
+            meanDistance /= edgePoints.Count;
 
             float maxDitance = Math.Max( minAcceptableDistortion,
                 ( (float) cloudSize.X + cloudSize.Y ) / 2 * relativeDistortionLimit );
@@ -510,7 +508,6 @@ namespace AForge.Math.Geometry
             }
 
             // calculate distances between edge points and polygon sides
-            float[] distances = new float[edgePoints.Count];
             float meanDistance = 0;
 
             for ( int i = 0, n = edgePoints.Count; i < n; i++ )
@@ -534,10 +531,9 @@ namespace AForge.Math.Geometry
                         minDistance = distance;
                 }
 
-                distances[i] = minDistance;
                 meanDistance += minDistance;
             }
-            meanDistance /= distances.Length;
+            meanDistance /= edgePoints.Count;
 
             // get bounding rectangle of the corners list
             IntPoint minXY, maxXY;
