@@ -137,6 +137,10 @@ namespace AForge.Imaging.Filters
         /// Determines, if pixels should be filled inside or outside specified
         /// color range.
         /// </summary>
+        /// 
+        /// <remarks><para>Default value is set to <see langword="true"/>, which means
+        /// the filter removes colors outside of the specified range.</para></remarks>
+        /// 
         public bool FillOutsideRange
         {
             get { return fillOutsideRange; }

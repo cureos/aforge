@@ -1,8 +1,9 @@
 // AForge Image Processing Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2008
-// andrew.kirillov@gmail.com
+// Copyright © Andrew Kirillov, 2005-2010
+// andrew.kirillov@aforgenet.com
 //
 
 namespace AForge.Imaging.Filters
@@ -28,7 +29,7 @@ namespace AForge.Imaging.Filters
     /// // create filter
     /// EuclideanColorFiltering filter = new EuclideanColorFiltering( );
     /// // set center colol and radius
-    /// filter.CenterColor = Color.FromArgb( 215, 30, 30 );
+    /// filter.CenterColor = new RGB( 215, 30, 30 );
     /// filter.Radius = 100;
     /// // apply the filter
     /// filter.ApplyInPlace( image );
@@ -45,8 +46,8 @@ namespace AForge.Imaging.Filters
     public class EuclideanColorFiltering : BaseInPlacePartialFilter
     {
         private short radius = 100;
-        private Color center = Color.FromArgb( 255, 255, 255 );
-        private Color fill   = Color.FromArgb( 0, 0, 0 );
+        private RGB center = new RGB( 255, 255, 255 );
+        private RGB fill = new RGB( 0, 0, 0 );
         private bool fillOutside = true;
 
         // private format translation dictionary
@@ -81,7 +82,7 @@ namespace AForge.Imaging.Filters
         /// 
         /// <remarks>Default value is (255, 255, 255) - white color.</remarks>
         /// 
-        public Color CenterColor
+        public RGB CenterColor
         {
             get { return center; }
             set { center = value; }
@@ -90,7 +91,7 @@ namespace AForge.Imaging.Filters
         /// <summary>
         /// Fill color used to fill filtered pixels.
         /// </summary>
-        public Color FillColor
+        public RGB FillColor
         {
             get { return fill; }
             set { fill = value; }
@@ -100,6 +101,10 @@ namespace AForge.Imaging.Filters
         /// Determines, if pixels should be filled inside or outside specified
         /// RGB sphere.
         /// </summary>
+        /// 
+        /// <remarks><para>Default value is set to <see langword="true"/>, which means
+        /// the filter removes colors outside of the specified range.</para></remarks>
+        /// 
         public bool FillOutside
         {
             get { return fillOutside; }
@@ -125,7 +130,7 @@ namespace AForge.Imaging.Filters
         /// <param name="center">RGB sphere's center.</param>
         /// <param name="radius">RGB sphere's radius.</param>
         /// 
-        public EuclideanColorFiltering( Color center, short radius ) :
+        public EuclideanColorFiltering( RGB center, short radius ) :
             this( )
         {
             this.center = center;
@@ -152,13 +157,13 @@ namespace AForge.Imaging.Filters
 
             byte r, g, b;
             // sphere's center
-            byte cR = center.R;
-            byte cG = center.G;
-            byte cB = center.B;
+            byte cR = center.Red;
+            byte cG = center.Green;
+            byte cB = center.Blue;
             // fill color
-            byte fR = fill.R;
-            byte fG = fill.G;
-            byte fB = fill.B;
+            byte fR = fill.Red;
+            byte fG = fill.Green;
+            byte fB = fill.Blue;
 
             // do the job
             byte* ptr = (byte*) image.ImageData.ToPointer( );
