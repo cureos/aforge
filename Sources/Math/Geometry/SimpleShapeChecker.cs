@@ -216,7 +216,7 @@ namespace AForge.Math.Geometry
         public bool IsCircle( List<IntPoint> edgePoints )
         {
             DoublePoint center;
-            float radius;
+            double radius;
 
             return IsCircle( edgePoints, out center, out radius );
         }
@@ -236,7 +236,7 @@ namespace AForge.Math.Geometry
         /// The method returns <see langword="false"/> always, of number of points in the specified
         /// shape is less than 8.</note></para></remarks>
         /// 
-        public bool IsCircle( List<IntPoint> edgePoints, out DoublePoint center, out float radius )
+        public bool IsCircle( List<IntPoint> edgePoints, out DoublePoint center, out double radius )
         {
             // make sure we have at least 8 points for curcle shape
             if ( edgePoints.Count < 8 )
@@ -261,7 +261,7 @@ namespace AForge.Math.Geometry
 
             for ( int i = 0, n = edgePoints.Count; i < n; i++ )
             {
-                meanDistance += Math.Abs( (float) center.DistanceTo( edgePoints[i] ) - radius );
+                meanDistance += (float) Math.Abs( center.DistanceTo( edgePoints[i] ) - radius );
             }
             meanDistance /= edgePoints.Count;
 
