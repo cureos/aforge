@@ -13,9 +13,6 @@ namespace AForge.Video
 	using System.IO;
 	using System.Threading;
 	using System.Net;
-    using System.Net.Security;
-    using System.Security.Cryptography;
-    using System.Security.Cryptography.X509Certificates;
 
 	/// <summary>
 	/// JPEG video source.
@@ -86,8 +83,6 @@ namespace AForge.Video
 
 		private Thread thread = null;
 		private ManualResetEvent stopEvent = null;
-
-        private bool allCertificatesValid = false;
 
         /// <summary>
         /// New frame event.
@@ -286,25 +281,6 @@ namespace AForge.Video
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="JPEGStream"/> class.
-        /// </summary>
-        /// 
-        /// <param name="source">URL, which provides MJPEG stream.</param>
-        /// <param name="acceptAllHTTPSCertificates">Accept all HTTPS certificates from camera (including self signed).</param>
-        /// 
-        /// <remarks><para><note>Once <paramref name="acceptAllHTTPSCertificates"/> is set to <see langword="true"/> and
-        /// camera is started, the setting will automatically apply for all other cameras
-        /// accessed with <see cref="JPEGStream"/> or <see cref="MJPEGStream"/> classes (the setting is
-        /// global for now within executing process).</note></para>
-        /// </remarks>
-        ///
-        public JPEGStream( string source, bool acceptAllHTTPSCertificates )
-        {
-            this.allCertificatesValid = acceptAllHTTPSCertificates;
-            this.source = source;
-        }
-
-        /// <summary>
         /// Start video source.
         /// </summary>
         /// 
@@ -327,10 +303,6 @@ namespace AForge.Video
 
 				// create events
 				stopEvent = new ManualResetEvent( false );
-
-                // accept self signed certificates
-                if ( allCertificatesValid )
-                    ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback( AcceptAllCertificates );
 
                 // create and start new thread
 				thread = new Thread( new ThreadStart( WorkerThread ) );
@@ -408,12 +380,6 @@ namespace AForge.Video
 			stopEvent.Close( );
 			stopEvent = null;
 		}
-
-        // Every certificate will be valid to connect through HTTPS
-        private bool AcceptAllCertificates( object sender, X509Certificate certification, X509Chain chain, SslPolicyErrors sslPolicyErrors )
-        {
-            return true;
-        }
 
         // Worker thread
         private void WorkerThread( )
