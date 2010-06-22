@@ -1,8 +1,8 @@
-﻿// Blobs Browser sample application
+﻿// Simple Shape Checker sample application
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2009
+// Copyright © Andrew Kirillov, 2007-2010
 // andrew.kirillov@aforgenet.com
 //
 
