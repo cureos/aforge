@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2006-2009
+// Copyright © Andrew Kirillov, 2006-2010
 // andrew.kirillov@aforgenet.com
 //
 
@@ -444,7 +444,7 @@ namespace AForge.Genetic
         /// 
         /// <remarks><para>Population shuffling may be useful in cases when selection
         /// operator results in not random order of chromosomes (for example, after elite
-        /// selection population may ordered in ascending/descending order).</para></remarks>
+        /// selection population may be ordered in ascending/descending order).</para></remarks>
         /// 
         public void Shuffle( )
         {
@@ -541,6 +541,74 @@ namespace AForge.Genetic
             // find best chromosomes in each population
             FindBestChromosome( );
             anotherPopulation.FindBestChromosome( );
+        }
+
+        /// <summary>
+        /// Resize population to the new specified size.
+        /// </summary>
+        /// 
+        /// <param name="newPopulationSize">New size of population.</param>
+        /// 
+        /// <remarks><para>The method does resizing of population. In the case if population
+        /// should grow, it just adds missing number of random members. In the case if
+        /// population should get smaller, the <see cref="SelectionMethod">population's
+        /// selection method</see> is used to reduce the population.</para></remarks>
+        /// 
+        /// <exception cref="ArgumentException">Too small population's size was specified. The
+        /// exception is thrown in the case if <paramref name="size"/> is smaller than 2.</exception>
+        /// 
+        public void Resize( int newPopulationSize )
+        {
+            Resize( newPopulationSize, selectionMethod );
+        }
+
+        /// <summary>
+        /// Resize population to the new specified size.
+        /// </summary>
+        /// 
+        /// <param name="newPopulationSize">New size of population.</param>
+        /// <param name="membersSelector">Selection algorithm to use in the case
+        /// if population should get smaller.</param>
+        /// 
+        /// <remarks><para>The method does resizing of population. In the case if population
+        /// should grow, it just adds missing number of random members. In the case if
+        /// population should get smaller, the specified selection method is used to
+        /// reduce the population.</para></remarks>
+        /// 
+        /// <exception cref="ArgumentException">Too small population's size was specified. The
+        /// exception is thrown in the case if <paramref name="size"/> is smaller than 2.</exception>
+        ///
+        public void Resize( int newPopulationSize, ISelectionMethod membersSelector )
+        {
+            if ( newPopulationSize < 2 )
+                throw new ArgumentException( "Too small new population's size was specified." );
+
+            if ( newPopulationSize > size )
+            {
+                // population is growing, so add new rundom members
+
+                // Note: we use population.Count here instead of "size" because
+                // population may be bigger already after crossover/mutation. So
+                // we just keep those members instead of adding random member.
+                int toAdd = newPopulationSize - population.Count;
+
+                for ( int i = 0; i < toAdd; i++ )
+                {
+                    // create new chromosome
+                    IChromosome c = population[0].CreateNew( );
+                    // calculate it's fitness
+                    c.Evaluate( fitnessFunction );
+                    // add it to population
+                    population.Add( c );
+                }
+            }
+            else
+            {
+                // do selection
+                membersSelector.ApplySelection( population, newPopulationSize );
+            }
+
+            size = newPopulationSize;
         }
 
         // Find best chromosome in the population so far
