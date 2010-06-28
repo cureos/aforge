@@ -496,10 +496,13 @@ namespace TSP
 		private void stopButton_Click( object sender, System.EventArgs e )
 		{
 			// stop worker thread
-			needToStop = true;
-            while ( !workerThread.Join( 100 ) )
-                Application.DoEvents( );
-            workerThread = null;
+            if ( workerThread != null )
+            {
+                needToStop = true;
+                while ( !workerThread.Join( 100 ) )
+                    Application.DoEvents( );
+                workerThread = null;
+            }
 		}
 
 		// Worker thread
