@@ -1,8 +1,9 @@
 // AForge Image Processing Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2008
-// andrew.kirillov@gmail.com
+// Copyright © Andrew Kirillov, 2005-2010
+// andrew.kirillov@aforgenet.com
 //
 
 namespace AForge.Imaging
@@ -318,6 +319,200 @@ namespace AForge.Imaging
             }
 
             return loadedImage;
+        }
+
+        /// <summary>
+        /// Convert bitmap with 16 bits per plane to a bitmap with 8 bits per plane.
+        /// </summary>
+        /// 
+        /// <param name="bimap">Source image to convert.</param>
+        /// 
+        /// <returns>Returns new image which is a copy of the source image but with 8 bits per plane.</returns>
+        /// 
+        /// <remarks><para>The routine does the next pixel format conversions:
+        /// <list type="bullet">
+        /// <item><see cref="PixelFormat.Format16bppGrayScale">Format16bppGrayScale</see> to
+        /// <see cref="PixelFormat.Format8bppIndexed">Format8bppIndexed</see> with grayscale palette;</item>
+        /// <item><see cref="PixelFormat.Format48bppRgb">Format48bppRgb</see> to
+        /// <see cref="PixelFormat.Format24bppRgb">Format24bppRgb</see>;</item>
+        /// <item><see cref="PixelFormat.Format64bppArgb">Format64bppArgb</see> to
+        /// <see cref="PixelFormat.Format32bppArgb">Format32bppArgb</see>;</item>
+        /// <item><see cref="PixelFormat.Format64bppPArgb">Format64bppPArgb</see> to
+        /// <see cref="PixelFormat.Format32bppPArgb">Format32bppPArgb</see>.</item>
+        /// </list>
+        /// </para></remarks>
+        /// 
+        /// <exception cref="UnsupportedImageFormatException">Invalid pixel format of the source image.</exception>
+        /// 
+        public static Bitmap Convert16bppTo8bpp( Bitmap bimap )
+        {
+            Bitmap newImage = null;
+            int layers = 0;
+
+            // get image size
+            int width  = bimap.Width;
+            int height = bimap.Height;
+
+            // create new image depending on source image format
+            switch ( bimap.PixelFormat )
+            {
+                case PixelFormat.Format16bppGrayScale:
+                    // create new grayscale image
+                    newImage = CreateGrayscaleImage( width, height );
+                    layers = 1;
+                    break;
+
+                case PixelFormat.Format48bppRgb:
+                    // create new color 24 bpp image
+                    newImage = new Bitmap( width, height, PixelFormat.Format24bppRgb );
+                    layers = 3;
+                    break;
+
+                case PixelFormat.Format64bppArgb:
+                    // create new color 32 bpp image
+                    newImage = new Bitmap( width, height, PixelFormat.Format32bppArgb );
+                    layers = 4;
+                    break;
+
+                case PixelFormat.Format64bppPArgb:
+                    // create new color 32 bpp image
+                    newImage = new Bitmap( width, height, PixelFormat.Format32bppPArgb );
+                    layers = 4;
+                    break;
+
+                default:
+                    throw new UnsupportedImageFormatException( "Invalid pixel format of the source image." );
+            }
+
+            // lock both images
+            BitmapData sourceData = bimap.LockBits( new Rectangle( 0, 0, width, height ),
+                ImageLockMode.ReadOnly, bimap.PixelFormat );
+            BitmapData newData = newImage.LockBits( new Rectangle( 0, 0, width, height ),
+                ImageLockMode.ReadWrite, newImage.PixelFormat );
+
+            unsafe
+            {
+                // base pointers
+                int sourceBasePtr = (int) sourceData.Scan0.ToPointer( );
+                int newBasePtr = (int) newData.Scan0.ToPointer( );
+                // image strides
+                int sourceStride = sourceData.Stride;
+                int newStride = newData.Stride;
+
+                for ( int y = 0; y < height; y++ )
+                {
+                    ushort* sourcePtr = (ushort*) ( sourceBasePtr + y * sourceStride );
+                    byte* newPtr = (byte*) ( newBasePtr + y * newStride );
+
+                    for ( int x = 0, lineSize = width * layers; x < lineSize; x++, sourcePtr++, newPtr++ )
+                    {
+                        *newPtr = (byte) ( *sourcePtr >> 8 );
+                    }
+                }
+            }
+
+            // unlock both image
+            bimap.UnlockBits( sourceData );
+            newImage.UnlockBits( newData );
+
+            return newImage;
+        }
+
+        /// <summary>
+        /// Convert bitmap with 8 bits per plane to a bitmap with 16 bits per plane.
+        /// </summary>
+        /// 
+        /// <param name="bimap">Source image to convert.</param>
+        /// 
+        /// <returns>Returns new image which is a copy of the source image but with 16 bits per plane.</returns>
+        /// 
+        /// <remarks><para>The routine does the next pixel format conversions:
+        /// <list type="bullet">
+        /// <item><see cref="PixelFormat.Format8bppIndexed">Format8bppIndexed</see> (grayscale palette assumed) to
+        /// <see cref="PixelFormat.Format16bppGrayScale">Format16bppGrayScale</see>;</item>
+        /// <item><see cref="PixelFormat.Format24bppRgb">Format24bppRgb</see> to
+        /// <see cref="PixelFormat.Format48bppRgb">Format48bppRgb</see>;</item>
+        /// <item><see cref="PixelFormat.Format32bppArgb">Format32bppArgb</see> to
+        /// <see cref="PixelFormat.Format64bppArgb">Format64bppArgb</see>;</item>
+        /// <item><see cref="PixelFormat.Format32bppPArgb">Format32bppPArgb</see> to
+        /// <see cref="PixelFormat.Format64bppPArgb">Format64bppPArgb</see>.</item>
+        /// </list>
+        /// </para></remarks>
+        /// 
+        /// <exception cref="UnsupportedImageFormatException">Invalid pixel format of the source image.</exception>
+        /// 
+        public static Bitmap Convert8bppTo16bpp( Bitmap bimap )
+        {
+            Bitmap newImage = null;
+            int layers = 0;
+
+            // get image size
+            int width  = bimap.Width;
+            int height = bimap.Height;
+
+            // create new image depending on source image format
+            switch ( bimap.PixelFormat )
+            {
+                case PixelFormat.Format8bppIndexed:
+                    // create new grayscale image
+                    newImage = new Bitmap( width, height, PixelFormat.Format16bppGrayScale );
+                    layers = 1;
+                    break;
+
+                case PixelFormat.Format24bppRgb:
+                    // create new color 48 bpp image
+                    newImage = new Bitmap( width, height, PixelFormat.Format48bppRgb );
+                    layers = 3;
+                    break;
+
+                case PixelFormat.Format32bppArgb:
+                    // create new color 64 bpp image
+                    newImage = new Bitmap( width, height, PixelFormat.Format64bppArgb );
+                    layers = 4;
+                    break;
+
+                case PixelFormat.Format32bppPArgb:
+                    // create new color 64 bpp image
+                    newImage = new Bitmap( width, height, PixelFormat.Format64bppPArgb );
+                    layers = 4;
+                    break;
+
+                default:
+                    throw new UnsupportedImageFormatException( "Invalid pixel format of the source image." );
+            }
+
+            // lock both images
+            BitmapData sourceData = bimap.LockBits( new Rectangle( 0, 0, width, height ),
+                ImageLockMode.ReadOnly, bimap.PixelFormat );
+            BitmapData newData = newImage.LockBits( new Rectangle( 0, 0, width, height ),
+                ImageLockMode.ReadWrite, newImage.PixelFormat );
+
+            unsafe
+            {
+                // base pointers
+                int sourceBasePtr = (int) sourceData.Scan0.ToPointer( );
+                int newBasePtr = (int) newData.Scan0.ToPointer( );
+                // image strides
+                int sourceStride = sourceData.Stride;
+                int newStride = newData.Stride;
+
+                for ( int y = 0; y < height; y++ )
+                {
+                    byte* sourcePtr = (byte*) ( sourceBasePtr + y * sourceStride );
+                    ushort* newPtr  = (ushort*) ( newBasePtr + y * newStride );
+
+                    for ( int x = 0, lineSize = width * layers; x < lineSize; x++, sourcePtr++, newPtr++ )
+                    {
+                        *newPtr = (ushort) ( *sourcePtr << 8 );
+                    }
+                }
+            }
+
+            // unlock both image
+            bimap.UnlockBits( sourceData );
+            newImage.UnlockBits( newData );
+
+            return newImage;
         }
     }
 }
