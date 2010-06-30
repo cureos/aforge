@@ -90,6 +90,15 @@ namespace AForge.Robotics.Surveyor
         public enum ServosBank
         {
             /// <summary>
+            /// First bank of the first (<see cref="Camera.Left"/>) SRV-1 Blackfin camera,
+            /// timers 2 and 3 (marked as TMR2-1 and TMR3-1 on the SVS board). Note: these
+            /// timers on SVS board are supposed for controlling motors by default
+            /// (see <see cref="RunMotors"/> and <see cref="ControlMotors"/>), so use 0th
+            /// servos bank only when you've done proper configuration changes on SVS side.
+            /// </summary>
+            Bank0,
+
+            /// <summary>
             /// Second bank of the first (<see cref="Camera.Left"/>) SRV-1 Blackfin camera,
             /// timers 6 and 7 (marked as TMR6-1 and TMR7-1 on the SVS board).
             /// </summary>
@@ -516,9 +525,9 @@ namespace AForge.Robotics.Surveyor
         /// <remarks><para>The method performs servos control of the SVS board.
         /// For <see cref="ServosBank.Bank1"/> and <see cref="ServosBank.Bank3"/>
         /// banks it calls <see cref="SRV1.ControlServos"/> method for the corresponding
-        /// SRV-1 Blackfin camera. In the case of <see cref="ServosBank.Bank2"/>,
+        /// SRV-1 Blackfin camera. In the case of <see cref="ServosBank.Bank0"/> or <see cref="ServosBank.Bank2"/>,
         /// the method sends 'Sab' SRV-1 command (see <a href="http://www.surveyor.com/SRV_protocol.html">SRV-1
-        /// Control Protocol</a>) to the second SRV-1 Blackfin camera (<see cref="Camera.Right"/>).</para>
+        /// Control Protocol</a>) to the appropriate SRV-1 Blackfin camera.</para>
         /// </remarks>
         /// 
         /// <exception cref="NotConnectedException">Not connected to SVS. Connect to SVS board before using
@@ -528,6 +537,16 @@ namespace AForge.Robotics.Surveyor
         {
             switch ( servosBank )
             {
+                case ServosBank.Bank0:
+                    // check limts
+                    if ( leftServo > 100 )
+                        leftServo = 100;
+                    if ( rightServo > 100 )
+                        rightServo = 100;
+
+                    SafeGetCommunicator1( ).Send( new byte[] { (byte) 'S', (byte) leftServo, (byte) rightServo } );
+                    break;
+
                 case ServosBank.Bank1:
                     SafeGetCommunicator1( ).ControlServos( leftServo, rightServo );
                     break;
