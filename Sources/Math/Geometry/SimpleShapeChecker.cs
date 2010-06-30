@@ -42,6 +42,10 @@ namespace AForge.Math.Geometry
     /// which set acceptable errors for polygon sub type checking done by
     /// <see cref="CheckPolygonSubType"/> method.</para>
     /// 
+    /// <para><note>See the next article for details about the implemented algorithms:
+    /// <a href="http://www.aforgenet.com/articles/shape_checker/">Detecting some simple shapes in images</a>.
+    /// </note></para>
+    /// 
     /// <para>Sample usage:</para>
     /// <code>
     /// private List&lt;IntPoint&gt; idealCicle = new List&lt;IntPoint&gt;( );
