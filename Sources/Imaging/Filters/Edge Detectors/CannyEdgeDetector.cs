@@ -23,6 +23,16 @@ namespace AForge.Imaging.Filters
     /// The implementation follows
     /// <a href="http://www.pages.drexel.edu/~weg22/can_tut.html">Bill Green's Canny edge detection tutorial</a>.</para>
     /// 
+    /// <para><note>The implemented canny edge detector has one difference with the above linked algorithm.
+    /// The difference is in hysteresis step, which is a bit simplified (getting faster as a result). On the
+    /// hysteresis step each pixel is compared with two threshold values: <see cref="HighThreshold"/> and
+    /// <see cref="LowThreshold"/>. If pixel's value is greater or equal to <see cref="HighThreshold"/>, then
+    /// it is kept as edge pixel. If pixel's value is greater or equal to <see cref="LowThreshold"/>, then
+    /// it is kept as edge pixel only if there is at least one neighbouring pixel (8 neighbours are checked) which
+    /// has value greater or equal to <see cref="HighThreshold"/>; otherwise it is none edge pixel. In the case
+    /// if pixel's value is less than <see cref="LowThreshold"/>, then it is marked as none edge immediately.
+    /// </note></para>
+    /// 
     /// <para>The filter accepts 8 bpp grayscale images for processing.</para>
     /// 
     /// <para>Sample usage:</para>
@@ -179,7 +189,7 @@ namespace AForge.Imaging.Filters
             int srcOffset = srcStride - rect.Width + 2;
 
             // pixel's value and gradients
-            double gx, gy;
+            int gx, gy;
             //
             double orientation, toAngle = 180.0 / System.Math.PI;
             float leftPixel = 0, rightPixel = 0;
@@ -228,7 +238,7 @@ namespace AForge.Imaging.Filters
                     }
                     else
                     {
-                        double div = gy / gx;
+                        double div = (double) gy / gx;
 
                         // handle angles of the 2nd and 4th quads
                         if ( div < 0 )
@@ -310,13 +320,11 @@ namespace AForge.Imaging.Filters
             // allign pointer
             dst += dstStride * startY + startX;
 
-            p = 0;
-
             // for each line
             for ( int y = startY; y < stopY; y++ )
             {
                 // for each pixel
-                for ( int x = startX; x < stopX; x++, dst++, p++ )
+                for ( int x = startX; x < stopX; x++, dst++ )
                 {
                     if ( *dst < highThreshold )
                     {
