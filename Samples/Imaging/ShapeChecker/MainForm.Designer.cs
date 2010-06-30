@@ -40,6 +40,8 @@
             this.loadDemoImage4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator( );
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.groupBox1 = new System.Windows.Forms.GroupBox( );
             this.label9 = new System.Windows.Forms.Label( );
             this.label10 = new System.Windows.Forms.Label( );
@@ -54,8 +56,6 @@
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog( );
             this.splitContainer = new System.Windows.Forms.SplitContainer( );
             this.toolTip = new System.Windows.Forms.ToolTip( this.components );
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             ( (System.ComponentModel.ISupportInitialize) ( this.pictureBox ) ).BeginInit( );
             this.menuStrip.SuspendLayout( );
             this.groupBox1.SuspendLayout( );
@@ -151,6 +151,21 @@
             this.exitToolStripMenuItem.Size = new System.Drawing.Size( 179, 22 );
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler( this.exitToolStripMenuItem_Click );
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem} );
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size( 44, 20 );
+            this.helpToolStripMenuItem.Text = "&Help";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size( 107, 22 );
+            this.aboutToolStripMenuItem.Text = "&About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler( this.aboutToolStripMenuItem_Click );
             // 
             // groupBox1
             // 
@@ -292,21 +307,7 @@
             this.splitContainer.Size = new System.Drawing.Size( 524, 358 );
             this.splitContainer.SplitterDistance = 51;
             this.splitContainer.TabIndex = 1;
-            // 
-            // helpToolStripMenuItem
-            // 
-            this.helpToolStripMenuItem.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem} );
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size( 44, 20 );
-            this.helpToolStripMenuItem.Text = "&Help";
-            // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size( 152, 22 );
-            this.aboutToolStripMenuItem.Text = "&About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler( this.aboutToolStripMenuItem_Click );
+            this.splitContainer.TabStop = false;
             // 
             // MainForm
             // 
