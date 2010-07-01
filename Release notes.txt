@@ -1,3 +1,92 @@
+AForge.NET Framework 2.1.3 release notes
+----------------------------------------
+01.07.2010.
+
+
+Version updates and fixes:
+
+* Fixed registered issues/requests:
+  - Issue 132: Adjustable Threshold for blob counter  
+  - Issue 135: Convert from Format16bppGrayScale to Format8bppIndexed is missing 
+  - Issue 136: Enhancement to disable reference clock on DirectShow graphs
+  - Issue 137: Improvement request for svs  
+  - Issue 138: Enable amendment of Population size on the fly
+
+
+* AForge.Math
+  - Adding interface for shape optimizers its 3 implementations:
+    1) FlatAnglesOptimizer - shape optimizer, which removes obtuse angles (close
+       to flat) from a shape;
+    2) LineStraighteningOptimizer - shape optimizer, which removes points within
+       close range to shapes' body;
+    3) ClosePointsMergingOptimizer - shape optimizer, which merges points within
+       close distance to each other.
+
+  - Added SimpleShapeChecker class for checking simple geometrical shapes.
+
+  - Bug fix in GrahamConvexHull - don't process points with same coordinates as the first point.
+
+  - Few updates to PointsCloud.FindQuadrilateralCorners():
+    1) Bug fix - wrong points were used to compare distances between points;
+    2) Using relative distortion limit instead of hard-coded constants for checking if certain
+       points are far away enough;
+    3) Searching first point as the furthest from shape's centre, instead of from (0, 0) point
+       of coordinates system.
+
+
+* AForge.Imaging
+  - Fixing SusanCornersDetector - don't dispose internal grey image in the case if
+    greyscale image was given as input.
+
+  - Increasing size limits for convolution's kernel size and structuring element of
+    morphological operators. The limit is set to 99. The benefit of such big kernels
+    is not clear, but if users want it and ready to wait until such lengthy image processing
+    is done, then why not to give it to them.
+
+  - Added background threshold property to blob counters, so thresholding step could be
+    skipped in many cases.
+
+  - Adding LevelsLinear16bpp image processing filter, which is similar to LevelsLinear,
+    but designed for images with 16 bpp planes - 16 bpp grayscale or 48/64 bpp images.
+
+  - Added two methods into AForge.Imaging.Image class: Convert16bppTo8bpp() and Convert8bppTo16bpp()
+    which perform conversion of images with 16 bpp color planes to images with 8 bpp color planes
+    and vice versa.
+
+  - Few minor improvements to CannyEdgeDetector: changed from double to int type for those
+    variables, which are really integer; removed incrementing index variable, which is not used
+    inside of a loop; clarified documentation about hysteresis.
+
+
+* AForge.Video
+  - Putting check of IsRunning property into Start() method of all video sources, so
+    it checks if video source is really running or not. Checking thread variable for null
+    was not a good check if user calls SignalToStop() without further WaitForStop().
+
+
+* AForge.Video.DirectShow
+  - Merging the code contributed by Jeremy Noring, which allows to disable reference clock
+    of a DirectShow graph allowing to process video files as fast as possible.
+
+
+* AForge.Genetic
+  - Fixing Population.FindBestChromosome() method to make sure that a chromosome will be selected
+    even if all chromosome have fitness value equal to 0.
+
+  - Added Population.Resize() method which allows to resize genetic population during its lifetime.
+
+
+* AForge.Robotics.Surveyor
+  - Added SVS.ServosBank.Bank0, so users could control servos connected to TMR2-1 and TMR3-1 of
+    SVS board (in the case of some custom set-up).
+
+
+* Samples
+  - Added sample application to demonstrate usage of SimpleShapeChecker class.
+
+
+
+
 AForge.NET Framework 2.1.2 release notes
 ----------------------------------------
 10.03.2010.
