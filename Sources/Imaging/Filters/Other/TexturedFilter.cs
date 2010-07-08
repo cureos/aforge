@@ -77,17 +77,17 @@ namespace AForge.Imaging.Filters
         private double preserveLevel = 0.0;
 
         // private format translation dictionary
-        private Dictionary<PixelFormat, PixelFormat> formatTransalations = new Dictionary<PixelFormat, PixelFormat>( );
+        private Dictionary<PixelFormat, PixelFormat> formatTranslations = new Dictionary<PixelFormat, PixelFormat>( );
 
         /// <summary>
         /// Format translations dictionary.
         /// </summary>
         ///
-        /// <remarks><para>See <see cref="IFilterInformation.FormatTransalations"/> for more information.</para></remarks>
+        /// <remarks><para>See <see cref="IFilterInformation.FormatTranslations"/> for more information.</para></remarks>
         ///
-        public override Dictionary<PixelFormat, PixelFormat> FormatTransalations
+        public override Dictionary<PixelFormat, PixelFormat> FormatTranslations
         {
-            get { return formatTransalations; }
+            get { return formatTranslations; }
         }
 
         /// <summary>
@@ -183,11 +183,11 @@ namespace AForge.Imaging.Filters
                 if ( value is IFilterInformation )
                 {
                     IFilterInformation info = (IFilterInformation) value;
-                    if ( !info.FormatTransalations.ContainsKey( PixelFormat.Format24bppRgb ) )
+                    if ( !info.FormatTranslations.ContainsKey( PixelFormat.Format24bppRgb ) )
                         throw new UnsupportedImageFormatException( "The specified filter does not support 24 bpp color images." );
                     if (
-                        ( info.FormatTransalations[PixelFormat.Format24bppRgb] != PixelFormat.Format24bppRgb ) &&
-                        ( info.FormatTransalations[PixelFormat.Format24bppRgb] != PixelFormat.Format8bppIndexed ) )
+                        ( info.FormatTranslations[PixelFormat.Format24bppRgb] != PixelFormat.Format24bppRgb ) &&
+                        ( info.FormatTranslations[PixelFormat.Format24bppRgb] != PixelFormat.Format8bppIndexed ) )
                         throw new UnsupportedImageFormatException( "The specified filter does not produce image of supported format." );
                 }
                 else
@@ -224,11 +224,11 @@ namespace AForge.Imaging.Filters
                 if ( value is IFilterInformation )
                 {
                     IFilterInformation info = (IFilterInformation) value;
-                    if ( !info.FormatTransalations.ContainsKey( PixelFormat.Format24bppRgb ) )
+                    if ( !info.FormatTranslations.ContainsKey( PixelFormat.Format24bppRgb ) )
                         throw new UnsupportedImageFormatException( "The specified filter does not support 24 bpp color images." );
                     if (
-                        ( info.FormatTransalations[PixelFormat.Format24bppRgb] != PixelFormat.Format24bppRgb ) &&
-                        ( info.FormatTransalations[PixelFormat.Format24bppRgb] != PixelFormat.Format8bppIndexed ) )
+                        ( info.FormatTranslations[PixelFormat.Format24bppRgb] != PixelFormat.Format24bppRgb ) &&
+                        ( info.FormatTranslations[PixelFormat.Format24bppRgb] != PixelFormat.Format8bppIndexed ) )
                         throw new UnsupportedImageFormatException( "The specified filter does not produce image of supported format." );
                 }
                 else
@@ -243,7 +243,7 @@ namespace AForge.Imaging.Filters
         // Private constructor to 
         private TexturedFilter( )
         {
-            formatTransalations[PixelFormat.Format24bppRgb] = PixelFormat.Format24bppRgb;
+            formatTranslations[PixelFormat.Format24bppRgb] = PixelFormat.Format24bppRgb;
         }
 
         /// <summary>

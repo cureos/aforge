@@ -66,7 +66,7 @@ namespace AForge.Imaging.Filters
     public class ImageWarp : BaseFilter
     {
         // private format translation dictionary
-        private Dictionary<PixelFormat, PixelFormat> formatTransalations = new Dictionary<PixelFormat, PixelFormat>( );
+        private Dictionary<PixelFormat, PixelFormat> formatTranslations = new Dictionary<PixelFormat, PixelFormat>( );
 
         private IntPoint[,] warpMap = null;
 
@@ -105,12 +105,12 @@ namespace AForge.Imaging.Filters
         /// Format translations dictionary.
         /// </summary>
         /// 
-        /// <remarks><para>See <see cref="IFilterInformation.FormatTransalations"/>
+        /// <remarks><para>See <see cref="IFilterInformation.FormatTranslations"/>
         /// documentation for additional information.</para></remarks>
         /// 
-        public override Dictionary<PixelFormat, PixelFormat> FormatTransalations
+        public override Dictionary<PixelFormat, PixelFormat> FormatTranslations
         {
-            get { return formatTransalations; }
+            get { return formatTranslations; }
         }
 
         /// <summary>
@@ -121,10 +121,10 @@ namespace AForge.Imaging.Filters
         /// 
         public ImageWarp( IntPoint[,] warpMap )
         {
-            formatTransalations[PixelFormat.Format8bppIndexed] = PixelFormat.Format8bppIndexed;
-            formatTransalations[PixelFormat.Format24bppRgb]    = PixelFormat.Format24bppRgb;
-            formatTransalations[PixelFormat.Format32bppRgb]    = PixelFormat.Format32bppRgb;
-            formatTransalations[PixelFormat.Format32bppArgb]   = PixelFormat.Format32bppArgb;
+            formatTranslations[PixelFormat.Format8bppIndexed] = PixelFormat.Format8bppIndexed;
+            formatTranslations[PixelFormat.Format24bppRgb]    = PixelFormat.Format24bppRgb;
+            formatTranslations[PixelFormat.Format32bppRgb]    = PixelFormat.Format32bppRgb;
+            formatTranslations[PixelFormat.Format32bppArgb]   = PixelFormat.Format32bppArgb;
 
             WarpMap = warpMap;
         }

@@ -52,9 +52,9 @@ namespace AForge.Imaging.Filters
         /// <summary>
         /// Format translations dictionary.
         /// </summary>
-        public Dictionary<PixelFormat, PixelFormat> FormatTransalations
+        public Dictionary<PixelFormat, PixelFormat> FormatTranslations
         {
-            get { return errosion.FormatTransalations; }
+            get { return errosion.FormatTranslations; }
         }
 
 		/// <summary>
@@ -164,7 +164,7 @@ namespace AForge.Imaging.Filters
         /// 
         /// <para><note>The destination image must have the same width and height as source image. Also
         /// destination image must have pixel format, which is expected by particular filter (see
-        /// <see cref="FormatTransalations"/> property for information about pixel format conversions).</note></para>
+        /// <see cref="FormatTranslations"/> property for information about pixel format conversions).</note></para>
         /// </remarks>
         /// 
         /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>

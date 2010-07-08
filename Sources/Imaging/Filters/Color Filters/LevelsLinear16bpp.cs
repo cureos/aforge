@@ -54,14 +54,14 @@ namespace AForge.Imaging.Filters
         private ushort[] mapBlue  = new ushort[65536];
 
         // private format translation dictionary
-        private Dictionary<PixelFormat, PixelFormat> formatTransalations = new Dictionary<PixelFormat, PixelFormat>( );
+        private Dictionary<PixelFormat, PixelFormat> formatTranslations = new Dictionary<PixelFormat, PixelFormat>( );
 
         /// <summary>
         /// Format translations dictionary.
         /// </summary>
-        public override Dictionary<PixelFormat, PixelFormat> FormatTransalations
+        public override Dictionary<PixelFormat, PixelFormat> FormatTranslations
         {
-            get { return formatTransalations; }
+            get { return formatTranslations; }
         }
 
         #region Public Propertis
@@ -216,10 +216,10 @@ namespace AForge.Imaging.Filters
             CalculateMap( inGreen, outGreen, mapGreen );
             CalculateMap( inBlue, outBlue, mapBlue );
 
-            formatTransalations[PixelFormat.Format16bppGrayScale] = PixelFormat.Format16bppGrayScale;
-            formatTransalations[PixelFormat.Format48bppRgb]       = PixelFormat.Format48bppRgb;
-            formatTransalations[PixelFormat.Format64bppArgb]      = PixelFormat.Format64bppArgb;
-            formatTransalations[PixelFormat.Format64bppPArgb]     = PixelFormat.Format64bppPArgb;
+            formatTranslations[PixelFormat.Format16bppGrayScale] = PixelFormat.Format16bppGrayScale;
+            formatTranslations[PixelFormat.Format48bppRgb]       = PixelFormat.Format48bppRgb;
+            formatTranslations[PixelFormat.Format64bppArgb]      = PixelFormat.Format64bppArgb;
+            formatTranslations[PixelFormat.Format64bppPArgb]     = PixelFormat.Format64bppPArgb;
         }
 
         /// <summary>

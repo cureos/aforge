@@ -110,14 +110,14 @@ namespace AForge.Imaging.Filters
         }
 
         // private format translation dictionary
-        private Dictionary<PixelFormat, PixelFormat> formatTransalations = new Dictionary<PixelFormat, PixelFormat>( );
+        private Dictionary<PixelFormat, PixelFormat> formatTranslations = new Dictionary<PixelFormat, PixelFormat>( );
 
         /// <summary>
         /// Format translations dictionary.
         /// </summary>
-        public override Dictionary<PixelFormat, PixelFormat> FormatTransalations
+        public override Dictionary<PixelFormat, PixelFormat> FormatTranslations
         {
-            get { return formatTransalations; }
+            get { return formatTranslations; }
         }
 
         /// <summary>
@@ -126,10 +126,10 @@ namespace AForge.Imaging.Filters
         public SimplePosterization( )
         {
             // initialize format translation dictionary
-            formatTransalations[PixelFormat.Format8bppIndexed] = PixelFormat.Format8bppIndexed;
-            formatTransalations[PixelFormat.Format24bppRgb]    = PixelFormat.Format8bppIndexed;
-            formatTransalations[PixelFormat.Format32bppRgb]    = PixelFormat.Format8bppIndexed;
-            formatTransalations[PixelFormat.Format32bppArgb]   = PixelFormat.Format8bppIndexed;
+            formatTranslations[PixelFormat.Format8bppIndexed] = PixelFormat.Format8bppIndexed;
+            formatTranslations[PixelFormat.Format24bppRgb]    = PixelFormat.Format8bppIndexed;
+            formatTranslations[PixelFormat.Format32bppRgb]    = PixelFormat.Format8bppIndexed;
+            formatTranslations[PixelFormat.Format32bppArgb]   = PixelFormat.Format8bppIndexed;
         }
 
         /// <summary>

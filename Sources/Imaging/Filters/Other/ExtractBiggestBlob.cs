@@ -64,32 +64,32 @@ namespace AForge.Imaging.Filters
         /// source images and which pixel format will be used for resulting image.
         /// </para>
         /// 
-        /// <para>See <see cref="IFilterInformation.FormatTransalations"/> for more information.</para>
+        /// <para>See <see cref="IFilterInformation.FormatTranslations"/> for more information.</para>
         /// </remarks>
         ///
-        public Dictionary<PixelFormat, PixelFormat> FormatTransalations
+        public Dictionary<PixelFormat, PixelFormat> FormatTranslations
         {
             get
             {
-                Dictionary<PixelFormat, PixelFormat> formatTransalations = new Dictionary<PixelFormat, PixelFormat>( );
+                Dictionary<PixelFormat, PixelFormat> formatTranslations = new Dictionary<PixelFormat, PixelFormat>( );
 
                 // initialize format translation dictionary
                 if ( originalImage == null )
                 {
-                    formatTransalations[PixelFormat.Format8bppIndexed] = PixelFormat.Format8bppIndexed;
-                    formatTransalations[PixelFormat.Format24bppRgb]    = PixelFormat.Format24bppRgb;
-                    formatTransalations[PixelFormat.Format32bppArgb]   = PixelFormat.Format32bppArgb;
-                    formatTransalations[PixelFormat.Format32bppPArgb]  = PixelFormat.Format32bppPArgb;
+                    formatTranslations[PixelFormat.Format8bppIndexed] = PixelFormat.Format8bppIndexed;
+                    formatTranslations[PixelFormat.Format24bppRgb]    = PixelFormat.Format24bppRgb;
+                    formatTranslations[PixelFormat.Format32bppArgb]   = PixelFormat.Format32bppArgb;
+                    formatTranslations[PixelFormat.Format32bppPArgb]  = PixelFormat.Format32bppPArgb;
                 }
                 else
                 {
-                    formatTransalations[PixelFormat.Format8bppIndexed] = originalImage.PixelFormat;
-                    formatTransalations[PixelFormat.Format24bppRgb]    = originalImage.PixelFormat;
-                    formatTransalations[PixelFormat.Format32bppArgb]   = originalImage.PixelFormat;
-                    formatTransalations[PixelFormat.Format32bppPArgb]  = originalImage.PixelFormat;
+                    formatTranslations[PixelFormat.Format8bppIndexed] = originalImage.PixelFormat;
+                    formatTranslations[PixelFormat.Format24bppRgb]    = originalImage.PixelFormat;
+                    formatTranslations[PixelFormat.Format32bppArgb]   = originalImage.PixelFormat;
+                    formatTranslations[PixelFormat.Format32bppPArgb]  = originalImage.PixelFormat;
                 }
 
-                return formatTransalations;
+                return formatTranslations;
             }
         }
 
@@ -159,7 +159,7 @@ namespace AForge.Imaging.Filters
         public Bitmap Apply( BitmapData imageData )
         {
             // check pixel format of the source image
-            if ( !FormatTransalations.ContainsKey( imageData.PixelFormat ) )
+            if ( !FormatTranslations.ContainsKey( imageData.PixelFormat ) )
                 throw new UnsupportedImageFormatException( "Source pixel format is not supported by the filter." );
 
             // locate blobs in the source image

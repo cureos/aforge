@@ -38,14 +38,14 @@ namespace AForge.Imaging.Filters
     public sealed class RotateChannels : BaseInPlacePartialFilter
     {
         // private format translation dictionary
-        private Dictionary<PixelFormat, PixelFormat> formatTransalations = new Dictionary<PixelFormat, PixelFormat>( );
+        private Dictionary<PixelFormat, PixelFormat> formatTranslations = new Dictionary<PixelFormat, PixelFormat>( );
 
         /// <summary>
         /// Format translations dictionary.
         /// </summary>
-        public override Dictionary<PixelFormat, PixelFormat> FormatTransalations
+        public override Dictionary<PixelFormat, PixelFormat> FormatTranslations
         {
-            get { return formatTransalations; }
+            get { return formatTranslations; }
         }
 
         /// <summary>   
@@ -53,9 +53,9 @@ namespace AForge.Imaging.Filters
         /// </summary>
         public RotateChannels( )
         {
-            formatTransalations[PixelFormat.Format24bppRgb]  = PixelFormat.Format24bppRgb;
-            formatTransalations[PixelFormat.Format32bppRgb]  = PixelFormat.Format32bppRgb;
-            formatTransalations[PixelFormat.Format32bppArgb] = PixelFormat.Format32bppArgb;
+            formatTranslations[PixelFormat.Format24bppRgb]  = PixelFormat.Format24bppRgb;
+            formatTranslations[PixelFormat.Format32bppRgb]  = PixelFormat.Format32bppRgb;
+            formatTranslations[PixelFormat.Format32bppArgb] = PixelFormat.Format32bppArgb;
         }
 
         /// <summary>

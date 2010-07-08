@@ -33,10 +33,10 @@ namespace AForge.Imaging.Filters
         /// source images and which pixel format will be used for resulting image.
         /// </para>
         /// 
-        /// <para>See <see cref="IFilterInformation.FormatTransalations"/> for more information.</para>
+        /// <para>See <see cref="IFilterInformation.FormatTranslations"/> for more information.</para>
         /// </remarks>
         ///
-        public abstract Dictionary<PixelFormat, PixelFormat> FormatTransalations { get; }
+        public abstract Dictionary<PixelFormat, PixelFormat> FormatTranslations { get; }
 
         /// <summary>
         /// Apply filter to an image.
@@ -168,7 +168,7 @@ namespace AForge.Imaging.Filters
         /// 
         /// <para><note>The destination image must have the same width and height as source image. Also
         /// destination image must have pixel format, which is expected by particular filter (see
-        /// <see cref="FormatTransalations"/> property for information about pixel format conversions).</note></para>
+        /// <see cref="FormatTranslations"/> property for information about pixel format conversions).</note></para>
         /// </remarks>
         /// 
         /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
@@ -353,7 +353,7 @@ namespace AForge.Imaging.Filters
         // Check pixel format of the source image
         private void CheckSourceFormat( PixelFormat pixelFormat )
         {
-            if ( !FormatTransalations.ContainsKey( pixelFormat ) )
+            if ( !FormatTranslations.ContainsKey( pixelFormat ) )
                 throw new UnsupportedImageFormatException( "Source pixel format is not supported by the filter." );
         }
     }

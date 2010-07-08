@@ -81,16 +81,16 @@ namespace AForge.Imaging.Filters
         /// Format translations dictionary.
         /// </summary>
         /// 
-        /// <remarks><para>See <see cref="IFilterInformation.FormatTransalations"/>
+        /// <remarks><para>See <see cref="IFilterInformation.FormatTranslations"/>
         /// documentation for additional information.</para>
         /// 
         /// <para><note>The filter provides format translation dictionary taken from
         /// <see cref="BaseFilter"/> filter.</note></para>
         /// </remarks>
         /// 
-        public Dictionary<PixelFormat, PixelFormat> FormatTransalations
+        public Dictionary<PixelFormat, PixelFormat> FormatTranslations
         {
-            get { return ( (IFilterInformation) baseFilter).FormatTransalations; }
+            get { return ( (IFilterInformation) baseFilter).FormatTranslations; }
         }
 
         /// <summary>
@@ -244,7 +244,7 @@ namespace AForge.Imaging.Filters
         /// 
         /// <para><note>The destination image must have the same width and height as source image. Also
         /// destination image must have pixel format, which is expected by particular filter (see
-        /// <see cref="FormatTransalations"/> property for information about pixel format conversions).</note></para>
+        /// <see cref="FormatTranslations"/> property for information about pixel format conversions).</note></para>
         /// </remarks>
         /// 
         public void Apply( UnmanagedImage sourceImage, UnmanagedImage destinationImage )
