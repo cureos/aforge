@@ -360,7 +360,7 @@ namespace AForge.Imaging
             if ( Math.Abs( dx ) >= Math.Abs( dy ) )
             {
                 // the line is more horizontal, we'll plot along the X axis
-                float slope = (float) dy / (float) dx;
+                float slope = ( dx != 0 ) ? (float) dy / dx : 0;
                 int step = ( dx > 0 ) ? 1 : -1;
 
                 // correct dx so last point is included as well
@@ -397,7 +397,7 @@ namespace AForge.Imaging
             else
             {
                 // the line is more vertical, we'll plot along the y axis.
-                float slope = (float) dx / (float) dy;
+                float slope = ( dy != 0 ) ? (float) dx / dy : 0;
                 int step = ( dy > 0 ) ? 1 : -1;
 
                 // correct dy so last point is included as well
