@@ -188,5 +188,17 @@ namespace AForge
         {
             return string.Format( "{0}, {1}", X, Y );
         }
+
+        /// <summary>
+        /// Calculate Euclidean norm of the vector comprised of the point's 
+        /// coordinates - distance from (0, 0) in other words.
+        /// </summary>
+        /// 
+        /// <returns>Returns point's distance from (0, 0) point.</returns>
+        /// 
+        public double EuclideanNorm( )
+        {
+            return System.Math.Sqrt( X * X + Y * Y );
+        }
     }    
 }

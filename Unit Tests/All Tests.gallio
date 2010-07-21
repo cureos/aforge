@@ -3,6 +3,7 @@
   <testPackage shadowCopy="false" debug="false">
     <files>
       <file>Build\AForge.Math.Tests.dll</file>
+      <file>Build\AForge.Tests.dll</file>
     </files>
     <hintDirectories />
     <excludedFrameworkIds />
