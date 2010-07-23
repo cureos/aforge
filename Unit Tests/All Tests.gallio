@@ -4,6 +4,7 @@
     <files>
       <file>Build\AForge.Math.Tests.dll</file>
       <file>Build\AForge.Tests.dll</file>
+      <file>Build\AForge.Imaging.Tests.dll</file>
     </files>
     <hintDirectories />
     <excludedFrameworkIds />

@@ -11,6 +11,7 @@ namespace AForge.Imaging
     using System;
     using System.Drawing;
     using System.Drawing.Imaging;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Image in unmanaged memory.
@@ -288,8 +289,10 @@ namespace AForge.Imaging
         /// <see cref="System.Drawing.Imaging.PixelFormat">Format24bppRgb</see>,
         /// <see cref="System.Drawing.Imaging.PixelFormat">Format32bppRgb</see>,
         /// <see cref="System.Drawing.Imaging.PixelFormat">Format32bppArgb</see>,
-        /// <see cref="System.Drawing.Imaging.PixelFormat">Format48bppRgb</see> and
-        /// <see cref="System.Drawing.Imaging.PixelFormat">Format64bppArgb</see> pixel formats.
+        /// <see cref="System.Drawing.Imaging.PixelFormat">Format32bppPArgb</see>,
+        /// <see cref="System.Drawing.Imaging.PixelFormat">Format48bppRgb</see>,
+        /// <see cref="System.Drawing.Imaging.PixelFormat">Format64bppArgb</see> and
+        /// <see cref="System.Drawing.Imaging.PixelFormat">Format64bppPArgb</see> pixel formats.
         /// In the case if <see cref="System.Drawing.Imaging.PixelFormat">Format8bppIndexed</see>
         /// format is specified, pallete is not not created for the image (supposed that it is
         /// 8 bpp grayscale image).
@@ -317,12 +320,14 @@ namespace AForge.Imaging
                     break;
                 case PixelFormat.Format32bppRgb:
                 case PixelFormat.Format32bppArgb:
+                case PixelFormat.Format32bppPArgb:
                     bytesPerPixel = 4;
                     break;
                 case PixelFormat.Format48bppRgb:
                     bytesPerPixel = 6;
                     break;
                 case PixelFormat.Format64bppArgb:
+                case PixelFormat.Format64bppPArgb:
                     bytesPerPixel = 8;
                     break;
                 default:
@@ -454,8 +459,10 @@ namespace AForge.Imaging
                 ( pixelFormat != PixelFormat.Format24bppRgb ) &&
                 ( pixelFormat != PixelFormat.Format32bppRgb ) &&
                 ( pixelFormat != PixelFormat.Format32bppArgb ) &&
+                ( pixelFormat != PixelFormat.Format32bppPArgb ) &&
                 ( pixelFormat != PixelFormat.Format48bppRgb ) &&
-                ( pixelFormat != PixelFormat.Format64bppArgb ) )
+                ( pixelFormat != PixelFormat.Format64bppArgb ) &&
+                ( pixelFormat != PixelFormat.Format64bppPArgb ) )
             {
                 throw new UnsupportedImageFormatException( "Unsupported pixel format of the source image." );
             }
@@ -468,6 +475,144 @@ namespace AForge.Imaging
             image.mustBeDisposed = true;
 
             return image;
+        }
+
+        /// <summary>
+        /// Collect pixel values from the specified list of coordinates.
+        /// </summary>
+        /// 
+        /// <param name="points">List of coordinates to collect pixels' value from.</param>
+        /// 
+        /// <returns>Returns array of pixels' values from the specified coordinates.</returns>
+        /// 
+        /// <remarks><para>The method goes through the specified list of points and for each point retrievs
+        /// corresponding pixel's value from the unmanaged image.</para>
+        /// 
+        /// <para><note>For grayscale image the output array has the same length as number of points in the
+        /// specified list of points. For color image the output array has triple length, containing pixels'
+        /// values in RGB order.</note></para>
+        /// 
+        /// <para><note>The method does not make any checks for valid coordinates and leaves this up to user.
+        /// If specified coordinates are out of image's bounds, the result is not predictable (crash in most cases).
+        /// </note></para>
+        /// 
+        /// <para><note>This method is supposed for images with 8 bpp channels only (8 bpp grayscale image and
+        /// 24/32 bpp color images).</note></para>
+        /// </remarks>
+        /// 
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image. Use Collect16bppPixelValues() method for
+        /// images with 16 bpp channels.</exception>
+        /// 
+        public byte[] Collect8bppPixelValues( List<IntPoint> points )
+        {
+            int pixelSize = Bitmap.GetPixelFormatSize( pixelFormat ) / 8;
+
+            if ( ( pixelFormat == PixelFormat.Format16bppGrayScale ) || ( pixelSize > 4 ) )
+            {
+                throw new UnsupportedImageFormatException( "Unsupported pixel format of the source image. Use Collect16bppPixelValues() method for it." );
+            }
+
+            byte[] pixelValues = new byte[points.Count * ( ( pixelFormat == PixelFormat.Format8bppIndexed ) ? 1 : 3 )];
+
+            unsafe
+            {
+                byte* basePtr = (byte*) imageData.ToPointer( );
+                byte* ptr;
+
+                if ( pixelFormat == PixelFormat.Format8bppIndexed )
+                {
+                    int i = 0;
+
+                    foreach ( IntPoint point in points )
+                    {
+                        ptr = basePtr + stride * point.Y + point.X;
+                        pixelValues[i++] = *ptr;
+                    }
+                }
+                else
+                {
+                    int i = 0;
+
+                    foreach ( IntPoint point in points )
+                    {
+                        ptr = basePtr + stride * point.Y + point.X * pixelSize;
+                        pixelValues[i++] = ptr[RGB.R];
+                        pixelValues[i++] = ptr[RGB.G];
+                        pixelValues[i++] = ptr[RGB.B];
+                    }
+                }
+            }
+
+            return pixelValues;
+        }
+
+        /// <summary>
+        /// Collect pixel values from the specified list of coordinates.
+        /// </summary>
+        /// 
+        /// <param name="points">List of coordinates to collect pixels' value from.</param>
+        /// 
+        /// <returns>Returns array of pixels' values from the specified coordinates.</returns>
+        /// 
+        /// <remarks><para>The method goes through the specified list of points and for each point retrievs
+        /// corresponding pixel's value from the unmanaged image.</para>
+        /// 
+        /// <para><note>For grayscale image the output array has the same length as number of points in the
+        /// specified list of points. For color image the output array has triple length, containing pixels'
+        /// values in RGB order.</note></para>
+        /// 
+        /// <para><note>The method does not make any checks for valid coordinates and leaves this up to user.
+        /// If specified coordinates are out of image's bounds, the result is not predictable (crash in most cases).
+        /// </note></para>
+        /// 
+        /// <para><note>This method is supposed for images with 16 bpp channels only (16 bpp grayscale image and
+        /// 48/64 bpp color images).</note></para>
+        /// </remarks>
+        /// 
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image. Use Collect8bppPixelValues() method for
+        /// images with 8 bpp channels.</exception>
+        ///
+        public ushort[] Collect16bppPixelValues( List<IntPoint> points )
+        {
+            int pixelSize = Bitmap.GetPixelFormatSize( pixelFormat ) / 8;
+
+            if ( ( pixelFormat == PixelFormat.Format8bppIndexed ) || ( pixelSize == 3 ) || ( pixelSize == 4 ) )
+            {
+                throw new UnsupportedImageFormatException( "Unsupported pixel format of the source image. Use Collect8bppPixelValues() method for it." );
+            }
+
+            ushort[] pixelValues = new ushort[points.Count * ( ( pixelFormat == PixelFormat.Format16bppGrayScale ) ? 1 : 3 )];
+
+            unsafe
+            {
+                byte* basePtr = (byte*) imageData.ToPointer( );
+                ushort* ptr;
+
+                if ( pixelFormat == PixelFormat.Format16bppGrayScale )
+                {
+                    int i = 0;
+
+                    foreach ( IntPoint point in points )
+                    {
+                        ptr = (ushort*) ( basePtr + stride * point.Y + point.X * pixelSize );
+                        pixelValues[i++] = *ptr;
+                    }
+                }
+                else
+                {
+                    int i = 0;
+
+                    foreach ( IntPoint point in points )
+                    {
+                        ptr = (ushort*) ( basePtr + stride * point.Y + point.X * pixelSize );
+                        pixelValues[i++] = ptr[RGB.R];
+                        pixelValues[i++] = ptr[RGB.G];
+                        pixelValues[i++] = ptr[RGB.B];
+                    }
+                }
+            }
+
+            return pixelValues;
         }
     }
 }
