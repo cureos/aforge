@@ -397,9 +397,9 @@ namespace AForge.Math.Geometry
             if ( corners.Count == 3 )
             {
                 // get angles of the triangle
-                float angle1 = Tools.GetAngleBetweenVectors( corners[0], corners[1], corners[2] );
-                float angle2 = Tools.GetAngleBetweenVectors( corners[1], corners[2], corners[0] );
-                float angle3 = Tools.GetAngleBetweenVectors( corners[2], corners[0], corners[1] );
+                double angle1 = GeometryTools.GetAngleBetweenVectors( corners[0], corners[1], corners[2] );
+                double angle2 = GeometryTools.GetAngleBetweenVectors( corners[1], corners[2], corners[0] );
+                double angle3 = GeometryTools.GetAngleBetweenVectors( corners[2], corners[0], corners[1] );
 
                 // check for equilateral triangle
                 if ( ( Math.Abs( angle1 - 60 ) <= angleError ) &&
@@ -431,8 +431,8 @@ namespace AForge.Math.Geometry
             else if ( corners.Count == 4 )
             {
                 // get angles between 2 pairs of opposite sides
-                float angleBetween1stPair = Tools.GetAngleBetweenLines( corners[0], corners[1], corners[2], corners[3] );
-                float angleBetween2ndPair = Tools.GetAngleBetweenLines( corners[1], corners[2], corners[3], corners[0] );
+                double angleBetween1stPair = GeometryTools.GetAngleBetweenLines( corners[0], corners[1], corners[2], corners[3] );
+                double angleBetween2ndPair = GeometryTools.GetAngleBetweenLines( corners[1], corners[2], corners[3], corners[0] );
 
                 // check 1st pair for parallelism
                 if ( angleBetween1stPair <= angleError )
@@ -445,7 +445,7 @@ namespace AForge.Math.Geometry
                         subType = PolygonSubType.Parallelogram;
 
                         // check angle between adjacent sides
-                        if ( Math.Abs( Tools.GetAngleBetweenVectors( corners[1], corners[0], corners[2] ) - 90 ) <= angleError )
+                        if ( Math.Abs( GeometryTools.GetAngleBetweenVectors( corners[1], corners[0], corners[2] ) - 90 ) <= angleError )
                         {
                             subType = PolygonSubType.Rectangle;
                         }
