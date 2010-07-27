@@ -1,4 +1,4 @@
-﻿namespace AForge.Imaging.IPPrototyper
+﻿namespace IPPrototyper
 {
     partial class AboutForm
     {

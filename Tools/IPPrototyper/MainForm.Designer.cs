@@ -1,4 +1,4 @@
-﻿namespace AForge.Imaging.IPPrototyper
+﻿namespace IPPrototyper
 {
     partial class MainForm
     {
@@ -56,6 +56,8 @@
             this.pictureBox = new System.Windows.Forms.PictureBox( );
             this.logBox = new System.Windows.Forms.TextBox( );
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog( );
+            this.recentFoldersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator( );
             this.menuStrip.SuspendLayout( );
             this.mainPanel.SuspendLayout( );
             this.mainSplitContainer.Panel1.SuspendLayout( );
@@ -89,6 +91,8 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
             this.openFolderToolStripMenuItem,
             this.toolStripMenuItem1,
+            this.recentFoldersToolStripMenuItem,
+            this.toolStripMenuItem2,
             this.exitToolStripMenuItem} );
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size( 37, 20 );
@@ -160,7 +164,7 @@
             this.centerToolStripMenuItem,
             this.stretchToolStripMenuItem} );
             this.imageviewToolStripMenuItem.Name = "imageviewToolStripMenuItem";
-            this.imageviewToolStripMenuItem.Size = new System.Drawing.Size( 134, 22 );
+            this.imageviewToolStripMenuItem.Size = new System.Drawing.Size( 152, 22 );
             this.imageviewToolStripMenuItem.Text = "Image &view";
             this.imageviewToolStripMenuItem.DropDownOpening += new System.EventHandler( this.imageviewToolStripMenuItem_DropDownOpening );
             // 
@@ -341,6 +345,17 @@
             // 
             this.folderBrowserDialog.Description = "Select folder containing images to process:";
             // 
+            // recentFoldersToolStripMenuItem
+            // 
+            this.recentFoldersToolStripMenuItem.Name = "recentFoldersToolStripMenuItem";
+            this.recentFoldersToolStripMenuItem.Size = new System.Drawing.Size( 180, 22 );
+            this.recentFoldersToolStripMenuItem.Text = "&Recent Folders";
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size( 177, 6 );
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
@@ -353,6 +368,7 @@
             this.Name = "MainForm";
             this.Text = "Image Processing Prototyper";
             this.Load += new System.EventHandler( this.MainForm_Load );
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler( this.MainForm_FormClosing );
             this.menuStrip.ResumeLayout( false );
             this.menuStrip.PerformLayout( );
             this.mainPanel.ResumeLayout( false );
@@ -402,6 +418,8 @@
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copyImageClipboardToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showhistogramToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem recentFoldersToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
     }
 }
 

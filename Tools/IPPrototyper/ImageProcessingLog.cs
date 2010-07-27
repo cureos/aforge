@@ -10,8 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using AForge.Imaging.IPPrototyper;
 
-namespace AForge.Imaging.IPPrototyper
+namespace IPPrototyper
 {
     // The class, which keeps image processing log
     internal class ImageProcessingLog : IImageProcessingLog

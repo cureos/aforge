@@ -14,7 +14,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace AForge.Imaging.IPPrototyper
+namespace IPPrototyper
 {
     internal partial class AboutForm : Form
     {

@@ -18,8 +18,9 @@ using System.Reflection;
 
 using AForge;
 using AForge.Imaging;
+using AForge.Imaging.IPPrototyper;
 
-namespace AForge.Imaging.IPPrototyper
+namespace IPPrototyper
 {
     internal partial class MainForm : Form
     {
@@ -57,6 +58,41 @@ namespace AForge.Imaging.IPPrototyper
                     ipRoutineToUse = processingRoutines[routineName];
                 }
             }
+
+            // load configuratio
+            Configuration config = Configuration.Instance;
+
+            if ( config.Load( ) )
+            {
+                RebuildRecentFoldersList( );
+            }
+        }
+
+        // Rebuild menu with the list of recently used folders
+        private void RebuildRecentFoldersList( )
+        {
+            // unsubscribe from events
+            foreach ( ToolStripItem item in recentFoldersToolStripMenuItem.DropDownItems )
+            {
+                item.Click -= new EventHandler( recentFolder_Click );
+            }
+
+            // remove all current items
+            recentFoldersToolStripMenuItem.DropDownItems.Clear( );
+
+            // add new items
+            foreach ( string folderName in Configuration.Instance.RecentFolders )
+            {
+                ToolStripItem item = recentFoldersToolStripMenuItem.DropDownItems.Add( folderName );
+
+                item.Click += new EventHandler( recentFolder_Click );
+            }
+        }
+
+        // On form closing
+        private void MainForm_FormClosing( object sender, FormClosingEventArgs e )
+        {
+            Configuration.Instance.Save( );
         }
 
         // Update check style of modules' items
@@ -72,6 +108,7 @@ namespace AForge.Imaging.IPPrototyper
         private void module_Click( object sender, EventArgs e )
         {
             ipRoutineToUse = processingRoutines[( (ToolStripMenuItem) sender ).Text];
+            ProcessSelectedImage( );
         }
 
         // Exit from application
@@ -146,9 +183,41 @@ namespace AForge.Imaging.IPPrototyper
         {
             if ( folderBrowserDialog.ShowDialog( ) == DialogResult.OK )
             {
-                selectedFolder = folderBrowserDialog.SelectedPath;
+                if ( OpenFolder( folderBrowserDialog.SelectedPath ) )
+                {
+                    // remember this folder
+                    Configuration.Instance.AddRecentFolder( selectedFolder );
+                    RebuildRecentFoldersList( );
+                }
+            }
+        }
 
-                DirectoryInfo dirInfo = new DirectoryInfo( selectedFolder );
+        // Item is clicked in recent folders list
+        private void recentFolder_Click( object sender, EventArgs e )
+        {
+            string folderName = ( (ToolStripMenuItem) sender ).Text;
+
+            if ( OpenFolder( folderName ) )
+            {
+                // move the folder up in the list
+                Configuration.Instance.AddRecentFolder( folderName );
+            }
+            else
+            {
+                // remove failing folder
+                Configuration.Instance.RemoveRecentFolder( folderName );
+            }
+            RebuildRecentFoldersList( );
+        }
+
+        // Open specified folder
+        private bool OpenFolder( string folderName )
+        {
+            bool success = false;
+
+            try
+            {
+                DirectoryInfo dirInfo = new DirectoryInfo( folderName );
                 FileInfo[] fileInfos = dirInfo.GetFiles( );
 
                 filesListView.Items.Clear( );
@@ -170,7 +239,16 @@ namespace AForge.Imaging.IPPrototyper
                 logListView.Items.Clear( );
                 filesListView.Focus( );
                 ProcessSelectedImage( );
+
+                selectedFolder = folderName;
+                success = true;
             }
+            catch
+            {
+                MessageBox.Show( "Failed opening the folder:\n" + folderName, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+            }
+
+            return success;
         }
 
         // Selection has changed in files list view control

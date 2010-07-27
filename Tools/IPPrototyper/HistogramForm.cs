@@ -17,7 +17,7 @@ using System.Windows.Forms;
 using AForge.Math;
 using AForge.Imaging;
 
-namespace AForge.Imaging.IPPrototyper
+namespace IPPrototyper
 {
     // Form to display image's histogram(s) and basic statistics like mean, std.dev, etc
     internal partial class HistogramForm : Form

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace AForge.Imaging.IPPrototyper
+namespace IPPrototyper
 {
     static class Program
     {

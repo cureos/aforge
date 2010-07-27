@@ -8,7 +8,7 @@
     <ProjectGuid>{257502A9-6C82-4F86-815D-2CE0FA8C0036}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AForge.Imaging.IPPrototyper</RootNamespace>
+    <RootNamespace>IPPrototyper</RootNamespace>
     <AssemblyName>IPPrototyper</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -80,6 +80,7 @@
     <Compile Include="AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Configuration.cs" />
     <Compile Include="HistogramForm.cs">
       <SubType>Form</SubType>
     </Compile>
