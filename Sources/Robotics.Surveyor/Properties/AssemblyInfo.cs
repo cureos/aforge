@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle( "AForge.Robotics.Surveyor" )]
 [assembly: AssemblyDescription( "" )]
 [assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "" )]
-[assembly: AssemblyProduct( "Robotics.Surveyor" )]
-[assembly: AssemblyCopyright( "Copyright ©  2009" )]
+[assembly: AssemblyCompany( "AForge" )]
+[assembly: AssemblyProduct( "AForge.NET" )]
+[assembly: AssemblyCopyright( "AForge © 2009" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 

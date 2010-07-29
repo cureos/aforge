@@ -7,11 +7,11 @@ using System.Runtime.CompilerServices;
 // associated with an assembly.
 //
 [assembly: AssemblyTitle( "Imaging Filters Demo" )]
-[assembly: AssemblyDescription( "" )]
+[assembly: AssemblyDescription( "Imaging Filters Demo sample" )]
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "AForge" )]
-[assembly: AssemblyProduct( "Imaging Filters Demo" )]
-[assembly: AssemblyCopyright( "AForge.NET © 2009" )]
+[assembly: AssemblyProduct( "AForge.NET" )]
+[assembly: AssemblyCopyright( "AForge © 2009" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 

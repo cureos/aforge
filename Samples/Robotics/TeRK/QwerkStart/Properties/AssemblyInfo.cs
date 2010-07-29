@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle( "Qwerk Start sample" )]
-[assembly: AssemblyDescription( "" )]
+[assembly: AssemblyTitle( "Qwerk Start" )]
+[assembly: AssemblyDescription( "Qwerk Start sample" )]
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "AForge" )]
 [assembly: AssemblyProduct( "AForge.NET" )]
-[assembly: AssemblyCopyright( "AForge.NET © 2008" )]
+[assembly: AssemblyCopyright( "AForge © 2008" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 

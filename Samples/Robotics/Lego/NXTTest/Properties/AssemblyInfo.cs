@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle( "Lego NXT Test" )]
-[assembly: AssemblyDescription( "" )]
+[assembly: AssemblyDescription( "Lego NXT Test sample" )]
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "AForge" )]
-[assembly: AssemblyProduct( "Lego NXT Test" )]
-[assembly: AssemblyCopyright( "AForge.NET © 2007" )]
+[assembly: AssemblyProduct( "AForge.NET" )]
+[assembly: AssemblyCopyright( "AForge © 2007" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 

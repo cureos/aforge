@@ -7,11 +7,11 @@ using System.Runtime.CompilerServices;
 // associated with an assembly.
 //
 [assembly: AssemblyTitle( "Neuro One-Layer Perceptron" )]
-[assembly: AssemblyDescription( "" )]
+[assembly: AssemblyDescription( "Neuro One-Layer Perceptron sample" )]
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "AForge" )]
-[assembly: AssemblyProduct( "Neuro One-Layer Perceptron" )]
-[assembly: AssemblyCopyright( "AForge.NET © 2008" )]
+[assembly: AssemblyProduct( "AForge.NET" )]
+[assembly: AssemblyCopyright( "AForge © 2008" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 

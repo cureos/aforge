@@ -7,11 +7,11 @@ using System.Runtime.CompilerServices;
 // associated with an assembly.
 //
 [assembly: AssemblyTitle( "Neuro Delta Rule Learning" )]
-[assembly: AssemblyDescription( "" )]
+[assembly: AssemblyDescription( "Neuro Delta Rule Learning sample" )]
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "AForge" )]
-[assembly: AssemblyProduct( "Neuro Delta Rule Learning" )]
-[assembly: AssemblyCopyright( "AForge.NET © 2008" )]
+[assembly: AssemblyProduct( "AForge.NET" )]
+[assembly: AssemblyCopyright( "AForge © 2008" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 
