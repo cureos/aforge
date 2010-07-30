@@ -411,7 +411,7 @@ namespace AForge.Video.DirectShow.Internals
     /// <summary>
     /// Specifies a filter's state or the state of the filter graph.
     /// </summary>
-    public enum FilterState
+    internal enum FilterState
     {
         /// <summary>
         /// Stopped. The filter is not processing data.
