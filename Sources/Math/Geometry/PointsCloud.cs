@@ -109,7 +109,7 @@ namespace AForge.Math.Geometry
             int numberOfPoints = cloud.Count;
             double xSum = 0, ySum = 0;
 
-            for ( int i = 1; i < numberOfPoints; i++ )
+            for ( int i = 0; i < numberOfPoints; i++ )
             {
                 xSum += cloud[i].X;
                 ySum += cloud[i].Y;
