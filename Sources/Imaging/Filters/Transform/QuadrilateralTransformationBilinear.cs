@@ -208,7 +208,6 @@ namespace AForge.Imaging.Filters
             for ( int y = 0; y < dstHeight; y++ )
             {
                 byte* dst = baseDst + dstStride * y;
-                byte* p;
 
                 // find corresponding Y on the left edge of the quadrilateral
                 double yHorizLeft = leftFactor * y + srcY0;
@@ -241,19 +240,15 @@ namespace AForge.Imaging.Filters
                     double xs = horizFactor * x + xHorizLeft;
                     double ys = kHoriz * xs + bHoriz;
 
-                    // X coordinates
                     ox1 = (int) xs;
                     ox2 = ( ox1 == xmax ) ? ox1 : ox1 + 1;
-                    dx1 = xs - (double) ox1;
+                    dx1 = xs - ox1;
                     dx2 = 1.0 - dx1;
 
                     oy1 = (int) ys;
                     oy2 = ( oy1 == ymax ) ? oy1 : oy1 + 1;
-                    dy1 = ys - (double) oy1;
+                    dy1 = ys - oy1;
                     dy2 = 1.0 - dy1;
-
-                    // get pointers to pixel in the source image
-                    p = baseSrc + ( (int) ys * srcStride + (int) xs * pixelSize );
 
                     // get four points
                     p1 = p2 = baseSrc + oy1 * srcStride;
