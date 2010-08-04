@@ -93,7 +93,7 @@ namespace AForge.Imaging.Filters
         /// </summary>
         /// 
         /// <remarks><para>The property defines width of the destination image, which gets
-        /// transfermed quadrilateral image.</para>
+        /// transformed quadrilateral image.</para>
         /// 
         /// <para><note>Setting the property does not have any effect, if <see cref="AutomaticSizeCalculaton"/>
         /// property is set to <see langword="true"/>. In this case destination image's width
@@ -117,7 +117,7 @@ namespace AForge.Imaging.Filters
         /// </summary>
         /// 
         /// <remarks><para>The property defines height of the destination image, which gets
-        /// transfermed quadrilateral image.</para>
+        /// transformed quadrilateral image.</para>
         /// 
         /// <para><note>Setting the property does not have any effect, if <see cref="AutomaticSizeCalculaton"/>
         /// property is set to <see langword="true"/>. In this case destination image's height
@@ -168,7 +168,7 @@ namespace AForge.Imaging.Filters
         ///
         protected BaseQuadrilateralTransformationFilter( List<IntPoint> sourceCorners )
         {
-            this.automaticSizeCalculaton = false;
+            this.automaticSizeCalculaton = true;
             this.sourceCorners = sourceCorners;
             CalculateDestinationSize( );
         }
@@ -203,8 +203,8 @@ namespace AForge.Imaging.Filters
         // Calculates size of destination image
         private void CalculateDestinationSize( )
         {
-            int maxXdiff = 0;
-            int maxYdiff = 0;
+            int maxXdiff = Math.Abs( sourceCorners[3].X - sourceCorners[0].X ); ;
+            int maxYdiff = Math.Abs( sourceCorners[3].Y - sourceCorners[0].Y );
 
             for ( int i = 1; i < 4; i++ )
             {
