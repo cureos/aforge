@@ -16,7 +16,7 @@ namespace AForge.Imaging.Filters
     using AForge;
 
     /// <summary>
-    /// Performs quadrilateral transformation of an area in the source image.
+    /// Performs quadrilateral transformation of an area in a given source image.
     /// </summary>
     /// 
     /// <remarks><para>The class implements quadrilateral transformation algorithm,
@@ -50,6 +50,7 @@ namespace AForge.Imaging.Filters
     /// <img src="img/imaging/quadrilateral_ex_bilinear.png" width="200" height="200" />
     /// </remarks>
     /// 
+    /// <seealso cref="BackwardQuadrilateralTransformation"/>
     /// <seealso cref="SimpleQuadrilateralTransformation"/>
     /// 
     public class QuadrilateralTransformation : BaseTransformationFilter
@@ -258,6 +259,7 @@ namespace AForge.Imaging.Filters
         /// <returns>New image size - size of the destination image.</returns>
         /// 
         /// <exception cref="ArgumentException">The specified quadrilateral's corners are outside of the given image.</exception>
+        /// <exception cref="NullReferenceException">Source quadrilateral was not set.</exception>
         /// 
         protected override System.Drawing.Size CalculateNewImageSize( UnmanagedImage sourceData )
         {
