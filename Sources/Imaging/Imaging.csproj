@@ -79,7 +79,6 @@
     <Compile Include="Filters\Base classes\BaseInPlaceFilter.cs" />
     <Compile Include="Filters\Base classes\BaseInPlacePartialFilter.cs" />
     <Compile Include="Filters\Base classes\BaseInPlaceFilter2.cs" />
-    <Compile Include="Filters\Base classes\BaseQuadrilateralTransformationFilter.cs" />
     <Compile Include="Filters\Base classes\BaseResizeFilter.cs" />
     <Compile Include="Filters\Base classes\BaseRotateFilter.cs" />
     <Compile Include="Filters\Base classes\BaseTransformationFilter.cs" />
@@ -185,6 +184,7 @@
     <Compile Include="Filters\Transform\RotateBilinear.cs" />
     <Compile Include="Filters\Transform\RotateNearestNeighbor.cs" />
     <Compile Include="Filters\Transform\Shrink.cs" />
+    <Compile Include="Filters\Transform\SimpleQuadrilateralTransformation.cs" />
     <Compile Include="Filters\YCbCr Filters\YCbCrExtractChannel.cs" />
     <Compile Include="Filters\YCbCr Filters\YCbCrFiltering.cs" />
     <Compile Include="Filters\YCbCr Filters\YCbCrLinear.cs" />
