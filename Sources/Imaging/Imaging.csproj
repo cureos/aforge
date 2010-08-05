@@ -175,6 +175,8 @@
     <Compile Include="Filters\Smooting\ConservativeSmoothing.cs" />
     <Compile Include="Filters\Smooting\Median.cs" />
     <Compile Include="Filters\Transform\Crop.cs" />
+    <Compile Include="Filters\Transform\Quad.cs" />
+    <Compile Include="Filters\Transform\QuadrilateralTransformation.cs" />
     <Compile Include="Filters\Transform\QuadrilateralTransformationBilinear.cs" />
     <Compile Include="Filters\Transform\QuadrilateralTransformationNearestNeighbor.cs" />
     <Compile Include="Filters\Transform\ResizeBicubic.cs" />

@@ -19,27 +19,12 @@ namespace AForge.Imaging.Filters
     /// Performs quadrilateral transformation of an area in the source image.
     /// </summary>
     /// 
-    /// <remarks><para>The class implements simple algorithm described by
-    /// <a href="http://www.codeguru.com/forum/showpost.php?p=1186454&amp;postcount=2">Olivier Thill</a>
-    /// for transforming quadrilateral area from a source image into rectangular image.
-    /// The idea of the algorithm is based on finding for each line of destination
-    /// rectangular image a corresponding line connecting "left" and "right" sides of
-    /// quadrilateral in a source image. Then the line is linearly transformed into the
-    /// line in destination image.</para>
-    /// 
-    /// <para><note>Due to simplicity of the algorithm it does not do any correction for perspective.
-    /// </note></para>
-    /// 
-    /// <para><note>To make sure the algorithm works correctly, it is preferred if the
-    /// "left-top" corner of the quadrilateral (screen coordinates system) is
-    /// specified first in the list of quadrilateral's corners. At least
-    /// user need to make sure that the "left" side (side connecting first and the last
-    /// corner) and the "right" side (side connecting second and third corners) are
-    /// not horizontal.</note></para>
-    /// 
-    /// <para>Use <see cref="QuadrilateralTransformation"/> to avoid the above mentioned limitations,
-    /// which is a more advanced quadrilateral transformation algorithms (although a bit more
-    /// computationally expensive).</para>
+    /// <remarks><para>The class implements quadrilateral transformation algorithm,
+    /// which allows to transform any quadrilateral from a given source image
+    /// to a rectangular image. The idea of the algorithm is based on homogeneous
+    /// transformation and its math is described by Paul Heckbert in his
+    /// "<a href="http://graphics.cs.cmu.edu/courses/15-463/2008_fall/Papers/proj.pdf">Projective Mappings for Image Warping</a>" paper.
+    /// </para>
     /// 
     /// <para>The image processing filter accepts 8 grayscale images and 24/32 bpp
     /// color images for processing.</para>
@@ -53,8 +38,8 @@ namespace AForge.Imaging.Filters
     /// corners.Add( new IntPoint( 184, 126 ) );
     /// corners.Add( new IntPoint( 122, 150 ) );
     /// // create filter
-    /// SimpleQuadrilateralTransformation filter =
-    ///     new SimpleQuadrilateralTransformation( corners, 200, 200 );
+    /// QuadrilateralTransformation filter =
+    ///     new QuadrilateralTransformation( corners, 200, 200 );
     /// // apply the filter
     /// Bitmap newImage = filter.Apply( image );
     /// </code>
@@ -62,12 +47,12 @@ namespace AForge.Imaging.Filters
     /// <para><b>Initial image:</b></para>
     /// <img src="img/imaging/sample18.jpg" width="320" height="240" />
     /// <para><b>Result image:</b></para>
-    /// <img src="img/imaging/quadrilateral_bilinear.png" width="200" height="200" />
+    /// <img src="img/imaging/quadrilateral_ex_bilinear.png" width="200" height="200" />
     /// </remarks>
     /// 
-    /// <seealso cref="QuadrilateralTransformation"/>
-    ///
-    public class SimpleQuadrilateralTransformation : BaseTransformationFilter
+    /// <seealso cref="SimpleQuadrilateralTransformation"/>
+    /// 
+    public class QuadrilateralTransformation : BaseTransformationFilter
     {
         private bool automaticSizeCalculaton = true;
         private bool useInterpolation = true;
@@ -135,9 +120,6 @@ namespace AForge.Imaging.Filters
         /// 
         /// <remarks><para>The property specifies four corners of the quadrilateral area
         /// in the source image to be transformed.</para>
-        /// 
-        /// <para>See documentation to the <see cref="SimpleQuadrilateralTransformation"/>
-        /// class itself for additional information.</para>
         /// </remarks>
         /// 
         public List<IntPoint> SourceQuadrilateral
@@ -216,10 +198,10 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SimpleQuadrilateralTransformation"/> class.
+        /// Initializes a new instance of the <see cref="QuadrilateralTransformation"/> class.
         /// </summary>
         /// 
-        public SimpleQuadrilateralTransformation( )
+        public QuadrilateralTransformation( )
         {
             formatTranslations[PixelFormat.Format8bppIndexed] = PixelFormat.Format8bppIndexed;
             formatTranslations[PixelFormat.Format24bppRgb]    = PixelFormat.Format24bppRgb;
@@ -229,7 +211,7 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SimpleQuadrilateralTransformation"/> class.
+        /// Initializes a new instance of the <see cref="QuadrilateralTransformation"/> class.
         /// </summary>
         /// 
         /// <param name="sourceQuadrilateral">Corners of the source quadrilateral area.</param>
@@ -240,7 +222,7 @@ namespace AForge.Imaging.Filters
         /// <see langword="false"/>, which means that destination image will have width and
         /// height as specified by user.</para></remarks>
         /// 
-        public SimpleQuadrilateralTransformation( List<IntPoint> sourceQuadrilateral, int newWidth, int newHeight )
+        public QuadrilateralTransformation( List<IntPoint> sourceQuadrilateral, int newWidth, int newHeight )
             : this( )
         {
             this.automaticSizeCalculaton = false;
@@ -250,7 +232,7 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SimpleQuadrilateralTransformation"/> class.
+        /// Initializes a new instance of the <see cref="QuadrilateralTransformation"/> class.
         /// </summary>
         /// 
         /// <param name="sourceQuadrilateral">Corners of the source quadrilateral area.</param>
@@ -259,7 +241,7 @@ namespace AForge.Imaging.Filters
         /// <see langword="true"/>, which means that destination image will have width and
         /// height automatically calculated based on <see cref="SourceQuadrilateral"/> property.</para></remarks>
         ///
-        public SimpleQuadrilateralTransformation( List<IntPoint> sourceQuadrilateral )
+        public QuadrilateralTransformation( List<IntPoint> sourceQuadrilateral )
             : this( )
         {
             this.automaticSizeCalculaton = true;
@@ -276,7 +258,6 @@ namespace AForge.Imaging.Filters
         /// <returns>New image size - size of the destination image.</returns>
         /// 
         /// <exception cref="ArgumentException">The specified quadrilateral's corners are outside of the given image.</exception>
-        /// <exception cref="NullReferenceException">Source quadrilateral was not set.</exception>
         /// 
         protected override System.Drawing.Size CalculateNewImageSize( UnmanagedImage sourceData )
         {
@@ -322,7 +303,7 @@ namespace AForge.Imaging.Filters
                 }
             }
 
-            newWidth  = maxXdiff;
+            newWidth = maxXdiff;
             newHeight = maxYdiff;
         }
 
@@ -344,149 +325,77 @@ namespace AForge.Imaging.Filters
             int pixelSize = Image.GetPixelFormatSize( sourceData.PixelFormat ) / 8;
             int srcStride = sourceData.Stride;
             int dstStride = destinationData.Stride;
+            int offset = dstStride - dstWidth * pixelSize;
 
-            // find equations of four quadrilateral's edges ( f(x) = k*x + b )
-            double kTop,    bTop;
-            double kBottom, bBottom;
-            double kLeft,   bLeft;
-            double kRight,  bRight;
+            // calculate tranformation matrix
+            List<IntPoint> dstRect = new List<IntPoint>( );
+            dstRect.Add( new IntPoint( 0, 0 ) );
+            dstRect.Add( new IntPoint( dstWidth - 1, 0 ) );
+            dstRect.Add( new IntPoint( dstWidth - 1, dstHeight - 1 ) );
+            dstRect.Add( new IntPoint( 0, dstHeight - 1 ) );
 
-            // top edge
-            if ( sourceQuadrilateral[1].X == sourceQuadrilateral[0].X )
-            {
-                kTop = 0;
-                bTop = sourceQuadrilateral[1].X;
-            }
-            else
-            {
-                kTop = (double) ( sourceQuadrilateral[1].Y - sourceQuadrilateral[0].Y ) /
-                                ( sourceQuadrilateral[1].X - sourceQuadrilateral[0].X );
-                bTop = (double) sourceQuadrilateral[0].Y - kTop * sourceQuadrilateral[0].X;
-            }
-
-            // bottom edge
-            if ( sourceQuadrilateral[2].X == sourceQuadrilateral[3].X )
-            {
-                kBottom = 0;
-                bBottom = sourceQuadrilateral[2].X;
-            }
-            else
-            {
-                kBottom = (double) ( sourceQuadrilateral[2].Y - sourceQuadrilateral[3].Y ) /
-                                   ( sourceQuadrilateral[2].X - sourceQuadrilateral[3].X );
-                bBottom = (double) sourceQuadrilateral[3].Y - kBottom * sourceQuadrilateral[3].X;
-            }
-
-            // left edge
-            if ( sourceQuadrilateral[3].X == sourceQuadrilateral[0].X )
-            {
-                kLeft = 0;
-                bLeft = sourceQuadrilateral[3].X;
-            }
-            else
-            {
-                kLeft = (double) ( sourceQuadrilateral[3].Y - sourceQuadrilateral[0].Y ) /
-                                 ( sourceQuadrilateral[3].X - sourceQuadrilateral[0].X );
-                bLeft = (double) sourceQuadrilateral[0].Y - kLeft * sourceQuadrilateral[0].X;
-            }
-
-            // right edge
-            if ( sourceQuadrilateral[2].X == sourceQuadrilateral[1].X )
-            {
-                kRight = 0;
-                bRight = sourceQuadrilateral[2].X;
-            }
-            else
-            {
-                kRight = (double) ( sourceQuadrilateral[2].Y - sourceQuadrilateral[1].Y ) /
-                                  ( sourceQuadrilateral[2].X - sourceQuadrilateral[1].X );
-                bRight = (double) sourceQuadrilateral[1].Y - kRight * sourceQuadrilateral[1].X;
-            }
-
-            // some precalculated values
-            double leftFactor  = (double) ( sourceQuadrilateral[3].Y - sourceQuadrilateral[0].Y ) / dstHeight;
-            double rightFactor = (double) ( sourceQuadrilateral[2].Y - sourceQuadrilateral[1].Y ) / dstHeight;
-
-            int srcY0 = sourceQuadrilateral[0].Y;
-            int srcY1 = sourceQuadrilateral[1].Y;
+            // calculate tranformation matrix
+            double[,] matrix = QuadTransformationCalcs.MapQuadToQuad( dstRect, sourceQuadrilateral );
 
             // do the job
+            byte* ptr = (byte*) destinationData.ImageData.ToPointer( );
             byte* baseSrc = (byte*) sourceData.ImageData.ToPointer( );
-            byte* baseDst = (byte*) destinationData.ImageData.ToPointer( );
 
-            // source width and height decreased by 1
-            int ymax = srcHeight - 1;
-            int xmax = srcWidth - 1;
-
-            // coordinates of source points
-            double  dx1, dy1, dx2, dy2;
-            int     sx1, sy1, sx2, sy2;
-
-            // temporary pointers
-            byte* p1, p2, p3, p4, p;
-
-            // for each line
-            for ( int y = 0; y < dstHeight; y++ )
+            if ( !useInterpolation )
             {
-                byte* dst = baseDst + dstStride * y;
+                byte* p;
 
-                // find corresponding Y on the left edge of the quadrilateral
-                double yHorizLeft = leftFactor * y + srcY0;
-                // find corresponding X on the left edge of the quadrilateral
-                double xHorizLeft = ( kLeft == 0 ) ? bLeft : ( yHorizLeft - bLeft ) / kLeft;
-
-                // find corresponding Y on the right edge of the quadrilateral
-                double yHorizRight = rightFactor * y + srcY1;
-                // find corresponding X on the left edge of the quadrilateral
-                double xHorizRight = ( kRight == 0 ) ? bRight : ( yHorizRight - bRight ) / kRight;
-
-                // find equation of the line joining points on the left and right edges
-                double kHoriz, bHoriz;
-
-                if ( xHorizLeft == xHorizRight )
+                // for each row
+                for ( int y = 0; y < dstHeight; y++ )
                 {
-                    kHoriz = 0;
-                    bHoriz = xHorizRight;
-                }
-                else
-                {
-                    kHoriz = ( yHorizRight - yHorizLeft ) / ( xHorizRight - xHorizLeft );
-                    bHoriz = yHorizLeft - kHoriz * xHorizLeft;
-                }
-
-                double horizFactor = ( xHorizRight - xHorizLeft ) / dstWidth;
-
-                if ( !useInterpolation )
-                {
+                    // for each pixel
                     for ( int x = 0; x < dstWidth; x++ )
                     {
-                        double xs = horizFactor * x + xHorizLeft;
-                        double ys = kHoriz * xs + bHoriz;
+                        double factor = matrix[2, 0] * x + matrix[2, 1] * y + matrix[2, 2];
+                        double srcX = ( matrix[0, 0] * x + matrix[0, 1] * y + matrix[0, 2] ) / factor;
+                        double srcY = ( matrix[1, 0] * x + matrix[1, 1] * y + matrix[1, 2] ) / factor;
 
                         // get pointer to the pixel in the source image
-                        p = baseSrc + ( (int) ys * srcStride + (int) xs * pixelSize );
+                        p = baseSrc + (int) srcY * srcStride + (int) srcX * pixelSize;
                         // copy pixel's values
-                        for ( int i = 0; i < pixelSize; i++, dst++, p++ )
+                        for ( int i = 0; i < pixelSize; i++, ptr++, p++ )
                         {
-                            *dst = *p;
+                            *ptr = *p;
                         }
                     }
+                    ptr += offset;
                 }
-                else
+            }
+            else
+            {
+                int srcWidthM1  = srcWidth - 1;
+                int srcHeightM1 = srcHeight - 1;
+
+                // coordinates of source points
+                double dx1, dy1, dx2, dy2;
+                int sx1, sy1, sx2, sy2;
+
+                // temporary pointers
+                byte* p1, p2, p3, p4;
+
+                // for each row
+                for ( int y = 0; y < dstHeight; y++ )
                 {
+                    // for each pixel
                     for ( int x = 0; x < dstWidth; x++ )
                     {
-                        double xs = horizFactor * x + xHorizLeft;
-                        double ys = kHoriz * xs + bHoriz;
+                        double factor = matrix[2, 0] * x + matrix[2, 1] * y + matrix[2, 2];
+                        double srcX = ( matrix[0, 0] * x + matrix[0, 1] * y + matrix[0, 2] ) / factor;
+                        double srcY = ( matrix[1, 0] * x + matrix[1, 1] * y + matrix[1, 2] ) / factor;
 
-                        sx1 = (int) xs;
-                        sx2 = ( sx1 == xmax ) ? sx1 : sx1 + 1;
-                        dx1 = xs - sx1;
+                        sx1 = (int) srcX;
+                        sx2 = ( sx1 == srcWidthM1 ) ? sx1 : sx1 + 1;
+                        dx1 = srcX - sx1;
                         dx2 = 1.0 - dx1;
 
-                        sy1 = (int) ys;
-                        sy2 = ( sy1 == ymax ) ? sy1 : sy1 + 1;
-                        dy1 = ys - sy1;
+                        sy1 = (int) srcY;
+                        sy2 = ( sy1 == srcHeightM1 ) ? sy1 : sy1 + 1;
+                        dy1 = srcY - sy1;
                         dy2 = 1.0 - dy1;
 
                         // get four points
@@ -499,13 +408,14 @@ namespace AForge.Imaging.Filters
                         p4 += sx2 * pixelSize;
 
                         // interpolate using 4 points
-                        for ( int i = 0; i < pixelSize; i++, dst++, p1++, p2++, p3++, p4++ )
+                        for ( int i = 0; i < pixelSize; i++, ptr++, p1++, p2++, p3++, p4++ )
                         {
-                            *dst = (byte) (
+                            *ptr = (byte) (
                                 dy2 * ( dx2 * ( *p1 ) + dx1 * ( *p2 ) ) +
                                 dy1 * ( dx2 * ( *p3 ) + dx1 * ( *p4 ) ) );
                         }
                     }
+                    ptr += offset;
                 }
             }
         }

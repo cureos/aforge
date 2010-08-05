@@ -208,6 +208,7 @@
         <contentItem sourcePath="..\Math\Images\flat_angles_optimizer.png" destPath="img\math\" excludeItems="False" />
         <contentItem sourcePath="..\Math\Images\line_straightening_optimizer.png" destPath="img\math\" excludeItems="False" />
         <contentItem sourcePath="..\Math\Images\close_points_merging_optimizer.png" destPath="img\math\" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\quadrilateral_ex_bilinear.png" destPath="img\imaging\" excludeItems="False" />
     </additionalContent>
     <ProjectSummary>&lt;b&gt;AForge.NET Framework&lt;/b&gt; is a C# framework designed for developers and researchers in the fields of Computer Vision and Artificial Intelligence - image processing, computer vision, neural networks, genetic algorithms, machine learning, etc. </ProjectSummary>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace, TypeParameter</MissingTags>
