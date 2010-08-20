@@ -514,7 +514,7 @@ namespace AForge.Video.DirectShow
         }
 
         //
-        // Vodeo grabber
+        // Video grabber
         //
         private class Grabber : ISampleGrabberCB
         {
