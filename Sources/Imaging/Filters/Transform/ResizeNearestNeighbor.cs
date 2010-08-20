@@ -22,9 +22,6 @@ namespace AForge.Imaging.Filters
     /// <para>The filter accepts 8 and 16 bpp grayscale images and 24, 32, 48 and 64 bpp
     /// color images for processing.</para>
     /// 
-    /// <para><note>Parallelism may be used - the class may use <see cref="AForge.Parallel"/> class
-    /// for paralleling computations on multiple CPUs/cores (see <see cref="UseParallelsm"/> property).</note></para>
-    /// 
     /// <para>Sample usage:</para>
     /// <code>
     /// // create filter
@@ -44,7 +41,6 @@ namespace AForge.Imaging.Filters
     /// 
     public class ResizeNearestNeighbor : BaseResizeFilter
     {
-        private bool useParallelism = false;
         // format translation dictionary
         private Dictionary<PixelFormat, PixelFormat> formatTranslations = new Dictionary<PixelFormat, PixelFormat>( );
 
@@ -54,22 +50,6 @@ namespace AForge.Imaging.Filters
         public override Dictionary<PixelFormat, PixelFormat> FormatTranslations
         {
             get { return formatTranslations; }
-        }
-
-        /// <summary>
-        /// Use parallelism for the filter or not.
-        /// </summary>
-        ///
-        /// <remarks><para>The property specifies if the filter will use parallelism to perform
-        /// image processing on all available CPUs/cores by utilizing <see cref="AForge.Parallel"/> class.</para>
-        /// 
-        /// <para>Default value is set to <see langword="false"/>.</para>
-        /// </remarks>
-        ///
-        public bool UseParallelsm
-        {
-            get { return useParallelism; }
-            set { useParallelism = value; }
         }
 
         /// <summary>
@@ -89,20 +69,6 @@ namespace AForge.Imaging.Filters
             formatTranslations[PixelFormat.Format16bppGrayScale] = PixelFormat.Format16bppGrayScale;
             formatTranslations[PixelFormat.Format48bppRgb]       = PixelFormat.Format48bppRgb;
             formatTranslations[PixelFormat.Format64bppArgb]      = PixelFormat.Format64bppArgb;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ResizeNearestNeighbor"/> class.
-        /// </summary>
-        /// 
-        /// <param name="newWidth">Width of the new image.</param>
-        /// <param name="newHeight">Height of the new image.</param>
-        /// <param name="useParallelism">Use parallelism for the filter or not (see <see cref="UseParallelsm"/> property).</param>
-        /// 
-        public ResizeNearestNeighbor( int newWidth, int newHeight, bool useParallelism ) :
-            this( newWidth, newHeight )
-        {
-            this.useParallelism = useParallelism;
         }
 
         /// <summary>
@@ -128,50 +94,23 @@ namespace AForge.Imaging.Filters
             byte* baseSrc = (byte*) sourceData.ImageData.ToPointer( );
             byte* baseDst = (byte*) destinationData.ImageData.ToPointer( );
 
-            // check if parallelism should be used
-            if ( !useParallelism )
+            // for each line
+            for ( int y = 0; y < newHeight; y++ )
             {
-                // for each line
-                for ( int y = 0; y < newHeight; y++ )
+                byte* dst = baseDst + dstStride * y;
+                byte* src = baseSrc + srcStride * ( (int) ( y * yFactor ) );
+                byte* p;
+
+                // for each pixel
+                for ( int x = 0; x < newWidth; x++ )
                 {
-                    byte* dst = baseDst + dstStride * y;
-                    byte* src = baseSrc + srcStride * ( (int) ( y * yFactor ) );
-                    byte* p;
+                    p = src + pixelSize * ( (int) ( x * xFactor ) );
 
-                    // for each pixel
-                    for ( int x = 0; x < newWidth; x++ )
+                    for ( int i = 0; i < pixelSize; i++, dst++, p++ )
                     {
-                        p = src + pixelSize * ( (int) ( x * xFactor ) );
-
-                        for ( int i = 0; i < pixelSize; i++, dst++, p++ )
-                        {
-                            *dst = *p;
-                        }
+                        *dst = *p;
                     }
                 }
-            }
-            else
-            {
-                #region Parallel Implementation
-                // for each line
-                AForge.Parallel.For( 0, newHeight, delegate( int y )
-                {
-                    byte* dst = baseDst + dstStride * y;
-                    byte* src = baseSrc + srcStride * ( (int) ( y * yFactor ) );
-                    byte* p;
-
-                    // for each pixel
-                    for ( int x = 0; x < newWidth; x++ )
-                    {
-                        p = src + pixelSize * ( (int) ( x * xFactor ) );
-
-                        for ( int i = 0; i < pixelSize; i++, dst++, p++ )
-                        {
-                            *dst = *p;
-                        }
-                    }
-                } );
-                #endregion
             }
         }
     }
