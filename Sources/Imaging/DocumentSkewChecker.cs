@@ -107,7 +107,7 @@ namespace AForge.Imaging
         ///
         public double MinBeta
         {
-            get { return ( 90 - minTheta ); }
+            get { return ( minTheta - 90 ); }
             set
             {
                 minTheta = 90 + value;
@@ -126,7 +126,7 @@ namespace AForge.Imaging
         ///
         public double MaxBeta
         {
-            get { return ( 90 - maxTheta ); }
+            get { return ( maxTheta - 90 ); }
             set
             {
                 maxTheta = 90 + value;
@@ -165,7 +165,8 @@ namespace AForge.Imaging
         /// 
         /// <param name="image">Document's image to get skew angle of.</param>
         /// 
-        /// <returns>Returns document's skew angle.</returns>
+        /// <returns>Returns document's skew angle. If the returned angle equals to -90,
+        /// then document skew detection has failed.</returns>
         /// 
         /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         /// 
@@ -204,7 +205,8 @@ namespace AForge.Imaging
         /// 
         /// <param name="imageData">Document's image data to get skew angle of.</param>
         /// 
-        /// <returns>Returns document's skew angle.</returns>
+        /// <returns>Returns document's skew angle. If the returned angle equals to -90,
+        /// then document skew detection has failed.</returns>
         /// 
         /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         /// 
@@ -219,7 +221,8 @@ namespace AForge.Imaging
         /// 
         /// <param name="image">Document's unmanaged image to get skew angle of.</param>
         /// 
-        /// <returns>Returns document's skew angle.</returns>
+        /// <returns>Returns document's skew angle. If the returned angle equals to -90,
+        /// then document skew detection has failed.</returns>
         /// 
         /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         /// 
@@ -301,18 +304,16 @@ namespace AForge.Imaging
 
             double skewAngle = 0;
             double sumIntensity = 0;
-            if ( hls != null )
+
+            foreach ( HoughLine hl in hls )
             {
-                foreach ( HoughLine hl in hls )
+                if ( hl.RelativeIntensity > 0.5 )
                 {
-                    if ( hl.RelativeIntensity > 0.5 )
-                    {
-                        skewAngle += ( hl.Theta * hl.RelativeIntensity );
-                        sumIntensity += hl.RelativeIntensity;
-                    }
+                    skewAngle += ( hl.Theta * hl.RelativeIntensity );
+                    sumIntensity += hl.RelativeIntensity;
                 }
-                if ( hls.Length > 0 ) skewAngle = skewAngle / sumIntensity;
             }
+            if ( hls.Length > 0 ) skewAngle = skewAngle / sumIntensity;
 
             return skewAngle - 90.0;
         }
@@ -322,9 +323,6 @@ namespace AForge.Imaging
         {
             // lines count
             int n = Math.Min( count, lines.Count );
-
-            if ( n == 0 )
-                return null;
 
             // result array
             HoughLine[] dst = new HoughLine[n];
