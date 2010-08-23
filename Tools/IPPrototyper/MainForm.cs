@@ -35,6 +35,24 @@ namespace IPPrototyper
 
         private HistogramForm histogramForm = null;
 
+        // list of recently used folders
+        private List<string> recentFolders = new List<string>( );
+
+        #region Configuration Option Names
+        private const string mainFormXOption = "MainFormX";
+        private const string mainFormYOption = "MainFormY";
+        private const string mainFormWidthOption = "MainFormWidth";
+        private const string mainFormHeightOption = "MainFormHeight";
+        private const string mainFormStateOption = "MainFormState";
+        private const string splitter1Option = "Splitter1";
+        private const string splitter2Option = "Splitter2";
+        private const string splitter3Option = "Splitter3";
+        private const string recentFolderOption = "RecentFolder";
+        private const string pictureSizeModeOption = "PictureSizeMode";
+        private const string openLastOption = "OpenLastFolder";
+        #endregion
+
+
         public MainForm( )
         {
             InitializeComponent( );
@@ -64,7 +82,50 @@ namespace IPPrototyper
 
             if ( config.Load( ) )
             {
-                RebuildRecentFoldersList( );
+                try
+                {
+                    // get window location/size
+                    Location = new Point(
+                        int.Parse( config.GetConfigurationOption( mainFormXOption ) ),
+                        int.Parse( config.GetConfigurationOption( mainFormYOption ) ) );
+
+                    Size = new Size(
+                        int.Parse( config.GetConfigurationOption( mainFormWidthOption ) ),
+                        int.Parse( config.GetConfigurationOption( mainFormHeightOption ) ) );
+
+                    WindowState = (FormWindowState) Enum.Parse( typeof( FormWindowState ),
+                        config.GetConfigurationOption( mainFormStateOption ) );
+
+                    mainSplitContainer.SplitterDistance = int.Parse( config.GetConfigurationOption( splitter1Option ) );
+                    splitContainer1.SplitterDistance = int.Parse( config.GetConfigurationOption( splitter2Option ) );
+                    splitContainer2.SplitterDistance = int.Parse( config.GetConfigurationOption( splitter3Option ) );
+
+                    // get size mode of picture box
+                    pictureBox.SizeMode = (PictureBoxSizeMode) Enum.Parse( typeof( PictureBoxSizeMode ),
+                        config.GetConfigurationOption( pictureSizeModeOption ) );
+
+                    // get recent folders
+                    for ( int i = 0; i < 5; i++ )
+                    {
+                        string rf = config.GetConfigurationOption( recentFolderOption + i );
+
+                        if ( rf != null )
+                            recentFolders.Add( rf );
+                    }
+
+                    RebuildRecentFoldersList( );
+
+                    bool openLast = bool.Parse( config.GetConfigurationOption( openLastOption ) );
+                    openLastFolderOnStartToolStripMenuItem.Checked = openLast;
+
+                    if ( ( openLast ) && ( recentFolders.Count > 0 ) )
+                    {
+                        OpenFolder( recentFolders[0] );
+                    }
+                }
+                catch
+                {
+                }
             }
         }
 
@@ -81,7 +142,7 @@ namespace IPPrototyper
             recentFoldersToolStripMenuItem.DropDownItems.Clear( );
 
             // add new items
-            foreach ( string folderName in Configuration.Instance.RecentFolders )
+            foreach ( string folderName in recentFolders )
             {
                 ToolStripItem item = recentFoldersToolStripMenuItem.DropDownItems.Add( folderName );
 
@@ -92,7 +153,65 @@ namespace IPPrototyper
         // On form closing
         private void MainForm_FormClosing( object sender, FormClosingEventArgs e )
         {
-            Configuration.Instance.Save( );
+            Configuration config = Configuration.Instance;
+
+            // save window location/size
+            if ( WindowState != FormWindowState.Minimized )
+            {
+                if ( WindowState != FormWindowState.Maximized )
+                {
+                    config.SetConfigurationOption( mainFormXOption, Location.X.ToString( ) );
+                    config.SetConfigurationOption( mainFormYOption, Location.Y.ToString( ) );
+                    config.SetConfigurationOption( mainFormWidthOption, Width.ToString( ) );
+                    config.SetConfigurationOption( mainFormHeightOption, Height.ToString( ) );
+                }
+                config.SetConfigurationOption( mainFormStateOption, WindowState.ToString( ) );
+
+                config.SetConfigurationOption( splitter1Option, mainSplitContainer.SplitterDistance.ToString( ) );
+                config.SetConfigurationOption( splitter2Option, splitContainer1.SplitterDistance.ToString( ) );
+                config.SetConfigurationOption( splitter3Option, splitContainer2.SplitterDistance.ToString( ) );
+            }
+
+            // save size mode of picture box
+            config.SetConfigurationOption( pictureSizeModeOption, pictureBox.SizeMode.ToString( ) );
+
+            // save recent folders
+            for ( int i = 0, n = recentFolders.Count; i < n; i++ )
+            {
+                config.SetConfigurationOption( recentFolderOption + i, recentFolders[i] );
+            }
+            config.SetConfigurationOption( openLastOption, openLastFolderOnStartToolStripMenuItem.Checked.ToString( ) );
+
+            config.Save( );
+        }
+
+        // Add folder to the list of recently used folders
+        public void AddRecentFolder( string folderName )
+        {
+            int index = recentFolders.IndexOf( folderName );
+
+            if ( index != 0 )
+            {
+                if ( index != -1 )
+                {
+                    // remove previous entry
+                    recentFolders.RemoveAt( index );
+                }
+
+                // put this folder as the most recent
+                recentFolders.Insert( 0, folderName );
+
+                if ( recentFolders.Count > 5 )
+                {
+                    recentFolders.RemoveAt( 5 );
+                }
+            }
+        }
+
+        // Remove specified folder from the list of recently used folders
+        public void RemoveRecentFolder( string folderName )
+        {
+            recentFolders.Remove( folderName );
         }
 
         // Update check style of modules' items
@@ -186,7 +305,7 @@ namespace IPPrototyper
                 if ( OpenFolder( folderBrowserDialog.SelectedPath ) )
                 {
                     // remember this folder
-                    Configuration.Instance.AddRecentFolder( selectedFolder );
+                    AddRecentFolder( selectedFolder );
                     RebuildRecentFoldersList( );
                 }
             }
@@ -200,12 +319,12 @@ namespace IPPrototyper
             if ( OpenFolder( folderName ) )
             {
                 // move the folder up in the list
-                Configuration.Instance.AddRecentFolder( folderName );
+                AddRecentFolder( folderName );
             }
             else
             {
                 // remove failing folder
-                Configuration.Instance.RemoveRecentFolder( folderName );
+                RemoveRecentFolder( folderName );
             }
             RebuildRecentFoldersList( );
         }
@@ -380,6 +499,12 @@ namespace IPPrototyper
         private void stretchToolStripMenuItem_Click( object sender, EventArgs e )
         {
             pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+        }
+
+        // Switch option for openning last folder on application load
+        private void openLastFolderOnStartToolStripMenuItem_Click( object sender, EventArgs e )
+        {
+            openLastFolderOnStartToolStripMenuItem.Checked = !openLastFolderOnStartToolStripMenuItem.Checked;
         }
 
         // Show about form

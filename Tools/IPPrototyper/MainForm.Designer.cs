@@ -32,6 +32,8 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.openFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator( );
+            this.recentFoldersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator( );
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.copyImageClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
@@ -56,8 +58,7 @@
             this.pictureBox = new System.Windows.Forms.PictureBox( );
             this.logBox = new System.Windows.Forms.TextBox( );
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog( );
-            this.recentFoldersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator( );
+            this.openLastFolderOnStartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.menuStrip.SuspendLayout( );
             this.mainPanel.SuspendLayout( );
             this.mainSplitContainer.Panel1.SuspendLayout( );
@@ -111,6 +112,17 @@
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size( 177, 6 );
             // 
+            // recentFoldersToolStripMenuItem
+            // 
+            this.recentFoldersToolStripMenuItem.Name = "recentFoldersToolStripMenuItem";
+            this.recentFoldersToolStripMenuItem.Size = new System.Drawing.Size( 180, 22 );
+            this.recentFoldersToolStripMenuItem.Text = "&Recent Folders";
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size( 177, 6 );
+            // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
@@ -152,7 +164,8 @@
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.imageviewToolStripMenuItem} );
+            this.imageviewToolStripMenuItem,
+            this.openLastFolderOnStartToolStripMenuItem} );
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size( 61, 20 );
             this.settingsToolStripMenuItem.Text = "&Settings";
@@ -164,28 +177,28 @@
             this.centerToolStripMenuItem,
             this.stretchToolStripMenuItem} );
             this.imageviewToolStripMenuItem.Name = "imageviewToolStripMenuItem";
-            this.imageviewToolStripMenuItem.Size = new System.Drawing.Size( 152, 22 );
+            this.imageviewToolStripMenuItem.Size = new System.Drawing.Size( 201, 22 );
             this.imageviewToolStripMenuItem.Text = "Image &view";
             this.imageviewToolStripMenuItem.DropDownOpening += new System.EventHandler( this.imageviewToolStripMenuItem_DropDownOpening );
             // 
             // normalToolStripMenuItem
             // 
             this.normalToolStripMenuItem.Name = "normalToolStripMenuItem";
-            this.normalToolStripMenuItem.Size = new System.Drawing.Size( 114, 22 );
+            this.normalToolStripMenuItem.Size = new System.Drawing.Size( 152, 22 );
             this.normalToolStripMenuItem.Text = "&Normal";
             this.normalToolStripMenuItem.Click += new System.EventHandler( this.normalToolStripMenuItem_Click );
             // 
             // centerToolStripMenuItem
             // 
             this.centerToolStripMenuItem.Name = "centerToolStripMenuItem";
-            this.centerToolStripMenuItem.Size = new System.Drawing.Size( 114, 22 );
+            this.centerToolStripMenuItem.Size = new System.Drawing.Size( 152, 22 );
             this.centerToolStripMenuItem.Text = "&Center";
             this.centerToolStripMenuItem.Click += new System.EventHandler( this.centerToolStripMenuItem_Click );
             // 
             // stretchToolStripMenuItem
             // 
             this.stretchToolStripMenuItem.Name = "stretchToolStripMenuItem";
-            this.stretchToolStripMenuItem.Size = new System.Drawing.Size( 114, 22 );
+            this.stretchToolStripMenuItem.Size = new System.Drawing.Size( 152, 22 );
             this.stretchToolStripMenuItem.Text = "&Stretch";
             this.stretchToolStripMenuItem.Click += new System.EventHandler( this.stretchToolStripMenuItem_Click );
             // 
@@ -345,16 +358,12 @@
             // 
             this.folderBrowserDialog.Description = "Select folder containing images to process:";
             // 
-            // recentFoldersToolStripMenuItem
+            // openLastFolderOnStartToolStripMenuItem
             // 
-            this.recentFoldersToolStripMenuItem.Name = "recentFoldersToolStripMenuItem";
-            this.recentFoldersToolStripMenuItem.Size = new System.Drawing.Size( 180, 22 );
-            this.recentFoldersToolStripMenuItem.Text = "&Recent Folders";
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size( 177, 6 );
+            this.openLastFolderOnStartToolStripMenuItem.Name = "openLastFolderOnStartToolStripMenuItem";
+            this.openLastFolderOnStartToolStripMenuItem.Size = new System.Drawing.Size( 201, 22 );
+            this.openLastFolderOnStartToolStripMenuItem.Text = "&Open last folder on start";
+            this.openLastFolderOnStartToolStripMenuItem.Click += new System.EventHandler( this.openLastFolderOnStartToolStripMenuItem_Click );
             // 
             // MainForm
             // 
@@ -420,6 +429,7 @@
         private System.Windows.Forms.ToolStripMenuItem showhistogramToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem recentFoldersToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem openLastFolderOnStartToolStripMenuItem;
     }
 }
 

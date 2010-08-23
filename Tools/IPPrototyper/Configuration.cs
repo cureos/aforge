@@ -20,22 +20,22 @@ namespace IPPrototyper
     {
         private static Configuration singleton = null;
 
+        // list of configuration options
+        private Dictionary<string, string> options = new Dictionary<string, string>( );
+
         private const string baseConfigFileName = "ipprototyper.cfg";
         private string configFileName = null;
         bool isSuccessfullyLoaded = false;
 
-        private List<string> recentFolders = new List<string>( );
+        #region XML Tag Names
+        private const string mainTag = "IPPrototyper";
+        private const string optionsTag = "Options";
+        #endregion
 
         // Configuration load status
         public bool IsSuccessfullyLoaded
         {
             get { return isSuccessfullyLoaded; }
-        }
-
-        // List of recently opened folders
-        public ReadOnlyCollection<string> RecentFolders
-        {
-            get { return recentFolders.AsReadOnly( ); }
         }
 
         // Disable making class instances
@@ -59,6 +59,25 @@ namespace IPPrototyper
             }
         }
 
+        // Set configuration option's value to store
+        public void SetConfigurationOption( string option, string value )
+        {
+            if ( options.ContainsKey( option ) )
+            {
+                options[option] = value;
+            }
+            else
+            {
+                options.Add( option, value );
+            }
+        }
+
+        // Get value of configuration option
+        public string GetConfigurationOption( string option )
+        {
+            return ( options.ContainsKey( option ) ) ? options[option] : null;
+        }
+
         // Save application's configuration
         public void Save( )
         {
@@ -79,21 +98,12 @@ namespace IPPrototyper
                     xmlOut.WriteComment( "IPPrototyper configuration file" );
 
                     // main node
-                    xmlOut.WriteStartElement( "IPPrototyper" );
+                    xmlOut.WriteStartElement( mainTag );
 
-                    // recent folders
-                    xmlOut.WriteStartElement( "Recent" );
-                    xmlOut.WriteAttributeString( "count", recentFolders.Count.ToString( ) );
-
-                    foreach ( string folderName in recentFolders )
-                    {
-                        xmlOut.WriteStartElement( "Folder" );
-                        xmlOut.WriteString( folderName );
-                        xmlOut.WriteEndElement( );
-                    }
-
-                    xmlOut.WriteEndElement( ); // end of recent folders
-
+                    // save configuration options
+                    xmlOut.WriteStartElement( optionsTag );
+                    SaveOptions( xmlOut );
+                    xmlOut.WriteEndElement( );
 
                     xmlOut.WriteEndElement( ); // end of main node
                     // close file
@@ -129,29 +139,39 @@ namespace IPPrototyper
                         xmlIn.MoveToContent( );
 
                         // check main node
-                        if ( xmlIn.Name != "IPPrototyper" )
+                        if ( xmlIn.Name != mainTag )
                             throw new ApplicationException( );
 
                         // move to next node
                         xmlIn.Read( );
 
-                        // check Recent node
-                        if ( xmlIn.Name != "Recent" )
-                            throw new ApplicationException( );
-
-                        int recentCount = int.Parse( xmlIn.GetAttribute( "count" ) );
-
-                        if ( recentCount > 0 )
+                        while ( true )
                         {
-                            for ( int i = 0; i < recentCount; i++ )
+                            // ignore anything if it is not under main tag
+                            while ( ( xmlIn.Depth > 1 ) || (
+                                    ( xmlIn.Depth == 1 ) && ( xmlIn.NodeType != XmlNodeType.Element ) ) )
                             {
                                 xmlIn.Read( );
-                                xmlIn.Read( );
-                                recentFolders.Add( xmlIn.ReadContentAsString( ) );
                             }
 
-                            // read end element
-                            xmlIn.Read( );
+                            // break if end element is reached
+                            if ( xmlIn.Depth == 0 )
+                                break;
+
+                            int tagStartLineNummber = xmlIn.LineNumber;
+
+                            switch ( xmlIn.Name )
+                            {
+                                case optionsTag:
+                                    LoadOptions( xmlIn );
+                                    break;
+                            }
+
+                            // read to the next node, if loader did not move any further
+                            if ( xmlIn.LineNumber == tagStartLineNummber )
+                            {
+                                xmlIn.Read( );
+                            }
                         }
 
                         isSuccessfullyLoaded = true;
@@ -171,38 +191,44 @@ namespace IPPrototyper
             return isSuccessfullyLoaded;
         }
 
-        // Add folder to the list of recently used folders
-        public void AddRecentFolder( string folderName )
+        // Save configuration options
+        private void SaveOptions( XmlTextWriter xmlOut )
         {
-            lock ( baseConfigFileName )
+            foreach ( KeyValuePair<string, string> kvp in options )
             {
-                int index = recentFolders.IndexOf( folderName );
-
-                if ( index != 0 )
-                {
-                    if ( index != -1 )
-                    {
-                        // remove previous entry
-                        recentFolders.RemoveAt( index );
-                    }
-
-                    // put this folder as the most recent
-                    recentFolders.Insert( 0, folderName );
-
-                    if ( recentFolders.Count > 7 )
-                    {
-                        recentFolders.RemoveAt( 7 );
-                    }
-                }
+                xmlOut.WriteStartElement( kvp.Key );
+                xmlOut.WriteString( kvp.Value );
+                xmlOut.WriteEndElement( );
             }
         }
 
-        // Remove specified folder from the list of recently used folders
-        public void RemoveRecentFolder( string folderName )
+        // Load configuration options
+        private void LoadOptions( XmlTextReader xmlIn )
         {
-            lock ( baseConfigFileName )
+            options.Clear( );
+            // read to the first node
+            xmlIn.Read( );
+
+            int startingDept = xmlIn.Depth;
+
+            while ( ( xmlIn.NodeType == XmlNodeType.Element ) && ( xmlIn.Depth == startingDept ) )
             {
-                recentFolders.Remove( folderName );
+                string option = xmlIn.Name;
+                string value = null;
+
+                if ( !xmlIn.IsEmptyElement )
+                {
+                    // read to the content
+                    xmlIn.Read( );
+                    // read content as string
+                    value = xmlIn.ReadString( );
+
+                    // add the value to options list
+                    options.Add( option, value );
+                }
+
+                // read to the next option
+                xmlIn.Read( );
             }
         }
     }
