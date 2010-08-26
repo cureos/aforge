@@ -116,10 +116,17 @@ namespace AForge.Video.DirectShow.Internals
         /// 
         protected virtual void Dispose( bool disposing )
         {
-            if ( FormatSize != 0 )
+            if ( FormatPtr != IntPtr.Zero )
+            {
                 Marshal.FreeCoTaskMem( FormatPtr );
+                FormatPtr = IntPtr.Zero;
+            }
+
             if ( unkPtr != IntPtr.Zero )
+            {
                 Marshal.Release( unkPtr );
+                unkPtr = IntPtr.Zero;
+            }
         }
     }
 
