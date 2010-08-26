@@ -258,25 +258,12 @@ namespace AForge.Imaging.Filters
         /// 
         /// <returns>New image size - size of the destination image.</returns>
         /// 
-        /// <exception cref="ArgumentException">The specified quadrilateral's corners are outside of the given image.</exception>
         /// <exception cref="NullReferenceException">Source quadrilateral was not set.</exception>
         /// 
         protected override System.Drawing.Size CalculateNewImageSize( UnmanagedImage sourceData )
         {
             if ( sourceQuadrilateral == null )
                 throw new NullReferenceException( "Source quadrilateral was not set." );
-
-            // perform checking of source corners - they must feet into the image
-            foreach ( IntPoint point in sourceQuadrilateral )
-            {
-                if ( ( point.X < 0 ) ||
-                     ( point.Y < 0 ) ||
-                     ( point.X >= sourceData.Width ) ||
-                     ( point.Y >= sourceData.Height ) )
-                {
-                    throw new ArgumentException( "The specified quadrilateral's corners are outside of the given image." );
-                }
-            }
 
             return new Size( newWidth, newHeight );
         }
@@ -357,12 +344,19 @@ namespace AForge.Imaging.Filters
                         double srcX = ( matrix[0, 0] * x + matrix[0, 1] * y + matrix[0, 2] ) / factor;
                         double srcY = ( matrix[1, 0] * x + matrix[1, 1] * y + matrix[1, 2] ) / factor;
 
-                        // get pointer to the pixel in the source image
-                        p = baseSrc + (int) srcY * srcStride + (int) srcX * pixelSize;
-                        // copy pixel's values
-                        for ( int i = 0; i < pixelSize; i++, ptr++, p++ )
+                        if ( ( srcX >= 0 ) && ( srcY >= 0 ) && ( srcX < srcWidth ) && ( srcY < srcHeight ) )
                         {
-                            *ptr = *p;
+                            // get pointer to the pixel in the source image
+                            p = baseSrc + (int) srcY * srcStride + (int) srcX * pixelSize;
+                            // copy pixel's values
+                            for ( int i = 0; i < pixelSize; i++, ptr++, p++ )
+                            {
+                                *ptr = *p;
+                            }
+                        }
+                        else
+                        {
+                            ptr += pixelSize;
                         }
                     }
                     ptr += offset;
@@ -390,31 +384,38 @@ namespace AForge.Imaging.Filters
                         double srcX = ( matrix[0, 0] * x + matrix[0, 1] * y + matrix[0, 2] ) / factor;
                         double srcY = ( matrix[1, 0] * x + matrix[1, 1] * y + matrix[1, 2] ) / factor;
 
-                        sx1 = (int) srcX;
-                        sx2 = ( sx1 == srcWidthM1 ) ? sx1 : sx1 + 1;
-                        dx1 = srcX - sx1;
-                        dx2 = 1.0 - dx1;
-
-                        sy1 = (int) srcY;
-                        sy2 = ( sy1 == srcHeightM1 ) ? sy1 : sy1 + 1;
-                        dy1 = srcY - sy1;
-                        dy2 = 1.0 - dy1;
-
-                        // get four points
-                        p1 = p2 = baseSrc + sy1 * srcStride;
-                        p1 += sx1 * pixelSize;
-                        p2 += sx2 * pixelSize;
-
-                        p3 = p4 = baseSrc + sy2 * srcStride;
-                        p3 += sx1 * pixelSize;
-                        p4 += sx2 * pixelSize;
-
-                        // interpolate using 4 points
-                        for ( int i = 0; i < pixelSize; i++, ptr++, p1++, p2++, p3++, p4++ )
+                        if ( ( srcX >= 0 ) && ( srcY >= 0 ) && ( srcX < srcWidth ) && ( srcY < srcHeight ) )
                         {
-                            *ptr = (byte) (
-                                dy2 * ( dx2 * ( *p1 ) + dx1 * ( *p2 ) ) +
-                                dy1 * ( dx2 * ( *p3 ) + dx1 * ( *p4 ) ) );
+                            sx1 = (int) srcX;
+                            sx2 = ( sx1 == srcWidthM1 ) ? sx1 : sx1 + 1;
+                            dx1 = srcX - sx1;
+                            dx2 = 1.0 - dx1;
+
+                            sy1 = (int) srcY;
+                            sy2 = ( sy1 == srcHeightM1 ) ? sy1 : sy1 + 1;
+                            dy1 = srcY - sy1;
+                            dy2 = 1.0 - dy1;
+
+                            // get four points
+                            p1 = p2 = baseSrc + sy1 * srcStride;
+                            p1 += sx1 * pixelSize;
+                            p2 += sx2 * pixelSize;
+
+                            p3 = p4 = baseSrc + sy2 * srcStride;
+                            p3 += sx1 * pixelSize;
+                            p4 += sx2 * pixelSize;
+
+                            // interpolate using 4 points
+                            for ( int i = 0; i < pixelSize; i++, ptr++, p1++, p2++, p3++, p4++ )
+                            {
+                                *ptr = (byte) (
+                                    dy2 * ( dx2 * ( *p1 ) + dx1 * ( *p2 ) ) +
+                                    dy1 * ( dx2 * ( *p3 ) + dx1 * ( *p4 ) ) );
+                            }
+                        }
+                        else
+                        {
+                            ptr += pixelSize;
                         }
                     }
                     ptr += offset;

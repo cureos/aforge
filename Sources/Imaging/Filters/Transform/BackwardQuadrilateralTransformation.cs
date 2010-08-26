@@ -236,25 +236,12 @@ namespace AForge.Imaging.Filters
         /// 
         /// <param name="image">Image data to process by the filter.</param>
         ///
-        /// <exception cref="ArgumentException">The specified quadrilateral's corners are outside of the given destination image.</exception>
         /// <exception cref="NullReferenceException">Destination quadrilateral was not set.</exception>
         /// 
         protected override unsafe void ProcessFilter( UnmanagedImage image )
         {
             if ( destinationQuadrilateral == null )
                 throw new NullReferenceException( "Destination quadrilateral was not set." );
-
-            // perform checking of destination corners - they must feet into the image
-            foreach ( IntPoint point in destinationQuadrilateral )
-            {
-                if ( ( point.X < 0 ) ||
-                     ( point.Y < 0 ) ||
-                     ( point.X >= image.Width ) ||
-                     ( point.Y >= image.Height ) )
-                {
-                    throw new ArgumentException( "The specified quadrilateral's corners are outside of the given destination image." );
-                }
-            }
 
             // check overlay type
             if ( sourceImage != null )
@@ -298,6 +285,8 @@ namespace AForge.Imaging.Filters
             // get source and destination images size
             int srcWidth  = srcImage.Width;
             int srcHeight = srcImage.Height;
+            int dstWidth  = dstImage.Width;
+            int dstHeight = dstImage.Height;
 
             int pixelSize = Image.GetPixelFormatSize( srcImage.PixelFormat ) / 8;
             int srcStride = srcImage.Stride;
@@ -306,6 +295,20 @@ namespace AForge.Imaging.Filters
             // get bounding rectangle of the quadrilateral
             IntPoint minXY, maxXY;
             PointsCloud.GetBoundingRectangle( destinationQuadrilateral, out minXY, out maxXY );
+
+            // make sure the rectangle is inside of destination image
+            if ( ( maxXY.X < 0 ) || ( maxXY.Y < 0 ) || ( minXY.X >= dstWidth ) || ( minXY.Y >= dstHeight ) )
+                return; // nothing to do, since quadrilateral is completely outside
+
+            // correct rectangle if required
+            if ( minXY.X < 0 )
+                minXY.X = 0;
+            if ( minXY.Y < 0 )
+                minXY.Y = 0;
+            if ( maxXY.X >= dstWidth )
+                maxXY.X = dstWidth - 1;
+            if ( maxXY.Y >= dstHeight )
+                maxXY.Y = dstHeight - 1;
 
             int startX = minXY.X;
             int startY = minXY.Y;
