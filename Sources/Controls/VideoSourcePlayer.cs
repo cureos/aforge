@@ -66,6 +66,7 @@ namespace AForge.Controls
         private bool autosize = false;
         private bool needSizeUpdate = false;
         private bool firstFrameNotProcessed = true;
+        private volatile bool requestedToStop = false;
 
         // parent of the control
         private Control parent = null;
@@ -226,6 +227,8 @@ namespace AForge.Controls
         /// </summary>
         public void Start( )
         {
+            requestedToStop = false;
+
             lock ( this )
             {
                 if ( videoSource != null )
@@ -250,6 +253,8 @@ namespace AForge.Controls
         /// 
         public void Stop( )
         {
+            requestedToStop = true;
+
             lock ( this )
             {
                 if ( videoSource != null )
@@ -275,6 +280,8 @@ namespace AForge.Controls
         /// 
         public void SignalToStop( )
         {
+            requestedToStop = true;
+
             lock ( this )
             {
                 if ( videoSource != null )
@@ -293,6 +300,8 @@ namespace AForge.Controls
         /// 
         public void WaitForStop( )
         {
+            requestedToStop = true;
+
             lock ( this )
             {
                 if ( videoSource != null )
@@ -399,26 +408,29 @@ namespace AForge.Controls
         // On new frame ready
         private void videoSource_NewFrame( object sender, NewFrameEventArgs eventArgs )
         {
-            lock ( this )
+            if ( !requestedToStop )
             {
-                // dispose previous frame
-                if ( currentFrame != null )
+                lock ( this )
                 {
-                    currentFrame.Dispose( );
-                    currentFrame = null;
+                    // dispose previous frame
+                    if ( currentFrame != null )
+                    {
+                        currentFrame.Dispose( );
+                        currentFrame = null;
+                    }
+
+                    currentFrame = (Bitmap) eventArgs.Frame.Clone( );
+                    lastMessage = null;
+
+                    // notify about the new frame
+                    if ( NewFrame != null )
+                    {
+                        NewFrame( this, ref currentFrame );
+                    }
+
+                    // update control
+                    Invalidate( );
                 }
-
-                currentFrame = (Bitmap) eventArgs.Frame.Clone( );
-                lastMessage = null;
-
-                // notify about the new frame
-                if ( NewFrame != null )
-                {
-                    NewFrame( this, ref currentFrame );
-                }
-
-                // update control
-                Invalidate( );
             }
         }
 
