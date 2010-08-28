@@ -391,15 +391,23 @@ namespace IPPrototyper
                 {
                 }
 
-                ProcessImage( image );
-                ShowLogMessages( );
-                UpdateLogView( );
+                if ( image != null )
+                {
+                    ProcessImage( image );
+                    ShowLogMessages( );
+                    UpdateLogView( );
+                    return;
+                }
+                else
+                {
+                    MessageBox.Show( "Failed loading file: " + filesListView.SelectedItems[0].Text,
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                    filesListView.Items.Remove( filesListView.SelectedItems[0] );
+                }
             }
-            else
-            {
-                pictureBox.Image = null;
-                logBox.Text = string.Empty;
-            }
+
+            pictureBox.Image = null;
+            logBox.Text = string.Empty;
         }
 
         // Process specified image
