@@ -38,6 +38,9 @@ namespace IPPrototyper
         // list of recently used folders
         private List<string> recentFolders = new List<string>( );
 
+        // stopwatch to measure time taken by image processing routine
+        System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch( );
+
         #region Configuration Option Names
         private const string mainFormXOption = "MainFormX";
         private const string mainFormYOption = "MainFormY";
@@ -367,6 +370,8 @@ namespace IPPrototyper
                 MessageBox.Show( "Failed opening the folder:\n" + folderName, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
             }
 
+            UpdateImageCountStatus( );
+
             return success;
         }
 
@@ -403,6 +408,7 @@ namespace IPPrototyper
                     MessageBox.Show( "Failed loading file: " + filesListView.SelectedItems[0].Text,
                         "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
                     filesListView.Items.Remove( filesListView.SelectedItems[0] );
+                    UpdateImageCountStatus( );
                 }
             }
 
@@ -418,7 +424,15 @@ namespace IPPrototyper
 
             if ( ipRoutineToUse != null )
             {
+                stopWatch.Reset( );
+                stopWatch.Start( );
+
+                // process image with selected image processing routine
                 ipRoutineToUse.Process( image, processingLog );
+
+                stopWatch.Stop( );
+
+                UpdateProcessingTimeStatus( stopWatch.ElapsedMilliseconds );
             }
         }
 
@@ -561,6 +575,20 @@ namespace IPPrototyper
             {
                 histogramForm.SetImageStatistics( new ImageStatistics( (Bitmap) pictureBox.Image ) );
             }
+        }
+
+        // Update status label displaying number of available images
+        private void UpdateImageCountStatus( )
+        {
+            imagesCountLabel.Text = "Images: " + filesListView.Items.Count.ToString( );
+        }
+
+        // Update staus label displaying processing time of last routine
+        private void UpdateProcessingTimeStatus( long msTime )
+        {
+            double sTime = (double) msTime / 1000;
+
+            processingTimeLabel.Text = string.Format( "Processing time: {0}s", sTime.ToString( "F3" ) );
         }
     }
 }

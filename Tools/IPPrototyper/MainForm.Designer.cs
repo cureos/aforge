@@ -44,9 +44,13 @@
             this.normalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.centerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.stretchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
+            this.openLastFolderOnStartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.statusStrip = new System.Windows.Forms.StatusStrip( );
+            this.imagesCountLabel = new System.Windows.Forms.ToolStripStatusLabel( );
+            this.processingTimeLabel = new System.Windows.Forms.ToolStripStatusLabel( );
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel( );
             this.mainPanel = new System.Windows.Forms.Panel( );
             this.mainSplitContainer = new System.Windows.Forms.SplitContainer( );
             this.splitContainer1 = new System.Windows.Forms.SplitContainer( );
@@ -58,8 +62,8 @@
             this.pictureBox = new System.Windows.Forms.PictureBox( );
             this.logBox = new System.Windows.Forms.TextBox( );
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog( );
-            this.openLastFolderOnStartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.menuStrip.SuspendLayout( );
+            this.statusStrip.SuspendLayout( );
             this.mainPanel.SuspendLayout( );
             this.mainSplitContainer.Panel1.SuspendLayout( );
             this.mainSplitContainer.Panel2.SuspendLayout( );
@@ -83,7 +87,7 @@
             this.helpToolStripMenuItem} );
             this.menuStrip.Location = new System.Drawing.Point( 0, 0 );
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size( 600, 24 );
+            this.menuStrip.Size = new System.Drawing.Size( 694, 24 );
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -184,23 +188,30 @@
             // normalToolStripMenuItem
             // 
             this.normalToolStripMenuItem.Name = "normalToolStripMenuItem";
-            this.normalToolStripMenuItem.Size = new System.Drawing.Size( 152, 22 );
+            this.normalToolStripMenuItem.Size = new System.Drawing.Size( 114, 22 );
             this.normalToolStripMenuItem.Text = "&Normal";
             this.normalToolStripMenuItem.Click += new System.EventHandler( this.normalToolStripMenuItem_Click );
             // 
             // centerToolStripMenuItem
             // 
             this.centerToolStripMenuItem.Name = "centerToolStripMenuItem";
-            this.centerToolStripMenuItem.Size = new System.Drawing.Size( 152, 22 );
+            this.centerToolStripMenuItem.Size = new System.Drawing.Size( 114, 22 );
             this.centerToolStripMenuItem.Text = "&Center";
             this.centerToolStripMenuItem.Click += new System.EventHandler( this.centerToolStripMenuItem_Click );
             // 
             // stretchToolStripMenuItem
             // 
             this.stretchToolStripMenuItem.Name = "stretchToolStripMenuItem";
-            this.stretchToolStripMenuItem.Size = new System.Drawing.Size( 152, 22 );
+            this.stretchToolStripMenuItem.Size = new System.Drawing.Size( 114, 22 );
             this.stretchToolStripMenuItem.Text = "&Stretch";
             this.stretchToolStripMenuItem.Click += new System.EventHandler( this.stretchToolStripMenuItem_Click );
+            // 
+            // openLastFolderOnStartToolStripMenuItem
+            // 
+            this.openLastFolderOnStartToolStripMenuItem.Name = "openLastFolderOnStartToolStripMenuItem";
+            this.openLastFolderOnStartToolStripMenuItem.Size = new System.Drawing.Size( 201, 22 );
+            this.openLastFolderOnStartToolStripMenuItem.Text = "&Open last folder on start";
+            this.openLastFolderOnStartToolStripMenuItem.Click += new System.EventHandler( this.openLastFolderOnStartToolStripMenuItem_Click );
             // 
             // helpToolStripMenuItem
             // 
@@ -219,11 +230,49 @@
             // 
             // statusStrip
             // 
-            this.statusStrip.Location = new System.Drawing.Point( 0, 434 );
+            this.statusStrip.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.imagesCountLabel,
+            this.processingTimeLabel,
+            this.toolStripStatusLabel1} );
+            this.statusStrip.Location = new System.Drawing.Point( 0, 436 );
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size( 600, 22 );
+            this.statusStrip.Size = new System.Drawing.Size( 694, 22 );
             this.statusStrip.TabIndex = 1;
             this.statusStrip.Text = "statusStrip1";
+            // 
+            // imagesCountLabel
+            // 
+            this.imagesCountLabel.AutoSize = false;
+            this.imagesCountLabel.BorderSides = ( (System.Windows.Forms.ToolStripStatusLabelBorderSides) ( ( ( ( System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top )
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right )
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom ) ) );
+            this.imagesCountLabel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
+            this.imagesCountLabel.Name = "imagesCountLabel";
+            this.imagesCountLabel.Size = new System.Drawing.Size( 150, 17 );
+            this.imagesCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // processingTimeLabel
+            // 
+            this.processingTimeLabel.AutoSize = false;
+            this.processingTimeLabel.BorderSides = ( (System.Windows.Forms.ToolStripStatusLabelBorderSides) ( ( ( ( System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top )
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right )
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom ) ) );
+            this.processingTimeLabel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
+            this.processingTimeLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.processingTimeLabel.Name = "processingTimeLabel";
+            this.processingTimeLabel.Size = new System.Drawing.Size( 150, 17 );
+            this.processingTimeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.processingTimeLabel.ToolTipText = "Time taken processing last image";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.BorderSides = ( (System.Windows.Forms.ToolStripStatusLabelBorderSides) ( ( ( ( System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top )
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right )
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom ) ) );
+            this.toolStripStatusLabel1.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size( 348, 17 );
+            this.toolStripStatusLabel1.Spring = true;
             // 
             // mainPanel
             // 
@@ -231,7 +280,7 @@
             this.mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainPanel.Location = new System.Drawing.Point( 0, 24 );
             this.mainPanel.Name = "mainPanel";
-            this.mainPanel.Size = new System.Drawing.Size( 600, 410 );
+            this.mainPanel.Size = new System.Drawing.Size( 694, 412 );
             this.mainPanel.TabIndex = 2;
             // 
             // mainSplitContainer
@@ -247,8 +296,8 @@
             // mainSplitContainer.Panel2
             // 
             this.mainSplitContainer.Panel2.Controls.Add( this.splitContainer2 );
-            this.mainSplitContainer.Size = new System.Drawing.Size( 600, 410 );
-            this.mainSplitContainer.SplitterDistance = 160;
+            this.mainSplitContainer.Size = new System.Drawing.Size( 694, 412 );
+            this.mainSplitContainer.SplitterDistance = 185;
             this.mainSplitContainer.TabIndex = 4;
             // 
             // splitContainer1
@@ -265,8 +314,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add( this.logListView );
-            this.splitContainer1.Size = new System.Drawing.Size( 160, 410 );
-            this.splitContainer1.SplitterDistance = 205;
+            this.splitContainer1.Size = new System.Drawing.Size( 185, 412 );
+            this.splitContainer1.SplitterDistance = 206;
             this.splitContainer1.TabIndex = 3;
             // 
             // filesListView
@@ -280,7 +329,7 @@
             this.filesListView.Location = new System.Drawing.Point( 0, 0 );
             this.filesListView.MultiSelect = false;
             this.filesListView.Name = "filesListView";
-            this.filesListView.Size = new System.Drawing.Size( 160, 205 );
+            this.filesListView.Size = new System.Drawing.Size( 185, 206 );
             this.filesListView.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.filesListView.TabIndex = 0;
             this.filesListView.UseCompatibleStateImageBehavior = false;
@@ -303,7 +352,7 @@
             this.logListView.Location = new System.Drawing.Point( 0, 0 );
             this.logListView.MultiSelect = false;
             this.logListView.Name = "logListView";
-            this.logListView.Size = new System.Drawing.Size( 160, 201 );
+            this.logListView.Size = new System.Drawing.Size( 185, 202 );
             this.logListView.TabIndex = 2;
             this.logListView.UseCompatibleStateImageBehavior = false;
             this.logListView.View = System.Windows.Forms.View.Details;
@@ -328,8 +377,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add( this.logBox );
-            this.splitContainer2.Size = new System.Drawing.Size( 436, 410 );
-            this.splitContainer2.SplitterDistance = 300;
+            this.splitContainer2.Size = new System.Drawing.Size( 505, 412 );
+            this.splitContainer2.SplitterDistance = 301;
             this.splitContainer2.TabIndex = 6;
             // 
             // pictureBox
@@ -339,7 +388,7 @@
             this.pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox.Location = new System.Drawing.Point( 0, 0 );
             this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size( 436, 300 );
+            this.pictureBox.Size = new System.Drawing.Size( 505, 301 );
             this.pictureBox.TabIndex = 1;
             this.pictureBox.TabStop = false;
             // 
@@ -351,25 +400,18 @@
             this.logBox.Name = "logBox";
             this.logBox.ReadOnly = true;
             this.logBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.logBox.Size = new System.Drawing.Size( 436, 106 );
+            this.logBox.Size = new System.Drawing.Size( 505, 107 );
             this.logBox.TabIndex = 7;
             // 
             // folderBrowserDialog
             // 
             this.folderBrowserDialog.Description = "Select folder containing images to process:";
             // 
-            // openLastFolderOnStartToolStripMenuItem
-            // 
-            this.openLastFolderOnStartToolStripMenuItem.Name = "openLastFolderOnStartToolStripMenuItem";
-            this.openLastFolderOnStartToolStripMenuItem.Size = new System.Drawing.Size( 201, 22 );
-            this.openLastFolderOnStartToolStripMenuItem.Text = "&Open last folder on start";
-            this.openLastFolderOnStartToolStripMenuItem.Click += new System.EventHandler( this.openLastFolderOnStartToolStripMenuItem_Click );
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size( 600, 456 );
+            this.ClientSize = new System.Drawing.Size( 694, 458 );
             this.Controls.Add( this.mainPanel );
             this.Controls.Add( this.statusStrip );
             this.Controls.Add( this.menuStrip );
@@ -380,6 +422,8 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler( this.MainForm_FormClosing );
             this.menuStrip.ResumeLayout( false );
             this.menuStrip.PerformLayout( );
+            this.statusStrip.ResumeLayout( false );
+            this.statusStrip.PerformLayout( );
             this.mainPanel.ResumeLayout( false );
             this.mainSplitContainer.Panel1.ResumeLayout( false );
             this.mainSplitContainer.Panel2.ResumeLayout( false );
@@ -430,6 +474,9 @@
         private System.Windows.Forms.ToolStripMenuItem recentFoldersToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem openLastFolderOnStartToolStripMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel imagesCountLabel;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripStatusLabel processingTimeLabel;
     }
 }
 
