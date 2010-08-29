@@ -494,6 +494,7 @@ namespace IPPrototyper
                 }
 
                 ShowCurrentImageHistogram( );
+                UpdateImageSizeStatus( );
             }
         }
 
@@ -589,6 +590,20 @@ namespace IPPrototyper
             double sTime = (double) msTime / 1000;
 
             processingTimeLabel.Text = string.Format( "Processing time: {0}s", sTime.ToString( "F3" ) );
+        }
+
+        // Update status label displaying size of selected image
+        private void UpdateImageSizeStatus( )
+        {
+            if ( pictureBox.Image != null )
+            {
+                imageSizeLabel.Text = string.Format( "Image size: {0}x{1}",
+                    pictureBox.Image.Width, pictureBox.Image.Height );
+            }
+            else
+            {
+                imageSizeLabel.Text = string.Empty;
+            }
         }
     }
 }

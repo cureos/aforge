@@ -50,6 +50,7 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip( );
             this.imagesCountLabel = new System.Windows.Forms.ToolStripStatusLabel( );
             this.processingTimeLabel = new System.Windows.Forms.ToolStripStatusLabel( );
+            this.imageSizeLabel = new System.Windows.Forms.ToolStripStatusLabel( );
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel( );
             this.mainPanel = new System.Windows.Forms.Panel( );
             this.mainSplitContainer = new System.Windows.Forms.SplitContainer( );
@@ -233,6 +234,7 @@
             this.statusStrip.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
             this.imagesCountLabel,
             this.processingTimeLabel,
+            this.imageSizeLabel,
             this.toolStripStatusLabel1} );
             this.statusStrip.Location = new System.Drawing.Point( 0, 436 );
             this.statusStrip.Name = "statusStrip";
@@ -264,6 +266,18 @@
             this.processingTimeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.processingTimeLabel.ToolTipText = "Time taken processing last image";
             // 
+            // imageSizeLabel
+            // 
+            this.imageSizeLabel.AutoSize = false;
+            this.imageSizeLabel.BorderSides = ( (System.Windows.Forms.ToolStripStatusLabelBorderSides) ( ( ( ( System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top )
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right )
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom ) ) );
+            this.imageSizeLabel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
+            this.imageSizeLabel.Name = "imageSizeLabel";
+            this.imageSizeLabel.Size = new System.Drawing.Size( 150, 17 );
+            this.imageSizeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.imageSizeLabel.ToolTipText = "Size of currently shown image";
+            // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.BorderSides = ( (System.Windows.Forms.ToolStripStatusLabelBorderSides) ( ( ( ( System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top )
@@ -271,7 +285,7 @@
                         | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom ) ) );
             this.toolStripStatusLabel1.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size( 348, 17 );
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size( 229, 17 );
             this.toolStripStatusLabel1.Spring = true;
             // 
             // mainPanel
@@ -477,6 +491,7 @@
         private System.Windows.Forms.ToolStripStatusLabel imagesCountLabel;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel processingTimeLabel;
+        private System.Windows.Forms.ToolStripStatusLabel imageSizeLabel;
     }
 }
 
