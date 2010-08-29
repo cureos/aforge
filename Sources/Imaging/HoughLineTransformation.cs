@@ -367,6 +367,20 @@ namespace AForge.Imaging
         /// 
         public void ProcessImage( Bitmap image )
         {
+            ProcessImage( image, new Rectangle( 0, 0, image.Width, image.Height ) );
+        }
+
+        /// <summary>
+        /// Process an image building Hough map.
+        /// </summary>
+        /// 
+        /// <param name="image">Source image to process.</param>
+        /// <param name="rect">Image's rectangle to process.</param>
+        /// 
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
+        /// 
+        public void ProcessImage( Bitmap image, Rectangle rect )
+        {
             // check image format
             if ( image.PixelFormat != PixelFormat.Format8bppIndexed )
             {
@@ -381,7 +395,7 @@ namespace AForge.Imaging
             try
             {
                 // process the image
-                ProcessImage( new UnmanagedImage( imageData ) );
+                ProcessImage( new UnmanagedImage( imageData ), rect );
             }
             finally
             {
@@ -400,7 +414,22 @@ namespace AForge.Imaging
         /// 
         public void ProcessImage( BitmapData imageData )
         {
-            ProcessImage( new UnmanagedImage( imageData ) );
+            ProcessImage( new UnmanagedImage( imageData ),
+                new Rectangle( 0, 0, imageData.Width, imageData.Height ) );
+        }
+
+        /// <summary>
+        /// Process an image building Hough map.
+        /// </summary>
+        /// 
+        /// <param name="imageData">Source image data to process.</param>
+        /// <param name="rect">Image's rectangle to process.</param>
+        /// 
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
+        /// 
+        public void ProcessImage( BitmapData imageData, Rectangle rect )
+        {
+            ProcessImage( new UnmanagedImage( imageData ), rect );
         }
 
         /// <summary>
@@ -413,6 +442,20 @@ namespace AForge.Imaging
         /// 
         public void ProcessImage( UnmanagedImage image )
         {
+            ProcessImage( image, new Rectangle( 0, 0, image.Width, image.Height ) );
+        }
+
+        /// <summary>
+        /// Process an image building Hough map.
+        /// </summary>
+        /// 
+        /// <param name="image">Source unmanaged image to process.</param>
+        /// <param name="rect">Image's rectangle to process.</param>
+        /// 
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
+        /// 
+        public void ProcessImage( UnmanagedImage image, Rectangle rect )
+        {
             if ( image.PixelFormat != PixelFormat.Format8bppIndexed )
             {
                 throw new UnsupportedImageFormatException( "Unsupported pixel format of the source image." );
@@ -421,11 +464,18 @@ namespace AForge.Imaging
             // get source image size
             int width       = image.Width;
             int height      = image.Height;
-            int offset      = image.Stride - width;
             int halfWidth   = width / 2;
             int halfHeight  = height / 2;
-            int toWidth     = width - halfWidth;
-            int toHeight    = height - halfHeight;
+
+            // make sure the specified rectangle recides with the source image
+            rect.Intersect( new Rectangle( 0, 0, width, height ) );
+
+            int startX = -halfWidth  + rect.Left;
+            int startY = -halfHeight + rect.Top;
+            int stopX  = width  - halfWidth  - ( width  - rect.Right );
+            int stopY  = height - halfHeight - ( height - rect.Bottom );
+
+            int offset = image.Stride - rect.Width;
 
             // calculate Hough map's width
             int halfHoughWidth = (int) Math.Sqrt( halfWidth * halfWidth + halfHeight * halfHeight );
@@ -436,13 +486,14 @@ namespace AForge.Imaging
             // do the job
             unsafe
             {
-                byte* src = (byte*) image.ImageData.ToPointer( );
+                byte* src = (byte*) image.ImageData.ToPointer( ) +
+                    rect.Top * image.Stride + rect.Left;
 
                 // for each row
-                for ( int y = -halfHeight; y < toHeight; y++ )
+                for ( int y = startY; y < stopY; y++ )
                 {
                     // for each pixel
-                    for ( int x = -halfWidth; x < toWidth; x++, src++ )
+                    for ( int x = startX; x < stopX; x++, src++ )
                     {
                         if ( *src != 0 )
                         {

@@ -172,6 +172,24 @@ namespace AForge.Imaging
         /// 
         public double GetSkewAngle( Bitmap image )
         {
+            return GetSkewAngle( image, new Rectangle( 0, 0, image.Width, image.Height ) );
+        }
+
+        /// <summary>
+        /// Get skew angle of the provided document image.
+        /// </summary>
+        /// 
+        /// <param name="image">Document's image to get skew angle of.</param>
+        /// <param name="rect">Image's rectangle to process (used to exclude processing of
+        /// regions, which are not relevant to skew detection).</param>
+        /// 
+        /// <returns>Returns document's skew angle. If the returned angle equals to -90,
+        /// then document skew detection has failed.</returns>
+        /// 
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
+        /// 
+        public double GetSkewAngle( Bitmap image, Rectangle rect )
+        {
             // check image format
             if ( image.PixelFormat != PixelFormat.Format8bppIndexed )
             {
@@ -188,7 +206,7 @@ namespace AForge.Imaging
             try
             {
                 // process the image
-                skewAngle = GetSkewAngle( new UnmanagedImage( imageData ) );
+                skewAngle = GetSkewAngle( new UnmanagedImage( imageData ), rect );
             }
             finally
             {
@@ -212,7 +230,26 @@ namespace AForge.Imaging
         /// 
         public double GetSkewAngle( BitmapData imageData )
         {
-            return GetSkewAngle( new UnmanagedImage( imageData ) );
+            return GetSkewAngle( new UnmanagedImage( imageData ),
+                new Rectangle( 0, 0, imageData.Width, imageData.Height ) );
+        }
+
+        /// <summary>
+        /// Get skew angle of the provided document image.
+        /// </summary>
+        /// 
+        /// <param name="imageData">Document's image data to get skew angle of.</param>
+        /// <param name="rect">Image's rectangle to process (used to exclude processing of
+        /// regions, which are not relevant to skew detection).</param>
+        /// 
+        /// <returns>Returns document's skew angle. If the returned angle equals to -90,
+        /// then document skew detection has failed.</returns>
+        /// 
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
+        /// 
+        public double GetSkewAngle( BitmapData imageData, Rectangle rect )
+        {
+            return GetSkewAngle( new UnmanagedImage( imageData ), rect );
         }
 
         /// <summary>
@@ -228,6 +265,24 @@ namespace AForge.Imaging
         /// 
         public double GetSkewAngle( UnmanagedImage image )
         {
+            return GetSkewAngle( image, new Rectangle( 0, 0, image.Width, image.Height ) );
+        }
+
+        /// <summary>
+        /// Get skew angle of the provided document image.
+        /// </summary>
+        /// 
+        /// <param name="image">Document's unmanaged image to get skew angle of.</param>
+        /// <param name="rect">Image's rectangle to process (used to exclude processing of
+        /// regions, which are not relevant to skew detection).</param>
+        /// 
+        /// <returns>Returns document's skew angle. If the returned angle equals to -90,
+        /// then document skew detection has failed.</returns>
+        /// 
+        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
+        /// 
+        public double GetSkewAngle( UnmanagedImage image, Rectangle rect )
+        {
             if ( image.PixelFormat != PixelFormat.Format8bppIndexed )
             {
                 throw new UnsupportedImageFormatException( "Unsupported pixel format of the source image." );
@@ -239,11 +294,18 @@ namespace AForge.Imaging
             // get source image size
             int width       = image.Width;
             int height      = image.Height;
-            int offset      = image.Stride - width;
             int halfWidth   = width / 2;
             int halfHeight  = height / 2;
-            int toWidth     = width - halfWidth;
-            int toHeight    = height - halfHeight - 1;
+
+            // make sure the specified rectangle recides with the source image
+            rect.Intersect( new Rectangle( 0, 0, width, height ) );
+
+            int startX = -halfWidth  + rect.Left;
+            int startY = -halfHeight + rect.Top;
+            int stopX  = width  - halfWidth  - ( width  - rect.Right );
+            int stopY  = height - halfHeight - ( height - rect.Bottom ) - 1;
+
+            int offset = image.Stride - rect.Width;
 
             // calculate Hough map's width
             int halfHoughWidth = (int) Math.Sqrt( halfWidth * halfWidth + halfHeight * halfHeight );
@@ -254,14 +316,15 @@ namespace AForge.Imaging
             // do the job
             unsafe
             {
-                byte* src = (byte*) image.ImageData.ToPointer( );
-                byte* srcBelow = (byte*) image.ImageData.ToPointer( ) + image.Stride;
+                byte* src = (byte*) image.ImageData.ToPointer( ) +
+                    rect.Top * image.Stride + rect.Left;
+                byte* srcBelow = src + image.Stride;
 
                 // for each row
-                for ( int y = -halfHeight; y < toHeight; y++ )
+                for ( int y = startY; y < stopY; y++ )
                 {
                     // for each pixel
-                    for ( int x = -halfWidth; x < toWidth; x++, src++, srcBelow++ )
+                    for ( int x = startX; x < stopX; x++, src++, srcBelow++ )
                     {
                         // if current pixel is more black
                         // and pixel below is more white
