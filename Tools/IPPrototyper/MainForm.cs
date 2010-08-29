@@ -605,5 +605,18 @@ namespace IPPrototyper
                 imageSizeLabel.Text = string.Empty;
             }
         }
+
+        // Resize columns of file list view and log list view
+        private void mainSplitContainer_Panel1_Resize( object sender, EventArgs e )
+        {
+            if ( fileNameColumn != null )
+            {
+                fileNameColumn.Width = filesListView.Width - 24;
+            }
+            if ( processingStepsColumn != null )
+            {
+                processingStepsColumn.Width = logListView.Width - 24;
+            }
+        }
     }
 }

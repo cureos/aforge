@@ -306,6 +306,7 @@
             // mainSplitContainer.Panel1
             // 
             this.mainSplitContainer.Panel1.Controls.Add( this.splitContainer1 );
+            this.mainSplitContainer.Panel1.Resize += new System.EventHandler( this.mainSplitContainer_Panel1_Resize );
             // 
             // mainSplitContainer.Panel2
             // 
