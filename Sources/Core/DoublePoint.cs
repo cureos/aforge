@@ -174,12 +174,25 @@ namespace AForge
         /// <param name="p">Double precision point to convert to integer point.</param>
         /// 
         /// <returns>Returns new integer point which coordinates are explicitly converted
-        /// to integers from coordinates of the specified double precision point.</returns>
+        /// to integers from coordinates of the specified double precision point by
+        /// casting double values to integers value.</returns>
         /// 
         public static explicit operator IntPoint( DoublePoint p )
         {
             return new IntPoint( (int) p.X, (int) p.Y );
-        } 
+        }
+
+        /// <summary>
+        /// Rounds the double precision point.
+        /// </summary>
+        /// 
+        /// <returns>Returns new integer point, which coordinates equal to whole numbers
+        /// nearest to the corresponding coordinates of the double precision point.</returns>
+        /// 
+        public IntPoint Round( )
+        {
+            return new IntPoint( (int) Math.Round( X ), (int) Math.Round( Y ) );
+        }
 
         /// <summary>
         /// Get string representation of the class.
