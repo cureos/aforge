@@ -659,7 +659,7 @@ namespace AForge.Video.DirectShow
                             }
                         }
                     }
-                    mediaControl.StopWhenReady( );
+                    mediaControl.Stop( );
                 }
             }
             catch ( Exception exception )
