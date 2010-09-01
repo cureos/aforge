@@ -1,3 +1,99 @@
+AForge.NET Framework 2.1.4 release notes
+----------------------------------------
+01.09.2010.
+
+
+Version updates and fixes:
+
+* Fixed registered issues/requests:
+  - Issue 139: Possible Type Improvement in CannyEdgeDetector.cs
+  - Issue 142: Behaviour mismatch between SobelEdgeDetector.Apply and SobelEdgeDetector.ApplyInPlace
+  - Issue 143: Off-by-one error in PointsCloud.GetCenterOfGravity
+  - Issue 147: Perform SimpleQuadrilateralTransformation on entire image.
+  - Issue 149: Round DoublePoint to IntPoint, rather than truncating.
+
+
+* General
+  - Adding some unit test based on Gallio Automation Platform. The unit tests mostly cover new
+    recently added features for now. See "Unit Tests\Read Me.txt" for additional information.
+
+  - Adding initial version of IPPrototyper application (Image Processing Prototyper) - a tool which is
+    aimed to help prototyping/testing of image processing and computer vision routines.
+    
+
+* AForge
+  - Added IntPoint.EuclideanNorm() and DoublePoint.EuclideanNorm() methods, which calculate point's
+    distance to (0, 0) point.
+    
+  - Added DoublePoint.Round() method to round point to IntPoint using Math.Round().
+
+
+* AForge.Math
+  - Switching GeometryTools class to be public, which contains few tool methods to calculate angle
+    between two vectors and angle between two lines.
+    
+  - Fixing bug of GetCenterOfGravity(), where first point was not taken into account.
+    
+
+* AForge.Imaging
+  - Fixing an old somehow survived typo - changing "FormatTransalations" to "FormatTranslations".
+    This change may affect those users, who use the property.
+    
+  - Fixing a bug in line drawing (Drawing.Line()) - avoiding division by zero.
+  
+  - Adding UnmanagedImage.Collect8bppPixelValues() and UnmanagedImage.Collect16bppPixelValues() methods
+    to collect pixels' values from the list of specified coordinates.
+
+  - Adding SimpleQuadrilateralTransformation as replacement of QuadrilateralTransformationBilinear and
+    QuadrilateralTransformationNearestNeighbor filters. The new filter does transformation as with
+    interpolation, as without.
+
+  - QuadrilateralTransformationBilinear and QuadrilateralTransformationNearestNeighbor are marked as deprecated
+    and generate warning if used. But still work.
+    
+  - BaseQuadrilateralTransformationFilter is removed as no longer required.
+  
+  - Adding QuadrilateralTransformation - an implementation of quadrilateral transformation based on homogeneous
+    transformation.
+    
+  - Adding BackwardQuadrilateralTransformation - an image processing routine to transform given source
+    image into specified quadrilateral area of destination image.
+
+  - Putting black rectangle around processing area, so result of edge detectors look the same in the case
+    if Apply() or ApplyInPlace() methods are called (ApplyInPlace() was leaving some garbage from original image).
+    
+  - Extending DocumentSkewChecker and HoughLineTransformation to allow processing of specified rectangle only,
+    so lines could be searched only in the area of interest.
+    
+  - DocumentSkewChecker: Replacing MinBeta and MaxBeta properties with single MaxSkewToDetect property,
+    which covers both. Also removing cycled checking of lines' angles, since it is not required due to
+    limited range of detection.
+    
+
+* AForge.Video.DirectShow
+  - Fixing disposing of AMMediaType.
+  
+  - Improving FileVideoSource, so it can play video files which have audio stream as their first stream
+    (which becomes first output pin of IBaseFilter). First output pin was always taken before and used for
+    connection with input pin of sample grabber. However it was failing in those cases, when first output pin
+    had audio type. Now the code is changed to iterate through source's output pins searching for one, which
+    can be connected with sample grabber.
+    
+  - Changing DirectShow related classes to use IMediaControl::Stop() method instead of IMediaControl::StopWhenReady()
+    which allows data queuing, which does not seem to be required.
+    
+    
+* AForge.Controls
+  - Adding addition "request to stop" volatile boolean variable in VideoSourcePlayer to avoid trying
+    handle NewFrame event when WaitForStop() is already invoked, so rare deadlock is avoided.
+
+
+* Samples
+  - Adding "IPPrototyper Sample" application - demonstrates usage of IPPrototype tool.
+
+
+
+
 AForge.NET Framework 2.1.3 release notes
 ----------------------------------------
 01.07.2010.
