@@ -133,7 +133,8 @@ namespace AForge
         /// 
         public bool IsOverlapping( IntRange range )
         {
-            return ( ( IsInside( range.min ) ) || ( IsInside( range.max ) ) );
+            return ( ( IsInside( range.min ) ) || ( IsInside( range.max ) ) ||
+                     ( range.IsInside( min ) ) || ( range.IsInside( max ) ) );
         }
     }
 }

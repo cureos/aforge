@@ -11,8 +11,8 @@
     <properties />
   </testPackage>
   <testFilters>
-    <testFilter filterName="AutoSave" filterExpr="" />
-    <testFilter filterName="LastRun" filterExpr="" />
+    <testFilter filterName="AutoSave" filterExpr="Id: bcba98e69213bfcc" />
+    <testFilter filterName="LastRun" filterExpr="Id: bcba98e69213bfcc" />
   </testFilters>
   <extensionSpecifications />
   <reportDirectory>Build</reportDirectory>
