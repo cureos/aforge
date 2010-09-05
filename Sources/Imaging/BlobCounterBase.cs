@@ -98,8 +98,9 @@ namespace AForge.Imaging
         // objects' sort order
         private ObjectsOrder objectsOrder = ObjectsOrder.None;
 
-        // filtering by size is required or nor
+        // filtering by size is required or not
         private bool filterBlobs = false;
+        private IBlobsFilter filter = null;
 
         // coupled size filtering or not
         private bool coupledSizeFiltering = false;
@@ -175,9 +176,10 @@ namespace AForge.Imaging
         /// 
         /// <remarks><para>If the property is equal to <b>false</b>, then there is no any additional
         /// post processing after image was processed. If the property is set to <b>true</b>, then
-        /// blobs filtering is done right after image processing routine. Blobs are filtered according
-        /// to dimensions specified in <see cref="MinWidth"/>, <see cref="MinHeight"/>, <see cref="MaxWidth"/>
-        /// and <see cref="MaxHeight"/> properties.</para>
+        /// blobs filtering is done right after image processing routine. If <see cref="BlobsFilter"/>
+        /// is set, then custom blobs' filtering is done, which is implemented by user. Otherwise
+        /// blobs are filtered according to dimensions specified in <see cref="MinWidth"/>,
+        /// <see cref="MinHeight"/>, <see cref="MaxWidth"/> and <see cref="MaxHeight"/> properties.</para>
         /// 
         /// <para>Default value is set to <see langword="false"/>.</para></remarks>
         /// 
@@ -213,7 +215,8 @@ namespace AForge.Imaging
         /// 
         /// <remarks><para>The property specifies minimum object's width acceptable by blob counting
         /// routine and has power only when <see cref="FilterBlobs"/> property is set to
-        /// <see langword="true"/>.</para>
+        /// <see langword="true"/> and <see cref="BlobsFilter">custom blobs' filter</see> is
+        /// set to <see langword="null"/>.</para>
         /// 
         /// <para>See documentation to <see cref="CoupledSizeFiltering"/> for additional information.</para>
         /// </remarks>
@@ -230,7 +233,8 @@ namespace AForge.Imaging
         /// 
         /// <remarks><para>The property specifies minimum object's height acceptable by blob counting
         /// routine and has power only when <see cref="FilterBlobs"/> property is set to
-        /// <see langword="true"/>.</para>
+        /// <see langword="true"/> and <see cref="BlobsFilter">custom blobs' filter</see> is
+        /// set to <see langword="null"/>.</para>
         /// 
         /// <para>See documentation to <see cref="CoupledSizeFiltering"/> for additional information.</para>
         /// </remarks>
@@ -247,7 +251,8 @@ namespace AForge.Imaging
         /// 
         /// <remarks><para>The property specifies maximum object's width acceptable by blob counting
         /// routine and has power only when <see cref="FilterBlobs"/> property is set to
-        /// <see langword="true"/>.</para>
+        /// <see langword="true"/> and <see cref="BlobsFilter">custom blobs' filter</see> is
+        /// set to <see langword="null"/>.</para>
         /// 
         /// <para>See documentation to <see cref="CoupledSizeFiltering"/> for additional information.</para>
         /// </remarks>
@@ -264,7 +269,8 @@ namespace AForge.Imaging
         /// 
         /// <remarks><para>The property specifies maximum object's height acceptable by blob counting
         /// routine and has power only when <see cref="FilterBlobs"/> property is set to
-        /// <see langword="true"/>.</para>
+        /// <see langword="true"/> and <see cref="BlobsFilter">custom blobs' filter</see> is
+        /// set to <see langword="null"/>.</para>
         /// 
         /// <para>See documentation to <see cref="CoupledSizeFiltering"/> for additional information.</para>
         /// </remarks>
@@ -273,6 +279,23 @@ namespace AForge.Imaging
         {
             get { return maxHeight; }
             set { maxHeight = value; }
+        }
+
+        /// <summary>
+        /// Custom blobs' filter to use.
+        /// </summary>
+        /// 
+        /// <remarks><para>The property specifies custom blobs' filtering routine to use. It has
+        /// effect only in the case if see cref="FilterBlobs"/> property is set to <see langword="true"/>.</para>
+        /// 
+        /// <para><note>When custom blobs' filtering routine is set, it has priority over default filtering done
+        /// with <see cref="MinWidth"/>, <see cref="MinHeight"/>, <see cref="MaxWidth"/> and <see cref="MaxHeight"/>.</note></para>
+        /// </remarks>
+        /// 
+        public IBlobsFilter BlobsFilter
+        {
+            get { return filter; }
+            set { filter = value; }
         }
 
         /// <summary>
@@ -408,29 +431,44 @@ namespace AForge.Imaging
                 // check dimension of all objects and filter them
                 int objectsToRemove = 0;
 
-                for ( int i = objectsCount - 1; i >= 0; i-- )
+                if ( filter == null )
                 {
-                    int blobWidth  = blobs[i].Rectangle.Width;
-                    int blobHeight = blobs[i].Rectangle.Height;
-
-                    if ( coupledSizeFiltering == false )
+                    for ( int i = objectsCount - 1; i >= 0; i-- )
                     {
-                        // uncoupled filtering
-                        if (
-                            ( blobWidth < minWidth ) || ( blobHeight < minHeight ) ||
-                            ( blobWidth > maxWidth ) || ( blobHeight > maxHeight ) )
+                        int blobWidth  = blobs[i].Rectangle.Width;
+                        int blobHeight = blobs[i].Rectangle.Height;
+
+                        if ( coupledSizeFiltering == false )
                         {
-                            labelsMap[i + 1] = 0;
-                            objectsToRemove++;
-                            blobs.RemoveAt( i );
+                            // uncoupled filtering
+                            if (
+                                ( blobWidth < minWidth ) || ( blobHeight < minHeight ) ||
+                                ( blobWidth > maxWidth ) || ( blobHeight > maxHeight ) )
+                            {
+                                labelsMap[i + 1] = 0;
+                                objectsToRemove++;
+                                blobs.RemoveAt( i );
+                            }
+                        }
+                        else
+                        {
+                            // coupled filtering
+                            if (
+                                ( ( blobWidth < minWidth ) && ( blobHeight < minHeight ) ) ||
+                                ( ( blobWidth > maxWidth ) && ( blobHeight > maxHeight ) ) )
+                            {
+                                labelsMap[i + 1] = 0;
+                                objectsToRemove++;
+                                blobs.RemoveAt( i );
+                            }
                         }
                     }
-                    else
+                }
+                else
+                {
+                    for ( int i = objectsCount - 1; i >= 0; i-- )
                     {
-                        // coupled filtering
-                        if (
-                            ( ( blobWidth < minWidth ) && ( blobHeight < minHeight ) ) ||
-                            ( ( blobWidth > maxWidth ) && ( blobHeight > maxHeight ) ) )
+                        if ( !filter.Check( blobs[i] ) )
                         {
                             labelsMap[i + 1] = 0;
                             objectsToRemove++;

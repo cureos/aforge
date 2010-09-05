@@ -192,6 +192,7 @@
     <Compile Include="HorizontalIntensityStatistics.cs" />
     <Compile Include="HoughCircleTransformation.cs" />
     <Compile Include="HoughLineTransformation.cs" />
+    <Compile Include="IBlobsFilter.cs" />
     <Compile Include="IBlockMatching.cs" />
     <Compile Include="ICornersDetector.cs" />
     <Compile Include="Image.cs" />
