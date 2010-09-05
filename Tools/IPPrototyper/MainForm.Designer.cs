@@ -63,6 +63,7 @@
             this.pictureBox = new System.Windows.Forms.PictureBox( );
             this.logBox = new System.Windows.Forms.TextBox( );
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog( );
+            this.autoSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.menuStrip.SuspendLayout( );
             this.statusStrip.SuspendLayout( );
             this.mainPanel.SuspendLayout( );
@@ -180,7 +181,8 @@
             this.imageviewToolStripMenuItem.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
             this.normalToolStripMenuItem,
             this.centerToolStripMenuItem,
-            this.stretchToolStripMenuItem} );
+            this.stretchToolStripMenuItem,
+            this.autoSizeToolStripMenuItem} );
             this.imageviewToolStripMenuItem.Name = "imageviewToolStripMenuItem";
             this.imageviewToolStripMenuItem.Size = new System.Drawing.Size( 201, 22 );
             this.imageviewToolStripMenuItem.Text = "Image &view";
@@ -189,21 +191,21 @@
             // normalToolStripMenuItem
             // 
             this.normalToolStripMenuItem.Name = "normalToolStripMenuItem";
-            this.normalToolStripMenuItem.Size = new System.Drawing.Size( 114, 22 );
+            this.normalToolStripMenuItem.Size = new System.Drawing.Size( 152, 22 );
             this.normalToolStripMenuItem.Text = "&Normal";
             this.normalToolStripMenuItem.Click += new System.EventHandler( this.normalToolStripMenuItem_Click );
             // 
             // centerToolStripMenuItem
             // 
             this.centerToolStripMenuItem.Name = "centerToolStripMenuItem";
-            this.centerToolStripMenuItem.Size = new System.Drawing.Size( 114, 22 );
+            this.centerToolStripMenuItem.Size = new System.Drawing.Size( 152, 22 );
             this.centerToolStripMenuItem.Text = "&Center";
             this.centerToolStripMenuItem.Click += new System.EventHandler( this.centerToolStripMenuItem_Click );
             // 
             // stretchToolStripMenuItem
             // 
             this.stretchToolStripMenuItem.Name = "stretchToolStripMenuItem";
-            this.stretchToolStripMenuItem.Size = new System.Drawing.Size( 114, 22 );
+            this.stretchToolStripMenuItem.Size = new System.Drawing.Size( 152, 22 );
             this.stretchToolStripMenuItem.Text = "&Stretch";
             this.stretchToolStripMenuItem.Click += new System.EventHandler( this.stretchToolStripMenuItem_Click );
             // 
@@ -422,6 +424,13 @@
             // 
             this.folderBrowserDialog.Description = "Select folder containing images to process:";
             // 
+            // autoSizeToolStripMenuItem
+            // 
+            this.autoSizeToolStripMenuItem.Name = "autoSizeToolStripMenuItem";
+            this.autoSizeToolStripMenuItem.Size = new System.Drawing.Size( 152, 22 );
+            this.autoSizeToolStripMenuItem.Text = "&Auto Size";
+            this.autoSizeToolStripMenuItem.Click += new System.EventHandler( this.autoSizeToolStripMenuItem_Click );
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
@@ -493,6 +502,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel processingTimeLabel;
         private System.Windows.Forms.ToolStripStatusLabel imageSizeLabel;
+        private System.Windows.Forms.ToolStripMenuItem autoSizeToolStripMenuItem;
     }
 }
 

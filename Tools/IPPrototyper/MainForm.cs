@@ -104,11 +104,11 @@ namespace IPPrototyper
                     splitContainer2.SplitterDistance = int.Parse( config.GetConfigurationOption( splitter3Option ) );
 
                     // get size mode of picture box
-                    pictureBox.SizeMode = (PictureBoxSizeMode) Enum.Parse( typeof( PictureBoxSizeMode ),
-                        config.GetConfigurationOption( pictureSizeModeOption ) );
+                    SetPictureBoxSizeMode( (PictureBoxSizeMode) Enum.Parse( typeof( PictureBoxSizeMode ),
+                        config.GetConfigurationOption( pictureSizeModeOption ) ) );
 
                     // get recent folders
-                    for ( int i = 0; i < 5; i++ )
+                    for ( int i = 0; i < 7; i++ )
                     {
                         string rf = config.GetConfigurationOption( recentFolderOption + i );
 
@@ -204,9 +204,9 @@ namespace IPPrototyper
                 // put this folder as the most recent
                 recentFolders.Insert( 0, folderName );
 
-                if ( recentFolders.Count > 5 )
+                if ( recentFolders.Count > 7 )
                 {
-                    recentFolders.RemoveAt( 5 );
+                    recentFolders.RemoveAt( 7 );
                 }
             }
         }
@@ -501,27 +501,52 @@ namespace IPPrototyper
         // Update status of menu items in Settings->Image view
         private void imageviewToolStripMenuItem_DropDownOpening( object sender, EventArgs e )
         {
-            normalToolStripMenuItem.Checked = ( pictureBox.SizeMode == PictureBoxSizeMode.Normal );
-            centerToolStripMenuItem.Checked = ( pictureBox.SizeMode == PictureBoxSizeMode.CenterImage );
-            stretchToolStripMenuItem.Checked = ( pictureBox.SizeMode == PictureBoxSizeMode.StretchImage );
+            normalToolStripMenuItem.Checked   = ( pictureBox.SizeMode == PictureBoxSizeMode.Normal );
+            centerToolStripMenuItem.Checked   = ( pictureBox.SizeMode == PictureBoxSizeMode.CenterImage );
+            stretchToolStripMenuItem.Checked  = ( pictureBox.SizeMode == PictureBoxSizeMode.StretchImage );
+            autoSizeToolStripMenuItem.Checked = ( pictureBox.SizeMode == PictureBoxSizeMode.AutoSize );
         }
 
         // Set Normal view for images
         private void normalToolStripMenuItem_Click( object sender, EventArgs e )
         {
-            pictureBox.SizeMode = PictureBoxSizeMode.Normal;
+            SetPictureBoxSizeMode( PictureBoxSizeMode.Normal );
         }
 
         // Set Centred view for images
         private void centerToolStripMenuItem_Click( object sender, EventArgs e )
         {
-            pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
+            SetPictureBoxSizeMode( PictureBoxSizeMode.CenterImage );
         }
 
         // Set Stretched view for images
         private void stretchToolStripMenuItem_Click( object sender, EventArgs e )
         {
-            pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            SetPictureBoxSizeMode( PictureBoxSizeMode.StretchImage );
+        }
+
+        // Set Auto Size view for image
+        private void autoSizeToolStripMenuItem_Click( object sender, EventArgs e )
+        {
+            SetPictureBoxSizeMode( PictureBoxSizeMode.AutoSize );
+        }
+
+        // Set size mode for picture box
+        private void SetPictureBoxSizeMode( PictureBoxSizeMode sizeMode )
+        {
+            if ( sizeMode == PictureBoxSizeMode.AutoSize )
+            {
+                pictureBox.Dock = DockStyle.None;
+                pictureBox.Location = new Point( 0, 0 );
+                splitContainer2.Panel1.AutoScroll = true;
+            }
+            else
+            {
+                pictureBox.Dock = DockStyle.Fill;
+                splitContainer2.Panel1.AutoScroll = false;
+            }
+
+            pictureBox.SizeMode = sizeMode;
         }
 
         // Switch option for openning last folder on application load
