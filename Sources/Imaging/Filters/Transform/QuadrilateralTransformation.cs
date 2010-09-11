@@ -274,26 +274,10 @@ namespace AForge.Imaging.Filters
             if ( sourceQuadrilateral == null )
                 throw new NullReferenceException( "Source quadrilateral was not set." );
 
-            int maxXdiff = Math.Abs( sourceQuadrilateral[3].X - sourceQuadrilateral[0].X ); ;
-            int maxYdiff = Math.Abs( sourceQuadrilateral[3].Y - sourceQuadrilateral[0].Y );
-
-            for ( int i = 1; i < 4; i++ )
-            {
-                int xDiff = Math.Abs( sourceQuadrilateral[i - 1].X - sourceQuadrilateral[i].X );
-                int yDiff = Math.Abs( sourceQuadrilateral[i - 1].Y - sourceQuadrilateral[i].Y );
-
-                if ( xDiff > maxXdiff )
-                {
-                    maxXdiff = xDiff;
-                }
-                if ( yDiff > maxYdiff )
-                {
-                    maxYdiff = yDiff;
-                }
-            }
-
-            newWidth = maxXdiff;
-            newHeight = maxYdiff;
+            newWidth  = (int) Math.Max( sourceQuadrilateral[0].DistanceTo( sourceQuadrilateral[1] ),
+                                        sourceQuadrilateral[2].DistanceTo( sourceQuadrilateral[3] ) );
+            newHeight = (int) Math.Max( sourceQuadrilateral[1].DistanceTo( sourceQuadrilateral[2] ),
+                                        sourceQuadrilateral[3].DistanceTo( sourceQuadrilateral[0] ) );
         }
 
         /// <summary>
