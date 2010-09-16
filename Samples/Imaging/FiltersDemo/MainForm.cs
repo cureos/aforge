@@ -511,16 +511,25 @@ namespace FiltersDemo
                 {
                     // load image
                     sourceImage = (Bitmap) Bitmap.FromFile( openFileDialog.FileName );
-                    // format image
-                    AForge.Imaging.Image.FormatImage( ref sourceImage );
 
-                    // image type
-                    if ( sourceImage.PixelFormat != PixelFormat.Format24bppRgb )
+                    // check pixel format
+                    if ( ( sourceImage.PixelFormat == PixelFormat.Format16bppGrayScale ) ||
+                         ( Bitmap.GetPixelFormatSize( sourceImage.PixelFormat ) > 32 ) )
                     {
-                        MessageBox.Show( "The demo application support only color images.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                        MessageBox.Show( "The demo application supports only color images.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
                         // free image
                         sourceImage.Dispose( );
                         sourceImage = null;
+                    }
+                    else
+                    {
+                        // make sure the image has 24 bpp format
+                        if ( sourceImage.PixelFormat != PixelFormat.Format24bppRgb )
+                        {
+                            Bitmap temp = AForge.Imaging.Image.Clone( sourceImage, PixelFormat.Format24bppRgb );
+                            sourceImage.Dispose( );
+                            sourceImage = temp;
+                        }
                     }
 
                     ClearCurrentImage( );
