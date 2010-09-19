@@ -165,6 +165,36 @@ namespace AForge
         }
 
         /// <summary>
+        /// Equality operator - checks if two points have equal coordinates.
+        /// </summary>
+        /// 
+        /// <param name="p1">First point to check.</param>
+        /// <param name="p2">Second point to check.</param>
+        /// 
+        /// <returns>Returns <see langword="true"/> if coordinates of specified
+        /// points are equal.</returns>
+        ///
+        public static bool operator ==( IntPoint p1, IntPoint p2 )
+        {
+            return ( ( p1.X == p2.X ) && ( p1.Y == p2.Y ) );
+        }
+
+        /// <summary>
+        /// Inequality operator - checks if two points have different coordinates.
+        /// </summary>
+        /// 
+        /// <param name="p1">First point to check.</param>
+        /// <param name="p2">Second point to check.</param>
+        /// 
+        /// <returns>Returns <see langword="true"/> if coordinates of specified
+        /// points are not equal.</returns>
+        ///
+        public static bool operator !=( IntPoint p1, IntPoint p2 )
+        {
+            return ( ( p1.X != p2.X ) || ( p1.Y != p2.Y ) );
+        }
+
+        /// <summary>
         /// Implicit conversion to <see cref="DoublePoint"/>.
         /// </summary>
         /// 
