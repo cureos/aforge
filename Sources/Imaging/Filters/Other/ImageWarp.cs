@@ -81,7 +81,7 @@ namespace AForge.Imaging.Filters
         /// are calculated as sum of destination coordinate and corresponding value from warp map).
         /// </para>
         /// 
-        /// <para><note>The map array is access using [y, x] indexing, i.e.
+        /// <para><note>The map array is accessed using [y, x] indexing, i.e.
         /// first dimension in the map array corresponds to Y axis of image.</note></para>
         /// 
         /// <para><note>If the map is smaller or bigger than the image to process, then only minimum
