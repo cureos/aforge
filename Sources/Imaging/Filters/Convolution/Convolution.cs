@@ -27,7 +27,8 @@ namespace AForge.Imaging.Filters
     /// different results, like blur image, sharpen it, find edges, etc.</para>
     /// 
     /// <para>The filter accepts 8 and 16 bpp grayscale images and 24, 32, 48 and 64 bpp
-    /// color images for processing.</para>
+    /// color images for processing. Note: for 32 bpp and 64 bpp images, the alpha channel is
+    /// not processed anyhow with the specified kernel; its values are just copied as is. </para>
     /// 
     /// <para>Sample usage:</para>
     /// <code>
@@ -430,6 +431,10 @@ namespace AForge.Imaging.Filters
                             dst[RGB.R] = (byte) ( ( r > 255 ) ? 255 : ( ( r < 0 ) ? 0 : r ) );
                             dst[RGB.G] = (byte) ( ( g > 255 ) ? 255 : ( ( g < 0 ) ? 0 : g ) );
                             dst[RGB.B] = (byte) ( ( b > 255 ) ? 255 : ( ( b < 0 ) ? 0 : b ) );
+
+                            // take care of alpha channel
+                            if ( pixelSize == 4 )
+                                dst[RGB.A] = src[RGB.A];
                         }
                         src += srcOffset;
                         dst += dstOffset;
@@ -609,6 +614,10 @@ namespace AForge.Imaging.Filters
                             dst[RGB.R] = (ushort) ( ( r > 65535 ) ? 65535 : ( ( r < 0 ) ? 0 : r ) );
                             dst[RGB.G] = (ushort) ( ( g > 65535 ) ? 65535 : ( ( g < 0 ) ? 0 : g ) );
                             dst[RGB.B] = (ushort) ( ( b > 65535 ) ? 65535 : ( ( b < 0 ) ? 0 : b ) );
+
+                            // take care of alpha channel
+                            if ( pixelSize == 4 )
+                                dst[RGB.A] = src[RGB.A];
                         }
                     }
                 }
