@@ -105,5 +105,56 @@ namespace AForge.Math.Geometry
 
             return angle;
         }
+
+        /// <summary>
+        /// Finds intersection point of the two specified lines A and B.
+        /// </summary>
+        /// 
+        /// <param name="a1">The first point defining line A.</param>
+        /// <param name="a2">The second point defining line A.</param>
+        /// <param name="b1">The first point defining line B.</param>
+        /// <param name="b2">The second point defining line B.</param>
+        /// 
+        /// <returns>Returns intersection point of the two lines.</returns>
+        /// 
+        /// <exception cref="InvalidOperationException">Thrown if the two lines are parallel.</exception>
+        /// 
+        public static DoublePoint GetIntersectionPoint( DoublePoint a1, DoublePoint a2, DoublePoint b1, DoublePoint b2 )
+        {
+            // calculate each line in slope-intercept form (m and b, resp.)
+            DoublePoint a = a1 - a2;
+            DoublePoint b = b1 - b2;
+
+            double mA = a.Y / a.X;
+            double mB = b.Y / b.X;
+
+            if ( ( Double.IsInfinity( mA ) && Double.IsInfinity( mB ) ) || ( mA == mB ) )
+            {
+                throw new InvalidOperationException( "Parallel lines do not have an intersection point." );
+            }
+
+            // y=mx+b => y-mx=b
+            double bA = a1.Y - mA * a1.X;
+            double bB = b1.Y - mB * b1.X;
+
+            DoublePoint intersection;
+
+            if ( Double.IsInfinity( mA ) )
+            {
+                intersection = new DoublePoint( a1.X, mB * a1.X + bB );
+            }
+            else if ( Double.IsInfinity( mB ) )
+            {
+                intersection = new DoublePoint( b1.X, mA * b1.X + bA );
+            }
+            else
+            {
+                // the intersection is at x=(b2-b1)/(m1-m2), and y=m1*x+b1
+                double x = ( bB - bA ) / ( mA - mB );
+                intersection = new DoublePoint( x, mA * x + bA );
+            }
+
+            return intersection;
+        }
     }
 }
