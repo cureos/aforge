@@ -53,6 +53,7 @@
     <Compile Include="Geometry\FlatAnglesOptimizerTest.cs" />
     <Compile Include="Geometry\GeometryToolsTest.cs" />
     <Compile Include="Geometry\LineStraighteningOptimizerTest.cs" />
+    <Compile Include="Geometry\LineTest.cs" />
     <Compile Include="Geometry\ShapeOptimizerTestBase.cs">
       <SubType>Code</SubType>
     </Compile>

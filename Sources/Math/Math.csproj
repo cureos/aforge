@@ -40,6 +40,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Complex.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="Geometry\GrahamConvexHull.cs" />
     <Compile Include="Geometry\IConvexHullAlgorithm.cs" />
     <Compile Include="Geometry\IShapeOptimizer.cs" />
+    <Compile Include="Geometry\Line.cs" />
     <Compile Include="Geometry\LineStraighteningOptimizer.cs" />
     <Compile Include="Geometry\PointsCloud.cs" />
     <Compile Include="Geometry\ShapeType.cs" />
