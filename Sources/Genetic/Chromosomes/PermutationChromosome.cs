@@ -2,14 +2,14 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2006-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2006-2010
+// contacts@aforgenet.com
 //
 
 namespace AForge.Genetic
 {
 	using System;
-	using System.Text;
+	using System.Collections.Generic;
 
 	/// <summary>
 	/// Permutation chromosome.
@@ -149,6 +149,9 @@ namespace AForge.Genetic
 		// Produce new child applying crossover to two parents
 		private void CreateChildUsingCrossover( ushort[] parent1, ushort[] parent2, ushort[] child )
 		{
+            Dictionary<ushort, int> indexDictionary1 = CreateIndexDictionary( parent1 );
+            Dictionary<ushort, int> indexDictionary2 = CreateIndexDictionary( parent2 );
+
 			// temporary array to specify if certain gene already
 			// present in the child
 			bool[]	geneIsBusy = new bool[length];
@@ -169,19 +172,11 @@ namespace AForge.Genetic
 			{
 				// find the next gene after PREV in both parents
 				// 1
-				for ( j = 0; j < k; j++ )
-				{
-					if ( parent1[j] == prev )
-						break;
-				}
+                j = indexDictionary1[prev];
 				next1 = ( j == k ) ? parent1[0] : parent1[j + 1];
 				// 2
-				for ( j = 0; j < k; j++ )
-				{
-					if ( parent2[j] == prev )
-						break;
-				}
-				next2 = ( j == k ) ? parent2[0] : parent2[j + 1];
+                j = indexDictionary2[prev];
+                next2 = ( j == k ) ? parent2[0] : parent2[j + 1];
 
 				// check candidate genes for validness
 				valid1 = !geneIsBusy[next1];
@@ -222,5 +217,18 @@ namespace AForge.Genetic
 				geneIsBusy[prev] = true;
 			}
 		}
+
+        // Create dictionary for fast lookup of genes' indexes
+        private static Dictionary<ushort, int> CreateIndexDictionary( ushort[] genes )
+        {
+            Dictionary<ushort, int> indexDictionary = new Dictionary<ushort, int>( genes.Length );
+
+            for ( int i = 0, n = genes.Length; i < n; i++ )
+            {
+                indexDictionary.Add( genes[i], i );
+            }
+
+            return indexDictionary;
+        }
 	}
 }
