@@ -24,7 +24,7 @@ namespace AForge.Imaging
     /// <para><note>Due to limitations of Moravec corners detector (anisotropic response, etc.) its usage is limited
     /// to certain cases only.</note></para>
     /// 
-    /// <para>The class processes only grayscale 8 bpp and color 24 bpp images.</para>
+    /// <para>The class processes only grayscale 8 bpp and color 24/32 bpp images.</para>
     /// 
     /// <para>Sample usage:</para>
     /// <code>
@@ -136,7 +136,9 @@ namespace AForge.Imaging
             // check image format
             if (
                 ( image.PixelFormat != PixelFormat.Format8bppIndexed ) &&
-                ( image.PixelFormat != PixelFormat.Format24bppRgb )
+                ( image.PixelFormat != PixelFormat.Format24bppRgb ) &&
+                ( image.PixelFormat != PixelFormat.Format32bppRgb ) &&
+                ( image.PixelFormat != PixelFormat.Format32bppArgb )
                 )
             {
                 throw new UnsupportedImageFormatException( "Unsupported pixel format of the source image." );
@@ -193,7 +195,9 @@ namespace AForge.Imaging
             // check image format
             if (
                 ( image.PixelFormat != PixelFormat.Format8bppIndexed ) &&
-                ( image.PixelFormat != PixelFormat.Format24bppRgb )
+                ( image.PixelFormat != PixelFormat.Format24bppRgb ) &&
+                ( image.PixelFormat != PixelFormat.Format32bppRgb ) &&
+                ( image.PixelFormat != PixelFormat.Format32bppArgb )
                 )
             {
                 throw new UnsupportedImageFormatException( "Unsupported pixel format of the source image." );
@@ -203,7 +207,7 @@ namespace AForge.Imaging
             int width  = image.Width;
             int height = image.Height;
             int stride = image.Stride;
-            int pixelSize = ( image.PixelFormat == PixelFormat.Format8bppIndexed ) ? 1 : 3;
+            int pixelSize = Bitmap.GetPixelFormatSize( image.PixelFormat ) / 8;
             // window radius
             int windowRadius = windowSize / 2;
 

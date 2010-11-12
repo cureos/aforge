@@ -21,7 +21,7 @@ namespace AForge.Imaging.Filters
     /// <para>The filter highlights corners of objects on the image using provided corners
     /// detection algorithm.</para>
     /// 
-    /// <para>The filter accepts 8 bpp grayscale and 24 color images for processing.</para>
+    /// <para>The filter accepts 8 bpp grayscale and 24/32 color images for processing.</para>
     /// 
     /// <para>Sample usage:</para>
     /// <code>
@@ -99,6 +99,8 @@ namespace AForge.Imaging.Filters
 
             formatTranslations[PixelFormat.Format8bppIndexed] = PixelFormat.Format8bppIndexed;
             formatTranslations[PixelFormat.Format24bppRgb]    = PixelFormat.Format24bppRgb;
+            formatTranslations[PixelFormat.Format32bppRgb]    = PixelFormat.Format32bppRgb;
+            formatTranslations[PixelFormat.Format32bppArgb]   = PixelFormat.Format32bppArgb;
         }
 
         /// <summary>
