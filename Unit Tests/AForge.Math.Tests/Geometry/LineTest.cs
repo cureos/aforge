@@ -3,7 +3,7 @@ using AForge;
 using AForge.Math.Geometry;
 using MbUnit.Framework;
 
-namespace AForge.Math.Tests.Geometry
+namespace AForge.Math.Geometry.Tests
 {
     public class LineTest
     {
@@ -79,6 +79,22 @@ namespace AForge.Math.Tests.Geometry
             DoublePoint result = line1.GetIntersectionWith( line2 );
 
             Assert.IsTrue( result == new DoublePoint( xRet, yRet ) );
+        }
+
+        [Test]
+        [Row( 0, 0, 5, 0, 8, 0, 0 )]
+        [Row( 6, 2, 5, 0, 8, 0, 2 )]
+        [Row( 2, 6, 0, 5, 0, 8, 2 )]
+        [Row( 9, 0, 5, 0, 8, 0, 0 )]
+        [Row( 3, 0, 0, 0, 3, 4, 2.4 )]
+        public void DistanceToPointTest( double x, double y, double x1, double y1, double x2, double y2, double expectedDistance )
+        {
+            DoublePoint pt = new DoublePoint( x, y );
+            DoublePoint pt1 = new DoublePoint( x1, y1 );
+            DoublePoint pt2 = new DoublePoint( x2, y2 );
+            Line line = new Line( pt1, pt2 );
+
+            Assert.AreEqual( line.DistanceToPoint( pt ), expectedDistance );
         }
     }
 }

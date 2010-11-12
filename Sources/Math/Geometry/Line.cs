@@ -16,7 +16,7 @@ namespace AForge.Math.Geometry
     /// </summary>
     /// 
     /// <remarks><para>The class provides some methods which are related to lines:
-    /// angle between lines, distance to line, finding intersection point, etc.
+    /// angle between lines, distance to point, finding intersection point, etc.
     /// </para>
     /// 
     /// <para>Sample usage:</para>
@@ -43,8 +43,8 @@ namespace AForge.Math.Geometry
         private readonly DoublePoint start;
         private readonly DoublePoint end;
 
-        // line's parameters from it's equation: y = k * x + b;
-        private readonly double k; // line slopes' tangent
+        // line's parameters from its equation: y = k * x + b;
+        private readonly double k; // line's slope
         private readonly double b; // Y-coordinate where line intersects Y-axis
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace AForge.Math.Geometry
         }
 
         /// <summary>
-        /// Get line's length - Euclidean distance between it's <see cref="Start"/> and <see cref="End"/> points.
+        /// Get line's length - Euclidean distance between its <see cref="Start"/> and <see cref="End"/> points.
         /// </summary>
         public double Length
         {
@@ -112,10 +112,10 @@ namespace AForge.Math.Geometry
         }
 
         /// <summary>
-        /// Calculate minimum angle between this line and the specified like measured in [0, 90] degrees range.
+        /// Calculate minimum angle between this line and the specified line measured in [0, 90] degrees range.
         /// </summary>
         /// 
-        /// <param name="secondLine">The line to find andle between.</param>
+        /// <param name="secondLine">The line to find angle between.</param>
         /// 
         /// <returns>Returns minimum angle between lines.</returns>
         /// 
@@ -203,6 +203,31 @@ namespace AForge.Math.Geometry
             }
 
             return intersection;
+        }
+
+        /// <summary>
+        /// Calculate Euclidean distance between a point and a line.
+        /// </summary>
+        /// 
+        /// <param name="point">The point to calculate distance to.</param>
+        /// 
+        /// <returns>Returns the Euclidean distance between this line and the specified point.</returns>
+        /// 
+        public double DistanceToPoint( DoublePoint point )
+        {
+            double distance;
+
+            if ( !IsVertical )
+            {
+                double div = Math.Sqrt( k * k + 1 );
+                distance = Math.Abs( ( k * point.X + b - point.Y ) / div );
+            }
+            else
+            {
+                distance = Math.Abs( start.X - point.X );
+            }
+
+            return distance;
         }
     }
 }
