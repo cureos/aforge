@@ -195,6 +195,30 @@ namespace AForge
         }
 
         /// <summary>
+        /// Check if this instance of <see cref="IntPoint"/> equal to the specified one.
+        /// </summary>
+        /// 
+        /// <param name="obj">Another point to check equalty to.</param>
+        /// 
+        /// <returns>Return <see langword="true"/> if objects are equal.</returns>
+        /// 
+        public override bool Equals( object obj )
+        {
+            return ( obj is IntPoint ) ? ( this == (IntPoint) obj ) : false;
+        }
+
+        /// <summary>
+        /// Get hash code for this instance.
+        /// </summary>
+        /// 
+        /// <returns>Returns the hash code for this instance.</returns>
+        /// 
+        public override int GetHashCode( )
+        {
+            return base.GetHashCode( );
+        }
+
+        /// <summary>
         /// Implicit conversion to <see cref="DoublePoint"/>.
         /// </summary>
         /// 
