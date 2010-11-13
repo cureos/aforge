@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2010
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2010
+// contacts@aforgenet.com
 //
 
 namespace AForge.Math.Geometry
@@ -41,20 +41,23 @@ namespace AForge.Math.Geometry
         /// Calculate minimum angle between two lines measured in [0, 90] degrees range.
         /// </summary>
         /// 
-        /// <param name="line1start">Starting point of the first line.</param>
-        /// <param name="line1end">Ending point of the first line.</param>
-        /// <param name="line2start">Starting point of the second line.</param>
-        /// <param name="line2end">Ending point of the second line.</param>
+        /// <param name="a1">A point on the first line.</param>
+        /// <param name="a2">Another point on the first line.</param>
+        /// <param name="b1">A point on the second line.</param>
+        /// <param name="b2">Another point on the second line.</param>
         /// 
         /// <returns>Returns minimum angle between two lines.</returns>
         /// 
         /// <remarks><para><note>It is preferred to use <see cref="Line.GetAngleBetweenLines"/> if it is required to calculate angle
         /// multiple times for one of the lines.</note></para></remarks>
         /// 
-        public static double GetAngleBetweenLines( IntPoint line1start, IntPoint line1end, IntPoint line2start, IntPoint line2end )
+        /// <exception cref="ArgumentException"><paramref name="a1"/> and <paramref name="a2"/> are the same,
+        /// -OR- <paramref name="b1"/> and <paramref name="b2"/> are the same.</exception>
+        /// 
+        public static double GetAngleBetweenLines( IntPoint a1, IntPoint a2, IntPoint b1, IntPoint b2 )
         {
-            Line line1 = new Line( line1start, line1end );
-            return line1.GetAngleBetweenLines( new Line( line2start, line2end ) );
+            Line line1 = Line.FromPoints( a1, a2 );
+            return line1.GetAngleBetweenLines( Line.FromPoints( b1, b2 ) );
         }
     }
 }

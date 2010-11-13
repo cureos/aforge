@@ -51,6 +51,7 @@
     <Compile Include="Geometry\IConvexHullAlgorithm.cs" />
     <Compile Include="Geometry\IShapeOptimizer.cs" />
     <Compile Include="Geometry\Line.cs" />
+    <Compile Include="Geometry\LineSegment.cs" />
     <Compile Include="Geometry\LineStraighteningOptimizer.cs" />
     <Compile Include="Geometry\PointsCloud.cs" />
     <Compile Include="Geometry\ShapeType.cs" />

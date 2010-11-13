@@ -19,12 +19,18 @@ namespace AForge.Math.Geometry
     /// angle between lines, distance to point, finding intersection point, etc.
     /// </para>
     /// 
+    /// <para>Generally, the equation of the line is y = <see cref="Slope"/> * x + 
+    /// <see cref="Intercept"/>. However, when <see cref="Slope"/> is an Infinity,
+    /// <paramref name="Intercept"/> would normally be meaningless, and it would be
+    /// impossible to distinguish the line x = 5 from the line x = -5. Therefore,
+    /// if <see cref="Slope"/> is <see cref="Double.PositiveInfinity"/> or
+    /// <see cref="Double.NegativeInfinity"/>, the line's equation is instead 
+    /// x = <see cref="Intercept"/>.</para>
+    /// 
     /// <para>Sample usage:</para>
     /// <code>
     /// // create a line
-    /// Line line = new Line( new DoublePoint( 0, 0 ), new DoublePoint( 3, 4 ) );
-    /// // get line's length
-    /// double length = line.Length;
+    /// Line line = Line.FromPoints( new DoublePoint( 0, 0 ), new DoublePoint( 3, 4 ) );
     /// // check if it is vertical or horizontal
     /// if ( line.IsVertical || line.IsHorizontal )
     /// {
@@ -33,43 +39,16 @@ namespace AForge.Math.Geometry
     /// 
     /// // get intersection point with another line
     /// DoublePoint intersection = line.GetIntersectionWith(
-    ///     new Line( new DoublePoint( 3, 0 ), new DoublePoint( 0, 4 ) ) );
+    ///     Line.FromPoints( new DoublePoint( 3, 0 ), new DoublePoint( 0, 4 ) ) );
     /// </code>
     /// </remarks>
     /// 
-    public class Line
+    public sealed class Line
     {
-        // line's start/end point
-        private readonly DoublePoint start;
-        private readonly DoublePoint end;
-
         // line's parameters from its equation: y = k * x + b;
+        // If k is an Infinity, the equation is x = b.
         private readonly double k; // line's slope
         private readonly double b; // Y-coordinate where line intersects Y-axis
-
-        /// <summary>
-        /// Start point of the line.
-        /// </summary>
-        public DoublePoint Start
-        {
-            get { return start; }
-        }
-
-        /// <summary>
-        /// End point of the line.
-        /// </summary>
-        public DoublePoint End
-        {
-            get { return end; }
-        }
-
-        /// <summary>
-        /// Get line's length - Euclidean distance between its <see cref="Start"/> and <see cref="End"/> points.
-        /// </summary>
-        public double Length
-        {
-            get { return start.DistanceTo( end ); }
-        }
 
         /// <summary>
         /// Checks if the line vertical or not.
@@ -89,27 +68,158 @@ namespace AForge.Math.Geometry
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Line"/> class.
+        /// Gets the slope of the line.
+        /// </summary>
+        public double Slope { get { return k; } }
+
+        /// <summary>
+        /// If not <see cref="IsVertical"/>, gets the Line's Y-intercept.
+        /// If <see cref="IsVertical"/> gets the line's X-intercept.
+        /// </summary>
+        public double Intercept { get { return b; } }
+
+        /// <summary>
+        /// Creates a <see cref="Line"/>  that goes through the two specified points.
         /// </summary>
         /// 
-        /// <param name="start">Line's start point.</param>
-        /// <param name="end">Line's end point.</param>
+        /// <param name="point1">One point on the line.</param>
+        /// <param name="point2">Another point on the line.</param>
         /// 
-        /// <exception cref="ArgumentException">Thrown if start point equals to end point.</exception>
+        /// <returns>Returns a <see cref="Line"/> representing the line between <paramref name="point1"/>
+        /// and <paramref name="point2"/>.</returns>
         /// 
-        public Line( DoublePoint start, DoublePoint end )
+        /// <exception cref="ArgumentException">Thrown if the two points are the same.</exception>
+        /// 
+        public static Line FromPoints( DoublePoint point1, DoublePoint point2 )
+        {
+            return new Line( point1, point2 );
+        }
+
+        /// <summary>
+        /// Creates a <see cref="Line"/> with the specified slope and intercept.
+        /// </summary>
+        /// 
+        /// <param name="slope">The slope of the line</param>
+        /// <param name="intercept">The Y-intercept of the line, unless the slope is an
+        /// infinity, in which case the line's equation is "x = intercept" instead.</param>
+        /// 
+        /// <returns>Returns <see cref="Line"/> representing the specified line.</returns>
+        /// 
+        /// <remarks><para>The construction here follows the same rules as for the rest of this class.
+        /// Most lines are expressed as y = slope * x + intercept. Vertical lines, however, are 
+        /// x = intercept. This is indicated by <see cref="IsVertical"/> being true or by 
+        /// <see cref="Slope"/> returning <see cref="Double.PositiveInfinity"/> or 
+        /// <see cref="Double.NegativeInfinity"/>.</para></remarks>
+        /// 
+        public static Line FromSlopeIntercept( double slope, double intercept )
+        {
+            return new Line( slope, intercept );
+        }
+
+        /// <summary>
+        /// Constructs a <see cref="Line"/> from a radius and an angle (in degrees).
+        /// </summary>
+        /// 
+        /// <param name="radius">The minimum distance from the line to the origin.</param>
+        /// <param name="theta">The angle of the vector from the origin to the line.</param>
+        /// 
+        /// <returns>Returns a <see cref="Line"/> representing the specified line.</returns>
+        /// 
+        /// <remarks><para><paramref name="radius"/> is the minimum distance from the origin
+        /// to the line, and <paramref name="theta"/> is the counterclockwise rotation from
+        /// the positive X axis to the vector through the origin and normal to the line.</para>
+        /// <para>This means that if <paramref name="theta"/> is in [0,180), the point on the line
+        /// closest to the origin is on the positive X or Y axes, or in quadrants I or II. Likewise,
+        /// if <paramref name="theta"/> is in [180,360), the point on the line closest to the
+        /// origin is on the negative X or Y axes, or in quadrants III or IV.</para></remarks>
+        /// 
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if radius is negative.</exception>
+        /// 
+        public static Line FromRTheta( double radius, double theta )
+        {
+            return new Line( radius, theta, false );
+        }
+
+        /// <summary>
+        /// Constructs a <see cref="Line"/> from a point and an angle (in degrees).
+        /// </summary>
+        /// 
+        /// <param name="point">The minimum distance from the line to the origin.</param>
+        /// <param name="theta">The angle of the normal vector from the origin to the line.</param>
+        /// 
+        /// <remarks><para><paramref name="theta"/> is the counterclockwise rotation from
+        /// the positive X axis to the vector through the origin and normal to the line.</para>
+        /// <para>This means that if <paramref name="theta"/> is in [0,180), the point on the line
+        /// closest to the origin is on the positive X or Y axes, or in quadrants I or II. Likewise,
+        /// if <paramref name="theta"/> is in [180,360), the point on the line closest to the
+        /// origin is on the negative X or Y axes, or in quadrants III or IV.</para></remarks>
+        /// 
+        /// <returns>Returns a <see cref="Line"/> representing the specified line.</returns>
+        /// 
+        public static Line FromPointTheta( DoublePoint point, double theta )
+        {
+            return new Line( point, theta );
+        }
+
+        #region Private Constructors
+        private Line( DoublePoint start, DoublePoint end )
         {
             if ( start == end )
             {
                 throw new ArgumentException( "Start point of the line cannot be the same as its end point." );
             }
 
-            this.start = start;
-            this.end = end;
-
-            k = (double) ( end.Y - start.Y ) / ( end.X - start.X );
-            b = start.Y - k * start.X;
+            k = ( end.Y - start.Y ) / ( end.X - start.X );
+            b = Double.IsInfinity( k ) ? start.X : start.Y - k * start.X;
         }
+
+        private Line( double slope, double intercept )
+        {
+            k = slope;
+            b = intercept;
+        }
+
+        private Line( double radius, double theta, bool unused )
+        {
+            if ( radius < 0 )
+            {
+                throw new ArgumentOutOfRangeException( "radius", radius, "Must be non-negative" );
+            }
+
+            theta *= Math.PI / 180;
+
+            double sine = Math.Sin( theta ), cosine = Math.Cos( theta );
+            DoublePoint pt1 = new DoublePoint( radius * cosine, radius * sine );
+
+            // -1/tan, to get the slope of the line, and not the slope of the normal
+            k = -cosine / sine;
+
+            if ( !Double.IsInfinity( k ) )
+            {
+                b = pt1.Y - k * pt1.X;
+            }
+            else
+            {
+                b = Math.Abs( radius );
+            }
+        }
+
+        private Line( DoublePoint point, double theta )
+        {
+            theta *= Math.PI / 180;
+
+            k = -1 / Math.Tan( theta );
+
+            if ( !Double.IsInfinity( k ) )
+            {
+                b = point.Y - k * point.X;
+            }
+            else
+            {
+                b = point.X;
+            }
+        }
+        #endregion
 
         /// <summary>
         /// Calculate minimum angle between this line and the specified line measured in [0, 90] degrees range.
@@ -189,11 +299,11 @@ namespace AForge.Math.Geometry
 
             if ( isVertical1 )
             {
-                intersection = new DoublePoint( start.X, k2 * start.X + b2 );
+                intersection = new DoublePoint( b, k2 * b + b2 );
             }
             else if ( isVertical2 )
             {
-                intersection = new DoublePoint( secondLine.start.X, k * secondLine.start.X + b );
+                intersection = new DoublePoint( b2, k * b2 + b );
             }
             else
             {
@@ -224,7 +334,7 @@ namespace AForge.Math.Geometry
             }
             else
             {
-                distance = Math.Abs( start.X - point.X );
+                distance = Math.Abs( b - point.X );
             }
 
             return distance;
