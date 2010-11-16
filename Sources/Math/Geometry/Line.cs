@@ -103,7 +103,7 @@ namespace AForge.Math.Geometry
         /// <param name="intercept">The Y-intercept of the line, unless the slope is an
         /// infinity, in which case the line's equation is "x = intercept" instead.</param>
         /// 
-        /// <returns>Returns <see cref="Line"/> representing the specified line.</returns>
+        /// <returns>Returns a <see cref="Line"/> representing the specified line.</returns>
         /// 
         /// <remarks><para>The construction here follows the same rules as for the rest of this class.
         /// Most lines are expressed as y = slope * x + intercept. Vertical lines, however, are 
@@ -316,12 +316,35 @@ namespace AForge.Math.Geometry
         }
 
         /// <summary>
+        /// Finds, provided it exists, the intersection point with the specified <see cref="LineSegment"/>.
+        /// </summary>
+        /// 
+        /// <param name="other"><see cref="LineSegment"/> to find intersection with.</param>
+        /// 
+        /// <returns>Returns intersection point with the specified <see cref="LineSegment"/>, or <see langword="null"/>,
+        /// if this line does not intersect with the segment.</returns>
+        /// 
+        /// <remarks><para>If the line and segment do not intersect, the method returns <see langword="null"/>.
+        /// If the line and segment share multiple points, the method throws an <see cref="InvalidOperationException"/>.
+        /// </para></remarks>
+        /// 
+        /// <exception cref="InvalidOperationException">Thrown if <paramref name="other"/> is a portion
+        /// of this line.</exception>
+        /// 
+        public DoublePoint? GetIntersectionWith( LineSegment other )
+        {
+            return other.GetIntersectionWith( this );
+        }
+
+        /// <summary>
         /// Calculate Euclidean distance between a point and a line.
         /// </summary>
         /// 
         /// <param name="point">The point to calculate distance to.</param>
         /// 
-        /// <returns>Returns the Euclidean distance between this line and the specified point.</returns>
+        /// <returns>Returns the Euclidean distance between this line and the specified point. Unlike
+        /// <see cref="LineSegment.DistanceToPoint"/>, this returns the distance from the infinite line. (0,0) is 0 units
+        /// from the line defined by (0,5) and (0,8), but is 5 units from the segment with those endpoints.</returns>
         /// 
         public double DistanceToPoint( DoublePoint point )
         {
