@@ -2,11 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2010
-// andrew.kirillov@aforgenet.com
-//
-// Updated by Ivan.Farkas@FL4SaleLive.com, 02/01/2010
-// Fix related to AirLink cameras, which are not accurate with HTTP standard
+// Copyright © AForge.NET, 2005-2010
+// contacts@aforgenet.com
 //
 
 namespace AForge.Video
@@ -34,8 +31,6 @@ namespace AForge.Video
     /// // start the video source
     /// stream.Start( );
     /// // ...
-    /// // signal to stop
-    /// stream.SignalToStop( );
     /// </code>
     /// 
     /// <para><note>Some cameras produce HTTP header, which does not conform strictly to
@@ -432,6 +427,7 @@ namespace AForge.Video
 					// check content type
                     string contentType = response.ContentType;
                     string[] contentTypeArray = contentType.Split( '/' );
+
                     if ( ! ( ( contentTypeArray[0] == "multipart" ) && ( contentType.Contains( "mixed" ) ) ) )
                     {
                         // provide information to clients
@@ -454,6 +450,8 @@ namespace AForge.Video
 					// get boundary
 					ASCIIEncoding encoding = new ASCIIEncoding( );
                     string boudaryStr = contentType.Substring( contentType.IndexOf( "boundary=", 0 ) + 9 );
+                    // remove double quotes, which may be added by some IP cameras
+                    boudaryStr = boudaryStr.Trim( '"' );
                     boundary = encoding.GetBytes( boudaryStr );
 					boundaryLen = boundary.Length;
                     bool boundaryIsChecked = false;
