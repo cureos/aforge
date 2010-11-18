@@ -1,8 +1,9 @@
 ﻿// AForge Controls Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2008
-// andrew.kirillov@gmail.com
+// Copyright © AForge.NET, 2005-2010
+// contacts@aforgenet.com
 //
 
 using System;
@@ -101,7 +102,7 @@ namespace AForge.Controls
         /// 
         /// <remarks><para>Specifies color of the border drawn around video frame.</para></remarks>
         /// 
-        [DefaultValue( typeof(Color), "Black" )]
+        [DefaultValue( typeof( Color ), "Black" )]
         public Color BorderColor
         {
             get { return borderColor; }
@@ -133,38 +134,40 @@ namespace AForge.Controls
             get { return videoSource; }
             set
             {
+                CheckForCrossThreadAccess( );
+
+                // detach events
+                if ( videoSource != null )
+                {
+                    videoSource.NewFrame -= new NewFrameEventHandler( videoSource_NewFrame );
+                    videoSource.VideoSourceError -= new VideoSourceErrorEventHandler( videoSource_VideoSourceError );
+                    videoSource.PlayingFinished -= new PlayingFinishedEventHandler( videoSource_PlayingFinished );
+                }
+
                 lock ( this )
                 {
-                    // detach events
-                    if ( videoSource != null )
-                    {
-                        videoSource.NewFrame -= new NewFrameEventHandler( videoSource_NewFrame );
-                        videoSource.VideoSourceError -= new VideoSourceErrorEventHandler( videoSource_VideoSourceError );
-                        videoSource.PlayingFinished -= new PlayingFinishedEventHandler( videoSource_PlayingFinished );
-                    }
-
                     if ( currentFrame != null )
                     {
                         currentFrame.Dispose( );
                         currentFrame = null;
                     }
-
-                    videoSource = value;
-
-                    // atach events
-                    if ( videoSource != null )
-                    {
-                        videoSource.NewFrame += new NewFrameEventHandler( videoSource_NewFrame );
-                        videoSource.VideoSourceError += new VideoSourceErrorEventHandler( videoSource_VideoSourceError );
-                        videoSource.PlayingFinished += new PlayingFinishedEventHandler( videoSource_PlayingFinished );
-                    }
-
-                    lastMessage = null;
-                    needSizeUpdate = true;
-                    firstFrameNotProcessed = true;
-                    // update the control
-                    Invalidate( );
                 }
+
+                videoSource = value;
+
+                // atach events
+                if ( videoSource != null )
+                {
+                    videoSource.NewFrame += new NewFrameEventHandler( videoSource_NewFrame );
+                    videoSource.VideoSourceError += new VideoSourceErrorEventHandler( videoSource_VideoSourceError );
+                    videoSource.PlayingFinished += new PlayingFinishedEventHandler( videoSource_PlayingFinished );
+                }
+
+                lastMessage = null;
+                needSizeUpdate = true;
+                firstFrameNotProcessed = true;
+                // update the control
+                Invalidate( );
             }
         }
 
@@ -179,10 +182,9 @@ namespace AForge.Controls
         {
             get
             {
-                lock ( this )
-                {
-                    return ( videoSource != null ) ? videoSource.IsRunning : false;
-                }
+                CheckForCrossThreadAccess( );
+
+                return ( videoSource != null ) ? videoSource.IsRunning : false;
             }
         }
 
@@ -221,23 +223,43 @@ namespace AForge.Controls
             SetStyle( ControlStyles.AllPaintingInWmPaint | ControlStyles.ResizeRedraw |
                 ControlStyles.DoubleBuffer | ControlStyles.UserPaint, true );
         }
-        
+
+        // Check if the control is accessed from a none UI thread
+        private void CheckForCrossThreadAccess( )
+        {
+            // force handle creation, so InvokeRequired() will use it instead of searching through parent's chain
+            if ( !IsHandleCreated )
+            {
+                CreateControl( );
+
+                // if the control is not Visible, then CreateControl() will not be enough
+                if ( !IsHandleCreated )
+                {
+                    CreateHandle( );
+                }
+            }
+
+            if ( InvokeRequired )
+            {
+                throw new InvalidOperationException( "Cross thread access to the control is not allowed." );
+            }
+        }
+
         /// <summary>
         /// Start video source and displaying its frames.
         /// </summary>
         public void Start( )
         {
+            CheckForCrossThreadAccess( );
+
             requestedToStop = false;
 
-            lock ( this )
+            if ( videoSource != null )
             {
-                if ( videoSource != null )
-                {
-                    firstFrameNotProcessed = true;
+                firstFrameNotProcessed = true;
 
-                    videoSource.Start( );
-                    Invalidate( );
-                }
+                videoSource.Start( );
+                Invalidate( );
             }
         }
 
@@ -253,21 +275,21 @@ namespace AForge.Controls
         /// 
         public void Stop( )
         {
+            CheckForCrossThreadAccess( );
+
             requestedToStop = true;
 
-            lock ( this )
+            if ( videoSource != null )
             {
-                if ( videoSource != null )
-                {
-                    videoSource.Stop( );
+                videoSource.Stop( );
 
-                    if ( currentFrame != null )
-                    {
-                        currentFrame.Dispose( );
-                        currentFrame = null;
-                    }
-                    Invalidate( );
+                if ( currentFrame != null )
+                {
+                    currentFrame.Dispose( );
+                    currentFrame = null;
                 }
+
+                Invalidate( );
             }
         }
 
@@ -280,14 +302,13 @@ namespace AForge.Controls
         /// 
         public void SignalToStop( )
         {
+            CheckForCrossThreadAccess( );
+
             requestedToStop = true;
 
-            lock ( this )
+            if ( videoSource != null )
             {
-                if ( videoSource != null )
-                {
-                    videoSource.SignalToStop( );
-                }
+                videoSource.SignalToStop( );
             }
         }
 
@@ -295,26 +316,30 @@ namespace AForge.Controls
         /// Wait for video source has stopped. 
         /// </summary>
         /// 
-        /// <remarks><para>Waits for video source stopping after it was signalled to stop using
-        /// <see cref="SignalToStop"/> method.</para></remarks>
+        /// <remarks><para>Waits for video source stopping after it was signaled to stop using
+        /// <see cref="SignalToStop"/> method. If <see cref="SignalToStop"/> was not called, then
+        /// it will be called automatically.</para></remarks>
         /// 
         public void WaitForStop( )
         {
-            requestedToStop = true;
+            CheckForCrossThreadAccess( );
 
-            lock ( this )
+            if ( !requestedToStop )
             {
-                if ( videoSource != null )
-                {
-                    videoSource.WaitForStop( );
+                SignalToStop( );
+            }
 
-                    if ( currentFrame != null )
-                    {
-                        currentFrame.Dispose( );
-                        currentFrame = null;
-                    }
-                    Invalidate( );
+            if ( videoSource != null )
+            {
+                videoSource.WaitForStop( );
+
+                if ( currentFrame != null )
+                {
+                    currentFrame.Dispose( );
+                    currentFrame = null;
                 }
+
+                Invalidate( );
             }
         }
 
