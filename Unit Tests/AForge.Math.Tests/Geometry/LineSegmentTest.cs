@@ -38,7 +38,7 @@ namespace AForge.Math.Geometry.Tests
         // Denotes which versions of the test are supposed to return non-null values:
         // SegmentA means that the segment A1-A2 intersects with the line B1-B2, but not
         // with the segment B1-B2.
-        public enum IntersectionType { LinesOnly, SegmentA, SegmentB, AllFour };
+        public enum IntersectionType { None, LinesOnly, SegmentA, SegmentB, AllFour };
 
         [Test]
         [Row( 0, 0, 4, 4, 0, 4, 4, 0, 2, 2, IntersectionType.AllFour )]
@@ -47,14 +47,12 @@ namespace AForge.Math.Geometry.Tests
         [Row( -4, -4, 0, 0, 4, 0, 8, -4, 2, 2, IntersectionType.LinesOnly )]
         [Row( 0, 0, 6, 0, 5, 1, 5, 5, 5, 0, IntersectionType.SegmentA )]
         [Row( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, IntersectionType.LinesOnly, ExpectedException = typeof( ArgumentException ), ExpectedExceptionMessage = "Start point of the line cannot be the same as its end point." )]
-        [Row( 0, 0, 0, 5, 1, 0, 1, 5, 0, 0, IntersectionType.LinesOnly, ExpectedException = typeof( InvalidOperationException ), ExpectedExceptionMessage = "Parallel lines do not have an intersection point." )]
+        [Row( 0, 0, 0, 5, 1, 0, 1, 5, 0, 0, IntersectionType.None)]
         public void IntersectionPointTest( double ax1, double ay1, double ax2, double ay2, double bx1, double by1, double bx2, double by2, double ix, double iy, IntersectionType type )
         {
             LineSegment segA = new LineSegment( new DoublePoint( ax1, ay1 ), new DoublePoint( ax2, ay2 ) );
             LineSegment segB = new LineSegment( new DoublePoint( bx1, by1 ), new DoublePoint( bx2, by2 ) );
             DoublePoint expectedIntersection = new DoublePoint( ix, iy );
-
-            Assert.AreEqual( expectedIntersection, ( (Line) segA ).GetIntersectionWith( (Line) segB ) );
 
             Assert.DoesNotThrow( ( ) =>
             {
@@ -89,6 +87,17 @@ namespace AForge.Math.Geometry.Tests
                     Assert.AreEqual( null, lineSeg );
                 }
             } );
+
+            DoublePoint? lineLine = ( (Line) segA ).GetIntersectionWith( (Line) segB );
+
+            if ( type != IntersectionType.None )
+            {
+                Assert.AreEqual( expectedIntersection, lineLine );
+            }
+            else
+            {
+                Assert.AreEqual( null, lineLine );
+            }
         }
 
         [Test]
@@ -101,7 +110,7 @@ namespace AForge.Math.Geometry.Tests
             LineSegment segB = new LineSegment( new DoublePoint( bx1, by1 ), new DoublePoint( bx2, by2 ) );
 
             // are we really parallel?
-            Assert.Throws<InvalidOperationException>( ( ) => ( (Line) segA ).GetIntersectionWith( (Line) segB ) );
+            Assert.AreEqual( null, ( (Line) segA ).GetIntersectionWith( (Line) segB ) );
 
             Assert.AreEqual( null, segA.GetIntersectionWith( (Line) segB ) );
             Assert.AreEqual( null, ( (Line) segA ).GetIntersectionWith( segB ) );
@@ -116,12 +125,13 @@ namespace AForge.Math.Geometry.Tests
         [Row( 0, 1, 0, 2, 0, 3, 0, 4 )]
         [Row( 0, 0, -1, 1, -2, 2, -3, 3, -4, 4 )]
         [Row( 1, 0, 2, 0, 3, 0, 4, 0 )]
-        public void CollinearIntersectionPointTest( double ax1, double ay1, double ax2, double ay2, double bx1, double by1, double bx2, double by2 )
+        [Row(0, 0, 0, 1, 0, 2, 0, 3 )]
+        public void CollinearIntersectionPointTest(double ax1, double ay1, double ax2, double ay2, double bx1, double by1, double bx2, double by2)
         {
             LineSegment segA = new LineSegment( new DoublePoint( ax1, ay1 ), new DoublePoint( ax2, ay2 ) );
             LineSegment segB = new LineSegment( new DoublePoint( bx1, by1 ), new DoublePoint( bx2, by2 ) );
 
-            // are we really parallel?
+            // are we really collinear?
             Assert.Throws<InvalidOperationException>( ( ) => ( (Line) segA ).GetIntersectionWith( (Line) segB ) );
 
             Assert.Throws<InvalidOperationException>( ( ) => segA.GetIntersectionWith( (Line) segB ) );
@@ -147,7 +157,7 @@ namespace AForge.Math.Geometry.Tests
             LineSegment segB = new LineSegment( new DoublePoint( bx1, by1 ), new DoublePoint( bx2, by2 ) );
             DoublePoint expectedIntersection = new DoublePoint( ix, iy );
 
-            // are we really parallel?
+            // are we really collinear?
             Assert.Throws<InvalidOperationException>( ( ) => ( (Line) segA ).GetIntersectionWith( (Line) segB ) );
 
             Assert.Throws<InvalidOperationException>( ( ) => segA.GetIntersectionWith( (Line) segB ) );
@@ -167,7 +177,7 @@ namespace AForge.Math.Geometry.Tests
             LineSegment segA = new LineSegment( new DoublePoint( ax1, ay1 ), new DoublePoint( ax2, ay2 ) );
             LineSegment segB = new LineSegment( new DoublePoint( bx1, by1 ), new DoublePoint( bx2, by2 ) );
 
-            // are we really parallel?
+            // are we really collinear?
             Assert.Throws<InvalidOperationException>( ( ) => ( (Line) segA ).GetIntersectionWith( (Line) segB ) );
 
             Assert.Throws<InvalidOperationException>( ( ) => segA.GetIntersectionWith( (Line) segB ) );

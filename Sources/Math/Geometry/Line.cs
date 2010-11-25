@@ -278,11 +278,12 @@ namespace AForge.Math.Geometry
         /// 
         /// <param name="secondLine">Line to find intersection with.</param>
         /// 
-        /// <returns>Returns intersection point with the specified line.</returns>
+        /// <returns>Returns intersection point with the specified line, or 
+        /// <see langword="null"/> if the lines are parallel and distinct.</returns>
         /// 
-        /// <exception cref="InvalidOperationException">Thrown if the specified line is parallel to this line.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if the specified line is the same line as this line.</exception>
         /// 
-        public DoublePoint GetIntersectionWith( Line secondLine )
+        public DoublePoint? GetIntersectionWith( Line secondLine )
         {
             double k2 = secondLine.k;
             double b2 = secondLine.b;
@@ -290,26 +291,31 @@ namespace AForge.Math.Geometry
             bool isVertical1 = IsVertical;
             bool isVertical2 = secondLine.IsVertical;
 
+            DoublePoint? intersection = null;
+
             if ( ( k == k2 ) || ( isVertical1 && isVertical2 ) )
             {
-                throw new InvalidOperationException( "Parallel lines do not have an intersection point." );
-            }
-
-            DoublePoint intersection;
-
-            if ( isVertical1 )
-            {
-                intersection = new DoublePoint( b, k2 * b + b2 );
-            }
-            else if ( isVertical2 )
-            {
-                intersection = new DoublePoint( b2, k * b2 + b );
+                if ( b == b2 )
+                {
+                    throw new InvalidOperationException( "Identical lines do not have an intersection point." );
+                }
             }
             else
             {
-                // the intersection is at x=(b2-b1)/(k1-k2), and y=k1*x+b1
-                double x = ( b2 - b ) / ( k - k2 );
-                intersection = new DoublePoint( x, k * x + b );
+                if ( isVertical1 )
+                {
+                    intersection = new DoublePoint( b, k2 * b + b2 );
+                }
+                else if ( isVertical2 )
+                {
+                    intersection = new DoublePoint( b2, k * b2 + b );
+                }
+                else
+                {
+                    // the intersection is at x=(b2-b1)/(k1-k2), and y=k1*x+b1
+                    double x = ( b2 - b ) / ( k - k2 );
+                    intersection = new DoublePoint( x, k * x + b );
+                }
             }
 
             return intersection;

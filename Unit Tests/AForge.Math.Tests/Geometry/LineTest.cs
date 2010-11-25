@@ -1,10 +1,9 @@
 ﻿using System;
-using AForge;
-using AForge.Math.Geometry;
 using MbUnit.Framework;
 
 namespace AForge.Math.Geometry.Tests
 {
+    [TestFixture]
     public class LineTest
     {
         [Test]
@@ -77,24 +76,31 @@ namespace AForge.Math.Geometry.Tests
         }
 
         [Test]
-        [Row( 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, ExpectedException = typeof( InvalidOperationException ) )]
-        [Row( 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, ExpectedException = typeof( InvalidOperationException ) )]
-        [Row( 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, ExpectedException = typeof( InvalidOperationException ) )]
-        [Row( 0, 0, 1, 1, 0, 1, 1, 2, 0, 0, ExpectedException = typeof( InvalidOperationException ) )]
-        [Row( 0, 0, 1, 0, 0, 0, 1, 1, 0, 0 )]
-        [Row( 0, 0, 1, 0, 0, 1, 1, 2, -1, 0 )]
-        [Row( 0, 0, 1, 0, 1, 1, 1, 2, 1, 0 )]
-        [Row( 0, 0, 0, 1, 0, 1, -1, 1, 0, 1 )]
-        [Row( -1, -1, 1, 1, 1, -1, -1, 1, 0, 0 )]
+        [Row( 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, false )]
+        [Row( 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, false )]
+        [Row( 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, false, ExpectedException = typeof( InvalidOperationException ) )]
+        [Row( 0, 0, 1, 1, 0, 1, 1, 2, 0, 0, false )]
+        [Row( 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, true )]
+        [Row( 0, 0, 1, 0, 0, 1, 1, 2, -1, 0, true )]
+        [Row( 0, 0, 1, 0, 1, 1, 1, 2, 1, 0, true )]
+        [Row( 0, 0, 0, 1, 0, 1, -1, 1, 0, 1, true )]
+        [Row( -1, -1, 1, 1, 1, -1, -1, 1, 0, 0, true )]
         public void GetIntersectionPointTest( double sx1, double sy1, double ex1, double ey1,
-            double sx2, double sy2, double ex2, double ey2, double xRet, double yRet )
+            double sx2, double sy2, double ex2, double ey2, double xRet, double yRet, bool hasResult )
         {
             Line line1 = Line.FromPoints( new DoublePoint( sx1, sy1 ), new DoublePoint( ex1, ey1 ) );
             Line line2 = Line.FromPoints( new DoublePoint( sx2, sy2 ), new DoublePoint( ex2, ey2 ) );
 
-            DoublePoint result = line1.GetIntersectionWith( line2 );
+            DoublePoint? result = line1.GetIntersectionWith( line2 );
 
-            Assert.IsTrue( result == new DoublePoint( xRet, yRet ) );
+            if ( hasResult )
+            {
+                Assert.IsTrue( result == new DoublePoint( xRet, yRet ) );
+            }
+            else
+            {
+                Assert.AreEqual( null, result );
+            }
         }
 
         [Test]

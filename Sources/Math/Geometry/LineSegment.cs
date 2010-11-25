@@ -167,7 +167,7 @@ namespace AForge.Math.Geometry
                     else if ( ( ( start == other.start ) && ( projD == ProjectionLocation.RayA ) ) ||
                               ( ( start == other.end ) && ( projC == ProjectionLocation.RayA ) ) )
                     {
-                        // sared start point
+                        // shared start point
                         result = start;
                     }
                     else if ( ( ( end == other.start ) && ( projD == ProjectionLocation.RayB ) ) ||
