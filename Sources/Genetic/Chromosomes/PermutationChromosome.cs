@@ -149,8 +149,8 @@ namespace AForge.Genetic
 		// Produce new child applying crossover to two parents
 		private void CreateChildUsingCrossover( ushort[] parent1, ushort[] parent2, ushort[] child )
 		{
-            Dictionary<ushort, int> indexDictionary1 = CreateIndexDictionary( parent1 );
-            Dictionary<ushort, int> indexDictionary2 = CreateIndexDictionary( parent2 );
+            ushort[] indexDictionary1 = CreateIndexDictionary( parent1 );
+            ushort[] indexDictionary2 = CreateIndexDictionary( parent2 );
 
 			// temporary array to specify if certain gene already
 			// present in the child
@@ -219,13 +219,13 @@ namespace AForge.Genetic
 		}
 
         // Create dictionary for fast lookup of genes' indexes
-        private static Dictionary<ushort, int> CreateIndexDictionary( ushort[] genes )
+        private static ushort[] CreateIndexDictionary( ushort[] genes )
         {
-            Dictionary<ushort, int> indexDictionary = new Dictionary<ushort, int>( genes.Length );
+            ushort[] indexDictionary = new ushort[genes.Length];
 
             for ( int i = 0, n = genes.Length; i < n; i++ )
             {
-                indexDictionary.Add( genes[i], i );
+                indexDictionary[genes[i]] = (ushort) i;
             }
 
             return indexDictionary;
