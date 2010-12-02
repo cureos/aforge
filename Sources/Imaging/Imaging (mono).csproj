@@ -52,6 +52,10 @@
     <Compile Include="BlobCounter.cs" />
     <Compile Include="BlobCounterBase.cs" />
     <Compile Include="BlockMatch.cs" />
+    <Compile Include="Color Reduction\ColorImageQuantizer.cs" />
+    <Compile Include="Color Reduction\IColorQuantizer.cs" />
+    <Compile Include="Color Reduction\MedianCutCube.cs" />
+    <Compile Include="Color Reduction\MedianCutQuantizer.cs" />
     <Compile Include="ColorConverter.cs" />
     <Compile Include="Complex Filters\FrequencyFilter.cs" />
     <Compile Include="Complex Filters\IComplexFilter.cs" />
