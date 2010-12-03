@@ -27,6 +27,7 @@
         <namespaceSummaryItem name="AForge.Fuzzy" isDocumented="True">The &lt;b&gt;AForge.Fuzzy&lt;/b&gt; namespace contains set of interfaces and classes to operate with fuzzy sets.</namespaceSummaryItem>
         <namespaceSummaryItem name="AForge.Genetic" isDocumented="True">The &lt;b&gt;AForge.Genetic&lt;/b&gt; namespace contains interfaces and classes for genetic computations. The namespace and its sub namespaces contain classes, which allows to solve many different problems (optimization, approximation, prediction, etc) with the help of Genetic Algorithms (GA), Genetic Programming (GP), Gene Expression Programming (GEP).</namespaceSummaryItem>
         <namespaceSummaryItem name="AForge.Imaging" isDocumented="True">The &lt;b&gt;AForge.Imaging&lt;/b&gt; namespace contains interfaces and classes for different image processing routines.</namespaceSummaryItem>
+        <namespaceSummaryItem name="AForge.Imaging.ColorReduction" isDocumented="True">The &lt;b&gt;AForge.Imaging.ColorReduction&lt;/b&gt; namespace contains set of classes aimed to perform color reduction in color images, which include color quantization classes, color re-coding functionality and color dithering algorithms.</namespaceSummaryItem>
         <namespaceSummaryItem name="AForge.Imaging.ComplexFilters" isDocumented="True">The &lt;b&gt;AForge.Imaging&lt;/b&gt; namespace contains interfaces and classes for different image processing routines, which are done on complex Fourier transformed images.</namespaceSummaryItem>
         <namespaceSummaryItem name="AForge.Imaging.Filters" isDocumented="True">The &lt;b&gt;AForge.Imaging.Filters&lt;/b&gt; namespace contains collection of interfaces and classes, which provide different image processing filters. Classes of this namespace allow to do different transformation of a source image, doing it directly on the source image or providing new image as a result of image processing routine.</namespaceSummaryItem>
         <namespaceSummaryItem name="AForge.Imaging.Formats" isDocumented="True">The &lt;b&gt;AForge.Imaging.Formats&lt;/b&gt; namespace contains interfaces and classes, which are used to handle different image file formats.</namespaceSummaryItem>
@@ -214,6 +215,12 @@
         <contentItem sourcePath="..\Imaging\Images\icon.png" destPath="img\imaging\" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\filled_holes.png" destPath="img\imaging\" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\sample19.png" destPath="img\imaging\" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\color_burkes.png" destPath="img\imaging\" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\color_floyd_steinberg.png" destPath="img\imaging\" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\color_jarvis_judice_ninke.png" destPath="img\imaging\" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\color_sierra.png" destPath="img\imaging\" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\color_stucki.png" destPath="img\imaging\" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\reduced_colors.png" destPath="img\imaging\" excludeItems="False" />
     </additionalContent>
     <ProjectSummary>&lt;b&gt;AForge.NET Framework&lt;/b&gt; is a C# framework designed for developers and researchers in the fields of Computer Vision and Artificial Intelligence - image processing, computer vision, neural networks, genetic algorithms, machine learning, etc. </ProjectSummary>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace, TypeParameter</MissingTags>
