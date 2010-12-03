@@ -55,10 +55,17 @@
     <Compile Include="BlobCounter.cs" />
     <Compile Include="BlobCounterBase.cs" />
     <Compile Include="BlockMatch.cs" />
+    <Compile Include="Color Reduction\BurkesColorDithering.cs" />
+    <Compile Include="Color Reduction\ColorErrorDiffusionToAdjacentNeighbors.cs" />
     <Compile Include="Color Reduction\ColorImageQuantizer.cs" />
+    <Compile Include="Color Reduction\ErrorDiffusionColorDithering.cs" />
+    <Compile Include="Color Reduction\FloydSteinbergColorDithering.cs" />
     <Compile Include="Color Reduction\IColorQuantizer.cs" />
+    <Compile Include="Color Reduction\JarvisJudiceNinkeColorDithering.cs" />
     <Compile Include="Color Reduction\MedianCutCube.cs" />
     <Compile Include="Color Reduction\MedianCutQuantizer.cs" />
+    <Compile Include="Color Reduction\SierraColorDithering.cs" />
+    <Compile Include="Color Reduction\StuckiColorDithering.cs" />
     <Compile Include="ColorConverter.cs" />
     <Compile Include="Complex Filters\FrequencyFilter.cs" />
     <Compile Include="Complex Filters\IComplexFilter.cs" />
