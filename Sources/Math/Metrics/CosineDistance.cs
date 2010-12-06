@@ -14,8 +14,9 @@ namespace AForge.Math.Metrics
     /// Cosine distance metric. 
     /// </summary>
     /// 
-    /// <remarks><para>This class represents the 
-    /// <a href="http://en.wikipedia.org/wiki/Cosine_similarity">Cosine distance metric</a>.</para>
+    /// <remarks><para>This class represents the cosine distance metric (1 - cosine similarity)
+    /// <a href="http://en.wikipedia.org/wiki/Cosine_similarity"></a>.
+    /// </para>
     /// 
     /// <para>Sample usage:</para>
     /// <code>
@@ -45,25 +46,12 @@ namespace AForge.Math.Metrics
         /// 
         public double GetDistance( double[] p, double[] q )
         {
-            double denominator = 0, numerator = 0, pSumSq = 0, qSumSq = 0;
-            double pValue, qValue;
+            double distance;
 
-            if ( p.Length != q.Length )
-                throw new ArgumentException( "Input vectors must be of the same dimension." );
+            CosineSimilarity dist = new CosineSimilarity( );
+            distance = (double) 1 - dist.GetSimilarityScore( p, q );
 
-            for ( int x = 0, len = p.Length; x < len; x++ )
-            {
-                pValue = p[x];
-                qValue = q[x];
-
-                numerator += pValue * qValue;
-                pSumSq    += pValue * pValue;
-                qSumSq    += qValue * qValue;
-            }
-
-            denominator = Math.Sqrt( pSumSq ) * Math.Sqrt( qSumSq );
-
-            return numerator / denominator;
+            return distance;
         }
     }
 }

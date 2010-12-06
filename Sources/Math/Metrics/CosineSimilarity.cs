@@ -24,7 +24,7 @@ namespace AForge.Math.Metrics
     /// // create two vectors for inputs
     /// double[] p = new double[] { 2.5, 3.5, 3.0, 3.5, 2.5, 3.0 };
     /// double[] q = new double[] { 3.0, 3.5, 1.5, 5.0, 3.5, 3.0 };
-    /// // get simirarity between the two vectors
+    /// // get similarity between the two vectors
     /// double similarityScore = sim.GetSimilarityScore( p, q );
     /// </code>    
     /// </remarks>
@@ -45,12 +45,25 @@ namespace AForge.Math.Metrics
         /// 
         public double GetSimilarityScore( double[] p, double[] q )
         {
-            double similarity;
+            double denominator = 0, numerator = 0, pSumSq = 0, qSumSq = 0;
+            double pValue, qValue;
 
-            CosineDistance dist = new CosineDistance( );
-            similarity = (double) 1 - dist.GetDistance( p, q );
+            if ( p.Length != q.Length )
+                throw new ArgumentException( "Input vectors must be of the same dimension." );
 
-            return similarity;
+            for ( int x = 0, len = p.Length; x < len; x++ )
+            {
+                pValue = p[x];
+                qValue = q[x];
+
+                numerator += pValue * qValue;
+                pSumSq += pValue * pValue;
+                qSumSq += qValue * qValue;
+            }
+
+            denominator = Math.Sqrt( pSumSq ) * Math.Sqrt( qSumSq );
+
+            return numerator / denominator;
         }
     }
 }

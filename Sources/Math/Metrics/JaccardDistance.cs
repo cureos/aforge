@@ -64,7 +64,10 @@ namespace AForge.Math.Metrics
                 }
             }
 
-            distance = 1.0 - ( (double) intersection / (double) union );
+            if ( union != 0 )
+                distance = 1.0 - ( (double) intersection / (double) union );
+            else
+                distance = 0;
 
             return distance;
         }

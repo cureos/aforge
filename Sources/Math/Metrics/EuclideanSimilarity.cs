@@ -15,7 +15,8 @@ namespace AForge.Math.Metrics
     /// </summary>
     /// 
     /// <remarks><para>This class represents the 
-    /// <a href="http://en.wikipedia.org/wiki/Euclidean_distance">Euclidean Similarity metric</a>.</para>
+    /// <a href="http://en.wikipedia.org/wiki/Euclidean_distance">Euclidean Similarity metric</a>,
+    /// which is calculated as 1.0 / ( 1.0 + EuclideanDistance ).</para>
     /// 
     /// <para>Sample usage:</para>
     /// <code>
