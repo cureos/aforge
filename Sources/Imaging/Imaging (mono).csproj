@@ -80,6 +80,7 @@
     <Compile Include="Filters\2 Source filters\MoveTowards.cs" />
     <Compile Include="Filters\2 Source filters\StereoAnaglyph.cs" />
     <Compile Include="Filters\2 Source filters\Subtract.cs" />
+    <Compile Include="Filters\Adaptive Binarization\BradleyLocalThresholding.cs" />
     <Compile Include="Filters\Adaptive Binarization\IterativeThreshold.cs" />
     <Compile Include="Filters\Adaptive Binarization\OtsuThreshold.cs" />
     <Compile Include="Filters\Adaptive Binarization\SISThreshold.cs" />
