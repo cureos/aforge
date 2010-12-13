@@ -63,7 +63,7 @@ namespace AForge.Math.Metrics
 
             denominator = Math.Sqrt( pSumSq ) * Math.Sqrt( qSumSq );
 
-            return numerator / denominator;
+            return ( denominator == 0 ) ? 0 : numerator / denominator;
         }
     }
 }

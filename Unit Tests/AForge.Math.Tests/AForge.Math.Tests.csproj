@@ -59,6 +59,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Geometry\SimpleShapeCheckerTest.cs" />
+    <Compile Include="Metrics\MetricsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ToolsTest.cs" />
   </ItemGroup>
