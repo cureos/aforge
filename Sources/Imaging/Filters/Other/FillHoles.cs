@@ -26,7 +26,7 @@ namespace AForge.Imaging.Filters
     /// <para>Sample usage:</para>
     /// <code>
     /// // create and configure the filter
-    /// FillHoles filter = new FillHoles;
+    /// FillHoles filter = new FillHoles( );
     /// filter.MaxHoleHeight = 20;
     /// filter.MaxHoleWidth  = 20;
     /// filter.CoupledSizeFiltering = false;
