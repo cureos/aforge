@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2005-2010
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging
@@ -179,10 +179,14 @@ namespace AForge.Imaging
                 // for each line
                 for ( int y = 1; y <= height; y++ )
                 {
+                    uint rowSum = 0;
+
                     // for each pixel
                     for ( int x = 1; x <= width; x++, src++ )
                     {
-                        integralImage[y, x] = *src + integralImage[y, x - 1] + integralImage[y - 1, x] - integralImage[y - 1, x - 1];
+                        rowSum += *src;
+
+                        integralImage[y, x] = rowSum + integralImage[y - 1, x];
                     }
                     src += offset;
                 }
@@ -202,7 +206,7 @@ namespace AForge.Imaging
         /// 
         /// <returns>Returns sum of pixels in the specified rectangle.</returns>
         /// 
-        /// <remarks><para>Both specified points are included into the rectangle calculation rectangle.</para></remarks>
+        /// <remarks><para>Both specified points are included into the calculation rectangle.</para></remarks>
         /// 
         public uint GetRectangleSum( int x1, int y1, int x2, int y2 )
         {
@@ -233,7 +237,7 @@ namespace AForge.Imaging
         /// 
         /// <returns>Returns sum of pixels in the specified rectangle.</returns>
         /// 
-        /// <remarks><para>Both specified points are included into the rectangle calculation rectangle.</para></remarks>
+        /// <remarks><para>Both specified points are included into the calculation rectangle.</para></remarks>
         /// 
         public uint GetRectangleSumUnsafe( int x1, int y1, int x2, int y2 )
         {
@@ -294,7 +298,7 @@ namespace AForge.Imaging
         /// 
         /// <returns>Returns mean value of pixels in the specified rectangle.</returns>
         /// 
-        /// <remarks>Both specified points are included into the rectangle calculation rectangle.</remarks>
+        /// <remarks>Both specified points are included into the calculation rectangle.</remarks>
         /// 
         public float GetRectangleMean( int x1, int y1, int x2, int y2 )
         {
@@ -327,7 +331,7 @@ namespace AForge.Imaging
         /// 
         /// <returns>Returns mean value of pixels in the specified rectangle.</returns>
         /// 
-        /// <remarks>Both specified points are included into the rectangle calculation rectangle.</remarks>
+        /// <remarks>Both specified points are included into the calculation rectangle.</remarks>
         /// 
         public float GetRectangleMeanUnsafe( int x1, int y1, int x2, int y2 )
         {
