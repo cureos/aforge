@@ -80,11 +80,14 @@
     <Compile Include="Filters\2 Source filters\MoveTowards.cs" />
     <Compile Include="Filters\2 Source filters\StereoAnaglyph.cs" />
     <Compile Include="Filters\2 Source filters\Subtract.cs" />
+    <Compile Include="Filters\2 Source filters\ThresholdedDifference.cs" />
+    <Compile Include="Filters\2 Source filters\ThresholdedEuclideanDifference.cs" />
     <Compile Include="Filters\Adaptive Binarization\BradleyLocalThresholding.cs" />
     <Compile Include="Filters\Adaptive Binarization\IterativeThreshold.cs" />
     <Compile Include="Filters\Adaptive Binarization\OtsuThreshold.cs" />
     <Compile Include="Filters\Adaptive Binarization\SISThreshold.cs" />
     <Compile Include="Filters\Base classes\BaseFilter.cs" />
+    <Compile Include="Filters\Base classes\BaseFilter2.cs" />
     <Compile Include="Filters\Base classes\BaseInPlaceFilter.cs" />
     <Compile Include="Filters\Base classes\BaseInPlacePartialFilter.cs" />
     <Compile Include="Filters\Base classes\BaseInPlaceFilter2.cs" />
