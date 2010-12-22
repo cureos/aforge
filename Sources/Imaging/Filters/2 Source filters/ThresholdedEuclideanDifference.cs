@@ -57,7 +57,7 @@ namespace AForge.Imaging.Filters
         /// <remarks><para>The property specifies difference threshold. If difference between pixels of processing image
         /// and overlay image is greater than this value, then corresponding pixel of result image is set to white; otherwise
         /// black.
-        /// </para></remarks>
+        /// </para>
         /// 
         /// <para>Default value is set to <b>15</b>.</para></remarks>
         /// 
@@ -65,6 +65,20 @@ namespace AForge.Imaging.Filters
         {
             get { return threshold; }
             set { threshold = value; }
+        }
+
+        private int whitePixelsCount = 0;
+
+        /// <summary>
+        /// Number of pixels which were set to white in destination image during last image processing call.
+        /// </summary>
+        ///
+        /// <remarks><para>The property may be useful to determine amount of difference between two images which,
+        /// for example, may be treated as amount of motion in motion detection applications, etc.</para></remarks>
+        ///
+        public int WhitePixelsCount
+        {
+            get { return whitePixelsCount; }
         }
 
         /// <summary>
@@ -113,6 +127,8 @@ namespace AForge.Imaging.Filters
         /// 
         protected override unsafe void ProcessFilter( UnmanagedImage sourceData, UnmanagedImage overlay, UnmanagedImage destinationData )
         {
+            whitePixelsCount = 0;
+
             // get source image size
             int width  = sourceData.Width;
             int height = sourceData.Height;
@@ -140,7 +156,15 @@ namespace AForge.Imaging.Filters
                         if ( diff < 0 )
                             diff = -diff;
 
-                        *dst = (byte) ( ( diff > threshold ) ? 255 : 0 );
+                        if ( diff > threshold )
+                        {
+                            *dst = (byte) 255;
+                            whitePixelsCount++;
+                        }
+                        else
+                        {
+                            *dst = 0;
+                        }
                     }
                     src += srcOffset;
                     ovr += ovrOffset;
@@ -166,7 +190,15 @@ namespace AForge.Imaging.Filters
                         int diffG = src[RGB.G] - ovr[RGB.G];
                         int diffB = src[RGB.B] - ovr[RGB.B];
 
-                        *dst = (byte) ( ( diffR * diffR + diffG * diffG + diffB * diffB > squaredThreshold ) ? 255 : 0 );
+                        if ( diffR * diffR + diffG * diffG + diffB * diffB > squaredThreshold )
+                        {
+                            *dst = (byte) 255;
+                            whitePixelsCount++;
+                        }
+                        else
+                        {
+                            *dst = 0;
+                        }
                     }
                     src += srcOffset;
                     ovr += ovrOffset;

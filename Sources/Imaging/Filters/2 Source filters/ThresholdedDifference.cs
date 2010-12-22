@@ -70,6 +70,20 @@ namespace AForge.Imaging.Filters
             set { threshold = value; }
         }
 
+        private int whitePixelsCount = 0;
+
+        /// <summary>
+        /// Number of pixels which were set to white in destination image during last image processing call.
+        /// </summary>
+        ///
+        /// <remarks><para>The property may be useful to determine amount of difference between two images which,
+        /// for example, may be treated as amount of motion in motion detection applications, etc.</para></remarks>
+        ///
+        public int WhitePixelsCount
+        {
+            get { return whitePixelsCount; }
+        }
+
         /// <summary>
         /// Format translations dictionary.
         /// </summary>
@@ -116,6 +130,8 @@ namespace AForge.Imaging.Filters
         /// 
         protected override unsafe void ProcessFilter( UnmanagedImage sourceData, UnmanagedImage overlay, UnmanagedImage destinationData )
         {
+            whitePixelsCount = 0;
+
             // get source image size
             int width  = sourceData.Width;
             int height = sourceData.Height;
@@ -143,7 +159,15 @@ namespace AForge.Imaging.Filters
                         if ( diff < 0 )
                             diff = -diff;
 
-                        *dst = (byte) ( ( diff > threshold ) ? 255 : 0 );
+                        if ( diff > threshold )
+                        {
+                            *dst = (byte) 255;
+                            whitePixelsCount++;
+                        }
+                        else
+                        {
+                            *dst = 0;
+                        }
                     }
                     src += srcOffset;
                     ovr += ovrOffset;
@@ -174,7 +198,15 @@ namespace AForge.Imaging.Filters
                         if ( diffB < 0 )
                             diffB = -diffB;
 
-                        *dst = (byte) ( ( diffR + diffG + diffB > threshold ) ? 255 : 0 );
+                        if ( diffR + diffG + diffB > threshold )
+                        {
+                            *dst = (byte) 255;
+                            whitePixelsCount++;
+                        }
+                        else
+                        {
+                            *dst = 0;
+                        }
                     }
                     src += srcOffset;
                     ovr += ovrOffset;
