@@ -119,7 +119,7 @@ namespace AForge.Video.DirectShow.Internals
             if ( ( FormatSize != 0 ) && ( FormatPtr != IntPtr.Zero ) )
             {
                 Marshal.FreeCoTaskMem( FormatPtr );
-                FormatPtr = IntPtr.Zero;
+                FormatSize = 0;
             }
 
             if ( unkPtr != IntPtr.Zero )
