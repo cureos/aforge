@@ -343,6 +343,46 @@ namespace AForge.Math.Geometry
         }
 
         /// <summary>
+        /// Relative distortion limit allowed for quadrilaterals, [0.0, 0.25].
+        /// </summary>
+        /// 
+        /// <remarks><para>The value of this property is used to calculate distortion limit used by
+        /// <see cref="FindQuadrilateralCorners"/>, when processing potential corners and making decision
+        /// if the provided points form a quadrilateral or a triangle. The distortion limit is
+        /// calculated as:
+        /// <code lang="none">
+        /// distrtionLimit = RelativeDistortionLimit * ( W * H ) / 2,
+        /// </code>
+        /// where <b>W</b> and <b>H</b> are width and height of the "points cloud" passed to the
+        /// <see cref="FindQuadrilateralCorners"/>.
+        /// </para>
+        /// 
+        /// <para>To explain the idea behind distortion limit, let’s suppose that quadrilateral finder routine found
+        /// the next candidates for corners:<br />
+        /// <img src="img/math/potential_corners.png" width="151" height="128" /><br />
+        /// As we can see on the above picture, the shape there potentially can be a triangle, but not quadrilateral
+        /// (suppose that points list comes from a hand drawn picture or acquired from camera, so some
+        /// inaccuracy may exist). It may happen that the <b>D</b> point is just a distortion (noise, etc).
+        /// So the <see cref="FindQuadrilateralCorners"/> check what is the distance between a potential corner
+        /// (D in this case) and a line connecting two adjacent points (AB in this case). If the distance is smaller
+        /// then the distortion limit, then the point may be rejected, so the shape turns into triangle.
+        /// </para>
+        /// 
+        /// <para>An exception is the case when both <b>C</b> and <b>D</b> points are very close to the <b>AB</b> line,
+        /// so both their distances are less than distortion limit. In this case both points will be accepted as corners -
+        /// the shape is just a flat quadrilateral.</para>
+        /// 
+        /// <para>Default value is set to <b>0.1</b>.</para>
+        /// </remarks>
+        /// 
+        public static double QuadrilateralRelativeDistortionLimit
+        {
+            get { return quadrilateralRelativeDistortionLimit; }
+            set { quadrilateralRelativeDistortionLimit = Math.Max( 0.0, Math.Min( 0.25, value ) ); }
+        }
+        private static double quadrilateralRelativeDistortionLimit = 0.1;
+
+        /// <summary>
         /// Find corners of quadrilateral or triangular area, which contains the specified collection of points.
         /// </summary>
         /// 
@@ -364,6 +404,8 @@ namespace AForge.Math.Geometry
         /// specified points potentially may be outside of the found quadrilateral/triangle, since the
         /// method takes corners only from the specified collection of points, but does not calculate such
         /// to form true bounding quadrilateral/triangle.</note></para>
+        /// 
+        /// <para>See <see cref="QuadrilateralRelativeDistortionLimit"/> property for additional information.</para>
         /// </remarks>
         /// 
         public static List<IntPoint> FindQuadrilateralCorners( List<IntPoint> cloud )
@@ -379,7 +421,7 @@ namespace AForge.Math.Geometry
             // calculate center point
             IntPoint center = minXY + cloudSize / 2;
             // acceptable deviation limit
-            double distortionLimit = 0.1 * ( cloudSize.X + cloudSize.Y ) / 2;
+            double distortionLimit = quadrilateralRelativeDistortionLimit * ( cloudSize.X + cloudSize.Y ) / 2;
 
             // get the furthest point from (0,0)
             IntPoint point1 = PointsCloud.GetFurthestPoint( cloud, center );
@@ -401,9 +443,19 @@ namespace AForge.Math.Geometry
 
             // but if one of the points (3 or 4) is very close to the line
             // connecting points 1 and 2, then it is one the same line ...
-            // which means corner was not found
+            // which means corner was not found.
+            // in this case we deal with a trapezoid or triangle, where
+            // (1-2) line is one of it sides.
 
-            if ( ( distance3 >= distortionLimit ) && ( distance4 >= distortionLimit ) )
+            // another interesting case is when both points (3) and (4) are
+            // very close the (1-2) line. in this case we may have just a flat
+            // quadrilateral.
+
+            if (
+                 ( ( distance3 >= distortionLimit ) && ( distance4 >= distortionLimit ) ) ||
+
+                 ( ( distance3 < distortionLimit ) && ( distance3 != 0 ) &&
+                   ( distance4 < distortionLimit ) && ( distance4 != 0 ) ) )
             {
                 corners.Add( point3 );
                 corners.Add( point4 );
