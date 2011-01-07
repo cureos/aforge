@@ -2,14 +2,15 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2010
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Math.Geometry
 {
     using System;
     using System.Collections.Generic;
+    using AForge;
 
     /// <summary>
     /// Set of tools for processing collection of points in 2D space.
@@ -467,11 +468,15 @@ namespace AForge.Math.Geometry
                         PointsCloud.GetFurthestPointsFromLine( cloud, point2, point3,
                             out tempPoint, out tempDistance, out point4, out distance4 );
 
-                        if ( tempPoint.DistanceTo( point1 ) > point4.DistanceTo( point1 ) )
+                        if ( ( tempPoint.DistanceTo( point1 ) > point4.DistanceTo( point1 ) ) &&
+                             ( tempPoint != point2 ) && ( tempPoint != point3 ) )
+                        {
                             point4 = tempPoint;
+                        }
                     }
 
-                    corners.Add( point4 );
+                    if ( ( point4 != point1 ) && ( point4 != point2 ) && ( point4 != point3 ) )
+                        corners.Add( point4 );
                 }
             }
 
