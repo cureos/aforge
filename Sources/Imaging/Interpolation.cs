@@ -1,8 +1,9 @@
 // AForge Image Processing Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2008
-// andrew.kirillov@gmail.com
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging
@@ -23,22 +24,29 @@ namespace AForge.Imaging
         /// 
         /// <returns>Bicubic cooefficient.</returns>
         /// 
+        /// <remarks><para>The function implements bicubic kernel W(x) as described on
+        /// <a href="http://en.wikipedia.org/wiki/Bicubic_interpolation#Bicubic_convolution_algorithm">Wikipedia</a>
+        /// (coefficient <b>a</b> is set to <b>-0.5</b>).</para></remarks>
+        /// 
         public static double BiCubicKernel( double x )
         {
-            if ( x > 2.0 )
-                return 0.0;
+            if ( x < 0 )
+            {
+                x = -x;
+            }
 
-            double a, b, c, d;
-            double xm1 = x - 1.0;
-            double xp1 = x + 1.0;
-            double xp2 = x + 2.0;
+            double biCoef = 0;
 
-            a = ( xp2 <= 0.0 ) ? 0.0 : xp2 * xp2 * xp2;
-            b = ( xp1 <= 0.0 ) ? 0.0 : xp1 * xp1 * xp1;
-            c = ( x <= 0.0 )   ? 0.0 : x * x * x;
-            d = ( xm1 <= 0.0 ) ? 0.0 : xm1 * xm1 * xm1;
+            if ( x <= 1 )
+            {
+                biCoef = ( 1.5 * x - 2.5 ) * x * x + 1;
+            }
+            else if ( x < 2 )
+            {
+                biCoef = ( ( -0.5 * x + 2.5 ) * x - 4 ) * x + 2;
+            }
 
-            return ( 0.16666666666666666667 * ( a - ( 4.0 * b ) + ( 6.0 * c ) - ( 4.0 * d ) ) );
+            return biCoef;
         }
     }
 }
