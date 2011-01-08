@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging.Filters
@@ -79,6 +79,7 @@ namespace AForge.Imaging.Filters
                     formatTranslations[PixelFormat.Format8bppIndexed] = PixelFormat.Format8bppIndexed;
                     formatTranslations[PixelFormat.Format24bppRgb]    = PixelFormat.Format24bppRgb;
                     formatTranslations[PixelFormat.Format32bppArgb]   = PixelFormat.Format32bppArgb;
+                    formatTranslations[PixelFormat.Format32bppRgb]    = PixelFormat.Format32bppRgb;
                     formatTranslations[PixelFormat.Format32bppPArgb]  = PixelFormat.Format32bppPArgb;
                 }
                 else
@@ -86,6 +87,7 @@ namespace AForge.Imaging.Filters
                     formatTranslations[PixelFormat.Format8bppIndexed] = originalImage.PixelFormat;
                     formatTranslations[PixelFormat.Format24bppRgb]    = originalImage.PixelFormat;
                     formatTranslations[PixelFormat.Format32bppArgb]   = originalImage.PixelFormat;
+                    formatTranslations[PixelFormat.Format32bppRgb]    = originalImage.PixelFormat;
                     formatTranslations[PixelFormat.Format32bppPArgb]  = originalImage.PixelFormat;
                 }
 
@@ -192,7 +194,7 @@ namespace AForge.Imaging.Filters
             // extract biggest blob's image
             if ( originalImage == null )
             {
-                blobCounter.ExtractBlobsImage( imageData, biggestBlob, false );
+                blobCounter.ExtractBlobsImage( new UnmanagedImage( imageData ), biggestBlob, false );
             }
             else
             {
@@ -200,6 +202,7 @@ namespace AForge.Imaging.Filters
                 if (
                     ( originalImage.PixelFormat != PixelFormat.Format24bppRgb ) &&
                     ( originalImage.PixelFormat != PixelFormat.Format32bppArgb ) &&
+                    ( originalImage.PixelFormat != PixelFormat.Format32bppRgb ) &&
                     ( originalImage.PixelFormat != PixelFormat.Format32bppPArgb ) &&
                     ( originalImage.PixelFormat != PixelFormat.Format8bppIndexed )
                     )
@@ -216,7 +219,12 @@ namespace AForge.Imaging.Filters
                 blobCounter.ExtractBlobsImage( originalImage, biggestBlob, false );
             }
 
-            return biggestBlob.Image;
+            Bitmap managedImage = biggestBlob.Image.ToManagedImage( );
+
+            // dispose unmanaged image of the biggest blob
+            biggestBlob.Image.Dispose( );
+
+            return managedImage;
         }
 
         /// <summary>

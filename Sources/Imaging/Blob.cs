@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging
@@ -29,7 +29,7 @@ namespace AForge.Imaging
     public class Blob
     {
         // blob's image
-        private Bitmap image;
+        private UnmanagedImage image;
         // blob's image size - as original image or not
         private bool originalSize = false;
 
@@ -54,10 +54,10 @@ namespace AForge.Imaging
         ///
         /// <remarks><para>The property keeps blob's image. In the case if it equals to <b>null</b>,
         /// the image may be extracted using <see cref="BlobCounterBase.ExtractBlobsImage( Bitmap, Blob, bool )"/>
-        /// or <see cref="BlobCounterBase.ExtractBlobsImage( BitmapData, Blob, bool )"/> method.</para></remarks>
+        /// or <see cref="BlobCounterBase.ExtractBlobsImage( UnmanagedImage, Blob, bool )"/> method.</para></remarks>
         ///
         [Browsable( false )]
-        public Bitmap Image
+        public UnmanagedImage Image
         {
             get { return image; }
             internal set { image = value; }
@@ -177,7 +177,7 @@ namespace AForge.Imaging
         /// 
         /// <remarks><para>This constructor leaves <see cref="Image"/> property not initialized. The blob's
         /// image may be extracted later using <see cref="BlobCounterBase.ExtractBlobsImage( Bitmap, Blob, bool )"/>
-        /// or <see cref="BlobCounterBase.ExtractBlobsImage( BitmapData, Blob, bool )"/> method.</para></remarks>
+        /// or <see cref="BlobCounterBase.ExtractBlobsImage( UnmanagedImage, Blob, bool )"/> method.</para></remarks>
         /// 
         internal Blob( int id, Rectangle rect )
         {

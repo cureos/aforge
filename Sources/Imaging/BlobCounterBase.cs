@@ -2,12 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2010
-// andrew.kirillov@aforgenet.com
-//
-// Copyright © Frank Nagl, 2009
-// (adding the code for extracting blobs in original image's size)
-// admin@franknagl.de
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging
@@ -548,9 +544,9 @@ namespace AForge.Imaging
         /// <returns>Returns array of partially initialized blobs (without <see cref="Blob.Image"/> property initialized).</returns>
         /// 
         /// <remarks><para>By the amount of provided information, the method is between <see cref="GetObjectsRectangles"/> and
-        /// <see cref="GetObjects( BitmapData, bool )"/> methods. The method provides array of blobs without initialized their image.
-        /// Blob's image may be extracted later using <see cref="ExtractBlobsImage( Bitmap, Blob, bool )"/>,
-        /// <see cref="ExtractBlobsImage( BitmapData, Blob, bool )"/> or <see cref="ExtractBlobsImage( UnmanagedImage, Blob, bool )"/> method.
+        /// <see cref="GetObjects( UnmanagedImage, bool )"/> methods. The method provides array of blobs without initialized their image.
+        /// Blob's image may be extracted later using <see cref="ExtractBlobsImage( Bitmap, Blob, bool )"/>
+        /// or <see cref="ExtractBlobsImage( UnmanagedImage, Blob, bool )"/> method.
         /// </para></remarks>
         /// 
         /// <example>
@@ -611,7 +607,7 @@ namespace AForge.Imaging
         /// or <see cref="ProcessImage(UnmanagedImage)"/> method should be called, which will build
         /// objects map.</para>
         /// 
-        /// <para>The method supports 24 bpp color and 8 bpp indexed grayscale images.</para>
+        /// <para>The method supports 24/32 bpp color and 8 bpp indexed grayscale images.</para>
         /// </remarks>
         /// 
         /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the provided image.</exception>
@@ -629,7 +625,7 @@ namespace AForge.Imaging
             try
             {
                 // process image
-                blobs = GetObjects( imageData, extractInOriginalSize );
+                blobs = GetObjects( new UnmanagedImage( imageData ), extractInOriginalSize );
             }
             finally
             {
@@ -637,35 +633,6 @@ namespace AForge.Imaging
                 image.UnlockBits( imageData );
             }
             return blobs;
-        }
-
-        /// <summary>
-        /// Get blobs.
-        /// </summary>
-        /// 
-        /// <param name="imageData">Source image data to extract objects from.</param>
-        /// <param name="extractInOriginalSize">Specifies size of blobs' image to extract.
-        /// If set to <see langword="true"/> each blobs' image will have the same size as
-        /// the specified image. If set to <see langword="false"/> each blobs' image will
-        /// have the size of its blob.</param>
-        ///
-        /// <returns>Returns array of blobs.</returns>
-        /// 
-        /// <remarks><para>The method returns array of blobs. Before calling the
-        /// method, the <see cref="ProcessImage(Bitmap)"/>, <see cref="ProcessImage(BitmapData)"/>
-        /// or <see cref="ProcessImage(UnmanagedImage)"/> method should be called, which will build
-        /// objects map.</para>
-        /// 
-        /// <para>The method supports 24 bpp color and 8 bpp indexed grayscale images.</para>
-        /// </remarks>
-        /// 
-        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the provided image.</exception>
-        /// <exception cref="ApplicationException">No image was processed before, so objects
-        /// can not be collected.</exception>
-        /// 
-        public Blob[] GetObjects( BitmapData imageData, bool extractInOriginalSize )
-        {
-            return GetObjects( new UnmanagedImage( imageData ), extractInOriginalSize );
         }
 
         /// <summary>
@@ -685,7 +652,7 @@ namespace AForge.Imaging
         /// or <see cref="ProcessImage(UnmanagedImage)"/> method should be called, which will build
         /// objects map.</para>
         /// 
-        /// <para>The method supports 24 bpp color and 8 bpp indexed grayscale images.</para>
+        /// <para>The method supports 24/32 bpp color and 8 bpp indexed grayscale images.</para>
         /// </remarks>
         ///
         /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the provided image.</exception>
@@ -702,6 +669,7 @@ namespace AForge.Imaging
                 ( image.PixelFormat != PixelFormat.Format24bppRgb ) &&
                 ( image.PixelFormat != PixelFormat.Format8bppIndexed ) &&
                 ( image.PixelFormat != PixelFormat.Format32bppArgb ) &&
+                ( image.PixelFormat != PixelFormat.Format32bppRgb ) &&
                 ( image.PixelFormat != PixelFormat.Format32bppPArgb )
                 )
                 throw new UnsupportedImageFormatException( "Unsupported pixel format of the provided image." );
@@ -731,30 +699,23 @@ namespace AForge.Imaging
                 int label = blobs[k].ID;
 
                 // create new image
-                Bitmap dstImg = ( image.PixelFormat == PixelFormat.Format8bppIndexed ) ?
-                    AForge.Imaging.Image.CreateGrayscaleImage( blobImageWidth, blobImageHeight ) :
-                    new Bitmap( blobImageWidth, blobImageHeight, image.PixelFormat );
-
-                // lock destination bitmap data
-                BitmapData dstData = dstImg.LockBits(
-                    new Rectangle( 0, 0, blobImageWidth, blobImageHeight ),
-                    ImageLockMode.ReadWrite, image.PixelFormat );
+                UnmanagedImage dstImage = UnmanagedImage.Create( blobImageWidth, blobImageHeight, image.PixelFormat );
 
                 // copy image
                 unsafe
                 {
                     byte* src = (byte*) image.ImageData.ToPointer( ) + ymin * srcStride + xmin * pixelSize;
-                    byte* dst = (byte*) dstData.Scan0.ToPointer( );
+                    byte* dst = (byte*) dstImage.ImageData.ToPointer( );
                     int p = ymin * width + xmin;
 
                     if ( extractInOriginalSize )
                     {
                         // allign destination pointer also
-                        dst += ymin * dstData.Stride + xmin * pixelSize;
+                        dst += ymin * dstImage.Stride + xmin * pixelSize;
                     }
 
                     int srcOffset = srcStride - objectWidth * pixelSize;
-                    int dstOffset = dstData.Stride - objectWidth * pixelSize;
+                    int dstOffset = dstImage.Stride - objectWidth * pixelSize;
                     int labelsOffset = width - objectWidth;
 
                     // for each line
@@ -785,11 +746,9 @@ namespace AForge.Imaging
                         p += labelsOffset;
                     }
                 }
-                // unlock destination image
-                dstImg.UnlockBits( dstData );
 
                 objects[k] = new Blob( blobs[k] );
-                objects[k].Image = dstImg;
+                objects[k].Image = dstImage;
                 objects[k].OriginalSize = extractInOriginalSize;
             }
 
@@ -813,7 +772,7 @@ namespace AForge.Imaging
         /// or <see cref="ProcessImage(UnmanagedImage)"/> method should be called, which will build
         /// objects map.</para>
         /// 
-        /// <para>The method supports 24 bpp color and 8 bpp indexed grayscale images.</para>
+        /// <para>The method supports 24/32 bpp color and 8 bpp indexed grayscale images.</para>
         /// </remarks>
         /// 
         /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the provided image.</exception>
@@ -830,42 +789,13 @@ namespace AForge.Imaging
             try
             {
                 // process image
-                ExtractBlobsImage( imageData, blob, extractInOriginalSize );
+                ExtractBlobsImage( new UnmanagedImage( imageData ), blob, extractInOriginalSize );
             }
             finally
             {
                 // unlock source images
                 image.UnlockBits( imageData );
             }
-        }
-
-        /// <summary>
-        /// Extract blob's image.
-        /// </summary>
-        /// 
-        /// <param name="imageData">Source image data to extract blob's image from.</param>
-        /// <param name="blob">Blob which is required to be extracted.</param>
-        /// <param name="extractInOriginalSize">Specifies size of blobs' image to extract.
-        /// If set to <see langword="true"/> each blobs' image will have the same size as
-        /// the specified image. If set to <see langword="false"/> each blobs' image will
-        /// have the size of its blob.</param>
-        ///
-        /// <remarks><para>The method is used to extract image of partially initialized blob, which
-        /// was provided by <see cref="GetObjectsInformation"/> method. Before calling the
-        /// method, the <see cref="ProcessImage(Bitmap)"/>, <see cref="ProcessImage(BitmapData)"/>
-        /// or <see cref="ProcessImage(UnmanagedImage)"/> method should be called, which will build
-        /// objects map.</para>
-        /// 
-        /// <para>The method supports 24 bpp color and 8 bpp indexed grayscale images.</para>
-        /// </remarks>
-        /// 
-        /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the provided image.</exception>
-        /// <exception cref="ApplicationException">No image was processed before, so blob
-        /// can not be extracted.</exception>
-        /// 
-        public void ExtractBlobsImage( BitmapData imageData, Blob blob, bool extractInOriginalSize )
-        {
-            ExtractBlobsImage( new UnmanagedImage( imageData ), blob, extractInOriginalSize );
         }
 
         /// <summary>
@@ -885,7 +815,7 @@ namespace AForge.Imaging
         /// or <see cref="ProcessImage(UnmanagedImage)"/> method should be called, which will build
         /// objects map.</para>
         /// 
-        /// <para>The method supports 24 bpp color and 8 bpp indexed grayscale images.</para>
+        /// <para>The method supports 24/32 bpp color and 8 bpp indexed grayscale images.</para>
         /// </remarks>
         /// 
         /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the provided image.</exception>
@@ -902,6 +832,7 @@ namespace AForge.Imaging
                 ( image.PixelFormat != PixelFormat.Format24bppRgb ) &&
                 ( image.PixelFormat != PixelFormat.Format8bppIndexed ) &&
                 ( image.PixelFormat != PixelFormat.Format32bppArgb ) &&
+                ( image.PixelFormat != PixelFormat.Format32bppRgb ) &&
                 ( image.PixelFormat != PixelFormat.Format32bppPArgb )
                 )
                 throw new UnsupportedImageFormatException( "Unsupported pixel format of the provided image." );
@@ -926,31 +857,24 @@ namespace AForge.Imaging
             int label = blob.ID;
 
             // create new image
-            blob.Image = ( image.PixelFormat == PixelFormat.Format8bppIndexed ) ?
-                AForge.Imaging.Image.CreateGrayscaleImage( blobImageWidth, blobImageHeight ) :
-                new Bitmap( blobImageWidth, blobImageHeight, image.PixelFormat );
+            blob.Image = UnmanagedImage.Create( blobImageWidth, blobImageHeight, image.PixelFormat );
             blob.OriginalSize = extractInOriginalSize;
-
-            // lock destination bitmap data
-            BitmapData dstData = blob.Image.LockBits(
-                new Rectangle( 0, 0, blobImageWidth, blobImageHeight ),
-                ImageLockMode.ReadWrite, image.PixelFormat );
 
             // copy image
             unsafe
             {
                 byte* src = (byte*) image.ImageData.ToPointer( ) + ymin * srcStride + xmin * pixelSize;
-                byte* dst = (byte*) dstData.Scan0.ToPointer( );
+                byte* dst = (byte*) blob.Image.ImageData.ToPointer( );
                 int p = ymin * width + xmin;
 
                 if ( extractInOriginalSize )
                 {
                     // allign destination pointer also
-                    dst += ymin * dstData.Stride + xmin * pixelSize;
+                    dst += ymin * blob.Image.Stride + xmin * pixelSize;
                 }
 
                 int srcOffset = srcStride - objectWidth * pixelSize;
-                int dstOffset = dstData.Stride - objectWidth * pixelSize;
+                int dstOffset = blob.Image.Stride - objectWidth * pixelSize;
                 int labelsOffset = width - objectWidth;
 
                 // for each line
@@ -981,8 +905,6 @@ namespace AForge.Imaging
                     p += labelsOffset;
                 }
             }
-            // unlock destination image
-            blob.Image.UnlockBits( dstData );
         }
 
         /// <summary>
