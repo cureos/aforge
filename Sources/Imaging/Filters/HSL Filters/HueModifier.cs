@@ -1,8 +1,9 @@
 // AForge Image Processing Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2008
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging.Filters
@@ -69,9 +70,10 @@ namespace AForge.Imaging.Filters
         /// 
         public HueModifier( )
         {
-            formatTranslations[PixelFormat.Format24bppRgb]  = PixelFormat.Format24bppRgb;
-            formatTranslations[PixelFormat.Format32bppRgb]  = PixelFormat.Format32bppRgb;
-            formatTranslations[PixelFormat.Format32bppArgb] = PixelFormat.Format32bppArgb;
+            formatTranslations[PixelFormat.Format24bppRgb]   = PixelFormat.Format24bppRgb;
+            formatTranslations[PixelFormat.Format32bppRgb]   = PixelFormat.Format32bppRgb;
+            formatTranslations[PixelFormat.Format32bppArgb]  = PixelFormat.Format32bppArgb;
+            formatTranslations[PixelFormat.Format32bppPArgb] = PixelFormat.Format32bppPArgb;
         }
 
         /// <summary>
@@ -94,11 +96,13 @@ namespace AForge.Imaging.Filters
         ///
         protected override unsafe void ProcessFilter( UnmanagedImage image, Rectangle rect )
         {
+            int pixelSize = Bitmap.GetPixelFormatSize( image.PixelFormat ) / 8;
+
             int startX  = rect.Left;
             int startY  = rect.Top;
             int stopX   = startX + rect.Width;
             int stopY   = startY + rect.Height;
-            int offset  = image.Stride - rect.Width * 3;
+            int offset  = image.Stride - rect.Width * pixelSize;
 
             RGB rgb = new RGB( );
             HSL hsl = new HSL( );
@@ -107,13 +111,13 @@ namespace AForge.Imaging.Filters
             byte* ptr = (byte*) image.ImageData.ToPointer( );
 
             // allign pointer to the first pixel to process
-            ptr += ( startY * image.Stride + startX * 3 );
+            ptr += ( startY * image.Stride + startX * pixelSize );
 
             // for each row
             for ( int y = startY; y < stopY; y++ )
             {
                 // for each pixel
-                for ( int x = startX; x < stopX; x++, ptr += 3 )
+                for ( int x = startX; x < stopX; x++, ptr += pixelSize )
                 {
                     rgb.Red     = ptr[RGB.R];
                     rgb.Green   = ptr[RGB.G];
