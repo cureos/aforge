@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © AForge.NET, 2005-2010
+// Copyright © AForge.NET, 2005-2011
 // contacts@aforgenet.com
 //
 
@@ -435,23 +435,31 @@ namespace AForge.Video
                         {
                             VideoSourceError( this, new VideoSourceErrorEventArgs( "Invalid content type" ) );
                         }
-
-                        request.Abort( );
-                        request = null;
-                        response.Close( );
-                        response = null;
-
-                        // need to stop ?
-                        if ( stopEvent.WaitOne( 0, true ) )
-                            break;
-                        continue;
+                        throw new ApplicationException( );
                     }
 
 					// get boundary
+                    int boundaryIndex = contentType.IndexOf( "boundary", 0 );
+                    if ( boundaryIndex != -1 )
+                    {
+                        boundaryIndex = contentType.IndexOf( "=", boundaryIndex + 8 );
+                    }
+
+                    if ( boundaryIndex == -1 )
+                    {
+                        // provide information to clients
+                        if ( VideoSourceError != null )
+                        {
+                            VideoSourceError( this, new VideoSourceErrorEventArgs( "Invalid content type" ) );
+                        }
+                        throw new ApplicationException( );
+                    }
+
+                    string boudaryStr = contentType.Substring( boundaryIndex + 1 );
+                    // remove spaces and double quotes, which may be added by some IP cameras
+                    boudaryStr = boudaryStr.Trim( ' ', '"' );
+
 					ASCIIEncoding encoding = new ASCIIEncoding( );
-                    string boudaryStr = contentType.Substring( contentType.IndexOf( "boundary=", 0 ) + 9 );
-                    // remove double quotes, which may be added by some IP cameras
-                    boudaryStr = boudaryStr.Trim( '"' );
                     boundary = encoding.GetBytes( boudaryStr );
 					boundaryLen = boundary.Length;
                     bool boundaryIsChecked = false;
