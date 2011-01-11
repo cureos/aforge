@@ -48,7 +48,7 @@ namespace AForge.Math.Geometry
         /// <param name="cloud">Collection of points to shift their coordinates.</param>
         /// <param name="shift">Point to shift by.</param>
         /// 
-        public static void Shift( List<IntPoint> cloud, IntPoint shift )
+        public static void Shift( IList<IntPoint> cloud, IntPoint shift )
         {
             for ( int i = 0, n = cloud.Count; i < n; i++ )
             {
@@ -64,21 +64,17 @@ namespace AForge.Math.Geometry
         /// <param name="minXY">Point comprised of smallest X and Y coordinates.</param>
         /// <param name="maxXY">Point comprised of biggest X and Y coordinates.</param>
         /// 
-        public static void GetBoundingRectangle( List<IntPoint> cloud, out IntPoint minXY, out IntPoint maxXY )
+        public static void GetBoundingRectangle( IEnumerable<IntPoint> cloud, out IntPoint minXY, out IntPoint maxXY )
         {
-            if ( cloud.Count == 0 )
-                throw new ArgumentException( "List of points can not be empty." );
+            int minX = int.MaxValue;
+            int maxX = int.MinValue;
+            int minY = int.MaxValue;
+            int maxY = int.MinValue;
 
-            // take first point as min and max
-            int minX = cloud[0].X;
-            int maxX = cloud[0].X;
-            int minY = cloud[0].Y;
-            int maxY = cloud[0].Y;
-
-            for ( int i = 1, n = cloud.Count; i < n; i++ )
+            foreach ( IntPoint pt in cloud )
             {
-                int x = cloud[i].X;
-                int y = cloud[i].Y;
+                int x = pt.X;
+                int y = pt.Y;
 
                 // check X coordinate
                 if ( x < minX )
@@ -93,6 +89,9 @@ namespace AForge.Math.Geometry
                     maxY = y;
             }
 
+            if ( minX > maxX ) // if no point appeared to set either minX or maxX
+                throw new ArgumentException( "List of points can not be empty." );
+
             minXY = new IntPoint( minX, minY );
             maxXY = new IntPoint( maxX, maxY );
         }
@@ -105,15 +104,16 @@ namespace AForge.Math.Geometry
         /// 
         /// <returns>Returns center of gravity (mean X-Y values) for the specified list of points.</returns>
         /// 
-        public static DoublePoint GetCenterOfGravity( List<IntPoint> cloud )
+        public static DoublePoint GetCenterOfGravity( IEnumerable<IntPoint> cloud )
         {
-            int numberOfPoints = cloud.Count;
+            int numberOfPoints = 0;
             double xSum = 0, ySum = 0;
 
-            for ( int i = 0; i < numberOfPoints; i++ )
+            foreach ( IntPoint pt in cloud )
             {
-                xSum += cloud[i].X;
-                ySum += cloud[i].Y;
+                xSum += pt.X;
+                ySum += pt.Y;
+                numberOfPoints++;
             }
 
             xSum /= numberOfPoints;
@@ -131,7 +131,7 @@ namespace AForge.Math.Geometry
         /// 
         /// <returns>Returns a point, which is the furthest away from the <paramref name="referencePoint"/>.</returns>
         /// 
-        public static IntPoint GetFurthestPoint( List<IntPoint> cloud, IntPoint referencePoint )
+        public static IntPoint GetFurthestPoint( IEnumerable<IntPoint> cloud, IntPoint referencePoint )
         {
             IntPoint furthestPoint = referencePoint;
             double maxDistance = -1;
@@ -172,7 +172,7 @@ namespace AForge.Math.Geometry
         /// where one point is on one side from the line and the second point is on
         /// another side from the line.</para></remarks>
         /// 
-        public static void GetFurthestPointsFromLine( List<IntPoint> cloud, IntPoint linePoint1, IntPoint linePoint2,
+        public static void GetFurthestPointsFromLine( IEnumerable<IntPoint> cloud, IntPoint linePoint1, IntPoint linePoint2,
             out IntPoint furthestPoint1, out IntPoint furthestPoint2 )
         {
             double d1, d2;
@@ -198,7 +198,7 @@ namespace AForge.Math.Geometry
         /// where one point is on one side from the line and the second point is on
         /// another side from the line.</para></remarks>
         ///
-        public static void GetFurthestPointsFromLine( List<IntPoint> cloud, IntPoint linePoint1, IntPoint linePoint2,
+        public static void GetFurthestPointsFromLine( IEnumerable<IntPoint> cloud, IntPoint linePoint1, IntPoint linePoint2,
             out IntPoint furthestPoint1, out double distance1, out IntPoint furthestPoint2, out double distance2 )
         {
             furthestPoint1 = linePoint1;
@@ -269,11 +269,11 @@ namespace AForge.Math.Geometry
         /// specified line.</returns>
         /// 
         /// <remarks><para>The method finds the furthest point from the specified line.
-        /// Unlike the <see cref="GetFurthestPointsFromLine( List{IntPoint}, IntPoint, IntPoint, out IntPoint, out IntPoint )"/>
+        /// Unlike the <see cref="GetFurthestPointsFromLine( IEnumerable{IntPoint}, IntPoint, IntPoint, out IntPoint, out IntPoint )"/>
         /// method, this method find only one point, which is the furthest away from the line
         /// regardless of side from the line.</para></remarks>
         ///
-        public static IntPoint GetFurthestPointFromLine( List<IntPoint> cloud, IntPoint linePoint1, IntPoint linePoint2 )
+        public static IntPoint GetFurthestPointFromLine( IEnumerable<IntPoint> cloud, IntPoint linePoint1, IntPoint linePoint2 )
         {
             double d;
 
@@ -293,11 +293,11 @@ namespace AForge.Math.Geometry
         /// specified line.</returns>
         /// 
         /// <remarks><para>The method finds the furthest point from the specified line.
-        /// Unlike the <see cref="GetFurthestPointsFromLine( List{IntPoint}, IntPoint, IntPoint, out IntPoint, out double, out IntPoint, out double )"/>
+        /// Unlike the <see cref="GetFurthestPointsFromLine( IEnumerable{IntPoint}, IntPoint, IntPoint, out IntPoint, out double, out IntPoint, out double )"/>
         /// method, this method find only one point, which is the furthest away from the line
         /// regardless of side from the line.</para></remarks>
         ///
-        public static IntPoint GetFurthestPointFromLine( List<IntPoint> cloud, IntPoint linePoint1, IntPoint linePoint2, out double distance )
+        public static IntPoint GetFurthestPointFromLine( IEnumerable<IntPoint> cloud, IntPoint linePoint1, IntPoint linePoint2, out double distance )
         {
             IntPoint furthestPoint = linePoint1;
             distance = 0;
@@ -408,7 +408,7 @@ namespace AForge.Math.Geometry
         /// <para>See <see cref="QuadrilateralRelativeDistortionLimit"/> property for additional information.</para>
         /// </remarks>
         /// 
-        public static List<IntPoint> FindQuadrilateralCorners( List<IntPoint> cloud )
+        public static List<IntPoint> FindQuadrilateralCorners( IEnumerable<IntPoint> cloud )
         {
             // quadrilateral's corners
             List<IntPoint> corners = new List<IntPoint>( );
