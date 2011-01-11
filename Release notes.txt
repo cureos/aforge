@@ -1,3 +1,130 @@
+AForge.NET Framework 2.1.5 release notes
+----------------------------------------
+11.01.2011.
+
+!! This version has backward incompatibility with the previous version (see details below) !!!
+
+Version updates and fixes:
+
+* Fixed registered issues/requests:
+  - Issue 20: Color Reduction functionality
+  - Issue 151: Add support for 32-bits ARGB images in the CornersMarker filter
+  - Issue 152: Slow performance of PermutationChromosome.CreateChildUsingCrossover
+  - Issue 154: PointedColorFloodFill causing Stack Overflow
+  - Issue 155: Deadlock with out-of-order calling of VideoSourcePlayer.WaitForStop and VideoSourcePlayer.SignalToStop.
+  - Issue 157: MJPEGStream could handle incorrect boundary values
+  - Issue 158: XML documentation files are not included on default installation
+  - Issue 160: Blob Detection problem with certain aspect ratio rectangles 
+  - Issue 166: Find line intersections
+  - Issue 167: Math.Tools.IsPowerOf2 returns true when given 0
+  - Issue 169: Distance and Similarity metrics
+  - Issue 174: More Line construction options
+  - Issue 175: LineSegment.DistanceToPoint and GetIntersectionWith functions
+  - Issue 178: HueModifier does not work with 32bpp images
+  - Issue 181: Bicubic resize kernel is badly implemented
+  - Issue 182: Make PointsCloud accept a wider variety of arguments
+    
+
+* AForge
+  - Fixing bug in IntRange.IsOverlapping() and DoubleRange.IsOverlapping(), when these methods report
+    "false" (no overlapping) in the case if specified range completely covers and wider than the range
+    of the instance which method is invoked.
+    
+  - Added equality and inequality operators for IntPoint and DoublePoint.
+  
+
+*AForge.Math
+  - Added a check for greater than 0 in IsPowerOf2() function. It will return false for everything which is <= 0.
+  
+  - Introducing Line class in AForge.Math.Geometry, which is supposed to keep lines' related methods.
+  
+  - Committing contributed code, which is about distance and similarity metrics. New classes are placed into
+    AForge.Math.Metrics namespace.
+
+  - Fixing PointsCloud.FindQuadrilateralCorners() so it does not return 4 corners in some cases, where 2 of them are the same.
+
+  - Fixes to PointsCloud.FindQuadrilateralCorners():
+    1) Fixing the issue of detecting flat rectangles with high aspect ratio between adjacent sides;
+    2) Adding PointsCloud.QuadrilateralRelativeDistortionLimit static property, so user could tweak distortion limit
+       if he understands what he does.
+       
+  - Changed methods of PointsCloud class to accept IEnumerable<IntPoint> instead of List<IntPoint>. Only Shift()
+    method is changed to accept IList<IntPoint>.
+
+    
+* AForge.Imaging
+  - Adding support for custom blobs' filtering routines, which implement IBlobsFilter interface.
+  
+  - Improved automatic calculation of new image's size which is the result of quadrilateral transformation.
+  
+  - Image.FormatImage() is marked as deprecated and Image.Clone() should be used instead with specifying desired pixel format.
+  
+  - Fixing Convolution image processing filter to copy alpha channel values as they are for 32 bpp images.
+  
+  - Added support of 32-bit images to CornersMarker and MoravecCornersDetector.
+  
+  - Changing implementation of PointedColorFloodFill to use queue instead of stack, so the image processing routine
+    will not generate stack overflow any more. It is speed is a bit reduced as a result of this, but it may get
+    noticeable only when processing thousands of images (depends on image size of course).
+
+  - Adding FillHoles image processing routine, which allows to fill black holes in white objects in binary images.
+  
+  - Added median cut color quantization algorithms. Also added helper ColorImageQuantizer class, which simplifies calculation
+    of reduced color table for images or their re-coloring.
+    
+  - Adding color dithering image processing routines, which are placed into AForge.Imaging.ColorReduction namespace.
+  
+  - Small improvement in Integral Image calculation for minor calculation speed-up.
+  
+  - Adding local thresholding routine described by Derek Bradley and Gerhard Roth in the "Adaptive Thresholding Using
+    the Integral Image" paper (see BradleyLocalThresholding class).
+    
+  - Adding ThresholdedDifference and ThresholdedEuclideanDifference, which calculate threshold difference of two images
+    (one class uses Manhattan distance to calculate difference between pixel values, but another class uses Euclidean distance).
+    
+  - Changing bicubic kernel for resize and rotation image processing routines to the one described on Wikipedia
+    (coefficient "a" is set to -0.5).
+    
+  - !! Backward compatibility breaking change !! Changing type of Blob.Image from Bitmap to UnmanagedImage, since in
+    most cases extracting of blob's image is required for its further processing, but not just for displaying
+    (.NET's Bitmap type does not make any sense doing image processing).
+    
+  - Fixed HueModifier image processing routine to process correctly 32 bpp images (using correct pixel size value).
+  
+
+* AForge.Video
+  - Updating MJPEGStream video source class to remove double quotes from start/end of boundary, which can
+    be added by some IP cameras.
+    
+  - Adding AsyncVideoSource, which is a proxy video source for asynchronous processing of another nested video source.
+  
+  - Improving boundary parsing in MJPEGStream video source class, so it accepts more cameras which tend to have their
+    own specifics in MJPEG stream.    
+    
+    
+* AForge.Video.DirectShow
+  - Fixed bug in disposing of DirectShow AMMediaType structure. The bug was introduced in 2.1.4 version.
+
+
+* AForge.Genetic
+  - Modified PermutationChromosome.CreateChildUsingCrossover() to use arrays for fast lookup of genes'
+    indexes in parents' chromosomes.
+    
+
+* AForge.Controls
+  - Added check for cross-thread access to most methods/properties (those which are not allowed to be accessed
+    from another thread) of VideoSourcePlayer class. Lock is still kept in some methods/properties, which access
+    video frame (this must be protected anyway).    
+
+  
+* IPPrototyper
+  - Adding AutoSize size mode for picture box, which is nice to have when processing big images, which may need scrolling.
+
+  - Recent folders list size is increased to 7.
+
+
+
+
 AForge.NET Framework 2.1.4 release notes
 ----------------------------------------
 01.09.2010.
