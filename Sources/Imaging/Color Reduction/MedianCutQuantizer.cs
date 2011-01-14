@@ -29,7 +29,7 @@ namespace AForge.Imaging.ColorReduction
     /// // process colors (taken from image for example)
     /// for ( int i = 0; i &lt; pixelsToProcess; i++ )
     /// {
-    ///     quantizer.AddColor( /* pixel coloer */ );
+    ///     quantizer.AddColor( /* pixel color */ );
     /// }
     /// // get palette reduced to 16 colors
     /// Color[] palette = quantizer.GetPalette( 16 );

@@ -29,7 +29,7 @@ namespace AForge.Imaging.ColorReduction
     /// // get 16 color palette for a given image
     /// Color[] colorTable = ciq.CalculatePalette( image, 16 );
     /// 
-    /// // ... or just reduce color in the specified image
+    /// // ... or just reduce colors in the specified image
     /// Bitmap newImage = ciq.ReduceColors( image, 16 );
     /// </code>
     /// 
