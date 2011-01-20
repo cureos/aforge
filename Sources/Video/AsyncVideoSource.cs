@@ -67,7 +67,7 @@ namespace AForge.Video
 
         private Thread imageProcessingThread = null;
         private AutoResetEvent isNewFrameAvailable = null;
-        private AutoResetEvent isProcessingThreadAvailable = null;
+        private ManualResetEvent isProcessingThreadAvailable = null;
 
         // skip frames or not in the case if processing thread is busy
         private bool skipFramesIfBusy = false;
@@ -280,11 +280,10 @@ namespace AForge.Video
 
                 // create all synchronization events
                 isNewFrameAvailable = new AutoResetEvent( false );
-                isProcessingThreadAvailable = new AutoResetEvent( true );
+                isProcessingThreadAvailable = new ManualResetEvent( true );
 
                 // create image processing thread
                 imageProcessingThread = new Thread( new ThreadStart( imageProcessingThread_Worker ) );
-                imageProcessingThread.IsBackground = true;
                 imageProcessingThread.Start( );
 
                 // start the nested video source
@@ -337,8 +336,6 @@ namespace AForge.Video
             {
                 nestedVideoSource.NewFrame -= new NewFrameEventHandler( nestedVideoSource_NewFrame );
 
-                // make sure processing thread does nothing
-                isProcessingThreadAvailable.WaitOne( );
                 // signal worker thread to stop and wait for it
                 lastVideoFrame = null;
                 isNewFrameAvailable.Set( );
@@ -394,13 +391,15 @@ namespace AForge.Video
                     break;
                 }
 
+                // signal we are busy
+                isProcessingThreadAvailable.Reset( );
+
                 if ( NewFrame != null )
                 {
                     NewFrame( this, new NewFrameEventArgs( lastVideoFrame ) );
                 }
 
                 lastVideoFrame.Dispose( );
-                lastVideoFrame = null;
                 framesProcessed++;
 
                 // we are free now for new image
