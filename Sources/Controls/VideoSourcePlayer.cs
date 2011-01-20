@@ -452,10 +452,10 @@ namespace AForge.Controls
                     {
                         NewFrame( this, ref currentFrame );
                     }
-
-                    // update control
-                    Invalidate( );
                 }
+
+                // update control
+                Invalidate( );
             }
         }
 
