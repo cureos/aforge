@@ -204,6 +204,7 @@
     <Compile Include="Filters\Transform\RotateNearestNeighbor.cs" />
     <Compile Include="Filters\Transform\Shrink.cs" />
     <Compile Include="Filters\Transform\SimpleQuadrilateralTransformation.cs" />
+    <Compile Include="Filters\Transform\TransformFromPolar.cs" />
     <Compile Include="Filters\Transform\TransformToPolar.cs" />
     <Compile Include="Filters\YCbCr Filters\YCbCrExtractChannel.cs" />
     <Compile Include="Filters\YCbCr Filters\YCbCrFiltering.cs" />

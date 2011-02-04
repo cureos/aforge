@@ -14,37 +14,36 @@ namespace AForge.Imaging.Filters
     using System.Drawing.Imaging;
 
     /// <summary>
-    /// Transform rectangle image into circle (to polar coordinates).
+    /// Transform polar image into rectangle.
     /// </summary>
     /// 
-    /// <remarks><para>The image processing routine does transformation of the source image into
-    /// circle (polar transformation). The produced effect is similar to GIMP's "Polar Coordinates"
-    /// distortion filter (or its equivalent in Photoshop).
-    /// </para>
+    /// <remarks>The image processing routine oposite transformation to the one done by <see cref="TransformToPolar"/>
+    /// routine, i.e. transformation from polar image into rectangle. The produced effect is similar to GIMP's
+    /// "Polar Coordinates" distortion filter (or its equivalent in Photoshop).
     /// 
     /// <para>The filter accepts 8 bpp grayscale and 24/32 bpp color images for processing.</para>
     /// 
     /// <para>Sample usage:</para>
     /// <code>
     /// // create filter
-    /// TransformToPolar filter = new TransformToPolar( );
+    /// TransformFromPolar filter = new TransformFromPolar( );
     /// filter.OffsetAngle = 0;
     /// filter.CirlceDepth = 1;
     /// filter.UseOriginalImageSize = false;
-    /// filter.NewSize = new Size( 200, 200 );
+    /// filter.NewSize = new Size( 360, 120 );
     /// // apply the filter
     /// Bitmap newImage = filter.Apply( image );
     /// </code>
     /// 
     /// <para><b>Initial image:</b></para>
-    /// <img src="img/imaging/sample21.png" width="320" height="160" />
+    /// <img src="img/imaging/sample22.png" width="240" height="240" />
     /// <para><b>Result image:</b></para>
-    /// <img src="img/imaging/polar.png" width="200" height="200" />
+    /// <img src="img/imaging/from_polar.png" width="360" height="120" />
     /// </remarks>
     /// 
-    /// <seealso cref="TransformFromPolar"/>
+    /// <seealso cref="TransformToPolar"/>
     /// 
-    public class TransformToPolar : BaseTransformationFilter
+    public class TransformFromPolar : BaseTransformationFilter
     {
         private const double Pi2 = Math.PI * 2;
         private const double PiHalf = Math.PI / 2;
@@ -56,11 +55,12 @@ namespace AForge.Imaging.Filters
         /// </summary>
         /// 
         /// <remarks><para>The property specifies circularity coefficient of the mapping to be done.
-        /// If the coefficient is set to 1, then the mapping will produce ideal circle. If the coefficient
-        /// is set to 0, then the mapping will occupy entire area of the destination image (circle will
+        /// If the coefficient is set to 1, then destination image will be produced by mapping
+        /// ideal circle from the source image, which is placed in source image's centre and its
+        /// radius equals to the minimum distance from centre to the image’s edge. If the coefficient
+        /// is set to 0, then the mapping will use entire area of the source image (circle will
         /// be extended into direction of edges). Changing the property from 0 to 1 user may balance
-        /// circularity of the produced output.
-        /// </para>
+        /// circularity of the produced output.</para>
         /// 
         /// <para>Default value is set to <b>1</b>.</para>
         /// </remarks>
@@ -71,6 +71,7 @@ namespace AForge.Imaging.Filters
             set { circleDepth = Math.Max( 0, Math.Min( 1, value ) ); }
         }
 
+        
         private double offsetAngle = 0;
 
         /// <summary>
@@ -78,8 +79,8 @@ namespace AForge.Imaging.Filters
         /// </summary>
         /// 
         /// <remarks><para>The property specifies offset angle, which can be used to shift
-        /// mapping in counter clockwise direction. For example, if user sets this property to 30, then
-        /// start of polar mapping is shifted by 30 degrees in counter clockwise direction.</para>
+        /// mapping in clockwise direction. For example, if user sets this property to 30, then
+        /// start of polar mapping is shifted by 30 degrees in clockwise direction.</para>
         /// 
         /// <para>Default value is set to <b>0</b>.</para>
         /// </remarks>
@@ -96,7 +97,7 @@ namespace AForge.Imaging.Filters
         /// Specifies direction of mapping.
         /// </summary>
         ///
-        /// <remarks><para>The property specifies direction of mapping source image's X axis. If the
+        /// <remarks><para>The property specifies direction of mapping source image. If the
         /// property is set to <see langword="false"/>, the image is mapped in clockwise direction;
         /// otherwise in counter clockwise direction.</para>
         /// 
@@ -110,14 +111,14 @@ namespace AForge.Imaging.Filters
         }
 
         private bool mapFromTop = true;
-
+        
         /// <summary>
-        /// Specifies if top of the source image should go to center or edge of the result image.
+        /// Specifies if centre of the source image should to top or bottom of the result image.
         /// </summary>
         /// 
-        /// <remarks><para>The property specifies position of the source image's top line in the destination
-        /// image. If the property is set to <see langword="true"/>, then it goes to the center of the result image;
-        /// otherwise it goes to the edge.</para>
+        /// <remarks><para>The property specifies position of the source image's centre in the destination image.
+        /// If the property is set to <see langword="true"/>, then it goes to the top of the result image;
+        /// otherwise it goes to the bottom.</para>
         /// 
         /// <para>Default value is set to <see langword="true"/>.</para>
         /// </remarks>
@@ -126,27 +127,6 @@ namespace AForge.Imaging.Filters
         {
             get { return mapFromTop; }
             set { mapFromTop = value; }
-        }
-
-        private Color fillColor = Color.White;
-
-        /// <summary>
-        /// Fill color to use for unprocessed areas.
-        /// </summary>
-        /// 
-        /// <remarks><para>The property specifies fill color, which is used to fill unprocessed areas.
-        /// In the case if <see cref="CirlceDepth"/> is greater than 0, then there will be some areas on
-        /// the image's edge, which are not filled by the produced "circular" image, but are filled by
-        /// the specified color.
-        /// </para>
-        /// 
-        /// <para>Default value is set to <see cref="Color.White"/>.</para>
-        /// </remarks>
-        /// 
-        public Color FillColor
-        {
-            get { return fillColor; }
-            set { fillColor = value; }
         }
 
         private Size newSize = new Size( 200, 200 );
@@ -209,10 +189,10 @@ namespace AForge.Imaging.Filters
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TransformToPolar"/> class.
+        /// Initializes a new instance of the <see cref="TransformFromPolar"/> class.
         /// </summary>
         /// 
-        public TransformToPolar( )
+        public TransformFromPolar( )
         {
             formatTranslations[PixelFormat.Format8bppIndexed] = PixelFormat.Format8bppIndexed;
             formatTranslations[PixelFormat.Format24bppRgb]    = PixelFormat.Format24bppRgb;
@@ -254,13 +234,15 @@ namespace AForge.Imaging.Filters
             // get destination image size
             int newWidth  = destinationData.Width;
             int newHeight = destinationData.Height;
+            int newWidthM1  = newWidth - 1;
+            int newHeightM1 = newHeight - 1;
 
             // invert cirlce depth
             double circleDisform = 1 - circleDepth;
 
             // get position of center pixel
-            double cx = (double) ( newWidth - 1 ) / 2;
-            double cy = (double) ( newHeight - 1 ) / 2;
+            double cx = (double) widthM1 / 2;
+            double cy = (double) heightM1 / 2;
             double radius = ( cx < cy ) ? cx : cy;
             radius -= radius * circleDisform;
 
@@ -268,14 +250,7 @@ namespace AForge.Imaging.Filters
             double diagonalAngle = Math.Atan2( cy, cx );
 
             // offset angle in radians
-            double offsetAngleR = offsetAngle / 180 * Math.PI;
-            if ( offsetAngleR < 0 )
-            {
-                offsetAngleR = Pi2 - offsetAngleR;
-            }
-            // add extra offset to make sure rotation starts from Y axis and Pi*2 to
-            // make sure any negative angle will get positive
-            offsetAngleR += PiHalf + Pi2;
+            double offsetAngleR = ( ( mapBackwards ) ? offsetAngle : -offsetAngle ) / 180 * Math.PI + PiHalf;
 
             // do the job
             byte* baseSrc = (byte*) sourceData.ImageData.ToPointer( );
@@ -291,112 +266,77 @@ namespace AForge.Imaging.Filters
             // temporary pointers
             byte* p1, p2, p3, p4;
 
-            byte fillR = fillColor.R;
-            byte fillB = fillColor.B;
-            byte fillG = fillColor.G;
-            byte fillA = fillColor.A;
-            byte fillGrey = (byte) ( 0.2125 * fillR + 0.7154 * fillG + 0.0721 * fillB );
+            // precalculate Sin/Cos values and distances from center to edge in the source image
+            double[] angleCos = new double[newWidth];
+            double[] angleSin = new double[newWidth];
+            double[] maxDistance = new double[newWidth];
+
+            for ( int x = 0; x < newWidth; x++ )
+            {
+                double angle = -Pi2 * x / newWidth + offsetAngleR;
+
+                angleCos[x] = Math.Cos( angle );
+                angleSin[x] = Math.Sin( angle );
+
+                // calculate minimum angle between X axis and the
+                // line with the above calculated angle
+                double oxAngle = ( ( angle > 0 ) ? angle : -angle ) % Math.PI;
+                if ( oxAngle > PiHalf )
+                {
+                    oxAngle = Math.PI - oxAngle;
+                }
+
+                // calculate maximm distance from center for this angle - distance to image's edge
+                maxDistance[x] = circleDisform * ( ( oxAngle > diagonalAngle ) ? ( cy / Math.Sin( oxAngle ) ) : ( cx / Math.Cos( oxAngle ) ) );
+            }
 
             for ( int y = 0; y < newHeight; y++ )
             {
-                double dy = y - cy;
-                double dydy = dy * dy;
+                double yPart = (double) y / newHeightM1;
+
+                if ( !mapFromTop )
+                {
+                    yPart = 1 - yPart;
+                }
 
                 for ( int x = 0; x < newWidth; x++ )
                 {
-                    double dx = x - cx;
-                    // distance from the center
-                    double distance = Math.Sqrt( dx * dx + dydy );
-                    // angle of the line connecting center and the current pixel
-                    double angle = Math.Atan2( dy, dx );
+                    // calculate maximum allowed distance within wich we need to map Y axis of the destination image
+                    double maxAllowedDistance = radius + maxDistance[x];
 
-                    // calculate minimum angle between X axis and the
-                    // line connecting center and the current pixel
-                    double oxAngle = ( angle > 0 ) ? angle : -angle;
-                    if ( oxAngle > PiHalf )
+                    // source pixel's distance from the center of the source image
+                    double distance = yPart * maxAllowedDistance;
+
+                    // calculate pixel coordinates in the source image
+                    double sx = cx + distance * ( ( mapBackwards ) ? -angleCos[x] : angleCos[x] );
+                    double sy = cy - distance * angleSin[x];
+
+                    sx1 = (int) sx;
+                    sy1 = (int) sy;
+
+                    sx2 = ( sx1 == widthM1 ) ? sx1 : sx1 + 1;
+                    dx1 = sx - sx1;
+                    dx2 = 1.0 - dx1;
+
+                    sy2 = ( sy1 == heightM1 ) ? sy1 : sy1 + 1;
+                    dy1 = sy - sy1;
+                    dy2 = 1.0 - dy1;
+
+                    // get four points
+                    p1 = p2 = baseSrc + sy1 * srcStride;
+                    p1 += sx1 * pixelSize;
+                    p2 += sx2 * pixelSize;
+
+                    p3 = p4 = baseSrc + sy2 * srcStride;
+                    p3 += sx1 * pixelSize;
+                    p4 += sx2 * pixelSize;
+
+                    // interpolate using 4 points
+                    for ( int i = 0; i < pixelSize; i++, dst++, p1++, p2++, p3++, p4++ )
                     {
-                        oxAngle = Math.PI - oxAngle;
-                    }
-
-                    // calculate maximm distance from center for this angle - distance to image's edge
-                    double maxDistance = ( oxAngle > diagonalAngle ) ? ( cy / Math.Sin( oxAngle ) ) : ( cx / Math.Cos( oxAngle ) );
-
-                    // calculate maximum allowed distance within wich we need to map Y axis of the source image
-                    double maxAllowedDistance = radius + maxDistance * circleDisform;
-
-                    if ( distance < maxAllowedDistance + 1 )
-                    {
-                        // add angle offset and make sure it is in the [0, 2PI) range
-                        angle += offsetAngleR;
-                        angle = angle % Pi2;
-
-                        // calculate pixel coordinates in the source image
-                        double sy = ( distance / maxAllowedDistance ) * heightM1;
-
-                        if ( sy > heightM1 )
-                        {
-                            sy = heightM1;
-                        }
-
-                        if ( !mapFromTop )
-                        {
-                            sy = heightM1 - sy;
-                        }
-
-                        double sx = ( angle / Pi2 ) * widthM1;
-
-                        if ( mapBackwards )
-                        {
-                            sx = widthM1 - sx;
-                        }
-
-                        sx1 = (int) sx;
-                        sx2 = ( sx1 == widthM1 ) ? sx1 : sx1 + 1;
-                        dx1 = sx - sx1;
-                        dx2 = 1.0 - dx1;
-
-                        sy1 = (int) sy;
-                        sy2 = ( sy1 == heightM1 ) ? sy1 : sy1 + 1;
-                        dy1 = sy - sy1;
-                        dy2 = 1.0 - dy1;
-
-                        // get four points
-                        p1 = p2 = baseSrc + sy1 * srcStride;
-                        p1 += sx1 * pixelSize;
-                        p2 += sx2 * pixelSize;
-
-                        p3 = p4 = baseSrc + sy2 * srcStride;
-                        p3 += sx1 * pixelSize;
-                        p4 += sx2 * pixelSize;
-
-                        // interpolate using 4 points
-                        for ( int i = 0; i < pixelSize; i++, dst++, p1++, p2++, p3++, p4++ )
-                        {
-                            *dst = (byte) (
-                                dy2 * ( dx2 * ( *p1 ) + dx1 * ( *p2 ) ) +
-                                dy1 * ( dx2 * ( *p3 ) + dx1 * ( *p4 ) ) );
-                        }
-                    }
-                    else
-                    {
-                        // fill unprocessed pixel with default color
-                        if ( pixelSize == 1 )
-                        {
-                            *dst = fillGrey;
-                        }
-                        else
-                        {
-                            dst[RGB.R] = fillR;
-                            dst[RGB.G] = fillG;
-                            dst[RGB.B] = fillB;
-
-                            if ( pixelSize > 3 )
-                            {
-                                dst[RGB.A] = fillA;
-                            }
-                        }
-
-                        dst += pixelSize;
+                        *dst = (byte) (
+                            dy2 * ( dx2 * ( *p1 ) + dx1 * ( *p2 ) ) +
+                            dy1 * ( dx2 * ( *p3 ) + dx1 * ( *p4 ) ) );
                     }
                 }
                 dst += dstOffset;
