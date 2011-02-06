@@ -228,6 +228,10 @@
         <contentItem sourcePath="..\Math\Images\potential_corners.png" destPath="img\math\" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\bradley_local_thresholding.png" destPath="img\imaging\" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\sample20.png" destPath="img\imaging\" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\from_polar.png" destPath="img\imaging\" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\polar.png" destPath="img\imaging\" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\sample21.png" destPath="img\imaging\" excludeItems="False" />
+        <contentItem sourcePath="..\Imaging\Images\sample22.png" destPath="img\imaging\" excludeItems="False" />
     </additionalContent>
     <ProjectSummary>&lt;b&gt;AForge.NET Framework&lt;/b&gt; is a C# framework designed for developers and researchers in the fields of Computer Vision and Artificial Intelligence - image processing, computer vision, neural networks, genetic algorithms, machine learning, etc. </ProjectSummary>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace, TypeParameter</MissingTags>
