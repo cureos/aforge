@@ -1,10 +1,9 @@
 // AForge Image Processing Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright ©
-//   Andrew Kirillov (andrew.kirillov@aforgenet.com),
-//   Mladen Prajdic  (spirit1_fe@yahoo.com)
-// 2005-2009
+// Copyright © AForge.NET, 2005-2010
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging.Filters
@@ -20,7 +19,7 @@ namespace AForge.Imaging.Filters
     /// 
     /// <remarks><para>Contrast stretching (or as it is often called normalization) is a simple image enhancement
     /// technique that attempts to improve the contrast in an image by 'stretching' the range of intensity values
-    /// it contains to span a desired range of values, e.g. the the full range of pixel values that the image type
+    /// it contains to span a desired range of values, e.g. the full range of pixel values that the image type
     /// concerned allows. It differs from the more sophisticated <see cref="HistogramEqualization">histogram equalization</see>
     /// in that it can only apply a linear scaling function to the image pixel values.</para>
     /// 

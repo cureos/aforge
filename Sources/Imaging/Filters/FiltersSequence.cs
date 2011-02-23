@@ -1,8 +1,9 @@
 // AForge Image Processing Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2008
-// andrew.kirillov@gmail.com
+// Copyright © AForge.NET, 2005-2010
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging.Filters
@@ -88,7 +89,7 @@ namespace AForge.Imaging.Filters
         /// <returns>Returns filter's result obtained by applying the filter to
         /// the source image.</returns>
         /// 
-        /// <remarks>The method keeps the source image unchanged and returns the
+        /// <remarks>The method keeps the source image unchanged and returns
         /// the result of image processing filter as new image.</remarks>
         /// 
         /// <exception cref="ApplicationException">No filters were added into the filters' sequence.</exception>
@@ -155,7 +156,7 @@ namespace AForge.Imaging.Filters
         /// <returns>Returns filter's result obtained by applying the filter to
         /// the source image.</returns>
         /// 
-        /// <remarks>The method keeps the source image unchanged and returns the
+        /// <remarks>The method keeps the source image unchanged and returns
         /// the result of image processing filter as new image.</remarks>
         /// 
         /// <exception cref="ApplicationException">No filters were added into the filters' sequence.</exception>
