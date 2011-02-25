@@ -80,6 +80,7 @@
     <Compile Include="Random\UniformOneGenerator.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="Tools.cs" />
+    <Compile Include="Vector3.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AForge.Math.snk" />
