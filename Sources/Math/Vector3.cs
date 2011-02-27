@@ -163,7 +163,7 @@ namespace AForge.Math
         }
 
         /// <summary>
-        /// Returns array representation of this vector.
+        /// Returns array representation of the vector.
         /// </summary>
         /// 
         /// <returns>Array with 3 values containing X/Y/Z coordinates.</returns>
@@ -178,7 +178,7 @@ namespace AForge.Math
         /// </summary>
         /// 
         /// <param name="vector1">The vector to add to.</param>
-        /// <param name="vector2">The vector to add the first vector.</param>
+        /// <param name="vector2">The vector to add to the first vector.</param>
         /// 
         /// <returns>Returns a vector which coordinates are equal to sum of corresponding
         /// coordinates of the two specified vectors.</returns>
@@ -193,7 +193,7 @@ namespace AForge.Math
         /// </summary>
         /// 
         /// <param name="vector1">The vector to add to.</param>
-        /// <param name="vector2">The vector to add the first vector.</param>
+        /// <param name="vector2">The vector to add to the first vector.</param>
         /// 
         /// <returns>Returns a vector which coordinates are equal to sum of corresponding
         /// coordinates of the two specified vectors.</returns>
@@ -409,8 +409,8 @@ namespace AForge.Math
         /// Tests whether two specified vectors are equal.
         /// </summary>
         /// 
-        /// <param name="vector1">The left-hand vector number.</param>
-        /// <param name="vector2">The right-hand vector number.</param>
+        /// <param name="vector1">The left-hand vector.</param>
+        /// <param name="vector2">The right-hand vector.</param>
         /// 
         /// <returns>Returns <see langword="true"/> if the two vectors are equal or <see langword="false"/> otherwise.</returns>
         /// 
@@ -423,8 +423,8 @@ namespace AForge.Math
         /// Tests whether two specified vectors are not equal.
         /// </summary>
         /// 
-        /// <param name="vector1">The left-hand vector number.</param>
-        /// <param name="vector2">The right-hand vector number.</param>
+        /// <param name="vector1">The left-hand vector.</param>
+        /// <param name="vector2">The right-hand vector.</param>
         /// 
         /// <returns>Returns <see langword="true"/> if the two vectors are not equal or <see langword="false"/> otherwise.</returns>
         /// 
