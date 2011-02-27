@@ -51,12 +51,13 @@
     <Compile Include="Geometry\IConvexHullAlgorithm.cs" />
     <Compile Include="Geometry\IShapeOptimizer.cs" />
     <Compile Include="Geometry\Line.cs" />
-    <Compile Include="Geometry\LineSegment.cs" />
     <Compile Include="Geometry\LineStraighteningOptimizer.cs" />
+    <Compile Include="Geometry\LineSegment.cs" />
     <Compile Include="Geometry\PointsCloud.cs" />
     <Compile Include="Geometry\ShapeType.cs" />
     <Compile Include="Geometry\SimpleShapeChecker.cs" />
     <Compile Include="Histogram.cs" />
+    <Compile Include="Matrix3x3.cs" />
     <Compile Include="Metrics\CosineDistance.cs" />
     <Compile Include="Metrics\CosineSimilarity.cs" />
     <Compile Include="Metrics\EuclideanDistance.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Random\UniformGenerator.cs" />
     <Compile Include="Random\UniformOneGenerator.cs" />
     <Compile Include="Statistics.cs" />
+    <Compile Include="SVD.cs" />
     <Compile Include="Tools.cs" />
     <Compile Include="Vector3.cs" />
   </ItemGroup>
