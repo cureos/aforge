@@ -620,20 +620,6 @@ namespace AForge.Math
         }
 
         /// <summary>
-        /// Returns the hashcode for this instance.
-        /// </summary>
-        /// 
-        /// <returns>A 32-bit signed integer hash code.</returns>
-        /// 
-        public override int GetHashCode( )
-        {
-            return
-                V00.GetHashCode( ) + V01.GetHashCode( ) + V02.GetHashCode( ) +
-                V10.GetHashCode( ) + V11.GetHashCode( ) + V12.GetHashCode( ) +
-                V20.GetHashCode( ) + V21.GetHashCode( ) + V22.GetHashCode( );
-        }
-
-        /// <summary>
         /// Tests whether the matrix equals to the specified object.
         /// </summary>
         /// 
@@ -648,6 +634,20 @@ namespace AForge.Math
                 return Equals( (Matrix3x3) obj );
             }
             return false;
+        }
+
+        /// <summary>
+        /// Returns the hashcode for this instance.
+        /// </summary>
+        /// 
+        /// <returns>A 32-bit signed integer hash code.</returns>
+        /// 
+        public override int GetHashCode( )
+        {
+            return
+                V00.GetHashCode( ) + V01.GetHashCode( ) + V02.GetHashCode( ) +
+                V10.GetHashCode( ) + V11.GetHashCode( ) + V12.GetHashCode( ) +
+                V20.GetHashCode( ) + V21.GetHashCode( ) + V22.GetHashCode( );
         }
 
         /// <summary>
