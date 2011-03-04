@@ -99,19 +99,19 @@ namespace AForge.Math
         }
 
         /// <summary>
-        /// Creates rotation matrix around Y axis (yaw).
+        /// Creates rotation matrix around Y axis.
         /// </summary>
         /// 
-        /// <param name="yaw">Rotation angle around Y axis in radians.</param>
+        /// <param name="radians">Rotation angle around Y axis in radians.</param>
         /// 
         /// <returns>Returns rotation matrix to rotate an object around Y axis.</returns>
         /// 
-        public static Matrix3x3 FromYaw( float yaw )
+        public static Matrix3x3 CreateRotationY( float radians )
         {
             Matrix3x3 m = new Matrix3x3( );
 
-            float cos = (float) System.Math.Cos( yaw );
-            float sin = (float) System.Math.Sin( yaw );
+            float cos = (float) System.Math.Cos( radians );
+            float sin = (float) System.Math.Sin( radians );
 
             m.V00 = m.V22 = cos;
             m.V02 = sin;
@@ -122,19 +122,19 @@ namespace AForge.Math
         }
 
         /// <summary>
-        /// Creates rotation matrix around X axis (pitch).
+        /// Creates rotation matrix around X axis.
         /// </summary>
         /// 
-        /// <param name="pitch">Rotation angle around X axis in radians.</param>
+        /// <param name="radians">Rotation angle around X axis in radians.</param>
         /// 
         /// <returns>Returns rotation matrix to rotate an object around X axis.</returns>
         /// 
-        public static Matrix3x3 FromPitch( float pitch )
+        public static Matrix3x3 CreateRotationX( float radians )
         {
             Matrix3x3 m = new Matrix3x3( );
 
-            float cos = (float) System.Math.Cos( pitch );
-            float sin = (float) System.Math.Sin( pitch );
+            float cos = (float) System.Math.Cos( radians );
+            float sin = (float) System.Math.Sin( radians );
 
             m.V11 = m.V22 = cos;
             m.V12 = -sin;
@@ -145,19 +145,19 @@ namespace AForge.Math
         }
 
         /// <summary>
-        /// Creates rotation matrix around Z axis (roll).
+        /// Creates rotation matrix around Z axis.
         /// </summary>
         /// 
-        /// <param name="roll">Rotation angle around Z axis in radians.</param>
+        /// <param name="radians">Rotation angle around Z axis in radians.</param>
         /// 
         /// <returns>Returns rotation matrix to rotate an object around Z axis.</returns>
         /// 
-        public static Matrix3x3 FromRoll( float roll )
+        public static Matrix3x3 CreateRotationZ( float radians )
         {
             Matrix3x3 m = new Matrix3x3( );
 
-            float cos = (float) System.Math.Cos( roll );
-            float sin = (float) System.Math.Sin( roll );
+            float cos = (float) System.Math.Cos( radians );
+            float sin = (float) System.Math.Sin( radians );
 
             m.V00 = m.V11 = cos;
             m.V01 = -sin;
@@ -168,7 +168,7 @@ namespace AForge.Math
         }
 
         /// <summary>
-        /// Creates rotation matrix to rotation around X, Y and Z axes.
+        /// Creates rotation matrix to rotate an object around X, Y and Z axes.
         /// </summary>
         /// 
         /// <param name="yaw">Rotation angle around Y axis in radians.</param>
@@ -183,9 +183,9 @@ namespace AForge.Math
         /// Y axis.</note></para>
         /// </remarks>
         /// 
-        public static Matrix3x3 FromYawPitchRoll( float yaw, float pitch, float roll )
+        public static Matrix3x3 CreateFromYawPitchRoll( float yaw, float pitch, float roll )
         {
-            return ( FromYaw( yaw ) * FromPitch( pitch ) ) * FromRoll( roll );
+            return ( CreateRotationY( yaw ) * CreateRotationX( pitch ) ) * CreateRotationZ( roll );
         }
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace AForge.Math
         /// 
         /// <returns>Returns a matrix from specified rows.</returns>
         /// 
-        public static Matrix3x3 FromRows( Vector3 row0, Vector3 row1, Vector3 row2 )
+        public static Matrix3x3 CreateFromRows( Vector3 row0, Vector3 row1, Vector3 row2 )
         {
             Matrix3x3 m = new Matrix3x3( );
 
@@ -227,7 +227,7 @@ namespace AForge.Math
         /// 
         /// <returns>Returns a matrix from specified columns.</returns>
         /// 
-        public static Matrix3x3 FromColumns( Vector3 column0, Vector3 column1, Vector3 column2 )
+        public static Matrix3x3 CreateFromColumns( Vector3 column0, Vector3 column1, Vector3 column2 )
         {
             Matrix3x3 m = new Matrix3x3( );
 
@@ -254,7 +254,7 @@ namespace AForge.Math
         /// 
         /// <returns>Returns a diagonal matrix.</returns>
         /// 
-        public static Matrix3x3 Diagonal( Vector3 vector )
+        public static Matrix3x3 CreateDiagonal( Vector3 vector )
         {
             Matrix3x3 m = new Matrix3x3( );
 
@@ -795,7 +795,7 @@ namespace AForge.Math
 
             SVD( out u, out e, out v );
 
-            return v * Diagonal( e.Inverse( ) ) * u.Transpose( );
+            return v * CreateDiagonal( e.Inverse( ) ) * u.Transpose( );
         }
 
         /// <summary>

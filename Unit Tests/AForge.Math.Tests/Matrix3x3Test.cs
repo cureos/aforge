@@ -36,12 +36,12 @@ namespace AForge.Math.Tests
         }
 
         [Test]
-        public void FromRowsTest( )
+        public void CreateFromRowsTest( )
         {
             Vector3 row0 = new Vector3( 1, 2, 3 );
             Vector3 row1 = new Vector3( 4, 5, 6 );
             Vector3 row2 = new Vector3( 7, 8, 9 );
-            Matrix3x3 matrix = Matrix3x3.FromRows( row0, row1, row2 );
+            Matrix3x3 matrix = Matrix3x3.CreateFromRows( row0, row1, row2 );
 
             float[] array = matrix.ToArray( );
 
@@ -56,12 +56,12 @@ namespace AForge.Math.Tests
         }
 
         [Test]
-        public void FromColumnsTest( )
+        public void CreateFromColumnsTest( )
         {
             Vector3 column0 = new Vector3( 1, 4, 7 );
             Vector3 column1 = new Vector3( 2, 5, 8 );
             Vector3 column2 = new Vector3( 3, 6, 9 );
-            Matrix3x3 matrix = Matrix3x3.FromColumns( column0, column1, column2 );
+            Matrix3x3 matrix = Matrix3x3.CreateFromColumns( column0, column1, column2 );
 
             float[] array = matrix.ToArray( );
 
@@ -84,10 +84,10 @@ namespace AForge.Math.Tests
         [Row( -30 )]
         [Row( -90 )]
         [Row( -180 )]
-        public void FromYawTest( float angle )
+        public void CreateRotationYTest( float angle )
         {
             float radians = (float) ( angle * System.Math.PI / 180 );
-            Matrix3x3 matrix = Matrix3x3.FromYaw( radians );
+            Matrix3x3 matrix = Matrix3x3.CreateRotationY( radians );
 
             float sin = (float) System.Math.Sin( radians );
             float cos = (float) System.Math.Cos( radians );
@@ -109,10 +109,10 @@ namespace AForge.Math.Tests
         [Row( -30 )]
         [Row( -90 )]
         [Row( -180 )]
-        public void FromPitchTest( float angle )
+        public void CreateRotationXTest( float angle )
         {
             float radians = (float) ( angle * System.Math.PI / 180 );
-            Matrix3x3 matrix = Matrix3x3.FromPitch( radians );
+            Matrix3x3 matrix = Matrix3x3.CreateRotationX( radians );
 
             float sin = (float) System.Math.Sin( radians );
             float cos = (float) System.Math.Cos( radians );
@@ -134,10 +134,10 @@ namespace AForge.Math.Tests
         [Row( -30 )]
         [Row( -90 )]
         [Row( -180 )]
-        public void FromRollTest( float angle )
+        public void CreateRotationZTest( float angle )
         {
             float radians = (float) ( angle * System.Math.PI / 180 );
-            Matrix3x3 matrix = Matrix3x3.FromRoll( radians );
+            Matrix3x3 matrix = Matrix3x3.CreateRotationZ( radians );
 
             float sin = (float) System.Math.Sin( radians );
             float cos = (float) System.Math.Cos( radians );
@@ -159,17 +159,17 @@ namespace AForge.Math.Tests
         [Row( -30, -60, -90 )]
         [Row( -90, -135, -180 )]
         [Row( -180, -30, -60 )]
-        public void FromYawPitchRollTest( float yaw, float pitch, float roll )
+        public void CreateFromYawPitchRollTest( float yaw, float pitch, float roll )
         {
             float radiansYaw = (float) ( yaw * System.Math.PI / 180 );
             float radiansPitch = (float) ( pitch * System.Math.PI / 180 );
             float radiansRoll = (float) ( roll * System.Math.PI / 180 );
 
-            Matrix3x3 matrix = Matrix3x3.FromYawPitchRoll( radiansYaw, radiansPitch, radiansRoll );
+            Matrix3x3 matrix = Matrix3x3.CreateFromYawPitchRoll( radiansYaw, radiansPitch, radiansRoll );
 
-            Matrix3x3 xMatrix = Matrix3x3.FromPitch( radiansPitch );
-            Matrix3x3 yMatrix = Matrix3x3.FromYaw( radiansYaw );
-            Matrix3x3 zMatrix = Matrix3x3.FromRoll( radiansRoll );
+            Matrix3x3 xMatrix = Matrix3x3.CreateRotationX( radiansPitch );
+            Matrix3x3 yMatrix = Matrix3x3.CreateRotationY( radiansYaw );
+            Matrix3x3 zMatrix = Matrix3x3.CreateRotationZ( radiansRoll );
 
             Matrix3x3 rotationMatrix = ( yMatrix * xMatrix ) * zMatrix;
 
@@ -179,10 +179,10 @@ namespace AForge.Math.Tests
         [Test]
         [Row( 1, 2, 3 )]
         [Row( -1, -2, -3 )]
-        public void DiagonalTest( float v00, float v11, float v22 )
+        public void CreateDiagonalTest( float v00, float v11, float v22 )
         {
             Vector3 diagonal = new Vector3( v00, v11, v22 );
-            Matrix3x3 matrix = Matrix3x3.Diagonal( diagonal );
+            Matrix3x3 matrix = Matrix3x3.CreateDiagonal( diagonal );
 
             float[] expectedArray = new float[9] { v00, 0, 0, 0, v11, 0, 0, 0, v22 };
 
