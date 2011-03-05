@@ -434,7 +434,7 @@ namespace AForge.Math
         }
 
         /// <summary>
-        /// Multiplies specified matrix by the specified factor.
+        /// Multiplies specified matrix by the specified vector.
         /// </summary>
         /// 
         /// <param name="matrix">Matrix to multiply by vector.</param>
@@ -452,7 +452,7 @@ namespace AForge.Math
         }
 
         /// <summary>
-        /// Multiplies specified matrix by the specified factor.
+        /// Multiplies specified matrix by the specified vector.
         /// </summary>
         /// 
         /// <param name="matrix">Matrix to multiply by vector.</param>
