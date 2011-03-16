@@ -48,7 +48,9 @@
     <Compile Include="IntPoint.cs" />
     <Compile Include="IntRange.cs" />
     <Compile Include="Parallel.cs" />
+    <Compile Include="Point.cs" />
     <Compile Include="PolishExpression.cs" />
+    <Compile Include="Range.cs" />
     <Compile Include="SystemTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

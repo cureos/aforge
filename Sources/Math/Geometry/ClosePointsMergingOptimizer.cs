@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2010
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Math.Geometry
@@ -39,7 +39,7 @@ namespace AForge.Math.Geometry
     /// 
     public class ClosePointsMergingOptimizer : IShapeOptimizer
     {
-        private double maxDistanceToMerge = 10;
+        private float maxDistanceToMerge = 10;
 
         /// <summary>
         /// Maximum allowed distance between points, which are merged during optimization, [0, ∞).
@@ -50,7 +50,7 @@ namespace AForge.Math.Geometry
         /// 
         /// <para>Default value is set to <b>10</b>.</para></remarks>
         /// 
-        public double MaxDistanceToMerge
+        public float MaxDistanceToMerge
         {
             get { return maxDistanceToMerge; }
             set { maxDistanceToMerge = Math.Max( 0, value ); }
@@ -69,7 +69,7 @@ namespace AForge.Math.Geometry
         /// <param name="maxDistanceToMerge">Maximum allowed distance between points, which are
         /// merged during optimization (see <see cref="MaxDistanceToMerge"/>).</param>
         ///
-        public ClosePointsMergingOptimizer( double maxDistanceToMerge )
+        public ClosePointsMergingOptimizer( float maxDistanceToMerge )
         {
             this.maxDistanceToMerge = maxDistanceToMerge;
         }
@@ -94,7 +94,7 @@ namespace AForge.Math.Geometry
             }
             else
             {
-                double distance = 0;
+                float distance = 0;
 
                 // add first point to the new shape
                 optimizedShape.Add( shape[0] );

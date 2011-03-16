@@ -104,10 +104,10 @@ namespace AForge.Math.Geometry
         /// 
         /// <returns>Returns center of gravity (mean X-Y values) for the specified list of points.</returns>
         /// 
-        public static DoublePoint GetCenterOfGravity( IEnumerable<IntPoint> cloud )
+        public static Point GetCenterOfGravity( IEnumerable<IntPoint> cloud )
         {
             int numberOfPoints = 0;
-            double xSum = 0, ySum = 0;
+            float xSum = 0, ySum = 0;
 
             foreach ( IntPoint pt in cloud )
             {
@@ -119,7 +119,7 @@ namespace AForge.Math.Geometry
             xSum /= numberOfPoints;
             ySum /= numberOfPoints;
 
-            return new DoublePoint( xSum, ySum );
+            return new Point( xSum, ySum );
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace AForge.Math.Geometry
         public static IntPoint GetFurthestPoint( IEnumerable<IntPoint> cloud, IntPoint referencePoint )
         {
             IntPoint furthestPoint = referencePoint;
-            double maxDistance = -1;
+            float maxDistance = -1;
 
             int rx = referencePoint.X;
             int ry = referencePoint.Y;
@@ -145,7 +145,7 @@ namespace AForge.Math.Geometry
                 int dy = ry - point.Y;
                 // we are not calculating square root for finding "real" distance,
                 // since it is really not important for finding furthest point
-                double distance = dx * dx + dy * dy;
+                float distance = dx * dx + dy * dy;
 
                 if ( distance > maxDistance )
                 {
@@ -175,7 +175,7 @@ namespace AForge.Math.Geometry
         public static void GetFurthestPointsFromLine( IEnumerable<IntPoint> cloud, IntPoint linePoint1, IntPoint linePoint2,
             out IntPoint furthestPoint1, out IntPoint furthestPoint2 )
         {
-            double d1, d2;
+            float d1, d2;
 
             GetFurthestPointsFromLine( cloud, linePoint1, linePoint2,
                 out furthestPoint1, out d1, out furthestPoint2, out d2 );
@@ -199,7 +199,7 @@ namespace AForge.Math.Geometry
         /// another side from the line.</para></remarks>
         ///
         public static void GetFurthestPointsFromLine( IEnumerable<IntPoint> cloud, IntPoint linePoint1, IntPoint linePoint2,
-            out IntPoint furthestPoint1, out double distance1, out IntPoint furthestPoint2, out double distance2 )
+            out IntPoint furthestPoint1, out float distance1, out IntPoint furthestPoint2, out float distance2 )
         {
             furthestPoint1 = linePoint1;
             distance1 = 0;
@@ -210,11 +210,11 @@ namespace AForge.Math.Geometry
             if ( linePoint2.X != linePoint1.X )
             {
                 // line's equation y(x) = k * x + b
-                double k = (double) ( linePoint2.Y - linePoint1.Y ) / ( linePoint2.X - linePoint1.X );
-                double b = linePoint1.Y - k * linePoint1.X;
+                float k = (float) ( linePoint2.Y - linePoint1.Y ) / ( linePoint2.X - linePoint1.X );
+                float b = linePoint1.Y - k * linePoint1.X;
 
-                double div = Math.Sqrt( k * k + 1 );
-                double distance = 0;
+                float div = (float) Math.Sqrt( k * k + 1 );
+                float distance = 0;
 
                 foreach ( IntPoint point in cloud )
                 {
@@ -235,7 +235,7 @@ namespace AForge.Math.Geometry
             else
             {
                 int lineX = linePoint1.X;
-                double distance = 0;
+                float distance = 0;
 
                 foreach ( IntPoint point in cloud )
                 {
@@ -275,7 +275,7 @@ namespace AForge.Math.Geometry
         ///
         public static IntPoint GetFurthestPointFromLine( IEnumerable<IntPoint> cloud, IntPoint linePoint1, IntPoint linePoint2 )
         {
-            double d;
+            float d;
 
             return GetFurthestPointFromLine( cloud, linePoint1, linePoint2, out d );
         }
@@ -293,11 +293,11 @@ namespace AForge.Math.Geometry
         /// specified line.</returns>
         /// 
         /// <remarks><para>The method finds the furthest point from the specified line.
-        /// Unlike the <see cref="GetFurthestPointsFromLine( IEnumerable{IntPoint}, IntPoint, IntPoint, out IntPoint, out double, out IntPoint, out double )"/>
+        /// Unlike the <see cref="GetFurthestPointsFromLine( IEnumerable{IntPoint}, IntPoint, IntPoint, out IntPoint, out float, out IntPoint, out float )"/>
         /// method, this method find only one point, which is the furthest away from the line
         /// regardless of side from the line.</para></remarks>
         ///
-        public static IntPoint GetFurthestPointFromLine( IEnumerable<IntPoint> cloud, IntPoint linePoint1, IntPoint linePoint2, out double distance )
+        public static IntPoint GetFurthestPointFromLine( IEnumerable<IntPoint> cloud, IntPoint linePoint1, IntPoint linePoint2, out float distance )
         {
             IntPoint furthestPoint = linePoint1;
             distance = 0;
@@ -305,11 +305,11 @@ namespace AForge.Math.Geometry
             if ( linePoint2.X != linePoint1.X )
             {
                 // line's equation y(x) = k * x + b
-                double k = (double) ( linePoint2.Y - linePoint1.Y ) / ( linePoint2.X - linePoint1.X );
-                double b = linePoint1.Y - k * linePoint1.X;
+                float k = (float) ( linePoint2.Y - linePoint1.Y ) / ( linePoint2.X - linePoint1.X );
+                float b = linePoint1.Y - k * linePoint1.X;
 
-                double div = Math.Sqrt( k * k + 1 );
-                double pointDistance = 0;
+                float div = (float) Math.Sqrt( k * k + 1 );
+                float pointDistance = 0;
 
                 foreach ( IntPoint point in cloud )
                 {
@@ -325,7 +325,7 @@ namespace AForge.Math.Geometry
             else
             {
                 int lineX = linePoint1.X;
-                double pointDistance = 0;
+                float pointDistance = 0;
 
                 foreach ( IntPoint point in cloud )
                 {
@@ -375,12 +375,12 @@ namespace AForge.Math.Geometry
         /// <para>Default value is set to <b>0.1</b>.</para>
         /// </remarks>
         /// 
-        public static double QuadrilateralRelativeDistortionLimit
+        public static float QuadrilateralRelativeDistortionLimit
         {
             get { return quadrilateralRelativeDistortionLimit; }
-            set { quadrilateralRelativeDistortionLimit = Math.Max( 0.0, Math.Min( 0.25, value ) ); }
+            set { quadrilateralRelativeDistortionLimit = Math.Max( 0.0f, Math.Min( 0.25f, value ) ); }
         }
-        private static double quadrilateralRelativeDistortionLimit = 0.1;
+        private static float quadrilateralRelativeDistortionLimit = 0.1f;
 
         /// <summary>
         /// Find corners of quadrilateral or triangular area, which contains the specified collection of points.
@@ -421,7 +421,7 @@ namespace AForge.Math.Geometry
             // calculate center point
             IntPoint center = minXY + cloudSize / 2;
             // acceptable deviation limit
-            double distortionLimit = quadrilateralRelativeDistortionLimit * ( cloudSize.X + cloudSize.Y ) / 2;
+            float distortionLimit = quadrilateralRelativeDistortionLimit * ( cloudSize.X + cloudSize.Y ) / 2;
 
             // get the furthest point from (0,0)
             IntPoint point1 = PointsCloud.GetFurthestPoint( cloud, center );
@@ -433,7 +433,7 @@ namespace AForge.Math.Geometry
 
             // get two furthest points from line
             IntPoint point3, point4;
-            double distance3, distance4;
+            float distance3, distance4;
 
             PointsCloud.GetFurthestPointsFromLine( cloud, point1, point2,
                 out point3, out distance3, out point4, out distance4 );
@@ -505,7 +505,7 @@ namespace AForge.Math.Geometry
                     corners.Add( point3 );
 
                     // try to find 4th point
-                    double tempDistance;
+                    float tempDistance;
 
                     PointsCloud.GetFurthestPointsFromLine( cloud, point1, point3,
                         out tempPoint, out tempDistance, out point4, out distance4 );
@@ -546,13 +546,13 @@ namespace AForge.Math.Geometry
 
 
             // sort other points in counter clockwise order
-            double k1 = ( corners[1].X != corners[0].X ) ?
-                ( (double) ( corners[1].Y - corners[0].Y ) / ( corners[1].X - corners[0].X ) ) :
-                ( ( corners[1].Y > corners[0].Y ) ? double.PositiveInfinity : double.NegativeInfinity );
+            float k1 = ( corners[1].X != corners[0].X ) ?
+                ( (float) ( corners[1].Y - corners[0].Y ) / ( corners[1].X - corners[0].X ) ) :
+                ( ( corners[1].Y > corners[0].Y ) ? float.PositiveInfinity : float.NegativeInfinity );
 
-            double k2 = ( corners[2].X != corners[0].X ) ?
-                ( (double) ( corners[2].Y - corners[0].Y ) / ( corners[2].X - corners[0].X ) ) :
-                ( ( corners[2].Y > corners[0].Y ) ? double.PositiveInfinity : double.NegativeInfinity );
+            float k2 = ( corners[2].X != corners[0].X ) ?
+                ( (float) ( corners[2].Y - corners[0].Y ) / ( corners[2].X - corners[0].X ) ) :
+                ( ( corners[2].Y > corners[0].Y ) ? float.PositiveInfinity : float.NegativeInfinity );
 
             if ( k2 < k1 )
             {
@@ -560,16 +560,16 @@ namespace AForge.Math.Geometry
                 corners[1] = corners[2];
                 corners[2] = temp;
 
-                double tk = k1;
+                float tk = k1;
                 k1 = k2;
                 k2 = tk;
             }
 
             if ( corners.Count == 4 )
             {
-                double k3 = ( corners[3].X != corners[0].X ) ?
-                    ( (double) ( corners[3].Y - corners[0].Y ) / ( corners[3].X - corners[0].X ) ) :
-                    ( ( corners[3].Y > corners[0].Y ) ? double.PositiveInfinity : double.NegativeInfinity );
+                float k3 = ( corners[3].X != corners[0].X ) ?
+                    ( (float) ( corners[3].Y - corners[0].Y ) / ( corners[3].X - corners[0].X ) ) :
+                    ( ( corners[3].Y > corners[0].Y ) ? float.PositiveInfinity : float.NegativeInfinity );
 
                 if ( k3 < k1 )
                 {
@@ -577,7 +577,7 @@ namespace AForge.Math.Geometry
                     corners[1] = corners[3];
                     corners[3] = temp;
 
-                    double tk = k1;
+                    float tk = k1;
                     k1 = k3;
                     k3 = tk;
                 }
@@ -587,7 +587,7 @@ namespace AForge.Math.Geometry
                     corners[2] = corners[3];
                     corners[3] = temp;
 
-                    double tk = k2;
+                    float tk = k2;
                     k2 = k3;
                     k3 = tk;
                 }

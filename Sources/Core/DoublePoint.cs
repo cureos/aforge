@@ -2,11 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2010
-// andrew.kirillov@aforgenet.com
-//
-// Copyright © Fabio L. Caversan, 2008
-// fabio.caversan@gmail.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge
@@ -218,7 +215,7 @@ namespace AForge
         /// 
         public override int GetHashCode( )
         {
-            return base.GetHashCode( );
+            return X.GetHashCode( ) + Y.GetHashCode( );
         }
 
         /// <summary>
@@ -256,7 +253,7 @@ namespace AForge
         ///
         public override string ToString( )
         {
-            return string.Format( "{0}, {1}", X, Y );
+            return string.Format( System.Globalization.CultureInfo.InvariantCulture, "{0}, {1}", X, Y );
         }
 
         /// <summary>

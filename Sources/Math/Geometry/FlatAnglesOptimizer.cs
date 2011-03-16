@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2010
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Math.Geometry
@@ -33,7 +33,7 @@ namespace AForge.Math.Geometry
     /// 
     public class FlatAnglesOptimizer : IShapeOptimizer
     {
-        private double maxAngleToKeep = 160;
+        private float maxAngleToKeep = 160;
 
         /// <summary>
         /// Maximum angle between adjacent edges to keep in a shape, [140, 180].
@@ -45,7 +45,7 @@ namespace AForge.Math.Geometry
         /// 
         /// <para>Default value is set to <b>160</b>.</para></remarks>
         /// 
-        public double MaxAngleToKeep
+        public float MaxAngleToKeep
         {
             get { return maxAngleToKeep; }
             set { maxAngleToKeep = Math.Min( 180, Math.Max( 140, value ) ); }
@@ -63,7 +63,7 @@ namespace AForge.Math.Geometry
         /// 
         /// <param name="maxAngleToKeep">Maximum acceptable angle between two edges of a shape (see <see cref="MaxAngleToKeep"/>).</param>
         /// 
-        public FlatAnglesOptimizer( double maxAngleToKeep )
+        public FlatAnglesOptimizer( float maxAngleToKeep )
         {
             this.maxAngleToKeep = maxAngleToKeep;
         }
@@ -88,7 +88,7 @@ namespace AForge.Math.Geometry
             }
             else
             {
-                double angle = 0;
+                float angle = 0;
 
                 // add first 2 points to the new shape
                 optimizedShape.Add( shape[0] );

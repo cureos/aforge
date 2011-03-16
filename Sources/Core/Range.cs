@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge
@@ -11,22 +11,22 @@ namespace AForge
     using System;
 
     /// <summary>
-    /// Represents a double range with minimum and maximum values.
+    /// Represents a range with minimum and maximum values, which are single precision numbers (floats).
     /// </summary>
     /// 
     /// <remarks>
-    /// <para>The class represents a double range with inclusive limits -
+    /// <para>The class represents a single precision range with inclusive limits -
     /// both minimum and maximum values of the range are included into it.
     /// Mathematical notation of such range is <b>[min, max]</b>.</para>
     /// 
     /// <para>Sample usage:</para>
     /// <code>
     /// // create [0.25, 1.5] range
-    /// DoubleRange range1 = new DoubleRange( 0.25, 1.5 );
+    /// Range range1 = new Range( 0.25f, 1.5f );
     /// // create [1.00, 2.25] range
-    /// DoubleRange range2 = new DoubleRange( 1.00, 2.25 );
+    /// Range range2 = new Range( 1.00f, 2.25f );
     /// // check if values is inside of the first range
-    /// if ( range1.IsInside( 0.75 ) )
+    /// if ( range1.IsInside( 0.75f ) )
     /// {
     ///     // ...
     /// }
@@ -43,9 +43,9 @@ namespace AForge
     /// </code>
     /// </remarks>
     /// 
-    public struct DoubleRange
+    public struct Range
     {
-        private double min, max;
+        private float min, max;
 
         /// <summary>
         /// Minimum value of the range.
@@ -54,7 +54,7 @@ namespace AForge
         /// <remarks><para>The property represents minimum value (left side limit) or the range -
         /// [<b>min</b>, max].</para></remarks>
         /// 
-        public double Min
+        public float Min
         {
             get { return min; }
             set { min = value; }
@@ -67,7 +67,7 @@ namespace AForge
         /// <remarks><para>The property represents maximum value (right side limit) or the range -
         /// [min, <b>max</b>].</para></remarks>
         /// 
-        public double Max
+        public float Max
         {
             get { return max; }
             set { max = value; }
@@ -76,20 +76,20 @@ namespace AForge
         /// <summary>
         /// Length of the range (deffirence between maximum and minimum values).
         /// </summary>
-        public double Length
+        public float Length
         {
             get { return max - min; }
         }
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DoubleRange"/> class.
+        /// Initializes a new instance of the <see cref="Range"/> class.
         /// </summary>
         /// 
         /// <param name="min">Minimum value of the range.</param>
         /// <param name="max">Maximum value of the range.</param>
         /// 
-        public DoubleRange( double min, double max )
+        public Range( float min, float max )
         {
             this.min = min;
             this.max = max;
@@ -104,7 +104,7 @@ namespace AForge
         /// <returns><b>True</b> if the specified value is inside of the range or
         /// <b>false</b> otherwise.</returns>
         /// 
-        public bool IsInside( double x )
+        public bool IsInside( float x )
         {
             return ( ( x >= min ) && ( x <= max ) );
         }
@@ -118,7 +118,7 @@ namespace AForge
         /// <returns><b>True</b> if the specified range is inside of the range or
         /// <b>false</b> otherwise.</returns>
         /// 
-        public bool IsInside( DoubleRange range )
+        public bool IsInside( Range range )
         {
             return ( ( IsInside( range.min ) ) && ( IsInside( range.max ) ) );
         }
@@ -132,7 +132,7 @@ namespace AForge
         /// <returns><b>True</b> if the specified range overlaps with the range or
         /// <b>false</b> otherwise.</returns>
         /// 
-        public bool IsOverlapping( DoubleRange range )
+        public bool IsOverlapping( Range range )
         {
             return ( ( IsInside( range.min ) ) || ( IsInside( range.max ) ) ||
                      ( range.IsInside( min ) ) || ( range.IsInside( max ) ) );

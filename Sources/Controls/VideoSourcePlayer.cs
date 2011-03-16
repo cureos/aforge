@@ -19,6 +19,8 @@ using AForge.Video;
 
 namespace AForge.Controls
 {
+    using Point = System.Drawing.Point;
+
     /// <summary>
     /// Video source player control.
     /// </summary>

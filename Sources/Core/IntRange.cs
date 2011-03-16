@@ -43,7 +43,7 @@ namespace AForge
     /// </code>
     /// </remarks>
     /// 
-    public class IntRange
+    public struct IntRange
     {
         private int min, max;
 

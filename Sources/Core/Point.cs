@@ -1,28 +1,28 @@
-﻿// AForge Core Library
+// AForge Core Library
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © AForge.NET, 2007-2011
+// Copyright � AForge.NET, 2007-2011
 // contacts@aforgenet.com
 //
 
 namespace AForge
 {
     using System;
-    using System.ComponentModel;
 
     /// <summary>
-    /// Structure for representing a pair of coordinates of integer type.
+    /// Structure for representing a pair of coordinates of float type.
     /// </summary>
     /// 
-    /// <remarks><para>The structure is used to store a pair of integer coordinates.</para>
+    /// <remarks><para>The structure is used to store a pair of floating point
+    /// coordinates with single precision.</para>
     /// 
     /// <para>Sample usage:</para>
     /// <code>
     /// // assigning coordinates in the constructor
-    /// IntPoint p1 = new IntPoint( 10, 20 );
+    /// Point p1 = new Point( 10, 20 );
     /// // creating a point and assigning coordinates later
-    /// IntPoint p2;
+    /// Point p2;
     /// p2.X = 30;
     /// p2.Y = 40;
     /// // calculating distance between two points
@@ -30,28 +30,28 @@ namespace AForge
     /// </code>
     /// </remarks>
     /// 
-    public struct IntPoint
+    public struct Point
     {
         /// <summary> 
         /// X coordinate.
         /// </summary> 
         /// 
-        public int X;
+        public float X;
 
         /// <summary> 
         /// Y coordinate.
         /// </summary> 
         /// 
-        public int Y;
+        public float Y;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IntPoint"/> structure.
+        /// Initializes a new instance of the <see cref="Point"/> structure.
         /// </summary>
         /// 
         /// <param name="x">X axis coordinate.</param>
         /// <param name="y">Y axis coordinate.</param>
         /// 
-        public IntPoint( int x, int y )
+        public Point( float x, float y )
         {
             this.X = x;
             this.Y = y;
@@ -66,10 +66,10 @@ namespace AForge
         /// <returns>Returns Euclidean distance between this point and
         /// <paramref name="anotherPoint"/> points.</returns>
         /// 
-        public float DistanceTo( IntPoint anotherPoint )
+        public float DistanceTo( Point anotherPoint )
         {
-            int dx = X - anotherPoint.X;
-            int dy = Y - anotherPoint.Y;
+            float dx = X - anotherPoint.X;
+            float dy = Y - anotherPoint.Y;
 
             return (float) System.Math.Sqrt( dx * dx + dy * dy );
         }
@@ -84,9 +84,9 @@ namespace AForge
         /// <returns>Returns new point which coordinates equal to sum of corresponding
         /// coordinates of specified points.</returns>
         /// 
-        public static IntPoint operator +( IntPoint point1, IntPoint point2 )
+        public static Point operator +( Point point1, Point point2 )
         {
-            return new IntPoint( point1.X + point2.X, point1.Y + point2.Y );
+            return new Point( point1.X + point2.X, point1.Y + point2.Y );
         }
 
         /// <summary>
@@ -99,9 +99,9 @@ namespace AForge
         /// <returns>Returns new point which coordinates equal to sum of corresponding
         /// coordinates of specified points.</returns>
         /// 
-        public static IntPoint Add( IntPoint point1, IntPoint point2 )
+        public static Point Add( Point point1, Point point2 )
         {
-            return new IntPoint( point1.X + point2.X, point1.Y + point2.Y );
+            return new Point( point1.X + point2.X, point1.Y + point2.Y );
         }
 
         /// <summary>
@@ -114,9 +114,9 @@ namespace AForge
         /// <returns>Returns new point which coordinates equal to difference of corresponding
         /// coordinates of specified points.</returns>
         ///
-        public static IntPoint operator -( IntPoint point1, IntPoint point2 )
+        public static Point operator -( Point point1, Point point2 )
         {
-            return new IntPoint( point1.X - point2.X, point1.Y - point2.Y );
+            return new Point( point1.X - point2.X, point1.Y - point2.Y );
         }
 
         /// <summary>
@@ -129,9 +129,9 @@ namespace AForge
         /// <returns>Returns new point which coordinates equal to difference of corresponding
         /// coordinates of specified points.</returns>
         ///
-        public static IntPoint Subtract( IntPoint point1, IntPoint point2 )
+        public static Point Subtract( Point point1, Point point2 )
         {
-            return new IntPoint( point1.X - point2.X, point1.Y - point2.Y );
+            return new Point( point1.X - point2.X, point1.Y - point2.Y );
         }
 
         /// <summary>
@@ -144,9 +144,9 @@ namespace AForge
         /// <returns>Returns new point which coordinates equal to coordinates of
         /// the specified point increased by specified value.</returns>
         /// 
-        public static IntPoint operator +( IntPoint point, int valueToAdd )
+        public static Point operator +( Point point, float valueToAdd )
         {
-            return new IntPoint( point.X + valueToAdd, point.Y + valueToAdd );
+            return new Point( point.X + valueToAdd, point.Y + valueToAdd );
         }
 
         /// <summary>
@@ -159,9 +159,9 @@ namespace AForge
         /// <returns>Returns new point which coordinates equal to coordinates of
         /// the specified point increased by specified value.</returns>
         /// 
-        public static IntPoint Add( IntPoint point, int valueToAdd )
+        public static Point Add( Point point, float valueToAdd )
         {
-            return new IntPoint( point.X + valueToAdd, point.Y + valueToAdd );
+            return new Point( point.X + valueToAdd, point.Y + valueToAdd );
         }
 
         /// <summary>
@@ -174,9 +174,9 @@ namespace AForge
         /// <returns>Returns new point which coordinates equal to coordinates of
         /// the specified point decreased by specified value.</returns>
         /// 
-        public static IntPoint operator -( IntPoint point, int valueToSubtract )
+        public static Point operator -( Point point, float valueToSubtract )
         {
-            return new IntPoint( point.X - valueToSubtract, point.Y - valueToSubtract );
+            return new Point( point.X - valueToSubtract, point.Y - valueToSubtract );
         }
 
         /// <summary>
@@ -189,9 +189,9 @@ namespace AForge
         /// <returns>Returns new point which coordinates equal to coordinates of
         /// the specified point decreased by specified value.</returns>
         /// 
-        public static IntPoint Subtract( IntPoint point, int valueToSubtract )
+        public static Point Subtract( Point point, float valueToSubtract )
         {
-            return new IntPoint( point.X - valueToSubtract, point.Y - valueToSubtract );
+            return new Point( point.X - valueToSubtract, point.Y - valueToSubtract );
         }
 
         /// <summary>
@@ -204,9 +204,9 @@ namespace AForge
         /// <returns>Returns new point which coordinates equal to coordinates of
         /// the specified point multiplied by specified value.</returns>
         ///
-        public static IntPoint operator *( IntPoint point, int factor )
+        public static Point operator *( Point point, float factor )
         {
-            return new IntPoint( point.X * factor, point.Y * factor );
+            return new Point( point.X * factor, point.Y * factor );
         }
 
         /// <summary>
@@ -219,9 +219,9 @@ namespace AForge
         /// <returns>Returns new point which coordinates equal to coordinates of
         /// the specified point multiplied by specified value.</returns>
         ///
-        public static IntPoint Multiply( IntPoint point, int factor )
+        public static Point Multiply( Point point, float factor )
         {
-            return new IntPoint( point.X * factor, point.Y * factor );
+            return new Point( point.X * factor, point.Y * factor );
         }
 
         /// <summary>
@@ -234,9 +234,9 @@ namespace AForge
         /// <returns>Returns new point which coordinates equal to coordinates of
         /// the specified point divided by specified value.</returns>
         /// 
-        public static IntPoint operator /( IntPoint point, int factor )
+        public static Point operator /( Point point, float factor )
         {
-            return new IntPoint( point.X / factor, point.Y / factor );
+            return new Point( point.X / factor, point.Y / factor );
         }
 
         /// <summary>
@@ -249,9 +249,9 @@ namespace AForge
         /// <returns>Returns new point which coordinates equal to coordinates of
         /// the specified point divided by specified value.</returns>
         /// 
-        public static IntPoint Divide( IntPoint point, int factor )
+        public static Point Divide( Point point, float factor )
         {
-            return new IntPoint( point.X / factor, point.Y / factor );
+            return new Point( point.X / factor, point.Y / factor );
         }
 
         /// <summary>
@@ -264,7 +264,7 @@ namespace AForge
         /// <returns>Returns <see langword="true"/> if coordinates of specified
         /// points are equal.</returns>
         ///
-        public static bool operator ==( IntPoint point1, IntPoint point2 )
+        public static bool operator ==( Point point1, Point point2 )
         {
             return ( ( point1.X == point2.X ) && ( point1.Y == point2.Y ) );
         }
@@ -279,13 +279,13 @@ namespace AForge
         /// <returns>Returns <see langword="true"/> if coordinates of specified
         /// points are not equal.</returns>
         ///
-        public static bool operator !=( IntPoint point1, IntPoint point2 )
+        public static bool operator !=( Point point1, Point point2 )
         {
             return ( ( point1.X != point2.X ) || ( point1.Y != point2.Y ) );
         }
 
         /// <summary>
-        /// Check if this instance of <see cref="IntPoint"/> equal to the specified one.
+        /// Check if this instance of <see cref="Point"/> equal to the specified one.
         /// </summary>
         /// 
         /// <param name="obj">Another point to check equalty to.</param>
@@ -294,7 +294,7 @@ namespace AForge
         /// 
         public override bool Equals( object obj )
         {
-            return ( obj is IntPoint ) ? ( this == (IntPoint) obj ) : false;
+            return ( obj is Point ) ? ( this == (Point) obj ) : false;
         }
 
         /// <summary>
@@ -309,18 +309,31 @@ namespace AForge
         }
 
         /// <summary>
-        /// Implicit conversion to <see cref="Point"/>.
+        /// Explicit conversion to <see cref="IntPoint"/>.
         /// </summary>
         /// 
-        /// <param name="point">Integer point to convert to single precision point.</param>
+        /// <param name="point">Single precision point to convert to integer point.</param>
         /// 
-        /// <returns>Returns new single precision point which coordinates are implicitly converted
-        /// to floats from coordinates of the specified integer point.</returns>
+        /// <returns>Returns new integer point which coordinates are explicitly converted
+        /// to integers from coordinates of the specified single precision point by
+        /// casting float values to integers value.</returns>
         /// 
-        public static implicit operator Point( IntPoint point )
+        public static explicit operator IntPoint( Point point )
         {
-            return new Point( point.X, point.Y );
-        } 
+            return new IntPoint( (int) point.X, (int) point.Y );
+        }
+
+        /// <summary>
+        /// Rounds the single precision point.
+        /// </summary>
+        /// 
+        /// <returns>Returns new integer point, which coordinates equal to whole numbers
+        /// nearest to the corresponding coordinates of the single precision point.</returns>
+        /// 
+        public IntPoint Round( )
+        {
+            return new IntPoint( (int) Math.Round( X ), (int) Math.Round( Y ) );
+        }
 
         /// <summary>
         /// Get string representation of the class.
@@ -344,5 +357,5 @@ namespace AForge
         {
             return (float) System.Math.Sqrt( X * X + Y * Y );
         }
-    }    
+    }
 }

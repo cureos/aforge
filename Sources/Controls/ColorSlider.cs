@@ -1,8 +1,8 @@
 // AForge Controls Library
 // AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 using System;
@@ -18,6 +18,8 @@ using System.Reflection;
 
 namespace AForge.Controls
 {
+    using Point = System.Drawing.Point;
+
     /// <summary>
     /// Color slider control.
     /// </summary>

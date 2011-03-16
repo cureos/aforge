@@ -1,8 +1,8 @@
 // AForge Controls Library
 // AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2005-2008
-// andrew.kirillov@gmail.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Controls
@@ -76,8 +76,8 @@ namespace AForge.Controls
         private Pen		blackPen = new Pen( Color.Black );
         private Brush	whiteBrush = new SolidBrush( Color.White );
 
-        private DoubleRange	rangeX = new DoubleRange( 0, 1 );
-        private DoubleRange	rangeY = new DoubleRange( 0, 1 );
+        private Range	rangeX = new Range( 0, 1 );
+        private Range	rangeY = new Range( 0, 1 );
 
         /// <summary>
         /// Chart's X range.
@@ -85,7 +85,7 @@ namespace AForge.Controls
         /// 
         /// <remarks><para>The value sets the X range of data to be displayed on the chart.</para></remarks>
         /// 
-        public DoubleRange RangeX
+        public Range RangeX
         {
             get { return rangeX; }
             set
@@ -101,7 +101,7 @@ namespace AForge.Controls
         /// 
         /// <remarks>The value sets the Y range of data to be displayed on the chart.</remarks>
         ///
-        public DoubleRange RangeY
+        public Range RangeY
         {
             get { return rangeY; }
             set
@@ -178,7 +178,7 @@ namespace AForge.Controls
             g.DrawRectangle( blackPen, 0, 0, clientWidth - 1, clientHeight - 1 );
 
             // check if there are any data series
-            if ( ( rangeY != null ) && ( rangeX.Length != 0 ) )
+            if ( rangeX.Length != 0 )
             {
                 double xFactor = (double) ( clientWidth - 10 ) / ( rangeX.Length );
                 double yFactor = (double) ( clientHeight - 10 ) / ( ( rangeY.Length != 0 ) ? rangeY.Length : 1 );
@@ -390,8 +390,8 @@ namespace AForge.Controls
         /// </summary>
         private void UpdateYRange( )
         {
-            double	minY = double.MaxValue;
-            double	maxY = double.MinValue;
+            float minY = float.MaxValue;
+            float maxY = float.MinValue;
 
             // walk through all data series
             IDictionaryEnumerator en = seriesTable.GetEnumerator( );
@@ -405,7 +405,7 @@ namespace AForge.Controls
                 {
                     for ( int i = 0, n = data.GetLength( 0 ); i < n; i++ )
                     {
-                        double v = data[i, 1];
+                        float v = (float) data[i, 1];
                         // check for max
                         if ( v > maxY )
                             maxY = v;
@@ -419,7 +419,7 @@ namespace AForge.Controls
             // update Y range, if there are any data
             if ( ( minY != double.MaxValue ) || ( maxY != double.MinValue ) )
             {
-                rangeY = new DoubleRange( minY, maxY );
+                rangeY = new Range( minY, maxY );
             }
         }
     }

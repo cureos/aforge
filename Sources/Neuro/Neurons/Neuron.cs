@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Neuro
@@ -51,7 +51,7 @@ namespace AForge.Neuro
         /// <remarks>Sets the range of random generator. Affects initial values of neuron's weight.
         /// Default value is [0, 1].</remarks>
         /// 
-        protected static DoubleRange randRange = new DoubleRange( 0.0, 1.0 );
+        protected static Range randRange = new Range( 0.0f, 1.0f );
 
         /// <summary>
         /// Random number generator.
@@ -79,16 +79,10 @@ namespace AForge.Neuro
         /// <remarks>Sets the range of random generator. Affects initial values of neuron's weight.
         /// Default value is [0, 1].</remarks>
         /// 
-        public static DoubleRange RandRange
+        public static Range RandRange
         {
             get { return randRange; }
-            set
-            {
-                if ( value != null )
-                {
-                    randRange = value;
-                }
-            }
+            set { randRange = value; }
         }
 
         /// <summary>

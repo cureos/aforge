@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © AForge.NET, 2007-2010
+// Copyright © AForge.NET, 2007-2011
 // contacts@aforgenet.com
 //
 
@@ -23,28 +23,28 @@ namespace AForge.Math.Geometry
     /// <para>Sample usage:</para>
     /// <code>
     /// // create a segment
-    /// LineSegment segment = new LineSegment( new DoublePoint( 0, 0 ), new DoublePoint( 3, 4 ) );
+    /// LineSegment segment = new LineSegment( new Point( 0, 0 ), new Point( 3, 4 ) );
     /// // get segment's length
-    /// double length = segment.Length;
+    /// float length = segment.Length;
     /// 
     /// // get intersection point with a line
-    /// DoublePoint? intersection = segment.GetIntersectionWith(
-    ///     new Line( new DoublePoint( -3, 8 ), new DoublePoint( 0, 4 ) ) );
+    /// Point? intersection = segment.GetIntersectionWith(
+    ///     new Line( new Point( -3, 8 ), new Point( 0, 4 ) ) );
     /// </code>
     /// </remarks>
     /// 
     public sealed class LineSegment
     {
         // segment's start/end point
-        private readonly DoublePoint start;
-        private readonly DoublePoint end;
+        private readonly Point start;
+        private readonly Point end;
 
         private readonly Line line;
 
         /// <summary>
         /// Start point of the line segment.
         /// </summary>
-        public DoublePoint Start
+        public Point Start
         {
             get { return start; }
         }
@@ -52,7 +52,7 @@ namespace AForge.Math.Geometry
         /// <summary>
         /// End point of the line segment.
         /// </summary>
-        public DoublePoint End
+        public Point End
         {
             get { return end; }
         }
@@ -60,7 +60,7 @@ namespace AForge.Math.Geometry
         /// <summary>
         /// Get segment's length - Euclidean distance between its <see cref="Start"/> and <see cref="End"/> points.
         /// </summary>
-        public double Length
+        public float Length
         {
             get { return start.DistanceTo( end ); }
         }
@@ -74,7 +74,7 @@ namespace AForge.Math.Geometry
         /// 
         /// <exception cref="ArgumentException">Thrown if the two points are the same.</exception>
         /// 
-        public LineSegment( DoublePoint start, DoublePoint end )
+        public LineSegment( Point start, Point end )
         {
             line = Line.FromPoints( start, end );
             this.start = start;
@@ -105,9 +105,9 @@ namespace AForge.Math.Geometry
         /// <see cref="Line.DistanceToPoint"/>, this returns the distance from the finite segment. (0,0) is 5 units
         /// from the segment (0,5)-(0,8), but is 0 units from the line through those points.</returns>
         /// 
-        public double DistanceToPoint( DoublePoint point )
+        public float DistanceToPoint( Point point )
         {
-            double segmentDistance;
+            float segmentDistance;
 
             switch ( LocateProjection( point ) )
             {
@@ -141,9 +141,9 @@ namespace AForge.Math.Geometry
         /// <exception cref="InvalidOperationException">Thrown if the segments overlap - if they have
         /// multiple points in common.</exception>
         /// 
-        public DoublePoint? GetIntersectionWith( LineSegment other )
+        public Point? GetIntersectionWith( LineSegment other )
         {
-            DoublePoint? result = null;
+            Point? result = null;
 
             if ( ( line.Slope == other.line.Slope ) || ( line.IsVertical && other.line.IsVertical ) )
             {
@@ -213,9 +213,9 @@ namespace AForge.Math.Geometry
         /// <exception cref="InvalidOperationException">Thrown if this segment is a portion of
         /// <paramref name="other"/> line.</exception>
         /// 
-        public DoublePoint? GetIntersectionWith( Line other )
+        public Point? GetIntersectionWith( Line other )
         {
-            DoublePoint? result;
+            Point? result;
 
             if ( ( line.Slope == other.Slope ) || ( line.IsVertical && other.IsVertical ) )
             {
@@ -244,7 +244,7 @@ namespace AForge.Math.Geometry
         private enum ProjectionLocation { RayA, SegmentAB, RayB }
 
         // Get type of point's projections to this line segment
-        private ProjectionLocation LocateProjection( DoublePoint point )
+        private ProjectionLocation LocateProjection( Point point )
         {
             // Modified from http://www.codeguru.com/forum/showthread.php?t=194400
 
@@ -283,11 +283,11 @@ namespace AForge.Math.Geometry
             */
 
             // the above is modified here to compare the numerator and denominator, rather than doing the division
-            DoublePoint abDelta = end - start;
-            DoublePoint acDelta = point - start;
+            Point abDelta = end - start;
+            Point acDelta = point - start;
 
-            double numerator   = acDelta.X * abDelta.X + acDelta.Y * abDelta.Y;
-            double denomenator = abDelta.X * abDelta.X + abDelta.Y * abDelta.Y;
+            float numerator   = acDelta.X * abDelta.X + acDelta.Y * abDelta.Y;
+            float denomenator = abDelta.X * abDelta.X + abDelta.Y * abDelta.Y;
 
             ProjectionLocation result = ( numerator < 0 ) ? ProjectionLocation.RayA : ( numerator > denomenator ) ? ProjectionLocation.RayB : ProjectionLocation.SegmentAB;
 

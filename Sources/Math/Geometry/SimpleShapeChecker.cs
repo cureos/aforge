@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2010
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Math.Geometry
@@ -53,11 +53,11 @@ namespace AForge.Math.Geometry
     /// System.Random rand = new System.Random( );
     ///
     /// // generate sample circles
-    /// double radius = 100;
+    /// float radius = 100;
     ///
     /// for ( int i = 0; i &lt; 360; i += 10 )
     /// {
-    ///     double angle = (double) i / 180 * System.Math.PI;
+    ///     float angle = (float) ( (float) i / 180 * System.Math.PI );
     /// 
     ///     // add point to ideal circle
     ///     idealCicle.Add( new IntPoint(
@@ -65,7 +65,7 @@ namespace AForge.Math.Geometry
     ///         (int) ( radius * System.Math.Sin( angle ) ) ) );
     /// 
     ///     // add a bit distortion for distorred cirlce
-    ///     double distorredRadius = radius + rand.Next( 7 ) - 3;
+    ///     float distorredRadius = radius + rand.Next( 7 ) - 3;
     /// 
     ///     distorredCircle.Add( new IntPoint(
     ///         (int) ( distorredRadius * System.Math.Cos( angle ) ),
@@ -219,8 +219,8 @@ namespace AForge.Math.Geometry
         /// 
         public bool IsCircle( List<IntPoint> edgePoints )
         {
-            DoublePoint center;
-            double radius;
+            Point center;
+            float radius;
 
             return IsCircle( edgePoints, out center, out radius );
         }
@@ -240,12 +240,12 @@ namespace AForge.Math.Geometry
         /// The method returns <see langword="false"/> always, of number of points in the specified
         /// shape is less than 8.</note></para></remarks>
         /// 
-        public bool IsCircle( List<IntPoint> edgePoints, out DoublePoint center, out double radius )
+        public bool IsCircle( List<IntPoint> edgePoints, out Point center, out float radius )
         {
             // make sure we have at least 8 points for curcle shape
             if ( edgePoints.Count < 8 )
             {
-                center = new DoublePoint( 0, 0 );
+                center = new Point( 0, 0 );
                 radius = 0;
                 return false;
             }
@@ -256,7 +256,7 @@ namespace AForge.Math.Geometry
             // get cloud's size
             IntPoint cloudSize = maxXY - minXY;
             // calculate center point
-            center = minXY + (DoublePoint) cloudSize / 2;
+            center = minXY + (Point) cloudSize / 2;
 
             radius = ( (float) cloudSize.X + cloudSize.Y ) / 4;
 
@@ -397,9 +397,9 @@ namespace AForge.Math.Geometry
             if ( corners.Count == 3 )
             {
                 // get angles of the triangle
-                double angle1 = GeometryTools.GetAngleBetweenVectors( corners[0], corners[1], corners[2] );
-                double angle2 = GeometryTools.GetAngleBetweenVectors( corners[1], corners[2], corners[0] );
-                double angle3 = GeometryTools.GetAngleBetweenVectors( corners[2], corners[0], corners[1] );
+                float angle1 = GeometryTools.GetAngleBetweenVectors( corners[0], corners[1], corners[2] );
+                float angle2 = GeometryTools.GetAngleBetweenVectors( corners[1], corners[2], corners[0] );
+                float angle3 = GeometryTools.GetAngleBetweenVectors( corners[2], corners[0], corners[1] );
 
                 // check for equilateral triangle
                 if ( ( Math.Abs( angle1 - 60 ) <= angleError ) &&
@@ -431,8 +431,8 @@ namespace AForge.Math.Geometry
             else if ( corners.Count == 4 )
             {
                 // get angles between 2 pairs of opposite sides
-                double angleBetween1stPair = GeometryTools.GetAngleBetweenLines( corners[0], corners[1], corners[2], corners[3] );
-                double angleBetween2ndPair = GeometryTools.GetAngleBetweenLines( corners[1], corners[2], corners[3], corners[0] );
+                float angleBetween1stPair = GeometryTools.GetAngleBetweenLines( corners[0], corners[1], corners[2], corners[3] );
+                float angleBetween2ndPair = GeometryTools.GetAngleBetweenLines( corners[1], corners[2], corners[3], corners[0] );
 
                 // check 1st pair for parallelism
                 if ( angleBetween1stPair <= angleError )
@@ -493,9 +493,9 @@ namespace AForge.Math.Geometry
             int cornersCount = corners.Count;
 
             // lines coefficients (for representation as y(x)=k*x+b)
-            double[] k = new double[cornersCount];
-            double[] b = new double[cornersCount];
-            double[] div = new double[cornersCount]; // precalculated divisor
+            float[] k = new float[cornersCount];
+            float[] b = new float[cornersCount];
+            float[] div = new float[cornersCount]; // precalculated divisor
             bool[] isVert = new bool[cornersCount];
 
             for ( int i = 0; i < cornersCount; i++ )
@@ -505,9 +505,9 @@ namespace AForge.Math.Geometry
 
                 if ( !( isVert[i] = nextPoint.X == currentPoint.X ) )
                 {
-                    k[i] = (double) ( nextPoint.Y - currentPoint.Y ) / ( nextPoint.X - currentPoint.X );
+                    k[i] = (float) ( nextPoint.Y - currentPoint.Y ) / ( nextPoint.X - currentPoint.X );
                     b[i] = currentPoint.Y - k[i] * currentPoint.X;
-                    div[i] = Math.Sqrt( k[i] * k[i] + 1 );
+                    div[i] = (float) Math.Sqrt( k[i] * k[i] + 1 );
                 }
             }
 
