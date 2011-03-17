@@ -17,6 +17,8 @@ namespace AForge
     /// <remarks><para>The structure is used to store a pair of floating point
     /// coordinates with double precision.</para>
     /// 
+    /// <para><note>The structure is obsolete - use <see cref="Point"/> instead.</note></para>
+    /// 
     /// <para>Sample usage:</para>
     /// <code>
     /// // assigning coordinates in the constructor
@@ -30,6 +32,7 @@ namespace AForge
     /// </code>
     /// </remarks>
     /// 
+    [Obsolete( "Use Point structure instead." )]
     public struct DoublePoint
     {
         /// <summary> 

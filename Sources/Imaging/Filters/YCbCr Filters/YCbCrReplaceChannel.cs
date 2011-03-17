@@ -1,8 +1,8 @@
 // AForge Image Processing Library
 // AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2005-2008
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging.Filters
@@ -264,15 +264,15 @@ namespace AForge.Imaging.Filters
                     switch ( channel )
                     {
                         case YCbCr.YIndex:
-                            ycbcr.Y = (double) *ch / 255;
+                            ycbcr.Y = (float) *ch / 255;
                             break;
 
                         case YCbCr.CbIndex:
-                            ycbcr.Cb = (double) *ch / 255 - 0.5;
+                            ycbcr.Cb = (float) *ch / 255 - 0.5f;
                             break;
 
                         case YCbCr.CrIndex:
-                            ycbcr.Cr = (double) *ch / 255 - 0.5;
+                            ycbcr.Cr = (float) *ch / 255 - 0.5f;
                             break;
                     }
 

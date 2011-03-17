@@ -1,8 +1,8 @@
 // AForge Image Processing Library
 // AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging.Filters
@@ -29,7 +29,7 @@ namespace AForge.Imaging.Filters
     /// <para>Sample usage:</para>
     /// <code>
     /// // create filter
-    /// ContrastCorrection filter = new ContrastCorrection( 2.0 );
+    /// ContrastCorrection filter = new ContrastCorrection( 2.0f );
     /// // apply the filter
     /// filter.ApplyInPlace( image );
     /// </code>
@@ -43,8 +43,8 @@ namespace AForge.Imaging.Filters
     /// 
     public class ContrastCorrection : BaseInPlacePartialFilter
     {
-        private HSLLinear   baseFilter = new HSLLinear( );
-        private double      factor;
+        private HSLLinear baseFilter = new HSLLinear( );
+        private float factor;
 
         /// <summary>
         /// Contrast adjusting factor.
@@ -56,24 +56,24 @@ namespace AForge.Imaging.Filters
         /// 
         /// <para>Default value is set to <b>1.25</b>.</para></remarks>
         /// 
-        public double Factor
+        public float Factor
         {
             get { return factor; }
             set
             {
-                factor = Math.Max( 0.000001, value );
+                factor = Math.Max( 0.000001f, value );
 
                 // create luminance filter
-                baseFilter.InLuminance  = new DoubleRange( 0.0, 1.0 );
-                baseFilter.OutLuminance = new DoubleRange( 0.0, 1.0 );
+                baseFilter.InLuminance  = new Range( 0.0f, 1.0f );
+                baseFilter.OutLuminance = new Range( 0.0f, 1.0f );
 
                 if ( factor > 1 )
                 {
-                    baseFilter.InLuminance = new DoubleRange( 0.5 - ( 0.5 / factor ), 0.5 + ( 0.5 / factor ) );
+                    baseFilter.InLuminance = new Range( 0.5f - ( 0.5f / factor ), 0.5f + ( 0.5f / factor ) );
                 }
                 else
                 {
-                    baseFilter.OutLuminance = new DoubleRange( 0.5 - ( 0.5 * factor ), 0.5 + ( 0.5 * factor ) );
+                    baseFilter.OutLuminance = new Range( 0.5f - ( 0.5f * factor ), 0.5f + ( 0.5f * factor ) );
                 }
             }
         }
@@ -93,7 +93,7 @@ namespace AForge.Imaging.Filters
         /// Initializes a new instance of the <see cref="ContrastCorrection"/> class.
         /// </summary>
         /// 
-        public ContrastCorrection( ) : this( 1.25 )
+        public ContrastCorrection( ) : this( 1.25f )
         {
         }
 
@@ -103,7 +103,7 @@ namespace AForge.Imaging.Filters
         /// 
         /// <param name="factor">Contrast adjusting factor.</param>
         /// 
-        public ContrastCorrection( double factor )
+        public ContrastCorrection( float factor )
         {
             Factor = factor;
 

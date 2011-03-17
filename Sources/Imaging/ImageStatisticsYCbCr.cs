@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging
@@ -259,13 +259,13 @@ namespace AForge.Imaging
             }
 
             // create histograms
-            yHistogram  = new ContinuousHistogram( yhisto,  new DoubleRange(  0.0, 1.0 ) );
-            cbHistogram = new ContinuousHistogram( cbhisto, new DoubleRange( -0.5, 0.5 ) );
-            crHistogram = new ContinuousHistogram( crhisto, new DoubleRange( -0.5, 0.5 ) );
+            yHistogram  = new ContinuousHistogram( yhisto,  new Range(  0.0f, 1.0f ) );
+            cbHistogram = new ContinuousHistogram( cbhisto, new Range( -0.5f, 0.5f ) );
+            crHistogram = new ContinuousHistogram( crhisto, new Range( -0.5f, 0.5f ) );
 
-            yHistogramWithoutBlack  = new ContinuousHistogram( yhistoWB,  new DoubleRange(  0.0, 1.0 ) );
-            cbHistogramWithoutBlack = new ContinuousHistogram( cbhistoWB, new DoubleRange( -0.5, 0.5 ) );
-            crHistogramWithoutBlack = new ContinuousHistogram( crhistoWB, new DoubleRange( -0.5, 0.5 ) );
+            yHistogramWithoutBlack  = new ContinuousHistogram( yhistoWB,  new Range(  0.0f, 1.0f ) );
+            cbHistogramWithoutBlack = new ContinuousHistogram( cbhistoWB, new Range( -0.5f, 0.5f ) );
+            crHistogramWithoutBlack = new ContinuousHistogram( crhistoWB, new Range( -0.5f, 0.5f ) );
         }
 
         // Check pixel format of the source image

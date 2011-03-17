@@ -2,11 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2008-2009
-// andrew.kirillov@aforgenet.com
-//
-// Copyright © Fabio L. Caversan, 2008-2009
-// fabio.caversan@gmail.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Fuzzy
@@ -73,27 +70,27 @@ namespace AForge.Fuzzy
         /// 
         /// <exception cref="Exception">The numerical output is unavaliable. All memberships are zero.</exception>
         /// 
-        public double Defuzzify( FuzzyOutput fuzzyOutput, INorm normOperator )
+        public float Defuzzify( FuzzyOutput fuzzyOutput, INorm normOperator )
         {
             // results and accumulators
-            double weightSum = 0, membershipSum = 0;
+            float weightSum = 0, membershipSum = 0;
 
             // speech universe
-            double start = fuzzyOutput.OutputVariable.Start;
-            double end = fuzzyOutput.OutputVariable.End;
+            float start = fuzzyOutput.OutputVariable.Start;
+            float end = fuzzyOutput.OutputVariable.End;
 
             // increment
-            double increment = ( end - start ) / this.intervals;
+            float increment = ( end - start ) / this.intervals;
 
             // running through the speech universe and evaluating the labels at each point
-            for ( double x = start; x < end; x += increment )
+            for ( float x = start; x < end; x += increment )
             {
                 // we must evaluate x membership to each one of the output labels
                 foreach ( FuzzyOutput.OutputConstraint oc in fuzzyOutput.OutputList )
                 {
                     // getting the membership for X and constraining it with the firing strength
-                    double membership = fuzzyOutput.OutputVariable.GetLabelMembership( oc.Label, x );
-                    double constrainedMembership = normOperator.Evaluate( membership, oc.FiringStrength );
+                    float membership = fuzzyOutput.OutputVariable.GetLabelMembership( oc.Label, x );
+                    float constrainedMembership = normOperator.Evaluate( membership, oc.FiringStrength );
 
                     weightSum += x * constrainedMembership;
                     membershipSum += constrainedMembership;

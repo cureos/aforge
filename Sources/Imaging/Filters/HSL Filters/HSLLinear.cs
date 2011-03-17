@@ -1,8 +1,8 @@
 // AForge Image Processing Library
 // AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging.Filters
@@ -28,8 +28,8 @@ namespace AForge.Imaging.Filters
     /// // create filter
     /// HSLLinear filter = new HSLLinear( );
     /// // configure the filter
-    /// filter.InLuminance   = new DoubleRange( 0, 0.85 );
-    /// filter.OutSaturation = new DoubleRange( 0.25, 1 );
+    /// filter.InLuminance   = new Range( 0, 0.85 );
+    /// filter.OutSaturation = new Range( 0.25, 1 );
     /// // apply the filter
     /// filter.ApplyInPlace( image );
     /// </code>
@@ -45,10 +45,10 @@ namespace AForge.Imaging.Filters
     /// 
     public class HSLLinear : BaseInPlacePartialFilter
     {
-        private DoubleRange inLuminance   = new DoubleRange( 0.0, 1.0 );
-        private DoubleRange inSaturation  = new DoubleRange( 0.0, 1.0 );
-        private DoubleRange outLuminance  = new DoubleRange( 0.0, 1.0 );
-        private DoubleRange outSaturation = new DoubleRange( 0.0, 1.0 );
+        private Range inLuminance   = new Range( 0.0f, 1.0f );
+        private Range inSaturation  = new Range( 0.0f, 1.0f );
+        private Range outLuminance  = new Range( 0.0f, 1.0f );
+        private Range outSaturation = new Range( 0.0f, 1.0f );
 
         #region Public Propertis
 
@@ -58,7 +58,7 @@ namespace AForge.Imaging.Filters
         /// 
         /// <remarks>Luminance component is measured in the range of [0, 1].</remarks>
         /// 
-        public DoubleRange InLuminance
+        public Range InLuminance
         {
             get { return inLuminance; }
             set { inLuminance = value; }
@@ -70,7 +70,7 @@ namespace AForge.Imaging.Filters
         /// 
         /// <remarks>Luminance component is measured in the range of [0, 1].</remarks>
         /// 
-        public DoubleRange OutLuminance
+        public Range OutLuminance
         {
             get { return outLuminance; }
             set { outLuminance = value; }
@@ -82,7 +82,7 @@ namespace AForge.Imaging.Filters
         /// 
         /// <remarks>Saturation component is measured in the range of [0, 1].</remarks>
         /// 
-        public DoubleRange InSaturation
+        public Range InSaturation
         {
             get { return inSaturation; }
             set { inSaturation = value; }
@@ -94,7 +94,7 @@ namespace AForge.Imaging.Filters
         /// 
         /// <remarks>Saturation component is measured in the range of [0, 1].</remarks>
         /// 
-        public DoubleRange OutSaturation
+        public Range OutSaturation
         {
             get { return outSaturation; }
             set { outSaturation = value; }
@@ -144,8 +144,8 @@ namespace AForge.Imaging.Filters
             RGB rgb = new RGB( );
             HSL hsl = new HSL( );
 
-            double kl = 0, bl = 0;
-            double ks = 0, bs = 0;
+            float kl = 0, bl = 0;
+            float ks = 0, bs = 0;
 
             // luminance line parameters
             if ( inLuminance.Max != inLuminance.Min )

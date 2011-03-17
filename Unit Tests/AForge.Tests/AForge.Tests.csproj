@@ -45,8 +45,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DoublePointTest.cs" />
-    <Compile Include="DoubleRangeTest.cs" />
     <Compile Include="IntPointTest.cs" />
     <Compile Include="IntRangeTest.cs" />
     <Compile Include="PointTest.cs" />

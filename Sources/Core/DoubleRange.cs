@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge
@@ -18,6 +18,8 @@ namespace AForge
     /// <para>The class represents a double range with inclusive limits -
     /// both minimum and maximum values of the range are included into it.
     /// Mathematical notation of such range is <b>[min, max]</b>.</para>
+    /// 
+    /// <para><note>The structure is obsolete - use <see cref="Range"/> instead.</note></para>
     /// 
     /// <para>Sample usage:</para>
     /// <code>
@@ -43,6 +45,7 @@ namespace AForge
     /// </code>
     /// </remarks>
     /// 
+    [Obsolete( "Use Range structure instead." ) ]
     public struct DoubleRange
     {
         private double min, max;

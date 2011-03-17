@@ -1,8 +1,8 @@
 // AForge Image Processing Library
 // AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2005-2008
-// andrew.kirillov@gmail.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging.Filters
@@ -29,8 +29,8 @@ namespace AForge.Imaging.Filters
     /// // create filter
     /// YCbCrFiltering filter = new YCbCrFiltering( );
     /// // set color ranges to keep
-    /// filter.Cb = new DoubleRange( -0.2, 0 );
-    /// filter.Cr = new DoubleRange( 0.26, 0.5 );
+    /// filter.Cb = new Range( -0.2f, 0.0f );
+    /// filter.Cr = new Range( 0.26f, 0.5f );
     /// // apply the filter
     /// filter.ApplyInPlace( image );
     /// </code>
@@ -46,14 +46,14 @@ namespace AForge.Imaging.Filters
     /// 
     public class YCbCrFiltering : BaseInPlacePartialFilter
     {
-        private DoubleRange yRange  = new DoubleRange( 0.0, 1.0 );
-        private DoubleRange cbRange = new DoubleRange( -0.5, 0.5 );
-        private DoubleRange crRange = new DoubleRange( -0.5, 0.5 );
+        private Range yRange  = new Range( 0.0f, 1.0f );
+        private Range cbRange = new Range( -0.5f, 0.5f );
+        private Range crRange = new Range( -0.5f, 0.5f );
 
-        private double  fillY = 0.0;
-        private double  fillCb = 0.0;
-        private double  fillCr = 0.0;
-        private bool    fillOutsideRange = true;
+        private float fillY  = 0.0f;
+        private float fillCb = 0.0f;
+        private float fillCr = 0.0f;
+        private bool  fillOutsideRange = true;
 
         private bool updateY = true;
         private bool updateCb = true;
@@ -76,7 +76,7 @@ namespace AForge.Imaging.Filters
         /// Range of Y component, [0, 1].
         /// </summary>
         /// 
-        public DoubleRange Y
+        public Range Y
         {
             get { return yRange; }
             set { yRange = value; }
@@ -86,7 +86,7 @@ namespace AForge.Imaging.Filters
         /// Range of Cb component, [-0.5, 0.5].
         /// </summary>
         /// 
-        public DoubleRange Cb
+        public Range Cb
         {
             get { return cbRange; }
             set { cbRange = value; }
@@ -96,7 +96,7 @@ namespace AForge.Imaging.Filters
         /// Range of Cr component, [-0.5, 0.5].
         /// </summary>
         /// 
-        public DoubleRange Cr
+        public Range Cr
         {
             get { return crRange; }
             set { crRange = value; }
@@ -196,7 +196,7 @@ namespace AForge.Imaging.Filters
         /// <param name="cbRange">Range of Cb component.</param>
         /// <param name="crRange">Range of Cr component.</param>
         /// 
-        public YCbCrFiltering( DoubleRange yRange, DoubleRange cbRange, DoubleRange crRange ) :
+        public YCbCrFiltering( Range yRange, Range cbRange, Range crRange ) :
             this( )
         {
             this.yRange  = yRange;

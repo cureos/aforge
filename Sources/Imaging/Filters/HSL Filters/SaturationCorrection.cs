@@ -1,8 +1,8 @@
 // AForge Image Processing Library
 // AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging.Filters
@@ -28,7 +28,7 @@ namespace AForge.Imaging.Filters
     /// <para>Sample usage:</para>
     /// <code>
     /// // create filter
-    /// SaturationCorrection filter = new SaturationCorrection( -0.5 );
+    /// SaturationCorrection filter = new SaturationCorrection( -0.5f );
     /// // apply the filter
     /// filter.ApplyInPlace( image );
     /// </code>
@@ -41,8 +41,8 @@ namespace AForge.Imaging.Filters
     /// 
     public class SaturationCorrection : BaseInPlacePartialFilter
     {
-        private HSLLinear   baseFilter = new HSLLinear( );
-        private double      adjustValue;	// [-1, 1]
+        private HSLLinear baseFilter = new HSLLinear( );
+        private float adjustValue;	// [-1, 1]
 
         /// <summary>
         /// Saturation adjust value, [-1, 1].
@@ -51,23 +51,23 @@ namespace AForge.Imaging.Filters
         /// <remarks>Default value is set to <b>0.1</b>, which corresponds to increasing
         /// saturation by 10%.</remarks>
         /// 
-        public double AdjustValue
+        public float AdjustValue
         {
             get { return adjustValue; }
             set
             {
-                adjustValue = Math.Max( -1.0, Math.Min( 1.0, value ) );
+                adjustValue = Math.Max( -1.0f, Math.Min( 1.0f, value ) );
 
                 // create saturation filter
                 if ( adjustValue > 0 )
                 {
-                    baseFilter.InSaturation  = new DoubleRange( 0.0, 1.0 - adjustValue );
-                    baseFilter.OutSaturation = new DoubleRange( adjustValue, 1.0 );
+                    baseFilter.InSaturation  = new Range( 0.0f, 1.0f - adjustValue );
+                    baseFilter.OutSaturation = new Range( adjustValue, 1.0f );
                 }
                 else
                 {
-                    baseFilter.InSaturation  = new DoubleRange( -adjustValue, 1.0 );
-                    baseFilter.OutSaturation = new DoubleRange( 0.0, 1.0 + adjustValue );
+                    baseFilter.InSaturation  = new Range( -adjustValue, 1.0f );
+                    baseFilter.OutSaturation = new Range( 0.0f, 1.0f + adjustValue );
                 }
             }
         }
@@ -87,7 +87,7 @@ namespace AForge.Imaging.Filters
         /// Initializes a new instance of the <see cref="SaturationCorrection"/> class.
         /// </summary>
         /// 
-        public SaturationCorrection( ) : this( 0.1 )
+        public SaturationCorrection( ) : this( 0.1f )
         {
         }
 
@@ -97,7 +97,7 @@ namespace AForge.Imaging.Filters
         /// 
         /// <param name="adjustValue">Saturation adjust value.</param>
         /// 
-        public SaturationCorrection( double adjustValue )
+        public SaturationCorrection( float adjustValue )
         {
             AdjustValue = adjustValue;
 

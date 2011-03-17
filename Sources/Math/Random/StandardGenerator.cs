@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Math.Random
@@ -26,7 +26,7 @@ namespace AForge.Math.Random
     /// // create instance of random generator
     /// IRandomNumberGenerator generator = new StandardGenerator( );
     /// // generate random number
-    /// double randomNumber = generator.Next( );
+    /// float randomNumber = generator.Next( );
     /// </code>
     /// </remarks>
     /// 
@@ -34,14 +34,14 @@ namespace AForge.Math.Random
     {
         private UniformOneGenerator rand = null;
 
-        private double  secondValue;
+        private float  secondValue;
         private bool    useSecond = false;
 
         /// <summary>
         /// Mean value of the generator.
         /// </summary>
         /// 
-        public double Mean
+        public float Mean
         {
             get { return 0; }
         }
@@ -50,7 +50,7 @@ namespace AForge.Math.Random
         /// Variance value of the generator.
         /// </summary>
         ///
-        public double Variance
+        public float Variance
         {
             get { return 1; }
         }
@@ -81,7 +81,7 @@ namespace AForge.Math.Random
         /// 
         /// <returns>Returns next random number.</returns>
         /// 
-        public double Next( )
+        public float Next( )
         {
             // check if we can use second value
             if ( useSecond )
@@ -91,18 +91,18 @@ namespace AForge.Math.Random
                 return secondValue;
             }
 
-            double x1, x2, w, firstValue;
+            float x1, x2, w, firstValue;
 
             // generate new numbers
             do
             {
-                x1  = rand.Next( ) * 2.0 - 1.0;
-                x2  = rand.Next( ) * 2.0 - 1.0;
-                w   = x1 * x1 + x2 * x2;
+                x1 = (float) rand.Next( ) * 2.0f - 1.0f;
+                x2 = (float) rand.Next( ) * 2.0f - 1.0f;
+                w  = x1 * x1 + x2 * x2;
             }
-            while ( w >= 1.0 );
+            while ( w >= 1.0f );
 
-            w = Math.Sqrt( ( -2.0 * Math.Log( w ) ) / w );
+            w = (float) Math.Sqrt( ( -2.0f * Math.Log( w ) ) / w );
 
             // get two standard random numbers
             firstValue  = x1 * w;

@@ -2,11 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2008-2009
-// andrew.kirillov@aforgenet.com
-//
-// Copyright © Fabio L. Caversan, 2008-2009
-// fabio.caversan@gmail.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Fuzzy
@@ -54,7 +51,7 @@ namespace AForge.Fuzzy
     /// Clause fuzzyClause = new Clause( lvTemperature, fsHot );
     /// // setting the numerical input of the variable to evaluate the Clause
     /// lvTemperature.NumericInput = 35;
-    /// double result = fuzzyClause.Evaluate( );
+    /// float result = fuzzyClause.Evaluate( );
     /// Console.WriteLine ( result.ToString( ) );
     /// </code>    
     /// </remarks>
@@ -108,7 +105,7 @@ namespace AForge.Fuzzy
         /// 
         /// <returns>Degree of membership [0..1] of the clause.</returns>
         /// 
-        public double Evaluate( )
+        public float Evaluate( )
         {
             return label.GetMembership( variable.NumericInput );
         }

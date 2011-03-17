@@ -2,12 +2,10 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2008-2010
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
-// Copyright © Fabio L. Caversan, 2008-2010
-// fabio.caversan@gmail.com
-//
+
 namespace AForge.Fuzzy
 {
     using System;
@@ -30,7 +28,7 @@ namespace AForge.Fuzzy
         /// 
         /// <returns>The numerical result of the operation applied to <paramref name="membership"/></returns>.
         /// 
-        double Evaluate( double membership );
+        float Evaluate( float membership );
     }
 }
 

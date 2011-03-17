@@ -2,11 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2008-2010
-// andrew.kirillov@aforgenet.com
-//
-// Copyright © Fabio L. Caversan, 2008-2010
-// fabio.caversan@gmail.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Fuzzy
@@ -102,7 +99,7 @@ namespace AForge.Fuzzy
     /// // testing the firing strength
     /// lvSteel.NumericInput = 12;
     /// lvStove.NumericInput = 35;
-    /// double result = r1.EvaluateFiringStrength( );
+    /// float result = r1.EvaluateFiringStrength( );
     /// Console.WriteLine( result.ToString( ) );
     /// </code>    
     /// </remarks>
@@ -437,10 +434,10 @@ namespace AForge.Fuzzy
         /// 
         /// <returns>The firing strength [0..1] of the Rule.</returns>
         /// 
-        public double EvaluateFiringStrength( )
+        public float EvaluateFiringStrength( )
         {
             // Stack to store the operand values
-            Stack<double> s = new Stack<double>( );
+            Stack<float> s = new Stack<float>( );
 
             // Logic to calculate the firing strength
             foreach ( object o in rpnTokenList )
@@ -455,8 +452,8 @@ namespace AForge.Fuzzy
                 // returns to the stack
                 else
                 {
-                    double y = s.Pop( );
-                    double x = 0;
+                    float y = s.Pop( );
+                    float x = 0;
 
                     // unary pops only one value
                     if ( unaryOperators.IndexOf( o.ToString( ) ) < 0 )

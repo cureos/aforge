@@ -1,8 +1,8 @@
 // AForge Image Processing Library
 // AForge.NET framework
 //
-// Copyright © Andrew Kirillov, 2005-2008
-// andrew.kirillov@gmail.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging.Filters
@@ -27,7 +27,7 @@ namespace AForge.Imaging.Filters
     /// <para>Sample usage:</para>
     /// <code>
     /// // create random generator
-    /// IRandomNumberGenerator generator = new UniformGenerator( new DoubleRange( -50, 50 ) );
+    /// IRandomNumberGenerator generator = new UniformGenerator( new Range( -50, 50 ) );
     /// // create filter
     /// AdditiveNoise filter = new AdditiveNoise( generator );
     /// // apply the filter
@@ -43,7 +43,7 @@ namespace AForge.Imaging.Filters
     public class AdditiveNoise : BaseInPlacePartialFilter
     {
         // random number generator to add noise
-        IRandomNumberGenerator generator = new UniformGenerator( new DoubleRange( -10, 10 ) );
+        IRandomNumberGenerator generator = new UniformGenerator( new Range( -10, 10 ) );
 
         // private format translation dictionary
         private Dictionary<PixelFormat, PixelFormat> formatTranslations = new Dictionary<PixelFormat, PixelFormat>( );

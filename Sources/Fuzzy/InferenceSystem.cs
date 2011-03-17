@@ -2,11 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2008-2009
-// andrew.kirillov@aforgenet.com
-//
-// Copyright © Fabio L. Caversan, 2008-2009
-// fabio.caversan@gmail.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Fuzzy
@@ -91,7 +88,7 @@ namespace AForge.Fuzzy
     /// // getting outputs
     /// try
     /// {
-    ///     double newAngle = IS.Evaluate( "Angle" );
+    ///     float newAngle = IS.Evaluate( "Angle" );
     /// }
     /// catch ( Exception )
     /// {
@@ -175,7 +172,7 @@ namespace AForge.Fuzzy
         /// <exception cref="KeyNotFoundException">The variable indicated in <paramref name="variableName"/>
         /// was not found in the database.</exception>
         /// 
-        public void SetInput( string variableName, double value )
+        public void SetInput( string variableName, float value )
         {
             this.database.GetVariable( variableName ).NumericInput = value;
         }
@@ -219,11 +216,11 @@ namespace AForge.Fuzzy
         /// 
         /// <exception cref="KeyNotFoundException">The variable indicated was not found in the database.</exception>
         /// 
-        public double Evaluate( string variableName )
+        public float Evaluate( string variableName )
         {
             // call the defuzzification on fuzzy output 
             FuzzyOutput fuzzyOutput = ExecuteInference( variableName );
-            double res = defuzzifier.Defuzzify( fuzzyOutput, normOperator );
+            float res = defuzzifier.Defuzzify( fuzzyOutput, normOperator );
             return res;
         }
 
@@ -254,7 +251,7 @@ namespace AForge.Fuzzy
                 if ( r.Output.Variable.Name == variableName )
                 {
                     string labelName = r.Output.Label.Name;
-                    double firingStrength = r.EvaluateFiringStrength( );
+                    float firingStrength = r.EvaluateFiringStrength( );
                     if ( firingStrength > 0 )
                         fuzzyOutput.AddOutput( labelName, firingStrength );
                 }

@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2006-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Genetic
@@ -30,7 +30,7 @@ namespace AForge.Genetic
     /// public class UserFunction : OptimizationFunction1D
     /// {
     ///	    public UserFunction( ) :
-    ///         base( new DoubleRange( 0, 255 ) ) { }
+    ///         base( new Range( 0, 255 ) ) { }
     ///
     /// 	public override double OptimizationFunction( double x )
     ///		{
@@ -75,7 +75,7 @@ namespace AForge.Genetic
         }
 
         // optimization range
-        private DoubleRange	range = new DoubleRange( 0, 1 );
+        private Range range = new Range( 0, 1 );
         // optimization mode
         private Modes mode = Modes.Maximization;
 
@@ -87,7 +87,7 @@ namespace AForge.Genetic
         /// be searched in this range only.
         /// </remarks>
         /// 
-        public DoubleRange Range
+        public Range Range
         {
             get { return range; }
             set { range = value; }
@@ -111,7 +111,7 @@ namespace AForge.Genetic
         ///
         /// <param name="range">Specifies range for optimization.</param>
         ///
-        public OptimizationFunction1D( DoubleRange range )
+        public OptimizationFunction1D( Range range )
         {
             this.range = range;
         }

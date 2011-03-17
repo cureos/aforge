@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2006-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Genetic
@@ -30,7 +30,7 @@ namespace AForge.Genetic
     /// public class UserFunction : OptimizationFunction2D
     /// {
     ///		public UserFunction( ) :
-    ///			base( new DoubleRange( -4, 4 ), new DoubleRange( -4, 4 ) ) { }
+    ///			base( new Range( -4, 4 ), new Range( -4, 4 ) ) { }
     ///
     /// 	public override double OptimizationFunction( double x, double y )
     ///		{
@@ -70,8 +70,8 @@ namespace AForge.Genetic
         }
 
         // optimization ranges
-        private DoubleRange	rangeX = new DoubleRange( 0, 1 );
-        private DoubleRange	rangeY = new DoubleRange( 0, 1 );
+        private Range	rangeX = new Range( 0, 1 );
+        private Range	rangeY = new Range( 0, 1 );
         // optimization mode
         private Modes mode = Modes.Maximization;
 
@@ -83,7 +83,7 @@ namespace AForge.Genetic
         /// be searched in this range only.
         /// </remarks>
         /// 
-        public DoubleRange RangeX
+        public Range RangeX
         {
             get { return rangeX; }
             set { rangeX = value; }
@@ -97,7 +97,7 @@ namespace AForge.Genetic
         /// be searched in this range only.
         /// </remarks>
         /// 
-        public DoubleRange RangeY
+        public Range RangeY
         {
             get { return rangeY; }
             set { rangeY = value; }
@@ -122,7 +122,7 @@ namespace AForge.Genetic
         /// <param name="rangeX">Specifies X variable's range.</param>
         /// <param name="rangeY">Specifies Y variable's range.</param>
         ///
-        public OptimizationFunction2D( DoubleRange rangeX, DoubleRange rangeY )
+        public OptimizationFunction2D( Range rangeX, Range rangeY )
         {
             this.rangeX = rangeX;
             this.rangeY = rangeY;

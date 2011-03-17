@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging
@@ -227,11 +227,11 @@ namespace AForge.Imaging
             }
 
             // create histograms
-            saturation = new ContinuousHistogram( s, new DoubleRange( 0, 1 ) );
-            luminance  = new ContinuousHistogram( l, new DoubleRange( 0, 1 ) );
+            saturation = new ContinuousHistogram( s, new Range( 0, 1 ) );
+            luminance  = new ContinuousHistogram( l, new Range( 0, 1 ) );
 
-            saturationWithoutBlack = new ContinuousHistogram( swb, new DoubleRange( 0, 1 ) );
-            luminanceWithoutBlack  = new ContinuousHistogram( lwb, new DoubleRange( 0, 1 ) );
+            saturationWithoutBlack = new ContinuousHistogram( swb, new Range( 0, 1 ) );
+            luminanceWithoutBlack  = new ContinuousHistogram( lwb, new Range( 0, 1 ) );
         }
 
         // Check pixel format of the source image

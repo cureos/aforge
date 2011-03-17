@@ -2,11 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2008-2009
-// andrew.kirillov@aforgenet.com
-//
-// Copyright © Fabio L. Caversan, 2008-2009
-// fabio.caversan@gmail.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Fuzzy
@@ -52,12 +49,12 @@ namespace AForge.Fuzzy
     ///
     /// // showing the shape of the linguistic variable - the shape of its labels memberships from start to end
     /// Console.WriteLine( "Cold; Cool; Warm; Hot" );
-    /// for ( double x = 0; x &lt; 80; x += 0.2 )
+    /// for ( float x = 0; x &lt; 80; x += 0.2 )
     /// {
-    ///     double y1 = lvTemperature.GetLabelMembership( "Cold", x );
-    ///     double y2 = lvTemperature.GetLabelMembership( "Cool", x );
-    ///     double y3 = lvTemperature.GetLabelMembership( "Warm", x );
-    ///     double y4 = lvTemperature.GetLabelMembership( "Hot" , x );
+    ///     float y1 = lvTemperature.GetLabelMembership( "Cold", x );
+    ///     float y2 = lvTemperature.GetLabelMembership( "Cool", x );
+    ///     float y3 = lvTemperature.GetLabelMembership( "Warm", x );
+    ///     float y4 = lvTemperature.GetLabelMembership( "Hot" , x );
     ///
     ///     Console.WriteLine( String.Format( "{0:N}; {1:N}; {2:N}; {3:N}", y1, y2, y3, y4 ) );
     /// }
@@ -69,18 +66,18 @@ namespace AForge.Fuzzy
         // name of the linguistic variable
         private string name;
         // right limit within the lingusitic variable works
-        private double start;
+        private float start;
         // left limit within the lingusitic variable works
-        private double end;
+        private float end;
         // the linguistic labels of the linguistic variable
         private Dictionary<string, FuzzySet> labels;
         // the numeric input of this variable
-        private double numericInput;
+        private float numericInput;
 
         /// <summary>
         /// Numerical value of the input of this linguistic variable.
         /// </summary>
-        public double NumericInput
+        public float NumericInput
         {
             get { return numericInput; }
             set { numericInput = value; }
@@ -97,7 +94,7 @@ namespace AForge.Fuzzy
         /// <summary>
         /// Left limit of the valid variable range.
         /// </summary>
-        public double Start
+        public float Start
         {
             get { return start; }
         }
@@ -105,7 +102,7 @@ namespace AForge.Fuzzy
         /// <summary>
         /// Right limit of the valid variable range.
         /// </summary>
-        public double End
+        public float End
         {
             get { return end; }
         }
@@ -120,7 +117,7 @@ namespace AForge.Fuzzy
         /// 
         /// <param name="end">Right limit of the valid variable range.</param>
         /// 
-        public LinguisticVariable( string name, double start, double end )
+        public LinguisticVariable( string name, float start, float end )
         {
             this.name  = name;
             this.start = start;
@@ -198,7 +195,7 @@ namespace AForge.Fuzzy
         /// 
         /// <exception cref="KeyNotFoundException">The label indicated in labelName was not found in the linguistic variable.</exception>
         /// 
-        public double GetLabelMembership( string labelName, double value )
+        public float GetLabelMembership( string labelName, float value )
         {
             FuzzySet fs = labels[labelName];
             return fs.GetMembership( value );
