@@ -61,6 +61,7 @@
     <Compile Include="Geometry\SimpleShapeChecker.cs" />
     <Compile Include="Histogram.cs" />
     <Compile Include="Matrix3x3.cs" />
+    <Compile Include="Matrix4x4.cs" />
     <Compile Include="Metrics\CosineDistance.cs" />
     <Compile Include="Metrics\CosineSimilarity.cs" />
     <Compile Include="Metrics\EuclideanDistance.cs" />

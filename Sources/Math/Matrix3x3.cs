@@ -200,6 +200,8 @@ namespace AForge.Math
         /// Using extracted angles with the <see cref="CreateFromYawPitchRoll"/> should provide same rotation matrix.
         /// </note></para>
         /// 
+        /// <para><note>The method assumes the provided matrix represent valid rotation matrix.</note></para>
+        /// 
         /// <para>Sample usage:</para>
         /// <code>
         /// // assume we have a rotation matrix created like this
