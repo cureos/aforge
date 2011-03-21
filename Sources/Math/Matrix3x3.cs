@@ -189,6 +189,45 @@ namespace AForge.Math
         }
 
         /// <summary>
+        /// Extract rotation angles from the rotation matrix.
+        /// </summary>
+        /// 
+        /// <param name="yaw">Extracted rotation angle around Y axis in radians.</param>
+        /// <param name="pitch">Extracted rotation angle around X axis in radians.</param>
+        /// <param name="roll">Extracted rotation angle around Z axis in radians.</param>
+        /// 
+        /// <remarks><para><note>The routine assumes roll-pitch-yaw rotation order when extracting rotation angle.
+        /// Using extracted angles with the <see cref="CreateFromYawPitchRoll"/> should provide same rotation matrix.
+        /// </note></para>
+        /// 
+        /// <para>Sample usage:</para>
+        /// <code>
+        /// // assume we have a rotation matrix created like this
+        /// float yaw   = 10.0f / 180 * Math.PI;
+        /// float pitch = 30.0f / 180 * Math.PI;
+        /// float roll  = 45.0f / 180 * Math.PI;
+        /// 
+        /// Matrix3x3 rotationMatrix = Matrix3x3.CreateFromYawPitchRoll( yaw, pitch, roll );
+        /// // ...
+        /// 
+        /// // now somewhere in the code you may want to get rotation
+        /// // angles back from a matrix assuming same rotation order
+        /// float extractedYaw;
+        /// float extractedPitch;
+        /// float extractedRoll;
+        /// 
+        /// rotation.ExtractYawPitchRoll( out extractedYaw, out extractedPitch, out extractedRoll );
+        /// </code>
+        /// </remarks>
+        /// 
+        public void ExtractYawPitchRoll( out float yaw, out float pitch, out float roll )
+        {
+            yaw   = (float) Math.Atan2( V02, V22 );
+            pitch = (float) Math.Asin( -V12 );
+            roll  = (float) Math.Atan2( V10, V11 );
+        }
+
+        /// <summary>
         /// Creates a matrix from 3 rows specified as vectors.
         /// </summary>
         /// 

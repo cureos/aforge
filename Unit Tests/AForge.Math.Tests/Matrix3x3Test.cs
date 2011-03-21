@@ -161,9 +161,9 @@ namespace AForge.Math.Tests
         [Row( -180, -30, -60 )]
         public void CreateFromYawPitchRollTest( float yaw, float pitch, float roll )
         {
-            float radiansYaw = (float) ( yaw * System.Math.PI / 180 );
+            float radiansYaw   = (float) ( yaw   * System.Math.PI / 180 );
             float radiansPitch = (float) ( pitch * System.Math.PI / 180 );
-            float radiansRoll = (float) ( roll * System.Math.PI / 180 );
+            float radiansRoll  = (float) ( roll  * System.Math.PI / 180 );
 
             Matrix3x3 matrix = Matrix3x3.CreateFromYawPitchRoll( radiansYaw, radiansPitch, radiansRoll );
 
@@ -174,6 +174,31 @@ namespace AForge.Math.Tests
             Matrix3x3 rotationMatrix = ( yMatrix * xMatrix ) * zMatrix;
 
             CompareMatrixWithArray( matrix, rotationMatrix.ToArray( ) );
+        }
+
+        [Test]
+        [Row( 0, 0, 0 )]
+        [Row( 30, 45, 60 )]
+        [Row( 45, 60, 30 )]
+        [Row( 60, 30, 45 )]
+        [Row( -30, -60, -90 )]
+        public void ExtractYawPitchRollTest( float yaw, float pitch, float roll )
+        {
+            float radiansYaw   = (float) ( yaw   * System.Math.PI / 180 );
+            float radiansPitch = (float) ( pitch * System.Math.PI / 180 );
+            float radiansRoll  = (float) ( roll  * System.Math.PI / 180 );
+
+            Matrix3x3 matrix = Matrix3x3.CreateFromYawPitchRoll( radiansYaw, radiansPitch, radiansRoll );
+
+            float extractedYaw;
+            float extractedPitch;
+            float extractedRoll;
+
+            matrix.ExtractYawPitchRoll( out extractedYaw, out extractedPitch, out extractedRoll );
+
+            Assert.AreApproximatelyEqual<float, float>( radiansYaw,   extractedYaw,   Epsilon );
+            Assert.AreApproximatelyEqual<float, float>( radiansPitch, extractedPitch, Epsilon );
+            Assert.AreApproximatelyEqual<float, float>( radiansRoll,  extractedRoll,  Epsilon );
         }
 
         [Test]
