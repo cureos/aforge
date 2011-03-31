@@ -2,11 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2010
-// andrew.kirillov@aforgenet.com
-//
-// Resolution of device's video capabilities was contributed by
-// Yves Vander Haeghen 2009, based on code by Brian Low on CodeProject
+// Copyright © AForge.NET, 2009-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Video.DirectShow
@@ -545,43 +542,54 @@ namespace AForge.Video.DirectShow
 
                     if ( streamConfigObject != null )
                     {
-                        IAMStreamConfig streamConfig = (IAMStreamConfig) streamConfigObject;
+                        IAMStreamConfig streamConfig = null;
 
-                        if ( videoCapabilities == null )
+                        try
                         {
-                            // get all video capabilities
-                            try
+                            streamConfig = (IAMStreamConfig) streamConfigObject;
+                        }
+                        catch ( InvalidCastException )
+                        {
+                        }
+
+                        if ( streamConfig != null )
+                        {
+                            if ( videoCapabilities == null )
                             {
-                                videoCapabilities = AForge.Video.DirectShow.VideoCapabilities.FromStreamConfig( streamConfig );
+                                // get all video capabilities
+                                try
+                                {
+                                    videoCapabilities = AForge.Video.DirectShow.VideoCapabilities.FromStreamConfig( streamConfig );
+                                }
+                                catch
+                                {
+                                }
                             }
-                            catch
+
+                            // get current format
+                            streamConfig.GetFormat( out mediaType );
+                            VideoInfoHeader infoHeader = (VideoInfoHeader) Marshal.PtrToStructure( mediaType.FormatPtr, typeof( VideoInfoHeader ) );
+
+                            // change frame size if required
+                            if ( ( desiredFrameSize.Width != 0 ) && ( desiredFrameSize.Height != 0 ) )
                             {
+                                infoHeader.BmiHeader.Width = desiredFrameSize.Width;
+                                infoHeader.BmiHeader.Height = desiredFrameSize.Height;
                             }
+                            // change frame rate if required
+                            if ( desiredFrameRate != 0 )
+                            {
+                                infoHeader.AverageTimePerFrame = 10000000 / desiredFrameRate;
+                            }
+
+                            // copy the media structure back
+                            Marshal.StructureToPtr( infoHeader, mediaType.FormatPtr, false );
+
+                            // set the new format
+                            streamConfig.SetFormat( mediaType );
+
+                            mediaType.Dispose( );
                         }
-
-                        // get current format
-                        streamConfig.GetFormat( out mediaType );
-                        VideoInfoHeader infoHeader = (VideoInfoHeader) Marshal.PtrToStructure( mediaType.FormatPtr, typeof( VideoInfoHeader ) );
-
-                        // change frame size if required
-                        if ( ( desiredFrameSize.Width != 0 ) && ( desiredFrameSize.Height != 0 ) )
-                        {
-                            infoHeader.BmiHeader.Width = desiredFrameSize.Width;
-                            infoHeader.BmiHeader.Height = desiredFrameSize.Height;
-                        }
-                        // change frame rate if required
-                        if ( desiredFrameRate != 0 )
-                        {
-                            infoHeader.AverageTimePerFrame = 10000000 / desiredFrameRate;
-                        }
-
-                        // copy the media structure back
-                        Marshal.StructureToPtr( infoHeader, mediaType.FormatPtr, false );
-
-                        // set the new format
-                        streamConfig.SetFormat( mediaType );
-
-                        mediaType.Dispose( );
                     }
                 }
                 else
@@ -594,10 +602,10 @@ namespace AForge.Video.DirectShow
 
                         if ( streamConfigObject != null )
                         {
-                            IAMStreamConfig streamConfig = (IAMStreamConfig) streamConfigObject;
-                            // get all video capabilities
                             try
                             {
+                                IAMStreamConfig streamConfig = (IAMStreamConfig) streamConfigObject;
+                                // get all video capabilities
                                 videoCapabilities = AForge.Video.DirectShow.VideoCapabilities.FromStreamConfig( streamConfig );
                             }
                             catch
