@@ -147,11 +147,47 @@ namespace AForge.Imaging.Formats
             }
 
             // use default .NET's image decoding routine
-            bitmap = (Bitmap) Image.FromFile( fileName );
+            bitmap = FromFile( fileName );
 
             imageInfo = new ImageInfo( bitmap.Width, bitmap.Height, Image.GetPixelFormatSize( bitmap.PixelFormat ), 0, 1 );
 
             return bitmap;
+        }
+
+        private static System.Drawing.Bitmap FromFile( string fileName )
+        {
+            Bitmap loadedImage = null;
+            FileStream stream = null;
+
+            try
+            {
+                // read image to temporary memory stream
+                stream = File.OpenRead( fileName );
+                MemoryStream memoryStream = new MemoryStream( );
+
+                byte[] buffer = new byte[10000];
+                while ( true )
+                {
+                    int read = stream.Read( buffer, 0, 10000 );
+
+                    if ( read == 0 )
+                        break;
+
+                    memoryStream.Write( buffer, 0, read );
+                }
+
+                loadedImage = (Bitmap) Bitmap.FromStream( memoryStream );
+            }
+            finally
+            {
+                if ( stream != null )
+                {
+                    stream.Close( );
+                    stream.Dispose( );
+                }
+            }
+
+            return loadedImage;
         }
     }
 }
