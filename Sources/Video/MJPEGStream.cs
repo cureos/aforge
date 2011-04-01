@@ -403,6 +403,8 @@ namespace AForge.Video
             byte[] jpegMagic = new byte[] { 0xFF, 0xD8, 0xFF };
             int jpegMagicLength = 3;
 
+            ASCIIEncoding encoding = new ASCIIEncoding( );
+
 			while ( true )
 			{
 				// reset reload event
@@ -414,10 +416,13 @@ namespace AForge.Video
 				WebResponse response = null;
                 // stream for MJPEG downloading
                 Stream stream = null;
-                // boundary betweeen images
+                // boundary betweeen images (string and binary versions)
 				byte[] boundary = null;
+                string boudaryStr = null;
                 // length of boundary
 				int boundaryLen;
+                // flag signaling if boundary was checked or not
+                bool boundaryIsChecked = false;
                 // read amounts and positions
 				int read, todo = 0, total = 0, pos = 0, align = 1;
 				int start = 0, stop = 0;
@@ -457,7 +462,39 @@ namespace AForge.Video
                     string contentType = response.ContentType;
                     string[] contentTypeArray = contentType.Split( '/' );
 
-                    if ( ! ( ( contentTypeArray[0] == "multipart" ) && ( contentType.Contains( "mixed" ) ) ) )
+                    // "application/octet-stream"
+                    if ( ( contentTypeArray[0] == "application" ) && ( contentTypeArray[1] == "octet-stream" ) )
+                    {
+                        boundaryLen = 0;
+                        boundary = new byte[0];
+                    }
+                    else if ( ( contentTypeArray[0] == "multipart" ) && ( contentType.Contains( "mixed" ) ) )
+                    {
+                        // get boundary
+                        int boundaryIndex = contentType.IndexOf( "boundary", 0 );
+                        if ( boundaryIndex != -1 )
+                        {
+                            boundaryIndex = contentType.IndexOf( "=", boundaryIndex + 8 );
+                        }
+
+                        if ( boundaryIndex == -1 )
+                        {
+                            // try same scenario as with octet-stream, i.e. without boundaries
+                            boundaryLen = 0;
+                            boundary = new byte[0];
+                        }
+                        else
+                        {
+                            boudaryStr = contentType.Substring( boundaryIndex + 1 );
+                            // remove spaces and double quotes, which may be added by some IP cameras
+                            boudaryStr = boudaryStr.Trim( ' ', '"' );
+
+                            boundary = encoding.GetBytes( boudaryStr );
+                            boundaryLen = boundary.Length;
+                            boundaryIsChecked = false;
+                        }
+                    }
+                    else
                     {
                         // provide information to clients
                         if ( VideoSourceError != null )
@@ -466,32 +503,6 @@ namespace AForge.Video
                         }
                         throw new ApplicationException( );
                     }
-
-					// get boundary
-                    int boundaryIndex = contentType.IndexOf( "boundary", 0 );
-                    if ( boundaryIndex != -1 )
-                    {
-                        boundaryIndex = contentType.IndexOf( "=", boundaryIndex + 8 );
-                    }
-
-                    if ( boundaryIndex == -1 )
-                    {
-                        // provide information to clients
-                        if ( VideoSourceError != null )
-                        {
-                            VideoSourceError( this, new VideoSourceErrorEventArgs( "Invalid content type" ) );
-                        }
-                        throw new ApplicationException( );
-                    }
-
-                    string boudaryStr = contentType.Substring( boundaryIndex + 1 );
-                    // remove spaces and double quotes, which may be added by some IP cameras
-                    boudaryStr = boudaryStr.Trim( ' ', '"' );
-
-					ASCIIEncoding encoding = new ASCIIEncoding( );
-                    boundary = encoding.GetBytes( boudaryStr );
-					boundaryLen = boundary.Length;
-                    bool boundaryIsChecked = false;
 
 					// get response stream
                     stream = response.GetResponseStream( );
@@ -516,7 +527,7 @@ namespace AForge.Video
 						bytesReceived += read;
 
                         // do we need to check boundary ?
-                        if ( !boundaryIsChecked )
+                        if ( ( boundaryLen != 0 ) && ( !boundaryIsChecked ) )
                         {
                             // some IP cameras, like AirLink, claim that boundary is "myboundary",
                             // when it is really "--myboundary". this needs to be corrected.
@@ -544,13 +555,13 @@ namespace AForge.Video
                         }
 				
 						// search for image start
-						if ( align == 1 )
+						if ( ( align == 1 ) && ( todo >= jpegMagicLength ) )
 						{
 							start = ByteArrayUtils.Find( buffer, jpegMagic, pos, todo );
 							if ( start != -1 )
 							{
 								// found JPEG start
-								pos		= start;
+								pos		= start + jpegMagicLength;
 								todo	= total - pos;
 								align	= 2;
 							}
@@ -562,10 +573,13 @@ namespace AForge.Video
 							}
 						}
 
-						// search for image end
-						while ( ( align == 2 ) && ( todo >= boundaryLen ) )
+                        // search for image end ( boundaryLen can be 0, so need extra check )
+						while ( ( align == 2 ) && ( todo != 0 ) && ( todo >= boundaryLen ) )
 						{
-							stop = ByteArrayUtils.Find( buffer, boundary, pos, todo );
+							stop = ByteArrayUtils.Find( buffer,
+                                ( boundaryLen != 0 ) ? boundary : jpegMagic,
+                                pos, todo );
+
 							if ( stop != -1 )
 							{
 								pos		= stop;
@@ -597,8 +611,16 @@ namespace AForge.Video
 							else
 							{
 								// boundary not found
-								todo	= boundaryLen - 1;
-								pos		= total - todo;
+                                if ( boundaryLen != 0 )
+                                {
+                                    todo = boundaryLen - 1;
+                                    pos = total - todo;
+                                }
+                                else
+                                {
+                                    todo = 0;
+                                    pos = total;
+                                }
 							}
 						}
 					}
