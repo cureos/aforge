@@ -17,7 +17,8 @@ namespace AForge.Imaging.Filters
     /// Base class for error diffusion dithering.
     /// </summary>
     /// 
-    /// <remarks><para>The class is the base class for binarization algorithms based on error diffusion.</para>
+    /// <remarks><para>The class is the base class for binarization algorithms based on
+    /// <a href="http://en.wikipedia.org/wiki/Error_diffusion">error diffusion</a>.</para>
     /// 
     /// <para>Binarization with error diffusion in its idea is similar to binarization based on thresholding
     /// of pixels' cumulative value (see <see cref="ThresholdWithCarry"/>). Each pixel is binarized based not only

@@ -18,7 +18,8 @@ namespace AForge.Imaging.ColorReduction
     /// Base class for error diffusion color dithering.
     /// </summary>
     /// 
-    /// <remarks><para>The class is the base class for color dithering algorithms based on error diffusion.</para>
+    /// <remarks><para>The class is the base class for color dithering algorithms based on
+    /// <a href="http://en.wikipedia.org/wiki/Error_diffusion">error diffusion</a>.</para>
     /// 
     /// <para>Color dithering with error diffusion is based on the idea that each pixel from the specified source
     /// image is substituted with a best matching color (or better say with color's index) from the specified color

@@ -17,8 +17,8 @@ namespace AForge.Imaging.ColorReduction
     /// </summary>
     /// 
     /// <remarks><para>The image processing routine represents color dithering algorithm, which is based on
-    /// error diffusion dithering with Floyd-Steinberg coefficients. Error is diffused
-    /// on 4 neighbor pixels with the next coefficients:</para>
+    /// error diffusion dithering with <a href="http://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering">Floyd-Steinberg</a>
+    /// coefficients. Error is diffused on 4 neighbor pixels with the next coefficients:</para>
     /// 
     /// <code lang="none">
     ///     | * | 7 |

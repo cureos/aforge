@@ -16,8 +16,8 @@ namespace AForge.Imaging.Filters
     /// </summary>
     /// 
     /// <remarks><para>The filter represents binarization filter, which is based on
-    /// error diffusion dithering with Floyd-Steinberg coefficients. Error is diffused
-    /// on 4 neighbor pixels with next coefficients:</para>
+    /// error diffusion dithering with <a href="http://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering">Floyd-Steinberg</a>
+    /// coefficients. Error is diffused on 4 neighbor pixels with next coefficients:</para>
     /// 
     /// <code lang="none">
     ///     | * | 7 |
