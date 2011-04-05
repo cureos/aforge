@@ -146,5 +146,57 @@ namespace AForge.Imaging.Tests
                 Assert.AreEqual<byte>( 0, verticalRValues[i + 2] );
             }
         }
+
+        [Test]
+        public void CollectActivePixelsTest( )
+        {
+            // create grayscale image
+            UnmanagedImage image24 = UnmanagedImage.Create( 7, 7, PixelFormat.Format24bppRgb );
+            UnmanagedImage image8  = UnmanagedImage.Create( 7, 7, PixelFormat.Format8bppIndexed );
+
+            Drawing.FillRectangle( image24, new Rectangle( 1, 1, 5, 5 ), Color.FromArgb( 255, 255, 255 ) );
+            Drawing.FillRectangle( image24, new Rectangle( 2, 2, 3, 3 ), Color.FromArgb(   1,   1,   1 ) );
+            Drawing.FillRectangle( image24, new Rectangle( 3, 3, 1, 1 ), Color.FromArgb(   0,   0,   0 ) );
+
+            Drawing.FillRectangle( image8, new Rectangle( 1, 1, 5, 5 ), Color.FromArgb( 255, 255, 255 ) );
+            Drawing.FillRectangle( image8, new Rectangle( 2, 2, 3, 3 ), Color.FromArgb(   1,   1,   1 ) );
+            Drawing.FillRectangle( image8, new Rectangle( 3, 3, 1, 1 ), Color.FromArgb(   0,   0,   0 ) );
+
+            List<IntPoint> pixels24 = image24.CollectActivePixels( );
+            List<IntPoint> pixels8  = image8.CollectActivePixels( );
+
+            Assert.AreEqual<int>( pixels24.Count, 24 );
+            Assert.AreEqual<int>( pixels8.Count, 24 );
+
+            for ( int i = 1; i < 6; i++ )
+            {
+                for ( int j = 1; j < 6; j++ )
+                {
+                    if ( ( i == 3 ) && ( j == 3 ) )
+                        continue;
+
+                    Assert.IsTrue( pixels24.Contains( new IntPoint( j, i ) ) );
+                    Assert.IsTrue( pixels8.Contains( new IntPoint( j, i ) ) );
+                }
+            }
+
+            pixels24 = image24.CollectActivePixels( new Rectangle( 1, 0, 5, 4 ) );
+            pixels8 = image8.CollectActivePixels( new Rectangle( 1, 0, 5, 4 ) );
+
+            Assert.AreEqual<int>( pixels24.Count, 14 );
+            Assert.AreEqual<int>( pixels8.Count, 14 );
+
+            for ( int i = 1; i < 4; i++ )
+            {
+                for ( int j = 1; j < 6; j++ )
+                {
+                    if ( ( i == 3 ) && ( j == 3 ) )
+                        continue;
+
+                    Assert.IsTrue( pixels24.Contains( new IntPoint( j, i ) ) );
+                    Assert.IsTrue( pixels8.Contains( new IntPoint( j, i ) ) );
+                }
+            }
+        }
     }
 }

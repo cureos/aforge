@@ -547,6 +547,110 @@ namespace AForge.Imaging
         }
 
         /// <summary>
+        /// Collect coordinates of none black pixel in the image.
+        /// </summary>
+        /// 
+        /// <returns>Returns list of points, which have other than black color.</returns>
+        /// 
+        public List<IntPoint> CollectActivePixels( )
+        {
+            return CollectActivePixels( new Rectangle( 0, 0, width, height ) );
+        }
+
+        /// <summary>
+        /// Collect coordinates of none black pixel within specified rectangle of the image.
+        /// </summary>
+        /// 
+        /// <param name="rect">Image's rectangle to process.</param>
+        /// 
+        /// <returns>Returns list of points, which have other than black color.</returns>
+        ///
+        public List<IntPoint> CollectActivePixels( Rectangle rect )
+        {
+            List<IntPoint> pixels = new List<IntPoint>( );
+
+            int pixelSize = Bitmap.GetPixelFormatSize( pixelFormat ) / 8;
+
+            // correct rectangle
+            rect.Intersect( new Rectangle( 0, 0, width, height ) );
+
+            int startX = rect.X;
+            int startY = rect.Y;
+            int stopX  = rect.Right;
+            int stopY  = rect.Bottom;
+
+            unsafe
+            {
+                byte* basePtr = (byte*) imageData.ToPointer( );
+
+                if ( ( pixelFormat == PixelFormat.Format16bppGrayScale ) || ( pixelSize > 4 ) )
+                {
+                    int pixelWords = pixelSize >> 1;
+
+                    for ( int y = startY; y < stopY; y++ )
+                    {
+                        ushort* ptr = (ushort*) ( basePtr + y * stride + startX * pixelSize );
+
+                        if ( pixelWords == 1 )
+                        {
+                            // grayscale images
+                            for ( int x = startX; x < stopX; x++, ptr++ )
+                            {
+                                if ( *ptr != 0 )
+                                {
+                                    pixels.Add( new IntPoint( x, y ) );
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // color images
+                            for ( int x = startX; x < stopX; x++, ptr += pixelWords )
+                            {
+                                if ( ( ptr[RGB.R] != 0 ) || ( ptr[RGB.G] != 0 ) || ( ptr[RGB.B] != 0 ) )
+                                {
+                                    pixels.Add( new IntPoint( x, y ) );
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    for ( int y = startY; y < stopY; y++ )
+                    {
+                        byte* ptr = basePtr + y * stride + startX * pixelSize;
+
+                        if ( pixelSize == 1 )
+                        {
+                            // grayscale images
+                            for ( int x = startX; x < stopX; x++, ptr++ )
+                            {
+                                if ( *ptr != 0 )
+                                {
+                                    pixels.Add( new IntPoint( x, y ) );
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // color images
+                            for ( int x = startX; x < stopX; x++, ptr += pixelSize )
+                            {
+                                if ( ( ptr[RGB.R] != 0 ) || ( ptr[RGB.G] != 0 ) || ( ptr[RGB.B] != 0 ) )
+                                {
+                                    pixels.Add( new IntPoint( x, y ) );
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return pixels;
+        }
+
+        /// <summary>
         /// Collect pixel values from the specified list of coordinates.
         /// </summary>
         /// 
