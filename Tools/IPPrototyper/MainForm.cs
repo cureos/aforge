@@ -88,7 +88,7 @@ namespace IPPrototyper
                 try
                 {
                     // get window location/size
-                    Location = new Point(
+                    Location = new System.Drawing.Point(
                         int.Parse( config.GetConfigurationOption( mainFormXOption ) ),
                         int.Parse( config.GetConfigurationOption( mainFormYOption ) ) );
 
@@ -537,7 +537,7 @@ namespace IPPrototyper
             if ( sizeMode == PictureBoxSizeMode.AutoSize )
             {
                 pictureBox.Dock = DockStyle.None;
-                pictureBox.Location = new Point( 0, 0 );
+                pictureBox.Location = new System.Drawing.Point( 0, 0 );
                 splitContainer2.Panel1.AutoScroll = true;
             }
             else
