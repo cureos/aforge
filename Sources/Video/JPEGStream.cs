@@ -459,6 +459,7 @@ namespace AForge.Video
                     response = request.GetResponse( );
 					// get response stream
                     stream = response.GetResponseStream( );
+                    stream.ReadTimeout = requestTimeout;
 
 					// loop
 					while ( !stopEvent.WaitOne( 0, true ) )
