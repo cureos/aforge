@@ -371,6 +371,32 @@ namespace AForge.Robotics.Lego
             /// <remarks><note>The value is ignored when motor's state is set. The value is
             /// provided when motor's state is retrieved.</note></remarks>
             public int RotationCount;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="MotorState"/> class.
+            /// </summary>
+            /// 
+            /// <param name="power">Power, [-100, 100].</param>
+            /// <param name="turnRatio">Turn ratio, [-100, 100].</param>
+            /// <param name="mode">Mode (bit field).</param>
+            /// <param name="regulation">Regulation mode.</param>
+            /// <param name="runState">Run state.</param>
+            /// <param name="tachoLimit">The value determines motor's run limit.</param>
+            /// 
+            public MotorState( int power, int turnRatio, MotorMode mode,
+                MotorRegulationMode regulation, MotorRunState runState, int tachoLimit )
+            {
+                Power      = power;
+                TurnRatio  = turnRatio;
+                Mode       = mode;
+                Regulation = regulation;
+                RunState   = runState;
+                TachoLimit = tachoLimit;
+
+                TachoCount      = 0;
+                BlockTachoCount = 0;
+                RotationCount   = 0;
+            }
         }
 
         #endregion
