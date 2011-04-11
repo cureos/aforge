@@ -513,19 +513,16 @@ namespace AForge.Video
 						}
 					}
 				}
-				catch ( WebException exception )
+				catch ( Exception exception )
 				{
                     // provide information to clients
                     if ( VideoSourceError != null )
                     {
                         VideoSourceError( this, new VideoSourceErrorEventArgs( exception.Message ) );
                     }
-					// wait for a while before the next try
-					Thread.Sleep( 250 );
-				}
-				catch ( Exception )
-				{
-				}
+                    // wait for a while before the next try
+                    Thread.Sleep( 250 );
+                }
 				finally
 				{
 					// abort request

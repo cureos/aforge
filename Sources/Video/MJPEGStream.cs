@@ -496,12 +496,7 @@ namespace AForge.Video
                     }
                     else
                     {
-                        // provide information to clients
-                        if ( VideoSourceError != null )
-                        {
-                            VideoSourceError( this, new VideoSourceErrorEventArgs( "Invalid content type" ) );
-                        }
-                        throw new ApplicationException( );
+                        throw new Exception( "Invalid content type." );
                     }
 
 					// get response stream
@@ -626,7 +621,13 @@ namespace AForge.Video
 						}
 					}
 				}
-				catch ( WebException exception )
+				catch ( ApplicationException )
+				{
+                    // do nothing for Application Exception, which we raised on our own
+					// wait for a while before the next try
+					Thread.Sleep( 250 );
+				}
+				catch ( Exception exception )
 				{
                     // provide information to clients
                     if ( VideoSourceError != null )
@@ -634,16 +635,8 @@ namespace AForge.Video
                         VideoSourceError( this, new VideoSourceErrorEventArgs( exception.Message ) );
                     }
                     // wait for a while before the next try
-					Thread.Sleep( 250 );
-				}
-				catch ( ApplicationException )
-				{
-					// wait for a while before the next try
-					Thread.Sleep( 250 );
-				}
-				catch ( Exception )
-				{
-				}
+                    Thread.Sleep( 250 );
+                }
 				finally
 				{
 					// abort request
