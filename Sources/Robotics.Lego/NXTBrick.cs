@@ -1,8 +1,9 @@
 // AForge Lego Robotics Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2008
-// andrew.kirillov@gmail.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Robotics.Lego
@@ -177,47 +178,94 @@ namespace AForge.Robotics.Lego
         }
 
         /// <summary>
-        /// Structure, which describes sensor's values received from NXT brick's sensor port.
+        /// Class describing sensor's values received from NXT brick's sensor port.
         /// </summary>
         /// 
-        public struct SensorValues
+        public class SensorValues
         {
             /// <summary>
             /// Specifies if data value should be treated as valid data.
             /// </summary>
-            public bool IsValid;
+            public bool IsValid
+            {
+                get { return isValid;  }
+                internal set { isValid = value; }
+            }
+            private bool isValid;
+
             /// <summary>
             /// Specifies if calibration file was found and used for <see cref="Calibrated"/>
             /// field calculation.
             /// </summary>
-            public bool IsCalibrated;
+            public bool IsCalibrated
+            {
+                get { return isCalibrated;  }
+                internal set { isCalibrated = value; }
+            }
+            private bool isCalibrated;
+
             /// <summary>
             /// Sensor type.
             /// </summary>
-            public SensorType SensorType;
+            public SensorType SensorType
+            {
+                get { return sensorType; }
+                internal set { sensorType = value; }
+            }
+            private SensorType sensorType;
+
             /// <summary>
             /// Sensor mode.
             /// </summary>
-            public SensorMode SensorMode;
+            public SensorMode SensorMode
+            {
+                get { return sensorMode; }
+                internal set { sensorMode = value; }
+            }
+            private SensorMode sensorMode;
+
             /// <summary>
             /// Raw A/D value (device dependent).
             /// </summary>
-            public ushort Raw;
+            public ushort Raw
+            {
+                get { return raw; }
+                internal set { raw = value; }
+            }
+            private ushort raw;
+
             /// <summary>
             /// Normalized A/D value (sensor type dependent), [0, 1023].
             /// </summary>
-            public ushort Normalized;
+            public ushort Normalized
+            {
+                get { return normalized; }
+                internal set { normalized = value; }
+            }
+            private ushort normalized;
+
             /// <summary>
             /// Scaled value (sensor mode dependent).
             /// </summary>
-            public short Scaled;
+            public short Scaled
+            {
+                get { return scaled; }
+                internal set { scaled = value; }
+            }
+            private short scaled;
+
             /// <summary>
             /// Value scaled according to calibration.
             /// </summary>
             /// 
             /// <remarks><note>According to Lego notes the value is currently unused.</note></remarks>
             /// 
-            public short Calibrated;
+            public short Calibrated
+            {
+                get { return calibrated; }
+                internal set { calibrated = value; }
+            }
+            private short calibrated;
         }
 
         /// <summary>
@@ -319,58 +367,116 @@ namespace AForge.Robotics.Lego
         }
 
         /// <summary>
-        /// Structure, which describes motor's state.
+        /// Class describing motor's state.
         /// </summary>
         /// 
-        public struct MotorState
+        public class MotorState
         {
             /// <summary>
             /// Power, [-100, 100].
             /// </summary>
-            public int Power;
+            public int Power
+            {
+                get { return power; }
+                set { power = Math.Min( Math.Max( -100, value ), 100 ); }
+            }
+            private int power;
+
             /// <summary>
             /// Turn ratio, [-100, 100].
             /// </summary>
-            public int TurnRatio;
+            public int TurnRatio
+            {
+                get { return turnRatio; }
+                set { turnRatio = Math.Min( Math.Max( -100, value ), 100 ); }
+            }
+            private int turnRatio;
+
             /// <summary>
             /// Mode (bit field).
             /// </summary>
-            public MotorMode Mode;
+            public MotorMode Mode
+            {
+                get { return mode; }
+                set { mode = value; }
+            }
+            private MotorMode mode = MotorMode.None;
+
             /// <summary>
             /// Regulation mode.
             /// </summary>
-            public MotorRegulationMode Regulation;
+            public MotorRegulationMode Regulation
+            {
+                get { return regulation; }
+                set { regulation = value; }
+            }
+            private MotorRegulationMode regulation = MotorRegulationMode.Idle;
+
             /// <summary>
             /// Run state.
             /// </summary>
-            public MotorRunState RunState;
+            public MotorRunState RunState
+            {
+                get { return runState; }
+                set { runState = value; }
+            }
+            private MotorRunState runState = MotorRunState.Idle;
+
             /// <summary>
             /// Tacho limit (0 - run forever).
             /// </summary>
             /// 
             /// <remarks>The value determines motor's run limit.</remarks>
-            public int TachoLimit;
+            public int TachoLimit
+            {
+                get { return tachoLimit; }
+                set { tachoLimit = Math.Max( 0, value ); }
+            }
+            private int tachoLimit;
+
             /// <summary>
             /// Number of counts since last reset of motor counter.
             /// </summary>
             /// 
             /// <remarks><note>The value is ignored when motor's state is set. The value is
             /// provided when motor's state is retrieved.</note></remarks>
-            public int TachoCount;
+            public int TachoCount
+            {
+                get { return tachoCount; }
+                internal set { tachoCount = value; }
+            }
+            private int tachoCount;
+
             /// <summary>
             /// Current position relative to last programmed movement.
             /// </summary>
             /// 
             /// <remarks><note>The value is ignored when motor's state is set. The value is
             /// provided when motor's state is retrieved.</note></remarks>
-            public int BlockTachoCount;
+            public int BlockTachoCount
+            {
+                get { return blockTachoCount; }
+                internal set { blockTachoCount = value; }
+            }
+            private int blockTachoCount;
+
             /// <summary>
             /// Current position relative to last reset of motor's rotation sensor.
             /// </summary>
             /// 
             /// <remarks><note>The value is ignored when motor's state is set. The value is
             /// provided when motor's state is retrieved.</note></remarks>
-            public int RotationCount;
+            public int RotationCount
+            {
+                get { return rotationCount; }
+                internal set { rotationCount = value; }
+            }
+            private int rotationCount;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="MotorState"/> class.
+            /// </summary>
+            public MotorState( ) { }
 
             /// <summary>
             /// Initializes a new instance of the <see cref="MotorState"/> class.
