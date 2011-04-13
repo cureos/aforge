@@ -28,8 +28,8 @@ namespace AForge.Imaging.Filters
     /// // create filter
     /// HSLLinear filter = new HSLLinear( );
     /// // configure the filter
-    /// filter.InLuminance   = new Range( 0, 0.85 );
-    /// filter.OutSaturation = new Range( 0.25, 1 );
+    /// filter.InLuminance   = new Range( 0, 0.85f );
+    /// filter.OutSaturation = new Range( 0.25f, 1 );
     /// // apply the filter
     /// filter.ApplyInPlace( image );
     /// </code>

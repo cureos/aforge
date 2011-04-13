@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Neuro.Learning
@@ -21,7 +21,7 @@ namespace AForge.Neuro.Learning
     /// <para>Sample usage (clustering RGB colors):</para>
     /// <code>
     /// // set range for randomization neurons' weights
-    /// Neuron.RandRange = new DoubleRange( 0, 255 );
+    /// Neuron.RandRange = new Range( 0, 255 );
     /// // create network
     /// DistanceNetwork	network = new DistanceNetwork(
     ///         3, // thress inputs in the network

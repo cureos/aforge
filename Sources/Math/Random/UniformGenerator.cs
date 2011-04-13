@@ -26,7 +26,7 @@ namespace AForge.Math.Random
     /// <para>Sample usage:</para>
     /// <code>
     /// // create instance of random generator
-    /// IRandomNumberGenerator generator = new UniformGenerator( new DoubleRange( 50, 100 ) );
+    /// IRandomNumberGenerator generator = new UniformGenerator( new Range( 50, 100 ) );
     /// // generate random number
     /// float randomNumber = generator.Next( );
     /// </code>

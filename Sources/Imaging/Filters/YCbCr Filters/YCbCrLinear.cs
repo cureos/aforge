@@ -28,8 +28,8 @@ namespace AForge.Imaging.Filters
     /// // create filter
     /// YCbCrLinear filter = new YCbCrLinear( );
     /// // configure the filter
-    /// filter.InCb = new Range( -0.276, 0.163 );
-    /// filter.InCr = new Range( -0.202, 0.500 );
+    /// filter.InCb = new Range( -0.276f, 0.163f );
+    /// filter.InCr = new Range( -0.202f, 0.500f );
     /// // apply the filter
     /// filter.ApplyInPlace( image );
     /// </code>
