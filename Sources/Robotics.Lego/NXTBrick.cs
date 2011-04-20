@@ -9,6 +9,7 @@
 namespace AForge.Robotics.Lego
 {
     using System;
+    using AForge;
     using AForge.Robotics.Lego.Internals;
 
     /// <summary>
@@ -1086,6 +1087,18 @@ namespace AForge.Robotics.Lego
         }
 
         /// <summary>
+        /// The event is raised every time a command is sent successfully.
+        /// </summary>
+        /// 
+        public event MessageTransferHandler MessageSent;
+
+        /// <summary>
+        /// The event is raised every time a command is read successfully.
+        /// </summary>
+        /// 
+        public event MessageTransferHandler MessageRead;
+
+        /// <summary>
         /// Send command to Lego NXT brick and read reply.
         /// </summary>
         /// 
@@ -1102,7 +1115,7 @@ namespace AForge.Robotics.Lego
         /// be equal to second byte of command).</exception>
         /// <exception cref="ApplicationException">Error occured on NXT brick side.</exception>
         /// 
-        protected bool SendCommand( byte[] command, byte[] reply )
+        public bool SendCommand( byte[] command, byte[] reply )
         {
             bool result = false;
 
@@ -1117,11 +1130,23 @@ namespace AForge.Robotics.Lego
                 // send message to NXT brick
                 if ( communicationInterface.SendMessage( command, command.Length ) )
                 {
+                    // notifies clients if any
+                    if ( MessageSent != null )
+                    {
+                        MessageSent( this, new CommunicationBufferEventArgs( command ) );
+                    }
+
                     int bytesRead;
 
                     // read message
                     if ( communicationInterface.ReadMessage( reply, out bytesRead ) )
                     {
+                        // notifies clients if any
+                        if ( MessageRead != null )
+                        {
+                            MessageRead( this, new CommunicationBufferEventArgs( reply, 0, bytesRead ) );
+                        }
+
                         // check that reply corresponds to command
                         if ( reply[1] != command[1] )
                             throw new ApplicationException( "Reply does not correspond to command" );
