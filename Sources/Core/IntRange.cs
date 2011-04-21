@@ -167,7 +167,7 @@ namespace AForge
         }
 
         /// <summary>
-        /// Inequality operator - checks if two points have different min/max values.
+        /// Inequality operator - checks if two ranges have different min/max values.
         /// </summary>
         /// 
         /// <param name="range1">First range to check.</param>
