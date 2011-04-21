@@ -547,7 +547,7 @@ namespace AForge.Imaging
         }
 
         /// <summary>
-        /// Collect coordinates of none black pixel in the image.
+        /// Collect coordinates of none black pixels in the image.
         /// </summary>
         /// 
         /// <returns>Returns list of points, which have other than black color.</returns>
@@ -558,7 +558,7 @@ namespace AForge.Imaging
         }
 
         /// <summary>
-        /// Collect coordinates of none black pixel within specified rectangle of the image.
+        /// Collect coordinates of none black pixels within specified rectangle of the image.
         /// </summary>
         /// 
         /// <param name="rect">Image's rectangle to process.</param>
