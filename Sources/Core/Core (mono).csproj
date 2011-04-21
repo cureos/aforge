@@ -42,8 +42,10 @@
     <None Include="AForge.snk" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Delegates.cs" />
     <Compile Include="DoublePoint.cs" />
     <Compile Include="DoubleRange.cs" />
+    <Compile Include="EventArgs.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="IntPoint.cs" />
     <Compile Include="IntRange.cs" />
