@@ -652,8 +652,6 @@ namespace AForge.Video.DirectShow
                         {
                             if ( mediaEvent.GetEvent( out code, out p1, out p2, 0 ) >= 0 )
                             {
-                                System.Diagnostics.Debug.WriteLine( (int) code );
-
                                 mediaEvent.FreeEventParams( code, p1, p2 );
 
                                 if ( code == DsEvCode.DeviceLost )
