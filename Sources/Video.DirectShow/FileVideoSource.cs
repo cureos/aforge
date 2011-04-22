@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2010
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2009-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Video.DirectShow
@@ -458,7 +458,7 @@ namespace AForge.Video.DirectShow
 
                 // get media events' interface
                 mediaEvent = (IMediaEventEx) graphObject;
-                int p1, p2;
+                IntPtr p1, p2;
                 DsEvCode code;
 
                 // run
