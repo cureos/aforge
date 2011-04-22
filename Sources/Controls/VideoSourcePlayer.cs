@@ -481,6 +481,10 @@ namespace AForge.Controls
                     lastMessage = "Video was stopped";
                     break;
 
+                case ReasonToFinishPlaying.DeviceLost:
+                    lastMessage = "Video device was unplugged";
+                    break;
+
                 default:
                     lastMessage = "Video has finished for unknown reason";
                     break;

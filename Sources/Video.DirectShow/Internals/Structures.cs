@@ -1,8 +1,9 @@
 // AForge Direct Show Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007
-// andrew.kirillov@gmail.com
+// Copyright © AForge.NET, 2009-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Video.DirectShow.Internals
@@ -359,7 +360,8 @@ namespace AForge.Video.DirectShow.Internals
     internal enum DsEvCode
     {
         None,
-        Complete = 0x01,      // EC_COMPLETE
+        Complete   = 0x01,      // EC_COMPLETE
+        DeviceLost = 0x1F,      // EC_DEVICE_LOST
         //(...) not yet interested in other events
     }
 

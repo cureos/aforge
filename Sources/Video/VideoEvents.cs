@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2009-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Video
@@ -53,7 +53,11 @@ namespace AForge.Video
         /// <summary>
         /// Video playing has finished because it was stopped by user.
         /// </summary>
-        StoppedByUser
+        StoppedByUser,
+        /// <summary>
+        /// Video playing has finished because the device was lost (unplugged).
+        /// </summary>
+        DeviceLost
     }
 
     /// <summary>

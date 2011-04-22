@@ -460,6 +460,8 @@ namespace AForge.Video.DirectShow
 
         private void WorkerThread( bool runGraph )
         {
+            ReasonToFinishPlaying reasonToStop = ReasonToFinishPlaying.StoppedByUser;
+
             // grabber
             Grabber grabber = new Grabber( this );
 
@@ -475,6 +477,7 @@ namespace AForge.Video.DirectShow
             IBaseFilter     grabberBase = null;
             ISampleGrabber  sampleGrabber = null;
             IMediaControl   mediaControl = null;
+            IMediaEventEx   mediaEvent = null;
 
             try
             {
@@ -633,12 +636,33 @@ namespace AForge.Video.DirectShow
                     // get media control
                     mediaControl = (IMediaControl) graphObject;
 
+                    // get media events' interface
+                    mediaEvent = (IMediaEventEx) graphObject;
+                    int p1, p2;
+                    DsEvCode code;
+
                     // run
                     mediaControl.Run( );
 
                     while ( !stopEvent.WaitOne( 0, true ) )
                     {
                         Thread.Sleep( 100 );
+
+                        if ( mediaEvent != null )
+                        {
+                            if ( mediaEvent.GetEvent( out code, out p1, out p2, 0 ) >= 0 )
+                            {
+                                System.Diagnostics.Debug.WriteLine( (int) code );
+
+                                mediaEvent.FreeEventParams( code, p1, p2 );
+
+                                if ( code == DsEvCode.DeviceLost )
+                                {
+                                    reasonToStop = ReasonToFinishPlaying.DeviceLost;
+                                    break;
+                                }
+                            }
+                        }
 
                         if ( needToDisplayPropertyPage )
                         {
@@ -687,6 +711,7 @@ namespace AForge.Video.DirectShow
                 grabberBase     = null;
                 sampleGrabber   = null;
                 mediaControl    = null;
+                mediaEvent      = null;
 
                 if ( graphObject != null )
                 {
@@ -712,7 +737,7 @@ namespace AForge.Video.DirectShow
 
             if ( PlayingFinished != null )
             {
-                PlayingFinished( this, ReasonToFinishPlaying.StoppedByUser );
+                PlayingFinished( this, reasonToStop );
             }
         }
 
