@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Internal\Tools.cs" />
     <Compile Include="SliderControl.cs">
       <SubType>Component</SubType>
     </Compile>

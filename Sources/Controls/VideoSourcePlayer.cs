@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © AForge.NET, 2005-2010
+// Copyright © AForge.NET, 2005-2011
 // contacts@aforgenet.com
 //
 
@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Data;
 using System.Text;
 using System.Threading;
@@ -61,6 +62,9 @@ namespace AForge.Controls
         private IVideoSource videoSource = null;
         // last received frame from the video source
         private Bitmap currentFrame = null;
+        // converted version of the current frame (in the case if current frame is a 16 bpp 
+        // per color plane image, then the converted image is its 8 bpp version for rendering)
+        private Bitmap convertedFrame = null;
         // last error message provided by video source
         private string lastMessage = null;
         // controls border color
@@ -386,7 +390,8 @@ namespace AForge.Controls
                     if ( ( currentFrame != null ) && ( lastMessage == null ) )
                     {
                         // draw current frame
-                        g.DrawImage( currentFrame, rect.X + 1, rect.Y + 1, rect.Width - 2, rect.Height - 2 );
+                        g.DrawImage( ( convertedFrame != null ) ? convertedFrame : currentFrame,
+                            rect.X + 1, rect.Y + 1, rect.Width - 2, rect.Height - 2 );
                         firstFrameNotProcessed = false;
                     }
                     else
@@ -445,6 +450,11 @@ namespace AForge.Controls
                         currentFrame.Dispose( );
                         currentFrame = null;
                     }
+                    if ( convertedFrame != null )
+                    {
+                        convertedFrame.Dispose( );
+                        convertedFrame = null;
+                    }
 
                     currentFrame = (Bitmap) eventArgs.Frame.Clone( );
                     lastMessage = null;
@@ -453,6 +463,14 @@ namespace AForge.Controls
                     if ( NewFrame != null )
                     {
                         NewFrame( this, ref currentFrame );
+                    }
+
+                    // check if conversion is required to lower bpp rate
+                    if ( ( currentFrame.PixelFormat == PixelFormat.Format16bppGrayScale ) ||
+                         ( currentFrame.PixelFormat == PixelFormat.Format48bppRgb ) ||
+                         ( currentFrame.PixelFormat == PixelFormat.Format64bppArgb ) )
+                    {
+                        convertedFrame = Tools.ConvertImage( currentFrame );
                     }
                 }
 
