@@ -57,15 +57,21 @@ namespace AForge.Video.DirectShow
 
             for ( int i = 0; i < count; i++ )
             {
-                VideoCapabilities vc = new VideoCapabilities( videoStreamConfig, i );
-
-                ulong key = ( ( (ulong) vc.FrameSize.Height ) << 32 ) |
-                            ( ( (ulong) vc.FrameSize.Width ) << 16 ) |
-                              ( (ulong) (uint) vc.FrameRate );
-
-                if ( !videocapsList.ContainsKey( key ) )
+                try
                 {
-                    videocapsList.Add( key, vc );
+                    VideoCapabilities vc = new VideoCapabilities( videoStreamConfig, i );
+
+                    ulong key = ( ( (ulong) vc.FrameSize.Height ) << 32 ) |
+                                ( ( (ulong) vc.FrameSize.Width ) << 16 ) |
+                                  ( (ulong) (uint) vc.FrameRate );
+
+                    if ( !videocapsList.ContainsKey( key ) )
+                    {
+                        videocapsList.Add( key, vc );
+                    }
+                }
+                catch
+                {
                 }
             }
 
@@ -90,7 +96,7 @@ namespace AForge.Video.DirectShow
                     Marshal.ThrowExceptionForHR( hr );
 
                 // extract info
-                FrameSize    = caps.InputSize;
+                FrameSize = caps.InputSize;
                 FrameRate = (int) ( 10000000 / caps.MinFrameInterval );
             }
             finally

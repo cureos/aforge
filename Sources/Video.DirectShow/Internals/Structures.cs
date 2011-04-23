@@ -391,6 +391,15 @@ namespace AForge.Video.DirectShow.Internals
         PAL_N_COMBO = 0x00100000    // Argentina
     }
 
+    [Flags, ComVisible( false )]
+    internal enum VideoControlFlags
+    {
+        FlipHorizontal        = 0x0001,
+        FlipVertical          = 0x0002,
+        ExternalTriggerEnable = 0x0004,
+        Trigger               = 0x0008
+    }
+
     [StructLayout( LayoutKind.Sequential ), ComVisible( false )]
     internal class VideoStreamConfigCaps		// VIDEO_STREAM_CONFIG_CAPS
     {

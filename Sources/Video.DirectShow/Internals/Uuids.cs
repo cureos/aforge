@@ -1,8 +1,9 @@
 // AForge Direct Show Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007
-// andrew.kirillov@gmail.com
+// Copyright © AForge.NET, 2009-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Video.DirectShow.Internals
@@ -246,5 +247,14 @@ namespace AForge.Video.DirectShow.Internals
         /// 
         public static readonly Guid Capture =
             new Guid( 0xFB6C4281, 0x0353, 0x11D1, 0x90, 0x5F, 0x00, 0x00, 0xC0, 0xCC, 0x16, 0xBA );
+
+        /// <summary>
+        /// Still image pin.
+        /// </summary>
+        /// 
+        /// <remarks>Equals to PIN_CATEGORY_STILL.</remarks>
+        /// 
+        public static readonly Guid StillImage =
+            new Guid( 0xFB6C428A, 0x0353, 0x11D1, 0x90, 0x5F, 0x00, 0x00, 0xC0, 0xCC, 0x16, 0xBA );
     }
 }

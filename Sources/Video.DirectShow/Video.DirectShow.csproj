@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="FileVideoSource.cs" />
     <Compile Include="Internals\IAMStreamConfig.cs" />
+    <Compile Include="Internals\IAMVideoControl.cs" />
     <Compile Include="Internals\IBaseFilter.cs" />
     <Compile Include="Internals\ICaptureGraphBuilder2.cs" />
     <Compile Include="Internals\ICreateDevEnum.cs" />
