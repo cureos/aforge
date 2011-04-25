@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging
@@ -64,7 +64,14 @@ namespace AForge.Imaging
         /// 
         public Histogram Red
         {
-            get { return red; }
+            get
+            {
+                if ( red == null )
+                {
+                    throw new InvalidImagePropertiesException( ExceptionMessage.ColorHistogramException );
+                }
+                return red;
+            }
         }
 
         /// <summary>
@@ -76,7 +83,14 @@ namespace AForge.Imaging
         /// 
         public Histogram Green
         {
-            get { return green; }
+            get
+            {
+                if ( green == null )
+                {
+                    throw new InvalidImagePropertiesException( ExceptionMessage.ColorHistogramException );
+                }
+                return green;
+            }
         }
 
         /// <summary>
@@ -88,7 +102,14 @@ namespace AForge.Imaging
         /// 
         public Histogram Blue
         {
-            get { return blue; }
+            get
+            {
+                if ( blue == null )
+                {
+                    throw new InvalidImagePropertiesException( ExceptionMessage.ColorHistogramException );
+                }
+                return blue;
+            }
         }
 
         /// <summary>
@@ -100,7 +121,14 @@ namespace AForge.Imaging
         /// 
         public Histogram Gray
         {
-            get { return gray; }
+            get
+            {
+                if ( gray == null )
+                {
+                    throw new InvalidImagePropertiesException( ExceptionMessage.GrayHistogramException );
+                }
+                return gray;
+            }
         }
 
         /// <summary>
@@ -115,7 +143,14 @@ namespace AForge.Imaging
         /// 
         public Histogram RedWithoutBlack
         {
-            get { return redWithoutBlack; }
+            get
+            {
+                if ( redWithoutBlack == null )
+                {
+                    throw new InvalidImagePropertiesException( ExceptionMessage.ColorHistogramException );
+                }
+                return redWithoutBlack;
+            }
         }
 
         /// <summary>
@@ -130,7 +165,14 @@ namespace AForge.Imaging
         /// 
         public Histogram GreenWithoutBlack
         {
-            get { return greenWithoutBlack; }
+            get
+            {
+                if ( greenWithoutBlack == null )
+                {
+                    throw new InvalidImagePropertiesException( ExceptionMessage.ColorHistogramException );
+                }
+                return greenWithoutBlack;
+            }
         }
 
         /// <summary>
@@ -145,7 +187,14 @@ namespace AForge.Imaging
         /// 
         public Histogram BlueWithoutBlack
         {
-            get { return blueWithoutBlack; }
+            get
+            {
+                if ( blueWithoutBlack == null )
+                {
+                    throw new InvalidImagePropertiesException( ExceptionMessage.ColorHistogramException );
+                }
+                return blueWithoutBlack;
+            }
         }
 
         /// <summary>
@@ -160,7 +209,14 @@ namespace AForge.Imaging
         /// 
         public Histogram GrayWithoutBlack
         {
-            get { return grayWithoutBlack; }
+            get
+            {
+                if ( grayWithoutBlack == null )
+                {
+                    throw new InvalidImagePropertiesException( ExceptionMessage.GrayHistogramException );
+                }
+                return grayWithoutBlack;
+            }
         }
 
         /// <summary>
@@ -265,6 +321,9 @@ namespace AForge.Imaging
             int height = image.Height;
 
             pixels = pixelsWithoutBlack = 0;
+
+            red = green = blue = gray = null;
+            redWithoutBlack = greenWithoutBlack = blueWithoutBlack = grayWithoutBlack = null;
 
             // check pixel format
             if ( grayscale = ( image.PixelFormat == PixelFormat.Format8bppIndexed ) )

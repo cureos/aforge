@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging
@@ -58,7 +58,14 @@ namespace AForge.Imaging
         /// 
         public Histogram Red
         {
-            get { return red; }
+            get
+            {
+                if ( red == null )
+                {
+                    throw new InvalidImagePropertiesException( ExceptionMessage.ColorHistogramException );
+                }
+                return red;
+            }
         }
 
         /// <summary>
@@ -67,7 +74,14 @@ namespace AForge.Imaging
         /// 
         public Histogram Green
         {
-            get { return green; }
+            get
+            {
+                if ( green == null )
+                {
+                    throw new InvalidImagePropertiesException( ExceptionMessage.ColorHistogramException );
+                }
+                return green;
+            }
         }
 
         /// <summary>
@@ -76,7 +90,14 @@ namespace AForge.Imaging
         /// 
         public Histogram Blue
         {
-            get { return blue; }
+            get
+            {
+                if ( blue == null )
+                {
+                    throw new InvalidImagePropertiesException( ExceptionMessage.ColorHistogramException );
+                }
+                return blue;
+            }
         }
 
         /// <summary>
@@ -85,7 +106,14 @@ namespace AForge.Imaging
         /// 
         public Histogram Gray
         {
-            get { return gray; }
+            get
+            {
+                if ( gray == null )
+                {
+                    throw new InvalidImagePropertiesException( ExceptionMessage.GrayHistogramException );
+                }
+                return gray;
+            }
         }
 
         /// <summary>
@@ -197,6 +225,8 @@ namespace AForge.Imaging
             // get image dimension
             int width  = image.Width;
             int height = image.Height;
+
+            red = green = blue = gray = null;
 
             // do the job
             unsafe
