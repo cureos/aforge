@@ -41,6 +41,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Release\AForge.dll</HintPath>
     </Reference>
+    <Reference Include="AForge.Imaging, Version=2.1.5.0, Culture=neutral, PublicKeyToken=ba8ddea9676ca48b, processorArchitecture=MSIL" />
     <Reference Include="AForge.Video, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cbfb6e07d173c401, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Release\AForge.Video.dll</HintPath>
@@ -52,6 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HuePicker.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Internal\Tools.cs" />
     <Compile Include="SliderControl.cs">
       <SubType>Component</SubType>
@@ -103,6 +107,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="HuePicker.resx">
+      <DependentUpon>HuePicker.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SliderControl.resx">
       <DependentUpon>SliderControl.cs</DependentUpon>
     </EmbeddedResource>

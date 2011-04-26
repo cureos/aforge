@@ -1,5 +1,6 @@
 // AForge Controls Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
 // Copyright © AForge.NET, 2007-2011
 // contacts@aforgenet.com
@@ -49,10 +50,10 @@ namespace AForge.Controls
         private int dx;
 
         /// <summary>
-        /// An event, to notify about changes of <see cref="Min"/> or <see cref="Max"/> property.
+        /// An event, to notify about changes of <see cref="Min"/> or <see cref="Max"/> properties.
         /// </summary>
         /// 
-        /// <remarks><para>The event if fired after changes of <see cref="Min"/> or <see cref="Max"/> property,
+        /// <remarks><para>The event is fired after changes of <see cref="Min"/> or <see cref="Max"/> property,
         /// which is caused by user dragging the corresponding control’s arrow (slider).</para>
         /// </remarks>
         /// 
@@ -282,6 +283,9 @@ namespace AForge.Controls
         /// <summary>
         /// Dispose the object.
         /// </summary>
+        /// 
+        /// <param name="disposing">Specifies if disposing was invoked by user's code.</param>
+        /// 
         protected override void Dispose( bool disposing )
         {
             if ( disposing )
