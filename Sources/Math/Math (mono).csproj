@@ -54,6 +54,7 @@
     <Compile Include="Geometry\LineStraighteningOptimizer.cs" />
     <Compile Include="Geometry\LineSegment.cs" />
     <Compile Include="Geometry\PointsCloud.cs" />
+    <Compile Include="Geometry\POSIT.cs" />
     <Compile Include="Geometry\ShapeType.cs" />
     <Compile Include="Geometry\SimpleShapeChecker.cs" />
     <Compile Include="Histogram.cs" />
