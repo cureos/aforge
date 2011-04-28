@@ -15,7 +15,7 @@ using System.Windows.Forms;
 
 using AForge.Imaging;
 
-namespace IPLab
+namespace AForge.Controls
 {
     /// <summary>
     /// Hue picker control.
@@ -44,9 +44,9 @@ namespace IPLab
         private Pen whitePen;
         private Brush whiteBrush;
 
-        private Point ptCenter = new Point( 0, 0 );
-        private Point ptMin = new Point( 0, 0 );
-        private Point ptMax = new Point( 0, 0 );
+        private System.Drawing.Point ptCenter = new System.Drawing.Point( 0, 0 );
+        private System.Drawing.Point ptMin = new System.Drawing.Point( 0, 0 );
+        private System.Drawing.Point ptMax = new System.Drawing.Point( 0, 0 );
         private int trackMode = 0;
 
         private int min = 0;
