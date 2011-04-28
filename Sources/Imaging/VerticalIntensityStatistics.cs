@@ -128,7 +128,7 @@ namespace AForge.Imaging
         /// 
         public bool IsGrayscale
         {
-            get { return ( gray == null ); }
+            get { return ( gray != null ); }
         }
 
         /// <summary>

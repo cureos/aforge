@@ -53,7 +53,6 @@ namespace AForge.Imaging
 
         private int pixels;
         private int pixelsWithoutBlack;
-        private bool grayscale;
 
         /// <summary>
         /// Histogram of red channel.
@@ -248,7 +247,7 @@ namespace AForge.Imaging
         /// 
         public bool IsGrayscale
         {
-            get { return grayscale; }
+            get { return ( gray != null ); }
         }
 
         /// <summary>
@@ -326,7 +325,7 @@ namespace AForge.Imaging
             redWithoutBlack = greenWithoutBlack = blueWithoutBlack = grayWithoutBlack = null;
 
             // check pixel format
-            if ( grayscale = ( image.PixelFormat == PixelFormat.Format8bppIndexed ) )
+            if ( image.PixelFormat == PixelFormat.Format8bppIndexed )
             {
                 // alloc arrays
                 int[] g   = new int[256];
