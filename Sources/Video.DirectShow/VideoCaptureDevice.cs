@@ -893,14 +893,45 @@ namespace AForge.Video.DirectShow
         // Set frame's size and rate for the specified stream configuration
         private void SetFrameSizeAndRate( IAMStreamConfig streamConfig, Size size, int frameRate )
         {
+            bool sizeSet = false;
             AMMediaType mediaType;
 
             // get current format
             streamConfig.GetFormat( out mediaType );
-            VideoInfoHeader infoHeader = (VideoInfoHeader) Marshal.PtrToStructure( mediaType.FormatPtr, typeof( VideoInfoHeader ) );
 
             // change frame size if required
             if ( ( size.Width != 0 ) && ( size.Height != 0 ) )
+            {
+                // iterate through device's capabilities to find mediaType for desired resolution
+                int capabilitiesCount = 0, capabilitySize = 0;
+                AMMediaType newMediaType = null;
+                VideoStreamConfigCaps caps = new VideoStreamConfigCaps( );
+
+                streamConfig.GetNumberOfCapabilities( out capabilitiesCount, out capabilitySize );
+
+                for ( int i = 0; i < capabilitiesCount; i++ )
+                {
+                    if ( streamConfig.GetStreamCaps( i, out newMediaType, caps ) == 0 )
+                    {
+                        if ( caps.InputSize == size )
+                        {
+                            mediaType.Dispose( );
+                            mediaType = newMediaType;
+                            sizeSet = true;
+                            break;
+                        }
+                        else
+                        {
+                            newMediaType.Dispose( );
+                        }
+                    }
+                }
+            }
+
+            VideoInfoHeader infoHeader = (VideoInfoHeader) Marshal.PtrToStructure( mediaType.FormatPtr, typeof( VideoInfoHeader ) );
+
+            // try changing size manually if failed finding mediaType before
+            if ( ( size.Width != 0 ) && ( size.Height != 0 ) && ( !sizeSet ) )
             {
                 infoHeader.BmiHeader.Width  = size.Width;
                 infoHeader.BmiHeader.Height = size.Height;
