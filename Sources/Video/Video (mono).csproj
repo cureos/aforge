@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="AsyncVideoSource.cs" />
     <Compile Include="ByteArrayUtils.cs" />
+    <Compile Include="Exceptions.cs" />
     <Compile Include="IVideoSource.cs" />
     <Compile Include="JPEGStream.cs" />
     <Compile Include="MJPEGStream.cs" />
