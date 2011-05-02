@@ -17,13 +17,17 @@ namespace AForge.Math.Geometry
     /// </summary>
     /// 
     /// <remarks><para>The class implements an algorithm for 3D object's pose estimation from it's
-    /// 2D coordinates obtained by perspective projection. The idea of the implemented math and algorithm
-    /// is described in "Model-Based Object Pose in 25 Lines of Code" paper written by
-    /// Daniel F. DeMenthon and Larry S. Davis (the implementation of the algorithm is almost 1 to 1
-    /// translation of the pseudo code given by the paper, so should be easy to follow).</para>
+    /// 2D coordinates obtained by perspective projection, when the object is described none coplanar points.
+    /// The idea of the implemented math and algorithm is described in "Model-Based Object Pose in 25
+    /// Lines of Code" paper written by Daniel F. DeMenthon and Larry S. Davis (the implementation of
+    /// the algorithm is almost 1 to 1 translation of the pseudo code given by the paper, so should
+    /// be easy to follow).</para>
     /// 
     /// <para><note>At this point the implementation works only with models described by 4 points, which is
     /// the minimum number of points enough for 3D pose estimation.</note></para>
+    /// 
+    /// <para><note>The 4 model's point <b>must not be coplanar</b>, i.e. must not reside all within
+    /// same planer. See <see cref="CoplanarPosit"/> for coplanar case.</note></para>
     /// 
     /// <para>Sample usage:</para>
     /// <code>
@@ -56,6 +60,8 @@ namespace AForge.Math.Geometry
     /// </code>
     /// </remarks>
     /// 
+    /// <seealso cref="CoplanarPosit"/>
+    /// 
     public class Posit
     {
         // camera's focal length
@@ -80,7 +86,8 @@ namespace AForge.Math.Geometry
         /// Initializes a new instance of the <see cref="Posit"/> class.
         /// </summary>
         /// 
-        /// <param name="model">Array of vectors containing coordinates of four real model's point.</param>
+        /// <param name="model">Array of vectors containing coordinates of four real model's point (points
+        /// must not be on the same plane).</param>
         /// <param name="focalLength">Focal length of the camera used to capture the model.</param>
         /// 
         /// <exception cref="ArgumentException">The model must have 4 points.</exception>

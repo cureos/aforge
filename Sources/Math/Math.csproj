@@ -48,6 +48,7 @@
     <Compile Include="FourierTransform.cs" />
     <Compile Include="Gaussian.cs" />
     <Compile Include="Geometry\ClosePointsMergingOptimizer.cs" />
+    <Compile Include="Geometry\CoplanarPosit.cs" />
     <Compile Include="Geometry\FlatAnglesOptimizer.cs" />
     <Compile Include="Geometry\GeometryTools.cs" />
     <Compile Include="Geometry\GrahamConvexHull.cs" />
