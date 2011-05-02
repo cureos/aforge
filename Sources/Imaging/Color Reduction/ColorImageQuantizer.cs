@@ -68,7 +68,7 @@ namespace AForge.Imaging.ColorReduction
         /// <para><note>The property provides a trade off. On one hand it may speedup color reduction routine, but on another
         /// hand it increases memory usage. Also cache usage may not be efficient for very small target color tables.</note></para>
         /// 
-        /// <para>Default value is set to <see langword="true"/>.</para>
+        /// <para>Default value is set to <see langword="false"/>.</para>
         /// </remarks>
         /// 
         public bool UseCaching

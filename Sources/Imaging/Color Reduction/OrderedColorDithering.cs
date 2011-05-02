@@ -1,8 +1,8 @@
-// AForge Image Processing Library
+﻿// AForge Image Processing Library
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright � AForge.NET, 2005-2010
+// Copyright © AForge.NET, 2005-2011
 // contacts@aforgenet.com
 //
 
@@ -12,59 +12,44 @@ namespace AForge.Imaging.ColorReduction
     using System.Collections.Generic;
     using System.Drawing;
     using System.Drawing.Imaging;
-    using AForge.Imaging;
 
     /// <summary>
-    /// Base class for error diffusion color dithering.
+    /// Color dithering with a thresold matrix (ordered dithering).
     /// </summary>
     /// 
-    /// <remarks><para>The class is the base class for color dithering algorithms based on
-    /// <a href="http://en.wikipedia.org/wiki/Error_diffusion">error diffusion</a>.</para>
-    /// 
-    /// <para>Color dithering with error diffusion is based on the idea that each pixel from the specified source
-    /// image is substituted with a best matching color (or better say with color's index) from the specified color
-    /// table. However, the error (difference between color value in the source image and the best matching color)
-    /// is diffused to neighbor pixels of the source image, which affects the way those pixels are substituted by colors
-    /// from the specified table.</para>
+    /// <remarks><para>The class implements ordered color dithering as described on
+    /// <a href="http://en.wikipedia.org/wiki/Ordered_dithering">Wikipedia</a>.
+    /// The algorithm achieves dithering by applying a <see cref="ThresholdMatrix">threshold map</see> on
+    /// the pixels displayed, causing some of the pixels to be rendered at a different color, depending on
+    /// how far in between the color is of available <see cref="ColorTable">color entries</see>.</para>
     /// 
     /// <para>The image processing routine accepts 24/32 bpp color images for processing. As a result this routine
-    /// produces 4 bpp or 8 bpp indexed image, which depends on size of the specified <see cref="ColorTable">color table</see> - 4 bpp result for
+    /// produces 4 bpp or 8 bpp indexed image, which depends on size of the specified
+    /// <see cref="ColorTable">color table</see> - 4 bpp result for
     /// color tables with 16 colors or less; 8 bpp result for larger color tables.</para>
+    /// 
+    /// <para>Sample usage:</para>
+    /// <code>
+    /// // create color image quantization routine
+    /// ColorImageQuantizer ciq = new ColorImageQuantizer( new MedianCutQuantizer( ) );
+    /// // create 256 colors table
+    /// Color[] colorTable = ciq.CalculatePalette( image, 256 );
+    /// // create dithering routine
+    /// OrderedColorDithering dithering = new OrderedColorDithering( );
+    /// dithering.ColorTable = colorTable;
+    /// // apply the dithering routine
+    /// Bitmap newImage = dithering.Apply( image );
+    /// </code>
+    /// 
+    /// <para><b>Initial image:</b></para>
+    /// <img src="img/imaging/sample1.jpg" width="480" height="361" />
+    /// <para><b>Result image:</b></para>
+    /// <img src="img/imaging/ordered_color_dithering.png" width="480" height="361" />
     /// </remarks>
     /// 
-    public abstract class ErrorDiffusionColorDithering
+    public class OrderedColorDithering
     {
         private bool useCaching = false;
-
-        /// <summary>
-        /// Current processing X coordinate.
-        /// </summary>
-        protected int x;
-
-        /// <summary>
-        /// Current processing Y coordinate.
-        /// </summary>
-        protected int y;
-
-        /// <summary>
-        /// Processing image's width.
-        /// </summary>
-        protected int width;
-
-        /// <summary>
-        /// Processing image's height.
-        /// </summary>
-        protected int height;
-
-        /// <summary>
-        /// Processing image's stride (line size).
-        /// </summary>
-        protected int stride;
-
-        /// <summary>
-        /// Processing image's pixel size in bytes.
-        /// </summary>
-        protected int pixelSize;
 
         private Color[] colorTable = new Color[16]
         {
@@ -73,6 +58,46 @@ namespace AForge.Imaging.ColorReduction
             Color.Gray,    Color.Blue,        Color.Green,     Color.Cyan,
             Color.Red,     Color.Magenta,     Color.Yellow,    Color.White
         };
+
+        private byte[,] matrix = new byte[4, 4]
+		{
+			{  2, 18,  6, 22 },
+			{ 26, 10, 30, 14 },
+			{  8, 24,  4, 20 },
+			{ 32, 16, 28, 12 }
+		};
+
+        /// <summary>
+        /// Threshold matrix - values to add source image's values.
+        /// </summary>
+        /// 
+        /// <remarks><para>The property keeps a threshold matrix, which is applied to values of a source image
+        /// to dither. By adding these values to the source image the algorithm produces the effect when pixels
+        /// of the same color in source image may have different color in the result image (which depends on pixel's
+        /// position). This threshold map is also known as an index matrix or Bayer matrix.</para>
+        /// 
+        /// <para>By default the property is inialized with the below matrix:
+        /// <code lang="none">
+        ///  2   18    6   22
+        /// 26   10   30   14
+        ///  8   24    4   20
+        /// 32   16   28   12
+        /// </code>
+        /// </para>
+        /// </remarks>
+        /// 
+        public byte[,] ThresholdMatrix
+        {
+            get { return (byte[,]) matrix.Clone( ); }
+            set
+            {
+                if ( value == null )
+                {
+                    throw new NullReferenceException( "Threshold matrix cannot be set to null." );
+                }
+                matrix = value;
+            }
+        }
 
         /// <summary>
         /// Color table to use for image dithering. Must contain 2-256 colors.
@@ -115,7 +140,7 @@ namespace AForge.Imaging.ColorReduction
         /// <para><note>The property provides a trade off. On one hand it may speedup color dithering routine, but on another
         /// hand it increases memory usage. Also cache usage may not be efficient for very small target color tables.</note></para>
         /// 
-        /// <para>Default value is set to <see langword="false"/>.</para>
+        /// <para>Default value is set to <see langword="true"/>.</para>
         /// </remarks>
         /// 
         public bool UseCaching
@@ -125,27 +150,23 @@ namespace AForge.Imaging.ColorReduction
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ErrorDiffusionColorDithering"/> class.
+        /// Initializes a new instance of the <see cref="OrderedColorDithering"/> class.
         /// </summary>
         /// 
-        protected ErrorDiffusionColorDithering( )
+        public OrderedColorDithering( )
         {
         }
 
         /// <summary>
-        /// Do error diffusion.
+        /// Initializes a new instance of the <see cref="OrderedColorDithering"/> class.
         /// </summary>
         /// 
-        /// <param name="rError">Error value of red component.</param>
-        /// <param name="gError">Error value of green component.</param>
-        /// <param name="bError">Error value of blue component.</param>
-        /// <param name="ptr">Pointer to current processing pixel.</param>
+        /// <param name="matrix">Threshold matrix (see <see cref="ThresholdMatrix"/> property).</param>
         /// 
-        /// <remarks>All parameters of the image and current processing pixel's coordinates
-        /// are initialized in protected members.</remarks>
-        /// 
-        protected abstract unsafe void Diffuse( int rError, int gError, int bError, byte* ptr );
-
+        public OrderedColorDithering( byte[,] matrix )
+        {
+            ThresholdMatrix = matrix;
+        }
 
         /// <summary>
         /// Perform color dithering for the specified image.
@@ -167,7 +188,7 @@ namespace AForge.Imaging.ColorReduction
 
             try
             {
-                result = Apply( new UnmanagedImage( data)  );
+                result = Apply( new UnmanagedImage( data ) );
             }
             finally
             {
@@ -177,7 +198,7 @@ namespace AForge.Imaging.ColorReduction
             return result;
         }
 
-        /// <summary>
+                /// <summary>
         /// Perform color dithering for the specified image.
         /// </summary>
         /// 
@@ -200,14 +221,11 @@ namespace AForge.Imaging.ColorReduction
 
             cache.Clear( );
 
-            // make a copy of the original image
-            UnmanagedImage source = sourceImage.Clone( );
-
             // get image size
-            width  = sourceImage.Width;
-            height = sourceImage.Height;
-            stride = sourceImage.Stride;
-            pixelSize = Bitmap.GetPixelFormatSize( sourceImage.PixelFormat ) / 8;
+            int width  = sourceImage.Width;
+            int height = sourceImage.Height;
+            int stride = sourceImage.Stride;
+            int pixelSize = Bitmap.GetPixelFormatSize( sourceImage.PixelFormat ) / 8;
 
             int offset = stride - width * pixelSize;
 
@@ -227,32 +245,40 @@ namespace AForge.Imaging.ColorReduction
                 ImageLockMode.ReadWrite, destImage.PixelFormat );
 
             // pixel values
-            int r, g, b;
+            int r, g, b, toAdd;
+            int rows = matrix.GetLength( 0 );
+            int cols = matrix.GetLength( 1 );
+
 
             // do the job
-            byte* ptr = (byte*) source.ImageData.ToPointer( );
+            byte* ptr = (byte*) sourceImage.ImageData.ToPointer( );
             byte* dstBase = (byte*) destData.Scan0.ToPointer( );
             byte colorIndex;
 
             bool is8bpp = ( colorTable.Length > 16 );
 
             // for each line
-            for ( y = 0; y < height; y++ )
+            for ( int y = 0; y < height; y++ )
             {
                 byte* dst = dstBase + y * destData.Stride;
 
                 // for each pixels
-                for ( x = 0; x < width; x++, ptr += pixelSize )
+                for ( int x = 0; x < width; x++, ptr += pixelSize )
                 {
-                    r = ptr[RGB.R];
-                    g = ptr[RGB.G];
-                    b = ptr[RGB.B];
+                    toAdd = matrix[( y % rows ), ( x % cols )];
+                    r = ptr[RGB.R] + toAdd;
+                    g = ptr[RGB.G] + toAdd;
+                    b = ptr[RGB.B] + toAdd;
+
+                    if ( r > 255 )
+                        r = 255;
+                    if ( g > 255 )
+                        g = 255;
+                    if ( b > 255 )
+                        b = 255;
 
                     // get color from palette, which is the closest to current pixel's value
                     Color closestColor = GetClosestColor( r, g, b, out colorIndex );
-
-                    // do error diffusion
-                    Diffuse( r - closestColor.R, g - closestColor.G, b - closestColor.B, ptr );
 
                     // write color index as pixel's value to destination image
                     if ( is8bpp )
@@ -273,11 +299,9 @@ namespace AForge.Imaging.ColorReduction
                         }
                     }
                 }
-                ptr += offset;
             }
 
             destImage.UnlockBits( destData );
-            source.Dispose( );
 
             return destImage;
         }

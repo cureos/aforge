@@ -61,6 +61,7 @@
     <Compile Include="Color Reduction\JarvisJudiceNinkeColorDithering.cs" />
     <Compile Include="Color Reduction\MedianCutCube.cs" />
     <Compile Include="Color Reduction\MedianCutQuantizer.cs" />
+    <Compile Include="Color Reduction\OrderedColorDithering.cs" />
     <Compile Include="Color Reduction\SierraColorDithering.cs" />
     <Compile Include="Color Reduction\StuckiColorDithering.cs" />
     <Compile Include="ColorConverter.cs" />
