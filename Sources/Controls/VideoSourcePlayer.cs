@@ -78,6 +78,9 @@ namespace AForge.Controls
         // parent of the control
         private Control parent = null;
 
+        // dummy object to lock for synchronization
+        private string sync = "x";
+
         /// <summary>
         /// Auto size control or not.
         /// </summary>
@@ -150,7 +153,7 @@ namespace AForge.Controls
                     videoSource.PlayingFinished -= new PlayingFinishedEventHandler( videoSource_PlayingFinished );
                 }
 
-                lock ( this )
+                lock ( sync )
                 {
                     if ( currentFrame != null )
                     {
@@ -360,7 +363,7 @@ namespace AForge.Controls
         /// 
         public Bitmap GetCurrentVideoFrame( )
         {
-            lock ( this )
+            lock ( sync )
             {
                 return ( currentFrame == null ) ? null : (Bitmap) currentFrame.Clone( );
             }
@@ -376,7 +379,7 @@ namespace AForge.Controls
                 needSizeUpdate = false;
             }
 
-            lock ( this )
+            lock ( sync )
             {
                 Graphics  g = e.Graphics;
                 Rectangle rect = this.ClientRectangle;
@@ -413,7 +416,7 @@ namespace AForge.Controls
         // Update controls size and position
         private void UpdatePosition( )
         {
-            lock ( this )
+            lock ( sync )
             {
                 if ( ( autosize ) && ( this.Dock != DockStyle.Fill ) && ( this.Parent != null ) )
                 {
@@ -442,7 +445,7 @@ namespace AForge.Controls
         {
             if ( !requestedToStop )
             {
-                lock ( this )
+                lock ( sync )
                 {
                     // dispose previous frame
                     if ( currentFrame != null )

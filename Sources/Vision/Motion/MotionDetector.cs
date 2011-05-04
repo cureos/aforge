@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Vision.Motion
@@ -61,6 +61,9 @@ namespace AForge.Vision.Motion
         // size of video frame
         private int videoWidth, videoHeight;
 
+        // dummy object to lock for synchronization
+        private string sync = "x";
+
         /// <summary>
         /// Motion detection algorithm to apply to each video frame.
         /// </summary>
@@ -76,7 +79,7 @@ namespace AForge.Vision.Motion
             get { return detector; }
             set
             {
-                lock ( this )
+                lock ( sync )
                 {
                     detector = value;
                 }
@@ -100,7 +103,7 @@ namespace AForge.Vision.Motion
             get { return processor; }
             set
             {
-                lock ( this )
+                lock ( sync )
                 {
                     processor = value;
                 }
@@ -226,7 +229,7 @@ namespace AForge.Vision.Motion
         /// 
         public float ProcessFrame( UnmanagedImage videoFrame )
         {
-            lock ( this )
+            lock ( sync )
             {
                 if ( detector == null )
                     return 0;
@@ -287,7 +290,7 @@ namespace AForge.Vision.Motion
         /// 
         public void Reset( )
         {
-            lock ( this )
+            lock ( sync )
             {
                 if ( detector != null )
                 {
@@ -312,7 +315,7 @@ namespace AForge.Vision.Motion
         // Create motion zones' image
         private unsafe void CreateMotionZonesFrame( )
         {
-            lock ( this )
+            lock ( sync )
             {
                 // free previous motion zones frame
                 if ( zonesFrame != null )

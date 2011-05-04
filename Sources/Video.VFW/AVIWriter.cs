@@ -2,10 +2,10 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 // 
-//
+
 namespace AForge.Video.VFW
 {
 	using System;
@@ -65,6 +65,9 @@ namespace AForge.Video.VFW
 		private int position;
         // codec used for video compression
         private string codec = "DIB ";
+
+        // dummy object to lock for synchronization
+        private string sync = "x";
 
         /// <summary>
         /// Width of video frames.
@@ -238,7 +241,7 @@ namespace AForge.Video.VFW
 			// close previous file
 			Close( );
 
-            lock ( this )
+            lock ( sync )
             {
                 // calculate stride
                 stride = width * 3;
@@ -309,7 +312,7 @@ namespace AForge.Video.VFW
         /// 
         public void Close( )
 		{
-            lock ( this )
+            lock ( sync )
             {
                 // free unmanaged memory
                 if ( buffer != IntPtr.Zero )
@@ -356,7 +359,7 @@ namespace AForge.Video.VFW
         /// 
         public void AddFrame( Bitmap frameImage )
 		{
-            lock ( this )
+            lock ( sync )
             {
                 // check if AVI file was properly opened
                 if ( buffer == IntPtr.Zero )

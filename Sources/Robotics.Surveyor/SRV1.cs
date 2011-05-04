@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Robotics.Surveyor
@@ -64,6 +64,9 @@ namespace AForge.Robotics.Surveyor
     ///
     public class SRV1
     {
+        // dummy object to lock for synchronization
+        private string sync = "x";
+
         /// <summary>
         /// Enumeration of predefined motors' commands.
         /// </summary>
@@ -288,7 +291,7 @@ namespace AForge.Robotics.Surveyor
         {
             Disconnect( );
 
-            lock ( this )
+            lock ( sync )
             {
                 try
                 {
@@ -337,7 +340,7 @@ namespace AForge.Robotics.Surveyor
         /// 
         public void Disconnect( )
         {
-            lock ( this )
+            lock ( sync )
             {
                 if ( thread != null )
                 {
@@ -462,7 +465,7 @@ namespace AForge.Robotics.Surveyor
         /// 
         public SRV1Camera GetCamera( )
         {
-            lock ( this )
+            lock ( sync )
             {
                 if ( socket == null )
                 {
@@ -534,7 +537,7 @@ namespace AForge.Robotics.Surveyor
         /// 
         public int SendAndReceive( byte[] request, byte[] responseBuffer )
         {
-            lock ( this )
+            lock ( sync )
             {
                 if ( socket == null )
                 {

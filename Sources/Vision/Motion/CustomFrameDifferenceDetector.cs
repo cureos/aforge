@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Vision.Motion
@@ -89,6 +89,9 @@ namespace AForge.Vision.Motion
         // binary dilatation filter
         private BinaryDilatation3x3 dilatationFilter = new BinaryDilatation3x3( );
 
+        // dummy object to lock for synchronization
+        private string sync = "x";
+
         /// <summary>
         /// Difference threshold value, [1, 255].
         /// </summary>
@@ -104,7 +107,7 @@ namespace AForge.Vision.Motion
             get { return differenceThreshold; }
             set
             {
-                lock ( this )
+                lock ( sync )
                 {
                     differenceThreshold = Math.Max( 1, Math.Min( 255, value ) );
                     differenceThresholdNeg = -differenceThreshold;
@@ -125,7 +128,7 @@ namespace AForge.Vision.Motion
         {
             get
             {
-                lock ( this )
+                lock ( sync )
                 {
                     return (float) pixelsChanged / ( width * height );
                 }
@@ -152,7 +155,7 @@ namespace AForge.Vision.Motion
         {
             get
             {
-                lock ( this )
+                lock ( sync )
                 {
                     return motionFrame;
                 }
@@ -178,7 +181,7 @@ namespace AForge.Vision.Motion
             get { return suppressNoise; }
             set
             {
-                lock ( this )
+                lock ( sync )
                 {
                     suppressNoise = value;
 
@@ -216,7 +219,7 @@ namespace AForge.Vision.Motion
             get { return keepObjectEdges; }
             set
             {
-                lock ( this )
+                lock ( sync )
                 {
                     keepObjectEdges = value;
                 }
@@ -266,7 +269,7 @@ namespace AForge.Vision.Motion
         /// 
         public unsafe void ProcessFrame( UnmanagedImage videoFrame )
         {
-            lock ( this )
+            lock ( sync )
             {
                 // check background frame
                 if ( backgroundFrame == null )
@@ -369,7 +372,7 @@ namespace AForge.Vision.Motion
         // Reset motion detector to initial state
         private  void Reset( bool force )
         {
-            lock ( this )
+            lock ( sync )
             {
                 if (
                     ( backgroundFrame != null ) &&
@@ -447,7 +450,7 @@ namespace AForge.Vision.Motion
             // reset motion detection algorithm
             Reset( true );
 
-            lock ( this )
+            lock ( sync )
             {
                 // save image dimension
                 width  = backgroundFrame.Width;

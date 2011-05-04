@@ -81,6 +81,9 @@ namespace AForge.Video.DirectShow
         // time of starting the DirectX graph
         private DateTime startTime = new DateTime( );
 
+        // dummy object to lock for synchronization
+        private string sync = "x";
+
         /// <summary>
         /// Specifies if snapshots should be provided or not.
         /// </summary>
@@ -428,7 +431,7 @@ namespace AForge.Video.DirectShow
                 // create events
                 stopEvent = new ManualResetEvent( false );
 
-                lock ( this )
+                lock ( sync )
                 {
                     // create and start new thread
                     thread = new Thread( new ThreadStart( WorkerThread ) );
@@ -529,7 +532,7 @@ namespace AForge.Video.DirectShow
             if ( ( deviceMoniker == null ) || ( deviceMoniker == string.Empty ) )
                 throw new ArgumentException( "Video source is not specified" );
 
-            lock ( this )
+            lock ( sync )
             {
                 if ( IsRunning )
                 {

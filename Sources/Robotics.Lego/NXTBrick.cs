@@ -511,6 +511,9 @@ namespace AForge.Robotics.Lego
         // communication interfaced used for communication with NXT brick
         private INXTCommunicationInterface communicationInterface;
 
+        // dummy object to lock for synchronization
+        private string sync = "x";
+
         /// <summary>
         /// Check if connection to NXT brick is established.
         /// </summary>
@@ -519,7 +522,7 @@ namespace AForge.Robotics.Lego
         {
             get
             {
-                lock ( this )
+                lock ( sync )
                 {
                     return ( communicationInterface != null );
                 }
@@ -558,7 +561,7 @@ namespace AForge.Robotics.Lego
         /// 
         public bool Connect( string portName )
         {
-            lock ( this )
+            lock ( sync )
             {
                 if ( communicationInterface != null )
                     return true;
@@ -580,7 +583,7 @@ namespace AForge.Robotics.Lego
         /// 
         public void Disconnect( )
         {
-            lock ( this )
+            lock ( sync )
             {
                 if ( communicationInterface != null )
                 {
@@ -1119,7 +1122,7 @@ namespace AForge.Robotics.Lego
         {
             bool result = false;
 
-            lock ( this )
+            lock ( sync )
             {
                 // check connection
                 if ( communicationInterface == null )
