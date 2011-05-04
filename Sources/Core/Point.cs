@@ -324,6 +324,20 @@ namespace AForge
         }
 
         /// <summary>
+        /// Implicit conversion to <see cref="DoublePoint"/>.
+        /// </summary>
+        /// 
+        /// <param name="point">Single precision point to convert to double precision point.</param>
+        /// 
+        /// <returns>Returns new double precision point which coordinates are implicitly converted
+        /// to doubles from coordinates of the specified single precision point.</returns>
+        /// 
+        public static implicit operator DoublePoint( Point point )
+        {
+            return new DoublePoint( point.X, point.Y );
+        } 
+
+        /// <summary>
         /// Rounds the single precision point.
         /// </summary>
         /// 

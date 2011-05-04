@@ -320,6 +320,20 @@ namespace AForge
         public static implicit operator Point( IntPoint point )
         {
             return new Point( point.X, point.Y );
+        }
+
+        /// <summary>
+        /// Implicit conversion to <see cref="DoublePoint"/>.
+        /// </summary>
+        /// 
+        /// <param name="point">Integer point to convert to double precision point.</param>
+        /// 
+        /// <returns>Returns new double precision point which coordinates are implicitly converted
+        /// to doubles from coordinates of the specified integer point.</returns>
+        /// 
+        public static implicit operator DoublePoint( IntPoint point )
+        {
+            return new DoublePoint( point.X, point.Y );
         } 
 
         /// <summary>
