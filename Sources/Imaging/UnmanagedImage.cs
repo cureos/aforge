@@ -651,6 +651,220 @@ namespace AForge.Imaging
         }
 
         /// <summary>
+        /// Set pixels with the specified coordinates to the specified color.
+        /// </summary>
+        /// 
+        /// <param name="coordinates">List of points to set color for.</param>
+        /// <param name="color">Color to set for the specified points.</param>
+        /// 
+        /// <remarks><para><note>For images having 16 bpp per color plane, the method extends the specified color
+        /// value to 16 bit by multiplying it by 256.</note></para></remarks>
+        ///
+        public void SetPixels( List<IntPoint> coordinates, Color color )
+        {
+            unsafe
+            {
+                int pixelSize = Bitmap.GetPixelFormatSize( pixelFormat ) / 8;
+                byte* basePtr = (byte*) imageData.ToPointer( );
+
+                byte red   = color.R;
+                byte green = color.G;
+                byte blue  = color.B;
+                byte alpha = color.A;
+
+                switch ( pixelFormat )
+                {
+                    case PixelFormat.Format8bppIndexed:
+                        {
+                            byte grayValue = (byte) ( 0.2125 * red + 0.7154 * green + 0.0721 * blue );
+
+                            foreach ( IntPoint point in coordinates )
+                            {
+                                if ( ( point.X >= 0 ) && ( point.Y >= 0 ) && ( point.X < width ) && ( point.Y < height ) )
+                                {
+                                    byte* ptr = basePtr + point.Y * stride + point.X;
+                                    *ptr = grayValue;
+                                }
+                            }
+                        }
+                        break;
+
+                    case PixelFormat.Format24bppRgb:
+                    case PixelFormat.Format32bppRgb:
+                        {
+
+
+                            foreach ( IntPoint point in coordinates )
+                            {
+                                if ( ( point.X >= 0 ) && ( point.Y >= 0 ) && ( point.X < width ) && ( point.Y < height ) )
+                                {
+                                    byte* ptr = basePtr + point.Y * stride + point.X * pixelSize;
+                                    ptr[RGB.R] = red;
+                                    ptr[RGB.G] = green;
+                                    ptr[RGB.B] = blue;
+                                }
+                            }
+                        }
+                        break;
+
+                    case PixelFormat.Format32bppArgb:
+                        {
+                            foreach ( IntPoint point in coordinates )
+                            {
+                                if ( ( point.X >= 0 ) && ( point.Y >= 0 ) && ( point.X < width ) && ( point.Y < height ) )
+                                {
+                                    byte* ptr = basePtr + point.Y * stride + point.X * pixelSize;
+                                    ptr[RGB.R] = red;
+                                    ptr[RGB.G] = green;
+                                    ptr[RGB.B] = blue;
+                                    ptr[RGB.A] = alpha;
+                                }
+                            }
+                        }
+                        break;
+
+                    case PixelFormat.Format16bppGrayScale:
+                        {
+                            ushort grayValue = (ushort) ( (ushort) ( 0.2125 * red + 0.7154 * green + 0.0721 * blue ) << 8 );
+
+                            foreach ( IntPoint point in coordinates )
+                            {
+                                if ( ( point.X >= 0 ) && ( point.Y >= 0 ) && ( point.X < width ) && ( point.Y < height ) )
+                                {
+                                    ushort* ptr = (ushort*) ( basePtr + point.Y * stride ) + point.X;
+                                    *ptr = grayValue;
+                                }
+                            }
+                        }
+                        break;
+
+                    case PixelFormat.Format48bppRgb:
+                        {
+                            ushort red16   = (ushort) ( red   << 8 );
+                            ushort green16 = (ushort) ( green << 8 );
+                            ushort blue16  = (ushort) ( blue  << 8 );
+
+                            foreach ( IntPoint point in coordinates )
+                            {
+                                if ( ( point.X >= 0 ) && ( point.Y >= 0 ) && ( point.X < width ) && ( point.Y < height ) )
+                                {
+                                    ushort* ptr = (ushort*) ( basePtr + point.Y * stride + point.X * pixelSize );
+                                    ptr[RGB.R] = red16;
+                                    ptr[RGB.G] = green16;
+                                    ptr[RGB.B] = blue16;
+                                }
+                            }
+                        }
+                        break;
+
+                    case PixelFormat.Format64bppArgb:
+                        {
+                            ushort red16   = (ushort) ( red   << 8 );
+                            ushort green16 = (ushort) ( green << 8 );
+                            ushort blue16  = (ushort) ( blue  << 8 );
+                            ushort alpha16 = (ushort) ( alpha << 8 );
+
+                            foreach ( IntPoint point in coordinates )
+                            {
+                                if ( ( point.X >= 0 ) && ( point.Y >= 0 ) && ( point.X < width ) && ( point.Y < height ) )
+                                {
+                                    ushort* ptr = (ushort*) ( basePtr + point.Y * stride + point.X * pixelSize );
+                                    ptr[RGB.R] = red16;
+                                    ptr[RGB.G] = green16;
+                                    ptr[RGB.B] = blue16;
+                                    ptr[RGB.A] = alpha16;
+                                }
+                            }
+                        }
+                        break;
+
+                    default:
+                        throw new UnsupportedImageFormatException( "The pixel format is not supported: " + pixelFormat );
+                }
+            }
+        }
+
+        /// <summary>
+        /// Set pixel with the specified coordinates to the specified color.
+        /// </summary>
+        /// 
+        /// <param name="point">Point's coordiates to set color for.</param>
+        /// <param name="color">Color to set for the pixel.</param>
+        /// 
+        /// <remarks><para><note>For images having 16 bpp per color plane, the method extends the specified color
+        /// value to 16 bit by multiplying it by 256.</note></para></remarks>
+        ///
+        public void SetPixel( IntPoint point, Color color )
+        {
+            SetPixel( point.X, point.Y, color );
+        }
+
+        /// <summary>
+        /// Set pixel with the specified coordinates to the specified color.
+        /// </summary>
+        /// 
+        /// <param name="x">X coordinate of the pixel to set.</param>
+        /// <param name="y">Y coordinate of the pixel to set.</param>
+        /// <param name="color">Color to set for the pixel.</param>
+        /// 
+        /// <remarks><para><note>For images having 16 bpp per color plane, the method extends the specified color
+        /// value to 16 bit by multiplying it by 256.</note></para></remarks>
+        /// 
+        public void SetPixel( int x, int y, Color color )
+        {
+            if ( ( x >= 0 ) && ( y >= 0 ) && ( x < width ) && ( y < height ) )
+            {
+                unsafe
+                {
+                    int pixelSize = Bitmap.GetPixelFormatSize( pixelFormat ) / 8;
+                    byte* ptr = (byte*) imageData.ToPointer( ) + y * stride + x * pixelSize;
+                    ushort* ptr2 = (ushort*) ptr;
+
+                    switch ( pixelFormat )
+                    {
+                        case PixelFormat.Format8bppIndexed:
+                            *ptr = (byte) ( 0.2125 * color.R + 0.7154 * color.G + 0.0721 * color.B );
+                            break;
+
+                        case PixelFormat.Format24bppRgb:
+                        case PixelFormat.Format32bppRgb:
+                            ptr[RGB.R] = color.R;
+                            ptr[RGB.G] = color.G;
+                            ptr[RGB.B] = color.B;
+                            break;
+
+                        case PixelFormat.Format32bppArgb:
+                            ptr[RGB.R] = color.R;
+                            ptr[RGB.G] = color.G;
+                            ptr[RGB.B] = color.B;
+                            ptr[RGB.A] = color.A;
+                            break;
+
+                        case PixelFormat.Format16bppGrayScale:
+                            *ptr2 = (ushort) ( (ushort) ( 0.2125 * color.R + 0.7154 * color.G + 0.0721 * color.B ) << 8 );
+                            break;
+
+                        case PixelFormat.Format48bppRgb:
+                            ptr2[RGB.R] = (ushort) ( color.R << 8 );
+                            ptr2[RGB.G] = (ushort) ( color.G << 8 );
+                            ptr2[RGB.B] = (ushort) ( color.B << 8 );
+                            break;
+
+                        case PixelFormat.Format64bppArgb:
+                            ptr2[RGB.R] = (ushort) ( color.R << 8 );
+                            ptr2[RGB.G] = (ushort) ( color.G << 8 );
+                            ptr2[RGB.B] = (ushort) ( color.B << 8 );
+                            ptr2[RGB.A] = (ushort) ( color.A << 8 );
+                            break;
+
+                        default:
+                            throw new UnsupportedImageFormatException( "The pixel format is not supported: " + pixelFormat );
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Collect pixel values from the specified list of coordinates.
         /// </summary>
         /// 

@@ -57,16 +57,22 @@ namespace AForge.Imaging
         public byte Blue;
 
         /// <summary>
+        /// Alpha component.
+        /// </summary>
+        public byte Alpha;
+
+        /// <summary>
         /// <see cref="System.Drawing.Color">Color</see> value of the class.
         /// </summary>
         public System.Drawing.Color Color
         {
-            get { return Color.FromArgb( Red, Green, Blue ); }
+            get { return Color.FromArgb( Alpha, Red, Green, Blue ); }
             set
             {
                 Red   = value.R;
                 Green = value.G;
                 Blue  = value.B;
+                Alpha = value.A;
             }
         }
 
@@ -88,6 +94,24 @@ namespace AForge.Imaging
             this.Red   = red;
             this.Green = green;
             this.Blue  = blue;
+            this.Alpha = 255;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RGB"/> class.
+        /// </summary>
+        /// 
+        /// <param name="red">Red component.</param>
+        /// <param name="green">Green component.</param>
+        /// <param name="blue">Blue component.</param>
+        /// <param name="alpha">Alpha component.</param>
+        /// 
+        public RGB( byte red, byte green, byte blue, byte alpha )
+        {
+            this.Red   = red;
+            this.Green = green;
+            this.Blue  = blue;
+            this.Alpha = alpha;
         }
 
         /// <summary>
@@ -101,6 +125,7 @@ namespace AForge.Imaging
             this.Red   = color.R;
             this.Green = color.G;
             this.Blue  = color.B;
+            this.Alpha = color.A;
         }
     }
 
