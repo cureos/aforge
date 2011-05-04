@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2010
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2010-2011
+// contacts@aforgenet.com
 //
 
 using System;
@@ -87,21 +87,40 @@ namespace IPPrototyper
             {
                 try
                 {
+                    bool windowPositionIsValid = false;
                     // get window location/size
-                    Location = new System.Drawing.Point(
-                        int.Parse( config.GetConfigurationOption( mainFormXOption ) ),
-                        int.Parse( config.GetConfigurationOption( mainFormYOption ) ) );
-
-                    Size = new Size(
+                    Size windowSize = new Size(
                         int.Parse( config.GetConfigurationOption( mainFormWidthOption ) ),
                         int.Parse( config.GetConfigurationOption( mainFormHeightOption ) ) );
+                    System.Drawing.Point windowTopLeft = new System.Drawing.Point(
+                        int.Parse( config.GetConfigurationOption( mainFormXOption ) ),
+                        int.Parse( config.GetConfigurationOption( mainFormYOption ) ) );
+                    System.Drawing.Point windowTopRight = new System.Drawing.Point(
+                        windowTopLeft.X + windowSize.Width, windowTopLeft.Y );
 
-                    WindowState = (FormWindowState) Enum.Parse( typeof( FormWindowState ),
-                        config.GetConfigurationOption( mainFormStateOption ) );
+                    // check if window location is within of the displays
+                    foreach ( Screen screen in Screen.AllScreens )
+                    {
+                        if ( ( screen.WorkingArea.Contains( windowTopLeft ) ) ||
+                             ( screen.WorkingArea.Contains( windowTopRight ) ) )
+                        {
+                            windowPositionIsValid = true;
+                            break;
+                        }
+                    }
 
-                    mainSplitContainer.SplitterDistance = int.Parse( config.GetConfigurationOption( splitter1Option ) );
-                    splitContainer1.SplitterDistance = int.Parse( config.GetConfigurationOption( splitter2Option ) );
-                    splitContainer2.SplitterDistance = int.Parse( config.GetConfigurationOption( splitter3Option ) );
+                    if ( windowPositionIsValid )
+                    {
+                        Location = windowTopLeft;
+                        Size = windowSize;
+
+                        WindowState = (FormWindowState) Enum.Parse( typeof( FormWindowState ),
+                            config.GetConfigurationOption( mainFormStateOption ) );
+
+                        mainSplitContainer.SplitterDistance = int.Parse( config.GetConfigurationOption( splitter1Option ) );
+                        splitContainer1.SplitterDistance = int.Parse( config.GetConfigurationOption( splitter2Option ) );
+                        splitContainer2.SplitterDistance = int.Parse( config.GetConfigurationOption( splitter3Option ) );
+                    }
 
                     // get size mode of picture box
                     SetPictureBoxSizeMode( (PictureBoxSizeMode) Enum.Parse( typeof( PictureBoxSizeMode ),
