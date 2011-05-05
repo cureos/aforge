@@ -2,8 +2,9 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
+
 //
 namespace AForge.Video.VFW
 {
@@ -28,7 +29,7 @@ namespace AForge.Video.VFW
         /// 
         /// <returns>Return's the value of <b>dst</b> - pointer to destination.</returns>
         /// 
-        [DllImport( "ntdll.dll" )]
+        [DllImport( "ntdll.dll", CallingConvention = CallingConvention.Cdecl )]
         public static extern int memcpy(
             int dst,
             int src,
