@@ -135,7 +135,35 @@ namespace AForge.Robotics.Lego
             /// <summary>
             /// Low speed sensor (9V).
             /// </summary>
-            Lowspeed9V = 0x0B
+            Lowspeed9V = 0x0B,
+            /// <summary>
+            /// High speed sensor.
+            /// </summary>
+            Highspeed = 0x0C,
+            /// <summary>
+            /// NXT 2.0 color sensor in color detector mode.
+            /// </summary>
+            ColorFull = 0x0D,
+            /// <summary>
+            /// NXT 2.0 color sensor in light sensor mode with red light on.
+            /// </summary>
+            ColorRed = 0x0E,
+            /// <summary>
+            /// NXT 2.0 color sensor in light sensor mode with green light on.
+            /// </summary>
+            ColorGreen = 0x0F,
+            /// <summary>
+            /// NXT 2.0 color sensor in light sensor mode with blue light on.
+            /// </summary>
+            ColorBlue = 0x10,
+            /// <summary>
+            /// NXT 2.0 color sensor in light sensor mode without light.
+            /// </summary>
+            ColorNone = 0x11,
+            /// <summary>
+            /// NXT 2.0 color sensor internal state (no functionality known yet).
+            /// </summary>
+            ColorExit = 0x12
         }
 
         /// <summary>
@@ -932,8 +960,7 @@ namespace AForge.Robotics.Lego
 
             return SendCommand( command, new byte[3] );
         }
-
-
+        
         /// <summary>
         /// Get status of Low Speed bus.
         /// </summary>
@@ -1116,7 +1143,7 @@ namespace AForge.Robotics.Lego
         /// <exception cref="ArgumentException">Reply buffer size is smaller than the reply data size.</exception>
         /// <exception cref="ApplicationException">Reply does not correspond to command (second byte of reply should
         /// be equal to second byte of command).</exception>
-        /// <exception cref="ApplicationException">Error occured on NXT brick side.</exception>
+        /// <exception cref="ApplicationException">Error occurred on NXT brick side.</exception>
         /// 
         public bool SendCommand( byte[] command, byte[] reply )
         {
@@ -1155,9 +1182,16 @@ namespace AForge.Robotics.Lego
                             throw new ApplicationException( "Reply does not correspond to command" );
 
                         // check for errors
-                        if ( reply[2] != 0 )
+                        if (reply[2] != 0)
                         {
-                            throw new ApplicationException( "Error occured in NXT brick. Error code: " + reply[2].ToString( ) );
+                            if (reply[2] == 221)
+                            {
+                                throw new ApplicationException("It seems that a wrong sensor type is connected to the corresponding port");
+                            }
+                            else
+                            {
+                                throw new ApplicationException("Error occurred in NXT brick. Error code: " + reply[2].ToString());
+                            }
                         }
 
                         result = true;
@@ -1166,6 +1200,193 @@ namespace AForge.Robotics.Lego
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Read data from HiTechnic color sensor (also color sensor v2).
+        /// </summary>
+        /// 
+        /// <param name="sensor">Sensor to read from.</param>
+        /// <param name="colorNumber"><a href="http://www.hitechnic.com/contents/media/Color%20Number.jpg">Found color number.</a></param>
+        /// <param name="redValue">Found red value.</param>
+        /// <param name="greenValue">Found green value.</param>
+        /// <param name="blueValue">Found blue value.</param>
+        /// 
+        /// <returns>Returns <b>true</b> if the command was sent successfully and reply was
+        /// received, otherwise <b>false</b>.</returns>
+        /// 
+        /// <remarks><para>The method retrieves the color valuse of a <a href="http://www.hitechnic.com/products/">HiTechnic color sensor</a>
+        /// by communicating with I2C device (writing to and reading from low speed bus).
+        /// The method first sends { 0x02, 0x42 } command to the specified device using
+        /// <see cref="LsWrite"/> method. Then it waits until there is something available
+        /// to read using <see cref="LsGetStatus"/> method. Finally it reads sensor's value
+        /// using <see cref="LsRead"/> device. See
+        /// <a href="http://hsrc.static.net/Research/NXT%20I2C%20Communication/">this page</a>
+        /// for details.</para>
+        /// 
+        /// <para><note>Before using this method it is required to use
+        /// <see cref="SetSensorMode"/> method to set sensor's type to
+        /// <see cref="SensorType.Lowspeed"/> mode. It should be done
+        /// once after NXT brick is powered on. If sensor's type is not set properly,
+        /// the method will generate an exception. Also after setting sensor's
+        /// type application may need to wait a bit to give device some time
+        /// to initialize.</note></para>
+        /// 
+        /// <para><note>NXT Firmware version 1.24 must be loaded in the NXT for the HiTechnic color sensor to operate correctly.
+        /// You can check the firmware version using the <see cref="GetVersion"/> method.</note></para>
+        /// 
+        /// <para><note>The color sensor V2 must be configured to match the mains electricity frequency for your
+        /// country. Details on how to configure the Color Sensor V2 can be found at
+        /// <a href="http://www.hitechnic.com/colorsensor"></a></note></para>
+        /// </remarks>
+        /// 
+        public bool ReadHiTechnicColorSensor( NXTBrick.Sensor sensor, ref int colorNumber, ref int redValue, ref int greenValue, ref int blueValue )
+        {
+            byte[] command = { 0x02, 0x42 };
+            byte[] readBuffer = new byte[4];
+
+            int bytesReady;
+            int bytesRead;
+
+            LsWrite( sensor, command, readBuffer.Length );
+            LsGetStatus( sensor, out bytesReady );
+            LsRead( sensor, readBuffer, out bytesRead );
+
+            if ( bytesRead == readBuffer.Length )
+            {
+                colorNumber = readBuffer[0];
+                redValue    = readBuffer[1];
+                greenValue  = readBuffer[2];
+                blueValue   = readBuffer[3];
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Read data from HiTechnic compass sensor.
+        /// </summary>
+        /// 
+        /// <param name="sensor">Sensor to read from.</param>
+        /// <param name="angle">The magnetic heading, [0, 359] degrees.</param>
+        /// 
+        /// <returns>Returns <b>true</b> if the command was sent successfully and reply was
+        /// received, otherwise <b>false</b>.</returns>
+        /// 
+        /// <remarks><para>The method retrieves the angle of a <a href="http://www.hitechnic.com/products/">
+        /// HiTechnic compass sensor</a> by
+        /// communicating with I2C device (writing to and reading from low speed bus).
+        /// The method first sends { 0x02, 0x42 } command to the specified device using
+        /// <see cref="LsWrite"/> method. Then it waits until there is something available
+        /// to read using <see cref="LsGetStatus"/> method. Finally it reads sensor's value
+        /// using <see cref="LsRead"/> device. See
+        /// <a href="http://hsrc.static.net/Research/NXT%20I2C%20Communication/">this page</a>
+        /// for details.</para>
+        /// 
+        /// <para><note>Before using this method it is required to use
+        /// <see cref="SetSensorMode"/> method to set sensor's type to
+        /// <see cref="SensorType.Lowspeed"/> mode. It should be done
+        /// once after NXT brick is powered on. If sensor's type is not set properly,
+        /// the method will generate an exception. Also after setting sensor's
+        /// type application may need to wait a bit to give device some time
+        /// to initialize.</note></para>
+        /// 
+        /// <para><note>The HiTechnic compass sensor will only operate correctly in a horizontal plane so you must keep the compass
+        /// level for it to read correctly. This is very important so remember this when you build it into your robot.
+        /// It is highly desirable to mount the compass at least 6 inches (15cm) away from the motors and 4 inches (10cm) away from the NXT brick
+        /// itself. Try to make sure it is firmly mounted, if it bounces around, the readings may bounce around too.
+        /// </note></para>
+        /// 
+        /// <para><note>NXT Firmware version 1.03 must be loaded in the NXT for the compass to operate correctly. You can check the firmware version
+        /// using the <see cref="GetVersion"/> method.</note></para>
+        /// </remarks>
+        /// 
+        public bool ReadHiTechnicCompassSensor( NXTBrick.Sensor sensor, ref int angle )
+        {
+            byte[] command = { 0x02, 0x42 };
+            byte[] readBuffer = new byte[2];
+
+            int bytesReady;
+            int bytesRead;
+
+            LsWrite( sensor, command, readBuffer.Length );
+            LsGetStatus( sensor, out bytesReady );
+            LsRead( sensor, readBuffer, out bytesRead );
+
+            if ( bytesRead == readBuffer.Length )
+            {
+                angle = ( readBuffer[0] * 2 ) + readBuffer[1];
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Read data from HiTechnic acceleration/tilt sensor. The HiTechnic accelerometer/tilt sensor measures acceleration in 
+        /// three axes. It measures also tilt along each axis. Using the sensor, you can measure the acceleration of your robot in the range
+        /// of -2g to 2g.
+        /// </summary>
+        /// 
+        /// <param name="sensor">Sensor to read from.</param>
+        /// <param name="xAceeleration">Acceleration in X direction, with a scaling of approximately 200 counts per g.</param>
+        /// <param name="yAceeleration">Acceleration in Y direction, with a scaling of approximately 200 counts per g.</param>
+        /// <param name="zAceeleration">Acceleration in Z direction, with a scaling of approximately 200 counts per g.</param>
+        /// 
+        /// <returns>Returns <b>true</b> if the command was sent successfully and reply was
+        /// received, otherwise <b>false</b>.</returns>
+        /// 
+        /// <remarks><para>The method retrieves the acceleration in three directions of a
+        /// <a href="http://www.hitechnic.com/products/"> HiTechnic acceleration/tilt sensor</a> by
+        /// communicating with I2C device (writing to and reading from low speed bus).
+        /// The method first sends { 0x02, 0x42 } command to the specified device using
+        /// <see cref="LsWrite"/> method. Then it waits until there is something available
+        /// to read using <see cref="LsGetStatus"/> method. Finally it reads sensor's value
+        /// using <see cref="LsRead"/> device. See
+        /// <a href="http://hsrc.static.net/Research/NXT%20I2C%20Communication/">this page</a>
+        /// for details.</para>
+        /// 
+        /// <para><note>Before using this method it is required to use
+        /// <see cref="SetSensorMode"/> method to set sensor's type to
+        /// <see cref="SensorType.Lowspeed"/> mode. It should be done
+        /// once after NXT brick is powered onq If sensor's type is not set properly,
+        /// the method will generate an exception. Also after setting sensor's
+        /// type application may need to wait a bit to give device some time
+        /// to initialize.</note></para>
+        /// 
+        /// <para>The acceleration sensor can also be used to measure tilt in three axes This is possible because gravity is perceived
+        /// as acceleration. When the sensor is stationary and in the normal horizontal position, the x and y axis willl be near 
+        /// zero, because they are horizontal, while the z axis will be near 200, which represents g. If you tilt the sensor then 
+        /// gravity will also be detected on the other axis and the value for the z axis will go down. Since gravity is distributed
+        /// among the three component vectors, the tilt of the sensor can be determined.</para>
+        ///
+        /// <para><note>NXT Firmware version 1.05 or later must be loaded in the NXT for the acceleration/tilt sensor and other digital I2C
+        /// sensors to operate correctly. You can check the firmware version using the <see cref="GetVersion"/> method.</note></para>
+        /// </remarks>
+        /// 
+        public bool ReadHiTechnicAccelerationTiltSensor( NXTBrick.Sensor sensor, ref int xAceeleration, ref int yAceeleration, ref int zAceeleration )
+        {
+            byte[] command = { 0x02, 0x42 };
+            byte[] readBuffer = new byte[6];
+
+            int intReady;
+            int bytesRead;
+
+            LsWrite( sensor, command, readBuffer.Length );
+            LsGetStatus( sensor, out intReady );
+            LsRead( sensor, readBuffer, out bytesRead );
+
+            if ( bytesRead == readBuffer.Length )
+            {
+                xAceeleration = readBuffer[0] > 127 ? ( readBuffer[0] - 256 ) * 4 + readBuffer[3] : readBuffer[0] * 4 + readBuffer[3];
+                yAceeleration = readBuffer[1] > 127 ? ( readBuffer[1] - 256 ) * 4 + readBuffer[4] : readBuffer[1] * 4 + readBuffer[4];
+                zAceeleration = readBuffer[2] > 127 ? ( readBuffer[2] - 256 ) * 4 + readBuffer[5] : readBuffer[2] * 4 + readBuffer[5];
+
+                return true;
+            }
+
+            return false;
         }
     }
 }
