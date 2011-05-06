@@ -177,31 +177,34 @@ namespace AForge.Robotics.Lego
             /// </summary>
             Raw = 0x00,
             /// <summary>
-            /// Boolean mode.
+            /// Boolean mode. Report scaled value as 1 (TRUE) or 0 (FALSE). The firmware uses
+            /// inverse Boolean logic to match the physical characteristics of NXT sensors. Readings
+            /// are FALSE if raw value exceeds 55% of total range; reading are TRUE if raw value
+            /// is less than 45% of total range.
             /// </summary>
             Boolean = 0x20,
             /// <summary>
-            /// Number of boolean transitions.
+            /// Report scaled value as number of transition between TRUE and FALSE.
             /// </summary>
             TransitionCounter = 0x40,
             /// <summary>
-            /// Periodic counter (number of boolean transitions divided by two).
+            /// Report scaled value as number of transitions from FALSE to TRUE, then back to FALSE.
             /// </summary>
             PeriodicCounter = 0x60,
             /// <summary>
-            /// ??? (lack of documentation from Lego).
+            /// Report scaled value as percentage of full scale reading for configured sensor type.
             /// </summary>
             PCTFullScale = 0x80,
             /// <summary>
-            /// Celsius mode.
+            /// Scale terperature reading to degrees Celsius.
             /// </summary>
             Celsius = 0xA0,
             /// <summary>
-            /// Fahrenheit mode.
+            /// Scale terperature reading to degrees Fahrenheit.
             /// </summary>
             Fahrenheit = 0xC0,
             /// <summary>
-            /// Angle steps mode.
+            /// Report scaled value as count of ticks on RCX-style rotation sensor.
             /// </summary>
             AngleSteps = 0xE0
         }
