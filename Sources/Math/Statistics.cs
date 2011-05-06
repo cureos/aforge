@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2010
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Math
@@ -285,6 +285,49 @@ namespace AForge.Math
                     entropy += ( -p * Math.Log( p, 2 ) );
             }
             return entropy;
+        }
+
+        /// <summary>
+        /// Calculate mode value.
+        /// </summary>
+        /// 
+        /// <param name="values">Histogram array.</param>
+        /// 
+        /// <returns>Returns mode value of the histogram array.</returns>
+        /// 
+        /// <remarks>
+        /// <para>The input array is treated as histogram, i.e. its
+        /// indexes are treated as values of stochastic function, but
+        /// array values are treated as "probabilities" (total amount of
+        /// hits).</para>
+        /// 
+        /// <para><note>Returns the minimum mode value if the specified histogram is multimodal.</note></para>
+        ///
+        /// <para>Sample usage:</para>
+        /// <code>
+        /// // create array
+        /// int[] values = new int[] { 1, 1, 2, 3, 6, 8, 11, 12, 7, 3 };
+        /// // calculate mode value
+        /// int mode = Statistics.Mode( values );
+        /// // output it (7)
+        /// System.Diagnostics.Debug.WriteLine( "mode = " + mode );
+        /// </code>
+        /// </remarks>
+        /// 
+        public static int Mode( int[] values )
+        {
+            int mode = 0, curMax = 0;
+
+            for ( int i = 0, length = values.Length; i < length; i++ )
+            {
+                if ( values[i] > curMax )
+                {
+                    curMax = values[i];
+                    mode = i;
+                }
+            }
+
+            return mode;
         }
     }
 }
