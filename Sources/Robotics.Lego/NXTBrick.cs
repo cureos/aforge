@@ -93,51 +93,51 @@ namespace AForge.Robotics.Lego
             /// </summary>
             NoSensor = 0x00,
             /// <summary>
-            /// Switch (touch) sensor.
+            /// NXT or Legacy touch sensor.
             /// </summary>
             Switch = 0x01,
             /// <summary>
-            /// Temperature sensor.
+            /// Legacy temperature sensor.
             /// </summary>
             Temperature = 0x02,
             /// <summary>
-            /// Reflection sensor.
+            /// Legacy light sensor.
             /// </summary>
             Reflection = 0x03,
             /// <summary>
-            /// Angle sensor.
+            /// Legacy rotation sensor.
             /// </summary>
             Angle = 0x04,
             /// <summary>
-            /// Light activity sensor.
+            /// NXT light sensor with floodlight enabled.
             /// </summary>
             LightActive = 0x05,
             /// <summary>
-            /// Light inactivity sensor.
+            /// NXT light sensor with floodlight disabled.
             /// </summary>
             LightInactive = 0x06,
             /// <summary>
-            /// Sound sensor (in dB).
+            /// NXT sound sensor (dB scaling).
             /// </summary>
             SoundDB = 0x07,
             /// <summary>
-            /// Sound sensor (in dBA).
+            /// NXT sound sensor (dBA scaling).
             /// </summary>
             SoundDBA = 0x08,
             /// <summary>
-            /// Custom sensor.
+            /// Unused
             /// </summary>
             Custom = 0x09,
             /// <summary>
-            /// Low speed sensor.
+            /// I2C digital sensor.
             /// </summary>
             Lowspeed = 0x0A,
             /// <summary>
-            /// Low speed sensor (9V).
+            /// I2C digital sensor (9V power).
             /// </summary>
             Lowspeed9V = 0x0B,
             /// <summary>
-            /// High speed sensor.
+            /// Unused.
             /// </summary>
             Highspeed = 0x0C,
             /// <summary>
