@@ -778,10 +778,12 @@ namespace AForge.Robotics.Lego
         /// </summary>
         /// 
         /// <param name="motor">Motor to reset.</param>
-        /// 
+        /// <param name="relative">Specifies if relative (to last movement) or absolute motor's
+        /// position should reset.</param>
+        ///
         /// <returns>Returns <b>true</b> if command was executed successfully or <b>false</b> otherwise.</returns>
         /// 
-        public bool ResetMotorPosition( Motor motor )
+        public bool ResetMotorPosition( Motor motor, bool relative )
         {
             byte[] command = new byte[4];
 
@@ -789,7 +791,7 @@ namespace AForge.Robotics.Lego
             command[0] = (byte) NXTCommandType.DirectCommand;
             command[1] = (byte) NXTDirectCommand.ResetMotorPosition;
             command[2] = (byte) motor;
-            command[3] = 0; // reser absolute position
+            command[3] = (byte) ( ( relative ) ? 0xFF : 0x00 ); // reser relative or absolute position
 
             return SendCommand( command, new byte[3] );
         }
