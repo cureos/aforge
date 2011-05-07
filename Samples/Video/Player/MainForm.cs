@@ -1,8 +1,9 @@
-﻿// AForge.NET Framework
-// Simple Player sample application
+﻿// Simple Player sample application
+// AForge.NET Framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2008
-// andrew.kirillov@gmail.com
+// Copyright © AForge.NET, 2008-20111
+// contants@aforgenet.com
 //
 
 using System;
@@ -37,11 +38,7 @@ namespace Player
 
         private void MainForm_FormClosing( object sender, FormClosingEventArgs e )
         {
-            if ( videoSourcePlayer.VideoSource != null )
-            {
-                videoSourcePlayer.SignalToStop( );
-                videoSourcePlayer.WaitForStop( );
-            }
+            CloseCurrentVideoSource( );
         }
 
         // "Exit" menu item clicked
@@ -128,8 +125,7 @@ namespace Player
             this.Cursor = Cursors.WaitCursor;
 
             // stop current video source
-            videoSourcePlayer.SignalToStop( );
-            videoSourcePlayer.WaitForStop( );
+            CloseCurrentVideoSource( );
 
             // start new video source
             videoSourcePlayer.VideoSource = source;
@@ -142,6 +138,35 @@ namespace Player
             timer.Start( );
 
             this.Cursor = Cursors.Default;
+        }
+
+        // Close video source if it is running
+        private void CloseCurrentVideoSource( )
+        {
+            if ( videoSourcePlayer.VideoSource != null )
+            {
+                videoSourcePlayer.SignalToStop( );
+
+                Console.WriteLine( DateTime.Now );
+
+                // wait ~ 3 seconds
+                for ( int i = 0; i < 30; i++ )
+                {
+                    if ( !videoSourcePlayer.IsRunning )
+                        break;
+                    System.Threading.Thread.Sleep( 100 );
+                }
+                Console.WriteLine( DateTime.Now );
+
+
+                if ( videoSourcePlayer.IsRunning )
+                {
+                    videoSourcePlayer.Stop( );
+                }
+
+                Console.WriteLine( DateTime.Now );
+                videoSourcePlayer.VideoSource = null;
+            }
         }
 
         // New frame received by the player

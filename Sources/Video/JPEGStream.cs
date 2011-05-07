@@ -420,7 +420,7 @@ namespace AForge.Video
 			DateTime start;
 			TimeSpan span;
 
-			while ( true )
+            while ( !stopEvent.WaitOne( 0, true ) )
 			{
 				int	read, total = 0;
 
@@ -513,7 +513,11 @@ namespace AForge.Video
 						}
 					}
 				}
-				catch ( Exception exception )
+                catch ( ThreadAbortException )
+                {
+                    break;
+                }
+                catch ( Exception exception )
 				{
                     // provide information to clients
                     if ( VideoSourceError != null )

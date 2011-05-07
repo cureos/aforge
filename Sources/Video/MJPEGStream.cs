@@ -405,7 +405,7 @@ namespace AForge.Video
 
             ASCIIEncoding encoding = new ASCIIEncoding( );
 
-			while ( true )
+            while ( !stopEvent.WaitOne( 0, true ) )
 			{
 				// reset reload event
 				reloadEvent.Reset( );
@@ -624,11 +624,15 @@ namespace AForge.Video
 				catch ( ApplicationException )
 				{
                     // do nothing for Application Exception, which we raised on our own
-					// wait for a while before the next try
-					Thread.Sleep( 250 );
-				}
-				catch ( Exception exception )
-				{
+                    // wait for a while before the next try
+                    Thread.Sleep( 250 );
+                }
+                catch ( ThreadAbortException )
+                {
+                    break;
+                }
+                catch ( Exception exception )
+                {
                     // provide information to clients
                     if ( VideoSourceError != null )
                     {
