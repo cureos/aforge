@@ -293,5 +293,70 @@ namespace AForge.Math.Geometry
 
             return result;
         }
+
+        /// <summary>
+        /// Equality operator - checks if two line segments have equal parameters.
+        /// </summary>
+        /// 
+        /// <param name="line1">First line segment to check.</param>
+        /// <param name="line2">Second line segment to check.</param>
+        /// 
+        /// <returns>Returns <see langword="true"/> if parameters of specified
+        /// line segments are equal.</returns>
+        ///
+        public static bool operator ==( LineSegment line1, LineSegment line2 )
+        {
+            return ( ( line1.start == line2.start ) && ( line1.end == line2.end ) );
+        }
+
+        /// <summary>
+        /// Inequality operator - checks if two lines have different parameters.
+        /// </summary>
+        /// 
+        /// <param name="line1">First line segment to check.</param>
+        /// <param name="line2">Second line segment to check.</param>
+        /// 
+        /// <returns>Returns <see langword="true"/> if parameters of specified
+        /// line segments are not equal.</returns>
+        ///
+        public static bool operator !=( LineSegment line1, LineSegment line2 )
+        {
+            return ( ( line1.start != line2.start ) || ( line1.end != line2.end ) );
+        }
+
+        /// <summary>
+        /// Check if this instance of <see cref="LineSegment"/> equals to the specified one.
+        /// </summary>
+        /// 
+        /// <param name="obj">Another line segment to check equalty to.</param>
+        /// 
+        /// <returns>Return <see langword="true"/> if objects are equal.</returns>
+        /// 
+        public override bool Equals( object obj )
+        {
+            return ( obj is Point ) ? ( this == (LineSegment) obj ) : false;
+        }
+
+        /// <summary>
+        /// Get hash code for this instance.
+        /// </summary>
+        /// 
+        /// <returns>Returns the hash code for this instance.</returns>
+        /// 
+        public override int GetHashCode( )
+        {
+            return start.GetHashCode( ) + end.GetHashCode( );
+        }
+
+        /// <summary>
+        /// Get string representation of the class.
+        /// </summary>
+        /// 
+        /// <returns>Returns string, which contains values of the like in readable form.</returns>
+        ///
+        public override string ToString( )
+        {
+            return string.Format( System.Globalization.CultureInfo.InvariantCulture, "({0}) -> ({1})", start, end );
+        }
     }
 }

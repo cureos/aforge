@@ -368,5 +368,70 @@ namespace AForge.Math.Geometry
 
             return distance;
         }
+
+        /// <summary>
+        /// Equality operator - checks if two lines have equal parameters.
+        /// </summary>
+        /// 
+        /// <param name="line1">First line to check.</param>
+        /// <param name="line2">Second line to check.</param>
+        /// 
+        /// <returns>Returns <see langword="true"/> if parameters of specified
+        /// lines are equal.</returns>
+        ///
+        public static bool operator ==( Line line1, Line line2 )
+        {
+            return ( ( line1.k == line2.k ) && ( line1.b == line2.b ) );
+        }
+
+        /// <summary>
+        /// Inequality operator - checks if two lines have different parameters.
+        /// </summary>
+        /// 
+        /// <param name="line1">First line to check.</param>
+        /// <param name="line2">Second line to check.</param>
+        /// 
+        /// <returns>Returns <see langword="true"/> if parameters of specified
+        /// lines are not equal.</returns>
+        ///
+        public static bool operator !=( Line line1, Line line2 )
+        {
+            return ( ( line1.k != line2.k ) || ( line1.b != line2.b ) );
+        }
+
+        /// <summary>
+        /// Check if this instance of <see cref="Line"/> equals to the specified one.
+        /// </summary>
+        /// 
+        /// <param name="obj">Another line to check equalty to.</param>
+        /// 
+        /// <returns>Return <see langword="true"/> if objects are equal.</returns>
+        /// 
+        public override bool Equals( object obj )
+        {
+            return ( obj is Point ) ? ( this == (Line) obj ) : false;
+        }
+
+        /// <summary>
+        /// Get hash code for this instance.
+        /// </summary>
+        /// 
+        /// <returns>Returns the hash code for this instance.</returns>
+        /// 
+        public override int GetHashCode( )
+        {
+            return k.GetHashCode( ) + b.GetHashCode( );
+        }
+
+        /// <summary>
+        /// Get string representation of the class.
+        /// </summary>
+        /// 
+        /// <returns>Returns string, which contains values of the like in readable form.</returns>
+        ///
+        public override string ToString( )
+        {
+            return string.Format( System.Globalization.CultureInfo.InvariantCulture, "k = {0}, b = {1}", k, b );
+        }
     }
 }
