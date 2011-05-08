@@ -334,7 +334,7 @@ namespace AForge.Math.Geometry
         /// 
         public override bool Equals( object obj )
         {
-            return ( obj is Point ) ? ( this == (LineSegment) obj ) : false;
+            return ( obj is LineSegment ) ? ( this == (LineSegment) obj ) : false;
         }
 
         /// <summary>

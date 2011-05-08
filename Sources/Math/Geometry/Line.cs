@@ -409,7 +409,7 @@ namespace AForge.Math.Geometry
         /// 
         public override bool Equals( object obj )
         {
-            return ( obj is Point ) ? ( this == (Line) obj ) : false;
+            return ( obj is Line ) ? ( this == (Line) obj ) : false;
         }
 
         /// <summary>
