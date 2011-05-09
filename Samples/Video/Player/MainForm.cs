@@ -147,8 +147,6 @@ namespace Player
             {
                 videoSourcePlayer.SignalToStop( );
 
-                Console.WriteLine( DateTime.Now );
-
                 // wait ~ 3 seconds
                 for ( int i = 0; i < 30; i++ )
                 {
@@ -156,15 +154,12 @@ namespace Player
                         break;
                     System.Threading.Thread.Sleep( 100 );
                 }
-                Console.WriteLine( DateTime.Now );
-
 
                 if ( videoSourcePlayer.IsRunning )
                 {
                     videoSourcePlayer.Stop( );
                 }
 
-                Console.WriteLine( DateTime.Now );
                 videoSourcePlayer.VideoSource = null;
             }
         }
