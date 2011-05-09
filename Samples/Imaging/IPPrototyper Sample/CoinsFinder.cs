@@ -1,9 +1,9 @@
-﻿// Simple of IPPrototyper usage
+﻿// Sample of IPPrototyper usage
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2010
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 using System;
@@ -68,8 +68,8 @@ namespace IPPrototyperSample
                 List<IntPoint> edgePoint = blobCounter.GetBlobsEdgePoints( blob );
 
                 // check if shape looks like a circle
-                DoublePoint center;
-                double radius;
+                AForge.Point center;
+                float radius;
 
                 if ( shapeChecker.IsCircle( edgePoint, out center, out radius ) )
                 {

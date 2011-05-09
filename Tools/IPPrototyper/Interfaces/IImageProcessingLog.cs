@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2010
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2010-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging.IPPrototyper

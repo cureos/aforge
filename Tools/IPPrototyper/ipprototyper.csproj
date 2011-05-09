@@ -87,9 +87,6 @@
     <Compile Include="HistogramForm.Designer.cs">
       <DependentUpon>HistogramForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="IImageProcessingLog.cs" />
-    <Compile Include="IImageProcessingRoutine.cs" />
-    <Compile Include="ImageProcessingLog.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -154,6 +151,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Interfaces\Interfaces.csproj">
+      <Project>{BE2859E0-ED2E-4038-9B11-9E410FEA25F0}</Project>
+      <Name>Interfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

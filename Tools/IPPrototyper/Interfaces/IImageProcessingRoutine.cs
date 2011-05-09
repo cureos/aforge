@@ -2,15 +2,15 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2010
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2010-2011
+// contacts@aforgenet.com
 //
-
-using System;
-using System.Drawing;
 
 namespace AForge.Imaging.IPPrototyper
 {
+    using System;
+    using System.Drawing;
+
     /// <summary>
     /// Interface to implement by image processing routine.
     /// </summary>
