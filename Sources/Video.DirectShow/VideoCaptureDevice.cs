@@ -664,7 +664,14 @@ namespace AForge.Video.DirectShow
                 sourceBase = (IBaseFilter) sourceObject;
 
                 // get video control interface of the device
-                videoControl = (IAMVideoControl) sourceObject;
+                try
+                {
+                    videoControl = (IAMVideoControl) sourceObject;
+                }
+                catch
+                {
+                    // some camera drivers may not support IAMVideoControl interface
+                }
 
                 // get type of sample grabber
                 type = Type.GetTypeFromCLSID( Clsid.SampleGrabber );
