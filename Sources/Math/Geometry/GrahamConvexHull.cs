@@ -100,7 +100,7 @@ namespace AForge.Math.Geometry
             convexHullTemp.Add( firstCorner );
             // add another point, which forms a line with lowest slope
             convexHullTemp.Add( pointsToProcess[0] );
-            points.RemoveAt( 0 );
+            pointsToProcess.RemoveAt( 0 );
 
             PointToProcess lastPoint = convexHullTemp[1];
             PointToProcess prevPoint = convexHullTemp[0];
