@@ -2,8 +2,8 @@
 // AForge.NET Framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © AForge.NET, 2008-20111
-// contants@aforgenet.com
+// Copyright © AForge.NET, 2008-2011
+// contacts@aforgenet.com
 //
 
 using System;
