@@ -59,7 +59,7 @@ namespace AForge.Math
                 // accumalate total
                 total += hits;
             }
-            return mean / total;
+            return ( total == 0 ) ? 0 : mean / total;
         }
 
         /// <summary>
@@ -104,8 +104,11 @@ namespace AForge.Math
                 // accumalate total
                 total += hits;
             }
-            mean /= total;
 
+            if ( total == 0 )
+                return 0;
+
+            mean /= total;
             return Math.Sqrt( stddev / total - mean * mean );
         }
 
@@ -275,14 +278,17 @@ namespace AForge.Math
                 total += values[i];
             }
 
-            // for all values
-            for ( int i = 0; i < n; i++ )
+            if ( total != 0 )
             {
-                // get item's probability
-                p = (double) values[i] / total;
-                // calculate entropy
-                if ( p != 0 )
-                    entropy += ( -p * Math.Log( p, 2 ) );
+                // for all values
+                for ( int i = 0; i < n; i++ )
+                {
+                    // get item's probability
+                    p = (double) values[i] / total;
+                    // calculate entropy
+                    if ( p != 0 )
+                        entropy += ( -p * Math.Log( p, 2 ) );
+                }
             }
             return entropy;
         }
