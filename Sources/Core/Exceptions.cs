@@ -69,4 +69,24 @@ namespace AForge
         public NotConnectedException( string message ) :
             base( message ) { }
     }
+
+    /// <summary>
+    /// Device busy exception.
+    /// </summary>
+    /// 
+    /// <remarks><para>The exception is thrown in the case if access to certain device
+    /// is not available due to the fact that it is currently busy handling other request/connection.</para>
+    /// </remarks>
+    /// 
+    public class DeviceBusyException : Exception
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeviceBusyException"/> class.
+        /// </summary>
+        /// 
+        /// <param name="message">Exception's message.</param>
+        /// 
+        public DeviceBusyException( string message ) :
+            base( message ) { }
+    }
 }
