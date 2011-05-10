@@ -62,7 +62,7 @@ namespace AForge.Vision.Motion
         private int videoWidth, videoHeight;
 
         // dummy object to lock for synchronization
-        private string sync = "x";
+        private object sync = new object( );
 
         /// <summary>
         /// Motion detection algorithm to apply to each video frame.

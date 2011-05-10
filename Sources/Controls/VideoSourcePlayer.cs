@@ -79,7 +79,7 @@ namespace AForge.Controls
         private Control parent = null;
 
         // dummy object to lock for synchronization
-        private string sync = "x";
+        private object sync = new object( );
 
         /// <summary>
         /// Auto size control or not.
@@ -416,27 +416,27 @@ namespace AForge.Controls
         // Update controls size and position
         private void UpdatePosition( )
         {
-            lock ( sync )
+            if ( ( autosize ) && ( this.Dock != DockStyle.Fill ) && ( this.Parent != null ) )
             {
-                if ( ( autosize ) && ( this.Dock != DockStyle.Fill ) && ( this.Parent != null ) )
-                {
-                    Rectangle rc = this.Parent.ClientRectangle;
-                    int width = 320;
-                    int height = 240;
+                Rectangle rc = this.Parent.ClientRectangle;
+                int width = 320;
+                int height = 240;
 
+                lock ( sync )
+                {
                     if ( currentFrame != null )
                     {
                         // get frame size
                         width  = currentFrame.Width;
                         height = currentFrame.Height;
                     }
-
-                    // update controls size and location
-                    this.SuspendLayout( );
-                    this.Location = new Point( ( rc.Width - width - 2 ) / 2, ( rc.Height - height - 2 ) / 2 );
-                    this.Size = new Size( width + 2, height + 2 );
-                    this.ResumeLayout( );
                 }
+
+                // update controls size and location
+                this.SuspendLayout( );
+                this.Location = new Point( ( rc.Width - width - 2 ) / 2, ( rc.Height - height - 2 ) / 2 );
+                this.Size = new Size( width + 2, height + 2 );
+                this.ResumeLayout( );
             }
         }
 

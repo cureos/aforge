@@ -90,7 +90,7 @@ namespace AForge.Vision.Motion
         private BinaryDilatation3x3 dilatationFilter = new BinaryDilatation3x3( );
 
         // dummy object to lock for synchronization
-        private string sync = "x";
+        private object sync = new object( );
 
         /// <summary>
         /// Difference threshold value, [1, 255].

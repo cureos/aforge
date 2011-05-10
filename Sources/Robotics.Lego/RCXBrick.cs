@@ -245,7 +245,7 @@ namespace AForge.Robotics.Lego
         private IntPtr stack;
 
         // dummy object to lock for synchronization
-        private string sync = "x";
+        private object sync = new object( );
 
         /// <summary>
         /// Check if connection to RCX brick is established.

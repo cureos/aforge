@@ -67,7 +67,7 @@ namespace AForge.Video.VFW
         private string codec = "DIB ";
 
         // dummy object to lock for synchronization
-        private string sync = "x";
+        private object sync = new object( );
 
         /// <summary>
         /// Width of video frames.

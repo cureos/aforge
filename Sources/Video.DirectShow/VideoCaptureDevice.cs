@@ -82,7 +82,7 @@ namespace AForge.Video.DirectShow
         private DateTime startTime = new DateTime( );
 
         // dummy object to lock for synchronization
-        private string sync = "x";
+        private object sync = new object( );
 
         /// <summary>
         /// Specifies if snapshots should be provided or not.

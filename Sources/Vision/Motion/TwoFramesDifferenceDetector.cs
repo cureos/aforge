@@ -76,7 +76,7 @@ namespace AForge.Vision.Motion
         private BinaryErosion3x3 erosionFilter = new BinaryErosion3x3( );
 
         // dummy object to lock for synchronization
-        private string sync = "x";
+        private object sync = new object( );
 
         /// <summary>
         /// Difference threshold value, [1, 255].

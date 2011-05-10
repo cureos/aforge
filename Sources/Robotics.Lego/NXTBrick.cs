@@ -543,7 +543,7 @@ namespace AForge.Robotics.Lego
         private INXTCommunicationInterface communicationInterface;
 
         // dummy object to lock for synchronization
-        private string sync = "x";
+        private object sync = new object( );
 
         /// <summary>
         /// Check if connection to NXT brick is established.

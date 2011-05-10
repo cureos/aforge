@@ -65,7 +65,7 @@ namespace AForge.Robotics.Surveyor
     public class SRV1
     {
         // dummy object to lock for synchronization
-        private string sync = "x";
+        private object sync = new object( );
 
         /// <summary>
         /// Enumeration of predefined motors' commands.
