@@ -16,10 +16,7 @@ there is a main solution file – “Build All.sln”. This allows building all
 libraries in correct order, so no dependency issues arise.
 
 
-Important! Building all libraries right after checking out them from SVN
-or getting them from framework distribution will not work on most systems.
-The AForge.Robotics.TeRK library requires ICE framework to be installed
-(http://www.zeroc.com/ice.html) in order to build it. If you are not aimed
-to build full release of the framework, you may just avoid building TeRK
-library – simply open the “Build All.sln” in VS.NET and remove Robotics
-TeRK project from Solution Explorer.
+Important! To build all libraries right after checking out them from SVN
+it is suggested to use "Release" solution configuration in VS.NET. It will
+build all, except the AForge.Robotics.TeRK library, which requires ICE
+framework to be installed (http://www.zeroc.com/ice.html).
