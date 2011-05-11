@@ -190,7 +190,7 @@ namespace AForge.Imaging
         /// </summary>
         /// 
         /// <remarks><para>In uncoupled filtering mode, objects are filtered out in the case if
-        /// their width is smaller than <see cref="MinWidth"/> or height is smaller than 
+        /// their width is smaller than <see cref="MinWidth"/> <b>or</b> height is smaller than 
         /// <see cref="MinHeight"/>. But in coupled filtering mode, objects are filtered out in
         /// the case if their width is smaller than <see cref="MinWidth"/> <b>and</b> height is
         /// smaller than <see cref="MinHeight"/>. In both modes the idea with filtering by objects'
@@ -282,7 +282,7 @@ namespace AForge.Imaging
         /// </summary>
         /// 
         /// <remarks><para>The property specifies custom blobs' filtering routine to use. It has
-        /// effect only in the case if see cref="FilterBlobs"/> property is set to <see langword="true"/>.</para>
+        /// effect only in the case if <see cref="FilterBlobs"/> property is set to <see langword="true"/>.</para>
         /// 
         /// <para><note>When custom blobs' filtering routine is set, it has priority over default filtering done
         /// with <see cref="MinWidth"/>, <see cref="MinHeight"/>, <see cref="MaxWidth"/> and <see cref="MaxHeight"/>.</note></para>
