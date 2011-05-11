@@ -402,6 +402,8 @@ namespace AForge.Imaging
         /// <remarks><para>Processes the image and builds objects map, which is used later to extracts blobs.</para></remarks>
         /// 
         /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
+        /// <exception cref="InvalidImagePropertiesException">Thrown by some inherited classes if some image property other
+        /// than the pixel format is not supported. See that class's documentation or the exception message for details.</exception>
         /// 
         public void ProcessImage( UnmanagedImage image )
         {

@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2010
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging
@@ -23,7 +23,9 @@ namespace AForge.Imaging
     /// as background, but pixels with higher values are treated as objects' pixels.</note></para>
     /// 
     /// <para>For blobs' searching the class supports 8 bpp indexed grayscale images and
-    /// 24/32 bpp color images. 
+    /// 24/32 bpp color images that are at least two pixels wide. Images that are one
+    /// pixel wide can be processed if they are rotated first, or they can be processed
+    /// with <see cref="RecursiveBlobCounter"/>.
     /// See documentation about <see cref="BlobCounterBase"/> for information about which
     /// pixel formats are supported for extraction of blobs.</para>
     /// 
@@ -119,6 +121,8 @@ namespace AForge.Imaging
         /// <remarks>The method supports 8 bpp indexed grayscale images and 24/32 bpp color images.</remarks>
         /// 
         /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
+        /// <exception cref="InvalidImagePropertiesException">Cannot process images that are one pixel wide. Rotate the image
+        /// or use <see cref="RecursiveBlobCounter"/>.</exception>
         /// 
         protected override void BuildObjectsMap( UnmanagedImage image )
         {
@@ -135,7 +139,9 @@ namespace AForge.Imaging
 
             // we don't want one pixel width images
             if ( imageWidth == 1 )
-                throw new InvalidImagePropertiesException( "Too small image." );
+            {
+                throw new InvalidImagePropertiesException( "BlobCounter cannot process images that are one pixel wide. Rotate the image or use RecursiveBlobCounter." );
+            }
 
             // allocate labels array
             objectLabels = new int[imageWidth * imageHeight];
