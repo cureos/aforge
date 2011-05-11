@@ -222,6 +222,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\VideoCodec.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\VideoFileWriter.cpp"
 				>
 			</File>
@@ -233,6 +237,10 @@
 			>
 			<File
 				RelativePath=".\Stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\VideoCodec.h"
 				>
 			</File>
 			<File

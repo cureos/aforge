@@ -13,6 +13,8 @@ using namespace System::Drawing;
 using namespace System::Drawing::Imaging;
 using namespace AForge::Video;
 
+#include "VideoCodec.h"
+
 namespace libffmpeg
 {
 	extern "C"
@@ -26,21 +28,23 @@ namespace libffmpeg
 
 namespace AForge { namespace Video { namespace FFMPEG
 {
-
 	public ref class VideoFileWriter
 	{
 	public:
 		VideoFileWriter(void);
 
 		void Open( String^ fileName, int width, int height );
+		void Open( String^ fileName, int width, int height, int frameRate );
+		void Open( String^ fileName, int width, int height, int frameRate, VideoCodec codec );
+
 		void WriteVideoFrame( Bitmap^ frame );
 		void Close( );
-
 
 	private:
 		int m_width;
 		int m_height;
 		int	m_frameRate;
+		VideoCodec m_codec;
 
 	private:
 		

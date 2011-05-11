@@ -23,12 +23,22 @@ VideoFileWriter::VideoFileWriter( void )
 	m_width     = 0;
 	m_height    = 0;
 	m_frameRate = 25;
+	m_codec     = VideoCodec::Default;
 
 	libffmpeg::av_register_all( );
 }
 
-
 void VideoFileWriter::Open( String^ fileName, int width, int height )
+{
+	Open( fileName, width, height, m_frameRate );
+}
+
+void VideoFileWriter::Open( String^ fileName, int width, int height, int frameRate )
+{
+	Open( fileName, width, height, frameRate, m_codec );
+}
+
+void VideoFileWriter::Open( String^ fileName, int width, int height, int frameRate, VideoCodec codec )
 {
 	// close previous file if any open
 	Close( );
@@ -41,8 +51,16 @@ void VideoFileWriter::Open( String^ fileName, int width, int height )
 		throw gcnew ArgumentException( "Video file resolution must be a multiple of two." );
 	}
 
+	// check video codec
+	if ( ( (int) codec < -1 ) || ( (int) codec >= CODECS_COUNT ) )
+	{
+		throw gcnew ArgumentException( "Invalid video codec is specified." );
+	}
+
 	m_width  = width;
 	m_height = height;
+	m_codec  = codec;
+	m_frameRate = frameRate;
 	
 	// convert specified managed String to unmanaged string
 	IntPtr ptr = System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi( fileName );
@@ -77,7 +95,9 @@ void VideoFileWriter::Open( String^ fileName, int width, int height )
 
 		Console::WriteLine( "format context allocated" );
 
-		m_videoStream = add_video_stream( m_formatContext, outputFormat->video_codec );
+		// add video stream using the specified video codec
+		m_videoStream = add_video_stream( m_formatContext,
+			( m_codec == VideoCodec::Default ) ? outputFormat->video_codec : video_codecs[(int) m_codec] );
 
 		// set the output parameters (must be done even if no parameters)
 		if ( libffmpeg::av_set_parameters( m_formatContext, NULL ) < 0 )
@@ -114,6 +134,7 @@ void VideoFileWriter::Open( String^ fileName, int width, int height )
 	}
 }
 
+// Close video file
 void VideoFileWriter::Close( )
 {
 	if ( m_formatContext )
@@ -168,7 +189,7 @@ void VideoFileWriter::Close( )
 	m_height = 0;
 }
 
-
+// Writes new video frame to the opened video file
 void VideoFileWriter::WriteVideoFrame( Bitmap^ frame )
 {
 	if ( !m_formatContext )
@@ -207,7 +228,8 @@ void VideoFileWriter::WriteVideoFrame( Bitmap^ frame )
 	write_video_frame( );
 }
 
-// Write video frame to opened video file
+#pragma region Private methods
+// Writes video frame to opened video file
 void VideoFileWriter::write_video_frame( )
 {
 	libffmpeg::AVCodecContext* codecContext = m_videoStream->codec;
@@ -333,7 +355,6 @@ libffmpeg::AVStream* VideoFileWriter::add_video_stream( libffmpeg::AVFormatConte
 	return stream;
 }
 
-
 // Open video codec and prepare out buffer and picture
 void VideoFileWriter::open_video( libffmpeg::AVFormatContext* formatContext, libffmpeg::AVStream* stream )
 {
@@ -377,6 +398,7 @@ void VideoFileWriter::open_video( libffmpeg::AVFormatContext* formatContext, lib
 		throw gcnew VideoException( "Cannot initialize frames conversion context." );
 	}
 }
+#pragma endregion
 		
 } } }
 
