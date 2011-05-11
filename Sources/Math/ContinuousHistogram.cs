@@ -295,8 +295,12 @@ namespace AForge.Math
                 // accumulate std.dev. part
                 stdDev += randomVariableValue * randomVariableValue * hits;
             }
-            mean /= total;
-            stdDev = (float) Math.Sqrt( stdDev / total - mean * mean );
+
+            if ( total != 0 )
+            {
+                mean /= total;
+                stdDev = (float) Math.Sqrt( stdDev / total - mean * mean );
+            }
 
             min = ( min / nM1 ) * rangeLength + rangeMin;
             max = ( max / nM1 ) * rangeLength + rangeMin;
