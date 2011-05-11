@@ -325,6 +325,7 @@ namespace AForge.Imaging
 
             int pixelSize = ( image.PixelFormat == PixelFormat.Format24bppRgb ) ? 3 : 4;
             int offset = image.Stride - width * pixelSize;
+            int maskOffset = maskLineSize - width;
 
             // do the job
             byte * p = (byte*) image.ImageData.ToPointer( );
