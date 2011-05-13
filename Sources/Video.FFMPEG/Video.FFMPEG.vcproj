@@ -226,6 +226,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\VideoFileReader.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\VideoFileWriter.cpp"
 				>
 			</File>
@@ -241,6 +245,10 @@
 			</File>
 			<File
 				RelativePath=".\VideoCodec.h"
+				>
+			</File>
+			<File
+				RelativePath=".\VideoFileReader.h"
 				>
 			</File>
 			<File

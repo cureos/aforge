@@ -19,6 +19,8 @@ libffmpeg::CodecID video_codecs[] =
 	libffmpeg::CODEC_ID_H263P,
 	libffmpeg::CODEC_ID_FLV1,
 	libffmpeg::CODEC_ID_THEORA,
+	libffmpeg::CODEC_ID_RAWVIDEO,
+	
 };
 
 int CODECS_COUNT ( sizeof( video_codecs ) / sizeof( libffmpeg::CodecID ) );

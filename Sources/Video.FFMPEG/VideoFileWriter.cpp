@@ -114,7 +114,7 @@ void VideoFileWriter::Open( String^ fileName, int width, int height, int frameRa
 		{
 			if ( libffmpeg::avio_open( &m_formatContext->pb, nativeFileName, AVIO_WRONLY ) < 0 )
 			{
-				throw gcnew System::IO::IOException( "Cannot open the video file" );
+				throw gcnew System::IO::IOException( "Cannot open the video file." );
 			}
 		}
 
@@ -212,7 +212,7 @@ void VideoFileWriter::WriteVideoFrame( Bitmap^ frame )
 
 	// lock the bitmap
 	BitmapData^ bitmapData = frame->LockBits( System::Drawing::Rectangle( 0, 0, m_width, m_height ),
-		ImageLockMode::ReadOnly, System::Drawing::Imaging::PixelFormat::Format24bppRgb );
+		ImageLockMode::ReadOnly, PixelFormat::Format24bppRgb );
 
 	libffmpeg::uint8_t* ptr = reinterpret_cast<libffmpeg::uint8_t*>( static_cast<void*>( bitmapData->Scan0 ) );
 
@@ -376,7 +376,7 @@ void VideoFileWriter::open_video( libffmpeg::AVFormatContext* formatContext, lib
 	if ( !( formatContext->oformat->flags & AVFMT_RAWPICTURE ) )
 	{
          // allocate output buffer 
-         m_videoOutputBufferSize = 1024 * 1024;
+         m_videoOutputBufferSize = 6 * m_width * m_height; // more than enough even for raw video
 		 m_videoOutputBuffer = (libffmpeg::uint8_t*) libffmpeg::av_malloc( m_videoOutputBufferSize );
 	}
 
@@ -391,7 +391,7 @@ void VideoFileWriter::open_video( libffmpeg::AVFormatContext* formatContext, lib
 	// prepare scaling context to convert RGB image to video format
 	m_convertContext = libffmpeg::sws_getContext( codecContext->width, codecContext->height, libffmpeg::PIX_FMT_BGR24,
 			codecContext->width, codecContext->height, codecContext->pix_fmt,
-			 SWS_BICUBIC, NULL, NULL, NULL);
+			SWS_BICUBIC, NULL, NULL, NULL );
 
 	if ( m_convertContext == NULL )
 	{

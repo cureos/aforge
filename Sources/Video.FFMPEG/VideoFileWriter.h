@@ -31,23 +31,45 @@ namespace AForge { namespace Video { namespace FFMPEG
 	public ref class VideoFileWriter
 	{
 	public:
-		VideoFileWriter(void);
+
+		property int Width
+		{
+			int get( ) { return m_width; }
+		}
+		property int Height
+		{
+			int get( ) { return m_height; }
+		}
+		property int FrameRate
+		{
+			int get( ) { return m_frameRate; }
+		}
+		property VideoCodec  Codec
+		{
+			VideoCodec get( ) { return m_codec; }
+		}
+
+	public:
+
+		VideoFileWriter( void );
 
 		void Open( String^ fileName, int width, int height );
 		void Open( String^ fileName, int width, int height, int frameRate );
 		void Open( String^ fileName, int width, int height, int frameRate, VideoCodec codec );
 
 		void WriteVideoFrame( Bitmap^ frame );
+
 		void Close( );
 
 	private:
+
 		int m_width;
 		int m_height;
 		int	m_frameRate;
 		VideoCodec m_codec;
 
 	private:
-		
+
 		libffmpeg::AVStream* add_video_stream( libffmpeg::AVFormatContext* formatContext, enum libffmpeg::CodecID codec_id );
 		void open_video( libffmpeg::AVFormatContext* formatContext, libffmpeg::AVStream* stream );
 		void write_video_frame( );

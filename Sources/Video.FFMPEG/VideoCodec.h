@@ -33,7 +33,8 @@ namespace AForge { namespace Video { namespace FFMPEG
 		MSMPEG4v3,
 		H263P,
 		FLV1,
-		THEORA
+		Theora,
+		Raw,
 	};
 
 } } }
