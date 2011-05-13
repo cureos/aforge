@@ -179,10 +179,16 @@ void VideoFileWriter::Close( )
 		m_formatContext = NULL;
 	}
 
-	if ( m_convertContext )
+	if ( m_convertContext != NULL )
 	{
 		libffmpeg::sws_freeContext( m_convertContext );
 		m_convertContext = NULL;
+	}
+
+	if ( m_convertContextGrayscale != NULL )
+	{
+		libffmpeg::sws_freeContext( m_convertContextGrayscale );
+		m_convertContextGrayscale = NULL;
 	}
 
 	m_width  = 0;
@@ -194,15 +200,16 @@ void VideoFileWriter::WriteVideoFrame( Bitmap^ frame )
 {
 	if ( !m_formatContext )
 	{
-		throw gcnew VideoException( "A video file was not opened yet." );
+		throw gcnew System::IO::IOException( "A video file was not opened yet." );
 	}
 
-	if ( ( frame->PixelFormat != System::Drawing::Imaging::PixelFormat::Format24bppRgb ) &&
-	     ( frame->PixelFormat != System::Drawing::Imaging::PixelFormat::Format32bppArgb ) &&
-		 ( frame->PixelFormat != System::Drawing::Imaging::PixelFormat::Format32bppPArgb ) &&
-	 	 ( frame->PixelFormat != System::Drawing::Imaging::PixelFormat::Format32bppRgb ) )
+	if ( ( frame->PixelFormat != PixelFormat::Format24bppRgb ) &&
+	     ( frame->PixelFormat != PixelFormat::Format32bppArgb ) &&
+		 ( frame->PixelFormat != PixelFormat::Format32bppPArgb ) &&
+	 	 ( frame->PixelFormat != PixelFormat::Format32bppRgb ) &&
+		 ( frame->PixelFormat != PixelFormat::Format8bppIndexed ) )
 	{
-		throw gcnew ArgumentException( "The provided bitmap must be 24 or 32 bpp color image." );
+		throw gcnew ArgumentException( "The provided bitmap must be 24 or 32 bpp color image or 8 bpp grayscale image." );
 	}
 
 	if ( ( frame->Width != m_width ) || ( frame->Height != m_height ) )
@@ -212,7 +219,8 @@ void VideoFileWriter::WriteVideoFrame( Bitmap^ frame )
 
 	// lock the bitmap
 	BitmapData^ bitmapData = frame->LockBits( System::Drawing::Rectangle( 0, 0, m_width, m_height ),
-		ImageLockMode::ReadOnly, PixelFormat::Format24bppRgb );
+		ImageLockMode::ReadOnly,
+		( frame->PixelFormat == PixelFormat::Format8bppIndexed ) ? PixelFormat::Format8bppIndexed : PixelFormat::Format24bppRgb );
 
 	libffmpeg::uint8_t* ptr = reinterpret_cast<libffmpeg::uint8_t*>( static_cast<void*>( bitmapData->Scan0 ) );
 
@@ -220,7 +228,14 @@ void VideoFileWriter::WriteVideoFrame( Bitmap^ frame )
 	int srcLinesize[4] = { bitmapData->Stride, 0, 0, 0 };
 
 	// convert source image to the format of the video file
-	libffmpeg::sws_scale( m_convertContext, srcData, srcLinesize, 0, m_height, m_videoFrame->data, m_videoFrame->linesize );
+	if ( frame->PixelFormat == PixelFormat::Format8bppIndexed )
+	{
+		libffmpeg::sws_scale( m_convertContextGrayscale, srcData, srcLinesize, 0, m_height, m_videoFrame->data, m_videoFrame->linesize );
+	}
+	else
+	{
+		libffmpeg::sws_scale( m_convertContext, srcData, srcLinesize, 0, m_height, m_videoFrame->data, m_videoFrame->linesize );
+	}
 
 	frame->UnlockBits( bitmapData );
 
@@ -390,6 +405,10 @@ void VideoFileWriter::open_video( libffmpeg::AVFormatContext* formatContext, lib
 
 	// prepare scaling context to convert RGB image to video format
 	m_convertContext = libffmpeg::sws_getContext( codecContext->width, codecContext->height, libffmpeg::PIX_FMT_BGR24,
+			codecContext->width, codecContext->height, codecContext->pix_fmt,
+			SWS_BICUBIC, NULL, NULL, NULL );
+	// prepare scaling context to convert grayscale image to video format
+	m_convertContextGrayscale = libffmpeg::sws_getContext( codecContext->width, codecContext->height, libffmpeg::PIX_FMT_GRAY8,
 			codecContext->width, codecContext->height, codecContext->pix_fmt,
 			SWS_BICUBIC, NULL, NULL, NULL );
 

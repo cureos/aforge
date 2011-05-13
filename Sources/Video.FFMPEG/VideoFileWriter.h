@@ -80,6 +80,7 @@ namespace AForge { namespace Video { namespace FFMPEG
 		libffmpeg::AVStream*			m_videoStream;
 		libffmpeg::AVFrame*				m_videoFrame;
 		struct libffmpeg::SwsContext*	m_convertContext;
+		struct libffmpeg::SwsContext*	m_convertContextGrayscale;
 
 		libffmpeg::uint8_t*	m_videoOutputBuffer;
 		int	m_videoOutputBufferSize;

@@ -154,6 +154,11 @@ void VideoFileReader::Close(  )
 
 Bitmap^ VideoFileReader::ReadVideoFrame(  )
 {
+	if ( m_formatContext == NULL )
+	{
+		throw gcnew System::IO::IOException( "Cannot read video frames since video file is not open." );
+	}
+
 	libffmpeg::AVPacket packet;
 	int frameFinished;
 	Bitmap^ bitmap = nullptr;
