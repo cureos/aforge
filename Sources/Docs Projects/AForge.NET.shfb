@@ -14,6 +14,8 @@
         <assembly assemblyPath="..\..\Release\AForge.Robotics.TeRK.dll" xmlCommentsPath="..\..\Release\AForge.Robotics.TeRK.xml" commentsOnly="False" />
         <assembly assemblyPath="..\..\Release\AForge.Video.DirectShow.dll" xmlCommentsPath="..\..\Release\AForge.Video.DirectShow.xml" commentsOnly="False" />
         <assembly assemblyPath="..\..\Release\AForge.Video.dll" xmlCommentsPath="..\..\Release\AForge.Video.xml" commentsOnly="False" />
+        <assembly assemblyPath="..\..\Release\AForge.Video.FFMPEG.dll" xmlCommentsPath="..\..\Release\AForge.Video.FFMPEG.xml" commentsOnly="False" />
+        <assembly assemblyPath="..\..\Release\AForge.Video.Kinect.dll" xmlCommentsPath="..\..\Release\AForge.Video.Kinect.xml" commentsOnly="False" />
         <assembly assemblyPath="..\..\Release\AForge.Video.VFW.dll" xmlCommentsPath="..\..\Release\AForge.Video.VFW.xml" commentsOnly="False" />
         <assembly assemblyPath="..\..\Release\AForge.Vision.dll" xmlCommentsPath="..\..\Release\AForge.Vision.xml" commentsOnly="False" />
         <assembly assemblyPath="..\..\Release\Glacier2.dll" xmlCommentsPath="" commentsOnly="False" />
@@ -44,6 +46,8 @@
         <namespaceSummaryItem name="AForge.Robotics.TeRK" isDocumented="True">The &lt;b&gt;AForge.Robotics.TeRK&lt;/b&gt; namespace contains set of classes, which are aimed to control TeRK (&lt;a href="http://www.terk.ri.cmu.edu/"&gt;Telepresence Robot Kit&lt;/a&gt;) based robots, such as Qwerk.</namespaceSummaryItem>
         <namespaceSummaryItem name="AForge.Video" isDocumented="True">The &lt;b&gt;AForge.Video&lt;/b&gt; namespace contains interfaces and classes to access different video sources.</namespaceSummaryItem>
         <namespaceSummaryItem name="AForge.Video.DirectShow" isDocumented="True">The &lt;b&gt;AForge.Video.DirectShow&lt;/b&gt; namespace contains classes, which allow to access video sources using &lt;i&gt;DirectShow&lt;/i&gt; interface.</namespaceSummaryItem>
+        <namespaceSummaryItem name="AForge.Video.FFMPEG" isDocumented="True">The &lt;b&gt;AForge.Video.FFMPEG&lt;/b&gt; namespace contains classes, which allow reading and writing video files through &lt;a href="http://www.ffmpeg.org/"&gt;FFmpeg&lt;/a&gt; library.</namespaceSummaryItem>
+        <namespaceSummaryItem name="AForge.Video.Kinect" isDocumented="True">The &lt;b&gt;AForge.Video.Kinect&lt;/b&gt; namespace contains classes, which allow to access to video and depth data of Microsoft’s Xbox &lt;a href="http://en.wikipedia.org/wiki/Kinect"&gt;Kinect&lt;/a&gt; device.</namespaceSummaryItem>
         <namespaceSummaryItem name="AForge.Video.VFW" isDocumented="True">The &lt;b&gt;AForge.Video.VFW&lt;/b&gt; namespace contains classes, which allow reading and writing of AVI files using &lt;i&gt;Video for Windows&lt;/i&gt; interface.</namespaceSummaryItem>
         <namespaceSummaryItem name="AForge.Vision.Motion" isDocumented="True">The &lt;b&gt;bAForge.Vision.Motion&lt;/b&gt; namespace contains interfaces and classes used for motion detection and processing in video streams.</namespaceSummaryItem>
         <namespaceSummaryItem name="Glacier2" isDocumented="False" />
@@ -234,6 +238,7 @@
         <contentItem sourcePath="..\Imaging\Images\sample22.png" destPath="img\imaging\" excludeItems="False" />
         <contentItem sourcePath="..\Controls\Images\hue_picker1.png" destPath="img\controls\" excludeItems="False" />
         <contentItem sourcePath="..\Controls\Images\hue_picker2.png" destPath="img\controls\" excludeItems="False" />
+        <contentItem sourcePath="..\Video.Kinect\Images\Kinect.jpg" destPath="img\video\" excludeItems="False" />
     </additionalContent>
     <ProjectSummary>&lt;b&gt;AForge.NET Framework&lt;/b&gt; is a C# framework designed for developers and researchers in the fields of Computer Vision and Artificial Intelligence - image processing, computer vision, neural networks, genetic algorithms, machine learning, etc. </ProjectSummary>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace, TypeParameter</MissingTags>

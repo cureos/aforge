@@ -22,6 +22,8 @@ namespace AForge.Video.Kinect
     /// tilt value and accessing its camera. See <see cref="KinectVideoCamera"/> and <see cref="KinectDepthCamera"/>
     /// classes, which provide access to actual video.</para>
     /// 
+    /// <para><img src="img/video/kinect.jpg" width="320" height="140" /></para>
+    /// 
     /// <para>Sample usage:</para>
     /// <code>
     /// // get Kinect device
