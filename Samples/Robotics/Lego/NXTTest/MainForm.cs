@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
+using AForge;
 using AForge.Robotics.Lego;
 
 namespace NXTTest
@@ -61,6 +62,21 @@ namespace NXTTest
             inputPortCombo.SelectedIndex = 0;
             sensorTypeCombo.SelectedIndex = 0;
             sensorModeCombo.SelectedIndex = 0;
+
+            nxt.MessageSent += new MessageTransferHandler( nxt_MessageSent );
+            nxt.MessageRead += new MessageTransferHandler( nxt_MessageRead );
+        }
+
+        // On message sent by NXT brick
+        private void nxt_MessageSent( object sender, CommunicationBufferEventArgs eventArgs )
+        {
+            System.Diagnostics.Debug.WriteLine( string.Format( ">> [ {0} ]", eventArgs.GetMessageString( ) ) );
+        }
+
+        // On message received by NXT brick
+        private void nxt_MessageRead( object sender, CommunicationBufferEventArgs eventArgs )
+        {
+            System.Diagnostics.Debug.WriteLine( string.Format( "<< [ {0} ]", eventArgs.GetMessageString( ) ) );
         }
 
         // On "Connect" button click
