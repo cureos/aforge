@@ -70,8 +70,16 @@ namespace AForge.Robotics.Lego.Internals
         public SerialCommunication( string portName, int writeTimeout, int readTimeout )
         {
             this.port = new SerialPort( portName );
+
             this.port.WriteTimeout = writeTimeout;
             this.port.ReadTimeout  = readTimeout;
+
+            this.port.BaudRate  = 115200;
+            this.port.DataBits  = 8;
+            this.port.StopBits  = StopBits.One;
+            this.port.Parity    = Parity.None;
+            this.port.RtsEnable = true;
+            this.port.DtrEnable = true;
         }
 
         /// <summary>
@@ -175,11 +183,13 @@ namespace AForge.Robotics.Lego.Internals
 
             try
             {
-                // send 2 bytes of message length
-                byte[] messageLength = new byte[2] { (byte) length, 0 };
-                port.Write( messageLength, 0, 2 );
-                // send actual message
-                port.Write( message, offset, length );
+                // prepare request buffer
+                byte[] requestBuffer = new byte[length + 2];
+                requestBuffer[0] = (byte) ( length & 0xFF );
+                requestBuffer[1] = (byte) ( ( length & 0xFF00 ) >> 8 );
+                Array.Copy( message, offset, requestBuffer, 2, length );
+                // send actual request
+                port.Write( requestBuffer, 0, requestBuffer.Length );
             }
             catch
             {
@@ -228,10 +238,9 @@ namespace AForge.Robotics.Lego.Internals
             try
             {
                 // read 2 bytes of message length
-                // - first byte keeps the length
-                int toRead = port.ReadByte( );
-                // - second byte is zero
-                port.ReadByte( );
+                int lsb = port.ReadByte( );
+                int msb = port.ReadByte( );
+                int toRead = ( msb << 8 ) + lsb;
                 // check buffer size
                 if ( toRead > buffer.Length - offset )
                 {
@@ -246,7 +255,7 @@ namespace AForge.Robotics.Lego.Internals
                 // read the message
                 length = port.Read( buffer, offset, toRead );
 
-                while ( length != toRead )
+                while ( length < toRead )
                 {
                     buffer[offset + length] = (byte) port.ReadByte( );
                     length++;
