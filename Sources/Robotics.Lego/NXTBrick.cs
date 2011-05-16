@@ -649,10 +649,25 @@ namespace AForge.Robotics.Lego
         /// 
         public bool PlayTone( short frequency, short duration )
         {
+            return PlayTone( frequency, duration, true );
+        }
+
+        /// <summary>
+        /// Play tone of specified frequency.
+        /// </summary>
+        /// 
+        /// <param name="frequency">Tone frequency in Hz.</param>
+        /// <param name="duration">Tone duration in milliseconds.</param>
+        /// <param name="waitReply">Wait reply from NXT (safer option) or not (faster option).</param>
+        /// 
+        /// <returns>Returns <b>true</b> if device is alive or <b>false</b> otherwise.</returns>
+        /// 
+        public bool PlayTone( short frequency, short duration, bool waitReply )
+        {
             byte[] command = new byte[6];
 
             // prepare command
-            command[0] = (byte) NXTCommandType.DirectCommand;
+            command[0] = (byte) ( ( waitReply ) ? NXTCommandType.DirectCommand : NXTCommandType.DirectCommandWithoutReply );
             command[1] = (byte) NXTDirectCommand.PlayTone;
             command[2] = (byte) ( frequency & 0xFF );
             command[3] = (byte) ( frequency >> 8 );
@@ -788,13 +803,29 @@ namespace AForge.Robotics.Lego
         /// 
         public bool ResetMotorPosition( Motor motor, bool relative )
         {
+            return ResetMotorPosition( motor, relative, true );
+        }
+
+        /// <summary>
+        /// Reset motor's position.
+        /// </summary>
+        /// 
+        /// <param name="motor">Motor to reset.</param>
+        /// <param name="relative">Specifies if relative (to last movement) or absolute motor's
+        /// position should reset.</param>
+        /// <param name="waitReply">Wait reply from NXT (safer option) or not (faster option).</param>
+        ///
+        /// <returns>Returns <b>true</b> if command was executed successfully or <b>false</b> otherwise.</returns>
+        /// 
+        public bool ResetMotorPosition( Motor motor, bool relative, bool waitReply )
+        {
             byte[] command = new byte[4];
 
             // prepare message
-            command[0] = (byte) NXTCommandType.DirectCommand;
+            command[0] = (byte) ( ( waitReply ) ? NXTCommandType.DirectCommand : NXTCommandType.DirectCommandWithoutReply );
             command[1] = (byte) NXTDirectCommand.ResetMotorPosition;
             command[2] = (byte) motor;
-            command[3] = (byte) ( ( relative ) ? 0xFF : 0x00 ); // reser relative or absolute position
+            command[3] = (byte) ( ( relative ) ? 0xFF : 0x00 ); // reset relative or absolute position
 
             return SendCommand( command, new byte[3] );
         }
@@ -810,10 +841,25 @@ namespace AForge.Robotics.Lego
         /// 
         public bool SetMotorState( Motor motor, MotorState state )
         {
+            return SetMotorState( motor, state, true );
+        }
+
+        /// <summary>
+        /// Set motor state.
+        /// </summary>
+        /// 
+        /// <param name="motor">Motor to set state for.</param>
+        /// <param name="state">Motor's state to set.</param>
+        /// <param name="waitReply">Wait reply from NXT (safer option) or not (faster option).</param>
+        /// 
+        /// <returns>Returns <b>true</b> if command was executed successfully or <b>false</b> otherwise.</returns>
+        /// 
+        public bool SetMotorState( Motor motor, MotorState state, bool waitReply )
+        {
             byte[] command = new byte[12];
 
             // prepare message
-            command[0] = (byte) NXTCommandType.DirectCommand;
+            command[0] = (byte) ( ( waitReply ) ? NXTCommandType.DirectCommand : NXTCommandType.DirectCommandWithoutReply );
             command[1] = (byte) NXTDirectCommand.SetOutputState;
             command[2] = (byte) motor;
             command[3] = (byte) state.Power;
@@ -896,10 +942,26 @@ namespace AForge.Robotics.Lego
         /// 
         public bool SetSensorMode( Sensor sensor, SensorType type, SensorMode mode )
         {
+            return SetSensorMode( sensor, type, mode, true );
+        }
+
+        /// <summary>
+        /// Set sensor's type and mode.
+        /// </summary>
+        /// 
+        /// <param name="sensor">Sensor to set type of.</param>
+        /// <param name="type">Sensor's type.</param>
+        /// <param name="mode">Sensor's mode.</param>
+        /// <param name="waitReply">Wait reply from NXT (safer option) or not (faster option).</param>
+        /// 
+        /// <returns>Returns <b>true</b> if command was executed successfully or <b>false</b> otherwise.</returns>
+        /// 
+        public bool SetSensorMode( Sensor sensor, SensorType type, SensorMode mode, bool waitReply )
+        {
             byte[] command = new byte[5];
 
             // prepare message
-            command[0] = (byte) NXTCommandType.DirectCommand;
+            command[0] = (byte) ( ( waitReply ) ? NXTCommandType.DirectCommand : NXTCommandType.DirectCommandWithoutReply );
             command[1] = (byte) NXTDirectCommand.SetInputMode;
             command[2] = (byte) sensor;
             command[3] = (byte) type;
@@ -956,10 +1018,24 @@ namespace AForge.Robotics.Lego
         /// 
         public bool ClearSensor( Sensor sensor )
         {
+            return ClearSensor( sensor, true );
+        }
+
+        /// <summary>
+        /// Clear sensor's scaled value. 
+        /// </summary>
+        /// 
+        /// <param name="sensor">Sensor to clear value of.</param>
+        /// <param name="waitReply">Wait reply from NXT (safer option) or not (faster option).</param>
+        /// 
+        /// <returns>Returns <b>true</b> if command was executed successfully or <b>false</b> otherwise.</returns>
+        /// 
+        public bool ClearSensor( Sensor sensor, bool waitReply )
+        {
             byte[] command = new byte[3];
 
             // prepare message
-            command[0] = (byte) NXTCommandType.DirectCommand;
+            command[0] = (byte) ( ( waitReply ) ? NXTCommandType.DirectCommand : NXTCommandType.DirectCommandWithoutReply );
             command[1] = (byte) NXTDirectCommand.ResetInputScaledValue;
             command[2] = (byte) sensor;
 
@@ -1010,6 +1086,25 @@ namespace AForge.Robotics.Lego
         /// 
         public bool LsWrite( Sensor sensor, byte[] data, int expectedBytes )
         {
+            return LsWrite( sensor, data, expectedBytes, true );
+        }
+
+        /// <summary>
+        /// Write to Low Speed bus.
+        /// </summary>
+        /// 
+        /// <param name="sensor">Sensor to write to.</param>
+        /// <param name="data">Data to send to the I2C device.</param>
+        /// <param name="expectedBytes">Number of bytes expected from device on reply, [0..16].
+        /// Can be set to zero if I2C command does not suppose any reply.</param>
+        /// <param name="waitReply">Wait reply from NXT (safer option) or not (faster option).</param>
+        /// 
+        /// <returns>Returns <b>true</b> if command was executed successfully or <b>false</b> otherwise.</returns>
+        /// 
+        /// <exception cref="ArgumentException">Data length must be in the [1..16] range.</exception>
+        /// 
+        public bool LsWrite( Sensor sensor, byte[] data, int expectedBytes, bool waitReply )
+        {
             if ( ( data.Length == 0 ) || ( data.Length > 16 ) )
             {
                 throw new ArgumentException( "Data length must be in the [1..16] range.", "data" );
@@ -1019,7 +1114,7 @@ namespace AForge.Robotics.Lego
             byte[] reply = new byte[3];
 
             // prepare message
-            command[0] = (byte) NXTCommandType.DirectCommand;
+            command[0] = (byte) ( ( waitReply ) ? NXTCommandType.DirectCommand : NXTCommandType.DirectCommandWithoutReply );
             command[1] = (byte) NXTDirectCommand.LsWrite;
             command[2] = (byte) sensor;
 
@@ -1074,14 +1169,14 @@ namespace AForge.Robotics.Lego
         /// <remarks><para>The method retrieves value of ultrasonic distance sensor by
         /// communicating with I2C device (writing to and reading from low speed bus).
         /// The method first sends { 0x02, 0x42 } command to the specified device using
-        /// <see cref="LsWrite"/> method. Then it waits until there is something available
+        /// <see cref="LsWrite( Sensor, byte[], int )"/> method. Then it waits until there is something available
         /// to read using <see cref="LsGetStatus"/> method. Finally it reads sensor's value
         /// using <see cref="LsRead"/> device. See
         /// <a href="http://hsrc.static.net/Research/NXT%20I2C%20Communication/">this page</a>
         /// for details.</para>
         /// 
         /// <para><note>Before using this method it is required to use
-        /// <see cref="SetSensorMode"/> method to set sensor's type to
+        /// <see cref="SetSensorMode( Sensor, SensorType, SensorMode, bool )"/> method to set sensor's type to
         /// <see cref="SensorType.Lowspeed9V"/> mode. It should be done
         /// once after NXT brick is powered on. If sensor's type is not set properly,
         /// the method will generate an exception. Also after setting sensor's
@@ -1171,35 +1266,43 @@ namespace AForge.Robotics.Lego
                         MessageSent( this, new CommunicationBufferEventArgs( command ) );
                     }
 
-                    int bytesRead;
-
-                    // read message
-                    if ( communicationInterface.ReadMessage( reply, out bytesRead ) )
+                    if ( ( command[0] == (byte) NXTCommandType.DirectCommandWithoutReply ) ||
+                         ( command[1] == (byte) NXTCommandType.SystemCommandWithoutReply ) )
                     {
-                        // notifies clients if any
-                        if ( MessageRead != null )
-                        {
-                            MessageRead( this, new CommunicationBufferEventArgs( reply, 0, bytesRead ) );
-                        }
-
-                        // check that reply corresponds to command
-                        if ( reply[1] != command[1] )
-                            throw new ApplicationException( "Reply does not correspond to command" );
-
-                        // check for errors
-                        if (reply[2] != 0)
-                        {
-                            if (reply[2] == 221)
-                            {
-                                throw new ApplicationException("It seems that a wrong sensor type is connected to the corresponding port");
-                            }
-                            else
-                            {
-                                throw new ApplicationException("Error occurred in NXT brick. Error code: " + reply[2].ToString());
-                            }
-                        }
-
                         result = true;
+                    }
+                    else
+                    {
+                        int bytesRead;
+
+                        // read message
+                        if ( communicationInterface.ReadMessage( reply, out bytesRead ) )
+                        {
+                            // notifies clients if any
+                            if ( MessageRead != null )
+                            {
+                                MessageRead( this, new CommunicationBufferEventArgs( reply, 0, bytesRead ) );
+                            }
+
+                            // check that reply corresponds to command
+                            if ( reply[1] != command[1] )
+                                throw new ApplicationException( "Reply does not correspond to command" );
+
+                            // check for errors
+                            if ( reply[2] != 0 )
+                            {
+                                if ( reply[2] == 221 )
+                                {
+                                    throw new ApplicationException( "It seems that a wrong sensor type is connected to the corresponding port" );
+                                }
+                                else
+                                {
+                                    throw new ApplicationException( "Error occurred in NXT brick. Error code: " + reply[2].ToString( ) );
+                                }
+                            }
+
+                            result = true;
+                        }
                     }
                 }
             }
@@ -1223,14 +1326,14 @@ namespace AForge.Robotics.Lego
         /// <remarks><para>The method retrieves the color valuse of a <a href="http://www.hitechnic.com/products/">HiTechnic color sensor</a>
         /// by communicating with I2C device (writing to and reading from low speed bus).
         /// The method first sends { 0x02, 0x42 } command to the specified device using
-        /// <see cref="LsWrite"/> method. Then it waits until there is something available
+        /// <see cref="LsWrite( Sensor, byte[], int )"/> method. Then it waits until there is something available
         /// to read using <see cref="LsGetStatus"/> method. Finally it reads sensor's value
         /// using <see cref="LsRead"/> device. See
         /// <a href="http://hsrc.static.net/Research/NXT%20I2C%20Communication/">this page</a>
         /// for details.</para>
         /// 
         /// <para><note>Before using this method it is required to use
-        /// <see cref="SetSensorMode"/> method to set sensor's type to
+        /// <see cref="SetSensorMode( Sensor, SensorType, SensorMode, bool )"/> method to set sensor's type to
         /// <see cref="SensorType.Lowspeed"/> mode. It should be done
         /// once after NXT brick is powered on. If sensor's type is not set properly,
         /// the method will generate an exception. Also after setting sensor's
@@ -1283,14 +1386,14 @@ namespace AForge.Robotics.Lego
         /// HiTechnic compass sensor</a> by
         /// communicating with I2C device (writing to and reading from low speed bus).
         /// The method first sends { 0x02, 0x42 } command to the specified device using
-        /// <see cref="LsWrite"/> method. Then it waits until there is something available
+        /// <see cref="LsWrite( Sensor, byte[], int )"/> method. Then it waits until there is something available
         /// to read using <see cref="LsGetStatus"/> method. Finally it reads sensor's value
         /// using <see cref="LsRead"/> device. See
         /// <a href="http://hsrc.static.net/Research/NXT%20I2C%20Communication/">this page</a>
         /// for details.</para>
         /// 
         /// <para><note>Before using this method it is required to use
-        /// <see cref="SetSensorMode"/> method to set sensor's type to
+        /// <see cref="SetSensorMode( Sensor, SensorType, SensorMode, bool )"/> method to set sensor's type to
         /// <see cref="SensorType.Lowspeed"/> mode. It should be done
         /// once after NXT brick is powered on. If sensor's type is not set properly,
         /// the method will generate an exception. Also after setting sensor's
@@ -1346,14 +1449,14 @@ namespace AForge.Robotics.Lego
         /// <a href="http://www.hitechnic.com/products/"> HiTechnic acceleration/tilt sensor</a> by
         /// communicating with I2C device (writing to and reading from low speed bus).
         /// The method first sends { 0x02, 0x42 } command to the specified device using
-        /// <see cref="LsWrite"/> method. Then it waits until there is something available
+        /// <see cref="LsWrite( Sensor, byte[], int )"/> method. Then it waits until there is something available
         /// to read using <see cref="LsGetStatus"/> method. Finally it reads sensor's value
         /// using <see cref="LsRead"/> device. See
         /// <a href="http://hsrc.static.net/Research/NXT%20I2C%20Communication/">this page</a>
         /// for details.</para>
         /// 
         /// <para><note>Before using this method it is required to use
-        /// <see cref="SetSensorMode"/> method to set sensor's type to
+        /// <see cref="SetSensorMode( Sensor, SensorType, SensorMode, bool )"/> method to set sensor's type to
         /// <see cref="SensorType.Lowspeed"/> mode. It should be done
         /// once after NXT brick is powered onq If sensor's type is not set properly,
         /// the method will generate an exception. Also after setting sensor's

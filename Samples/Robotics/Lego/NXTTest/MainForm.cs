@@ -97,6 +97,8 @@ namespace NXTTest
 
                 connectButton.Enabled    = false;
                 disconnectButton.Enabled = true;
+
+                nxt.PlayTone( 100, 200, false );
             }
             else
             {
@@ -219,7 +221,7 @@ namespace NXTTest
         // On motor "Reset" button click
         private void resetMotorButton_Click( object sender, EventArgs e )
         {
-            if ( nxt.ResetMotorPosition( GetSelectedMotor( ), false ) != true )
+            if ( nxt.ResetMotorPosition( GetSelectedMotor( ), false, false ) != true )
             {
                 System.Diagnostics.Debug.WriteLine( "Failed reseting motor" );
             }
@@ -250,7 +252,7 @@ namespace NXTTest
             }
 
             // set motor's state
-            if ( nxt.SetMotorState( GetSelectedMotor( ), motorState ) != true )
+            if ( nxt.SetMotorState( GetSelectedMotor( ), motorState, false ) != true )
             {
                 System.Diagnostics.Debug.WriteLine( "Failed setting motor state" );
             }
@@ -302,7 +304,7 @@ namespace NXTTest
         {
             if ( nxt.SetSensorMode( GetSelectedSensor( ),
                 sensorTypes[sensorTypeCombo.SelectedIndex],
-                sensorModes[sensorModeCombo.SelectedIndex] ) != true )
+                sensorModes[sensorModeCombo.SelectedIndex], false ) != true )
             {
                 System.Diagnostics.Debug.WriteLine( "Failed setting input mode" );
             }
