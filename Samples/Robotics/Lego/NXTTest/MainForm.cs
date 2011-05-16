@@ -1,8 +1,9 @@
-// AForge.NET Framework
 // Lego Mindstorm NXT test application
+// AForge.NET Framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2008
-// andrew.kirillov@gmail.com
+// Copyright © AForge.NET, 2007-2011
+// contacts@aforgenet.com
 //
 
 using System;
@@ -202,7 +203,7 @@ namespace NXTTest
         // On motor "Reset" button click
         private void resetMotorButton_Click( object sender, EventArgs e )
         {
-            if ( nxt.ResetMotorPosition( GetSelectedMotor( ) ) != true )
+            if ( nxt.ResetMotorPosition( GetSelectedMotor( ), false ) != true )
             {
                 System.Diagnostics.Debug.WriteLine( "Failed reseting motor" );
             }
