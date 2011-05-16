@@ -76,7 +76,7 @@ namespace AForge
         ///
         public string GetMessageString( )
         {
-            return System.Text.Encoding.Default.GetString( message, index, length );
+            return BitConverter.ToString( message, index, length );
         }
     }
 }
