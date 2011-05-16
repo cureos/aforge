@@ -10,19 +10,14 @@
 
 using namespace System;
 
-namespace libffmpeg
-{
-	extern "C"
-	{
-		#include "libavcodec\avcodec.h"
-	}
-}
-
-extern libffmpeg::CodecID video_codecs[];
+extern int video_codecs[];
 extern int CODECS_COUNT;
 
 namespace AForge { namespace Video { namespace FFMPEG
 {
+	/// <summary>
+	/// Enumeration of some video codecs from FFmpeg library, which are available for writing video files.
+	/// </summary>
 	public enum class VideoCodec
 	{
 		Default = -1,

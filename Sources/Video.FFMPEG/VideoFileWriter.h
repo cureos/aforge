@@ -15,19 +15,13 @@ using namespace AForge::Video;
 
 #include "VideoCodec.h"
 
-namespace libffmpeg
-{
-	extern "C"
-	{
-		#include "libavformat\avformat.h"
-		#include "libavformat\avio.h"
-		#include "libavcodec\avcodec.h"
-		#include "libswscale\swscale.h"
-	}
-}
-
 namespace AForge { namespace Video { namespace FFMPEG
 {
+	ref struct PrivateData;
+
+	/// <summary>
+	/// Class for writing video files utilizing FFmpeg library.
+	/// </summary>
 	public ref class VideoFileWriter
 	{
 	public:
@@ -44,6 +38,10 @@ namespace AForge { namespace Video { namespace FFMPEG
 		{
 			int get( ) { return m_frameRate; }
 		}
+
+		/// <summary>
+		/// Codec to use for the video file. <see cref="VideoCodec"/> 
+		/// </summary>
 		property VideoCodec  Codec
 		{
 			VideoCodec get( ) { return m_codec; }
@@ -68,22 +66,7 @@ namespace AForge { namespace Video { namespace FFMPEG
 		int	m_frameRate;
 		VideoCodec m_codec;
 
-	private:
-
-		libffmpeg::AVStream* add_video_stream( libffmpeg::AVFormatContext* formatContext, enum libffmpeg::CodecID codec_id );
-		void open_video( libffmpeg::AVFormatContext* formatContext, libffmpeg::AVStream* stream );
-		void write_video_frame( );
-
-	private:
-
-		libffmpeg::AVFormatContext*		m_formatContext;
-		libffmpeg::AVStream*			m_videoStream;
-		libffmpeg::AVFrame*				m_videoFrame;
-		struct libffmpeg::SwsContext*	m_convertContext;
-		struct libffmpeg::SwsContext*	m_convertContextGrayscale;
-
-		libffmpeg::uint8_t*	m_videoOutputBuffer;
-		int	m_videoOutputBufferSize;
+		PrivateData^ data;
 	};
 
 } } }

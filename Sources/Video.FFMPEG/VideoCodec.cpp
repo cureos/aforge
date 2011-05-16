@@ -9,7 +9,16 @@
 #include "StdAfx.h"
 #include "VideoCodec.h"
 
-libffmpeg::CodecID video_codecs[] =
+namespace libffmpeg
+{
+	extern "C"
+	{
+		#pragma warning(disable:4635) 
+		#include "libavcodec\avcodec.h"
+	}
+}
+
+int video_codecs[] =
 {
 	libffmpeg::CODEC_ID_MPEG4,
 	libffmpeg::CODEC_ID_WMV1,

@@ -9,16 +9,51 @@
 #include "StdAfx.h"
 #include "VideoFileWriter.h"
 
+namespace libffmpeg
+{
+	extern "C"
+	{
+		// disable warnings about badly formed documentation from FFmpeg, which don't need at all
+		#pragma warning(disable:4635) 
+
+		#include "libavformat\avformat.h"
+		#include "libavformat\avio.h"
+		#include "libavcodec\avcodec.h"
+		#include "libswscale\swscale.h"
+	}
+}
+
 namespace AForge { namespace Video { namespace FFMPEG
 {
+#pragma region Some private FFmpeg related stuff hidden out of header file
+static void write_video_frame( PrivateData^ data );
+static void open_video( PrivateData^ data );
+static void add_video_stream( PrivateData^ data, int width, int height, int frameRate, enum libffmpeg::CodecID codec_id );
+
+ref struct PrivateData
+{
+public:
+	libffmpeg::AVFormatContext*		FormatContext;
+	libffmpeg::AVStream*			VideoStream;
+	libffmpeg::AVFrame*				VideoFrame;
+	struct libffmpeg::SwsContext*	ConvertContext;
+	struct libffmpeg::SwsContext*	ConvertContextGrayscale;
+
+	libffmpeg::uint8_t*	VideoOutputBuffer;
+	int VideoOutputBufferSize;
+};
+#pragma endregion
 
 VideoFileWriter::VideoFileWriter( void )
 {
-	m_formatContext     = NULL;
-	m_videoStream       = NULL;
-	m_videoFrame        = NULL;
-	m_convertContext	= NULL;
-	m_videoOutputBuffer = NULL;
+	data = gcnew PrivateData( );
+
+	data->FormatContext     = NULL;
+	data->VideoStream       = NULL;
+	data->VideoFrame        = NULL;
+	data->ConvertContext	= NULL;
+	data->VideoOutputBuffer = NULL;
+	data->ConvertContextGrayscale = NULL;
 
 	m_width     = 0;
 	m_height    = 0;
@@ -85,40 +120,40 @@ void VideoFileWriter::Open( String^ fileName, int width, int height, int frameRa
 		Console::WriteLine( "got format" );
 
 		// prepare format context
-		m_formatContext = libffmpeg::avformat_alloc_context( );
+		data->FormatContext = libffmpeg::avformat_alloc_context( );
 
-		if ( !m_formatContext )
+		if ( !data->FormatContext )
 		{
 			throw gcnew VideoException( "Cannot allocate format context." );
 		}
-		m_formatContext->oformat = outputFormat;
+		data->FormatContext->oformat = outputFormat;
 
 		Console::WriteLine( "format context allocated" );
 
 		// add video stream using the specified video codec
-		m_videoStream = add_video_stream( m_formatContext,
-			( m_codec == VideoCodec::Default ) ? outputFormat->video_codec : video_codecs[(int) m_codec] );
+		add_video_stream( data, width, height, frameRate,
+			( codec == VideoCodec::Default ) ? outputFormat->video_codec : (libffmpeg::CodecID) video_codecs[(int) codec] );
 
 		// set the output parameters (must be done even if no parameters)
-		if ( libffmpeg::av_set_parameters( m_formatContext, NULL ) < 0 )
+		if ( libffmpeg::av_set_parameters( data->FormatContext, NULL ) < 0 )
 		{
 			throw gcnew VideoException( "Failed configuring format context." );
 		}
 
 		Console::WriteLine( "video stream initialized" );
 
-		open_video( m_formatContext, m_videoStream );
+		open_video( data );
 
 		// open output file
 		if ( !( outputFormat->flags & AVFMT_NOFILE  ))
 		{
-			if ( libffmpeg::avio_open( &m_formatContext->pb, nativeFileName, AVIO_WRONLY ) < 0 )
+			if ( libffmpeg::avio_open( &data->FormatContext->pb, nativeFileName, AVIO_WRONLY ) < 0 )
 			{
 				throw gcnew System::IO::IOException( "Cannot open the video file." );
 			}
 		}
 
-		libffmpeg::av_write_header( m_formatContext );
+		libffmpeg::av_write_header( data->FormatContext );
 
 		Console::WriteLine( "header written" );
 		success = true;
@@ -137,58 +172,58 @@ void VideoFileWriter::Open( String^ fileName, int width, int height, int frameRa
 // Close video file
 void VideoFileWriter::Close( )
 {
-	if ( m_formatContext )
+	if ( data->FormatContext )
 	{
-		if ( m_formatContext->pb != NULL )
+		if ( data->FormatContext->pb != NULL )
 		{
-			libffmpeg::av_write_trailer( m_formatContext );
+			libffmpeg::av_write_trailer( data->FormatContext );
 			Console::WriteLine( "trailler written" );
 		}
 
-		if ( m_videoStream )
+		if ( data->VideoStream )
 		{
-			libffmpeg::avcodec_close( m_videoStream->codec );
-			m_videoStream = NULL;
+			libffmpeg::avcodec_close( data->VideoStream->codec );
+			data->VideoStream = NULL;
 		}
 
-		if ( m_videoFrame )
+		if ( data->VideoFrame )
 		{
-			libffmpeg::av_free( m_videoFrame->data[0] );
-			libffmpeg::av_free( m_videoFrame );
-			m_videoFrame = NULL;
+			libffmpeg::av_free( data->VideoFrame->data[0] );
+			libffmpeg::av_free( data->VideoFrame );
+			data->VideoFrame = NULL;
 		}
 
-		if ( m_videoOutputBuffer )
+		if ( data->VideoOutputBuffer )
 		{
-			libffmpeg::av_free(m_videoOutputBuffer);
-			m_videoOutputBuffer = NULL;
+			libffmpeg::av_free(data->VideoOutputBuffer);
+			data->VideoOutputBuffer = NULL;
 		}
 
-		for ( unsigned int i = 0; i < m_formatContext->nb_streams; i++ )
+		for ( unsigned int i = 0; i < data->FormatContext->nb_streams; i++ )
 		{
-			libffmpeg::av_freep( &m_formatContext->streams[i]->codec );
-			libffmpeg::av_freep( &m_formatContext->streams[i] );
+			libffmpeg::av_freep( &data->FormatContext->streams[i]->codec );
+			libffmpeg::av_freep( &data->FormatContext->streams[i] );
 		}
 
-		if ( m_formatContext->pb != NULL )
+		if ( data->FormatContext->pb != NULL )
 		{
-			libffmpeg::avio_close( m_formatContext->pb );
+			libffmpeg::avio_close( data->FormatContext->pb );
 		}
 		
-		libffmpeg::av_free( m_formatContext );
-		m_formatContext = NULL;
+		libffmpeg::av_free( data->FormatContext );
+		data->FormatContext = NULL;
 	}
 
-	if ( m_convertContext != NULL )
+	if ( data->ConvertContext != NULL )
 	{
-		libffmpeg::sws_freeContext( m_convertContext );
-		m_convertContext = NULL;
+		libffmpeg::sws_freeContext( data->ConvertContext );
+		data->ConvertContext = NULL;
 	}
 
-	if ( m_convertContextGrayscale != NULL )
+	if ( data->ConvertContextGrayscale != NULL )
 	{
-		libffmpeg::sws_freeContext( m_convertContextGrayscale );
-		m_convertContextGrayscale = NULL;
+		libffmpeg::sws_freeContext( data->ConvertContextGrayscale );
+		data->ConvertContextGrayscale = NULL;
 	}
 
 	m_width  = 0;
@@ -198,7 +233,7 @@ void VideoFileWriter::Close( )
 // Writes new video frame to the opened video file
 void VideoFileWriter::WriteVideoFrame( Bitmap^ frame )
 {
-	if ( !m_formatContext )
+	if ( !data->FormatContext )
 	{
 		throw gcnew System::IO::IOException( "A video file was not opened yet." );
 	}
@@ -230,35 +265,35 @@ void VideoFileWriter::WriteVideoFrame( Bitmap^ frame )
 	// convert source image to the format of the video file
 	if ( frame->PixelFormat == PixelFormat::Format8bppIndexed )
 	{
-		libffmpeg::sws_scale( m_convertContextGrayscale, srcData, srcLinesize, 0, m_height, m_videoFrame->data, m_videoFrame->linesize );
+		libffmpeg::sws_scale( data->ConvertContextGrayscale, srcData, srcLinesize, 0, m_height, data->VideoFrame->data, data->VideoFrame->linesize );
 	}
 	else
 	{
-		libffmpeg::sws_scale( m_convertContext, srcData, srcLinesize, 0, m_height, m_videoFrame->data, m_videoFrame->linesize );
+		libffmpeg::sws_scale( data->ConvertContext, srcData, srcLinesize, 0, m_height, data->VideoFrame->data, data->VideoFrame->linesize );
 	}
 
 	frame->UnlockBits( bitmapData );
 
 	// write the converted frame to the video file
-	write_video_frame( );
+	write_video_frame( data );
 }
 
 #pragma region Private methods
 // Writes video frame to opened video file
-void VideoFileWriter::write_video_frame( )
+void write_video_frame( PrivateData^ data )
 {
-	libffmpeg::AVCodecContext* codecContext = m_videoStream->codec;
+	libffmpeg::AVCodecContext* codecContext = data->VideoStream->codec;
 	int out_size, ret = 0;
 
-	if ( m_formatContext->oformat->flags & AVFMT_RAWPICTURE )
+	if ( data->FormatContext->oformat->flags & AVFMT_RAWPICTURE )
 	{
 		Console::WriteLine( "raw picture must be written" );
 	}
 	else
 	{
 		// encode the image
-		out_size = libffmpeg::avcodec_encode_video( codecContext, m_videoOutputBuffer,
-			m_videoOutputBufferSize, m_videoFrame );
+		out_size = libffmpeg::avcodec_encode_video( codecContext, data->VideoOutputBuffer,
+			data->VideoOutputBufferSize, data->VideoFrame );
 
 		// if zero size, it means the image was buffered
 		if ( out_size > 0 )
@@ -268,7 +303,7 @@ void VideoFileWriter::write_video_frame( )
 
 			if ( codecContext->coded_frame->pts != AV_NOPTS_VALUE )
 			{
-				packet.pts = libffmpeg::av_rescale_q( codecContext->coded_frame->pts, codecContext->time_base, m_videoStream->time_base );
+				packet.pts = libffmpeg::av_rescale_q( codecContext->coded_frame->pts, codecContext->time_base, data->VideoStream->time_base );
 			}
 
 			if ( codecContext->coded_frame->key_frame )
@@ -276,12 +311,12 @@ void VideoFileWriter::write_video_frame( )
 				packet.flags |= AV_PKT_FLAG_KEY;
 			}
 
-			packet.stream_index = m_videoStream->index;
-			packet.data = m_videoOutputBuffer;
+			packet.stream_index = data->VideoStream->index;
+			packet.data = data->VideoOutputBuffer;
 			packet.size = out_size;
 
 			// write the compressed frame to the media file
-			ret = libffmpeg::av_interleaved_write_frame( m_formatContext, &packet );
+			ret = libffmpeg::av_interleaved_write_frame( data->FormatContext, &packet );
 		}
 		else
 		{
@@ -322,32 +357,31 @@ static libffmpeg::AVFrame* alloc_picture( enum libffmpeg::PixelFormat pix_fmt, i
 }
 
 // Create new video stream and configure it
-libffmpeg::AVStream* VideoFileWriter::add_video_stream( libffmpeg::AVFormatContext* formatContext, enum libffmpeg::CodecID codec_id )
+void add_video_stream( PrivateData^ data,  int width, int height, int frameRate, enum libffmpeg::CodecID codec_id )
 {
 	libffmpeg::AVCodecContext* codecContex;
-	libffmpeg::AVStream* stream;
 
 	// create new stream
-	stream = libffmpeg::av_new_stream( formatContext, 0 );
-	if ( !stream )
+	data->VideoStream = libffmpeg::av_new_stream( data->FormatContext, 0 );
+	if ( !data->VideoStream )
 	{
 		throw gcnew VideoException( "Failed creating new video stream." );
 	}
 
-	codecContex = stream->codec;
+	codecContex = data->VideoStream->codec;
 	codecContex->codec_id   = codec_id;
 	codecContex->codec_type = libffmpeg::AVMEDIA_TYPE_VIDEO;
 
 	// put sample parameters
 	codecContex->bit_rate = 400000;
-	codecContex->width    = m_width;
-	codecContex->height   = m_height;
+	codecContex->width    = width;
+	codecContex->height   = height;
 
 	// time base: this is the fundamental unit of time (in seconds) in terms
 	// of which frame timestamps are represented. for fixed-fps content,
 	// timebase should be 1/framerate and timestamp increments should be
 	// identically 1.
-	codecContex->time_base.den = m_frameRate;
+	codecContex->time_base.den = frameRate;
 	codecContex->time_base.num = 1;
 
 	codecContex->gop_size = 12; // emit one intra frame every twelve frames at most
@@ -362,18 +396,16 @@ libffmpeg::AVStream* VideoFileWriter::add_video_stream( libffmpeg::AVFormatConte
 	}
 
 	// some formats want stream headers to be separate
-	if( formatContext->oformat->flags & AVFMT_GLOBALHEADER )
+	if( data->FormatContext->oformat->flags & AVFMT_GLOBALHEADER )
 	{
 		codecContex->flags |= CODEC_FLAG_GLOBAL_HEADER;
 	}
-
-	return stream;
 }
 
 // Open video codec and prepare out buffer and picture
-void VideoFileWriter::open_video( libffmpeg::AVFormatContext* formatContext, libffmpeg::AVStream* stream )
+void open_video( PrivateData^ data )
 {
-	libffmpeg::AVCodecContext* codecContext = stream->codec;
+	libffmpeg::AVCodecContext* codecContext = data->VideoStream->codec;
 	libffmpeg::AVCodec* codec = avcodec_find_encoder( codecContext->codec_id );
 
 	if ( !codec )
@@ -387,32 +419,32 @@ void VideoFileWriter::open_video( libffmpeg::AVFormatContext* formatContext, lib
 		throw gcnew VideoException( "Cannot open video codec." );
 	}
 
-	m_videoOutputBuffer = NULL;
-	if ( !( formatContext->oformat->flags & AVFMT_RAWPICTURE ) )
+	data->VideoOutputBuffer = NULL;
+	if ( !( data->FormatContext->oformat->flags & AVFMT_RAWPICTURE ) )
 	{
          // allocate output buffer 
-         m_videoOutputBufferSize = 6 * m_width * m_height; // more than enough even for raw video
-		 m_videoOutputBuffer = (libffmpeg::uint8_t*) libffmpeg::av_malloc( m_videoOutputBufferSize );
+         data->VideoOutputBufferSize = 6 * codecContext->width * codecContext->height; // more than enough even for raw video
+		 data->VideoOutputBuffer = (libffmpeg::uint8_t*) libffmpeg::av_malloc( data->VideoOutputBufferSize );
 	}
 
 	// allocate the encoded raw picture
-	m_videoFrame = alloc_picture( codecContext->pix_fmt, codecContext->width, codecContext->height );
+	data->VideoFrame = alloc_picture( codecContext->pix_fmt, codecContext->width, codecContext->height );
 
-	if ( !m_videoFrame )
+	if ( !data->VideoFrame )
 	{
 		throw gcnew VideoException( "Cannot allocate video picture." );
 	}
 
 	// prepare scaling context to convert RGB image to video format
-	m_convertContext = libffmpeg::sws_getContext( codecContext->width, codecContext->height, libffmpeg::PIX_FMT_BGR24,
+	data->ConvertContext = libffmpeg::sws_getContext( codecContext->width, codecContext->height, libffmpeg::PIX_FMT_BGR24,
 			codecContext->width, codecContext->height, codecContext->pix_fmt,
 			SWS_BICUBIC, NULL, NULL, NULL );
 	// prepare scaling context to convert grayscale image to video format
-	m_convertContextGrayscale = libffmpeg::sws_getContext( codecContext->width, codecContext->height, libffmpeg::PIX_FMT_GRAY8,
+	data->ConvertContextGrayscale = libffmpeg::sws_getContext( codecContext->width, codecContext->height, libffmpeg::PIX_FMT_GRAY8,
 			codecContext->width, codecContext->height, codecContext->pix_fmt,
 			SWS_BICUBIC, NULL, NULL, NULL );
 
-	if ( m_convertContext == NULL )
+	if ( ( data->ConvertContext == NULL ) || ( data->ConvertContextGrayscale == NULL ) )
 	{
 		throw gcnew VideoException( "Cannot initialize frames conversion context." );
 	}
