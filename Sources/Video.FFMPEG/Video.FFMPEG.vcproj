@@ -122,7 +122,7 @@
 				PreprocessorDefinitions="WIN32;NDEBUG;__STDC_CONSTANT_MACROS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
-				GenerateXMLDocumentationFiles="true"
+				GenerateXMLDocumentationFiles="false"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -226,6 +226,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\VideoFileReader.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\VideoFileWriter.cpp"
 				>
 			</File>
@@ -241,6 +245,10 @@
 			</File>
 			<File
 				RelativePath=".\VideoCodec.h"
+				>
+			</File>
+			<File
+				RelativePath=".\VideoFileReader.h"
 				>
 			</File>
 			<File

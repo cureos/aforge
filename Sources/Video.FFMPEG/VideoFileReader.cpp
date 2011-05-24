@@ -20,6 +20,11 @@ VideoFileReader::VideoFileReader( void )
 	m_videoFrame     = NULL;
 	m_convertContext = NULL;
 
+	m_packet = new libffmpeg::AVPacket( );
+	m_packet->data = NULL;
+	m_rawData = NULL;
+	m_bytesRemaining = 0;
+
 	libffmpeg::av_register_all( );
 }
 
@@ -104,12 +109,6 @@ void VideoFileReader::Open( String^ fileName )
 			throw gcnew VideoException( "Cannot initialize frames conversion context." );
 		}
 
-		Console::WriteLine( String::Format( "duration: {0}", m_stream->duration ) );
-		Console::WriteLine( String::Format( "fps: {0}", m_stream->time_base.den / m_stream->time_base.num  ) );
-
-		Console::WriteLine( String::Format( "frames: {0}", m_stream->nb_frames ) );
-		
-		// libffmpeg::av_seek_frame( m_formatContext, m_videoStreamIndex, 100, 0 );
 		success = true;
 	}
 	finally
@@ -149,8 +148,16 @@ void VideoFileReader::Close(  )
 		m_convertContext = NULL;
 	}
 
+	if ( m_packet->data != NULL )
+	{
+		libffmpeg::av_free_packet( m_packet );
+		m_packet->data = NULL;
+	}
+
+
 	m_stream = NULL;
 }
+
 
 Bitmap^ VideoFileReader::ReadVideoFrame(  )
 {
@@ -159,40 +166,102 @@ Bitmap^ VideoFileReader::ReadVideoFrame(  )
 		throw gcnew System::IO::IOException( "Cannot read video frames since video file is not open." );
 	}
 
-	libffmpeg::AVPacket packet;
 	int frameFinished;
 	Bitmap^ bitmap = nullptr;
 
-	while ( libffmpeg::av_read_frame( m_formatContext, &packet ) >= 0 )
+	int bytesDecoded;
+	bool exit = false;
+
+	while ( true )
 	{
-		if ( packet.stream_index == m_stream->index )
+		// work on the current packet until we have decoded all of it
+		while ( m_bytesRemaining > 0 )
 		{
-			libffmpeg::avcodec_decode_video( m_codecContext, m_videoFrame, &frameFinished, packet.data, packet.size );
+			// decode the next chunk of data
+			bytesDecoded = libffmpeg::avcodec_decode_video( m_codecContext, m_videoFrame, &frameFinished, m_rawData, m_bytesRemaining );
 
-			if ( frameFinished != 0 )
+			// was there an error?
+			if ( bytesDecoded < 0 )
 			{
-				bitmap = gcnew Bitmap( m_codecContext->width, m_codecContext->height, PixelFormat::Format24bppRgb );
-				
-				// lock the bitmap
-				BitmapData^ bitmapData = bitmap->LockBits( System::Drawing::Rectangle( 0, 0, m_codecContext->width, m_codecContext->height ),
-					ImageLockMode::ReadOnly, PixelFormat::Format24bppRgb );
+				throw gcnew VideoException( "Error while decoding frame." );
+			}
 
-				libffmpeg::uint8_t* ptr = reinterpret_cast<libffmpeg::uint8_t*>( static_cast<void*>( bitmapData->Scan0 ) );
+			m_bytesRemaining -= bytesDecoded;
+			m_rawData += bytesDecoded;
+					 
+			// did we finish the current frame? Then we can return
+			if ( frameFinished )
+			{
+				return DecodeVideoFrame( );
+			}
+		}
 
-				libffmpeg::uint8_t* srcData[4] = { ptr, NULL, NULL, NULL };
-				int srcLinesize[4] = { bitmapData->Stride, 0, 0, 0 };
+		// read the next packet, skipping all packets that aren't
+		// for this stream
+		do
+		{
+			// free old packet if any
+			if ( m_packet->data != NULL )
+			{
+				libffmpeg::av_free_packet( m_packet );
+				m_packet->data = NULL;
+			}
 
-				// convert video frame to the RGB bitmap
-				libffmpeg::sws_scale( m_convertContext, m_videoFrame->data, m_videoFrame->linesize, 0,
-					m_codecContext->height, srcData, srcLinesize );
-
-				bitmap->UnlockBits( bitmapData );
+			// read new packet
+			if ( libffmpeg::av_read_frame( m_formatContext, m_packet ) < 0)
+			{
+				exit = true;
 				break;
 			}
 		}
+		while ( m_packet->stream_index != m_stream->index );
+
+		// exit ?
+		if (exit)
+			break;
+
+		m_bytesRemaining = m_packet->size;
+		m_rawData = m_packet->data;
 	}
 
-	libffmpeg::av_free_packet( &packet );
+	// decode the rest of the last frame
+	bytesDecoded = libffmpeg::avcodec_decode_video(
+		m_codecContext, m_videoFrame, &frameFinished, m_rawData, m_bytesRemaining );
+
+	// free last packet
+	if ( m_packet->data != NULL )
+	{
+		libffmpeg::av_free_packet( m_packet );
+		m_packet->data = NULL;
+	}
+
+	// is there a frame
+	if ( frameFinished )
+	{
+		bitmap = DecodeVideoFrame( );
+	}
+
+	return bitmap;
+}
+
+Bitmap^ VideoFileReader::DecodeVideoFrame( )
+{
+	Bitmap^ bitmap = gcnew Bitmap( m_codecContext->width, m_codecContext->height, PixelFormat::Format24bppRgb );
+	
+	// lock the bitmap
+	BitmapData^ bitmapData = bitmap->LockBits( System::Drawing::Rectangle( 0, 0, m_codecContext->width, m_codecContext->height ),
+		ImageLockMode::ReadOnly, PixelFormat::Format24bppRgb );
+
+	libffmpeg::uint8_t* ptr = reinterpret_cast<libffmpeg::uint8_t*>( static_cast<void*>( bitmapData->Scan0 ) );
+
+	libffmpeg::uint8_t* srcData[4] = { ptr, NULL, NULL, NULL };
+	int srcLinesize[4] = { bitmapData->Stride, 0, 0, 0 };
+
+	// convert video frame to the RGB bitmap
+	libffmpeg::sws_scale( m_convertContext, m_videoFrame->data, m_videoFrame->linesize, 0,
+		m_codecContext->height, srcData, srcLinesize );
+
+	bitmap->UnlockBits( bitmapData );
 
 	return bitmap;
 }
