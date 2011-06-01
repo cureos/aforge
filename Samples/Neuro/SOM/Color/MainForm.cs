@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2006-2011
+// contacts@aforgenet.com
 //
 
 using System;
@@ -331,7 +331,7 @@ namespace Color
 		// Radnomize weights of network
 		private void RandomizeNetwork( )
 		{
-			Neuron.RandRange = new DoubleRange( 0, 255 );
+			Neuron.RandRange = new Range( 0, 255 );
 
 			// randomize net
 			network.Randomize( );

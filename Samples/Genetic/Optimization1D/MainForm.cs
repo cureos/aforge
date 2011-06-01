@@ -1,8 +1,9 @@
-// AForge Framework
 // 1D Optimization using Genetic Algorithms
+// AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2006-2008
-// andrew.kirillov@gmail.com
+// Copyright © AForge.NET, 2006-2011
+// contacts@aforgenet.com
 //
 
 using System;
@@ -484,7 +485,7 @@ namespace Optimization1D
 		{
 			try
 			{
-				userFunction.Range = new DoubleRange( double.Parse( minXBox.Text ), userFunction.Range.Max );
+				userFunction.Range = new Range( float.Parse( minXBox.Text ), userFunction.Range.Max );
 				UpdateChart( );
 			}
 			catch
@@ -497,7 +498,7 @@ namespace Optimization1D
 		{
 			try
 			{
-				userFunction.Range = new DoubleRange( userFunction.Range.Min, double.Parse( maxXBox.Text ) );
+				userFunction.Range = new Range( userFunction.Range.Min, float.Parse( maxXBox.Text ) );
 				UpdateChart( );
 			}
 			catch
@@ -653,7 +654,7 @@ namespace Optimization1D
 	// Function to optimize
 	public class UserFunction : OptimizationFunction1D
 	{
-		public UserFunction( ) : base( new DoubleRange( 0, 255 ) ) { }
+		public UserFunction( ) : base( new Range( 0, 255 ) ) { }
 
 		public override double OptimizationFunction( double x )
 		{

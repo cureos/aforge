@@ -1,11 +1,9 @@
-// AForge.NET Framework
 // Fyzzy Set sample application
+// AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2008
-// andrew.kirillov@gmail.com
-//
-// Copyright © Fabio L. Caversan, 2008
-// fabio.caversan@gmail.com
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 //
 
 using System;
@@ -28,7 +26,7 @@ namespace FuzzySetSample
         {
             InitializeComponent( );
 
-            chart.RangeX = new DoubleRange( 0, 50 );
+            chart.RangeX = new Range( 0, 50 );
             chart.AddDataSeries( "COLD", Color.CornflowerBlue, Chart.SeriesType.Line, 3, true );
             chart.AddDataSeries( "COOL", Color.LightBlue, Chart.SeriesType.Line, 3, true );
             chart.AddDataSeries( "WARM", Color.LightCoral, Chart.SeriesType.Line, 3, true );
@@ -99,7 +97,7 @@ namespace FuzzySetSample
 
             // showing the shape of the linguistic variable - the shape of its labels memberships from start to end
             int j = 0;
-            for ( double x = 0; x < 80; x += 0.5, j++ )
+            for ( float x = 0; x < 80; x += 0.5f, j++ )
             {
                 double y1 = lvTemperature.GetLabelMembership( "Cold", x );
                 double y2 = lvTemperature.GetLabelMembership( "Cool", x );

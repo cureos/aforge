@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2006-2011
+// contacts@aforgenet.com
 //
 
 using System;
@@ -224,7 +224,7 @@ namespace BlobsExplorer
 
                 // update controls size and location
                 this.SuspendLayout( );
-                this.Location = new Point( ( rc.Width - width - 2 ) / 2, ( rc.Height - height - 2 ) / 2 );
+                this.Location = new System.Drawing.Point( ( rc.Width - width - 2 ) / 2, ( rc.Height - height - 2 ) / 2 );
                 this.Size = new Size( width + 2, height + 2 );
                 this.ResumeLayout( );
             }
@@ -302,13 +302,13 @@ namespace BlobsExplorer
         }
 
         // Convert list of AForge.NET's IntPoint to array of .NET's Point
-        private Point[] PointsListToArray( List<IntPoint> list )
+        private System.Drawing.Point[] PointsListToArray( List<IntPoint> list )
         {
-            Point[] array = new Point[list.Count];
+            System.Drawing.Point[] array = new System.Drawing.Point[list.Count];
 
             for ( int i = 0, n = list.Count; i < n; i++ )
             {
-                array[i] = new Point( list[i].X, list[i].Y );
+                array[i] = new System.Drawing.Point( list[i].X, list[i].Y );
             }
 
             return array;

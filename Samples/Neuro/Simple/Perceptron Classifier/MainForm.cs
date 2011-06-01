@@ -1,8 +1,9 @@
-// AForge Framework
 // Perceptron Classifier
+// AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2006
-// andrew.kirillov@gmail.com
+// Copyright © AForge.NET, 2006-2011
+// contacts@aforgenet.com
 //
 
 using System;
@@ -440,12 +441,12 @@ namespace Classifier
 				StreamReader reader = null;
 
 				// temp buffers (for 50 samples only)
-				double[,]	tempData = null;
+                float[,]	tempData = null;
 				int[]		tempClasses = new int[50];
 
 				// min and max X values
-				double minX = double.MaxValue;
-				double maxX = double.MinValue;
+                float minX = float.MaxValue;
+                float maxX = float.MinValue;
 
 				// samples count
 				samples = 0;
@@ -469,13 +470,13 @@ namespace Classifier
 						if ( samples == 0 )
 						{
 							variables = strs.Length - 1;
-							tempData = new double[50, variables];
+                            tempData = new float[50, variables];
 						}
 
 						// parse data
 						for ( int j = 0; j < variables; j++ )
 						{
-							tempData[samples, j] = double.Parse( strs[j] );
+                            tempData[samples, j] = float.Parse( strs[j] );
 						}
 						tempClasses[samples] = int.Parse( strs[variables] );
 
@@ -518,7 +519,7 @@ namespace Classifier
 
 				if ( showChart )
 				{
-					chart.RangeX = new DoubleRange( minX, maxX );
+					chart.RangeX = new Range( minX, maxX );
 					ShowTrainingData( );
 				}
 
@@ -787,8 +788,8 @@ namespace Classifier
 					errors[i, 1] = (double) errorsList[i];
 				}
 
-				errorChart.RangeX = new DoubleRange( 0, errorsList.Count - 1 );
-				errorChart.RangeY = new DoubleRange( 0, samples );
+				errorChart.RangeX = new Range( 0, errorsList.Count - 1 );
+				errorChart.RangeY = new Range( 0, samples );
 				errorChart.UpdateDataSeries( "error", errors );
 			}
 			catch ( IOException )

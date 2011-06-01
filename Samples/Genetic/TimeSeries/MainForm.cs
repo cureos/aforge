@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2006-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2006-2011
+// contacts@aforgenet.com
 //
 
 using System;
@@ -668,7 +668,7 @@ namespace TimeSeries
 
 				// update list and chart
 				UpdateDataListView( );
-				chart.RangeX = new DoubleRange( 0, data.Length - 1 );
+				chart.RangeX = new Range( 0, data.Length - 1 );
 				chart.UpdateDataSeries( "data", dataToShow );
 				chart.UpdateDataSeries( "solution", null );
 				// set delimiters

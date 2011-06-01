@@ -1,8 +1,9 @@
-// AForge Framework
 // Traveling Salesman Problem using Genetic Algorithms
+// AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2006-2008
-// andrew.kirillov@gmail.com
+// Copyright © AForge.NET, 2006-2011
+// contacts@aforgenet.com
 //
 
 using System;
@@ -70,8 +71,8 @@ namespace TSP
 			InitializeComponent();
 
 			// set up map control
-			mapControl.RangeX = new DoubleRange( 0, 1000 );
-			mapControl.RangeY = new DoubleRange( 0, 1000 );
+			mapControl.RangeX = new Range( 0, 1000 );
+			mapControl.RangeY = new Range( 0, 1000 );
 			mapControl.AddDataSeries( "map", Color.Red, Chart.SeriesType.Dots, 5, false );
 			mapControl.AddDataSeries( "path", Color.Blue, Chart.SeriesType.Line, 1, false );
 

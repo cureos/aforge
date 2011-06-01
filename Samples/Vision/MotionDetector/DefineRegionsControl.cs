@@ -1,8 +1,9 @@
-// AForge.NET Framework
 // Motion Detection sample application
+// AForge.NET Framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007
-// andrew.kirillov@gmail.com
+// Copyright © AForge.NET, 2006-2011
+// contacts@aforgenet.com
 //
 
 using System;

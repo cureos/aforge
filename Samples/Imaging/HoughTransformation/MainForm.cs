@@ -1,8 +1,9 @@
-// AForge.NET Framework
 // Hough line and circle transformation demo
+// AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2008
-// andrew.kirillov@gmail.com
+// Copyright © AForge.NET, 2006-2011
+// contacts@aforgenet.com
 //
 
 using System;
@@ -55,7 +56,9 @@ namespace HoughTransform
                 if ( openFileDialog.ShowDialog( ) == DialogResult.OK )
                 {
                     // load image
-                    Bitmap image = (Bitmap) Bitmap.FromFile( openFileDialog.FileName );
+                    Bitmap tempImage = (Bitmap) Bitmap.FromFile( openFileDialog.FileName );
+                    Bitmap image = AForge.Imaging.Image.Clone( tempImage, PixelFormat.Format24bppRgb );
+                    tempImage.Dispose( );
                     // format image
                     AForge.Imaging.Image.FormatImage( ref image );
                     // lock the source image

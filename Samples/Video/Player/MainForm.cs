@@ -1,8 +1,8 @@
 ﻿// Simple Player sample application
-// AForge.NET Framework
+// AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © AForge.NET, 2008-2011
+// Copyright © AForge.NET, 2006-2011
 // contacts@aforgenet.com
 //
 

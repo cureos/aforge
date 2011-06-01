@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2006-2011
+// contacts@aforgenet.com
 //
 
 using System;
@@ -654,7 +654,7 @@ namespace FiltersDemo
         // On Filters->Saturation adjusting
         private void saturationAdjustingFiltersItem_Click( object sender, System.EventArgs e )
         {
-            ApplyFilter( new SaturationCorrection( 0.15 ) );
+            ApplyFilter( new SaturationCorrection( 0.15f ) );
             saturationAdjustingFiltersItem.Checked = true;
         }
 
@@ -675,7 +675,7 @@ namespace FiltersDemo
         // On Filters->HSL filtering
         private void hslFiltersItem_Click( object sender, System.EventArgs e )
         {
-            ApplyFilter( new HSLFiltering( new IntRange( 330, 30 ), new DoubleRange( 0, 1 ), new DoubleRange( 0, 1 ) ) );
+            ApplyFilter( new HSLFiltering( new IntRange( 330, 30 ), new Range( 0, 1 ), new Range( 0, 1 ) ) );
             hslFiltersItem.Checked = true;
         }
 
@@ -684,7 +684,7 @@ namespace FiltersDemo
         {
             YCbCrLinear filter = new YCbCrLinear( );
 
-            filter.InCb = new DoubleRange( -0.3, 0.3 );
+            filter.InCb = new Range( -0.3f, 0.3f );
 
             ApplyFilter( filter );
             yCbCrLinearFiltersItem.Checked = true;
@@ -693,7 +693,7 @@ namespace FiltersDemo
         // On Filters->YCbCr filtering
         private void yCbCrFiltersItem_Click( object sender, System.EventArgs e )
         {
-            ApplyFilter( new YCbCrFiltering( new DoubleRange( 0.2, 0.9 ), new DoubleRange( -0.3, 0.3 ), new DoubleRange( -0.3, 0.3 ) ) );
+            ApplyFilter( new YCbCrFiltering( new Range( 0.2f, 0.9f ), new Range( -0.3f, 0.3f ), new Range( -0.3f, 0.3f ) ) );
             yCbCrFiltersItem.Checked = true;
         }
 

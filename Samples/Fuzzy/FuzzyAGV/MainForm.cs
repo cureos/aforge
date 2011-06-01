@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Fabio L. Caversan, 2008-2009
-// fabio.caversan@gmail.com
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 //
 
 using System;
@@ -489,9 +489,9 @@ namespace FuzzyAGV
         private void DoInference( )
         {
             // Setting inputs
-            IS.SetInput( "RightDistance", Convert.ToDouble( txtRight.Text ) );
-            IS.SetInput( "LeftDistance", Convert.ToDouble( txtLeft.Text ) );
-            IS.SetInput( "FrontalDistance", Convert.ToDouble( txtFront.Text ) );
+            IS.SetInput( "RightDistance", Convert.ToSingle( txtRight.Text ) );
+            IS.SetInput( "LeftDistance", Convert.ToSingle( txtLeft.Text ) );
+            IS.SetInput( "FrontalDistance", Convert.ToSingle( txtFront.Text ) );
 
             // Setting outputs
             try

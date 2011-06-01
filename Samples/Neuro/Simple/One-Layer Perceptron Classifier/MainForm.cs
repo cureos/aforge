@@ -1,8 +1,9 @@
-// AForge Framework
 // One-Layer Perceptron Classifier
+// AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2006
-// andrew.kirillov@gmail.com
+// Copyright © AForge.NET, 2006-2011
+// contacts@aforgenet.com
 //
 
 using System;
@@ -430,12 +431,12 @@ namespace Classifier
 				StreamReader reader = null;
 
 				// temp buffers (for 200 samples only)
-				double[,]	tempData = new double[200, 2];
+                float[,]	tempData    = new float[200, 2];
 				int[]		tempClasses = new int[200];
 
 				// min and max X values
-				double minX = double.MaxValue;
-				double maxX = double.MinValue;
+                float minX = float.MaxValue;
+                float maxX = float.MinValue;
 
 				// samples count
 				samples = 0;
@@ -463,8 +464,8 @@ namespace Classifier
 							throw new ApplicationException( "Invalid file format" );
 
 						// parse tokens
-						tempData[samples, 0] = double.Parse( strs[0] );
-						tempData[samples, 1] = double.Parse( strs[1] );
+                        tempData[samples, 0] = float.Parse( strs[0] );
+                        tempData[samples, 1] = float.Parse( strs[1] );
 						tempClasses[samples] = int.Parse( strs[2] );
 
 						// skip classes over 10, except only first 10 classes
@@ -510,7 +511,7 @@ namespace Classifier
 				}
 
 				// update chart
-				chart.RangeX = new DoubleRange( minX, maxX );
+				chart.RangeX = new Range( minX, maxX );
 				ShowTrainingData( );
 
 				// enable start button
@@ -746,7 +747,7 @@ namespace Classifier
 					errors[i, 1] = (double) errorsList[i];
 				}
 
-				errorChart.RangeX = new DoubleRange( 0, errorsList.Count - 1 );
+				errorChart.RangeX = new Range( 0, errorsList.Count - 1 );
 				errorChart.UpdateDataSeries( "error", errors );
 			}
 			catch ( IOException )
