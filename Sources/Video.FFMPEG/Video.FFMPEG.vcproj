@@ -6,7 +6,7 @@
 	ProjectGUID="{FF31DD24-127D-4EB1-929C-F5738147E886}"
 	RootNamespace="VideoFFMPEG"
 	Keyword="ManagedCProj"
-	TargetFrameworkVersion="196613"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -122,7 +122,7 @@
 				PreprocessorDefinitions="WIN32;NDEBUG;__STDC_CONSTANT_MACROS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
-				GenerateXMLDocumentationFiles="false"
+				GenerateXMLDocumentationFiles="true"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>

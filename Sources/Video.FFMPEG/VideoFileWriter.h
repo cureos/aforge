@@ -17,46 +17,197 @@ using namespace AForge::Video;
 
 namespace AForge { namespace Video { namespace FFMPEG
 {
-	ref struct PrivateData;
+	ref struct WriterPrivateData;
 
 	/// <summary>
 	/// Class for writing video files utilizing FFmpeg library.
 	/// </summary>
+	///
+    /// <remarks><para>The class allows to write video files using FFmpeg library.</para>
+	///
+    /// <para>Sample usage:</para>
+	/// <code>
+	/// int width  = 320;
+	/// int height = 240;
+	/// 
+	/// // create instance of video writer
+	/// VideoFileWriter writer = new VideoFileWriter( );
+	/// // create new video file
+	/// writer.Open( "test.avi", width, height, 25, VideoCodec.MPEG4 );
+	/// // create a bitmap to save into the video file
+	/// Bitmap image = new Bitmap( width, height, PixelFormat.Format24bppRgb );
+	/// // write 1000 video frames
+	/// for ( int i = 0; i &lt; 1000; i++ )
+	/// {
+	///     image.SetPixel( i % width, i % height, Color.Red );
+	///     writer.WriteVideoFrame( image );
+	/// }
+	/// writer.Close( );
+	/// </code>
+    /// </remarks>
+	///
 	public ref class VideoFileWriter
 	{
 	public:
 
+		/// <summary>
+		/// Frame width of the opened video file.
+		/// </summary>
+		///
+        /// <exception cref="System::IO::IOException">Thrown if no video file was open.</exception>
+		///
 		property int Width
 		{
-			int get( ) { return m_width; }
-		}
-		property int Height
-		{
-			int get( ) { return m_height; }
-		}
-		property int FrameRate
-		{
-			int get( ) { return m_frameRate; }
+			int get( )
+			{
+				CheckIfVideoFileIsOpen( );
+				return m_width;
+			}
 		}
 
 		/// <summary>
-		/// Codec to use for the video file. <see cref="VideoCodec"/> 
+		/// Frame height of the opened video file.
 		/// </summary>
-		property VideoCodec  Codec
+		///
+        /// <exception cref="System::IO::IOException">Thrown if no video file was open.</exception>
+		///
+		property int Height
 		{
-			VideoCodec get( ) { return m_codec; }
+			int get( )
+			{
+				CheckIfVideoFileIsOpen( );
+				return m_height;
+			}
+		}
+
+		/// <summary>
+		/// Frame rate of the opened video file.
+		/// </summary>
+		///
+		/// <exception cref="System::IO::IOException">Thrown if no video file was open.</exception>
+		///
+		property int FrameRate
+		{
+			int get( )
+			{
+				CheckIfVideoFileIsOpen( );
+				return m_frameRate;
+			}
+		}
+
+		/// <summary>
+		/// Codec to use for the video file.
+		/// </summary>
+		///
+        /// <exception cref="System::IO::IOException">Thrown if no video file was open.</exception>
+		///
+		property VideoCodec Codec
+		{
+			VideoCodec get( )
+			{
+				return m_codec;
+				CheckIfVideoFileIsOpen( );
+			}
+		}
+
+		/// <summary>
+		/// The property specifies if a video file is opened or not by this instance of the class.
+		/// </summary>
+		property bool IsOpen
+		{
+			bool get ( )
+			{
+				return ( data != nullptr );
+			}
 		}
 
 	public:
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VideoFileWriter"/> class.
+        /// </summary>
+        /// 
 		VideoFileWriter( void );
 
+        /// <summary>
+        /// Create video file with the specified name and attributes.
+        /// </summary>
+		///
+		/// <param name="fileName">Video file name to create.</param>
+		/// <param name="width">Frame width of the video file.</param>
+		/// <param name="height">Frame height of the video file.</param>
+		///
+		/// <remarks><para>See documentation to the <see cref="Open( String^, int, int, int, VideoCodec )" />
+		/// for more information and the list of possible exceptions.</para>
+		///
+		/// <para><note>The method opens the video file using <see cref="VideoCodec::Default" />
+		/// codec and 25 fps frame rate.</note></para>
+		/// </remarks>
+		///
 		void Open( String^ fileName, int width, int height );
+
+        /// <summary>
+        /// Create video file with the specified name and attributes.
+        /// </summary>
+		///
+		/// <param name="fileName">Video file name to create.</param>
+		/// <param name="width">Frame width of the video file.</param>
+		/// <param name="height">Frame height of the video file.</param>
+		/// <param name="frameRate">Frame rate of the video file.</param>
+		///
+		/// <remarks><para>See documentation to the <see cref="Open( String^, int, int, int, VideoCodec )" />
+		/// for more information and the list of possible exceptions.</para>
+		///
+		/// <para><note>The method opens the video file using <see cref="VideoCodec::Default" />
+		/// codec.</note></para>
+		/// </remarks>
+		///
 		void Open( String^ fileName, int width, int height, int frameRate );
+
+        /// <summary>
+        /// Create video file with the specified name and attributes.
+        /// </summary>
+		///
+		/// <param name="fileName">Video file name to create.</param>
+		/// <param name="width">Frame width of the video file.</param>
+		/// <param name="height">Frame height of the video file.</param>
+		/// <param name="frameRate">Frame rate of the video file.</param>
+		/// <param name="codec">Video codec to use for compression.</param>
+		///
+		/// <remarks><para>The methods creates new video file with the specified name.
+		/// If a file with such name already exists in the file system, it will be overwritten.</para>
+		///
+		/// <para>When adding new video frames using <see cref="WriteVideoFrame"/> method,
+		/// the video frame must have width and height as specified during file opening.</para>
+		/// </remarks>
+		///
+        /// <exception cref="ArgumentException">Video file resolution must be a multiple of two.</exception>
+        /// <exception cref="ArgumentException">Invalid video codec is specified.</exception>
+        /// <exception cref="VideoException">A error occurred while creating new video file. See exception message.</exception>
+        /// <exception cref="System::IO::IOException">Cannot open video file with the specified name.</exception>
+        /// 
 		void Open( String^ fileName, int width, int height, int frameRate, VideoCodec codec );
 
+        /// <summary>
+        /// Write new video frame into currently opened video file.
+        /// </summary>
+		///
+		/// <param name="frame">Bitmap to add as a new video frame.</param>
+		///
+		/// <remarks><para>The specified bitmap must be either color 24 or 32 bpp image or grayscale 8 bpp (indexed) image.</para>
+		/// </remarks>
+		///
+        /// <exception cref="System::IO::IOException">Thrown if no video file was open.</exception>
+        /// <exception cref="ArgumentException">The provided bitmap must be 24 or 32 bpp color image or 8 bpp grayscale image.</exception>
+        /// <exception cref="ArgumentException">Bitmap size must be of the same as video size, which was specified on opening video file.</exception>
+        /// <exception cref="VideoException">A error occurred while writing new video frame. See exception message.</exception>
+        /// 
 		void WriteVideoFrame( Bitmap^ frame );
 
+        /// <summary>
+        /// Close currently opened video file if any.
+        /// </summary>
+        /// 
 		void Close( );
 
 	private:
@@ -66,7 +217,19 @@ namespace AForge { namespace Video { namespace FFMPEG
 		int	m_frameRate;
 		VideoCodec m_codec;
 
-		PrivateData^ data;
+	private:
+		// Checks if video file was opened
+		void CheckIfVideoFileIsOpen( )
+		{
+			if ( data == nullptr )
+			{
+				throw gcnew System::IO::IOException( "Video file is not open, so can not access its properties." );
+			}
+		}
+
+	private:
+		// private data of the class
+		WriterPrivateData^ data;
 	};
 
 } } }
