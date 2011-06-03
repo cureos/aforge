@@ -21,7 +21,7 @@ namespace AForge { namespace Video { namespace FFMPEG
 	/// Class for reading video files utilizing FFmpeg library.
 	/// </summary>
     /// 
-    /// <remarks><para>The class allows to read video files using FFmpeg library.</para>
+    /// <remarks><para>The class allows to read video files using <a href="http://www.ffmpeg.org/">FFmpeg</a> library.</para>
     /// 
     /// <para>Sample usage:</para>
     /// <code>
@@ -142,7 +142,7 @@ namespace AForge { namespace Video { namespace FFMPEG
 			}
 		}
 
-public:
+	public:
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VideoFileReader"/> class.

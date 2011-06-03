@@ -23,7 +23,7 @@ namespace AForge { namespace Video { namespace FFMPEG
 	/// Class for writing video files utilizing FFmpeg library.
 	/// </summary>
 	///
-    /// <remarks><para>The class allows to write video files using FFmpeg library.</para>
+    /// <remarks><para>The class allows to write video files using <a href="http://www.ffmpeg.org/">FFmpeg</a> library.</para>
 	///
     /// <para>Sample usage:</para>
 	/// <code>
