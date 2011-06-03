@@ -233,76 +233,99 @@ namespace AForge.Video.VFW
         /// <remarks><para>The method opens (creates) a video files, configure video codec and prepares
         /// the stream for saving video frames with a help of <see cref="AddFrame"/> method.</para></remarks>
         /// 
-        /// <exception cref="ApplicationException">Failure of opening video files (the exception message
-        /// specifies the issues).</exception>
+        /// <exception cref="System.IO.IOException">Failed opening the specified file.</exception>
+        /// <exception cref="VideoException">A error occurred while creating new video file. See exception message.</exception>
+        /// <exception cref="OutOfMemoryException">Insufficient memory for internal buffer.</exception>
+        /// <exception cref="ArgumentException">Video file resolution must be a multiple of two.</exception>
         /// 
         public void Open( string fileName, int width, int height )
 		{
 			// close previous file
 			Close( );
 
-            lock ( sync )
+           // check width and height
+            if ( ( ( width & 1 ) != 0 ) || ( ( height & 1 ) != 0 ) )
             {
-                // calculate stride
-                stride = width * 3;
-                if ( ( stride % 4 ) != 0 )
-                    stride += ( 4 - stride % 4 );
+	            throw new ArgumentException( "Video file resolution must be a multiple of two." );
+            }
 
-                // create new file
-                if ( Win32.AVIFileOpen( out file, fileName, Win32.OpenFileMode.Create | Win32.OpenFileMode.Write, IntPtr.Zero ) != 0 )
-                    throw new ApplicationException( "Failed opening file" );
+            bool success = false;
 
-                this.width = width;
-                this.height = height;
+            try
+            {
+                lock ( sync )
+                {
+                    // calculate stride
+                    stride = width * 3;
+                    if ( ( stride % 4 ) != 0 )
+                        stride += ( 4 - stride % 4 );
 
-                // describe new stream
-                Win32.AVISTREAMINFO info = new Win32.AVISTREAMINFO( );
+                    // create new file
+                    if ( Win32.AVIFileOpen( out file, fileName, Win32.OpenFileMode.Create | Win32.OpenFileMode.Write, IntPtr.Zero ) != 0 )
+                        throw new System.IO.IOException( "Failed opening the specified file." );
 
-                info.type = Win32.mmioFOURCC( "vids" );
-                info.handler = Win32.mmioFOURCC( codec );
-                info.scale = 1;
-                info.rate = rate;
-                info.suggestedBufferSize = stride * height;
+                    this.width = width;
+                    this.height = height;
 
-                // create stream
-                if ( Win32.AVIFileCreateStream( file, out stream, ref info ) != 0 )
-                    throw new ApplicationException( "Failed creating stream" );
+                    // describe new stream
+                    Win32.AVISTREAMINFO info = new Win32.AVISTREAMINFO( );
 
-                // describe compression options
-                Win32.AVICOMPRESSOPTIONS options = new Win32.AVICOMPRESSOPTIONS( );
+                    info.type    = Win32.mmioFOURCC( "vids" );
+                    info.handler = Win32.mmioFOURCC( codec );
+                    info.scale   = 1;
+                    info.rate    = rate;
+                    info.suggestedBufferSize = stride * height;
 
-                options.handler = Win32.mmioFOURCC( codec );
-                options.quality = quality;
+                    // create stream
+                    if ( Win32.AVIFileCreateStream( file, out stream, ref info ) != 0 )
+                        throw new VideoException( "Failed creating stream." );
 
-                // uncomment if video settings dialog is required to show
-                // Win32.AVISaveOptions( stream, ref options );
+                    // describe compression options
+                    Win32.AVICOMPRESSOPTIONS options = new Win32.AVICOMPRESSOPTIONS( );
 
-                // create compressed stream
-                if ( Win32.AVIMakeCompressedStream( out streamCompressed, stream, ref options, IntPtr.Zero ) != 0 )
-                    throw new ApplicationException( "Failed creating compressed stream" );
+                    options.handler = Win32.mmioFOURCC( codec );
+                    options.quality = quality;
 
-                // describe frame format
-                Win32.BITMAPINFOHEADER bitmapInfoHeader = new Win32.BITMAPINFOHEADER( );
+                    // uncomment if video settings dialog is required to show
+                    // Win32.AVISaveOptions( stream, ref options );
 
-                bitmapInfoHeader.size = Marshal.SizeOf( bitmapInfoHeader.GetType( ) );
-                bitmapInfoHeader.width = width;
-                bitmapInfoHeader.height = height;
-                bitmapInfoHeader.planes = 1;
-                bitmapInfoHeader.bitCount = 24;
-                bitmapInfoHeader.sizeImage = 0;
-                bitmapInfoHeader.compression = 0; // BI_RGB
+                    // create compressed stream
+                    if ( Win32.AVIMakeCompressedStream( out streamCompressed, stream, ref options, IntPtr.Zero ) != 0 )
+                        throw new VideoException( "Failed creating compressed stream." );
 
-                // set frame format
-                if ( Win32.AVIStreamSetFormat( streamCompressed, 0, ref bitmapInfoHeader, Marshal.SizeOf( bitmapInfoHeader.GetType( ) ) ) != 0 )
-                    throw new ApplicationException( "Failed creating compressed stream" );
+                    // describe frame format
+                    Win32.BITMAPINFOHEADER bitmapInfoHeader = new Win32.BITMAPINFOHEADER( );
 
-                // alloc unmanaged memory for frame
-                buffer = Marshal.AllocHGlobal( stride * height );
+                    bitmapInfoHeader.size        = Marshal.SizeOf( bitmapInfoHeader.GetType( ) );
+                    bitmapInfoHeader.width       = width;
+                    bitmapInfoHeader.height      = height;
+                    bitmapInfoHeader.planes      = 1;
+                    bitmapInfoHeader.bitCount    = 24;
+                    bitmapInfoHeader.sizeImage   = 0;
+                    bitmapInfoHeader.compression = 0; // BI_RGB
 
-                if ( buffer == IntPtr.Zero )
-                    throw new ApplicationException( "Insufficient memory for internal buffer" );
+                    // set frame format
+                    if ( Win32.AVIStreamSetFormat( streamCompressed, 0, ref bitmapInfoHeader, Marshal.SizeOf( bitmapInfoHeader.GetType( ) ) ) != 0 )
+                        throw new VideoException( "Failed setting format of the compressed stream." );
 
-                position = 0;
+                    // alloc unmanaged memory for frame
+                    buffer = Marshal.AllocHGlobal( stride * height );
+
+                    if ( buffer == IntPtr.Zero )
+                    {
+                        throw new OutOfMemoryException( "Insufficient memory for internal buffer." );
+                    }
+
+                    position = 0;
+                    success = true;
+                }
+            }
+            finally
+            {
+                if ( !success )
+                {
+                    Close( );
+                }
             }
 		}
 
@@ -354,8 +377,9 @@ namespace AForge.Video.VFW
         /// of the frame should be the same as it was specified in <see cref="Open"/> method
         /// (see <see cref="Width"/> and <see cref="Height"/> properties).</para></remarks>
         /// 
-        /// <exception cref="ApplicationException">Failure of opening video files (the exception message
-        /// specifies the issues).</exception>
+        /// <exception cref="System.IO.IOException">Thrown if no video file was open.</exception>
+        /// <exception cref="ArgumentException">Bitmap size must be of the same as video size, which was specified on opening video file.</exception>
+        /// <exception cref="VideoException">A error occurred while writing new video frame. See exception message.</exception>
         /// 
         public void AddFrame( Bitmap frameImage )
 		{
@@ -363,11 +387,11 @@ namespace AForge.Video.VFW
             {
                 // check if AVI file was properly opened
                 if ( buffer == IntPtr.Zero )
-                    throw new ApplicationException( "AVI file should be successfully opened before writing" );
+                    throw new System.IO.IOException( "AVI file should be successfully opened before writing." );
 
                 // check image dimension
                 if ( ( frameImage.Width != width ) || ( frameImage.Height != height ) )
-                    throw new ApplicationException( "Invalid image dimension" );
+                    throw new ArgumentException( "Bitmap size must be of the same as video size, which was specified on opening video file." );
 
                 // lock bitmap data
                 BitmapData imageData = frameImage.LockBits(
@@ -394,7 +418,7 @@ namespace AForge.Video.VFW
                 // write to stream
                 if ( Win32.AVIStreamWrite( streamCompressed, position, 1, buffer,
                     stride * height, 0, IntPtr.Zero, IntPtr.Zero ) != 0 )
-                    throw new ApplicationException( "Failed adding frame" );
+                    throw new VideoException( "Failed adding frame." );
 
                 position++;
             }

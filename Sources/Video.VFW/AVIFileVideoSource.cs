@@ -2,9 +2,10 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 //
+
 namespace AForge.Video.VFW
 {
     using System;
@@ -160,7 +161,7 @@ namespace AForge.Video.VFW
         /// Received bytes count.
         /// </summary>
         /// 
-        /// <remarks>The property is not supported by the class. It always equals to 0.</remarks>
+        /// <remarks>The property is not supported by this class. It always equals to 0.</remarks>
         /// 
         public int BytesReceived
 		{
@@ -215,13 +216,15 @@ namespace AForge.Video.VFW
         /// object creates background thread and notifies about new frames with the
         /// help of <see cref="NewFrame"/> event.</remarks>
         /// 
+        /// <exception cref="ArgumentException">Video source is not specified.</exception>
+        /// 
         public void Start( )
 		{
             if ( !IsRunning )
 			{
                 // check source
-                if ( ( source == null ) || ( source == string.Empty ) )
-                    throw new ArgumentException( "Video source is not specified" );
+                if ( string.IsNullOrEmpty( source ) )
+                    throw new ArgumentException( "Video source is not specified." );
                 
                 framesReceived = 0;
 
@@ -357,7 +360,7 @@ namespace AForge.Video.VFW
                         // miliseconds to sleep
                         int msec = interval - (int) span.TotalMilliseconds;
 
-                        while ( ( msec > 0 ) && ( stopEvent.WaitOne( 0, true ) == false ) )
+                        while ( ( msec > 0 ) && ( stopEvent.WaitOne( 0, false ) == false ) )
                         {
                             // sleeping ...
                             Thread.Sleep( ( msec < 100 ) ? msec : 100 );
