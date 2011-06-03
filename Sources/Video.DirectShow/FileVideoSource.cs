@@ -588,14 +588,17 @@ namespace AForge.Video.DirectShow
                     int srcStride = imageData.Stride;
                     int dstStride = imageData.Stride;
 
-                    int dst = imageData.Scan0.ToInt32( ) + dstStride * ( height - 1 );
-                    int src = buffer.ToInt32( );
-
-                    for ( int y = 0; y < height; y++ )
+                    unsafe
                     {
-                        Win32.memcpy( dst, src, srcStride );
-                        dst -= dstStride;
-                        src += srcStride;
+                        byte* dst = (byte*) imageData.Scan0.ToPointer( ) + dstStride * ( height - 1 );
+                        byte* src = (byte*) buffer.ToPointer( );
+
+                        for ( int y = 0; y < height; y++ )
+                        {
+                            Win32.memcpy( dst, src, srcStride );
+                            dst -= dstStride;
+                            src += srcStride;
+                        }
                     }
 
                     // unlock bitmap data

@@ -61,9 +61,9 @@ namespace AForge.Video.DirectShow.Internals
         /// <returns>Return's the value of <b>dst</b> - pointer to destination.</returns>
         /// 
         [DllImport( "ntdll.dll", CallingConvention = CallingConvention.Cdecl )]
-        public static extern int memcpy(
-            int dst,
-            int src,
+        public static unsafe extern int memcpy(
+            byte* dst,
+            byte* src,
             int count );
 
         /// <summary>
