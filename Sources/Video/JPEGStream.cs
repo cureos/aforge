@@ -420,7 +420,7 @@ namespace AForge.Video
 			DateTime start;
 			TimeSpan span;
 
-            while ( !stopEvent.WaitOne( 0, true ) )
+            while ( !stopEvent.WaitOne( 0, false ) )
 			{
 				int	read, total = 0;
 
@@ -462,7 +462,7 @@ namespace AForge.Video
                     stream.ReadTimeout = requestTimeout;
 
 					// loop
-					while ( !stopEvent.WaitOne( 0, true ) )
+					while ( !stopEvent.WaitOne( 0, false ) )
 					{
 						// check total read
 						if ( total > bufferSize - readSize )
@@ -480,7 +480,7 @@ namespace AForge.Video
 						bytesReceived += read;
 					}
 
-					if ( !stopEvent.WaitOne( 0, true ) )
+					if ( !stopEvent.WaitOne( 0, false ) )
 					{
 						// increment frames counter
 						framesReceived++;
@@ -505,7 +505,7 @@ namespace AForge.Video
 						// miliseconds to sleep
 						int msec = frameInterval - (int) span.TotalMilliseconds;
 
-						while ( ( msec > 0 ) && ( stopEvent.WaitOne( 0, true ) == false ) )
+						while ( ( msec > 0 ) && ( stopEvent.WaitOne( 0, false ) == false ) )
 						{
 							// sleeping ...
 							Thread.Sleep( ( msec < 100 ) ? msec : 100 );
@@ -550,7 +550,7 @@ namespace AForge.Video
 				}
 
 				// need to stop ?
-				if ( stopEvent.WaitOne( 0, true ) )
+				if ( stopEvent.WaitOne( 0, false ) )
 					break;
 			}
 

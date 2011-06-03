@@ -785,7 +785,7 @@ namespace AForge.Video.DirectShow
                         videoControl.SetMode( pinStillImage, VideoControlFlags.ExternalTriggerEnable );
                     }
 
-                    while ( !stopEvent.WaitOne( 0, true ) )
+                    while ( !stopEvent.WaitOne( 0, false ) )
                     {
                         Thread.Sleep( 100 );
 
@@ -1019,7 +1019,7 @@ namespace AForge.Video.DirectShow
         private void OnNewFrame( Bitmap image )
         {
             framesReceived++;
-            if ( ( !stopEvent.WaitOne( 0, true ) ) && ( NewFrame != null ) )
+            if ( ( !stopEvent.WaitOne( 0, false ) ) && ( NewFrame != null ) )
                 NewFrame( this, new NewFrameEventArgs( image ) );
         }
 
@@ -1037,7 +1037,7 @@ namespace AForge.Video.DirectShow
             // automatically (or better disable it)
             if ( timeSinceStarted.TotalSeconds >= 4 )
             {
-                if ( ( !stopEvent.WaitOne( 0, true ) ) && ( SnapshotFrame != null ) )
+                if ( ( !stopEvent.WaitOne( 0, false ) ) && ( SnapshotFrame != null ) )
                     SnapshotFrame( this, new NewFrameEventArgs( image ) );
             }
         }

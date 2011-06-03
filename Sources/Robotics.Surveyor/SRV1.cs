@@ -1058,12 +1058,12 @@ namespace AForge.Robotics.Surveyor
         {
             bool lastRequestFailed = false;
 
-            while ( !stopEvent.WaitOne( 0, true ) )
+            while ( !stopEvent.WaitOne( 0, false ) )
             {
                 // wait for any request
                 requestIsAvailable.WaitOne( );
 
-                while ( !stopEvent.WaitOne( 0, true ) )
+                while ( !stopEvent.WaitOne( 0, false ) )
                 {
                     // get next communication request from queue
                     CommunicationRequest cr = null;
@@ -1121,7 +1121,7 @@ namespace AForge.Robotics.Surveyor
                                 }
 
                                 // read the rest
-                                while ( !stopEvent.WaitOne( 0, true ) )
+                                while ( !stopEvent.WaitOne( 0, false ) )
                                 {
                                     int read = socket.Receive( cr.ResponseBuffer, cr.BytesRead,
                                         Math.Min( readSize, bytesToRead ), SocketFlags.None );
@@ -1163,7 +1163,7 @@ namespace AForge.Robotics.Surveyor
                                             }
                                         }
 
-                                        if ( ( endLineWasFound ) || stopEvent.WaitOne( 0, true ) )
+                                        if ( ( endLineWasFound ) || stopEvent.WaitOne( 0, false ) )
                                             break;
 
                                         // read more
@@ -1212,7 +1212,7 @@ namespace AForge.Robotics.Surveyor
                     finally
                     {
                         // signal about available response to the waiting caller
-                        if ( ( stopEvent != null ) && ( !stopEvent.WaitOne( 0, true ) ) && ( cr.ResponseBuffer != null ) )
+                        if ( ( stopEvent != null ) && ( !stopEvent.WaitOne( 0, false ) ) && ( cr.ResponseBuffer != null ) )
                         {
                             lastRequestWithReply = cr;
                             replyIsAvailable.Set( );
@@ -1226,7 +1226,7 @@ namespace AForge.Robotics.Surveyor
         {
             byte[] buffer = new byte[100];
 
-            while ( !stopEvent.WaitOne( 0, true ) )
+            while ( !stopEvent.WaitOne( 0, false ) )
             {
                 int read = socket.Receive( buffer, 0, 100, SocketFlags.None );
 

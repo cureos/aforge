@@ -23,6 +23,7 @@ namespace AForge.Video.DirectShow
     /// 
     /// <remarks><para>The video source provides access to video files. DirectShow is used to access video
     /// files.</para>
+    /// 
     /// <para>Sample usage:</para>
     /// <code>
     /// // create video source
@@ -464,7 +465,7 @@ namespace AForge.Video.DirectShow
                 // run
                 mediaControl.Run( );
 
-                while ( !stopEvent.WaitOne( 0, true ) )
+                while ( !stopEvent.WaitOne( 0, false ) )
                 {
                     Thread.Sleep( 100 );
 
@@ -533,7 +534,7 @@ namespace AForge.Video.DirectShow
         protected void OnNewFrame( Bitmap image )
         {
             framesReceived++;
-            if ( ( !stopEvent.WaitOne( 0, true ) ) && ( NewFrame != null ) )
+            if ( ( !stopEvent.WaitOne( 0, false ) ) && ( NewFrame != null ) )
                 NewFrame( this, new NewFrameEventArgs( image ) );
         }
 

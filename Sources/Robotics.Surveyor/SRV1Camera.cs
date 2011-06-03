@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2007-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Robotics.Surveyor
@@ -366,7 +366,7 @@ namespace AForge.Robotics.Surveyor
             // buffer to read stream into
             byte[] buffer = new byte[bufferSize];
 
-            while ( !stopEvent.WaitOne( 0, true ) )
+            while ( !stopEvent.WaitOne( 0, false ) )
             {
                 try
                 {
@@ -390,7 +390,7 @@ namespace AForge.Robotics.Surveyor
                             // extract image size
                             int imageSize = System.BitConverter.ToInt32( buffer, 6 );
 
-                            if ( !stopEvent.WaitOne( 0, true ) )
+                            if ( !stopEvent.WaitOne( 0, false ) )
                             {
                                 try
                                 {
@@ -419,7 +419,7 @@ namespace AForge.Robotics.Surveyor
                                     // miliseconds to sleep
                                     int msec = frameInterval - (int) stopWatch.ElapsedMilliseconds;
 
-                                    while ( ( msec > 0 ) && ( stopEvent.WaitOne( 0, true ) == false ) )
+                                    while ( ( msec > 0 ) && ( stopEvent.WaitOne( 0, false ) == false ) )
                                     {
                                         // sleeping ...
                                         Thread.Sleep( ( msec < 100 ) ? msec : 100 );

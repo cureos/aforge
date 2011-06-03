@@ -405,7 +405,7 @@ namespace AForge.Video
 
             ASCIIEncoding encoding = new ASCIIEncoding( );
 
-            while ( !stopEvent.WaitOne( 0, true ) )
+            while ( !stopEvent.WaitOne( 0, false ) )
 			{
 				// reset reload event
 				reloadEvent.Reset( );
@@ -504,7 +504,7 @@ namespace AForge.Video
                     stream.ReadTimeout = requestTimeout;
 
 					// loop
-					while ( ( !stopEvent.WaitOne( 0, true ) ) && ( !reloadEvent.WaitOne( 0, true ) ) )
+					while ( ( !stopEvent.WaitOne( 0, false ) ) && ( !reloadEvent.WaitOne( 0, false ) ) )
 					{
 						// check total read
 						if ( total > bufSize - readSize )
@@ -585,7 +585,7 @@ namespace AForge.Video
 								framesReceived ++;
 
 								// image at stop
-								if ( ( NewFrame != null ) && ( !stopEvent.WaitOne( 0, true ) ) )
+								if ( ( NewFrame != null ) && ( !stopEvent.WaitOne( 0, false ) ) )
 								{
 									Bitmap bitmap = (Bitmap) Bitmap.FromStream ( new MemoryStream( buffer, start, stop - start ) );
 									// notify client
@@ -664,7 +664,7 @@ namespace AForge.Video
 				}
 
 				// need to stop ?
-				if ( stopEvent.WaitOne( 0, true ) )
+				if ( stopEvent.WaitOne( 0, false ) )
 					break;
 			}
 
