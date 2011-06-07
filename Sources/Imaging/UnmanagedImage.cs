@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging
@@ -387,12 +387,19 @@ namespace AForge.Imaging
                 byte* dst = (byte*) dstData.Scan0.ToPointer( );
                 byte* src = (byte*) imageData.ToPointer( );
 
-                // copy image
-                for ( int y = 0; y < height; y++ )
+                if ( stride != dstStride )
                 {
-                    AForge.SystemTools.CopyUnmanagedMemory( dst, src, lineSize );
-                    dst += dstStride;
-                    src += stride;
+                    // copy image
+                    for ( int y = 0; y < height; y++ )
+                    {
+                        AForge.SystemTools.CopyUnmanagedMemory( dst, src, lineSize );
+                        dst += dstStride;
+                        src += stride;
+                    }
+                }
+                else
+                {
+                    AForge.SystemTools.CopyUnmanagedMemory( dst, src, stride * height );
                 }
             }
 
