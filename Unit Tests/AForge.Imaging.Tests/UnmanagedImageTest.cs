@@ -273,5 +273,52 @@ namespace AForge.Imaging.Tests
             Assert.IsTrue( pixels.Contains( new IntPoint( 319, 239 ) ) );
             Assert.IsTrue( pixels.Contains( new IntPoint( 160, 120 ) ) );
         }
+
+        [Test]
+        [Row( PixelFormat.Format24bppRgb,   1,   1, 240,   0,   0 )]
+        [Row( PixelFormat.Format24bppRgb, 318,   1,   0, 240,   0 )]
+        [Row( PixelFormat.Format24bppRgb, 318, 238, 240, 240,   0 )]
+        [Row( PixelFormat.Format24bppRgb,   1, 238,   0,   0, 240 )]
+        [Row( PixelFormat.Format24bppRgb, 160, 120, 240, 240, 240 )]
+
+        [Row( PixelFormat.Format32bppArgb,   1,   1, 240,   0,   0 )]
+        [Row( PixelFormat.Format32bppArgb, 318,   1,   0, 240,   0 )]
+        [Row( PixelFormat.Format32bppArgb, 318, 238, 240, 240,   0 )]
+        [Row( PixelFormat.Format32bppArgb,   1, 238,   0,   0, 240 )]
+        [Row( PixelFormat.Format32bppArgb, 160, 120, 240, 240, 240 )]
+
+        [Row( PixelFormat.Format32bppRgb,   1,   1, 240,   0,   0 )]
+        [Row( PixelFormat.Format32bppRgb, 318,   1,   0, 240,   0 )]
+        [Row( PixelFormat.Format32bppRgb, 318, 238, 240, 240,   0 )]
+        [Row( PixelFormat.Format32bppRgb,   1, 238,   0,   0, 240 )]
+        [Row( PixelFormat.Format32bppRgb, 160, 120, 240, 240, 240 )]
+
+        [Row( PixelFormat.Format8bppIndexed,   1,   1, 128, 128, 128 )]
+        [Row( PixelFormat.Format8bppIndexed, 318,   1,  96,  96,  96 )]
+        [Row( PixelFormat.Format8bppIndexed, 318, 238, 192, 192, 192 )]
+        [Row( PixelFormat.Format8bppIndexed,   1, 238,  32,  32,  32 )]
+        [Row( PixelFormat.Format8bppIndexed, 160, 120, 255, 255, 255 )]
+
+        public void ToManagedImageTest( PixelFormat pixelFormat, int x, int y, byte red, byte green, byte blue )
+        {
+            UnmanagedImage image = UnmanagedImage.Create( 320, 240, pixelFormat );
+
+            image.SetPixel( new IntPoint( x, y ), Color.FromArgb( 255, red, green, blue ) );
+
+            Bitmap bitmap = image.ToManagedImage( );
+
+            // check colors of pixels
+            Assert.AreEqual<Color>( Color.FromArgb( 255, red, green, blue ), bitmap.GetPixel( x, y ) );
+
+            // make sure there are only 1 pixel
+            UnmanagedImage temp = UnmanagedImage.FromManagedImage( bitmap );
+
+            List<IntPoint> pixels = temp.CollectActivePixels( );
+            Assert.AreEqual<int>( 1, pixels.Count );
+
+            image.Dispose( );
+            bitmap.Dispose( );
+            temp.Dispose( );
+        }
     }
 }
