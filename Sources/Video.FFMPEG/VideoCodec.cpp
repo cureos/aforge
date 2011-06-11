@@ -28,11 +28,13 @@ int video_codecs[] =
 	libffmpeg::CODEC_ID_MSMPEG4V3,
 	libffmpeg::CODEC_ID_H263P,
 	libffmpeg::CODEC_ID_FLV1,
-	libffmpeg::CODEC_ID_RAWVIDEO,
+	libffmpeg::CODEC_ID_MPEG2VIDEO,
+	libffmpeg::CODEC_ID_RAWVIDEO
 };
 
 int pixel_formats[] =
 {
+	libffmpeg::PIX_FMT_YUV420P,
 	libffmpeg::PIX_FMT_YUV420P,
 	libffmpeg::PIX_FMT_YUV420P,
 	libffmpeg::PIX_FMT_YUV420P,

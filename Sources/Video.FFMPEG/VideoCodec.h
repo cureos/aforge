@@ -55,6 +55,10 @@ namespace AForge { namespace Video { namespace FFMPEG
 		/// </summary>
 		FLV1,
 		/// <summary>
+		/// MPEG-2 part 2.
+		/// </summary>
+		MPEG2,
+		/// <summary>
 		/// Raw (uncompressed) video.
 		/// </summary>
 		Raw,
