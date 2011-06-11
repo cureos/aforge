@@ -32,7 +32,7 @@ namespace AForge.Math.Geometry
     /// shape. If the mean distance is equal to or less than maximum allowed distance,
     /// then a shape is recognized. The maximum allowed distance is calculated as:
     /// <code lang="none">
-    /// maxDitance = max( minAcceptableDistortion, relativeDistortionLimit * ( width + height ) / 2 )
+    /// maxDistance = max( minAcceptableDistortion, relativeDistortionLimit * ( width + height ) / 2 )
     /// </code>
     /// , where <b>width</b> and <b>height</b> is the size of bounding rectangle for the
     /// specified points.
