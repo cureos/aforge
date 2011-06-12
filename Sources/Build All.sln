@@ -81,6 +81,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Video.Kinect", "Video.Kinec
 		{809725DC-6502-4732-A51C-DEB7FEA12975} = {809725DC-6502-4732-A51C-DEB7FEA12975}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Video.Ximea", "Video.Ximea\Video.Ximea.csproj", "{AEDD6CFB-747B-4077-9288-9CD2A86090F1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{631AC093-430F-45F4-BA0C-AF0F0405918A} = {631AC093-430F-45F4-BA0C-AF0F0405918A}
+		{809725DC-6502-4732-A51C-DEB7FEA12975} = {809725DC-6502-4732-A51C-DEB7FEA12975}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug Complete|Any CPU = Debug Complete|Any CPU
@@ -223,6 +229,14 @@ Global
 		{9DA8E727-4038-4E6B-90BD-853730FDFA49}.Release Complete|Any CPU.Build.0 = Release|Any CPU
 		{9DA8E727-4038-4E6B-90BD-853730FDFA49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9DA8E727-4038-4E6B-90BD-853730FDFA49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEDD6CFB-747B-4077-9288-9CD2A86090F1}.Debug Complete|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEDD6CFB-747B-4077-9288-9CD2A86090F1}.Debug Complete|Any CPU.Build.0 = Debug|Any CPU
+		{AEDD6CFB-747B-4077-9288-9CD2A86090F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEDD6CFB-747B-4077-9288-9CD2A86090F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEDD6CFB-747B-4077-9288-9CD2A86090F1}.Release Complete|Any CPU.ActiveCfg = Release|Any CPU
+		{AEDD6CFB-747B-4077-9288-9CD2A86090F1}.Release Complete|Any CPU.Build.0 = Release|Any CPU
+		{AEDD6CFB-747B-4077-9288-9CD2A86090F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEDD6CFB-747B-4077-9288-9CD2A86090F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
