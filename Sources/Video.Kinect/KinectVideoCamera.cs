@@ -356,7 +356,7 @@ namespace AForge.Video.Kinect
         /// Stop video source.
         /// </summary>
         /// 
-        /// <remarks><para>The method stop the video source, so it no longer provides new video frames
+        /// <remarks><para>The method stops the video source, so it no longer provides new video frames
         /// and does not consume any resources.</para>
         /// </remarks>
         /// 
