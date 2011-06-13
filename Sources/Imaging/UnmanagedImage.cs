@@ -369,14 +369,44 @@ namespace AForge.Imaging
         /// 
         public Bitmap ToManagedImage( )
         {
-            Bitmap bitmap = new Bitmap( width, height, stride, pixelFormat, imageData );
+            // create new image of required format
+            Bitmap dstImage = ( pixelFormat == PixelFormat.Format8bppIndexed ) ?
+                AForge.Imaging.Image.CreateGrayscaleImage( width, height ) :
+                new Bitmap( width, height, pixelFormat );
 
-            if ( pixelFormat == PixelFormat.Format8bppIndexed )
+            // lock destination bitmap data
+            BitmapData dstData = dstImage.LockBits(
+                new Rectangle( 0, 0, width, height ),
+                ImageLockMode.ReadWrite, pixelFormat );
+
+            int dstStride = dstData.Stride;
+            int lineSize  = Math.Min( stride, dstStride );
+
+            unsafe
             {
-                Image.SetGrayscalePalette( bitmap );
+                byte* dst = (byte*) dstData.Scan0.ToPointer( );
+                byte* src = (byte*) imageData.ToPointer( );
+
+                if ( stride != dstStride )
+                {
+                    // copy image
+                    for ( int y = 0; y < height; y++ )
+                    {
+                        AForge.SystemTools.CopyUnmanagedMemory( dst, src, lineSize );
+                        dst += dstStride;
+                        src += stride;
+                    }
+                }
+                else
+                {
+                    AForge.SystemTools.CopyUnmanagedMemory( dst, src, stride * height );
+                }
             }
 
-            return bitmap;
+            // unlock destination images
+            dstImage.UnlockBits( dstData );
+
+            return dstImage;
         }
 
         /// <summary>
