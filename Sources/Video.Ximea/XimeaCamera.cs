@@ -6,14 +6,14 @@
 // contacts@aforgenet.com
 //
 
-using System;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Text;
-using AForge.Video.Ximea.Internal;
-
 namespace AForge.Video.Ximea
 {
+    using System;
+    using System.Drawing;
+    using System.Drawing.Imaging;
+    using System.Text;
+    using AForge.Video.Ximea.Internal;
+
     /// <summary>
     /// The class provides access to XIMEA cameras.
     /// </summary>
@@ -361,12 +361,35 @@ namespace AForge.Video.Ximea
         /// 
         /// <returns>Returns image retrieved from the camera.</returns>
         /// 
+        /// <remarks><para>The method calls <see cref="GetImage(int,bool)"/> method specifying <see langword="true"/>
+        /// the <b>makeCopy</b> parameter.</para></remarks>
+        ///
+        public unsafe Bitmap GetImage( int timeout )
+        {
+            return GetImage( timeout, true );
+        }
+        
+        /// <summary>
+        /// Get image from the opened XIMEA camera.
+        /// </summary>
+        /// 
+        /// <param name="timeout">Maximum time to wait in milliseconds till image becomes available.</param>
+        /// <param name="makeCopy">Make a copy of the camera's image or not.</param>
+        /// 
+        /// <returns>Returns image retrieved from the camera.</returns>
+        /// 
+        /// <remarks><para>If the <paramref name="makeCopy"/> is set to <see langword="true"/>, then the method
+        /// creates a managed copy of the camera's image, so the managed image stays valid even when the camera
+        /// is closed. However, setting this parameter to <see langword="false"/> creates a managed image which is
+        /// just a wrapper around camera's unmanaged image. So if camera is closed and its resources are freed, the
+        /// managed image becomes no longer valid and accessing it will generate an exception.</para></remarks>
+        /// 
         /// <exception cref="VideoException">An error occurred while communicating with a camera. See error
         /// message for additional information.</exception>
         /// <exception cref="NotConnectedException">No camera was opened, so can not access its methods.</exception>
         /// <exception cref="TimeoutException">Time out value reached - no image is available within specified time value.</exception>
         ///
-        public Bitmap GetImage( int timeout )
+        public Bitmap GetImage( int timeout, bool makeCopy )
         {
             CheckConnection( );
 
@@ -411,7 +434,48 @@ namespace AForge.Video.Ximea
                     throw new VideoException( "Unsupported pixel format." );
             }
 
-            Bitmap bitmap = new Bitmap( ximeaImage.Width, ximeaImage.Height, stride, pixelFormat, ximeaImage.BitmapData );
+            Bitmap bitmap = null;
+
+            if ( !makeCopy )
+            {
+                bitmap = new Bitmap( ximeaImage.Width, ximeaImage.Height, stride, pixelFormat, ximeaImage.BitmapData );
+            }
+            else
+            {
+                bitmap = new Bitmap( ximeaImage.Width, ximeaImage.Height, pixelFormat );
+
+                // lock destination bitmap data
+                BitmapData bitmapData = bitmap.LockBits(
+                    new Rectangle( 0, 0, ximeaImage.Width, ximeaImage.Height ),
+                    ImageLockMode.ReadWrite, pixelFormat );
+
+                int dstStride = bitmapData.Stride;
+                int lineSize  = Math.Min( stride, dstStride );
+
+                unsafe
+                {
+                    byte* dst = (byte*) bitmapData.Scan0.ToPointer( );
+                    byte* src = (byte*) ximeaImage.BitmapData.ToPointer( );
+
+                    if ( stride != dstStride )
+                    {
+                        // copy image
+                        for ( int y = 0; y < ximeaImage.Height; y++ )
+                        {
+                            AForge.SystemTools.CopyUnmanagedMemory( dst, src, lineSize );
+                            dst += dstStride;
+                            src += stride;
+                        }
+                    }
+                    else
+                    {
+                        AForge.SystemTools.CopyUnmanagedMemory( dst, src, stride * ximeaImage.Height );
+                    }
+                }
+
+                // unlock destination images
+                bitmap.UnlockBits( bitmapData );
+            }
 
             // set palette for grayscale image
             if ( ximeaImage.PixelFormat == XimeaImageFormat.Grayscale8 )
