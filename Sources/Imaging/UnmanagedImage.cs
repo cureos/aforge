@@ -365,46 +365,79 @@ namespace AForge.Imaging
         /// <returns>Returns managed copy of the unmanaged image.</returns>
         /// 
         /// <remarks><para>The method creates a managed copy of the unmanaged image with the
-        /// same size and pixel format.</para></remarks>
+        /// same size and pixel format (it calls <see cref="ToManagedImage(bool)"/> specifying
+        /// <see langword="true"/> for the <b>makeCopy</b> parameter).</para></remarks>
         /// 
         public Bitmap ToManagedImage( )
         {
-            // create new image of required format
-            Bitmap dstImage = ( pixelFormat == PixelFormat.Format8bppIndexed ) ?
-                AForge.Imaging.Image.CreateGrayscaleImage( width, height ) :
-                new Bitmap( width, height, pixelFormat );
+            return ToManagedImage( true );
+        }
 
-            // lock destination bitmap data
-            BitmapData dstData = dstImage.LockBits(
-                new Rectangle( 0, 0, width, height ),
-                ImageLockMode.ReadWrite, pixelFormat );
+        /// <summary>
+        /// Create managed image from the unmanaged.
+        /// </summary>
+        /// 
+        /// <param name="makeCopy">Make a copy of the unmanaged image or not.</param>
+        /// 
+        /// <returns>Returns managed copy of the unmanaged image.</returns>
+        /// 
+        /// <remarks><para>If the <paramref name="makeCopy"/> is set to <see langword="true"/>, then the method
+        /// creates a managed copy of the unmanaged image, so the managed image stays valid even when the unmanaged
+        /// image gets disposed. However, setting this parameter to <see langword="false"/> creates a managed image which is
+        /// just a wrapper around the unmanaged image. So if unmanaged image is disposed, the
+        /// managed image becomes no longer valid and accessing it will generate an exception.</para></remarks>
+        /// 
+        public Bitmap ToManagedImage( bool makeCopy )
+        {
+            Bitmap dstImage = null;
 
-            int dstStride = dstData.Stride;
-            int lineSize  = Math.Min( stride, dstStride );
-
-            unsafe
+            if ( !makeCopy )
             {
-                byte* dst = (byte*) dstData.Scan0.ToPointer( );
-                byte* src = (byte*) imageData.ToPointer( );
-
-                if ( stride != dstStride )
+                dstImage = new Bitmap( width, height, stride, pixelFormat, imageData );
+                if ( pixelFormat == PixelFormat.Format8bppIndexed )
                 {
-                    // copy image
-                    for ( int y = 0; y < height; y++ )
-                    {
-                        AForge.SystemTools.CopyUnmanagedMemory( dst, src, lineSize );
-                        dst += dstStride;
-                        src += stride;
-                    }
-                }
-                else
-                {
-                    AForge.SystemTools.CopyUnmanagedMemory( dst, src, stride * height );
+                    Image.SetGrayscalePalette( dstImage );
                 }
             }
+            else
+            {
+                // create new image of required format
+                dstImage = ( pixelFormat == PixelFormat.Format8bppIndexed ) ?
+                    AForge.Imaging.Image.CreateGrayscaleImage( width, height ) :
+                    new Bitmap( width, height, pixelFormat );
 
-            // unlock destination images
-            dstImage.UnlockBits( dstData );
+                // lock destination bitmap data
+                BitmapData dstData = dstImage.LockBits(
+                    new Rectangle( 0, 0, width, height ),
+                    ImageLockMode.ReadWrite, pixelFormat );
+
+                int dstStride = dstData.Stride;
+                int lineSize  = Math.Min( stride, dstStride );
+
+                unsafe
+                {
+                    byte* dst = (byte*) dstData.Scan0.ToPointer( );
+                    byte* src = (byte*) imageData.ToPointer( );
+
+                    if ( stride != dstStride )
+                    {
+                        // copy image
+                        for ( int y = 0; y < height; y++ )
+                        {
+                            AForge.SystemTools.CopyUnmanagedMemory( dst, src, lineSize );
+                            dst += dstStride;
+                            src += stride;
+                        }
+                    }
+                    else
+                    {
+                        AForge.SystemTools.CopyUnmanagedMemory( dst, src, stride * height );
+                    }
+                }
+
+                // unlock destination images
+                dstImage.UnlockBits( dstData );
+            }
 
             return dstImage;
         }
