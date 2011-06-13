@@ -57,7 +57,12 @@ namespace AForge.Video
         /// <summary>
         /// Video playing has finished because the device was lost (unplugged).
         /// </summary>
-        DeviceLost
+        DeviceLost,
+        /// <summary>
+        /// Video playing has finished because of some error happened the video source (camera, stream, file, etc.).
+        /// A error reporting event usually is fired to provide error information.
+        /// </summary>
+        VideoSourceError
     }
 
     /// <summary>
