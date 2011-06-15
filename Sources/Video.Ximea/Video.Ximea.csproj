@@ -52,6 +52,7 @@
     <Compile Include="Internal\XimeaImage.cs" />
     <Compile Include="XimeaCamera.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XimeaVideoSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AForge.Video.Ximea.snk" />

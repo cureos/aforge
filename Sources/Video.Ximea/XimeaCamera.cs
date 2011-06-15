@@ -47,11 +47,16 @@ namespace AForge.Video.Ximea
     /// </code>
     /// </remarks>
     /// 
+    /// <seealso cref="XimeaVideoSource"/>
+    /// 
     public class XimeaCamera
     {
         private IntPtr deviceHandle = IntPtr.Zero;
         private bool isAcquisitionStarted = false;
         private int deviceID = 0;
+
+        // dummy object to lock for synchronization
+        private object sync = new object( );
 
         /// <summary>
         /// Get number of XIMEA camera connected to the system.
@@ -74,7 +79,13 @@ namespace AForge.Video.Ximea
         /// </summary>
         public bool IsAcquisitionStarted
         {
-            get { return isAcquisitionStarted; }
+            get
+            {
+                lock ( sync )
+                {
+                    return isAcquisitionStarted;
+                }
+            }
         }
 
         /// <summary>
@@ -82,7 +93,13 @@ namespace AForge.Video.Ximea
         /// </summary>
         public bool IsDeviceOpen
         {
-            get { return ( deviceHandle != IntPtr.Zero ); }
+            get
+            {
+                lock ( sync )
+                {
+                    return ( deviceHandle != IntPtr.Zero );
+                }
+            }
         }
 
         /// <summary>
@@ -108,13 +125,16 @@ namespace AForge.Video.Ximea
         ///
         public void Open( int deviceID )
         {
-            IntPtr deviceHandle;
-            int errorCode = XimeaAPI.xiOpenDevice( deviceID, out deviceHandle );
-            HandleError( errorCode );
-            // save the device handle is everything is fine
-            this.deviceHandle = deviceHandle;
-            this.isAcquisitionStarted = false;
-            this.deviceID = deviceID;
+            lock ( sync )
+            {
+                IntPtr deviceHandle;
+                int errorCode = XimeaAPI.xiOpenDevice( deviceID, out deviceHandle );
+                HandleError( errorCode );
+                // save the device handle is everything is fine
+                this.deviceHandle = deviceHandle;
+                this.isAcquisitionStarted = false;
+                this.deviceID = deviceID;
+            }
         }
 
         /// <summary>
@@ -129,27 +149,30 @@ namespace AForge.Video.Ximea
         ///
         public void Close( )
         {
-            if ( deviceHandle != IntPtr.Zero )
+            lock ( sync )
             {
-                if ( isAcquisitionStarted )
+                if ( deviceHandle != IntPtr.Zero )
                 {
+                    if ( isAcquisitionStarted )
+                    {
+                        try
+                        {
+                            StopAcquisition( );
+                        }
+                        catch
+                        {
+                        }
+                    }
+
                     try
                     {
-                        StopAcquisition( );
+                        int errorCode = XimeaAPI.xiCloseDevice( deviceHandle );
+                        HandleError( errorCode );
                     }
-                    catch
+                    finally
                     {
+                        deviceHandle = IntPtr.Zero;
                     }
-                }
-
-                try
-                {
-                    int errorCode = XimeaAPI.xiCloseDevice( deviceHandle );
-                    HandleError( errorCode );
-                }
-                finally
-                {
-                    deviceHandle = IntPtr.Zero;
                 }
             }
         }
@@ -167,12 +190,15 @@ namespace AForge.Video.Ximea
         /// 
         public void StartAcquisition( )
         {
-            CheckConnection( );
+            lock ( sync )
+            {
+                CheckConnection( );
 
-            int errorCode = XimeaAPI.xiStartAcquisition( deviceHandle );
-            HandleError( errorCode );
+                int errorCode = XimeaAPI.xiStartAcquisition( deviceHandle );
+                HandleError( errorCode );
 
-            isAcquisitionStarted = true;
+                isAcquisitionStarted = true;
+            }
         }
 
         /// <summary>
@@ -185,16 +211,19 @@ namespace AForge.Video.Ximea
         /// 
         public void StopAcquisition( )
         {
-            CheckConnection( );
+            lock ( sync )
+            {
+                CheckConnection( );
 
-            try
-            {
-                int errorCode = XimeaAPI.xiStopAcquisition( deviceHandle );
-                HandleError( errorCode );
-            }
-            finally
-            {
-                isAcquisitionStarted = false;
+                try
+                {
+                    int errorCode = XimeaAPI.xiStopAcquisition( deviceHandle );
+                    HandleError( errorCode );
+                }
+                finally
+                {
+                    isAcquisitionStarted = false;
+                }
             }
         }
 
@@ -216,10 +245,13 @@ namespace AForge.Video.Ximea
         ///
         public void SetParam( string parameterName, int value )
         {
-            CheckConnection( );
+            lock ( sync )
+            {
+                CheckConnection( );
 
-            int errorCode = XimeaAPI.xiSetParam( deviceHandle, parameterName, ref value, 4, ParameterType.Integer );
-            HandleError( errorCode );
+                int errorCode = XimeaAPI.xiSetParam( deviceHandle, parameterName, ref value, 4, ParameterType.Integer );
+                HandleError( errorCode );
+            }
         }
 
         /// <summary>
@@ -240,10 +272,13 @@ namespace AForge.Video.Ximea
         ///
         public void SetParam( string parameterName, float value )
         {
-            CheckConnection( );
+            lock ( sync )
+            {
+                CheckConnection( );
 
-            int errorCode = XimeaAPI.xiSetParam( deviceHandle, parameterName, ref value, 4, ParameterType.Float );
-            HandleError( errorCode );
+                int errorCode = XimeaAPI.xiSetParam( deviceHandle, parameterName, ref value, 4, ParameterType.Float );
+                HandleError( errorCode );
+            }
         }
 
         /// <summary>
@@ -263,16 +298,19 @@ namespace AForge.Video.Ximea
         ///
         public int GetParamInt( string parameterName )
         {
-            CheckConnection( );
+            lock ( sync )
+            {
+                CheckConnection( );
 
-            int value;
-            int size;
-            ParameterType type = ParameterType.Integer;
+                int value;
+                int size;
+                ParameterType type = ParameterType.Integer;
 
-            int errorCode = XimeaAPI.xiGetParam( deviceHandle, parameterName, out value, out size, ref type );
-            HandleError( errorCode );
+                int errorCode = XimeaAPI.xiGetParam( deviceHandle, parameterName, out value, out size, ref type );
+                HandleError( errorCode );
 
-            return value;
+                return value;
+            }
         }
 
         /// <summary>
@@ -292,16 +330,19 @@ namespace AForge.Video.Ximea
         ///
         public float GetParamFloat( string parameterName )
         {
-            CheckConnection( );
+            lock ( sync )
+            {
+                CheckConnection( );
 
-            float value;
-            int size;
-            ParameterType type = ParameterType.Float;
+                float value;
+                int size;
+                ParameterType type = ParameterType.Float;
 
-            int errorCode = XimeaAPI.xiGetParam( deviceHandle, parameterName, out value, out size, ref type );
-            HandleError( errorCode );
+                int errorCode = XimeaAPI.xiGetParam( deviceHandle, parameterName, out value, out size, ref type );
+                HandleError( errorCode );
 
-            return value;
+                return value;
+            }
         }
 
         /// <summary>
@@ -321,22 +362,25 @@ namespace AForge.Video.Ximea
         ///
         public string GetParamString( string parameterName )
         {
-            CheckConnection( );
-
-            byte[] bytes = new byte[260];
-            int size = bytes.Length;
-            ParameterType type = ParameterType.String;
-
-            unsafe
+            lock ( sync )
             {
-                fixed ( byte* ptr = bytes )
-                {
-                    int errorCode = XimeaAPI.xiGetParam( deviceHandle, parameterName, ptr, out size, ref type );
-                    HandleError( errorCode );
-                }
-            }
+                CheckConnection( );
 
-            return Encoding.ASCII.GetString( bytes, 0, size );
+                byte[] bytes = new byte[260];
+                int size = bytes.Length;
+                ParameterType type = ParameterType.String;
+
+                unsafe
+                {
+                    fixed ( byte* ptr = bytes )
+                    {
+                        int errorCode = XimeaAPI.xiGetParam( deviceHandle, parameterName, ptr, out size, ref type );
+                        HandleError( errorCode );
+                    }
+                }
+
+                return Encoding.ASCII.GetString( bytes, 0, size );
+            }
         }
 
         /// <summary>
@@ -391,104 +435,107 @@ namespace AForge.Video.Ximea
         ///
         public Bitmap GetImage( int timeout, bool makeCopy )
         {
-            CheckConnection( );
-
-            int errorCode;
-
-            XimeaImage ximeaImage = new XimeaImage( );
-            unsafe
+            lock ( sync )
             {
-                ximeaImage.StructSize = sizeof( XimeaImage );
-            }
+                CheckConnection( );
 
-            // get image from XIMEA camera
-            try
-            {
-                errorCode = XimeaAPI.xiGetImage( deviceHandle, timeout, ref ximeaImage );
-            }
-            catch ( AccessViolationException )
-            {
-                errorCode = 9;
-            }
+                int errorCode;
 
-            // handle error if any
-            HandleError( errorCode );
-
-            // create managed bitmap for the unmanaged image provided by camera
-            PixelFormat pixelFormat = PixelFormat.Undefined;
-            int stride = 0;
-
-            switch ( ximeaImage.PixelFormat )
-            {
-                case XimeaImageFormat.Grayscale8:
-                    pixelFormat = PixelFormat.Format8bppIndexed;
-                    stride = ximeaImage.Width;
-                    break;
-
-                case XimeaImageFormat.RGB32:
-                    pixelFormat = PixelFormat.Format32bppRgb;
-                    stride = ximeaImage.Width * 4;
-                    break;
-
-                default:
-                    throw new VideoException( "Unsupported pixel format." );
-            }
-
-            Bitmap bitmap = null;
-
-            if ( !makeCopy )
-            {
-                bitmap = new Bitmap( ximeaImage.Width, ximeaImage.Height, stride, pixelFormat, ximeaImage.BitmapData );
-            }
-            else
-            {
-                bitmap = new Bitmap( ximeaImage.Width, ximeaImage.Height, pixelFormat );
-
-                // lock destination bitmap data
-                BitmapData bitmapData = bitmap.LockBits(
-                    new Rectangle( 0, 0, ximeaImage.Width, ximeaImage.Height ),
-                    ImageLockMode.ReadWrite, pixelFormat );
-
-                int dstStride = bitmapData.Stride;
-                int lineSize  = Math.Min( stride, dstStride );
-
+                XimeaImage ximeaImage = new XimeaImage( );
                 unsafe
                 {
-                    byte* dst = (byte*) bitmapData.Scan0.ToPointer( );
-                    byte* src = (byte*) ximeaImage.BitmapData.ToPointer( );
+                    ximeaImage.StructSize = sizeof( XimeaImage );
+                }
 
-                    if ( stride != dstStride )
+                // get image from XIMEA camera
+                try
+                {
+                    errorCode = XimeaAPI.xiGetImage( deviceHandle, timeout, ref ximeaImage );
+                }
+                catch ( AccessViolationException )
+                {
+                    errorCode = 9;
+                }
+
+                // handle error if any
+                HandleError( errorCode );
+
+                // create managed bitmap for the unmanaged image provided by camera
+                PixelFormat pixelFormat = PixelFormat.Undefined;
+                int stride = 0;
+
+                switch ( ximeaImage.PixelFormat )
+                {
+                    case XimeaImageFormat.Grayscale8:
+                        pixelFormat = PixelFormat.Format8bppIndexed;
+                        stride = ximeaImage.Width;
+                        break;
+
+                    case XimeaImageFormat.RGB32:
+                        pixelFormat = PixelFormat.Format32bppRgb;
+                        stride = ximeaImage.Width * 4;
+                        break;
+
+                    default:
+                        throw new VideoException( "Unsupported pixel format." );
+                }
+
+                Bitmap bitmap = null;
+
+                if ( !makeCopy )
+                {
+                    bitmap = new Bitmap( ximeaImage.Width, ximeaImage.Height, stride, pixelFormat, ximeaImage.BitmapData );
+                }
+                else
+                {
+                    bitmap = new Bitmap( ximeaImage.Width, ximeaImage.Height, pixelFormat );
+
+                    // lock destination bitmap data
+                    BitmapData bitmapData = bitmap.LockBits(
+                        new Rectangle( 0, 0, ximeaImage.Width, ximeaImage.Height ),
+                        ImageLockMode.ReadWrite, pixelFormat );
+
+                    int dstStride = bitmapData.Stride;
+                    int lineSize  = Math.Min( stride, dstStride );
+
+                    unsafe
                     {
-                        // copy image
-                        for ( int y = 0; y < ximeaImage.Height; y++ )
+                        byte* dst = (byte*) bitmapData.Scan0.ToPointer( );
+                        byte* src = (byte*) ximeaImage.BitmapData.ToPointer( );
+
+                        if ( stride != dstStride )
                         {
-                            AForge.SystemTools.CopyUnmanagedMemory( dst, src, lineSize );
-                            dst += dstStride;
-                            src += stride;
+                            // copy image
+                            for ( int y = 0; y < ximeaImage.Height; y++ )
+                            {
+                                AForge.SystemTools.CopyUnmanagedMemory( dst, src, lineSize );
+                                dst += dstStride;
+                                src += stride;
+                            }
+                        }
+                        else
+                        {
+                            AForge.SystemTools.CopyUnmanagedMemory( dst, src, stride * ximeaImage.Height );
                         }
                     }
-                    else
-                    {
-                        AForge.SystemTools.CopyUnmanagedMemory( dst, src, stride * ximeaImage.Height );
-                    }
+
+                    // unlock destination images
+                    bitmap.UnlockBits( bitmapData );
                 }
 
-                // unlock destination images
-                bitmap.UnlockBits( bitmapData );
-            }
-
-            // set palette for grayscale image
-            if ( ximeaImage.PixelFormat == XimeaImageFormat.Grayscale8 )
-            {
-                ColorPalette palette = bitmap.Palette;
-                for ( int i = 0; i < 256; i++ )
+                // set palette for grayscale image
+                if ( ximeaImage.PixelFormat == XimeaImageFormat.Grayscale8 )
                 {
-                    palette.Entries[i] = Color.FromArgb( i, i, i );
+                    ColorPalette palette = bitmap.Palette;
+                    for ( int i = 0; i < 256; i++ )
+                    {
+                        palette.Entries[i] = Color.FromArgb( i, i, i );
+                    }
+                    bitmap.Palette = palette;
                 }
-                bitmap.Palette = palette;
-            }
 
-            return bitmap;
+                return bitmap;
+            }
         }
 
 
@@ -502,7 +549,224 @@ namespace AForge.Video.Ximea
                     throw new TimeoutException( "Time out while waiting for camera response." ); 
                 }
 
-                throw new VideoException( "Error code: " + errorCode );
+                string errorMessage = string.Empty;
+
+                switch ( errorCode )
+                {
+                    case 1:
+                        errorMessage = "Invalid handle";
+                        break;
+
+                    case 2:
+                        errorMessage = "Register read error";
+                        break;
+
+                    case 3:
+                        errorMessage = "Register write error";
+                        break;
+
+                    case 4:
+                        errorMessage = "Freeing resiurces error";
+                        break;
+
+                    case 5:
+                        errorMessage = "Freeing channel error";
+                        break;
+
+                    case 6:
+                        errorMessage = "Freeing bandwith error";
+                        break;
+
+                    case 7:
+                        errorMessage = "Read block error";
+                        break;
+
+                    case 8:
+                        errorMessage = "Write block error";
+                        break;
+
+                    case 9:
+                        errorMessage = "No image";
+                        break;
+
+                    case 11:
+                        errorMessage = "Invalid arguments supplied";
+                        break;
+
+                    case 12:
+                        errorMessage = "Not supported";
+                        break;
+
+                    case 13:
+                        errorMessage = "Attach buffers error";
+                        break;
+
+                    case 14:
+                        errorMessage = "Overlapped result";
+                        break;
+
+                    case 15:
+                        errorMessage = "Memory allocation error";
+                        break;
+
+                    case 16:
+                        errorMessage = "DLL context is NULL";
+                        break;
+
+                    case 17:
+                        errorMessage = "DLL context is non zero";
+                        break;
+
+                    case 18:
+                        errorMessage = "DLL context exists";
+                        break;
+
+                    case 19:
+                        errorMessage = "Too many devices connected";
+                        break;
+
+                    case 20:
+                        errorMessage = "Camera context error";
+                        break;
+
+                    case 21:
+                        errorMessage = "Unknown hardware";
+                        break;
+
+                    case 22:
+                        errorMessage = "Invalid TM file";
+                        break;
+
+                    case 23:
+                        errorMessage = "Invalid TM tag";
+                        break;
+
+                    case 24:
+                        errorMessage = "Incomplete TM";
+                        break;
+
+                    case 25:
+                        errorMessage = "Bus reset error";
+                        break;
+
+                    case 26:
+                        errorMessage = "Not implemented";
+                        break;
+
+                    case 27:
+                        errorMessage = "Shading too bright";
+                        break;
+
+                    case 28:
+                        errorMessage = "Shading too dark";
+                        break;
+
+                    case 29:
+                        errorMessage = "Gain is too low";
+                        break;
+
+                    case 30:
+                        errorMessage = "Invalid bad pixel list";
+                        break;
+
+                    case 31:
+                        errorMessage = "Bad pixel list realloc error";
+                        break;
+
+                    case 32:
+                        errorMessage = "Invalid pixel list";
+                        break;
+
+                    case 33:
+                        errorMessage = "Invalid Flash File System";
+                        break;
+
+                    case 34:
+                        errorMessage = "Invalid profile";
+                        break;
+
+                    case 35:
+                        errorMessage = "Invalid calibration";
+                        break;
+
+                    case 36:
+                        errorMessage = "Invalid buffer";
+                        break;
+
+                    case 38:
+                        errorMessage = "Invalid data";
+                        break;
+
+                    case 39:
+                        errorMessage = "Timing generator is busy";
+                        break;
+
+                    case 40:
+                        errorMessage = "Wrong operation open/write/read/close";
+                        break;
+
+                    case 41:
+                        errorMessage = "Acquisition already started";
+                        break;
+
+                    case 42:
+                        errorMessage = "Old version of device driver installed to the system";
+                        break;
+
+                    case 44:
+                        errorMessage = "Data can't be processed";
+                        break;
+
+                    case 45:
+                        errorMessage = "Error occured and acquisition has been stoped or didn't start";
+                        break;
+
+                    case 46:
+                        errorMessage = "Acquisition has been stoped with error";
+                        break;
+
+                    case 100:
+                        errorMessage = "Unknown parameter";
+                        break;
+
+                    case 101:
+                        errorMessage = "Wrong parameter value";
+                        break;
+
+                    case 103:
+                        errorMessage = "Wrong parameter type";
+                        break;
+
+                    case 104:
+                        errorMessage = "Wrong parameter size";
+                        break;
+
+                    case 105:
+                        errorMessage = "Input buffer too small";
+                        break;
+
+                    case 106:
+                        errorMessage = "Parameter info not supported";
+                        break;
+
+                    case 107:
+                        errorMessage = "Parameter info not supported";
+                        break;
+
+                    case 108:
+                        errorMessage = "Data format not supported";
+                        break;
+
+                    case 109:
+                        errorMessage = "Read only parameter";
+                        break;
+
+                    case 110:
+                        errorMessage = "No devices found";
+                        break;
+                }
+
+                throw new VideoException( string.Format( "Error code: {0}, Message: {1}", errorCode, errorMessage ) );
             }
         }
 
