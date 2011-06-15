@@ -161,7 +161,7 @@ namespace AForge { namespace Video { namespace FFMPEG
         /// <para><note>Setting this property to 0 leads to no delay between video frames - frames
         /// are read as fast as possible.</note></para>
         /// 
-        /// <para>Default value is set to <b>0</b>0.</para>
+        /// <para>Default value is set to <b>0</b>.</para>
         /// </remarks>
         /// 
         property int FrameInterval
