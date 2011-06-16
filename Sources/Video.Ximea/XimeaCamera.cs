@@ -471,6 +471,11 @@ namespace AForge.Video.Ximea
                         stride = ximeaImage.Width;
                         break;
 
+                    case XimeaImageFormat.RGB24:
+                        pixelFormat = PixelFormat.Format24bppRgb;
+                        stride = ximeaImage.Width * 3;
+                        break;
+
                     case XimeaImageFormat.RGB32:
                         pixelFormat = PixelFormat.Format32bppRgb;
                         stride = ximeaImage.Width * 4;

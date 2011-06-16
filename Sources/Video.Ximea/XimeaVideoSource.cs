@@ -63,7 +63,7 @@ namespace AForge.Video.Ximea
         // recieved byte count
         private int bytesReceived;
         // frame interval in milliseconds
-        private int frameInterval = 0;
+        private int frameInterval = 200;
 
         private Thread thread = null;
         private ManualResetEvent stopEvent = null;

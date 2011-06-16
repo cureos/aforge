@@ -14,6 +14,8 @@ namespace AForge.Video.Ximea.Internal
     internal enum XimeaImageFormat
     {
         Grayscale8 = 0,
+        Grayscale16 = 1,
+        RGB24 = 2,
         RGB32 = 3
     }
 
