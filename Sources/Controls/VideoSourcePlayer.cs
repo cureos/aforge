@@ -450,6 +450,11 @@ namespace AForge.Controls
                     // dispose previous frame
                     if ( currentFrame != null )
                     {
+                        if ( currentFrame.Size != eventArgs.Frame.Size )
+                        {
+                            needSizeUpdate = true;
+                        }
+
                         currentFrame.Dispose( );
                         currentFrame = null;
                     }
