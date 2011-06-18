@@ -70,6 +70,7 @@ namespace AForge.Controls
         // controls border color
         private Color borderColor = Color.Black;
 
+        private Size frameSize = new Size( 320, 240 );
         private bool autosize = false;
         private bool needSizeUpdate = false;
         private bool firstFrameNotProcessed = true;
@@ -170,6 +171,10 @@ namespace AForge.Controls
                     videoSource.NewFrame += new NewFrameEventHandler( videoSource_NewFrame );
                     videoSource.VideoSourceError += new VideoSourceErrorEventHandler( videoSource_VideoSourceError );
                     videoSource.PlayingFinished += new PlayingFinishedEventHandler( videoSource_PlayingFinished );
+                }
+                else
+                {
+                    frameSize = new Size( 320, 240 );
                 }
 
                 lastMessage = null;
@@ -419,18 +424,8 @@ namespace AForge.Controls
             if ( ( autosize ) && ( this.Dock != DockStyle.Fill ) && ( this.Parent != null ) )
             {
                 Rectangle rc = this.Parent.ClientRectangle;
-                int width = 320;
-                int height = 240;
-
-                lock ( sync )
-                {
-                    if ( currentFrame != null )
-                    {
-                        // get frame size
-                        width  = currentFrame.Width;
-                        height = currentFrame.Height;
-                    }
-                }
+                int width  = frameSize.Width;
+                int height = frameSize.Height;
 
                 // update controls size and location
                 this.SuspendLayout( );
@@ -445,6 +440,15 @@ namespace AForge.Controls
         {
             if ( !requestedToStop )
             {
+                Bitmap newFrame = (Bitmap) eventArgs.Frame.Clone( );
+
+                // let user process the frame first
+                if ( NewFrame != null )
+                {
+                    NewFrame( this, ref newFrame );
+                }
+
+                // now update current frame of the control
                 lock ( sync )
                 {
                     // dispose previous frame
@@ -464,14 +468,9 @@ namespace AForge.Controls
                         convertedFrame = null;
                     }
 
-                    currentFrame = (Bitmap) eventArgs.Frame.Clone( );
-                    lastMessage = null;
-
-                    // notify about the new frame
-                    if ( NewFrame != null )
-                    {
-                        NewFrame( this, ref currentFrame );
-                    }
+                    currentFrame = newFrame;
+                    frameSize    = currentFrame.Size;
+                    lastMessage  = null;
 
                     // check if conversion is required to lower bpp rate
                     if ( ( currentFrame.PixelFormat == PixelFormat.Format16bppGrayScale ) ||
