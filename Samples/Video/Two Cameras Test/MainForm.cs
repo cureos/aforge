@@ -13,6 +13,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 using AForge.Video;
 using AForge.Video.DirectShow;
@@ -23,17 +24,8 @@ namespace TwoCamerasTest
     {
         // list of video devices
         FilterInfoCollection videoDevices;
-
-        // statistics length
-        private const int statLength = 15;
-        // current statistics index
-        private int statIndex = 0;
-        // ready statistics values
-        private int statReady = 0;
-        // statistics array
-        private int[] statCount1 = new int[statLength];
-        private int[] statCount2 = new int[statLength];
-
+        // stop watch for measuring fps
+        private Stopwatch stopWatch = null;
 
         public MainForm( )
         {
@@ -140,6 +132,8 @@ namespace TwoCamerasTest
                 videoSourcePlayer2.Start( );
             }
 
+            // reset stop watch
+            stopWatch = null;
             // start timer
             timer.Start( );
         }
@@ -162,40 +156,38 @@ namespace TwoCamerasTest
             IVideoSource videoSource1 = videoSourcePlayer1.VideoSource;
             IVideoSource videoSource2 = videoSourcePlayer2.VideoSource;
 
+            int framesReceived1 = 0;
+            int framesReceived2 = 0;
+
             // get number of frames for the last second
             if ( videoSource1 != null )
             {
-                statCount1[statIndex] = videoSource1.FramesReceived;
+                framesReceived1 = videoSource1.FramesReceived;
             }
 
             if ( videoSource2 != null )
             {
-                statCount2[statIndex] = videoSource2.FramesReceived;
+                framesReceived2 = videoSource2.FramesReceived;
             }
 
-            // increment indexes
-            if ( ++statIndex >= statLength )
-                statIndex = 0;
-            if ( statReady < statLength )
-                statReady++;
-
-            float fps1 = 0;
-            float fps2 = 0;
-
-            // calculate average value
-            for ( int i = 0; i < statReady; i++ )
+            if ( stopWatch == null )
             {
-                fps1 += statCount1[i];
-                fps2 += statCount2[i];
+                stopWatch = new Stopwatch( );
+                stopWatch.Start( );
             }
-            fps1 /= statReady;
-            fps2 /= statReady;
+            else
+            {
+                stopWatch.Stop( );
 
-            statCount1[statIndex] = 0;
-            statCount2[statIndex] = 0;
+                float fps1 = 1000.0f * framesReceived1 / stopWatch.ElapsedMilliseconds;
+                float fps2 = 1000.0f * framesReceived2 / stopWatch.ElapsedMilliseconds;
 
-            camera1FpsLabel.Text = fps1.ToString( "F2" ) + " fps";
-            camera2FpsLabel.Text = fps2.ToString( "F2" ) + " fps";
+                camera1FpsLabel.Text = fps1.ToString( "F2" ) + " fps";
+                camera2FpsLabel.Text = fps2.ToString( "F2" ) + " fps";
+
+                stopWatch.Reset( );
+                stopWatch.Start( );
+            }
         }
     }
 }
