@@ -12,6 +12,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 using AForge.Video;
 using AForge.Video.Ximea;
@@ -20,16 +21,8 @@ namespace XimeaSample
 {
     public partial class MainForm : Form
     {
-        XimeaVideoSource videoSource = null;
-
-        // statistics length
-        private const int statLength = 15;
-        // current statistics index
-        private int statIndex = 0;
-        // ready statistics values
-        private int statReady = 0;
-        // statistics array
-        private int[] statCount = new int[statLength];
+        private XimeaVideoSource videoSource = null;
+        private Stopwatch stopWatch = null;
 
         public MainForm( )
         {
@@ -124,7 +117,7 @@ namespace XimeaSample
                     // exposure
                     exposureUpDown.Minimum = videoSource.GetParamInt( CameraParameter.ExposureMin ) / 1000;
                     exposureUpDown.Maximum = videoSource.GetParamInt( CameraParameter.ExposureMax ) / 1000;
-                    exposureUpDown.Value = 50;
+                    exposureUpDown.Value = 10;
 
                     // gain
                     gainUpDown.Minimum = new Decimal( videoSource.GetParamFloat( CameraParameter.GainMin ) );
@@ -135,8 +128,8 @@ namespace XimeaSample
 
                     EnableConnectionControls( false );
 
-                    // reset statistics
-                    statIndex = statReady = 0;
+                    // reset stop watch
+                    stopWatch = null;
 
                     // start timer
                     timer.Start( );
@@ -179,27 +172,24 @@ namespace XimeaSample
         {
             if ( videoSource != null )
             {
-                // get number of frames for the last second
-                statCount[statIndex] = videoSource.FramesReceived;
+                // get number of frames since the last timer tick
+                int framesReceived = videoSource.FramesReceived;
 
-                // increment indexes
-                if ( ++statIndex >= statLength )
-                    statIndex = 0;
-                if ( statReady < statLength )
-                    statReady++;
-
-                float fps = 0;
-
-                // calculate average value
-                for ( int i = 0; i < statReady; i++ )
+                if ( stopWatch == null )
                 {
-                    fps += statCount[i];
+                    stopWatch = new Stopwatch( );
+                    stopWatch.Start( );
                 }
-                fps /= statReady;
+                else
+                {
+                    stopWatch.Stop( );
 
-                statCount[statIndex] = 0;
+                    float fps = 1000.0f * framesReceived / stopWatch.ElapsedMilliseconds;
+                    fpsLabel.Text = fps.ToString( "F2" ) + " fps";
 
-                fpsLabel.Text = fps.ToString( "F2" ) + " fps";
+                    stopWatch.Reset( );
+                    stopWatch.Start( );
+                }
             }
         }
 
@@ -252,7 +242,7 @@ namespace XimeaSample
                     videoSource.FrameInterval = (int) ( 1000.0f / videoSource.GetParamFloat( CameraParameter.FramerateMax ) );
 
                     // reset statistics
-                    statIndex = statReady = 0;
+                    stopWatch = null;
                     int bin = videoSource.FramesReceived;
 
                     spareLabel.Text = string.Format( "frame interval = {0} ms, max fps = {1}",

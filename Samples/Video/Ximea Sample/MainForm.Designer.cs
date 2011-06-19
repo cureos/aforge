@@ -35,6 +35,10 @@
             this.spareLabel = new System.Windows.Forms.ToolStripStatusLabel( );
             this.topPanel = new System.Windows.Forms.Panel( );
             this.groupBox1 = new System.Windows.Forms.GroupBox( );
+            this.offsetYUpDown = new System.Windows.Forms.NumericUpDown( );
+            this.label9 = new System.Windows.Forms.Label( );
+            this.offsetXUpDown = new System.Windows.Forms.NumericUpDown( );
+            this.label10 = new System.Windows.Forms.Label( );
             this.heightUpDown = new System.Windows.Forms.NumericUpDown( );
             this.label8 = new System.Windows.Forms.Label( );
             this.widthUpDown = new System.Windows.Forms.NumericUpDown( );
@@ -55,20 +59,16 @@
             this.deviceCombo = new System.Windows.Forms.ComboBox( );
             this.mainPanel = new System.Windows.Forms.Panel( );
             this.timer = new System.Windows.Forms.Timer( this.components );
-            this.offsetYUpDown = new System.Windows.Forms.NumericUpDown( );
-            this.label9 = new System.Windows.Forms.Label( );
-            this.offsetXUpDown = new System.Windows.Forms.NumericUpDown( );
-            this.label10 = new System.Windows.Forms.Label( );
             this.statusStrip.SuspendLayout( );
             this.topPanel.SuspendLayout( );
             this.groupBox1.SuspendLayout( );
+            ( (System.ComponentModel.ISupportInitialize) ( this.offsetYUpDown ) ).BeginInit( );
+            ( (System.ComponentModel.ISupportInitialize) ( this.offsetXUpDown ) ).BeginInit( );
             ( (System.ComponentModel.ISupportInitialize) ( this.heightUpDown ) ).BeginInit( );
             ( (System.ComponentModel.ISupportInitialize) ( this.widthUpDown ) ).BeginInit( );
             ( (System.ComponentModel.ISupportInitialize) ( this.gainUpDown ) ).BeginInit( );
             ( (System.ComponentModel.ISupportInitialize) ( this.exposureUpDown ) ).BeginInit( );
             this.mainPanel.SuspendLayout( );
-            ( (System.ComponentModel.ISupportInitialize) ( this.offsetYUpDown ) ).BeginInit( );
-            ( (System.ComponentModel.ISupportInitialize) ( this.offsetXUpDown ) ).BeginInit( );
             this.SuspendLayout( );
             // 
             // videoSourcePlayer
@@ -111,7 +111,7 @@
                         | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom ) ) );
             this.spareLabel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
             this.spareLabel.Name = "spareLabel";
-            this.spareLabel.Size = new System.Drawing.Size( 475, 17 );
+            this.spareLabel.Size = new System.Drawing.Size( 595, 17 );
             this.spareLabel.Spring = true;
             this.spareLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -157,6 +157,50 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Camera parameters:";
+            // 
+            // offsetYUpDown
+            // 
+            this.offsetYUpDown.Increment = new decimal( new int[] {
+            10,
+            0,
+            0,
+            0} );
+            this.offsetYUpDown.Location = new System.Drawing.Point( 520, 50 );
+            this.offsetYUpDown.Name = "offsetYUpDown";
+            this.offsetYUpDown.Size = new System.Drawing.Size( 62, 20 );
+            this.offsetYUpDown.TabIndex = 17;
+            this.offsetYUpDown.ValueChanged += new System.EventHandler( this.offsetYUpDown_ValueChanged );
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point( 468, 53 );
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size( 48, 13 );
+            this.label9.TabIndex = 16;
+            this.label9.Text = "Offset Y:";
+            // 
+            // offsetXUpDown
+            // 
+            this.offsetXUpDown.Increment = new decimal( new int[] {
+            10,
+            0,
+            0,
+            0} );
+            this.offsetXUpDown.Location = new System.Drawing.Point( 360, 50 );
+            this.offsetXUpDown.Name = "offsetXUpDown";
+            this.offsetXUpDown.Size = new System.Drawing.Size( 62, 20 );
+            this.offsetXUpDown.TabIndex = 15;
+            this.offsetXUpDown.ValueChanged += new System.EventHandler( this.offsetXUpDown_ValueChanged );
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point( 311, 53 );
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size( 48, 13 );
+            this.label10.TabIndex = 14;
+            this.label10.Text = "Offset X:";
             // 
             // heightUpDown
             // 
@@ -224,7 +268,7 @@
             // 
             this.exposureUpDown.DecimalPlaces = 2;
             this.exposureUpDown.Increment = new decimal( new int[] {
-            10,
+            2,
             0,
             0,
             0} );
@@ -346,50 +390,6 @@
             this.timer.Interval = 1000;
             this.timer.Tick += new System.EventHandler( this.timer_Tick );
             // 
-            // offsetYUpDown
-            // 
-            this.offsetYUpDown.Increment = new decimal( new int[] {
-            10,
-            0,
-            0,
-            0} );
-            this.offsetYUpDown.Location = new System.Drawing.Point( 520, 50 );
-            this.offsetYUpDown.Name = "offsetYUpDown";
-            this.offsetYUpDown.Size = new System.Drawing.Size( 62, 20 );
-            this.offsetYUpDown.TabIndex = 17;
-            this.offsetYUpDown.ValueChanged += new System.EventHandler( this.offsetYUpDown_ValueChanged );
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point( 468, 53 );
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size( 48, 13 );
-            this.label9.TabIndex = 16;
-            this.label9.Text = "Offset Y:";
-            // 
-            // offsetXUpDown
-            // 
-            this.offsetXUpDown.Increment = new decimal( new int[] {
-            10,
-            0,
-            0,
-            0} );
-            this.offsetXUpDown.Location = new System.Drawing.Point( 360, 50 );
-            this.offsetXUpDown.Name = "offsetXUpDown";
-            this.offsetXUpDown.Size = new System.Drawing.Size( 62, 20 );
-            this.offsetXUpDown.TabIndex = 15;
-            this.offsetXUpDown.ValueChanged += new System.EventHandler( this.offsetXUpDown_ValueChanged );
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point( 311, 53 );
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size( 48, 13 );
-            this.label10.TabIndex = 14;
-            this.label10.Text = "Offset X:";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
@@ -407,13 +407,13 @@
             this.topPanel.ResumeLayout( false );
             this.groupBox1.ResumeLayout( false );
             this.groupBox1.PerformLayout( );
+            ( (System.ComponentModel.ISupportInitialize) ( this.offsetYUpDown ) ).EndInit( );
+            ( (System.ComponentModel.ISupportInitialize) ( this.offsetXUpDown ) ).EndInit( );
             ( (System.ComponentModel.ISupportInitialize) ( this.heightUpDown ) ).EndInit( );
             ( (System.ComponentModel.ISupportInitialize) ( this.widthUpDown ) ).EndInit( );
             ( (System.ComponentModel.ISupportInitialize) ( this.gainUpDown ) ).EndInit( );
             ( (System.ComponentModel.ISupportInitialize) ( this.exposureUpDown ) ).EndInit( );
             this.mainPanel.ResumeLayout( false );
-            ( (System.ComponentModel.ISupportInitialize) ( this.offsetYUpDown ) ).EndInit( );
-            ( (System.ComponentModel.ISupportInitialize) ( this.offsetXUpDown ) ).EndInit( );
             this.ResumeLayout( false );
             this.PerformLayout( );
 
