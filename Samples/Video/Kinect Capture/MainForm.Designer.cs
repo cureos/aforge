@@ -39,11 +39,12 @@
             this.rightPanel = new System.Windows.Forms.Panel( );
             this.groupBox2 = new System.Windows.Forms.GroupBox( );
             this.depthCameraPlayer = new AForge.Controls.VideoSourcePlayer( );
-            this.irModeCheck = new System.Windows.Forms.CheckBox( );
             this.label2 = new System.Windows.Forms.Label( );
             this.ledColorCombo = new System.Windows.Forms.ComboBox( );
             this.label3 = new System.Windows.Forms.Label( );
             this.tiltUpDown = new System.Windows.Forms.NumericUpDown( );
+            this.label4 = new System.Windows.Forms.Label( );
+            this.videoModeCombo = new System.Windows.Forms.ComboBox( );
             this.tableLayoutPanel.SuspendLayout( );
             this.leftPanel.SuspendLayout( );
             this.groupBox1.SuspendLayout( );
@@ -178,20 +179,10 @@
             this.depthCameraPlayer.Text = "videoSourcePlayer2";
             this.depthCameraPlayer.VideoSource = null;
             // 
-            // irModeCheck
-            // 
-            this.irModeCheck.AutoSize = true;
-            this.irModeCheck.Location = new System.Drawing.Point( 647, 13 );
-            this.irModeCheck.Name = "irModeCheck";
-            this.irModeCheck.Size = new System.Drawing.Size( 176, 17 );
-            this.irModeCheck.TabIndex = 5;
-            this.irModeCheck.Text = "Infra red mode for video camera";
-            this.irModeCheck.UseVisualStyleBackColor = true;
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point( 390, 15 );
+            this.label2.Location = new System.Drawing.Point( 390, 13 );
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size( 31, 13 );
             this.label2.TabIndex = 6;
@@ -217,7 +208,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point( 530, 15 );
+            this.label3.Location = new System.Drawing.Point( 530, 13 );
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size( 24, 13 );
             this.label3.TabIndex = 8;
@@ -225,7 +216,7 @@
             // 
             // tiltUpDown
             // 
-            this.tiltUpDown.Location = new System.Drawing.Point( 560, 12 );
+            this.tiltUpDown.Location = new System.Drawing.Point( 560, 10 );
             this.tiltUpDown.Maximum = new decimal( new int[] {
             31,
             0,
@@ -241,16 +232,39 @@
             this.tiltUpDown.TabIndex = 9;
             this.tiltUpDown.ValueChanged += new System.EventHandler( this.tiltUpDown_ValueChanged );
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point( 635, 13 );
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size( 66, 13 );
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Video mode:";
+            // 
+            // videoModeCombo
+            // 
+            this.videoModeCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.videoModeCombo.FormattingEnabled = true;
+            this.videoModeCombo.Items.AddRange( new object[] {
+            "Color",
+            "Bayer",
+            "InfraRed"} );
+            this.videoModeCombo.Location = new System.Drawing.Point( 706, 10 );
+            this.videoModeCombo.Name = "videoModeCombo";
+            this.videoModeCombo.Size = new System.Drawing.Size( 100, 21 );
+            this.videoModeCombo.TabIndex = 11;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size( 827, 355 );
+            this.Controls.Add( this.videoModeCombo );
+            this.Controls.Add( this.label4 );
             this.Controls.Add( this.tiltUpDown );
             this.Controls.Add( this.label3 );
             this.Controls.Add( this.ledColorCombo );
             this.Controls.Add( this.label2 );
-            this.Controls.Add( this.irModeCheck );
             this.Controls.Add( this.tableLayoutPanel );
             this.Controls.Add( this.disconnectButton );
             this.Controls.Add( this.connectButton );
@@ -285,11 +299,12 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private AForge.Controls.VideoSourcePlayer videoCameraPlayer;
         private AForge.Controls.VideoSourcePlayer depthCameraPlayer;
-        private System.Windows.Forms.CheckBox irModeCheck;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox ledColorCombo;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown tiltUpDown;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox videoModeCombo;
     }
 }
 

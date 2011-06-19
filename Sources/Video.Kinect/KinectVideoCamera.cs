@@ -17,6 +17,27 @@ namespace AForge.Video.Kinect
     using AForge;
     using AForge.Imaging;
     using AForge.Video;
+
+    /// <summary>
+    /// Enumeration of video camera modes for the <see cref="KinectVideoCamera"/>.
+    /// </summary>
+    public enum VideoCameraMode
+    {
+        /// <summary>
+        /// 24 bit per pixel RGB mode.
+        /// </summary>
+        Color,
+
+        /// <summary>
+        /// 8 bit per pixel Bayer mode.
+        /// </summary>
+        Bayer,
+
+        /// <summary>
+        /// 8 bit per pixel Infra Red mode.
+        /// </summary>
+        InfraRed
+    }
     
     /// <summary>
     /// Video source for Microsoft Kinect's video camera.
@@ -60,8 +81,8 @@ namespace AForge.Video.Kinect
         private int framesReceived;
         // recieved byte count
         private int bytesReceived;
-        // infra red mode or not
-        private bool irMode = false;
+        // camera mode
+        private VideoCameraMode cameraMode = VideoCameraMode.Color;
         // camera resolution to set
         private CameraResolution resolution = CameraResolution.Medium;
         // list of currently running cameras
@@ -102,21 +123,19 @@ namespace AForge.Video.Kinect
         public event PlayingFinishedEventHandler PlayingFinished;
 
         /// <summary>
-        /// Specifies if IR (infra red) mode must be used or not.
+        /// Specifies video mode for the camera.
         /// </summary>
         /// 
-        /// <remarks><para>In IR mode the Kinect's video camera provides 8 bpp grayscale image, but
-        /// in color mode it provides 24 bpp color image.</para>
-        /// 
+        /// <remarks>
         /// <para><note>The property must be set before running the video source to take effect.</note></para>
         /// 
-        /// <para>Default value of the property is set to <see langword="false"/>.</para>
+        /// <para>Default value of the property is set to <see cref="VideoCameraMode.Color"/>.</para>
         /// </remarks>
         /// 
-        public bool IRMode
+        public VideoCameraMode CameraMode
         {
-            get { return irMode; }
-            set { irMode = value; }
+            get { return cameraMode; }
+            set { cameraMode = value; }
         }
 
         /// <summary>
@@ -226,13 +245,13 @@ namespace AForge.Video.Kinect
         /// 
         /// <param name="deviceID">Kinect's device ID (index) to connect to.</param>
         /// <param name="resolution">Resolution of video camera to set.</param>
-        /// <param name="irMode">Enable IR (infra red) mode for the camera or not.</param>
+        /// <param name="cameraMode">Sets video camera mode.</param>
         /// 
-        public KinectVideoCamera( int deviceID, CameraResolution resolution, bool irMode )
+        public KinectVideoCamera( int deviceID, CameraResolution resolution, VideoCameraMode cameraMode )
         {
             this.deviceID   = deviceID;
             this.resolution = resolution;
-            this.irMode     = irMode;
+            this.cameraMode = cameraMode;
         }
 
         private Kinect device = null;
@@ -271,9 +290,16 @@ namespace AForge.Video.Kinect
                             // get Kinect device
                             device = Kinect.GetDevice( deviceID );
 
-                            KinectNative.VideoCameraFormat dataFormat = ( !irMode ) ?
-                                KinectNative.VideoCameraFormat.RGB :
-                                KinectNative.VideoCameraFormat.IR8Bit;
+                            KinectNative.VideoCameraFormat dataFormat = KinectNative.VideoCameraFormat.RGB;
+ 
+                            if ( cameraMode == VideoCameraMode.Bayer )
+                            {
+                                dataFormat = KinectNative.VideoCameraFormat.Bayer;
+                            }
+                            else if ( cameraMode == VideoCameraMode.InfraRed )
+                            {
+                                dataFormat = KinectNative.VideoCameraFormat.IR8Bit;
+                            }
 
                             // find video format parameters
                             videoModeInfo = KinectNative.freenect_find_video_mode( resolution, dataFormat );
@@ -404,7 +430,8 @@ namespace AForge.Video.Kinect
 
             try
             {
-                image = ( !irMode ) ? new Bitmap( width, height, PixelFormat.Format24bppRgb ) :
+                image = ( cameraMode == VideoCameraMode.Color ) ?
+                    new Bitmap( width, height, PixelFormat.Format24bppRgb ) :
                     AForge.Imaging.Image.CreateGrayscaleImage( width, height );
 
                 data = image.LockBits( new Rectangle( 0, 0, width, height ),
@@ -415,7 +442,7 @@ namespace AForge.Video.Kinect
                     byte* dst = (byte*) data.Scan0.ToPointer( );
                     byte* src = (byte*) imageBuffer.ToPointer( );
 
-                    if ( !irMode )
+                    if ( cameraMode == VideoCameraMode.Color )
                     {
                         // color RGB 24 mode
                         int offset = data.Stride - width * 3;

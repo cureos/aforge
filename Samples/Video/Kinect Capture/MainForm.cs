@@ -50,6 +50,7 @@ namespace KinectCapture
                 }
             }
             devicesCombo.SelectedIndex = 0;
+            videoModeCombo.SelectedIndex = 0;
             EnableConnectionControls( true );
         }
 
@@ -63,7 +64,7 @@ namespace KinectCapture
         private void EnableConnectionControls( bool enable )
         {
             devicesCombo.Enabled = enable;
-            irModeCheck.Enabled = enable;
+            videoModeCombo.Enabled = enable;
             connectButton.Enabled = enable;
             disconnectButton.Enabled = !enable;
             ledColorCombo.Enabled = !enable;
@@ -104,7 +105,8 @@ namespace KinectCapture
                     if ( videoCamera == null )
                     {
                         videoCamera = kinectDevice.GetVideoCamera( );
-                        videoCamera.IRMode = irModeCheck.Checked;
+                        videoCamera.CameraMode = ( videoModeCombo.SelectedIndex == 0 ) ? VideoCameraMode.Color :
+                            ( ( videoModeCombo.SelectedIndex == 1 ) ? VideoCameraMode.Bayer : VideoCameraMode.InfraRed );
                         videoCameraPlayer.VideoSource = videoCamera;
                         videoCameraPlayer.Start( );
                     }
