@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent( )
         {
+            this.components = new System.ComponentModel.Container( );
             this.label1 = new System.Windows.Forms.Label( );
             this.devicesCombo = new System.Windows.Forms.ComboBox( );
             this.connectButton = new System.Windows.Forms.Button( );
@@ -45,12 +46,16 @@
             this.tiltUpDown = new System.Windows.Forms.NumericUpDown( );
             this.label4 = new System.Windows.Forms.Label( );
             this.videoModeCombo = new System.Windows.Forms.ComboBox( );
+            this.statusStrip = new System.Windows.Forms.StatusStrip( );
+            this.accelerometerLabel = new System.Windows.Forms.ToolStripStatusLabel( );
+            this.timer = new System.Windows.Forms.Timer( this.components );
             this.tableLayoutPanel.SuspendLayout( );
             this.leftPanel.SuspendLayout( );
             this.groupBox1.SuspendLayout( );
             this.rightPanel.SuspendLayout( );
             this.groupBox2.SuspendLayout( );
             ( (System.ComponentModel.ISupportInitialize) ( this.tiltUpDown ) ).BeginInit( );
+            this.statusStrip.SuspendLayout( );
             this.SuspendLayout( );
             // 
             // label1
@@ -105,7 +110,7 @@
             this.tableLayoutPanel.Name = "tableLayoutPanel";
             this.tableLayoutPanel.RowCount = 1;
             this.tableLayoutPanel.RowStyles.Add( new System.Windows.Forms.RowStyle( System.Windows.Forms.SizeType.Percent, 50F ) );
-            this.tableLayoutPanel.Size = new System.Drawing.Size( 826, 313 );
+            this.tableLayoutPanel.Size = new System.Drawing.Size( 826, 295 );
             this.tableLayoutPanel.TabIndex = 4;
             // 
             // leftPanel
@@ -114,7 +119,7 @@
             this.leftPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.leftPanel.Location = new System.Drawing.Point( 3, 3 );
             this.leftPanel.Name = "leftPanel";
-            this.leftPanel.Size = new System.Drawing.Size( 407, 307 );
+            this.leftPanel.Size = new System.Drawing.Size( 407, 289 );
             this.leftPanel.TabIndex = 0;
             // 
             // groupBox1
@@ -125,7 +130,7 @@
             this.groupBox1.Controls.Add( this.videoCameraPlayer );
             this.groupBox1.Location = new System.Drawing.Point( 5, 5 );
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size( 396, 295 );
+            this.groupBox1.Size = new System.Drawing.Size( 396, 277 );
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Video Camera";
@@ -139,7 +144,7 @@
             this.videoCameraPlayer.ForeColor = System.Drawing.Color.FromArgb( ( (int) ( ( (byte) ( 192 ) ) ) ), ( (int) ( ( (byte) ( 192 ) ) ) ), ( (int) ( ( (byte) ( 255 ) ) ) ) );
             this.videoCameraPlayer.Location = new System.Drawing.Point( 11, 15 );
             this.videoCameraPlayer.Name = "videoCameraPlayer";
-            this.videoCameraPlayer.Size = new System.Drawing.Size( 373, 271 );
+            this.videoCameraPlayer.Size = new System.Drawing.Size( 373, 253 );
             this.videoCameraPlayer.TabIndex = 0;
             this.videoCameraPlayer.VideoSource = null;
             // 
@@ -149,7 +154,7 @@
             this.rightPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rightPanel.Location = new System.Drawing.Point( 416, 3 );
             this.rightPanel.Name = "rightPanel";
-            this.rightPanel.Size = new System.Drawing.Size( 407, 307 );
+            this.rightPanel.Size = new System.Drawing.Size( 407, 289 );
             this.rightPanel.TabIndex = 1;
             // 
             // groupBox2
@@ -160,7 +165,7 @@
             this.groupBox2.Controls.Add( this.depthCameraPlayer );
             this.groupBox2.Location = new System.Drawing.Point( 6, 6 );
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size( 395, 295 );
+            this.groupBox2.Size = new System.Drawing.Size( 395, 277 );
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Depth Camera";
@@ -174,7 +179,7 @@
             this.depthCameraPlayer.ForeColor = System.Drawing.Color.FromArgb( ( (int) ( ( (byte) ( 192 ) ) ) ), ( (int) ( ( (byte) ( 192 ) ) ) ), ( (int) ( ( (byte) ( 255 ) ) ) ) );
             this.depthCameraPlayer.Location = new System.Drawing.Point( 11, 15 );
             this.depthCameraPlayer.Name = "depthCameraPlayer";
-            this.depthCameraPlayer.Size = new System.Drawing.Size( 373, 271 );
+            this.depthCameraPlayer.Size = new System.Drawing.Size( 373, 253 );
             this.depthCameraPlayer.TabIndex = 0;
             this.depthCameraPlayer.Text = "videoSourcePlayer2";
             this.depthCameraPlayer.VideoSource = null;
@@ -254,11 +259,34 @@
             this.videoModeCombo.Size = new System.Drawing.Size( 100, 21 );
             this.videoModeCombo.TabIndex = 11;
             // 
+            // statusStrip
+            // 
+            this.statusStrip.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.accelerometerLabel} );
+            this.statusStrip.Location = new System.Drawing.Point( 0, 338 );
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size( 827, 22 );
+            this.statusStrip.TabIndex = 12;
+            this.statusStrip.Text = "statusStrip1";
+            // 
+            // accelerometerLabel
+            // 
+            this.accelerometerLabel.AutoSize = false;
+            this.accelerometerLabel.Name = "accelerometerLabel";
+            this.accelerometerLabel.Size = new System.Drawing.Size( 781, 17 );
+            this.accelerometerLabel.Spring = true;
+            this.accelerometerLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // timer
+            // 
+            this.timer.Tick += new System.EventHandler( this.timer_Tick );
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size( 827, 355 );
+            this.ClientSize = new System.Drawing.Size( 827, 360 );
+            this.Controls.Add( this.statusStrip );
             this.Controls.Add( this.videoModeCombo );
             this.Controls.Add( this.label4 );
             this.Controls.Add( this.tiltUpDown );
@@ -270,7 +298,7 @@
             this.Controls.Add( this.connectButton );
             this.Controls.Add( this.devicesCombo );
             this.Controls.Add( this.label1 );
-            this.MinimumSize = new System.Drawing.Size( 741, 373 );
+            this.MinimumSize = new System.Drawing.Size( 840, 390 );
             this.Name = "MainForm";
             this.Text = "Kinect Capture";
             this.Load += new System.EventHandler( this.MainForm_Load );
@@ -281,6 +309,8 @@
             this.rightPanel.ResumeLayout( false );
             this.groupBox2.ResumeLayout( false );
             ( (System.ComponentModel.ISupportInitialize) ( this.tiltUpDown ) ).EndInit( );
+            this.statusStrip.ResumeLayout( false );
+            this.statusStrip.PerformLayout( );
             this.ResumeLayout( false );
             this.PerformLayout( );
 
@@ -305,6 +335,9 @@
         private System.Windows.Forms.NumericUpDown tiltUpDown;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox videoModeCombo;
+        private System.Windows.Forms.StatusStrip statusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel accelerometerLabel;
+        private System.Windows.Forms.Timer timer;
     }
 }
 

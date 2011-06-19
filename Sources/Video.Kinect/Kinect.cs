@@ -46,6 +46,7 @@ namespace AForge.Video.Kinect
             public IntPtr Device;
             public int ReferenceCounter;
             public int ErrorCounter;
+            public KinectNative.TiltState TiltState;
 
             public DeviceContext( IntPtr device )
             {
@@ -245,17 +246,51 @@ namespace AForge.Video.Kinect
         ///
         public void SetMotorTilt( int angle )
         {
-            // check if value is in valid range
-            if ( ( angle < -31 ) || ( angle > 31 ) )
+            lock ( sync )
             {
-                throw new ArgumentOutOfRangeException( "Motor tilt has to be in the [-31, 31] range." );
+                CheckDevice( );
+
+                // check if value is in valid range
+                if ( ( angle < -31 ) || ( angle > 31 ) )
+                {
+                    throw new ArgumentOutOfRangeException( "Motor tilt has to be in the [-31, 31] range." );
+                }
+
+                int result = KinectNative.freenect_set_tilt_degs( rawDevice, angle );
+                if ( result != 0 )
+                {
+                    throw new DeviceErrorException( "Failed setting motor tilt. Error code: " + result );
+                }
+            }
+        }
+
+        private const double CountsPerGravity = 819.0;
+        private const double Gravity = 9.80665;
+
+        /// <summary>
+        /// Get accelerometer values for 3 axes.
+        /// </summary>
+        /// 
+        /// <param name="x">X axis value on the accelerometer.</param>
+        /// <param name="y">Y axis value on the accelerometer.</param>
+        /// <param name="z">Z axis value on the accelerometer.</param>
+        /// 
+        /// <remarks><para>Units of all 3 values are m/s<sup>2</sup>. The <b>g</b> value used
+        /// for calculations is taken as 9.80665 m/s<sup>2</sup>.</para></remarks>
+        /// 
+        public void GetAccelerometerValues( out double x, out double y, out double z )
+        {
+            KinectNative.TiltState tiltState = new KinectNative.TiltState( );
+
+            lock ( sync )
+            {
+                CheckDevice( );
+                tiltState = openDevices[deviceID].TiltState;
             }
 
-            int result = KinectNative.freenect_set_tilt_degs( rawDevice, angle );
-            if ( result != 0 )
-            {
-                throw new DeviceErrorException( "Failed setting motor tilt. Error code: " + result );
-            }
+            x = (double) tiltState.AccelerometerX / CountsPerGravity * Gravity;
+            y = (double) tiltState.AccelerometerY / CountsPerGravity * Gravity;
+            z = (double) tiltState.AccelerometerZ / CountsPerGravity * Gravity;
         }
 
         /// <summary>
@@ -331,12 +366,16 @@ namespace AForge.Video.Kinect
                         {
                             if ( KinectNative.freenect_update_tilt_state( deviceContext.Device ) < 0 )
                             {
-                                Console.WriteLine( "Error while updating tilt state" );
                                 deviceContext.ErrorCounter++;
                             }
                             else
                             {
                                 deviceContext.ErrorCounter = 0;
+
+                                // get updated device status
+                                IntPtr ptr = KinectNative.freenect_get_tilt_state( deviceContext.Device );
+                                deviceContext.TiltState = (KinectNative.TiltState)
+                                    System.Runtime.InteropServices.Marshal.PtrToStructure( ptr, typeof( KinectNative.TiltState ) );
                             }
                         }
                     }

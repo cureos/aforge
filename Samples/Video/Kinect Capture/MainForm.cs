@@ -129,6 +129,8 @@ namespace KinectCapture
                         kinectDevice.SetMotorTilt( (int) tiltUpDown.Value );
                     }
 
+                    timer.Start( );
+
                     ret = true;
                 }
                 catch ( Exception ex )
@@ -148,6 +150,8 @@ namespace KinectCapture
         // Disconnect from Kinect cameras
         private void Disconnect( )
         {
+            timer.Stop( );
+
             if ( videoCamera != null )
             {
                 videoCameraPlayer.VideoSource = null;
@@ -169,6 +173,7 @@ namespace KinectCapture
             }
         }
 
+        // Change color of the LED
         private void ledColorCombo_SelectedIndexChanged( object sender, EventArgs e )
         {
             if ( kinectDevice != null )
@@ -177,12 +182,24 @@ namespace KinectCapture
             }
         }
 
+        // Tilt the camera up/down
         private void tiltUpDown_ValueChanged( object sender, EventArgs e )
         {
             if ( kinectDevice != null )
             {
                 kinectDevice.SetMotorTilt( (int) tiltUpDown.Value );
             }
+        }
+
+        // Read accelerometer values on timer tick
+        private void timer_Tick( object sender, EventArgs e )
+        {
+            double x, y, z;
+
+            kinectDevice.GetAccelerometerValues( out x, out y, out z );
+
+            accelerometerLabel.Text = string.Format(
+                "Accelerometer values (m/(s*s)): x = {0:F4}, y = {1:F4}, z = {2:F4}", x, y, z );
         }
     }
 }

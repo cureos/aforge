@@ -101,6 +101,33 @@ namespace AForge.Video.Kinect
             FormatPacked10Bit = 3
         }
 
+        // Different states the tilt motor can be in operation
+        public enum TiltStatusOption
+        {
+            Stopped = 0x00,
+            AtLimit = 0x01,
+            Moving  = 0x04
+        }
+
+        // Device tilt state values. This holds stuff like accelerometer and tilt status.
+        public struct TiltState
+        {
+            public Int16 AccelerometerX;
+            public Int16 AccelerometerY;
+            public Int16 AccelerometerZ;
+            public SByte TiltAngle;
+            public TiltStatusOption TiltStatus;
+
+            public TiltState( Int16 x, Int16 y, Int16 z )
+            {
+                AccelerometerX = x;
+                AccelerometerY = y;
+                AccelerometerZ = z;
+                TiltAngle = 0;
+                TiltStatus = TiltStatusOption.Stopped;
+            }
+        }
+
         // Information about certain picture format
         [StructLayout( LayoutKind.Sequential )]
         public struct BitmapInfoHeader

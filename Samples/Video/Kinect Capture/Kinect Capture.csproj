@@ -45,7 +45,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Release\AForge.Video.dll</HintPath>
     </Reference>
-    <Reference Include="AForge.Video.Kinect, Version=1.0.0.0, Culture=neutral, PublicKeyToken=96a9a097745e71d9, processorArchitecture=MSIL">
+    <Reference Include="AForge.Video.Kinect, Version=2.2.0.0, Culture=neutral, PublicKeyToken=96a9a097745e71d9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Release\AForge.Video.Kinect.dll</HintPath>
     </Reference>
