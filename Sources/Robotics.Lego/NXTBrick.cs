@@ -1464,7 +1464,7 @@ namespace AForge.Robotics.Lego
         /// to initialize.</note></para>
         /// 
         /// <para>The acceleration sensor can also be used to measure tilt in three axes This is possible because gravity is perceived
-        /// as acceleration. When the sensor is stationary and in the normal horizontal position, the x and y axis willl be near 
+        /// as acceleration. When the sensor is stationary and in the normal horizontal position, the x and y axis will be near 
         /// zero, because they are horizontal, while the z axis will be near 200, which represents g. If you tilt the sensor then 
         /// gravity will also be detected on the other axis and the value for the z axis will go down. Since gravity is distributed
         /// among the three component vectors, the tilt of the sensor can be determined.</para>
