@@ -505,12 +505,8 @@ namespace AForge.Video
 						// miliseconds to sleep
 						int msec = frameInterval - (int) span.TotalMilliseconds;
 
-						while ( ( msec > 0 ) && ( stopEvent.WaitOne( 0, false ) == false ) )
-						{
-							// sleeping ...
-							Thread.Sleep( ( msec < 100 ) ? msec : 100 );
-							msec -= 100;
-						}
+                        if ( ( msec > 0 ) && ( stopEvent.WaitOne( msec, false ) ) )
+                            break;
 					}
 				}
                 catch ( ThreadAbortException )

@@ -128,16 +128,10 @@ void VideoFileSource::WorkerThreadHandler( )
                 // miliseconds to sleep
                 int msec = interval - (int) span->TotalMilliseconds;
 
-                while ( ( msec > 0 ) && ( m_needToStop->WaitOne( 0, false ) == false ) )
-                {
-                    // sleeping ...
-					Thread::Sleep( ( msec < 100 ) ? msec : 100 );
-                    msec -= 100;
-                }
+                if ( ( msec > 0 ) && ( m_needToStop->WaitOne( msec, false ) == true ) )
+					break;
             }
-
 		}
-
 	}
 	catch ( Exception^ exception )
 	{
