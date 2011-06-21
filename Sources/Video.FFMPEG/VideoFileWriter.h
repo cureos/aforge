@@ -177,7 +177,7 @@ namespace AForge { namespace Video { namespace FFMPEG
 		/// <remarks><para>The methods creates new video file with the specified name.
 		/// If a file with such name already exists in the file system, it will be overwritten.</para>
 		///
-		/// <para>When adding new video frames using <see cref="WriteVideoFrame"/> method,
+		/// <para>When adding new video frames using <see cref="WriteVideoFrame(Bitmap^ frame)"/> method,
 		/// the video frame must have width and height as specified during file opening.</para>
 		/// </remarks>
 		///
@@ -203,6 +203,27 @@ namespace AForge { namespace Video { namespace FFMPEG
         /// <exception cref="VideoException">A error occurred while writing new video frame. See exception message.</exception>
         /// 
 		void WriteVideoFrame( Bitmap^ frame );
+
+        /// <summary>
+        /// Write new video frame with a specific timestamp into currently opened video file.
+        /// </summary>
+		///
+		/// <param name="frame">Bitmap to add as a new video frame.</param>
+		/// <param name="timestamp">Frame timestamp, total time since recording started.</param>
+		///
+		/// <remarks><para>The specified bitmap must be either color 24 or 32 bpp image or grayscale 8 bpp (indexed) image.</para>
+		/// 
+		/// <para><note>The <paramref name="timestamp"/> parameter allows user to specify presentation
+		/// time of the frame being saved. However, it is user's responsibility to make sure the value is increasing
+		/// over time.</note></para>
+		/// </remarks>
+		///
+        /// <exception cref="System::IO::IOException">Thrown if no video file was open.</exception>
+        /// <exception cref="ArgumentException">The provided bitmap must be 24 or 32 bpp color image or 8 bpp grayscale image.</exception>
+        /// <exception cref="ArgumentException">Bitmap size must be of the same as video size, which was specified on opening video file.</exception>
+        /// <exception cref="VideoException">A error occurred while writing new video frame. See exception message.</exception>
+        /// 
+		void WriteVideoFrame( Bitmap^ frame, TimeSpan timestamp );
 
         /// <summary>
         /// Close currently opened video file if any.

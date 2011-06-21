@@ -231,6 +231,12 @@ void VideoFileWriter::Close( )
 // Writes new video frame to the opened video file
 void VideoFileWriter::WriteVideoFrame( Bitmap^ frame )
 {
+	WriteVideoFrame( frame, TimeSpan::MinValue );
+}
+
+// Writes new video frame to the opened video file
+void VideoFileWriter::WriteVideoFrame( Bitmap^ frame, TimeSpan timestamp )
+{
 	if ( data == nullptr )
 	{
 		throw gcnew System::IO::IOException( "A video file was not opened yet." );
@@ -271,6 +277,12 @@ void VideoFileWriter::WriteVideoFrame( Bitmap^ frame )
 	}
 
 	frame->UnlockBits( bitmapData );
+
+	if ( timestamp.Ticks >= 0 )
+	{
+		const double frameNumber = timestamp.TotalSeconds * m_frameRate;
+		data->VideoFrame->pts = static_cast<libffmpeg::int64_t>( frameNumber );
+	}
 
 	// write the converted frame to the video file
 	write_video_frame( data );

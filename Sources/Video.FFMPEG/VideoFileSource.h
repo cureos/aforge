@@ -24,6 +24,10 @@ namespace AForge { namespace Video { namespace FFMPEG
 	///
 	/// <para><note>The class provides video only. Sound is not supported.</note></para>
     /// 
+	/// <para><note>The class ignores presentation time of video frames while retrieving them from
+	/// video file. Instead it provides video frames according to the FPS rate of the video file
+	/// or the configured <see cref="FrameInterval"/>.</note></para>
+    /// 
     /// <para>Sample usage:</para>
     /// <code>
     /// // create video source
@@ -160,6 +164,9 @@ namespace AForge { namespace Video { namespace FFMPEG
         /// 
         /// <para><note>Setting this property to 0 leads to no delay between video frames - frames
         /// are read as fast as possible.</note></para>
+		///
+		/// <para><note>Setting this property has effect only when <see cref="FrameIntervalFromSource"/>
+		/// is set to <see langword="false"/>.</note></para>
         /// 
         /// <para>Default value is set to <b>0</b>.</para>
         /// </remarks>
