@@ -30,6 +30,7 @@ namespace AForge
     /// </code>
     /// </remarks>
     /// 
+    [Serializable]
     public struct Point
     {
         /// <summary> 

@@ -43,6 +43,7 @@ namespace AForge
     /// </code>
     /// </remarks>
     /// 
+    [Serializable]
     public struct DoubleRange
     {
         private double min, max;

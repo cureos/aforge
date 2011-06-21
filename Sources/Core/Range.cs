@@ -42,7 +42,8 @@ namespace AForge
     /// }
     /// </code>
     /// </remarks>
-    /// 
+    ///
+    [Serializable]
     public struct Range
     {
         private float min, max;

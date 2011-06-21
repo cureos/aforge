@@ -42,7 +42,8 @@ namespace AForge
     /// }
     /// </code>
     /// </remarks>
-    /// 
+    ///
+    [Serializable]
     public struct IntRange
     {
         private int min, max;
