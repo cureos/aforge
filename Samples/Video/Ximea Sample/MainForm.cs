@@ -117,6 +117,7 @@ namespace XimeaSample
                     // exposure
                     exposureUpDown.Minimum = videoSource.GetParamInt( CameraParameter.ExposureMin ) / 1000;
                     exposureUpDown.Maximum = videoSource.GetParamInt( CameraParameter.ExposureMax ) / 1000;
+                    exposureUpDown.Value = 0;
                     exposureUpDown.Value = 10;
 
                     // gain
@@ -159,7 +160,7 @@ namespace XimeaSample
 
             if ( videoSource != null )
             {
-                videoSourcePlayer = null;
+                videoSourcePlayer.VideoSource = null;
 
                 videoSource.SignalToStop( );
                 videoSource.WaitForStop( );
