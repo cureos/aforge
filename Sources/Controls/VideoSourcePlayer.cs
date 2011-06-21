@@ -510,6 +510,10 @@ namespace AForge.Controls
                     lastMessage = "Video device was unplugged";
                     break;
 
+                case ReasonToFinishPlaying.VideoSourceError:
+                    lastMessage = "Video has finished because of error in video source";
+                    break;
+
                 default:
                     lastMessage = "Video has finished for unknown reason";
                     break;
