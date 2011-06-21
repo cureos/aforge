@@ -258,7 +258,7 @@ namespace AForge.Imaging
                 else if ( pixelFormat == PixelFormat.Format16bppGrayScale )
                 {
                     // 16 bpp grayscale image
-                    int basePtr = (int) image.ImageData.ToPointer( );
+                    byte* basePtr = (byte*) image.ImageData.ToPointer( );
                     int stride = image.Stride;
 
                     // histogram array
@@ -317,7 +317,7 @@ namespace AForge.Imaging
                     ( pixelFormat == PixelFormat.Format64bppArgb ) )
                 {
                     // 48/64 bpp color image
-                    int basePtr = (int) image.ImageData.ToPointer( );
+                    byte* basePtr = (byte*) image.ImageData.ToPointer( );
                     int stride = image.Stride;
                     int pixelSize = ( pixelFormat == PixelFormat.Format48bppRgb ) ? 3 : 4;
 

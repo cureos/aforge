@@ -1,8 +1,9 @@
 // AForge Image Processing Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2008
-// andrew.kirillov@gmail.com
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging.Filters
@@ -161,8 +162,8 @@ namespace AForge.Imaging.Filters
                 int v;
 
                 // do the job
-                int basePtr = (int) image.ImageData.ToPointer( );
-                int baseOvr = (int) overlay.ImageData.ToPointer( );
+                byte* basePtr = (byte*) image.ImageData.ToPointer( );
+                byte* baseOvr = (byte*) overlay.ImageData.ToPointer( );
 
                 // for each line
                 for ( int y = 0; y < height; y++ )

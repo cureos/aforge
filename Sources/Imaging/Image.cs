@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2010
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging
@@ -398,8 +398,8 @@ namespace AForge.Imaging
             unsafe
             {
                 // base pointers
-                int sourceBasePtr = (int) sourceData.Scan0.ToPointer( );
-                int newBasePtr = (int) newData.Scan0.ToPointer( );
+                byte* sourceBasePtr = (byte*) sourceData.Scan0.ToPointer( );
+                byte* newBasePtr    = (byte*) newData.Scan0.ToPointer( );
                 // image strides
                 int sourceStride = sourceData.Stride;
                 int newStride = newData.Stride;
@@ -495,8 +495,8 @@ namespace AForge.Imaging
             unsafe
             {
                 // base pointers
-                int sourceBasePtr = (int) sourceData.Scan0.ToPointer( );
-                int newBasePtr = (int) newData.Scan0.ToPointer( );
+                byte* sourceBasePtr = (byte*) sourceData.Scan0.ToPointer( );
+                byte* newBasePtr    = (byte*) newData.Scan0.ToPointer( );
                 // image strides
                 int sourceStride = sourceData.Stride;
                 int newStride = newData.Stride;

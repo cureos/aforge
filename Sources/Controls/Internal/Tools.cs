@@ -74,8 +74,8 @@ namespace AForge.Controls
             unsafe
             {
                 // base pointers
-                int sourceBasePtr = (int) sourceData.Scan0.ToPointer( );
-                int newBasePtr    = (int) newData.Scan0.ToPointer( );
+                byte* sourceBasePtr = (byte*) sourceData.Scan0.ToPointer( );
+                byte* newBasePtr    = (byte*) newData.Scan0.ToPointer( );
                 // image strides
                 int sourceStride = sourceData.Stride;
                 int newStride    = newData.Stride;
