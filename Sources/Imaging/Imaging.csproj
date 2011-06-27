@@ -110,6 +110,7 @@
     <Compile Include="Filters\Binarization\StuckiDithering.cs" />
     <Compile Include="Filters\Binarization\Threshold.cs" />
     <Compile Include="Filters\Binarization\ThresholdWithCarry.cs" />
+    <Compile Include="Filters\Color Filters\BayerFilter.cs" />
     <Compile Include="Filters\Color Filters\ChannelFiltering.cs" />
     <Compile Include="Filters\Color Filters\ColorFiltering.cs" />
     <Compile Include="Filters\Color Filters\ColorRemapping.cs" />
