@@ -1,8 +1,9 @@
 // AForge Image Processing Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2008
-// andrew.kirillov@gmail.com
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging.Filters
@@ -21,8 +22,8 @@ namespace AForge.Imaging.Filters
     /// 
     /// <para><note>Rotation is performed in counterclockwise direction.</note></para>
     /// 
-    /// <para>The filter accepts 8 bpp grayscale images and 24 bpp
-    /// color images for processing.</para>
+    /// <para>The filter accepts 8/16 bpp grayscale images and 24/48 bpp color image
+    /// for processing.</para>
     ///
     /// <para>Sample usage:</para>
     /// <code>
@@ -79,8 +80,10 @@ namespace AForge.Imaging.Filters
         public RotateNearestNeighbor( double angle, bool keepSize ) :
             base( angle, keepSize )
         {
-            formatTranslations[PixelFormat.Format8bppIndexed] = PixelFormat.Format8bppIndexed;
-            formatTranslations[PixelFormat.Format24bppRgb]    = PixelFormat.Format24bppRgb;
+            formatTranslations[PixelFormat.Format8bppIndexed]    = PixelFormat.Format8bppIndexed;
+            formatTranslations[PixelFormat.Format24bppRgb]       = PixelFormat.Format24bppRgb;
+            formatTranslations[PixelFormat.Format16bppGrayScale] = PixelFormat.Format16bppGrayScale;
+            formatTranslations[PixelFormat.Format48bppRgb]       = PixelFormat.Format48bppRgb;
         }
 
         /// <summary>
@@ -90,19 +93,37 @@ namespace AForge.Imaging.Filters
         /// <param name="sourceData">Source image data.</param>
         /// <param name="destinationData">Destination image data.</param>
         /// 
-        protected override unsafe void ProcessFilter( UnmanagedImage sourceData, UnmanagedImage destinationData )
+        protected override void ProcessFilter( UnmanagedImage sourceData, UnmanagedImage destinationData )
+        {
+            int pixelSize = Bitmap.GetPixelFormatSize( sourceData.PixelFormat ) / 8;
+
+            switch ( pixelSize )
+            {
+                case 1:
+                case 3:
+                    ProcessFilter8bpc( sourceData, destinationData );
+                    break;
+                case 2:
+                case 6:
+                    ProcessFilter16bpc( sourceData, destinationData );
+                    break;
+            }
+        }
+
+        // Process the filter on the image with 8 bits per color channel
+        private unsafe void ProcessFilter8bpc( UnmanagedImage sourceData, UnmanagedImage destinationData )
         {
             // get source image size
-            int     width       = sourceData.Width;
-            int     height      = sourceData.Height;
-            double  halfWidth   = (double) width / 2;
-            double  halfHeight  = (double) height / 2;
+            int width  = sourceData.Width;
+            int height = sourceData.Height;
+            double halfWidth  = (double) width / 2;
+            double halfHeight = (double) height / 2;
 
             // get destination image size
-            int     newWidth    = destinationData.Width;
-            int     newHeight   = destinationData.Height;
-            double  halfNewWidth    = (double) newWidth / 2;
-            double  halfNewHeight   = (double) newHeight / 2;
+            int newWidth  = destinationData.Width;
+            int newHeight = destinationData.Height;
+            double halfNewWidth  = (double) newWidth / 2;
+            double halfNewHeight = (double) newHeight / 2;
 
             // angle's sine and cosine
             double angleRad = -angle * Math.PI / 180;
@@ -194,6 +215,117 @@ namespace AForge.Imaging.Filters
                     }
                     cy++;
                     dst += dstOffset;
+                }
+            }
+        }
+
+        // Process the filter on the image with 16 bits per color channel.
+        private unsafe void ProcessFilter16bpc( UnmanagedImage sourceData, UnmanagedImage destinationData )
+        {
+            // get source image size
+            int width  = sourceData.Width;
+            int height = sourceData.Height;
+            double halfWidth  = (double) width / 2;
+            double halfHeight = (double) height / 2;
+
+            // get destination image size
+            int newWidth  = destinationData.Width;
+            int newHeight = destinationData.Height;
+            double halfNewWidth  = (double) newWidth / 2;
+            double halfNewHeight = (double) newHeight / 2;
+
+            // angle's sine and cosine
+            double angleRad = -angle * Math.PI / 180;
+            double angleCos = Math.Cos( angleRad );
+            double angleSin = Math.Sin( angleRad );
+
+            int srcStride = sourceData.Stride;
+            int dstStride = destinationData.Stride;
+
+            // fill values
+            ushort fillR = (ushort) ( fillColor.R << 8 );
+            ushort fillG = (ushort) ( fillColor.G << 8 );
+            ushort fillB = (ushort) ( fillColor.B << 8 );
+
+            // do the job
+            byte* src = (byte*) sourceData.ImageData.ToPointer( );
+            byte* dstBase = (byte*) destinationData.ImageData.ToPointer( );
+
+            // destination pixel's coordinate relative to image center
+            double cx, cy;
+            // source pixel's coordinates
+            int ox, oy;
+            // temporary pointer
+            ushort* p;
+
+            // check pixel format
+            if ( destinationData.PixelFormat == PixelFormat.Format16bppGrayScale )
+            {
+                // grayscale
+                cy = -halfNewHeight;
+                for ( int y = 0; y < newHeight; y++ )
+                {
+                    ushort* dst = (ushort*) ( dstBase + y * dstStride );
+
+                    cx = -halfNewWidth;
+                    for ( int x = 0; x < newWidth; x++, dst++ )
+                    {
+                        // coordinate of the nearest point
+                        ox = (int) (  angleCos * cx + angleSin * cy + halfWidth );
+                        oy = (int) ( -angleSin * cx + angleCos * cy + halfHeight );
+
+                        // validate source pixel's coordinates
+                        if ( ( ox < 0 ) || ( oy < 0 ) || ( ox >= width ) || ( oy >= height ) )
+                        {
+                            // fill destination image with filler
+                            *dst = fillG;
+                        }
+                        else
+                        {
+                            // fill destination image with pixel from source image
+                            p = (ushort*) ( src + oy * srcStride + ox * 2 );
+                            *dst = *p;
+                        }
+                        cx++;
+                    }
+                    cy++;
+                }
+            }
+            else
+            {
+                // RGB
+                cy = -halfNewHeight;
+                for ( int y = 0; y < newHeight; y++ )
+                {
+                    ushort* dst = (ushort*) ( dstBase + y * dstStride );
+
+                    cx = -halfNewWidth;
+                    for ( int x = 0; x < newWidth; x++, dst += 3 )
+                    {
+                        // coordinate of the nearest point
+                        ox = (int) (  angleCos * cx + angleSin * cy + halfWidth );
+                        oy = (int) ( -angleSin * cx + angleCos * cy + halfHeight );
+
+                        // validate source pixel's coordinates
+                        if ( ( ox < 0 ) || ( oy < 0 ) || ( ox >= width ) || ( oy >= height ) )
+                        {
+                            // fill destination image with filler
+                            dst[RGB.R] = fillR;
+                            dst[RGB.G] = fillG;
+                            dst[RGB.B] = fillB;
+                        }
+                        else
+                        {
+                            // fill destination image with pixel from source image
+                            p = (ushort*) ( src + oy * srcStride + ox * 6 );
+
+                            dst[RGB.R] = p[RGB.R];
+                            dst[RGB.G] = p[RGB.G];
+                            dst[RGB.B] = p[RGB.B];
+                        }
+                        cx++;
+                    }
+                    cy++;
                 }
             }
         }
