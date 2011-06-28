@@ -1,3 +1,267 @@
+AForge.NET Framework 2.2.0 release notes
+----------------------------------------
+xx.07.2011.
+
+Version updates and fixes:
+
+* Fixed registered issues/requests:
+  - Issue 140: Proxy support for JPEGStream\MJPEGStream  
+  - Issue 164: Converting an Image between Rectangular and Polar Coordinates  
+  - Issue 176: Image Statistics (histogram) mask  
+  - Issue 180: Mode function for Aforge.Math Statistics class 
+  - Issue 184: using IPPrototyper plugins in other applications  
+  - Issue 185: Equals method  
+  - Issue 187: Fix grouping of video capabilities  
+  - Issue 188: VideoCaptureDevice.DesiredFrameSize Behaves Inconsistently  
+  - Issue 189: Point Grey camera support
+  - Issue 191: Add VLC support to MJPEGStream class  
+  - Issue 192: File locked in AForge.Imaging.Formats.ImageDecoder.DecodeFromFile  
+  - Issue 193: Lego NXT HiTechnic color and compass sensor  
+  - Issue 194: Please provide type converters for NXTBrick internal structs
+  - Issue 195: Provide constructor with arguments allowing to initialize NXTBrick internal structs
+  - Issue 196: Provide a way to listen to raw protocol (NXT brick)
+  - Issue 197: MJPEGStream.cs enhancements
+  - Issue 198: mjpegstream not stoping  
+  - Issue 199: Conversion operators for IntRange and DoubleRange objects
+  - Issue 200: Add support for microsoft lifecam (and potentially other webcams) - directshow wrapper
+  - Issue 201: Consider merging HuePicker from IPLab into AForge.NET Framework
+  - Issue 207: Debugging issues in Horizontalintensitystatistics and verticalintensitystatistics
+  - Issue 209: VerticalIntensityStatics.cs IsGrayScale property
+  - Issue 210: Improve NXTBrick.SensorType documentation
+  - Issue 211: Improve NXTBrick.SensorMode documentation
+  - Issue 212: Enable reset motor relative position  
+  - Issue 213: Avoid PInvokeStackImbalance errors  
+  - Issue 215: Current trunk has build errors  
+  - Issue 216: Camera is not working
+  - Issue 218: Undocumented InvalidImagePropertiesException throw 
+  - Issue 219: Provice additional (fast) methods to communicate with NXT brick
+  - Issue 222: Add MPEG-2 encoding to Video.FFMPEG.VideoWriter
+  - Issue 223: Marking {Int|Double}Range as Serializable
+  - Issue 226: FFmpeg - write video frames with a specific timestamp
+  - Issue 227: AccessViolationException when PictureBox displaying 16bpc image
+  - Issue 229: 16-bit greyscale/48-bit RGB support in CanvasMove
+  - Issue 230: 16-bit greyscale/48-bit RGB support in RotateNearestNeighbor.cs  
+
+
+* General
+  - Adding AForge.Video.FFMPEG namespaces, which provides classes allowing to read/write video file through
+    FFmpeg library API. The code is experimental so far and is going to be extend. When extended it is supposed to
+    become replacement for AForge.Video.VFW namespace someday.
+    
+  - Adding AForge.Video.Kinect namespaces containing classes to get access to Microsoft Xbox Kinect device.
+  
+  - Adding AForge.Video.Ximea namespace, which provides access to XIMEA video camera through their native
+    API (m3api.dll)
+    
+  - Removing all use cases of lock(this) and replacing them with locking a dummy object.
+  
+  - Updated interoping of memcpy() and memset() to use Cdecl calling convention.
+  
+  - Avoiding casting of IntPtr.ToPointer() to (int), which causes issues on 64 bit systems. Instead of it is casted to (byte*).
+  
+  - Updated "Build All.sln" solution file, so it has "Release" and "Release Complete" configuration. "Release" is aimed
+    for most users who want to build the framework. It will build all except AForge.Robotics.TeRK, which requires installation
+    of ICE framework. "Release Complete" is aimed only for those who build release or do something with TeRK.
+
+
+* AForge
+  - Adding Point structure, which contains X/Y coordinate of float type. Adding Range structure, which is range between
+    min/max of float type. Changing all AForge.NET framework classes and samples to work with Point/Range instead of
+    DoublePoint/DoubleRange, which are left for some applications requiring higher precision.
+    
+  - {Int|Double}Range as well as {Int|Double}Point are marked [Serializable].
+  
+  - Added AForge.DeviceBusyException exception, which could be thrown in cases when multiple access to the same device is not allowed.
+  
+  - Added AForge.DeviceErrorException exception to report about possible errors in some devices.
+  
+
+* AForge.Imaging
+  - Added TransformToPolar image processing routine which transforms source image to polar coordinates. Produced effect is
+    similar to the one available in GIMP as "Polar Coordinates" distortion filter. The new class provides similar properties
+    as configuration options in GIMP.
+    
+  - Added TransformFromPolar which does transformation from polar coordinates to rectangle.
+  
+  - Improving performance of EuclideanColorFiltering image processing routine.
+  
+  - Added UnmanagedImage.CollectActivePixels() method, which returns list of pixels' coordinates having none black color.
+  
+  - Adding UnmanagedImage.SetPixel() and UnmanagedImage.SetPixels() methods, which are nice to have is some case for visualization
+    of some points. SetPixel() sets single pixel, but SetPixels() sets list of pixels.
+  
+  - Statistics classes now throw InvalidImagePropertiesException exception if user access invalid histogram - gray histogram
+    for color image or color histograms for grayscale image.
+    
+  - Fixed IsGrayscale property for VerticalIntensityStatistics, HorizontalIntensityStatistics and ImageStatistics classes,
+    so it returns correct value.
+    
+  - Added Ordered Color Dithering image processing routine as described on Wikipedia: http://en.wikipedia.org/wiki/Ordered_dithering
+  
+  - Updated ImageStatistics, ImageStatisticsHSL and ImageStatisticsYCbCr classes so they can gather statistics over image area,
+    which can be specified with a mask (8bpp image or byte[,] array).
+    
+  - Updating documentation of BlobCounter mentioned that InvalidImagePropertiesException exception can be thrown if provided
+    image is 1 pixel wide only. It should be 2 pixels wide at least.
+    
+  - Updated UnmanagedImage.ToManagedImage() method to copy entire image at once if the source and destination strides are equal.
+  
+  - Adding UnmanagedImage.ToManagedImage(bool) which allows specifying if user wants to get managed copy of the unmanaged
+    image or just a wrapper which depends on the managed image.
+    
+  - Added Bayer filter routine, which creates color image out of grayscale image produced by image sensor built with
+    Bayer color matrix.
+    
+  - RotateNearestNeighbor image processing routine is extended to support 16 bpp grayscale images and 48 bpp color images.
+  
+  - CanvasMove is extended to support 16 bpp grayscale and 48/64 bpp color images.
+    
+  
+* AForge.Imaging.Formats
+  - Updated ImageDecoder.DecodeFromFile() to load load standard image formats (BMP, JPG, PNG, etc.) through memory stream
+    instead of using standard .NET's FromFile( string fileName ) to avoid locking of the file.
+  
+  
+* AForge.Math
+  - Adding Math.Vector3 structure which provides some operations on 3D vectors.
+  
+  - Adding Vector4 structure, which provides some operation with 4D vectors.
+  
+  - Adding Matrix3x3 structure which provides some operations on 3x3 matrices.
+
+  - Adding implementation of POSIT algorithm - 3D pose estimation algorithm described by Daniel DeMenthon and Larry Davis in
+    the "Model-Based Object Pose in 25 Lines of Code".
+    
+  - Adding CoplanarPosit algorithm's implementation, which is an algorithm for estimating 3D pose of a model described by coplanar points.
+  
+  - Added AForge.Math.Statistics.Mode() method to calculate mode value of the specified histogram array.
+  
+  - Added equality and inequality operator for Line and LineSegment classes, as well as Equals() and GetHashCode() methods.
+  
+  - Fixing a bug in GrahamConvexHull, which was modifying input list of points. Some unit tests were added for GrahamConvexHull.
+  
+  - Fixed Mean(), StdDev() and Entropy() methods of AForge.Math.Statistics, so they don't return NaN when empty histogram (with 0 hits) is provided.
+  
+  - Fixing ContinuousHistogram class, so Mean and StdDev equals to zero if empty histogram (with zero hits) is provided.
+
+
+* AForge.Video
+  - Minor update to AsyncVideoSource class - changing manual reset event to auto reset.
+  
+  - Added Proxy property to both JPEGStream and MJPEGStream classes, which allow user to specify proxy server to use.
+  
+  - Added support for "application/octet-stream" content type into MJPEGStream class, so it is possible to get access to VLC
+    streaming of web camera, for example (in the case MJPEG transcoding is used in VLC).
+    
+  - Setting stream's read time-out to the same value as request's time-out in MJPEGStream and JPEGStream.
+  
+  - Report to clients about every exception occurred in JPEGStream and MJPEGStream classes. Only ApplicationException is hidden in
+    MJPEGStream class, which is thrown internally only in one case. All the rest will be sent to user for notification.
+  
+  - Added AFore.Video.VideoException exception, which will be used further by some video classes instead of ApplicationException.
+  
+  - Improving a bit reaction on thread aborting for JPEGStream and MJPEGStream classes, so they return faster when ThreadAbortException
+    exception is received. 
+
+  - Added one extra reason of video finishing, which is ReasonToFinishPlaying.VideoSourceError.
+  
+  - Improving frame interval processing if a pause needs to be done between video frames.
+
+
+* AForge.Video.DirectShow
+  - Updating VideoCapabilities class to provide multiple supported FPS rates for a particular resolution.
+  
+  - Adding try/catch blocks around getting IAMStreamConfig interface, which fails on Point Grey cameras. So with this extra
+    guard these cameras should work fine now.
+    
+  - Added monitoring for EC_DEVICE_LOST event in VideoCaptureDevice, so it stops video capturing when device is unplugged.
+    User is notified through PlayingFinished event.
+    
+  - Updating media event's DirectShow wrapper, so events are correctly detected on 64-bit systems (eventû like device lost
+    and end of video file).
+    
+  - VideoCaptureDevice is extended to support still image snapshots, which can be made using camera's shutter button or by
+    simulating the trigger. The snapshots are provided through the new SnapshotFrame event. Capabilities of snapshots can be checked
+    using SnapshotCapabilities property and desired snapshot size can be set using DesiredSnapshotSize property.
+    
+  - When desired video size is set, perform search of complete media type structure and set it as it is configured when enumerating
+    capabilities (fixes thes issue with Microsoft's LifeCam).
+    
+  - Added try/catch block around retrieving IAMVideoControl interface, since it seems like some USB camera drivers don't support this interface.
+  
+  - Updated signature of memcpy() in AForge.Video.DirectShow so it uses byte* instead of int. Also ToPointer() is used
+    with IntPtr instead of ToInt32(). Should get better on x64 systems now.
+    
+    
+* AForge.Video.VFW
+  - Updating exception types thrown by AVIReader and AVIWriter, so they are different for different type of exceptions.
+    
+
+* AForge.Robotics.Lego
+  - Added constructor for NXTBrick.MotorState structure, so it is "easer" to initialize it from user's code.
+  
+  - Turned NXT structures into classes and provided properties for them (many of them are read-only since those are supposed to
+    be set by framework, not by user).
+  
+  - NXTBrick.SendCommand() is made public, so users may send their own custom messages.
+  
+  - Added NXTBrick.MessageRead and NXTBrick.MessageSent events, so a communication listener could be implemented.
+  
+  - NXTBrick class is extended with 3 extra method: ReadHiTechnicColorSensor(), ReadHiTechnicCompassSensor() and
+    ReadHiTechnicAccelerationTiltSensor(), which read HiTechnic's color, compass and acceleration sensors.
+  
+  - NXTBrick.ResetMotorPosition() method is extended with extra parameter, which allows to reset either relative or absolute
+    motor's position.
+    
+  - Updated documentation of NXTBrick.SensorType enumeration.
+  
+  - Improved documentation for NXTBrick.SensorMode enumeration.
+  
+  - Some improvements for communication with Lego NXT brick, see ticket #219
+  
+  - Added overloads for PlayTone(), SetMotorState(), ResetMotorPosition(), SetSensorMode(), ClearSensor() and LsWrite() methods
+    of NXTBrick class, which can send commands without waiting for reply - faster versions.
+    
+  
+* AForge.Controls
+  - VideoSourcePlayer is extended to support cameras providing 16 bpp grayscale or 48/64 bpp color image.
+
+  - Merged HuePicker control from IPLab project into the AForge.NET framework. Some polishing of the class and its documentation
+    was done.
+    
+  - Making sure VideoSourcePlayer control gets resized if image from video source changes its size.
+  
+  - Fixing VideoSourcePlayer so it does not cause dead lock if user does access to UI using Invoke() in NewFrame event handler
+    (moving NewFrame event firing out of lock block).
+  
+  
+* Tools
+  - Added check for IPPrototyper's window position stored in configuration file. If window outside of the screen, then use its
+    default location. Window may get outside if the application was used on a system with multiple screens last time and the it
+    is started again when one of the screens got disconnected.
+    
+  - Created separate AForge.Imaging.IPPrototyper assembly, which holds interfaces for image processing prototyping and default
+    implementation of IImageProcessingLog interface. Updated IPPrototyper tool and sample application to accommodate these changes.
+    
+
+* Samples
+  - Adding Snapshot Maker sample application, which demonstrates recently added feature for making snapshots using DirectShow
+    device (USB camera).
+  
+  - Adding new sample application, which demonstrates usage of Posit and CoplanarPosit algorithms recently added to
+    AForge.Math.Geometry namespace.
+    
+  - Adding Kinect Capture sample application which demonstrates access to MS Xbox Kinect device.
+  
+  - Updated NXT sample application to demonstrates MessageSent and MessageRead events provided by NXT brick.
+  
+  - Adding sample application demonstrating access to XIMEA camera.
+  
+  - Improving FPS counter for "Player" and "Two Camera Test sample" applications.
+
+
+
+
 AForge.NET Framework 2.1.5 release notes
 ----------------------------------------
 11.01.2011.
