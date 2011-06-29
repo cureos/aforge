@@ -123,7 +123,7 @@ namespace AForge.Math.Geometry
         }
 
         /// <summary>
-        /// Find furhtest point from the specified point.
+        /// Find furthest point from the specified point.
         /// </summary>
         /// 
         /// <param name="cloud">Collection of points to search furthest point in.</param>
@@ -158,7 +158,7 @@ namespace AForge.Math.Geometry
         }
 
         /// <summary>
-        /// Find two furhtest points from the specified line.
+        /// Find two furthest points from the specified line.
         /// </summary>
         /// 
         /// <param name="cloud">Collection of points to search furthest points in.</param>
@@ -168,7 +168,7 @@ namespace AForge.Math.Geometry
         /// <param name="furthestPoint2">Second found furthest point (which is on the
         /// opposite side from the line compared to the <paramref name="furthestPoint1"/>);</param>
         /// 
-        /// <remarks><para>The method finds two furhtest points from the specified line,
+        /// <remarks><para>The method finds two furthest points from the specified line,
         /// where one point is on one side from the line and the second point is on
         /// another side from the line.</para></remarks>
         /// 
@@ -182,7 +182,7 @@ namespace AForge.Math.Geometry
         }
 
         /// <summary>
-        /// Find two furhtest points from the specified line.
+        /// Find two furthest points from the specified line.
         /// </summary>
         /// 
         /// <param name="cloud">Collection of points to search furthest points in.</param>
@@ -194,7 +194,7 @@ namespace AForge.Math.Geometry
         /// opposite side from the line compared to the <paramref name="furthestPoint1"/>);</param>
         /// <param name="distance2">Distance between the second found point and the given line.</param>
         /// 
-        /// <remarks><para>The method finds two furhtest points from the specified line,
+        /// <remarks><para>The method finds two furthest points from the specified line,
         /// where one point is on one side from the line and the second point is on
         /// another side from the line.</para></remarks>
         ///
@@ -258,7 +258,7 @@ namespace AForge.Math.Geometry
         }
 
         /// <summary>
-        /// Find the furhtest point from the specified line.
+        /// Find the furthest point from the specified line.
         /// </summary>
         /// 
         /// <param name="cloud">Collection of points to search furthest point in.</param>
@@ -281,13 +281,13 @@ namespace AForge.Math.Geometry
         }
 
         /// <summary>
-        /// Find the furhtest point from the specified line.
+        /// Find the furthest point from the specified line.
         /// </summary>
         /// 
         /// <param name="cloud">Collection of points to search furthest points in.</param>
         /// <param name="linePoint1">First point forming the line.</param>
         /// <param name="linePoint2">Second point forming the line.</param>
-        /// <param name="distance">Distance between the furhtest found point and the given line.</param>
+        /// <param name="distance">Distance between the furthest found point and the given line.</param>
         /// 
         /// <returns>Returns a point, which is the furthest away from the
         /// specified line.</returns>

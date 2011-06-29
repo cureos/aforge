@@ -41,6 +41,7 @@ Version updates and fixes:
   - Issue 227: AccessViolationException when PictureBox displaying 16bpc image
   - Issue 229: 16-bit greyscale/48-bit RGB support in CanvasMove
   - Issue 230: 16-bit greyscale/48-bit RGB support in RotateNearestNeighbor.cs  
+  - Issue 231: Misspelled comment  
 
 
 * General
