@@ -74,7 +74,7 @@ namespace AForge.Vision.Motion
         /// <see cref="IMotionDetector.MotionFrame">motion frame</see>.
         /// </para></remarks>
         ///
-        public IMotionDetector MotionDetectionAlgorthm
+        public IMotionDetector MotionDetectionAlgorithm
         {
             get { return detector; }
             set
@@ -161,7 +161,7 @@ namespace AForge.Vision.Motion
         /// <param name="videoFrame">Video frame to process (detect motion in).</param>
         /// 
         /// <returns>Returns amount of motion, which is provided <see cref="IMotionDetector.MotionLevel"/>
-        /// property of the <see cref="MotionDetectionAlgorthm">motion detection algorithm in use</see>.</returns>
+        /// property of the <see cref="MotionDetectionAlgorithm">motion detection algorithm in use</see>.</returns>
         /// 
         /// <remarks><para>See <see cref="ProcessFrame(UnmanagedImage)"/> for additional details.</para>
         /// </remarks>
@@ -193,7 +193,7 @@ namespace AForge.Vision.Motion
         /// <param name="videoFrame">Video frame to process (detect motion in).</param>
         /// 
         /// <returns>Returns amount of motion, which is provided <see cref="IMotionDetector.MotionLevel"/>
-        /// property of the <see cref="MotionDetectionAlgorthm">motion detection algorithm in use</see>.</returns>
+        /// property of the <see cref="MotionDetectionAlgorithm">motion detection algorithm in use</see>.</returns>
         /// 
         /// <remarks><para>See <see cref="ProcessFrame(UnmanagedImage)"/> for additional details.</para>
         /// </remarks>
@@ -210,7 +210,7 @@ namespace AForge.Vision.Motion
         /// <param name="videoFrame">Video frame to process (detect motion in).</param>
         /// 
         /// <returns>Returns amount of motion, which is provided <see cref="IMotionDetector.MotionLevel"/>
-        /// property of the <see cref="MotionDetectionAlgorthm">motion detection algorithm in use</see>.</returns>
+        /// property of the <see cref="MotionDetectionAlgorithm">motion detection algorithm in use</see>.</returns>
         /// 
         /// <remarks><para>The method first of all applies motion detection algorithm to the specified video
         /// frame to calculate <see cref="IMotionDetector.MotionLevel">motion level</see> and

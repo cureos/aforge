@@ -396,7 +396,7 @@ namespace MotionDetectorSample
         {
             lock ( this )
             {
-                detector.MotionDetectionAlgorthm = detectionAlgorithm;
+                detector.MotionDetectionAlgorithm = detectionAlgorithm;
                 motionHistory.Clear( );
 
                 if ( detectionAlgorithm is TwoFramesDifferenceDetector )
