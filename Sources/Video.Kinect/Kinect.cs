@@ -215,22 +215,21 @@ namespace AForge.Video.Kinect
         /// Set color of Kinect's LED.
         /// </summary>
         /// 
+        /// <param name="ledColor">LED color to set.</param>
+        /// 
         /// <exception cref="DeviceErrorException">Some error occurred with the device. Check error message.</exception>
         /// 
-        public LedColorOption LedColor
+        public void SetLedColor( LedColorOption ledColor )
         {
-            set
+            lock ( sync )
             {
-                lock ( sync )
+                CheckDevice( );
+
+                int result = KinectNative.freenect_set_led( rawDevice, ledColor );
+
+                if ( result != 0 )
                 {
-                    CheckDevice( );
-
-                    int result = KinectNative.freenect_set_led( rawDevice, value );
-
-                    if ( result != 0 )
-                    {
-                        throw new DeviceErrorException( "Failed setting LED color to " + value + ". Error code: " + result );
-                    }
+                    throw new DeviceErrorException( "Failed setting LED color to " + ledColor + ". Error code: " + result );
                 }
             }
         }
@@ -253,7 +252,7 @@ namespace AForge.Video.Kinect
                 // check if value is in valid range
                 if ( ( angle < -31 ) || ( angle > 31 ) )
                 {
-                    throw new ArgumentOutOfRangeException( "Motor tilt has to be in the [-31, 31] range." );
+                    throw new ArgumentOutOfRangeException( "angle", "Motor tilt has to be in the [-31, 31] range." );
                 }
 
                 int result = KinectNative.freenect_set_tilt_degs( rawDevice, angle );

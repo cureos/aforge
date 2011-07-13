@@ -178,7 +178,7 @@ namespace KinectCapture
         {
             if ( kinectDevice != null )
             {
-                kinectDevice.LedColor = ledMode[ledColorCombo.SelectedIndex];
+                kinectDevice.SetLedColor( ledMode[ledColorCombo.SelectedIndex] );
             }
         }
 
