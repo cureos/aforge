@@ -249,7 +249,7 @@ Version updates and fixes:
   - Adding Snapshot Maker sample application, which demonstrates recently added feature for making snapshots using DirectShow
     device (USB camera).
   
-  - Adding new sample application, which demonstrates usage of Posit and CoplanarPosit algorithms recently added to
+  - Adding new sample applications, which demonstrate usage of Posit and CoplanarPosit algorithms recently added to
     AForge.Math.Geometry namespace.
     
   - Adding Kinect Capture sample application which demonstrates access to MS Xbox Kinect device.

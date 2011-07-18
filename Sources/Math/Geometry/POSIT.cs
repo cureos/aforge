@@ -29,28 +29,31 @@ namespace AForge.Math.Geometry
     /// <para><note>The 4 model's point <b>must not be coplanar</b>, i.e. must not reside all within
     /// same planer. See <see cref="CoplanarPosit"/> for coplanar case.</note></para>
     /// 
+    /// <para>Read <a href="http://www.aforgenet.com/articles/posit/">3D Pose Estimation</a> article for
+    /// additional information and samples.</para>
+    /// 
     /// <para>Sample usage:</para>
     /// <code>
     /// // points of real object - model
     /// Vector3[] positObject = new Vector3[4]
     /// { 
-    ///     new Vector3( -0.5f, -0.5f,  0 ),
-    ///     new Vector3(  0.5f, -0.5f,  0 ),
-    ///     new Vector3( -0.5f,  0.5f,  0 ),
-    ///     new Vector3( -0.5f, -0.5f, -1 ),
+    ///     new Vector3(  23,  23, -23 ),
+    ///     new Vector3( -23,  23, -23 ),
+    ///     new Vector3(  23, -23, -23 ),
+    ///     new Vector3(  23,  23,  23 ),
     /// };
     /// // focal length of camera used to capture the object
-    /// float focalLength = -200; // depends on your camera or projection system
+    /// float focalLength = 640; // depends on your camera or projection system
     /// // initialize POSIT object
     /// Posit posit = new Posit( positObject, focalLength );
     /// 
     /// // 2D points of te object - projection
     /// AForge.Point[] projectedPoints = new AForge.Point[4]
     /// {
-    ///     new AForge.Point(  -4, -22 ),
-    ///     new AForge.Point(  25,   0 ),
-    ///     new AForge.Point( -27,   0 ),
-    ///     new AForge.Point( -13,  -3 ),
+    ///     new AForge.Point(   -4,   29 ),
+    ///     new AForge.Point( -180,   86 ),
+    ///     new AForge.Point(   -5, -102 ),
+    ///     new AForge.Point(   76,  137 ),
     /// };
     /// // estimate pose
     /// Matrix3x3 rotationMatrix;

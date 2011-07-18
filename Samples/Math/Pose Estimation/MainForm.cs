@@ -86,7 +86,7 @@ namespace PoseEstimation
             InitializeComponent( );
 
             posit = new Posit( positObject, -200 );
-            coposit = new CoplanarPosit( copositObject, -200 );
+            coposit = new CoplanarPosit( copositObject, 200 );
         }
 
         // Form got loaded
