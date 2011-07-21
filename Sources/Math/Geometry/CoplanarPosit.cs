@@ -37,10 +37,10 @@ namespace AForge.Math.Geometry
     /// // points of real object - model
     /// Vector3[] copositObject = new Vector3[4]
     /// { 
-    ///     new Vector3( -56.5f, 0,  56.5 ),
-    ///     new Vector3(  56.5f, 0,  56.5 ),
-    ///     new Vector3(  56.5f, 0, -56.5 ),
-    ///     new Vector3( -56.5f, 0, -56.5 ),
+    ///     new Vector3( -56.5f, 0,  56.5f ),
+    ///     new Vector3(  56.5f, 0,  56.5f ),
+    ///     new Vector3(  56.5f, 0, -56.5f ),
+    ///     new Vector3( -56.5f, 0, -56.5f ),
     /// };
     /// // focal length of camera used to capture the object
     /// float focalLength = 640; // depends on your camera or projection system

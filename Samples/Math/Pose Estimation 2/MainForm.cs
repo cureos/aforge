@@ -27,6 +27,7 @@ namespace PoseEstimation
         private Matrix3x3 rotationMatrix, bestRotationMatrix, alternateRotationMatrix;
         private Vector3 translationVector, bestTranslationVector, alternateTranslationVector;
         private bool isPoseEstimated = false;
+        private float modelRadius;
 
         // size of the opened image
         private Size imageSize = new Size( 0, 0 );
@@ -86,10 +87,10 @@ namespace PoseEstimation
                 },
                 new Vector3[]
                 {
-                    new Vector3(  23,  23, -23 ),
-                    new Vector3( -23,  23, -23 ),
-                    new Vector3(  23, -23, -23 ),
-                    new Vector3(  23,  23,  23 ),
+                    new Vector3(  28,  28, -28 ),
+                    new Vector3( -28,  28, -28 ),
+                    new Vector3(  28, -28, -28 ),
+                    new Vector3(  28,  28,  28 ),
                 },
                 640, false ),
 
@@ -105,10 +106,10 @@ namespace PoseEstimation
                 },
                 new Vector3[]
                 {
-                    new Vector3(  23,  23, -23 ),
-                    new Vector3( -23,  23, -23 ),
-                    new Vector3(  23, -23, -23 ),
-                    new Vector3(  23,  23,  23 ),
+                    new Vector3(  28,  28, -28 ),
+                    new Vector3( -28,  28, -28 ),
+                    new Vector3(  28, -28, -28 ),
+                    new Vector3(  28,  28,  28 ),
                 },
                 640, false ),
 
@@ -124,10 +125,10 @@ namespace PoseEstimation
                 },
                 new Vector3[]
                 {
-                    new Vector3(  23,  23, -23 ),
-                    new Vector3( -23,  23, -23 ),
-                    new Vector3(  23, -23, -23 ),
-                    new Vector3(  23,  23,  23 ),
+                    new Vector3(  28,  28, -28 ),
+                    new Vector3( -28,  28, -28 ),
+                    new Vector3(  28, -28, -28 ),
+                    new Vector3(  28,  28,  28 ),
                 },
                 640, false ),
 
@@ -354,7 +355,7 @@ namespace PoseEstimation
 
             if ( pictureBox.Image != null )
             {
-                int cx = imageSize.Width / 2;
+                int cx = imageSize.Width  / 2;
                 int cy = imageSize.Height / 2;
 
                 for ( int i = 0; i < 4; i++ )
@@ -377,7 +378,9 @@ namespace PoseEstimation
                         // create tranformation matrix
                         Matrix4x4.CreateTranslation( translationVector ) *       // 3: translate
                         Matrix4x4.CreateFromRotation( rotationMatrix ) *         // 2: rotate
-                        Matrix4x4.CreateDiagonal( new Vector4( cx, cx, cx, 1 ) ) // 1: scale
+                        Matrix4x4.CreateDiagonal(
+                            new Vector4( modelRadius, modelRadius, modelRadius, 1 ) ), // 1: scale
+                        imageSize.Width
                     );
 
                     using ( Pen pen = new Pen( Color.Blue, 3 ) )
@@ -404,7 +407,7 @@ namespace PoseEstimation
             }
         }
 
-        private AForge.Point[] PerformProjection( Vector3[] model, Matrix4x4 transformationMatrix )
+        private AForge.Point[] PerformProjection( Vector3[] model, Matrix4x4 transformationMatrix, int viewSize )
         {
             AForge.Point[] projectedPoints = new AForge.Point[model.Length];
 
@@ -413,8 +416,8 @@ namespace PoseEstimation
                 Vector3 scenePoint = ( transformationMatrix * model[i].ToVector4( ) ).ToVector3( );
 
                 projectedPoints[i] = new AForge.Point(
-                    (int) ( scenePoint.X ),
-                    (int) ( scenePoint.Y ) );
+                    (int) ( scenePoint.X / scenePoint.Z * viewSize ),
+                    (int) ( scenePoint.Y / scenePoint.Z * viewSize ) );
             }
 
             return projectedPoints;
@@ -596,6 +599,24 @@ namespace PoseEstimation
                        ( string.IsNullOrEmpty( modelPoint4zBox.Text ) ) ) ) )
                 {
                     throw new ApplicationException( "Some model coordinates are not specified." );
+                }
+
+                // calculate model's center
+                Vector3 modelCenter = new Vector3(
+                    ( modelPoints[0].X + modelPoints[1].X + modelPoints[2].X + modelPoints[3].X ) / 4,
+                    ( modelPoints[0].Y + modelPoints[1].Y + modelPoints[2].Y + modelPoints[3].Y ) / 4,
+                    ( modelPoints[0].Z + modelPoints[1].Z + modelPoints[2].Z + modelPoints[3].Z ) / 4
+                );
+
+                // calculate ~ model's radius
+                modelRadius = 0;
+                foreach ( Vector3 modelPoint in modelPoints )
+                {
+                    float distanceToCenter = ( modelPoint - modelCenter ).Norm;
+                    if ( distanceToCenter > modelRadius )
+                    {
+                        modelRadius = distanceToCenter;
+                    }
                 }
 
                 if ( !useCoplanarPosit )
