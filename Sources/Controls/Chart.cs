@@ -1,5 +1,6 @@
 // AForge Controls Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
 // Copyright © AForge.NET, 2007-2011
 // contacts@aforgenet.com
@@ -8,7 +9,7 @@
 namespace AForge.Controls
 {
     using System;
-    using System.Collections;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Drawing;
     using System.Data;
@@ -71,10 +72,9 @@ namespace AForge.Controls
         }
 
         // data series table
-        Hashtable		seriesTable = new Hashtable( );
+        private Dictionary<string, DataSeries> seriesTable = new Dictionary<string, DataSeries>( );
 
         private Pen		blackPen = new Pen( Color.Black );
-        private Brush	whiteBrush = new SolidBrush( Color.White );
 
         private Range	rangeX = new Range( 0, 1 );
         private Range	rangeY = new Range( 0, 1 );
@@ -85,12 +85,14 @@ namespace AForge.Controls
         /// 
         /// <remarks><para>The value sets the X range of data to be displayed on the chart.</para></remarks>
         /// 
+        [Browsable( false )]
         public Range RangeX
         {
             get { return rangeX; }
             set
             {
                 rangeX = value;
+                UpdateYRange( );
                 Invalidate( );
             }
         }
@@ -101,6 +103,7 @@ namespace AForge.Controls
         /// 
         /// <remarks>The value sets the Y range of data to be displayed on the chart.</remarks>
         ///
+        [Browsable( false )]
         public Range RangeY
         {
             get { return rangeY; }
@@ -142,7 +145,6 @@ namespace AForge.Controls
 
                 // free graphics resources
                 blackPen.Dispose( );
-                whiteBrush.Dispose( );
             }
             base.Dispose( disposing );
         }
@@ -172,7 +174,9 @@ namespace AForge.Controls
             int			clientHeight = ClientRectangle.Height;
 
             // fill with white background
-            g.FillRectangle( whiteBrush, 0, 0, clientWidth - 1, clientHeight - 1 );
+            Brush backgroundBrush = new SolidBrush( BackColor );
+            g.FillRectangle( backgroundBrush, 0, 0, clientWidth - 1, clientHeight - 1 );
+            backgroundBrush.Dispose( );
 
             // draw a black rectangle
             g.DrawRectangle( blackPen, 0, 0, clientWidth - 1, clientHeight - 1 );
@@ -184,10 +188,9 @@ namespace AForge.Controls
                 double yFactor = (double) ( clientHeight - 10 ) / ( ( rangeY.Length != 0 ) ? rangeY.Length : 1 );
 
                 // walk through all data series
-                IDictionaryEnumerator en = seriesTable.GetEnumerator( );
-                while ( en.MoveNext( ) )
+                foreach ( KeyValuePair<string, DataSeries> kvp in seriesTable )
                 {
-                    DataSeries series = (DataSeries) en.Value;
+                    DataSeries series = kvp.Value;
                     // get data of the series
                     double[,] data = series.data;
 
@@ -212,7 +215,11 @@ namespace AForge.Controls
                             x += 5;
                             y = clientHeight - 6 - y;
 
-                            g.FillRectangle( brush, x - r, y - r, width, width );
+                            if ( ( rangeX.IsInside( (float) data[i, 0] ) )     && ( rangeY.IsInside( (float) data[i, 1] ) ) &&
+                                 ( rangeX.IsInside( (float) data[i - 1, 0] ) ) && ( rangeY.IsInside( (float) data[i - 1, 1] ) ) )
+                            {
+                                g.FillRectangle( brush, x - r, y - r, width, width );
+                            }
                         }
                         brush.Dispose( );
                     }
@@ -239,9 +246,14 @@ namespace AForge.Controls
 
                             x2 += 5;
                             y2 = clientHeight - 6 - y2;
-                            g.FillRectangle( brush, x2 - r, y2 - r, width, width );
 
-                            g.DrawLine( pen, x1, y1, x2, y2 );
+                            if ( ( rangeX.IsInside( (float) data[i, 0] ) )     && ( rangeY.IsInside( (float) data[i, 1] ) ) &&
+                                 ( rangeX.IsInside( (float) data[i - 1, 0] ) ) && ( rangeY.IsInside( (float) data[i - 1, 1] ) ) )
+                            {
+                                g.FillRectangle( brush, x2 - r, y2 - r, width, width );
+
+                                g.DrawLine( pen, x1, y1, x2, y2 );
+                            }
 
                             x1 = x2;
                             y1 = y2;
@@ -270,7 +282,11 @@ namespace AForge.Controls
                             x2 += 5;
                             y2 = clientHeight - 6 - y2;
 
-                            g.DrawLine( pen, x1, y1, x2, y2 );
+                            if ( ( rangeX.IsInside( (float) data[i, 0] ) )     && ( rangeY.IsInside( (float) data[i, 1] ) ) &&
+                                 ( rangeX.IsInside( (float) data[i - 1, 0] ) ) && ( rangeY.IsInside( (float) data[i - 1, 1] ) ) )
+                            {
+                                g.DrawLine( pen, x1, y1, x2, y2 );
+                            }
 
                             x1 = x2;
                             y1 = y2;
@@ -348,10 +364,13 @@ namespace AForge.Controls
         /// 
         public void UpdateDataSeries( string name, double[,] data )
         {
+            if ( !seriesTable.ContainsKey( name ) )
+                throw new ArgumentException( "The chart does not contain data series with name: " + name );
+
             // get data series
-            DataSeries	series = (DataSeries) seriesTable[name];
+            DataSeries	series = seriesTable[name];
             // update data
-            series.data = data;
+            series.data = (double[,]) data.Clone( );
 
             // update Y range
             if ( series.updateYRange )
@@ -394,10 +413,9 @@ namespace AForge.Controls
             float maxY = float.MinValue;
 
             // walk through all data series
-            IDictionaryEnumerator en = seriesTable.GetEnumerator( );
-            while ( en.MoveNext( ) )
+            foreach ( KeyValuePair<string, DataSeries> kvp in seriesTable )
             {
-                DataSeries series = (DataSeries) en.Value;
+                DataSeries series = kvp.Value;
                 // get data of the series
                 double[,] data = series.data;
 
@@ -405,13 +423,17 @@ namespace AForge.Controls
                 {
                     for ( int i = 0, n = data.GetLength( 0 ); i < n; i++ )
                     {
-                        float v = (float) data[i, 1];
-                        // check for max
-                        if ( v > maxY )
-                            maxY = v;
-                        // check for min
-                        if ( v < minY )
-                            minY = v;
+                        if ( rangeX.IsInside( (float) data[i, 0] ) )
+                        {
+                            float v = (float) data[i, 1];
+
+                            // check for max
+                            if ( v > maxY )
+                                maxY = v;
+                            // check for min
+                            if ( v < minY )
+                                minY = v;
+                        }
                     }
                 }
             }

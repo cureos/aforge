@@ -234,7 +234,10 @@ Version updates and fixes:
   
   - Fixing VideoSourcePlayer so it does not cause dead lock if user does access to UI using Invoke() in NewFrame event handler
     (moving NewFrame event firing out of lock block).
-  
+	
+  - Making sure that Chart control displays only data which are in the configure x/Y range. Also updating Y range if required
+    when new X range is set.
+
   
 * Tools
   - Added check for IPPrototyper's window position stored in configuration file. If window outside of the screen, then use its
