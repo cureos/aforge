@@ -35,7 +35,7 @@ namespace PoseEstimation
         // colors used to highlight points on image
         private Color[] pointsColors = new Color[4]
         {
-            Color.Yellow, Color.Blue, Color.Red, Color.Green
+            Color.Yellow, Color.Blue, Color.Red, Color.Lime
         };
 
         private bool useCoplanarPosit = false;
@@ -383,21 +383,21 @@ namespace PoseEstimation
                         imageSize.Width
                     );
 
-                    using ( Pen pen = new Pen( Color.Blue, 3 ) )
+                    using ( Pen pen = new Pen( Color.Blue, 5 ) )
                     {
                         g.DrawLine( pen,
                             cx + projectedAxes[0].X, cy - projectedAxes[0].Y,
                             cx + projectedAxes[1].X, cy - projectedAxes[1].Y );
                     }
 
-                    using ( Pen pen = new Pen( Color.Red, 3 ) )
+                    using ( Pen pen = new Pen( Color.Red, 5 ) )
                     {
                         g.DrawLine( pen,
                             cx + projectedAxes[0].X, cy - projectedAxes[0].Y,
                             cx + projectedAxes[2].X, cy - projectedAxes[2].Y );
                     }
 
-                    using ( Pen pen = new Pen( Color.Green, 3 ) )
+                    using ( Pen pen = new Pen( Color.Lime, 5 ) )
                     {
                         g.DrawLine( pen,
                             cx + projectedAxes[0].X, cy - projectedAxes[0].Y,
