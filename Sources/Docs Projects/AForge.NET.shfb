@@ -240,7 +240,7 @@
         <contentItem sourcePath="..\Imaging\Images\sample22.png" destPath="img\imaging\" excludeItems="False" />
         <contentItem sourcePath="..\Controls\Images\hue_picker1.png" destPath="img\controls\" excludeItems="False" />
         <contentItem sourcePath="..\Controls\Images\hue_picker2.png" destPath="img\controls\" excludeItems="False" />
-        <contentItem sourcePath="..\Video.Kinect\Images\Kinect.jpg" destPath="img\video\" excludeItems="False" />
+        <contentItem sourcePath="..\Video.Kinect\Images\kinect.jpg" destPath="img\video\" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\bayer_filter.jpg" destPath="img\imaging\" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\sample23.png" destPath="img\imaging\" excludeItems="False" />
         <contentItem sourcePath="..\Imaging\Images\ordered_color_dithering.png" destPath="img\imaging\" excludeItems="False" />
