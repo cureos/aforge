@@ -33,7 +33,7 @@ namespace AForge.Imaging.Filters
     /// </code>
     /// 
     /// <para><b>Source image:</b></para>
-    /// <img src="img/imaging/sample23.PNG" width="640" height="480" />
+    /// <img src="img/imaging/sample23.png" width="640" height="480" />
     /// <para><b>Result image:</b></para>
     /// <img src="img/imaging/bayer_filter.jpg" width="640" height="480" />
     /// </remarks>
