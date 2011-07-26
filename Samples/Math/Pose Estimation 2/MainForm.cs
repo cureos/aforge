@@ -1,4 +1,12 @@
-﻿using System;
+﻿// 3D Pose Estimation (2) sample application
+// AForge.NET Framework
+// http://www.aforgenet.com/framework/
+//
+// Copyright © AForge.NET, 2009-2011
+// contacts@aforgenet.com
+//
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;

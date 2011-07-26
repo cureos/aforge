@@ -1,4 +1,4 @@
-﻿// 3D Post Estimation sample application
+﻿// 3D Pose Estimation sample application
 // AForge.NET Framework
 // http://www.aforgenet.com/framework/
 //
