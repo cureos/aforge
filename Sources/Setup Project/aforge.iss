@@ -2,7 +2,7 @@
 
 [Setup]
 AppName=AForge.NET Framework
-AppVerName=AForge.NET Framework 2.1.5
+AppVerName=AForge.NET Framework 2.2.0
 AppPublisher=AForge.NET
 AppPublisherURL=http://www.aforgenet.com/framework/
 AppSupportURL=http://www.aforgenet.com/framework/
@@ -19,6 +19,7 @@ LicenseFile=lgpl-3.0.txt
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Components]
+Name: "ext"; Description: "External Dependencies"; Types: full compact custom; Flags: fixed
 Name: "libs"; Description: "AForge.NET Framework's libraries"; Types: full compact custom; Flags: fixed
 Name: "docs"; Description: "Documentation"; Types: full custom
 Name: "sources"; Description: "Sources"; Types: full custom
@@ -31,7 +32,7 @@ Source: "Files\Release notes.txt"; DestDir: "{app}"; Components: libs
 Source: "Files\lgpl-3.0.txt"; DestDir: "{app}"; Components: libs
 Source: "Files\License.txt"; DestDir: "{app}"; Components: libs
 Source: "Files\Docs\*"; DestDir: "{app}\Docs"; Components: docs
-Source: "Files\Externals\*"; DestDir: "{app}\Externals"; Components: samples; Flags: recursesubdirs
+Source: "Files\Externals\*"; DestDir: "{app}\Externals"; Components: ext; Flags: recursesubdirs
 Source: "Files\Release\*"; DestDir: "{app}\Release"; Components: libs
 Source: "Files\Samples\*"; DestDir: "{app}\Samples"; Components: samples; Flags: recursesubdirs
 Source: "Files\Sources\*"; DestDir: "{app}\Sources"; Components: sources; Flags: recursesubdirs
