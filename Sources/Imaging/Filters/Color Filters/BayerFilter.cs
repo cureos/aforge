@@ -17,7 +17,7 @@ namespace AForge.Imaging.Filters
     /// Bayer fileter image processing routine.
     /// </summary>
     /// 
-    /// <remarks><para>The class implements <a href="http://en.wikipedia.org/wiki/Bayer_filter">Bayet filter</a>
+    /// <remarks><para>The class implements <a href="http://en.wikipedia.org/wiki/Bayer_filter">Bayer filter</a>
     /// routine, which creates color image out of grayscale image produced by image sensor built with
     /// Bayer color matrix.</para>
     /// 
