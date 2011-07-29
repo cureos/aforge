@@ -25,6 +25,10 @@ namespace AForge { namespace Video { namespace FFMPEG
 	///
     /// <remarks><para>The class allows to write video files using <a href="http://www.ffmpeg.org/">FFmpeg</a> library.</para>
 	///
+	/// <para><note>Make sure you have <b>FFmpeg</b> binaries (DLLs) in the output folder of your application in order
+	/// to use this class successfully. <b>FFmpeg</b> binaries can be found in Externals folder provided with AForge.NET
+	/// framework's distribution.</note></para>
+	///
     /// <para>Sample usage:</para>
 	/// <code>
 	/// int width  = 320;
