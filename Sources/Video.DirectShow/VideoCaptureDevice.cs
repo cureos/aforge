@@ -21,8 +21,11 @@ namespace AForge.Video.DirectShow
     /// Video source for local video capture device (for example USB webcam).
     /// </summary>
     /// 
-    /// <remarks><para>The video source captures video data from local video capture device.
-    /// DirectShow is used for capturing.</para>
+    /// <remarks><para>This video source class captures video data from local video capture device,
+    /// like USB web camera (or internal), frame grabber, capture board - anything which
+    /// supports <b>DirectShow</b> interface. For devices which has a shutter button or
+    /// support external software triggering, the class also allows to do snapshots. Both
+    /// video size and snapshot size can be configured.</para>
     /// 
     /// <para>Sample usage:</para>
     /// <code>
@@ -35,7 +38,7 @@ namespace AForge.Video.DirectShow
     /// // start the video source
     /// videoSource.Start( );
     /// // ...
-    /// // signal to stop
+    /// // signal to stop when you no longer need capturing
     /// videoSource.SignalToStop( );
     /// // ...
     /// 
