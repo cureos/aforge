@@ -17,7 +17,7 @@ namespace AForge.Imaging.Filters
     /// Transform polar image into rectangle.
     /// </summary>
     /// 
-    /// <remarks>The image processing routine oposite transformation to the one done by <see cref="TransformToPolar"/>
+    /// <remarks>The image processing routine is oposite transformation to the one done by <see cref="TransformToPolar"/>
     /// routine, i.e. transformation from polar image into rectangle. The produced effect is similar to GIMP's
     /// "Polar Coordinates" distortion filter (or its equivalent in Photoshop).
     /// 
