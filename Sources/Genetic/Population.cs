@@ -555,7 +555,7 @@ namespace AForge.Genetic
         /// selection method</see> is used to reduce the population.</para></remarks>
         /// 
         /// <exception cref="ArgumentException">Too small population's size was specified. The
-        /// exception is thrown in the case if <paramref name="size"/> is smaller than 2.</exception>
+        /// exception is thrown in the case if <paramref name="newPopulationSize"/> is smaller than 2.</exception>
         /// 
         public void Resize( int newPopulationSize )
         {
@@ -576,7 +576,7 @@ namespace AForge.Genetic
         /// reduce the population.</para></remarks>
         /// 
         /// <exception cref="ArgumentException">Too small population's size was specified. The
-        /// exception is thrown in the case if <paramref name="size"/> is smaller than 2.</exception>
+        /// exception is thrown in the case if <paramref name="newPopulationSize"/> is smaller than 2.</exception>
         ///
         public void Resize( int newPopulationSize, ISelectionMethod membersSelector )
         {

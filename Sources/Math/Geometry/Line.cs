@@ -21,7 +21,7 @@ namespace AForge.Math.Geometry
     /// 
     /// <para>Generally, the equation of the line is y = <see cref="Slope"/> * x + 
     /// <see cref="Intercept"/>. However, when <see cref="Slope"/> is an Infinity,
-    /// <paramref name="Intercept"/> would normally be meaningless, and it would be
+    /// <see name="Intercept"/> would normally be meaningless, and it would be
     /// impossible to distinguish the line x = 5 from the line x = -5. Therefore,
     /// if <see cref="Slope"/> is <see cref="float.PositiveInfinity"/> or
     /// <see cref="float.NegativeInfinity"/>, the line's equation is instead 
