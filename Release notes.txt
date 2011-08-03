@@ -1,3 +1,15 @@
+AForge.NET Framework 2.2.1 release notes
+----------------------------------------
+03.08.2011.
+
+Version updates and fixes:
+
+* AForge.Math
+  - Fixing == operator for Line and LineSegment classes, so it does not cause exception when line is compared with null.
+
+
+
+
 AForge.NET Framework 2.2.0 release notes
 ----------------------------------------
 28.07.2011.
