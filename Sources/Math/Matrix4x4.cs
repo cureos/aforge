@@ -694,5 +694,20 @@ namespace AForge.Math
             }
             return false;
         }
+
+        /// <summary>
+        /// Returns the hashcode for this instance.
+        /// </summary>
+        /// 
+        /// <returns>A 32-bit signed integer hash code.</returns>
+        /// 
+        public override int GetHashCode( )
+        {
+            return
+                V00.GetHashCode( ) + V01.GetHashCode( ) + V02.GetHashCode( ) + V03.GetHashCode( ) +
+                V10.GetHashCode( ) + V11.GetHashCode( ) + V12.GetHashCode( ) + V13.GetHashCode( ) +
+                V20.GetHashCode( ) + V21.GetHashCode( ) + V22.GetHashCode( ) + V23.GetHashCode( ) +
+                V30.GetHashCode( ) + V31.GetHashCode( ) + V32.GetHashCode( ) + V33.GetHashCode( );
+        }
     }
 }

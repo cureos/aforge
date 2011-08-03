@@ -4,6 +4,10 @@ AForge.NET Framework 2.2.1 release notes
 
 Version updates and fixes:
 
+* Fixed registered issues/requests:
+  - Issue 236: Compile time warnings related to bad XML comments 
+
+
 * AForge.Math
   - Fixing == operator for Line and LineSegment classes, so it does not cause exception when line is compared with null.
 
