@@ -596,5 +596,103 @@ namespace AForge.Math
         {
             return matrix * vector;
         }
+
+        /// <summary>
+        /// Tests whether two specified matrices are equal.
+        /// </summary>
+        /// 
+        /// <param name="matrix1">The left-hand matrix.</param>
+        /// <param name="matrix2">The right-hand matrix.</param>
+        /// 
+        /// <returns>Returns <see langword="true"/> if the two matrices are equal or <see langword="false"/> otherwise.</returns>
+        /// 
+        public static bool operator ==( Matrix4x4 matrix1, Matrix4x4 matrix2 )
+        {
+            return (
+                ( matrix1.V00 == matrix2.V00 ) &&
+                ( matrix1.V01 == matrix2.V01 ) &&
+                ( matrix1.V02 == matrix2.V02 ) &&
+                ( matrix1.V03 == matrix2.V03 ) &&
+
+                ( matrix1.V10 == matrix2.V10 ) &&
+                ( matrix1.V11 == matrix2.V11 ) &&
+                ( matrix1.V12 == matrix2.V12 ) &&
+                ( matrix1.V13 == matrix2.V13 ) &&
+
+                ( matrix1.V20 == matrix2.V20 ) &&
+                ( matrix1.V21 == matrix2.V21 ) &&
+                ( matrix1.V22 == matrix2.V22 ) &&
+                ( matrix1.V23 == matrix2.V23 ) &&
+
+                ( matrix1.V30 == matrix2.V30 ) &&
+                ( matrix1.V31 == matrix2.V31 ) &&
+                ( matrix1.V32 == matrix2.V32 ) &&
+                ( matrix1.V33 == matrix2.V33 )
+            );
+        }
+
+        /// <summary>
+        /// Tests whether two specified matrices are not equal.
+        /// </summary>
+        /// 
+        /// <param name="matrix1">The left-hand matrix.</param>
+        /// <param name="matrix2">The right-hand matrix.</param>
+        /// 
+        /// <returns>Returns <see langword="true"/> if the two matrices are not equal or <see langword="false"/> otherwise.</returns>
+        /// 
+        public static bool operator !=( Matrix4x4 matrix1, Matrix4x4 matrix2 )
+        {
+            return (
+                ( matrix1.V00 != matrix2.V00 ) ||
+                ( matrix1.V01 != matrix2.V01 ) ||
+                ( matrix1.V02 != matrix2.V02 ) ||
+                ( matrix1.V03 != matrix2.V03 ) ||
+
+                ( matrix1.V10 != matrix2.V10 ) ||
+                ( matrix1.V11 != matrix2.V11 ) ||
+                ( matrix1.V12 != matrix2.V12 ) ||
+                ( matrix1.V13 != matrix2.V13 ) ||
+
+                ( matrix1.V20 != matrix2.V20 ) ||
+                ( matrix1.V21 != matrix2.V21 ) ||
+                ( matrix1.V22 != matrix2.V22 ) ||
+                ( matrix1.V23 != matrix2.V23 ) ||
+
+                ( matrix1.V30 != matrix2.V30 ) ||
+                ( matrix1.V31 != matrix2.V31 ) ||
+                ( matrix1.V32 != matrix2.V32 ) ||
+                ( matrix1.V33 != matrix2.V33 )
+            );
+        }
+
+        /// <summary>
+        /// Tests whether the matrix equals to the specified one.
+        /// </summary>
+        /// 
+        /// <param name="matrix">The matrix to test equality with.</param>
+        /// 
+        /// <returns>Returns <see langword="true"/> if the two matrices are equal or <see langword="false"/> otherwise.</returns>
+        /// 
+        public bool Equals( Matrix4x4 matrix )
+        {
+            return ( this == matrix );
+        }
+
+        /// <summary>
+        /// Tests whether the matrix equals to the specified object.
+        /// </summary>
+        /// 
+        /// <param name="obj">The object to test equality with.</param>
+        /// 
+        /// <returns>Returns <see langword="true"/> if the matrix equals to the specified object or <see langword="false"/> otherwise.</returns>
+        /// 
+        public override bool Equals( Object obj )
+        {
+            if ( obj is Matrix4x4 )
+            {
+                return Equals( (Matrix4x4) obj );
+            }
+            return false;
+        }
     }
 }

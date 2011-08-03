@@ -381,6 +381,16 @@ namespace AForge.Math.Geometry
         ///
         public static bool operator ==( Line line1, Line line2 )
         {
+            if ( System.Object.ReferenceEquals( line1, line2 ) )
+            {
+                return true;
+            }
+
+            if ( ( (object) line1 == null ) || ( (object) line2 == null ) )
+            {
+                return false;
+            }
+
             return ( ( line1.k == line2.k ) && ( line1.b == line2.b ) );
         }
 
@@ -396,7 +406,7 @@ namespace AForge.Math.Geometry
         ///
         public static bool operator !=( Line line1, Line line2 )
         {
-            return ( ( line1.k != line2.k ) || ( line1.b != line2.b ) );
+            return !( line1 == line2 );
         }
 
         /// <summary>
