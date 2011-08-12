@@ -477,7 +477,7 @@ namespace AForge.Controls
                          ( currentFrame.PixelFormat == PixelFormat.Format48bppRgb ) ||
                          ( currentFrame.PixelFormat == PixelFormat.Format64bppArgb ) )
                     {
-                        convertedFrame = Tools.ConvertImage( currentFrame );
+                        convertedFrame = AForge.Imaging.Image.Convert16bppTo8bpp( currentFrame );
                     }
                 }
 

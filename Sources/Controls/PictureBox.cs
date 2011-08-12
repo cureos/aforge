@@ -63,7 +63,7 @@ namespace AForge.Controls
                       ( value.PixelFormat == PixelFormat.Format64bppArgb ) ) )
                 {   
                     // convert and display image
-                    Image tempImage = Tools.ConvertImage( (Bitmap) value );
+                    Image tempImage = AForge.Imaging.Image.Convert16bppTo8bpp( (Bitmap) value );
                     base.Image = tempImage;
 
                     // dispose previous image if required
