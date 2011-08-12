@@ -47,9 +47,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CameraParameter.cs" />
+    <Compile Include="GpiMode.cs" />
+    <Compile Include="GpoMode.cs" />
+    <Compile Include="ImageFormat.cs" />
     <Compile Include="Internal\ParameterType.cs" />
     <Compile Include="Internal\XimeaAPI.cs" />
     <Compile Include="Internal\XimeaImage.cs" />
+    <Compile Include="LedMode.cs" />
+    <Compile Include="TriggerSource.cs" />
     <Compile Include="XimeaCamera.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XimeaVideoSource.cs" />

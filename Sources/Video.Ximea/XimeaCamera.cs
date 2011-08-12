@@ -1,4 +1,4 @@
-﻿// AForge Kinect Video Library
+﻿// AForge XIMEA Video Library
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
@@ -466,17 +466,17 @@ namespace AForge.Video.Ximea
 
                 switch ( ximeaImage.PixelFormat )
                 {
-                    case XimeaImageFormat.Grayscale8:
+                    case ImageFormat.Grayscale8:
                         pixelFormat = PixelFormat.Format8bppIndexed;
                         stride = ximeaImage.Width;
                         break;
 
-                    case XimeaImageFormat.RGB24:
+                    case ImageFormat.RGB24:
                         pixelFormat = PixelFormat.Format24bppRgb;
                         stride = ximeaImage.Width * 3;
                         break;
 
-                    case XimeaImageFormat.RGB32:
+                    case ImageFormat.RGB32:
                         pixelFormat = PixelFormat.Format32bppRgb;
                         stride = ximeaImage.Width * 4;
                         break;
@@ -529,7 +529,7 @@ namespace AForge.Video.Ximea
                 }
 
                 // set palette for grayscale image
-                if ( ximeaImage.PixelFormat == XimeaImageFormat.Grayscale8 )
+                if ( ximeaImage.PixelFormat == ImageFormat.Grayscale8 )
                 {
                     ColorPalette palette = bitmap.Palette;
                     for ( int i = 0; i < 256; i++ )
