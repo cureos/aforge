@@ -113,6 +113,7 @@
     <Compile Include="Filters\Color Filters\ColorFiltering.cs" />
     <Compile Include="Filters\Color Filters\ColorRemapping.cs" />
     <Compile Include="Filters\Color Filters\ContrastStretch.cs" />
+    <Compile Include="Filters\Color Filters\BayerFilterOptimized.cs" />
     <Compile Include="Filters\Color Filters\EuclideanColorFiltering.cs" />
     <Compile Include="Filters\Color Filters\ExtractChannel.cs" />
     <Compile Include="Filters\Color Filters\GammaCorrection.cs" />
