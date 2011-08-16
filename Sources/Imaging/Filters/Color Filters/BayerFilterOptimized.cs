@@ -84,7 +84,7 @@ namespace AForge.Imaging.Filters
             int width  = sourceData.Width;
             int height = sourceData.Height;
 
-            if ( ( ( width & 1 ) == 0 ) || ( ( height & 1 ) == 0 ) ||
+            if ( ( ( width & 1 ) == 1 ) || ( ( height & 1 ) == 1 ) ||
                  ( width < 2 ) || ( height < 2 ) )
             {
                 throw new InvalidImagePropertiesException( "Source image must have even width and height. Width and height can not be smaller than 2." );
