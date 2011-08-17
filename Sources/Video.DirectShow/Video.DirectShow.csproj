@@ -61,6 +61,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileVideoSource.cs" />
@@ -93,9 +94,20 @@
     <Compile Include="FilterInfo.cs" />
     <Compile Include="FilterInfoCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Uuids.cs" />
     <Compile Include="VideoCapabilities.cs" />
     <Compile Include="VideoCaptureDevice.cs" />
+    <Compile Include="VideoCaptureDeviceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VideoCaptureDeviceForm.Designer.cs">
+      <DependentUpon>VideoCaptureDeviceForm.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="AForge.Video.DirectShow.snk" />
@@ -121,6 +133,18 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VideoCaptureDeviceForm.resx">
+      <DependentUpon>VideoCaptureDeviceForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\camera.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
