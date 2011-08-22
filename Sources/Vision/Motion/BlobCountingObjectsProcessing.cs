@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Vision.Motion
@@ -191,7 +191,7 @@ namespace AForge.Vision.Motion
         /// 
         /// <param name="highlightMotionRegions">Highlight motion regions or not (see <see cref="HighlightMotionRegions"/> property).</param>
         /// 
-        public BlobCountingObjectsProcessing( bool highlightMotionRegions ) : this( 10, 10, true ) { }
+        public BlobCountingObjectsProcessing( bool highlightMotionRegions ) : this( 10, 10, highlightMotionRegions ) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BlobCountingObjectsProcessing"/> class.
