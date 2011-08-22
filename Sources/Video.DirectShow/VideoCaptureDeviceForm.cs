@@ -36,8 +36,8 @@ namespace AForge.Video.DirectShow
         private VideoCaptureDevice videoDevice;
 
         // supported capabilities of video and snapshots
-        private VideoCapabilities[] videoCapabilities;
-        private VideoCapabilities[] snapshotCapabilities;
+        private Dictionary<string, VideoCapabilities> videoCapabilitiesDictionary = new Dictionary<string, VideoCapabilities>( );
+        private Dictionary<string, VideoCapabilities> snapshotCapabilitiesDictionary = new Dictionary<string, VideoCapabilities>( );
 
         // flag telling if user wants to configure snapshots as well
         private bool configureSnapshots = false;
@@ -128,23 +128,23 @@ namespace AForge.Video.DirectShow
         private void okButton_Click( object sender, EventArgs e )
         {
             // set video size
-            if ( videoCapabilities.Length != 0 )
+            if ( videoCapabilitiesDictionary.Count != 0 )
             {
-                int selectedSize = videoResolutionsCombo.SelectedIndex;
+                VideoCapabilities caps = videoCapabilitiesDictionary[(string) videoResolutionsCombo.SelectedItem];
 
-                videoDevice.DesiredFrameSize = videoCapabilities[selectedSize].FrameSize;
-                videoDevice.DesiredFrameRate = videoCapabilities[selectedSize].FrameRate;
+                videoDevice.DesiredFrameSize = caps.FrameSize;
+                videoDevice.DesiredFrameRate = caps.FrameRate;
             }
 
             if ( configureSnapshots )
             {
                 // set snapshots size
-                if ( snapshotCapabilities.Length != 0 )
+                if ( snapshotCapabilitiesDictionary.Count != 0 )
                 {
-                    int selectedSize = snapshotResolutionsCombo.SelectedIndex;
+                    VideoCapabilities caps = snapshotCapabilitiesDictionary[(string) snapshotResolutionsCombo.SelectedItem];
 
                     videoDevice.ProvideSnapshots = true;
-                    videoDevice.DesiredSnapshotSize = snapshotCapabilities[selectedSize].FrameSize;
+                    videoDevice.DesiredSnapshotSize = caps.FrameSize;
                 }
             }
         }
@@ -170,7 +170,7 @@ namespace AForge.Video.DirectShow
             try
             {
                 // collect video capabilities
-                videoCapabilities = videoDevice.VideoCapabilities;
+                VideoCapabilities[] videoCapabilities = videoDevice.VideoCapabilities;
 
                 foreach ( VideoCapabilities capabilty in videoCapabilities )
                 {
@@ -180,6 +180,18 @@ namespace AForge.Video.DirectShow
                     if ( !videoResolutionsCombo.Items.Contains( item ) )
                     {
                         videoResolutionsCombo.Items.Add( item );
+                    }
+
+                    if ( !videoCapabilitiesDictionary.ContainsKey( item ) )
+                    {
+                        videoCapabilitiesDictionary.Add( item, capabilty );
+                    }
+                    else
+                    {
+                        if ( capabilty.FrameRate > videoCapabilitiesDictionary[item].FrameRate )
+                        {
+                            videoCapabilitiesDictionary[item] = capabilty;
+                        }
                     }
                 }
 
@@ -193,7 +205,7 @@ namespace AForge.Video.DirectShow
                 if ( configureSnapshots )
                 {
                     // collect snapshot capabilities
-                    snapshotCapabilities = videoDevice.SnapshotCapabilities;
+                    VideoCapabilities[] snapshotCapabilities = videoDevice.SnapshotCapabilities;
 
                     foreach ( VideoCapabilities capabilty in snapshotCapabilities )
                     {
@@ -203,6 +215,7 @@ namespace AForge.Video.DirectShow
                         if ( !snapshotResolutionsCombo.Items.Contains( item ) )
                         {
                             snapshotResolutionsCombo.Items.Add( item );
+                            snapshotCapabilitiesDictionary.Add( item, capabilty );
                         }
                     }
 
