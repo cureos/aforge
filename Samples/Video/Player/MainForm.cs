@@ -54,8 +54,6 @@ namespace Player
                 // open it
                 OpenVideoSource( videoSource );
             }
-
-            form.ShowDialog( this );
         }
 
         // Open video file using DirectShow
