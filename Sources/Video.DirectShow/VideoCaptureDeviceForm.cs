@@ -121,7 +121,6 @@ namespace AForge.Video.DirectShow
         private void VideoCaptureDeviceForm_Load( object sender, EventArgs e )
         {
             devicesCombo.SelectedIndex = 0;
-            videoDevice = null;
         }
 
         // Ok button clicked
