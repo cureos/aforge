@@ -233,7 +233,7 @@ namespace AForge.Video.DirectShow.Internals
         [PreserveSig]
         int ReconnectEx(
             [In] IPin pin,
-            [In] AMMediaType mediaType
+            [In, MarshalAs( UnmanagedType.LPStruct )] AMMediaType mediaType
             );
 
         /// <summary>

@@ -40,7 +40,7 @@ namespace AForge.Video.DirectShow.Internals
         /// <returns>Return's <b>HRESULT</b> error code.</returns>
         /// 
         [PreserveSig]
-        int GetFormat( [Out] out AMMediaType mediaType );
+        int GetFormat( [Out, MarshalAs( UnmanagedType.LPStruct )] out AMMediaType mediaType );
 
         /// <summary>
         /// Retrieve the number of format capabilities that this pin supports.
@@ -67,7 +67,7 @@ namespace AForge.Video.DirectShow.Internals
         [PreserveSig]
         int GetStreamCaps(
             [In] int index,
-            [Out] out AMMediaType mediaType,
+            [Out, MarshalAs( UnmanagedType.LPStruct )] out AMMediaType mediaType,
             [In, MarshalAs( UnmanagedType.LPStruct )] VideoStreamConfigCaps streamConfigCaps
             );
     }
