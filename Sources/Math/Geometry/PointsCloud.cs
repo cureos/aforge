@@ -457,8 +457,17 @@ namespace AForge.Math.Geometry
                  ( ( distance3 < distortionLimit ) && ( distance3 != 0 ) &&
                    ( distance4 < distortionLimit ) && ( distance4 != 0 ) ) )
             {
-                corners.Add( point3 );
-                corners.Add( point4 );
+                // don't add one of the corners, if the point is already in the corners list
+                // (this may happen when both #3 and #4 points are very close to the line
+                // connecting #1 and #2)
+                if ( !corners.Contains( point3 ) )
+                {
+                    corners.Add( point3 );
+                }
+                if ( !corners.Contains( point4 ) )
+                {
+                    corners.Add( point4 );
+                }
             }
             else
             {
