@@ -10,6 +10,38 @@ namespace AForge.Math.Tests
     {
         private const float Epsilon = 0.000001f;
 
+        private Matrix3x3 a1 = new Matrix3x3( );
+        private Matrix3x3 a2 = new Matrix3x3( );
+
+        public Matrix3x3Test( )
+        {
+            // prepare 1st argument
+            a1.V00 = 1;
+            a1.V01 = 2;
+            a1.V02 = 3;
+
+            a1.V10 = 3;
+            a1.V11 = 2;
+            a1.V12 = 1;
+
+            a1.V20 = 1;
+            a1.V21 = 3;
+            a1.V22 = 2;
+
+            // prepare 2nd argument
+            a2.V00 = 2;
+            a2.V01 = 1;
+            a2.V02 = 3;
+
+            a2.V10 = 1;
+            a2.V11 = 3;
+            a2.V12 = 2;
+
+            a2.V20 = 3;
+            a2.V21 = 2;
+            a2.V22 = 1;
+        }
+
         [Test]
         public void ToArrayTest( )
         {
@@ -290,6 +322,72 @@ namespace AForge.Math.Tests
             Matrix3x3 identity = matrix * inverse;
 
             Assert.AreEqual<bool>( true, ApproximateEquals( identity, Matrix3x3.Identity ) );
+        }
+
+        [Test]
+        public void AddMatricesTest( )
+        {
+            Matrix3x3 expectedResult = new Matrix3x3( );
+
+            expectedResult.V00 = 3;
+            expectedResult.V01 = 3;
+            expectedResult.V02 = 6;
+
+            expectedResult.V10 = 4;
+            expectedResult.V11 = 5;
+            expectedResult.V12 = 3;
+
+            expectedResult.V20 = 4;
+            expectedResult.V21 = 5;
+            expectedResult.V22 = 3;
+
+            Matrix3x3 result = a1 + a2;
+
+            Assert.AreEqual<bool>( true, ApproximateEquals( result, expectedResult ) );
+        }
+
+        [Test]
+        public void SubtractMatricesTest( )
+        {
+            Matrix3x3 expectedResult = new Matrix3x3( );
+
+            expectedResult.V00 = -1;
+            expectedResult.V01 = 1;
+            expectedResult.V02 = 0;
+
+            expectedResult.V10 = 2;
+            expectedResult.V11 = -1;
+            expectedResult.V12 = -1;
+
+            expectedResult.V20 = -2;
+            expectedResult.V21 = 1;
+            expectedResult.V22 = 1;
+
+            Matrix3x3 result = a1 - a2;
+
+            Assert.AreEqual<bool>( true, ApproximateEquals( result, expectedResult ) );
+        }
+
+        [Test]
+        public void MultiplyMatricesTest( )
+        {
+            Matrix3x3 expectedResult = new Matrix3x3( );
+
+            expectedResult.V00 = 13;
+            expectedResult.V01 = 13;
+            expectedResult.V02 = 10;
+
+            expectedResult.V10 = 11;
+            expectedResult.V11 = 11;
+            expectedResult.V12 = 14;
+
+            expectedResult.V20 = 11;
+            expectedResult.V21 = 14;
+            expectedResult.V22 = 11;
+
+            Matrix3x3 result = a1 * a2;
+
+            Assert.AreEqual<bool>( true, ApproximateEquals( result, expectedResult ) );
         }
 
         private void CompareMatrixWithArray( Matrix3x3 matrix, float[] array )

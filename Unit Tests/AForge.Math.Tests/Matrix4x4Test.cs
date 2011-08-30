@@ -10,6 +10,54 @@ namespace AForge.Math.Tests
     {
         private const float Epsilon = 0.000001f;
 
+        private Matrix4x4 a1 = new Matrix4x4( );
+        private Matrix4x4 a2 = new Matrix4x4( );
+
+        public Matrix4x4Test( )
+        {
+            // prepare 1st argument
+            a1.V00 = 1;
+            a1.V01 = 2;
+            a1.V02 = 3;
+            a1.V03 = 4;
+
+            a1.V10 = 4;
+            a1.V11 = 3;
+            a1.V12 = 2;
+            a1.V13 = 1;
+
+            a1.V20 = 3;
+            a1.V21 = 1;
+            a1.V22 = 4;
+            a1.V23 = 2;
+
+            a1.V30 = 2;
+            a1.V31 = 4;
+            a1.V32 = 1;
+            a1.V33 = 3;
+
+            // prepare 2nd argument
+            a2.V00 = 2;
+            a2.V01 = 1;
+            a2.V02 = 4;
+            a2.V03 = 3;
+
+            a2.V10 = 4;
+            a2.V11 = 2;
+            a2.V12 = 3;
+            a2.V13 = 1;
+
+            a2.V20 = 3;
+            a2.V21 = 4;
+            a2.V22 = 1;
+            a2.V23 = 2;
+
+            a2.V30 = 1;
+            a2.V31 = 3;
+            a2.V32 = 2;
+            a2.V33 = 4;
+        }
+
         [Test]
         public void ToArrayTest( )
         {
@@ -258,6 +306,96 @@ namespace AForge.Math.Tests
             float[] expectedArray = new float[16] { v00, 0, 0, 0, 0, v11, 0, 0, 0, 0, v22, 0, 0, 0, 0, v33 };
 
             CompareMatrixWithArray( matrix, expectedArray );
+        }
+
+        [Test]
+        public void AddMatricesTest( )
+        {
+            Matrix4x4 expectedResult = new Matrix4x4( );
+
+            expectedResult.V00 = 3;
+            expectedResult.V01 = 3;
+            expectedResult.V02 = 7;
+            expectedResult.V03 = 7;
+
+            expectedResult.V10 = 8;
+            expectedResult.V11 = 5;
+            expectedResult.V12 = 5;
+            expectedResult.V13 = 2;
+
+            expectedResult.V20 = 6;
+            expectedResult.V21 = 5;
+            expectedResult.V22 = 5;
+            expectedResult.V23 = 4;
+
+            expectedResult.V30 = 3;
+            expectedResult.V31 = 7;
+            expectedResult.V32 = 3;
+            expectedResult.V33 = 7;
+
+            Matrix4x4 result = a1 + a2;
+
+            Assert.AreEqual<bool>( true, ApproximateEquals( result, expectedResult ) );
+        }
+
+        [Test]
+        public void SubtractMatricesTest( )
+        {
+            Matrix4x4 expectedResult = new Matrix4x4( );
+
+            expectedResult.V00 = -1;
+            expectedResult.V01 = 1;
+            expectedResult.V02 = -1;
+            expectedResult.V03 = 1;
+
+            expectedResult.V10 = 0;
+            expectedResult.V11 = 1;
+            expectedResult.V12 = -1;
+            expectedResult.V13 = 0;
+
+            expectedResult.V20 = 0;
+            expectedResult.V21 = -3;
+            expectedResult.V22 = 3;
+            expectedResult.V23 = 0;
+
+            expectedResult.V30 = 1;
+            expectedResult.V31 = 1;
+            expectedResult.V32 = -1;
+            expectedResult.V33 = -1;
+
+            Matrix4x4 result = a1 - a2;
+
+            Assert.AreEqual<bool>( true, ApproximateEquals( result, expectedResult ) );
+        }
+
+        [Test]
+        public void MultiplyMatricesTest( )
+        {
+            Matrix4x4 expectedResult = new Matrix4x4( );
+
+            expectedResult.V00 = 23;
+            expectedResult.V01 = 29;
+            expectedResult.V02 = 21;
+            expectedResult.V03 = 27;
+
+            expectedResult.V10 = 27;
+            expectedResult.V11 = 21;
+            expectedResult.V12 = 29;
+            expectedResult.V13 = 23;
+
+            expectedResult.V20 = 24;
+            expectedResult.V21 = 27;
+            expectedResult.V22 = 23;
+            expectedResult.V23 = 26;
+
+            expectedResult.V30 = 26;
+            expectedResult.V31 = 23;
+            expectedResult.V32 = 27;
+            expectedResult.V33 = 24;
+
+            Matrix4x4 result = a1 * a2;
+
+            Assert.AreEqual<bool>( true, ApproximateEquals( result, expectedResult ) );
         }
 
         private void CompareMatrixWithArray( Matrix4x4 matrix, float[] array )

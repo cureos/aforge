@@ -560,7 +560,111 @@ namespace AForge.Math
         public static Matrix4x4 Multiply( Matrix4x4 matrix1, Matrix4x4 matrix2 )
         {
             return matrix1 * matrix2;
-       }
+        }
+
+        /// <summary>
+        /// Adds corresponding components of two matrices.
+        /// </summary>
+        /// 
+        /// <param name="matrix1">The matrix to add to.</param>
+        /// <param name="matrix2">The matrix to add to the first matrix.</param>
+        /// 
+        /// <returns>Returns a matrix which components are equal to sum of corresponding
+        /// components of the two specified matrices.</returns>
+        ///
+        public static Matrix4x4 operator +( Matrix4x4 matrix1, Matrix4x4 matrix2 )
+        {
+            Matrix4x4 m = new Matrix4x4( );
+
+            m.V00 = matrix1.V00 + matrix2.V00;
+            m.V01 = matrix1.V01 + matrix2.V01;
+            m.V02 = matrix1.V02 + matrix2.V02;
+            m.V03 = matrix1.V03 + matrix2.V03;
+
+            m.V10 = matrix1.V10 + matrix2.V10;
+            m.V11 = matrix1.V11 + matrix2.V11;
+            m.V12 = matrix1.V12 + matrix2.V12;
+            m.V13 = matrix1.V13 + matrix2.V13;
+
+            m.V20 = matrix1.V20 + matrix2.V20;
+            m.V21 = matrix1.V21 + matrix2.V21;
+            m.V22 = matrix1.V22 + matrix2.V22;
+            m.V23 = matrix1.V23 + matrix2.V23;
+
+            m.V30 = matrix1.V30 + matrix2.V30;
+            m.V31 = matrix1.V31 + matrix2.V31;
+            m.V32 = matrix1.V32 + matrix2.V32;
+            m.V33 = matrix1.V33 + matrix2.V33;
+
+            return m;
+        }
+
+        /// <summary>
+        /// Adds corresponding components of two matrices.
+        /// </summary>
+        /// 
+        /// <param name="matrix1">The matrix to add to.</param>
+        /// <param name="matrix2">The matrix to add to the first matrix.</param>
+        /// 
+        /// <returns>Returns a matrix which components are equal to sum of corresponding
+        /// components of the two specified matrices.</returns>
+        ///
+        public static Matrix4x4 Add( Matrix4x4 matrix1, Matrix4x4 matrix2 )
+        {
+            return matrix1 + matrix2;
+        }
+
+        /// <summary>
+        /// Subtracts corresponding components of two matrices.
+        /// </summary>
+        /// 
+        /// <param name="matrix1">The matrix to subtract from.</param>
+        /// <param name="matrix2">The matrix to subtract from the first matrix.</param>
+        /// 
+        /// <returns>Returns a matrix which components are equal to difference of corresponding
+        /// components of the two specified matrices.</returns>
+        ///
+        public static Matrix4x4 operator -( Matrix4x4 matrix1, Matrix4x4 matrix2 )
+        {
+            Matrix4x4 m = new Matrix4x4( );
+
+            m.V00 = matrix1.V00 - matrix2.V00;
+            m.V01 = matrix1.V01 - matrix2.V01;
+            m.V02 = matrix1.V02 - matrix2.V02;
+            m.V03 = matrix1.V03 - matrix2.V03;
+
+            m.V10 = matrix1.V10 - matrix2.V10;
+            m.V11 = matrix1.V11 - matrix2.V11;
+            m.V12 = matrix1.V12 - matrix2.V12;
+            m.V13 = matrix1.V13 - matrix2.V13;
+
+            m.V20 = matrix1.V20 - matrix2.V20;
+            m.V21 = matrix1.V21 - matrix2.V21;
+            m.V22 = matrix1.V22 - matrix2.V22;
+            m.V23 = matrix1.V23 - matrix2.V23;
+
+            m.V30 = matrix1.V30 - matrix2.V30;
+            m.V31 = matrix1.V31 - matrix2.V31;
+            m.V32 = matrix1.V32 - matrix2.V32;
+            m.V33 = matrix1.V33 - matrix2.V33;
+
+            return m;
+        }
+
+        /// <summary>
+        /// Subtracts corresponding components of two matrices.
+        /// </summary>
+        /// 
+        /// <param name="matrix1">The matrix to subtract from.</param>
+        /// <param name="matrix2">The matrix to subtract from the first matrix.</param>
+        /// 
+        /// <returns>Returns a matrix which components are equal to difference of corresponding
+        /// components of the two specified matrices.</returns>
+        ///
+        public static Matrix4x4 Subtract( Matrix4x4 matrix1, Matrix4x4 matrix2 )
+        {
+            return matrix1 - matrix2;
+        }
 
         /// <summary>
         /// Multiplies specified matrix by the specified vector.

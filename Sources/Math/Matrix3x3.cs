@@ -400,17 +400,17 @@ namespace AForge.Math
         {
             Matrix3x3 m = new Matrix3x3( );
 
-            m.V00 = matrix1.V00 - matrix2.V00;
-            m.V01 = matrix1.V01 - matrix2.V01;
-            m.V02 = matrix1.V02 - matrix2.V02;
+            m.V00 = matrix1.V00 + matrix2.V00;
+            m.V01 = matrix1.V01 + matrix2.V01;
+            m.V02 = matrix1.V02 + matrix2.V02;
 
-            m.V10 = matrix1.V10 - matrix2.V10;
-            m.V11 = matrix1.V11 - matrix2.V11;
-            m.V12 = matrix1.V12 - matrix2.V12;
+            m.V10 = matrix1.V10 + matrix2.V10;
+            m.V11 = matrix1.V11 + matrix2.V11;
+            m.V12 = matrix1.V12 + matrix2.V12;
 
-            m.V20 = matrix1.V20 - matrix2.V20;
-            m.V21 = matrix1.V21 - matrix2.V21;
-            m.V22 = matrix1.V22 - matrix2.V22;
+            m.V20 = matrix1.V20 + matrix2.V20;
+            m.V21 = matrix1.V21 + matrix2.V21;
+            m.V22 = matrix1.V22 + matrix2.V22;
 
             return m;
         }
