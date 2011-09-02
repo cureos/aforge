@@ -86,12 +86,21 @@ namespace AForge.Math.Geometry
         }
 
         /// <summary>
+        /// Effective focal length of the camera used to capture the model.
+        /// </summary>
+        public float FocalLength
+        {
+            get { return focalLength; }
+            set { focalLength = value; }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Posit"/> class.
         /// </summary>
         /// 
         /// <param name="model">Array of vectors containing coordinates of four real model's point (points
         /// must not be on the same plane).</param>
-        /// <param name="focalLength">Focal length of the camera used to capture the model.</param>
+        /// <param name="focalLength">Effective focal length of the camera used to capture the model.</param>
         /// 
         /// <exception cref="ArgumentException">The model must have 4 points.</exception>
         /// 
