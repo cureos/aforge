@@ -60,6 +60,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HistogramView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HistogramView.Designer.cs">
+      <DependentUpon>HistogramView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HistogramVisualizer.cs" />
     <Compile Include="ImageView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -74,6 +81,9 @@
     <None Include="AForge.DebuggerVisualizers.snk" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="HistogramView.resx">
+      <DependentUpon>HistogramView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ImageView.resx">
       <DependentUpon>ImageView.cs</DependentUpon>
     </EmbeddedResource>

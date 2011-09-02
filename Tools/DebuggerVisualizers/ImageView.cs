@@ -34,8 +34,8 @@ namespace AForge.DebuggerVisualizers
             if ( pictureBox.Image != null )
             {
                 // if image was already set by the time of form loading, update form's size
-                int width  = System.Math.Min( 800, pictureBox.Image.Width );
-                int height = System.Math.Min( 600, pictureBox.Image.Height );
+                int width  = System.Math.Max( 64, System.Math.Min( 800, pictureBox.Image.Width ) );
+                int height = System.Math.Max( 64, System.Math.Min( 600, pictureBox.Image.Height ) );
                 this.Size = new Size( width + 80, height + 155 );
             }
         }
