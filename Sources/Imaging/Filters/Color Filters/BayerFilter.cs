@@ -24,15 +24,9 @@ namespace AForge.Imaging.Filters
     /// <para>This Bayer filter implementation is made generic by allowing user to specify used
     /// <see cref="BayerPattern">Bayer pattern</see>. This makes it slower. For optimized version
     /// of the Bayer filter see <see cref="BayerFilterOptimized"/> class, which implements Bayer filter
-    /// specifically optimized for one of the common patterns:
-    /// <code lang="none">
-    /// G R
-    /// B G
-    /// </code>
-    /// </para>
+    /// specifically optimized for some well known patterns.</para>
     /// 
-    /// <para>The filter accepts 8 bpp grayscale images and produces
-    /// 24 bpp RGB image.</para>
+    /// <para>The filter accepts 8 bpp grayscale images and produces 24 bpp RGB image.</para>
     /// 
     /// <para>Sample usage:</para>
     /// <code>
