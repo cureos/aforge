@@ -26,6 +26,8 @@ namespace AForge.Video.DirectShow
     /// interface), which can be reused across applications. It allows selecting video
     /// device, video size and snapshots size (if device supports snapshots and
     /// <see cref="ConfigureSnapshots">user needs them</see>).</para>
+    /// 
+    /// <para><img src="img/video/VideoCaptureDeviceForm.png" width="478" height="205" /></para>
     /// </remarks>
     /// 
     public partial class VideoCaptureDeviceForm : Form
@@ -85,6 +87,52 @@ namespace AForge.Video.DirectShow
             get { return videoDevice; }
         }
 
+        private string videoDeviceMoniker = string.Empty;
+        private Size captureSize = new Size( 0, 0 );
+        private Size snapshotSize = new Size( 0, 0 );
+
+        /// <summary>
+        /// Moniker string of the selected video device.
+        /// </summary>
+        /// 
+        /// <remarks><para>The property allows to get moniker string of the selected device
+        /// on form completion or set video device which should be selected by default on
+        /// form loading.</para></remarks>
+        /// 
+        public string VideoDeviceMoniker
+        {
+            get { return videoDeviceMoniker; }
+            set { videoDeviceMoniker = value; }
+        }
+
+        /// <summary>
+        /// Video frame size of the selected device.
+        /// </summary>
+        /// 
+        /// <remarks><para>The property allows to get video size of the selected device
+        /// on form completion or set the size to be selected by default on form loading.</para>
+        /// </remarks>
+        /// 
+        public Size CaptureSize
+        {
+            get { return captureSize; }
+            set { captureSize = value; }
+        }
+
+        /// <summary>
+        /// Snapshot frame size of the selected device.
+        /// </summary>
+        /// 
+        /// <remarks><para>The property allows to get snapshot size of the selected device
+        /// on form completion or set the size to be selected by default on form loading
+        /// (if <see cref="ConfigureSnapshots"/> property is set <see langword="true"/>).</para>
+        /// </remarks>
+        public Size SnapshotSize
+        {
+            get { return snapshotSize; }
+            set { snapshotSize = value; }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="VideoCaptureDeviceForm"/> class.
         /// </summary>
@@ -120,12 +168,25 @@ namespace AForge.Video.DirectShow
         // On form loaded
         private void VideoCaptureDeviceForm_Load( object sender, EventArgs e )
         {
-            devicesCombo.SelectedIndex = 0;
+            int selectedCameraIndex = 0;
+
+            for ( int i = 0; i < videoDevices.Count; i++ )
+            {
+                if ( videoDeviceMoniker == videoDevices[i].MonikerString )
+                {
+                    selectedCameraIndex = i;
+                    break;
+                }
+            }
+
+            devicesCombo.SelectedIndex = selectedCameraIndex;
         }
 
         // Ok button clicked
         private void okButton_Click( object sender, EventArgs e )
         {
+            videoDeviceMoniker = videoDevice.Source;
+
             // set video size
             if ( videoCapabilitiesDictionary.Count != 0 )
             {
@@ -133,6 +194,8 @@ namespace AForge.Video.DirectShow
 
                 videoDevice.DesiredFrameSize = caps.FrameSize;
                 videoDevice.DesiredFrameRate = caps.FrameRate;
+
+                captureSize = caps.FrameSize;
             }
 
             if ( configureSnapshots )
@@ -144,6 +207,8 @@ namespace AForge.Video.DirectShow
 
                     videoDevice.ProvideSnapshots = true;
                     videoDevice.DesiredSnapshotSize = caps.FrameSize;
+
+                    snapshotSize = caps.FrameSize;
                 }
             }
         }
@@ -166,10 +231,14 @@ namespace AForge.Video.DirectShow
             videoResolutionsCombo.Items.Clear( );
             snapshotResolutionsCombo.Items.Clear( );
 
+            videoCapabilitiesDictionary.Clear( );
+            snapshotCapabilitiesDictionary.Clear( );
+
             try
             {
                 // collect video capabilities
                 VideoCapabilities[] videoCapabilities = videoDevice.VideoCapabilities;
+                int videoResolutionIndex = 0;
 
                 foreach ( VideoCapabilities capabilty in videoCapabilities )
                 {
@@ -178,6 +247,11 @@ namespace AForge.Video.DirectShow
 
                     if ( !videoResolutionsCombo.Items.Contains( item ) )
                     {
+                        if ( captureSize == capabilty.FrameSize )
+                        {
+                            videoResolutionIndex = videoResolutionsCombo.Items.Count;
+                        }
+
                         videoResolutionsCombo.Items.Add( item );
                     }
 
@@ -199,12 +273,14 @@ namespace AForge.Video.DirectShow
                     videoResolutionsCombo.Items.Add( "Not supported" );
                 }
 
-                videoResolutionsCombo.SelectedIndex = 0;
+                videoResolutionsCombo.SelectedIndex = videoResolutionIndex;
+
 
                 if ( configureSnapshots )
                 {
                     // collect snapshot capabilities
                     VideoCapabilities[] snapshotCapabilities = videoDevice.SnapshotCapabilities;
+                    int snapshotResolutionIndex = 0;
 
                     foreach ( VideoCapabilities capabilty in snapshotCapabilities )
                     {
@@ -213,6 +289,11 @@ namespace AForge.Video.DirectShow
 
                         if ( !snapshotResolutionsCombo.Items.Contains( item ) )
                         {
+                            if ( snapshotSize == capabilty.FrameSize )
+                            {
+                                snapshotResolutionIndex = snapshotResolutionsCombo.Items.Count;
+                            }
+
                             snapshotResolutionsCombo.Items.Add( item );
                             snapshotCapabilitiesDictionary.Add( item, capabilty );
                         }
@@ -223,7 +304,7 @@ namespace AForge.Video.DirectShow
                         snapshotResolutionsCombo.Items.Add( "Not supported" );
                     }
 
-                    snapshotResolutionsCombo.SelectedIndex = 0;
+                    snapshotResolutionsCombo.SelectedIndex = snapshotResolutionIndex;
                 }
             }
             finally
