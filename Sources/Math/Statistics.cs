@@ -40,14 +40,14 @@ namespace AForge.Math
         /// // calculate mean value
         /// double mean = Statistics.Mean( histogram );
         /// // output it (5.759)
-        /// System.Diagnostics.Debug.WriteLine( "mean = " + mean.ToString( "F3" ) );
+        /// Console.WriteLine( "mean = " + mean.ToString( "F3" ) );
         /// </code>
         /// </remarks>
         /// 
         public static double Mean( int[] values )
         {
             int     hits;
-            int     total = 0;
+            long    total = 0;
             double  mean = 0;
 
             // for all values
@@ -82,14 +82,38 @@ namespace AForge.Math
         /// // calculate standard deviation value
         /// double stdDev = Statistics.StdDev( histogram );
         /// // output it (1.999)
-        /// System.Diagnostics.Debug.WriteLine( "std.dev. = " + stdDev.ToString( "F3" ) );
+        /// Console.WriteLine( "std.dev. = " + stdDev.ToString( "F3" ) );
         /// </code>
         /// </remarks>
         /// 
         public static double StdDev( int[] values )
         {
-            double  mean = 0;
+            return StdDev( values, Mean( values ) );
+        }
+
+        /// <summary>
+        /// Calculate standard deviation.
+        /// </summary>
+        /// 
+        /// <param name="values">Histogram array.</param>
+        /// <param name="mean">Mean value of the histogram.</param>
+        /// 
+        /// <returns>Returns value of standard deviation.</returns>
+        /// 
+        /// <remarks><para>The input array is treated as histogram, i.e. its
+        /// indexes are treated as values of stochastic function, but
+        /// array values are treated as "probabilities" (total amount of
+        /// hits).</para>
+        /// 
+        /// <para>The method is an equevalent to the <see cref="StdDev(int[])"/> method,
+        /// but it relieas on the passed mean value, which is previously calculated
+        /// using <see cref="Mean"/> method.</para>
+        /// </remarks>
+        /// 
+        public static double StdDev( int[] values, double mean )
+        {
             double  stddev = 0;
+            double  diff;
             int     hits;
             int     total = 0;
 
@@ -97,19 +121,14 @@ namespace AForge.Math
             for ( int i = 0, n = values.Length; i < n; i++ )
             {
                 hits = values[i];
-                // accumulate mean
-                mean += i * hits;
-                // accumulate std.dev. part
-                stddev += i * i * hits;
+                diff = (double) i - mean;
+                // accumulate std.dev.
+                stddev += diff * diff * hits;
                 // accumalate total
                 total += hits;
             }
 
-            if ( total == 0 )
-                return 0;
-
-            mean /= total;
-            return Math.Sqrt( stddev / total - mean * mean );
+            return ( total == 0 ) ? 0 : Math.Sqrt( stddev / total );
         }
 
         /// <summary>
@@ -137,7 +156,7 @@ namespace AForge.Math
         /// // calculate median value
         /// int median = Statistics.Median( histogram );
         /// // output it (6)
-        /// System.Diagnostics.Debug.WriteLine( "median = " + median );
+        /// Console.WriteLine( "median = " + median );
         /// </code>
         /// </remarks>
         /// 
@@ -192,7 +211,7 @@ namespace AForge.Math
         /// // get 75% range around median
         /// IntRange range = Statistics.GetRange( histogram, 0.75 );
         /// // output it ([4, 8])
-        /// System.Diagnostics.Debug.WriteLine( "range = [" + range.Min + ", " + range.Max + "]" );
+        /// Console.WriteLine( "range = [" + range.Min + ", " + range.Max + "]" );
         /// </code>
         /// </remarks>
         /// 
@@ -247,21 +266,21 @@ namespace AForge.Math
         /// // calculate entropy
         /// double entropy1 = Statistics.Entropy( histogram1 );
         /// // output it (1.000)
-        /// System.Diagnostics.Debug.WriteLine( "entropy1 = " + entropy1.ToString( "F3" ) );
+        /// Console.WriteLine( "entropy1 = " + entropy1.ToString( "F3" ) );
         /// 
         /// // create histogram array with 4 values of equal probabilities
         /// int[] histogram2 = new int[4] { 1, 1, 1, 1 };
         /// // calculate entropy
         /// double entropy2 = Statistics.Entropy( histogram2 );
         /// // output it (2.000)
-        /// System.Diagnostics.Debug.WriteLine( "entropy2 = " + entropy2.ToString( "F3" ) );
+        /// Console.WriteLine( "entropy2 = " + entropy2.ToString( "F3" ) );
         /// 
         /// // create histogram array with 4 values of different probabilities
         /// int[] histogram3 = new int[4] { 1, 2, 3, 4 };
         /// // calculate entropy
         /// double entropy3 = Statistics.Entropy( histogram3 );
         /// // output it (1.846)
-        /// System.Diagnostics.Debug.WriteLine( "entropy3 = " + entropy3.ToString( "F3" ) );
+        /// Console.WriteLine( "entropy3 = " + entropy3.ToString( "F3" ) );
         /// </code>
         /// </remarks>
         /// 
@@ -316,7 +335,7 @@ namespace AForge.Math
         /// // calculate mode value
         /// int mode = Statistics.Mode( values );
         /// // output it (7)
-        /// System.Diagnostics.Debug.WriteLine( "mode = " + mode );
+        /// Console.WriteLine( "mode = " + mode );
         /// </code>
         /// </remarks>
         /// 

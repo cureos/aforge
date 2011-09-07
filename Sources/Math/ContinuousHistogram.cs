@@ -265,7 +265,6 @@ namespace AForge.Math
 
             float rangeLength = range.Length;
             float rangeMin = range.Min;
-            float randomVariableValue = 0;
 
             max    = 0;
             min    = n;
@@ -273,10 +272,11 @@ namespace AForge.Math
             stdDev = 0;
             total  = 0;
 
+            double sum = 0;
+
             // calculate mean, min, max
             for ( i = 0; i < n; i++ )
             {
-                randomVariableValue = ( ( (float) i / nM1 ) * rangeLength + rangeMin );
                 hits = values[i];
 
                 if ( hits != 0 )
@@ -292,19 +292,32 @@ namespace AForge.Math
                 // accumulate total value
                 total += hits;
                 // accumulate mean value
-                mean += randomVariableValue * hits;
-                // accumulate std.dev. part
-                stdDev += randomVariableValue * randomVariableValue * hits;
+                sum += ( ( (double) i / nM1 ) * rangeLength + rangeMin ) * hits;
             }
 
             if ( total != 0 )
             {
-                mean /= total;
-                stdDev = (float) Math.Sqrt( stdDev / total - mean * mean );
+                mean = (float) ( sum / total );
             }
 
             min = ( min / nM1 ) * rangeLength + rangeMin;
             max = ( max / nM1 ) * rangeLength + rangeMin;
+
+            // calculate stadard deviation
+            sum = 0;
+            double diff;
+
+            for ( i = 0; i < n; i++ )
+            {
+                hits = values[i];
+                diff = ( ( (double) i / nM1 ) * rangeLength + rangeMin ) - mean;
+                sum += diff * diff * hits;
+            }
+
+            if ( total != 0 )
+            {
+                stdDev = (float) Math.Sqrt( sum / total );
+            }
 
             // calculate median
             int m, halfTotal = total / 2;

@@ -252,8 +252,8 @@ namespace AForge.Math
                 }
             }
 
-            mean = Statistics.Mean( values );
-            stdDev = Statistics.StdDev( values );
+            mean   = Statistics.Mean( values );
+            stdDev = Statistics.StdDev( values, mean );
             median = Statistics.Median( values );
         }
     }
