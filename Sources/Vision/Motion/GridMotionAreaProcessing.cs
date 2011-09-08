@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Vision.Motion
@@ -233,10 +233,26 @@ namespace AForge.Vision.Motion
         /// set to <see langword="true"/>, the cell with motion level above threshold are
         /// highlighted.</para></remarks>
         ///
+        /// <exception cref="InvalidImagePropertiesException">Motion frame is not 8 bpp image, but it must be so.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Video frame must be 8 bpp grayscale image or 24/32 bpp color image.</exception>
+        ///
         public unsafe void ProcessFrame( UnmanagedImage videoFrame, UnmanagedImage motionFrame )
         {
+            if ( motionFrame.PixelFormat != PixelFormat.Format8bppIndexed )
+            {
+                throw new InvalidImagePropertiesException( "Motion frame must be 8 bpp image." );
+            }
+
+            if ( ( videoFrame.PixelFormat != PixelFormat.Format8bppIndexed ) &&
+                 ( videoFrame.PixelFormat != PixelFormat.Format24bppRgb ) &&
+                 ( videoFrame.PixelFormat != PixelFormat.Format32bppArgb ) )
+            {
+                throw new UnsupportedImageFormatException( "Video frame must be 8 bpp grayscale image or 24/32 bpp color image." );
+            } 
+            
             int width  = videoFrame.Width;
             int height = videoFrame.Height;
+            int pixelSize = Bitmap.GetPixelFormatSize( videoFrame.PixelFormat ) / 8; 
 
             if ( ( motionFrame.Width != width ) || ( motionFrame.Height != height ) )
                 return;
@@ -301,32 +317,63 @@ namespace AForge.Vision.Motion
                 // highlight motion grid - cells, which have enough motion
 
                 byte* src = (byte*) videoFrame.ImageData.ToPointer( );
-                int srcOffset = videoFrame.Stride - width * 3;
+                int srcOffset = videoFrame.Stride - width * pixelSize;
 
-                byte fillR = highlightColor.R;
-                byte fillG = highlightColor.G;
-                byte fillB = highlightColor.B;
-
-                for ( int y = 0; y < height; y++ )
+                if ( pixelSize == 1 )
                 {
-                    yCell = y / cellHeight;
-                    if ( yCell >= gridHeight )
-                        yCell = gridHeight - 1;
+                    // grayscale case
+                    byte fillG = (byte) ( 0.2125 * highlightColor.R +
+                                          0.7154 * highlightColor.G +
+                                          0.0721 * highlightColor.B );
 
-                    for ( int x = 0; x < width; x++, src += 3 )
+                    for ( int y = 0; y < height; y++ )
                     {
-                        xCell = x / cellWidth;
-                        if ( xCell >= gridWidth )
-                            xCell = gridWidth - 1;
+                        yCell = y / cellHeight;
+                        if ( yCell >= gridHeight )
+                            yCell = gridHeight - 1;
 
-                        if ( ( motionGrid[yCell, xCell] > motionAmountToHighlight ) && ( ( ( x + y ) & 1 ) == 0 ) )
+                        for ( int x = 0; x < width; x++, src++ )
                         {
-                            src[RGB.R] = fillR;
-                            src[RGB.G] = fillG;
-                            src[RGB.B] = fillB;
+                            xCell = x / cellWidth;
+                            if ( xCell >= gridWidth )
+                                xCell = gridWidth - 1;
+
+                            if ( ( motionGrid[yCell, xCell] > motionAmountToHighlight ) && ( ( ( x + y ) & 1 ) == 0 ) )
+                            {
+                                *src = fillG;
+                            }
                         }
+                        src += srcOffset;
                     }
-                    src += srcOffset;
+                }
+                else
+                {
+                    // color case
+                    byte fillR = highlightColor.R;
+                    byte fillG = highlightColor.G;
+                    byte fillB = highlightColor.B;
+
+                    for ( int y = 0; y < height; y++ )
+                    {
+                        yCell = y / cellHeight;
+                        if ( yCell >= gridHeight )
+                            yCell = gridHeight - 1;
+
+                        for ( int x = 0; x < width; x++, src += pixelSize )
+                        {
+                            xCell = x / cellWidth;
+                            if ( xCell >= gridWidth )
+                                xCell = gridWidth - 1;
+
+                            if ( ( motionGrid[yCell, xCell] > motionAmountToHighlight ) && ( ( ( x + y ) & 1 ) == 0 ) )
+                            {
+                                src[RGB.R] = fillR;
+                                src[RGB.G] = fillG;
+                                src[RGB.B] = fillB;
+                            }
+                        }
+                        src += srcOffset;
+                    }
                 }
             }
         }

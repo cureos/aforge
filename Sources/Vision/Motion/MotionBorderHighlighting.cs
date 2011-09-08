@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Vision.Motion
@@ -94,44 +94,86 @@ namespace AForge.Vision.Motion
         /// on the original video frame with <see cref="HighlightColor">specified color</see>.</para>
         /// </remarks>
         ///
+        /// <exception cref="InvalidImagePropertiesException">Motion frame is not 8 bpp image, but it must be so.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Video frame must be 8 bpp grayscale image or 24/32 bpp color image.</exception>
+        ///
         public unsafe void ProcessFrame( UnmanagedImage videoFrame, UnmanagedImage motionFrame )
         {
+            if ( motionFrame.PixelFormat != PixelFormat.Format8bppIndexed )
+            {
+                throw new InvalidImagePropertiesException( "Motion frame must be 8 bpp image." );
+            }
+
+            if ( ( videoFrame.PixelFormat != PixelFormat.Format8bppIndexed ) &&
+                 ( videoFrame.PixelFormat != PixelFormat.Format24bppRgb ) &&
+                 ( videoFrame.PixelFormat != PixelFormat.Format32bppArgb ) )
+            {
+                throw new UnsupportedImageFormatException( "Video frame must be 8 bpp grayscale image or 24/32 bpp color image." );
+            } 
+
             int width  = videoFrame.Width;
             int height = videoFrame.Height;
+            int pixelSize = Bitmap.GetPixelFormatSize( videoFrame.PixelFormat ) / 8; 
 
             if ( ( motionFrame.Width != width ) || ( motionFrame.Height != height ) )
                 return;
 
-            byte fillR = highlightColor.R;
-            byte fillG = highlightColor.G;
-            byte fillB = highlightColor.B;
-
             byte* src    = (byte*) videoFrame.ImageData.ToPointer( );
             byte* motion = (byte*) motionFrame.ImageData.ToPointer( );
 
-            int srcOffset    = videoFrame.Stride  - ( width - 2 ) * 3;
+            int srcOffset    = videoFrame.Stride  - ( width - 2 ) * pixelSize;
             int motionOffset = motionFrame.Stride - ( width - 2 );
 
-            src    += videoFrame.Stride + 3;
+            src    += videoFrame.Stride + pixelSize;
             motion += motionFrame.Stride + 1;
 
             int widthM1  = width - 1;
             int heightM1 = height - 1;
 
             // use simple edge detector
-            for ( int y = 1; y < heightM1; y++ )
+            if ( pixelSize == 1 )
             {
-                for ( int x = 1; x < widthM1; x++, motion++, src += 3 )
-                {
-                    if ( 4 * *motion - motion[-width] - motion[width] - motion[1] - motion[-1] != 0 )
-                    {
-                        src[RGB.R] = fillR;
-                        src[RGB.G] = fillG;
-                        src[RGB.B] = fillB;                    }
-                }
+                // grayscale case
+                byte fillG = (byte) ( 0.2125 * highlightColor.R +
+                                      0.7154 * highlightColor.G +
+                                      0.0721 * highlightColor.B );
 
-                motion += motionOffset;
-                src += srcOffset;
+                for ( int y = 1; y < heightM1; y++ )
+                {
+                    for ( int x = 1; x < widthM1; x++, motion++, src++ )
+                    {
+                        if ( 4 * *motion - motion[-width] - motion[width] - motion[1] - motion[-1] != 0 )
+                        {
+                            *src = fillG;
+                        }
+                    }
+
+                    motion += motionOffset;
+                    src += srcOffset;
+                }
+            }
+            else
+            {
+                // color case
+                byte fillR = highlightColor.R;
+                byte fillG = highlightColor.G;
+                byte fillB = highlightColor.B;
+
+                for ( int y = 1; y < heightM1; y++ )
+                {
+                    for ( int x = 1; x < widthM1; x++, motion++, src += pixelSize )
+                    {
+                        if ( 4 * *motion - motion[-width] - motion[width] - motion[1] - motion[-1] != 0 )
+                        {
+                            src[RGB.R] = fillR;
+                            src[RGB.G] = fillG;
+                            src[RGB.B] = fillB;
+                        }
+                    }
+
+                    motion += motionOffset;
+                    src += srcOffset;
+                }
             }
         }
 
