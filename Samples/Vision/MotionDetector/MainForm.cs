@@ -51,11 +51,13 @@ namespace MotionDetectorSample
         private float motionAlarmLevel = 0.015f;
 
         private List<float> motionHistory = new List<float>( );
+        private int detectedObjectsCount = -1;
 
         // Constructor
         public MainForm( )
         {
             InitializeComponent( );
+            Application.Idle += new EventHandler( Application_Idle );
         }
 
         // Application's main form is closing
@@ -171,7 +173,7 @@ namespace MotionDetectorSample
             CloseVideoSource( );
 
             // start new video source
-            videoSourcePlayer.VideoSource = source;
+            videoSourcePlayer.VideoSource = new AsyncVideoSource( source );
             videoSourcePlayer.Start( );
 
             // reset statistics
@@ -236,11 +238,11 @@ namespace MotionDetectorSample
                     if ( detector.MotionProcessingAlgorithm is BlobCountingObjectsProcessing )
                     {
                         BlobCountingObjectsProcessing countingDetector = (BlobCountingObjectsProcessing) detector.MotionProcessingAlgorithm;
-                        objectsCountLabel.Text = "Objects: " + countingDetector.ObjectsCount.ToString( );
+                        detectedObjectsCount = countingDetector.ObjectsCount;
                     }
                     else
                     {
-                        objectsCountLabel.Text = "";
+                        detectedObjectsCount = -1;
                     }
 
                     // accumulate history
@@ -254,6 +256,12 @@ namespace MotionDetectorSample
                         DrawMotionHistory( image );
                 }
             }
+        }
+
+        // Update some UI elements
+        private void Application_Idle( object sender, EventArgs e )
+        {
+            objectsCountLabel.Text = ( detectedObjectsCount < 0 ) ? string.Empty : "Objects: " + detectedObjectsCount;
         }
 
         // Draw motion history
