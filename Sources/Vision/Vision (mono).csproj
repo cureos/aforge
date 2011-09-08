@@ -61,5 +61,6 @@
     <Compile Include="Motion\SimpleBackgroundModelingDetector.cs" />
     <Compile Include="Motion\TwoFramesDifferenceDetector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools.cs" />
   </ItemGroup>
 </Project>
