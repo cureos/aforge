@@ -46,6 +46,7 @@
       <HintPath>..\..\Release\AForge.Math.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +170,7 @@
     <Compile Include="Filters\Noise generation\AdditiveNoise.cs" />
     <Compile Include="Filters\Noise generation\SaltAndPepperNoise.cs" />
     <Compile Include="Filters\Normalized RGB\ExtractNormalizedRGBChannel.cs" />
+    <Compile Include="Filters\Other\ApplyMask.cs" />
     <Compile Include="Filters\Other\BlobsFiltering.cs" />
     <Compile Include="Filters\Other\CanvasCrop.cs" />
     <Compile Include="Filters\Other\CanvasFill.cs" />
