@@ -28,7 +28,7 @@ namespace AForge.Video.Kinect
     /// as described on <a href="http://openkinect.org/wiki/Getting_Started#Windows">Open Kinect</a>
     /// project's page.</note></para>
     ///
-    /// <para><note>In order to run correctly the class requires <i>libfreenect.dll</i> library
+    /// <para><note>In order to run correctly the class requires <i>freenect.dll</i> library
     /// to be put into solution's output folder. This can be found within the AForge.NET framework's
     /// distribution in Externals folder.</note></para>
     /// 

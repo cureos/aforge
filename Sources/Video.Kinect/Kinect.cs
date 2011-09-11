@@ -24,7 +24,7 @@ namespace AForge.Video.Kinect
     /// 
     /// <para><img src="img/video/kinect.jpg" width="320" height="140" /></para>
     /// 
-    /// <para><note>In order to run correctly the class requires <i>libfreenect.dll</i> library
+    /// <para><note>In order to run correctly the class requires <i>freenect.dll</i> library
     /// to be put into solution's output folder. This can be found within the AForge.NET framework's
     /// distribution in Externals folder.</note></para>
     ///
