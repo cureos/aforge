@@ -48,6 +48,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Blob.cs" />
@@ -181,6 +182,7 @@
     <Compile Include="Filters\Other\FillHoles.cs" />
     <Compile Include="Filters\Other\ImageWarp.cs" />
     <Compile Include="Filters\Other\Jitter.cs" />
+    <Compile Include="Filters\Other\MaskedFilter.cs" />
     <Compile Include="Filters\Other\Mirror.cs" />
     <Compile Include="Filters\Other\OilPainting.cs" />
     <Compile Include="Filters\Other\Pixellate.cs" />

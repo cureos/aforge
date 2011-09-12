@@ -14,26 +14,96 @@ namespace AForge.Imaging.Filters
     using System.Drawing.Imaging;
 
     /// <summary>
-    /// Apply mask to the specified image.
+    /// Apply filter according to the specified mask.
     /// </summary>
     /// 
-    /// <remarks><para>The filter applies mask to the specified image - keeps all pixels
-    /// in the image if corresponding pixels/values of the mask are not equal to 0. For all
-    /// 0 pixels/values in mask, corresponding pixels in the source image are set to 0.</para>
+    /// <remarks><para>The image processing routine applies the specified <see cref="BaseFilter"/> to
+    /// a source image according to the specified mask - if a pixel/value in the specified mask image/array
+    /// is set to 0, then the original pixel's value is kept; otherwise the pixel is filtered using the
+    /// specified base filter.</para>
     /// 
     /// <para>Mask can be specified as <see cref="MaskImage">.NET's managed Bitmap</see>, as
     /// <see cref="UnmanagedMaskImage">UnmanagedImage</see> or as <see cref="Mask">byte array</see>.
     /// In the case if mask is specified as image, it must be 8 bpp grayscale image. In all case
     /// mask size must be the same as size of the image to process.</para>
     /// 
-    /// <para>The filter accepts 8/16 bpp grayscale and 24/32/48/64 bpp color images for processing.</para>
+    /// <para><note>Pixel formats accepted by this filter are specified by the <see cref="BaseFilter"/>.</note></para>
+    /// 
+    /// <para>Sample usage:</para>
+    /// <code>
+    /// // create the filter
+    /// MaskedFilter maskedFilter = new MaskedFilter( new Sepia( ), maskImage );
+    /// // apply the filter
+    /// maskedFilter.ApplyInPlace( image );
+    /// </code>
+    /// 
+    /// <para><b>Initial image:</b></para>
+    /// <img src="img/imaging/sample1.jpg" width="480" height="361" />
+    /// <para><b>Mask image:</b></para>
+    /// <img src="img/imaging/mask.png" width="480" height="361" />
+    /// <para><b>Result image:</b></para>
+    /// <img src="img/imaging/masked_image.jpg" width="480" height="361" />
     /// </remarks>
     /// 
-    public class ApplyMask : BaseInPlacePartialFilter
+    public class MaskedFilter : BaseInPlacePartialFilter
     {
+        private IFilter baseFilter = null;
+
+        // masks (one of them must be set)
         private Bitmap maskImage;
         private UnmanagedImage unmanagedMaskImage;
         private byte[,] mask;
+
+        /// <summary>
+        /// Base filter to apply to the source image.
+        /// </summary>
+        ///
+        /// <remarks><para>The property specifies base filter which is applied to the specified source
+        /// image (to all pixels which have corresponding none 0 value in mask image/array).</para>
+        /// 
+        /// <para><note>The base filter must implement <see cref="IFilterInformation"/> interface.</note></para>
+        /// 
+        /// <para><note>The base filter must never change image's pixel format. For example, if source
+        /// image's pixel format is 24 bpp color image, then it must stay the same after the base
+        /// filter is applied.</note></para>
+        /// 
+        /// <para><note>The base filter must never change size of the source image.</note></para>
+        /// </remarks>
+        /// 
+        /// <exception cref="NullReferenceException">Base filter can not be set to null.</exception>
+        /// <exception cref="ArgumentException">The specified base filter must implement IFilterInformation interface.</exception>
+        /// <exception cref="ArgumentException">The specified filter must never change pixel format.</exception>
+        ///
+        public IFilter BaseFilter
+        {
+            get { return baseFilter; }
+            private set
+            {
+                if ( value == null )
+                {
+                    throw new NullReferenceException( "Base filter can not be set to null." );
+                }
+
+                if ( !( value is IFilterInformation ) )
+                {
+                    throw new ArgumentException( "The specified base filter must implement IFilterInformation interface." );
+                }
+
+                // check that the base filter does not change pixel format of image
+                Dictionary<PixelFormat, PixelFormat> baseFormatTranslations =
+                    ( (IFilterInformation) value ).FormatTranslations;
+
+                foreach ( KeyValuePair<PixelFormat, PixelFormat> translation in baseFormatTranslations )
+                {
+                    if ( translation.Key != translation.Value )
+                    {
+                        throw new ArgumentException( "The specified filter must never change pixel format." );
+                    }
+                }
+
+                baseFilter = value;
+            }
+        }
 
         /// <summary>
         /// Mask image to apply.
@@ -117,64 +187,58 @@ namespace AForge.Imaging.Filters
             }
         }
 
-        // private format translation dictionary
-        private Dictionary<PixelFormat, PixelFormat> formatTranslations = new Dictionary<PixelFormat, PixelFormat>( );
-
         /// <summary>
         /// Format translations dictionary.
         /// </summary>
         /// 
         /// <remarks><para>See <see cref="IFilterInformation.FormatTranslations"/>
-        /// documentation for additional information.</para></remarks>
+        /// documentation for additional information.</para>
+        /// 
+        /// <para><note>The property returns format translation table from the
+        /// <see cref="BaseFilter"/>.</note></para>
+        /// </remarks>
         /// 
         public override Dictionary<PixelFormat, PixelFormat> FormatTranslations
         {
-            get { return formatTranslations; }
-        }
-
-        private ApplyMask( )
-        {
-            formatTranslations[PixelFormat.Format8bppIndexed]    = PixelFormat.Format8bppIndexed;
-            formatTranslations[PixelFormat.Format24bppRgb]       = PixelFormat.Format24bppRgb;
-            formatTranslations[PixelFormat.Format32bppArgb]      = PixelFormat.Format32bppArgb;
-            formatTranslations[PixelFormat.Format32bppRgb]       = PixelFormat.Format32bppRgb;
-            formatTranslations[PixelFormat.Format32bppPArgb]     = PixelFormat.Format32bppPArgb;
-            formatTranslations[PixelFormat.Format16bppGrayScale] = PixelFormat.Format16bppGrayScale;
-            formatTranslations[PixelFormat.Format48bppRgb]       = PixelFormat.Format48bppRgb;
-            formatTranslations[PixelFormat.Format64bppArgb]      = PixelFormat.Format64bppArgb;
-            formatTranslations[PixelFormat.Format64bppPArgb]     = PixelFormat.Format64bppPArgb;
+            get { return ( (IFilterInformation) baseFilter).FormatTranslations; }
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApplyMask"/> class.
+        /// Initializes a new instance of the <see cref="MaskedFilter"/> class.
         /// </summary>
         /// 
+        /// <param name="baseFiler"><see cref="BaseFilter">Base filter</see> to apply to the specified source image.</param>
         /// <param name="maskImage"><see cref="MaskImage">Mask image</see> to use.</param>
         /// 
-        public ApplyMask( Bitmap maskImage ) : this( )
+        public MaskedFilter( IFilter baseFiler, Bitmap maskImage )
         {
+            BaseFilter = baseFiler;
             MaskImage = maskImage;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApplyMask"/> class.
+        /// Initializes a new instance of the <see cref="MaskedFilter"/> class.
         /// </summary>
         /// 
+        /// <param name="baseFiler"><see cref="BaseFilter">Base filter</see> to apply to the specified source image.</param>
         /// <param name="unmanagedMaskImage"><see cref="UnmanagedMaskImage">Unmanaged mask image</see> to use.</param>
         /// 
-        public ApplyMask( UnmanagedImage unmanagedMaskImage ) : this( )
+        public MaskedFilter( IFilter baseFiler, UnmanagedImage unmanagedMaskImage )
         {
+            BaseFilter = baseFiler;
             UnmanagedMaskImage = unmanagedMaskImage;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApplyMask"/> class.
+        /// Initializes a new instance of the <see cref="MaskedFilter"/> class.
         /// </summary>
         /// 
+        /// <param name="baseFiler"><see cref="BaseFilter">Base filter</see> to apply to the specified source image.</param>
         /// <param name="mask"><see cref="Mask"/> to use.</param>
         /// 
-        public ApplyMask( byte[,] mask ) : this( )
+        public MaskedFilter( IFilter baseFiler, byte[,] mask )
         {
+            BaseFilter = baseFiler;
             Mask = mask;
         }
 
@@ -243,6 +307,15 @@ namespace AForge.Imaging.Filters
 
         private unsafe void ProcessImage( UnmanagedImage image, Rectangle rect, byte* mask, int maskLineSize )
         {
+            // apply base filter to the specified image
+            UnmanagedImage filteredImage = baseFilter.Apply( image );
+
+            if ( ( image.Width  != filteredImage.Width ) ||
+                 ( image.Height != filteredImage.Height ) )
+            {
+                throw new ArgumentException( "Base filter must not change image size." );
+            }
+
             int pixelSize = Bitmap.GetPixelFormatSize( image.PixelFormat ) / 8;
 
             int startY  = rect.Top;
@@ -251,7 +324,8 @@ namespace AForge.Imaging.Filters
             int startX  = rect.Left;
             int stopX   = startX + rect.Width;
 
-            int stride = image.Stride;
+            int srcStride = image.Stride;
+            int filteredStride = filteredImage.Stride;
             int maskOffset = maskLineSize - rect.Width;
 
             // allign mask to the first pixel
@@ -261,8 +335,12 @@ namespace AForge.Imaging.Filters
             {
                 // 8 bits per channel
                 byte* imagePtr = (byte*) image.ImageData.ToPointer( ) +
-                                 stride * startY + pixelSize * startX;
-                int offset = stride - rect.Width * pixelSize;
+                                 srcStride * startY + pixelSize * startX;
+                int srcOffset = srcStride - rect.Width * pixelSize;
+
+                byte* filteredPtr = (byte*) filteredImage.ImageData.ToPointer( ) +
+                                    filteredStride * startY + pixelSize * startX;
+                int filteredOffset = filteredStride - rect.Width * pixelSize;
 
                 #region 8 bit cases
                 switch ( pixelSize )
@@ -271,14 +349,15 @@ namespace AForge.Imaging.Filters
                         // 8 bpp grayscale
                         for ( int y = startY; y < stopY; y++ )
                         {
-                            for ( int x = startX; x < stopX; x++, imagePtr++, mask++ )
+                            for ( int x = startX; x < stopX; x++, imagePtr++, filteredPtr++, mask++ )
                             {
-                                if ( *mask == 0 )
+                                if ( *mask != 0 )
                                 {
-                                    *imagePtr = 0;
+                                    *imagePtr = *filteredPtr;
                                 }
                             }
-                            imagePtr += offset;
+                            imagePtr += srcOffset;
+                            filteredPtr += filteredOffset;
                             mask += maskOffset;
                         }
                         break;
@@ -287,16 +366,17 @@ namespace AForge.Imaging.Filters
                         // 24 bpp color
                         for ( int y = startY; y < stopY; y++ )
                         {
-                            for ( int x = startX; x < stopX; x++, imagePtr += 3, mask++ )
+                            for ( int x = startX; x < stopX; x++, imagePtr += 3, filteredPtr += 3, mask++ )
                             {
-                                if ( *mask == 0 )
+                                if ( *mask != 0 )
                                 {
-                                    imagePtr[RGB.R] = 0;
-                                    imagePtr[RGB.G] = 0;
-                                    imagePtr[RGB.B] = 0;
+                                    imagePtr[RGB.R] = filteredPtr[RGB.R];
+                                    imagePtr[RGB.G] = filteredPtr[RGB.G];
+                                    imagePtr[RGB.B] = filteredPtr[RGB.B];
                                 }
                             }
-                            imagePtr += offset;
+                            imagePtr += srcOffset;
+                            filteredPtr += filteredOffset;
                             mask += maskOffset;
                         }
                         break;
@@ -305,17 +385,18 @@ namespace AForge.Imaging.Filters
                         // 32 bpp color
                         for ( int y = startY; y < stopY; y++ )
                         {
-                            for ( int x = startX; x < stopX; x++, imagePtr += 4, mask++ )
+                            for ( int x = startX; x < stopX; x++, imagePtr += 4, filteredPtr += 4, mask++ )
                             {
-                                if ( *mask == 0 )
+                                if ( *mask != 0 )
                                 {
-                                    imagePtr[RGB.R] = 0;
-                                    imagePtr[RGB.G] = 0;
-                                    imagePtr[RGB.B] = 0;
-                                    imagePtr[RGB.A] = 0;
+                                    imagePtr[RGB.R] = filteredPtr[RGB.R];
+                                    imagePtr[RGB.G] = filteredPtr[RGB.G];
+                                    imagePtr[RGB.B] = filteredPtr[RGB.B];
+                                    imagePtr[RGB.A] = filteredPtr[RGB.A];
                                 }
                             }
-                            imagePtr += offset;
+                            imagePtr += srcOffset;
+                            filteredPtr += filteredOffset;
                             mask += maskOffset;
                         }
                         break;
@@ -326,7 +407,9 @@ namespace AForge.Imaging.Filters
             {
                 // 16 bits per channel
                 byte* imagePtrBase = (byte*) image.ImageData.ToPointer( ) +
-                                     stride * startY + pixelSize * startX;
+                                     srcStride * startY + pixelSize * startX;
+                byte* filteredPtrBase = (byte*) filteredImage.ImageData.ToPointer( ) +
+                                        filteredStride * startY + pixelSize * startX;
 
                 #region 16 bit cases
                 switch ( pixelSize )
@@ -336,15 +419,17 @@ namespace AForge.Imaging.Filters
                         for ( int y = startY; y < stopY; y++ )
                         {
                             ushort* imagePtr = (ushort*) imagePtrBase;
+                            ushort* filteredPtr = (ushort*) filteredPtrBase;
 
-                            for ( int x = startX; x < stopX; x++, imagePtr++, mask++ )
+                            for ( int x = startX; x < stopX; x++, imagePtr++, filteredPtr++, mask++ )
                             {
-                                if ( *mask == 0 )
+                                if ( *mask != 0 )
                                 {
-                                    *imagePtr = 0;
+                                    *imagePtr = *filteredPtr;
                                 }
                             }
-                            imagePtrBase += stride;
+                            imagePtrBase += srcStride;
+                            filteredPtrBase += filteredStride;
                             mask += maskOffset;
                         }
                         break;
@@ -354,17 +439,19 @@ namespace AForge.Imaging.Filters
                         for ( int y = startY; y < stopY; y++ )
                         {
                             ushort* imagePtr = (ushort*) imagePtrBase;
+                            ushort* filteredPtr = (ushort*) filteredPtrBase;
 
-                            for ( int x = startX; x < stopX; x++, imagePtr += 3, mask++ )
+                            for ( int x = startX; x < stopX; x++, imagePtr += 3, filteredPtr += 3, mask++ )
                             {
-                                if ( *mask == 0 )
+                                if ( *mask != 0 )
                                 {
-                                    imagePtr[RGB.R] = 0;
-                                    imagePtr[RGB.G] = 0;
-                                    imagePtr[RGB.B] = 0;
+                                    imagePtr[RGB.R] = filteredPtr[RGB.R];
+                                    imagePtr[RGB.G] = filteredPtr[RGB.G];
+                                    imagePtr[RGB.B] = filteredPtr[RGB.B];
                                 }
                             }
-                            imagePtrBase += stride;
+                            imagePtrBase += srcStride;
+                            filteredPtrBase += filteredStride;
                             mask += maskOffset;
                         }
                         break;
@@ -374,18 +461,20 @@ namespace AForge.Imaging.Filters
                         for ( int y = startY; y < stopY; y++ )
                         {
                             ushort* imagePtr = (ushort*) imagePtrBase;
+                            ushort* filteredPtr = (ushort*) filteredPtrBase;
 
-                            for ( int x = startX; x < stopX; x++, imagePtr += 4, mask++ )
+                            for ( int x = startX; x < stopX; x++, imagePtr += 4, filteredPtr += 4, mask++ )
                             {
-                                if ( *mask == 0 )
+                                if ( *mask != 0 )
                                 {
-                                    imagePtr[RGB.R] = 0;
-                                    imagePtr[RGB.G] = 0;
-                                    imagePtr[RGB.B] = 0;
-                                    imagePtr[RGB.A] = 0;
+                                    imagePtr[RGB.R] = filteredPtr[RGB.R];
+                                    imagePtr[RGB.G] = filteredPtr[RGB.G];
+                                    imagePtr[RGB.B] = filteredPtr[RGB.B];
+                                    imagePtr[RGB.A] = filteredPtr[RGB.A];
                                 }
                             }
-                            imagePtrBase += stride;
+                            imagePtrBase += srcStride;
+                            filteredPtrBase += filteredStride;
                             mask += maskOffset;
                         }
                         break;
