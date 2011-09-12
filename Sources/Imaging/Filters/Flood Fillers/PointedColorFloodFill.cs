@@ -47,14 +47,14 @@ namespace AForge.Imaging.Filters
     /// 
     /// <seealso cref="PointedMeanFloodFill"/>
     /// 
-    public class PointedColorFloodFill : BaseInPlacePartialFilter
+    public unsafe class PointedColorFloodFill : BaseInPlacePartialFilter
     {
         // map of pixels, which are already checked by the flood fill algorithm
         private bool[,] checkedPixels;
 
         // set of variables (which describe image property and min/max color) to avoid passing them
         // recursively as parameters
-        int scan0;      // pointer to first image line
+        byte* scan0;      // pointer to first image line
         int stride;     // size of image's line
         int startX;     // X1 of bounding rectangle
         int stopX;      // Y1 of bounding rectangle
@@ -190,7 +190,7 @@ namespace AForge.Imaging.Filters
             stopY  = rect.Bottom - 1;
 
             // save image properties
-            scan0 = image.ImageData.ToInt32( );
+            scan0 = (byte*) image.ImageData.ToPointer( );
             stride = image.Stride;
 
             // create map visited pixels
@@ -435,13 +435,13 @@ namespace AForge.Imaging.Filters
         }
 
         // Convert image coordinate to pointer for Grayscale images
-        private int CoordsToPointerGray( int x, int y )
+        private byte* CoordsToPointerGray( int x, int y )
         {
             return scan0 + ( stride * y ) + x;
         }
 
         // Convert image coordinate to pointer for RGB images
-        private int CoordsToPointerRGB( int x, int y )
+        private byte* CoordsToPointerRGB( int x, int y )
         {
             return scan0 + ( stride * y ) + x * 3;
         }
