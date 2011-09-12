@@ -30,8 +30,8 @@ namespace AForge.Imaging.Filters
     /// HSLFiltering filter = new HSLFiltering( );
     /// // set color ranges to keep
     /// filter.Hue = new IntRange( 335, 0 );
-    /// filter.Saturation = new Range( 0.6, 1 );
-    /// filter.Luminance = new Range( 0.1, 1 );
+    /// filter.Saturation = new Range( 0.6f, 1 );
+    /// filter.Luminance = new Range( 0.1f, 1 );
     /// // apply the filter
     /// filter.ApplyInPlace( image );
     /// </code>
