@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © AForge.NET, 2005-2010
+// Copyright © AForge.NET, 2005-2011
 // contacts@aforgenet.com
 //
 
@@ -74,6 +74,7 @@ namespace AForge.Imaging.Filters
             {
                 // apply the filter
                 dstImage = Apply( srcData );
+                dstImage.SetResolution( image.HorizontalResolution, image.VerticalResolution );
             }
             finally
             {

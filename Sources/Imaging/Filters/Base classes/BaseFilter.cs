@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © AForge.NET, 2005-2010
+// Copyright © AForge.NET, 2005-2011
 // contacts@aforgenet.com
 //
 
@@ -71,6 +71,7 @@ namespace AForge.Imaging.Filters
             {
                 // apply the filter
                 dstImage = Apply( srcData );
+                dstImage.SetResolution( image.HorizontalResolution, image.VerticalResolution );
             }
             finally
             {
@@ -114,13 +115,12 @@ namespace AForge.Imaging.Filters
                 new Bitmap( width, height, dstPixelFormat );
 
             // lock destination bitmap data
-             BitmapData dstData = dstImage.LockBits(
+            BitmapData dstData = dstImage.LockBits(
                 new Rectangle( 0, 0, width, height ),
                 ImageLockMode.ReadWrite, dstPixelFormat );
 
             try
             {
-
                 // process the filter
                 ProcessFilter( new UnmanagedImage( imageData ), new UnmanagedImage( dstData ) );
             }
