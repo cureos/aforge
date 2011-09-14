@@ -1,5 +1,101 @@
 AForge.NET Framework 2.2.1 release notes
 ----------------------------------------
+XX.09.2011.
+
+Version updates and fixes:
+
+* Fixed registered issues/requests:
+  - Issue 173: 16bpp greyscale Masked Filter
+  - Issue 228: Resolution of Bitmap returned by BaseTransformationFilter.Apply is default
+  - Issue 241: HuePicker control it's not shade color
+  - Issue 244: Error in BlobCountingObjectsProcessing constructor
+  - Issue 245: Chart control crashes sample applications for AForge.Neuro
+  - Issue 246: special character (line 394) Video.VFW\win32.cs
+  - Issue 249: memory leak in ToManagedImage
+  - Issue 253: Problem with StDev that return NAN
+
+
+* AForge.Imaging
+  - Fixing AForge.Imaging.RGB class, so by default alpha channel is initialized with 255 (not transparent). Also updated HSL
+    and YCbCr converters to set alpha to 255.
+    
+  - Added optimized version of Bayer filter, which is optimized for GRBG and BGGR patterns. Compared to generic version, the
+    optimized version is about 10 times faster.
+    
+  - Adding try/catch block into UnmanagedImage.ToManagedImage(), so it handles possible exceptions and disposes managed image
+    if it was already created.
+    
+  - Added ApplyMask image processing routine which applies mask to the specified image - keeps original pixels' values or
+    sets them to 0 depending on corresponding value in the mask image/array.
+    
+  - Added MaskedFiler image processing routine, which allows to apply filter only the part of image specified by mask
+    (0 values of mask tell that original pixel's value must be kept; otherwise - filtered).
+    
+  - Fixed flood fill classes to avoid conversion of pointer to Int32 so they should work fine on 64 bit systems.
+  
+  - Setting horizontal/vertical resolution of result image to the same values as source image has. The fix is applied to filters
+    and image processing routines which accept Bitmap as parameter and return Bitmap as result. Obviously it can not copy DPI
+    settings when image processing routine is applied to BitmapData or UnmanagedImage.
+
+
+* AForge.Math
+  - Added fix to PointsCloud.FindQuadrilateralCorners() so it does provide 2 same corners in the case when both 3rd and 4th
+    potential corners are very close to the line connecting 1st and 2nd corner.
+    
+  - Fixed bug in Matrix3x3 add operator, so it adds instead of doing subtraction (silly bug).
+  
+  - Adding addition and subtraction operators/methods for Matrix4x4.
+  
+  - Exposing FocalLength property for POSIT and CoplanarPosit classes so it could be set not only using constructor.
+  
+  - Added Histogram.TotalCount, which represents total count of values contributed to the histogram.
+  
+  - Marked both Histogram and ContinuousHistogram as serializable.
+  
+  - Changing algorithm for standard deviation calculation from single-pass to two-pass in order to minimize numerical errors.
+  
+
+* AForge.Vision
+  - Fixed one of the constructors for BlobCountingObjectsProcessing so it passes its parameter (highlighting motion detection)
+    further to another constructor.
+    
+  - Extended motion detectors to support 8 bpp grayscale image for motion detection.
+  
+
+* AForge.Video.DirectShow
+  - Moving VideoCaptureDeviceForm from Player sample application to AForge.Video.DirectShow namespace and beautifying it a bit.
+    Now the form can be reused in other applications, which require selection of local video devices.
+    
+  - Updating COM interop definition for few interfaces of DirectShow (should get more stable in some cases).
+
+
+* AForge.Video.Ximea
+  - Added additional camera parameters/enumerations for XIMEA cameras.
+
+
+* AForge.Controls
+  - Updating some AForge.Controls classes to use AForge.Imaging instead of internal tools since this assembly references
+    AForge.Imaging.dll anyway.
+    
+  - Fixing few bugs in Chart control: fixed cloning of data input data and fixed drawing of dots series type.
+  
+  - Added PlayingFinished event to VideoSourcePlayer, so users could track video stopping directly through the control
+    without subscribing to video source events.
+  
+
+* Tools
+  - Adding AForge.DebuggerVisualizers tool assembly, which allows visualizing Bitmap, UnmanagedBitmap and Histogram
+    objects during debugging.
+    
+    
+* Samples
+  - Fixing Motion Detector sample to perform safe update of UI (avoid cross thread access).
+  
+
+
+
+AForge.NET Framework 2.2.1 release notes
+----------------------------------------
 03.08.2011.
 
 Version updates and fixes:
