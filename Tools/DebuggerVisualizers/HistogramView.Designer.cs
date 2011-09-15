@@ -30,8 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( HistogramView ) );
             this.mainPanel = new System.Windows.Forms.Panel( );
-            this.textBox = new System.Windows.Forms.TextBox( );
             this.histogramControl = new AForge.Controls.Histogram( );
+            this.textBox = new System.Windows.Forms.TextBox( );
             this.statsBox = new System.Windows.Forms.TextBox( );
             this.logCheck = new System.Windows.Forms.CheckBox( );
             this.mainPanel.SuspendLayout( );
@@ -48,16 +48,6 @@
             this.mainPanel.Size = new System.Drawing.Size( 474, 159 );
             this.mainPanel.TabIndex = 0;
             // 
-            // textBox
-            // 
-            this.textBox.Anchor = ( (System.Windows.Forms.AnchorStyles) ( ( ( System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left )
-                        | System.Windows.Forms.AnchorStyles.Right ) ) );
-            this.textBox.Location = new System.Drawing.Point( 10, 203 );
-            this.textBox.Name = "textBox";
-            this.textBox.ReadOnly = true;
-            this.textBox.Size = new System.Drawing.Size( 424, 20 );
-            this.textBox.TabIndex = 2;
-            // 
             // histogramControl
             // 
             this.histogramControl.AllowSelection = true;
@@ -70,6 +60,16 @@
             this.histogramControl.Values = null;
             this.histogramControl.SelectionChanged += new AForge.Controls.HistogramEventHandler( this.histogramControl_SelectionChanged );
             this.histogramControl.PositionChanged += new AForge.Controls.HistogramEventHandler( this.histogramControl_PositionChanged );
+            // 
+            // textBox
+            // 
+            this.textBox.Anchor = ( (System.Windows.Forms.AnchorStyles) ( ( ( System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left )
+                        | System.Windows.Forms.AnchorStyles.Right ) ) );
+            this.textBox.Location = new System.Drawing.Point( 10, 203 );
+            this.textBox.Name = "textBox";
+            this.textBox.ReadOnly = true;
+            this.textBox.Size = new System.Drawing.Size( 424, 20 );
+            this.textBox.TabIndex = 2;
             // 
             // statsBox
             // 
@@ -95,8 +95,7 @@
             // 
             // HistogramView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size( 494, 231 );
             this.Controls.Add( this.logCheck );
             this.Controls.Add( this.statsBox );
