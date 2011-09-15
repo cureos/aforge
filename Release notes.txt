@@ -84,8 +84,8 @@ Version updates and fixes:
   
 
 * Tools
-  - Adding AForge.DebuggerVisualizers tool assembly, which allows visualizing Bitmap, UnmanagedBitmap and Histogram
-    objects during debugging.
+  - Adding AForge.DebuggerVisualizers tool assembly, which allows visualizing Image, BitmapData, UnmanagedBitmap
+    and Histogram objects during debugging.
     
     
 * Samples
