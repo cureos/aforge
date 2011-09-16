@@ -1,6 +1,6 @@
 AForge.NET Framework 2.2.1 release notes
 ----------------------------------------
-XX.09.2011.
+16.09.2011.
 
 Version updates and fixes:
 
