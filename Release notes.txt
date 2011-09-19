@@ -1,4 +1,4 @@
-AForge.NET Framework 2.2.1 release notes
+AForge.NET Framework 2.2.2 release notes
 ----------------------------------------
 16.09.2011.
 
