@@ -460,5 +460,46 @@ namespace AForge.Math.Geometry
                 System.Math.Abs( ia4 - ma4 )
                 ) / 4;
         }
+
+        // This function calculates error value as it is mentioned in theory - average distance
+        // between image points and projected model's points. However, if translation is not
+        // calculated very precisely (because of inaccurate focal length, for example), this function
+        // may return big error value for both estimated poses. So the above function uses
+        // angles between objects' side instead of corners' coordinates.
+        /*
+        private float _GetError( Point[] imagePoints, Matrix3x3 rotation, Vector3 translation )
+        {
+            Vector3 v1 = rotation * modelPoints[0] + translation;
+            v1.X = v1.X * focalLength / v1.Z;
+            v1.Y = v1.Y * focalLength / v1.Z;
+
+            Vector3 v2 = rotation * modelPoints[1] + translation;
+            v2.X = v2.X * focalLength / v2.Z;
+            v2.Y = v2.Y * focalLength / v2.Z;
+
+            Vector3 v3 = rotation * modelPoints[2] + translation;
+            v3.X = v3.X * focalLength / v3.Z;
+            v3.Y = v3.Y * focalLength / v3.Z;
+
+            Vector3 v4 = rotation * modelPoints[3] + translation;
+            v4.X = v4.X * focalLength / v4.Z;
+            v4.Y = v4.Y * focalLength / v4.Z;
+
+            Point[] modeledPoints = new Point[4]
+            {
+                new Point( v1.X, v1.Y ),
+                new Point( v2.X, v2.Y ),
+                new Point( v3.X, v3.Y ),
+                new Point( v4.X, v4.Y ),
+            };
+
+            return (
+                imagePoints[0].DistanceTo( modeledPoints[0] ) +
+                imagePoints[1].DistanceTo( modeledPoints[1] ) +
+                imagePoints[2].DistanceTo( modeledPoints[2] ) +
+                imagePoints[3].DistanceTo( modeledPoints[3] )
+                ) / 4;
+        }
+        */
     }
 }
