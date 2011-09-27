@@ -31,7 +31,7 @@ namespace AForge { namespace Video { namespace FFMPEG
 
 static void write_video_frame( WriterPrivateData^ data );
 static void open_video( WriterPrivateData^ data );
-static void add_video_stream( WriterPrivateData^ data, int width, int height, int frameRate,
+static void add_video_stream( WriterPrivateData^ data, int width, int height, int frameRate, int bitRate,
 							  enum libffmpeg::CodecID codec_id, enum libffmpeg::PixelFormat pixelFormat );
 
 // A structure to encapsulate all FFMPEG related private variable
@@ -77,8 +77,13 @@ void VideoFileWriter::Open( String^ fileName, int width, int height, int frameRa
 	Open( fileName, width, height, frameRate, VideoCodec::Default );
 }
 
-// Creates a video file with the specified name and properties
 void VideoFileWriter::Open( String^ fileName, int width, int height, int frameRate, VideoCodec codec )
+{
+	Open( fileName, width, height, frameRate, codec, 400000 );
+}
+
+// Creates a video file with the specified name and properties
+void VideoFileWriter::Open( String^ fileName, int width, int height, int frameRate, VideoCodec codec, int bitRate )
 {
 	// close previous file if any open
 	Close( );
@@ -102,6 +107,7 @@ void VideoFileWriter::Open( String^ fileName, int width, int height, int frameRa
 	m_height = height;
 	m_codec  = codec;
 	m_frameRate = frameRate;
+	m_bitRate = bitRate;
 	
 	// convert specified managed String to unmanaged string
 	IntPtr ptr = System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi( fileName );
@@ -133,7 +139,7 @@ void VideoFileWriter::Open( String^ fileName, int width, int height, int frameRa
 		data->FormatContext->oformat = outputFormat;
 
 		// add video stream using the specified video codec
-		add_video_stream( data, width, height, frameRate,
+		add_video_stream( data, width, height, frameRate, bitRate,
 			( codec == VideoCodec::Default ) ? outputFormat->video_codec : (libffmpeg::CodecID) video_codecs[(int) codec],
 			( codec == VideoCodec::Default ) ? libffmpeg::PIX_FMT_YUV420P : (libffmpeg::PixelFormat) pixel_formats[(int) codec] );
 
@@ -367,7 +373,7 @@ static libffmpeg::AVFrame* alloc_picture( enum libffmpeg::PixelFormat pix_fmt, i
 }
 
 // Create new video stream and configure it
-void add_video_stream( WriterPrivateData^ data,  int width, int height, int frameRate,
+void add_video_stream( WriterPrivateData^ data,  int width, int height, int frameRate, int bitRate,
 					  enum libffmpeg::CodecID codecId, enum libffmpeg::PixelFormat pixelFormat )
 {
 	libffmpeg::AVCodecContext* codecContex;
@@ -384,7 +390,7 @@ void add_video_stream( WriterPrivateData^ data,  int width, int height, int fram
 	codecContex->codec_type = libffmpeg::AVMEDIA_TYPE_VIDEO;
 
 	// put sample parameters
-	codecContex->bit_rate = 400000;
+	codecContex->bit_rate = bitRate;
 	codecContex->width    = width;
 	codecContex->height   = height;
 

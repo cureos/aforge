@@ -100,6 +100,21 @@ namespace AForge { namespace Video { namespace FFMPEG
 		}
 
 		/// <summary>
+		/// Bit rate of the video stream.
+		/// </summary>
+		///
+		/// <exception cref="System::IO::IOException">Thrown if no video file was open.</exception>
+		///
+		property int BitRate
+		{
+			int get( )
+			{
+				CheckIfVideoFileIsOpen( );
+				return m_bitRate;
+			}
+		}
+
+		/// <summary>
 		/// Codec to use for the video file.
 		/// </summary>
 		///
@@ -109,8 +124,8 @@ namespace AForge { namespace Video { namespace FFMPEG
 		{
 			VideoCodec get( )
 			{
-				return m_codec;
 				CheckIfVideoFileIsOpen( );
+				return m_codec;
 			}
 		}
 
@@ -193,6 +208,35 @@ namespace AForge { namespace Video { namespace FFMPEG
 		void Open( String^ fileName, int width, int height, int frameRate, VideoCodec codec );
 
         /// <summary>
+        /// Create video file with the specified name and attributes.
+        /// </summary>
+		///
+		/// <param name="fileName">Video file name to create.</param>
+		/// <param name="width">Frame width of the video file.</param>
+		/// <param name="height">Frame height of the video file.</param>
+		/// <param name="frameRate">Frame rate of the video file.</param>
+		/// <param name="codec">Video codec to use for compression.</param>
+		/// <param name="bitRate">Bit rate of the video stream.</param>
+		///
+		/// <remarks><para>The methods creates new video file with the specified name.
+		/// If a file with such name already exists in the file system, it will be overwritten.</para>
+		///
+		/// <para>When adding new video frames using <see cref="WriteVideoFrame(Bitmap^ frame)"/> method,
+		/// the video frame must have width and height as specified during file opening.</para>
+		///
+		/// <para><note>The bit rate parameter represents a trade-off value between video quality
+		/// and video file size. Higher bit rate value increase video quality and result in larger
+		/// file size. Smaller values result in opposite – worse quality and small video files.</note></para>
+		/// </remarks>
+		///
+        /// <exception cref="ArgumentException">Video file resolution must be a multiple of two.</exception>
+        /// <exception cref="ArgumentException">Invalid video codec is specified.</exception>
+        /// <exception cref="VideoException">A error occurred while creating new video file. See exception message.</exception>
+        /// <exception cref="System::IO::IOException">Cannot open video file with the specified name.</exception>
+        /// 
+		void Open( String^ fileName, int width, int height, int frameRate, VideoCodec codec, int bitRate );
+
+        /// <summary>
         /// Write new video frame into currently opened video file.
         /// </summary>
 		///
@@ -240,6 +284,7 @@ namespace AForge { namespace Video { namespace FFMPEG
 		int m_width;
 		int m_height;
 		int	m_frameRate;
+		int m_bitRate;
 		VideoCodec m_codec;
 
 	private:
