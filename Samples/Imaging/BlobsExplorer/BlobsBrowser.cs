@@ -132,8 +132,17 @@ namespace BlobsExplorer
                 List<IntPoint> hull = grahamScan.FindHull( edgePoints );
                 hulls.Add( blob.ID, hull );
 
+                List<IntPoint> quadrilateral = null;
+
                 // find quadrilateral
-                List<IntPoint> quadrilateral = PointsCloud.FindQuadrilateralCorners( hull );
+                if ( hull.Count < 4 )
+                {
+                    quadrilateral = new List<IntPoint>( hull );
+                }
+                else
+                {
+                    quadrilateral = PointsCloud.FindQuadrilateralCorners( hull );
+                }
                 quadrilaterals.Add( blob.ID, quadrilateral );
 
                 // shift all points for vizualization
@@ -186,12 +195,12 @@ namespace BlobsExplorer
                             g.DrawPolygon( pen, PointsListToArray( hulls[blob.ID] ) );
                             break;
                         case HightlightType.LeftAndRightEdges:
-                            g.DrawLines( pen, PointsListToArray( leftEdges[blob.ID] ) );
-                            g.DrawLines( pen, PointsListToArray( rightEdges[blob.ID] ) );
+                            DrawEdge( g, pen, leftEdges[blob.ID] );
+                            DrawEdge( g, pen, rightEdges[blob.ID] );
                             break;
                         case HightlightType.TopAndBottomEdges:
-                            g.DrawLines( pen, PointsListToArray( topEdges[blob.ID] ) );
-                            g.DrawLines( pen, PointsListToArray( bottomEdges[blob.ID] ) );
+                            DrawEdge( g, pen, topEdges[blob.ID] );
+                            DrawEdge( g, pen, bottomEdges[blob.ID] );
                             break;
                         case HightlightType.Quadrilateral:
                             g.DrawPolygon( pen, PointsListToArray( quadrilaterals[blob.ID] ) );
@@ -302,7 +311,7 @@ namespace BlobsExplorer
         }
 
         // Convert list of AForge.NET's IntPoint to array of .NET's Point
-        private System.Drawing.Point[] PointsListToArray( List<IntPoint> list )
+        private static System.Drawing.Point[] PointsListToArray( List<IntPoint> list )
         {
             System.Drawing.Point[] array = new System.Drawing.Point[list.Count];
 
@@ -312,6 +321,21 @@ namespace BlobsExplorer
             }
 
             return array;
+        }
+
+        // Draw object's edge
+        private static void DrawEdge( Graphics g, Pen pen, List<IntPoint> edge )
+        {
+            System.Drawing.Point[] points = PointsListToArray( edge );
+
+            if ( points.Length > 1 )
+            {
+                g.DrawLines( pen, points );
+            }
+            else
+            {
+                g.DrawLine( pen, points[0], points[0] );
+            }
         }
     }
 }
