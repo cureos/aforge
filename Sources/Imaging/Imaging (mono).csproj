@@ -177,6 +177,7 @@
     <Compile Include="Filters\Other\CornersMarker.cs" />
     <Compile Include="Filters\Other\ExtractBiggestBlob.cs" />
     <Compile Include="Filters\Other\FillHoles.cs" />
+    <Compile Include="Filters\Other\HorizontalRunLengthSmoothing.cs" />
     <Compile Include="Filters\Other\ImageWarp.cs" />
     <Compile Include="Filters\Other\Jitter.cs" />
     <Compile Include="Filters\Other\MaskedFilter.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="Filters\Other\TexturedFilter.cs" />
     <Compile Include="Filters\Other\TexturedMerge.cs" />
     <Compile Include="Filters\Other\Texturer.cs" />
+    <Compile Include="Filters\Other\VerticalRunLengthSmoothing.cs" />
     <Compile Include="Filters\Other\WaterWave.cs" />
     <Compile Include="Filters\Smooting\AdaptiveSmooth.cs" />
     <Compile Include="Filters\Smooting\ConservativeSmoothing.cs" />
