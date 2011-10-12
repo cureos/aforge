@@ -186,6 +186,10 @@ namespace AForge.Imaging.Filters
                 int srcOffset = sourceData.Stride - width * pixelSize;
                 int dstOffset = destinationData.Stride - width;
 
+                int rc = (int) ( 0x10000 * RedCoefficient );
+                int gc = (int) ( 0x10000 * GreenCoefficient );
+                int bc = (int) ( 0x10000 * BlueCoefficient );
+
                 // do the job
                 byte* src = (byte*) sourceData.ImageData.ToPointer( );
                 byte* dst = (byte*) destinationData.ImageData.ToPointer( );
@@ -196,7 +200,7 @@ namespace AForge.Imaging.Filters
                     // for each pixel
                     for ( int x = 0; x < width; x++, src += pixelSize, dst++ )
                     {
-                        *dst = (byte) ( RedCoefficient * src[RGB.R] + GreenCoefficient * src[RGB.G] + BlueCoefficient * src[RGB.B] );
+                        *dst = (byte) ( ( rc * src[RGB.R] + gc * src[RGB.G] + bc * src[RGB.B] ) >> 16 );
                     }
                     src += srcOffset;
                     dst += dstOffset;
