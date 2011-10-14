@@ -1022,6 +1022,8 @@ namespace AForge.Video.DirectShow
         private void OnNewFrame( Bitmap image )
         {
             framesReceived++;
+            bytesReceived += image.Width * image.Height * ( Bitmap.GetPixelFormatSize( image.PixelFormat ) >> 3 );
+
             if ( ( !stopEvent.WaitOne( 0, false ) ) && ( NewFrame != null ) )
                 NewFrame( this, new NewFrameEventArgs( image ) );
         }
