@@ -50,6 +50,8 @@ namespace AForge.Video.VFW
 		private string source;
         // received frames count
 		private int framesReceived;
+        // recieved byte count
+        private long bytesReceived;
         // frame interval in milliseconds
         private int frameInterval = 0;
         // get frame interval from source or use manually specified
@@ -161,11 +163,18 @@ namespace AForge.Video.VFW
         /// Received bytes count.
         /// </summary>
         /// 
-        /// <remarks>The property is not supported by this class. It always equals to 0.</remarks>
+        /// <remarks>Number of bytes the video source provided from the moment of the last
+        /// access to the property.
+        /// </remarks>
         /// 
-        public int BytesReceived
+        public long BytesReceived
 		{
-			get { return 0; }
+            get
+            {
+                long bytes = bytesReceived;
+                bytesReceived = 0;
+                return bytes;
+            }
 		}
 
         /// <summary>
@@ -227,6 +236,7 @@ namespace AForge.Video.VFW
                     throw new ArgumentException( "Video source is not specified." );
                 
                 framesReceived = 0;
+                bytesReceived = 0;
 
 				// create events
 				stopEvent = new ManualResetEvent( false );
@@ -337,6 +347,8 @@ namespace AForge.Video.VFW
 					Bitmap bitmap = aviReader.GetNextFrame( );
 
 					framesReceived++;
+                    bytesReceived += bitmap.Width * bitmap.Height *
+                        ( Bitmap.GetPixelFormatSize( bitmap.PixelFormat ) >> 3 );
 
 					if ( NewFrame != null )
 						NewFrame( this, new NewFrameEventArgs( bitmap ) );

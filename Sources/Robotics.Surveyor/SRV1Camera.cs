@@ -60,7 +60,7 @@ namespace AForge.Robotics.Surveyor
         // received frames count
         private int framesReceived;
         // recieved bytes count
-        private int bytesReceived;
+        private long bytesReceived;
         // frame interval in milliseconds
         private int frameInterval = 0;
 
@@ -157,11 +157,11 @@ namespace AForge.Robotics.Surveyor
         /// access to the property.
         /// </remarks>
         /// 
-        public int BytesReceived
+        public long BytesReceived
         {
             get
             {
-                int bytes = bytesReceived;
+                long bytes = bytesReceived;
                 bytesReceived = 0;
                 return bytes;
             }

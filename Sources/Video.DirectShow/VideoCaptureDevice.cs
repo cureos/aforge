@@ -58,7 +58,7 @@ namespace AForge.Video.DirectShow
         // received frames count
         private int framesReceived;
         // recieved byte count
-        private int bytesReceived;
+        private long bytesReceived;
         // specifies desired size of captured video frames
         private Size desiredFrameSize = new Size( 0, 0 );
         // specifies desired video capture frame rate
@@ -198,11 +198,11 @@ namespace AForge.Video.DirectShow
         /// access to the property.
         /// </remarks>
         /// 
-        public int BytesReceived
+        public long BytesReceived
         {
             get
             {
-                int bytes = bytesReceived;
+                long bytes = bytesReceived;
                 bytesReceived = 0;
                 return bytes;
             }

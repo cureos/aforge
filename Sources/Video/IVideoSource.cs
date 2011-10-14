@@ -77,7 +77,7 @@ namespace AForge.Video
         /// access to the property.
         /// </remarks>
         /// 
-        int BytesReceived { get; }
+        long BytesReceived { get; }
 
         /// <summary>
         /// State of the video source.

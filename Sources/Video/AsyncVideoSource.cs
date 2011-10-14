@@ -188,7 +188,7 @@ namespace AForge.Video
         /// <remarks><para>Number of bytes the <see cref="NestedVideoSource">nested video source</see> received from
         /// the moment of the last access to the property.</para></remarks>
         ///
-        public int BytesReceived
+        public long BytesReceived
         {
             get { return nestedVideoSource.BytesReceived; }
         }

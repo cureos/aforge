@@ -69,7 +69,7 @@ namespace AForge.Video
         // received frames count
 		private int framesReceived;
         // recieved byte count
-		private int bytesReceived;
+		private long bytesReceived;
         // use separate HTTP connection group or use default
 		private bool useSeparateConnectionGroup = false;
         // prevent cashing or not
@@ -238,11 +238,11 @@ namespace AForge.Video
         /// access to the property.
         /// </remarks>
         /// 
-        public int BytesReceived
+        public long BytesReceived
 		{
 			get
 			{
-				int bytes = bytesReceived;
+				long bytes = bytesReceived;
 				bytesReceived = 0;
 				return bytes;
 			}

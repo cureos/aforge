@@ -58,7 +58,7 @@ namespace AForge.Video.Kinect
         // received frames count
         private int framesReceived;
         // recieved byte count
-        private int bytesReceived;
+        private long bytesReceived;
         // specifies of original 11 bit depth images (as 16 bit) should be provided and 24 bit color image
         private bool provideOriginalDepthImage = false;
         private ushort[] gamma = new ushort[2048];
@@ -175,11 +175,11 @@ namespace AForge.Video.Kinect
         /// access to the property.
         /// </remarks>
         /// 
-        public int BytesReceived
+        public long BytesReceived
         {
             get
             {
-                int bytes = bytesReceived;
+                long bytes = bytesReceived;
                 bytesReceived = 0;
                 return bytes;
             }

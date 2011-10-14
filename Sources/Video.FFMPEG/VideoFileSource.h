@@ -127,11 +127,13 @@ namespace AForge { namespace Video { namespace FFMPEG
         /// Received bytes count.
         /// </summary>
         /// 
-        /// <remarks>The property is not supported by this class. It always equals to 0.</remarks>
+        /// <remarks>Number of bytes the video source provided from the moment of the last
+        /// access to the property.
+        /// </remarks>
         /// 
-		property int BytesReceived
+		property long long BytesReceived
 		{
-			virtual int get( )
+			virtual long long get( )
 			{
 				return 0;
 			}
@@ -270,6 +272,7 @@ namespace AForge { namespace Video { namespace FFMPEG
 		ManualResetEvent^ m_needToStop;
 
 		int  m_framesReceived;
+        int  m_bytesReceived;
 		bool m_frameIntervalFromSource;
 		int  m_frameInterval;
 

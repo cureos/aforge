@@ -34,6 +34,7 @@ void VideoFileSource::Start( )
 		}
 
 		m_framesReceived = 0;
+        m_bytesReceived = 0;
 
 		// create events
 		m_needToStop = gcnew ManualResetEvent( false );
@@ -112,6 +113,8 @@ void VideoFileSource::WorkerThreadHandler( )
 			}
 
 			m_framesReceived++;
+            m_bytesReceived += bitmap->Width * bitmap->Height *
+                ( Bitmap::GetPixelFormatSize( bitmap->PixelFormat ) >> 3 );
 
 			// notify clients about the new video frame
 			NewFrame( this, gcnew NewFrameEventArgs( bitmap ) );

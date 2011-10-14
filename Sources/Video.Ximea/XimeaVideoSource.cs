@@ -61,7 +61,7 @@ namespace AForge.Video.Ximea
         // received frames count
         private int framesReceived;
         // recieved byte count
-        private int bytesReceived;
+        private long bytesReceived;
         // frame interval in milliseconds
         private int frameInterval = 200;
 
@@ -150,11 +150,11 @@ namespace AForge.Video.Ximea
         /// access to the property.
         /// </remarks>
         /// 
-        public int BytesReceived
+        public long BytesReceived
         {
             get
             {
-                int bytes = bytesReceived;
+                long bytes = bytesReceived;
                 bytesReceived = 0;
                 return bytes;
             }
@@ -432,7 +432,7 @@ namespace AForge.Video.Ximea
                     Bitmap bitmap = camera.GetImage( 15000, false );
 
                     framesReceived++;
-                    bytesReceived += bitmap.Width * bitmap.Height * Bitmap.GetPixelFormatSize( bitmap.PixelFormat ) / 8;
+                    bytesReceived += bitmap.Width * bitmap.Height * ( Bitmap.GetPixelFormatSize( bitmap.PixelFormat ) >> 3 );
 
                     if ( NewFrame != null )
                         NewFrame( this, new NewFrameEventArgs( bitmap ) );

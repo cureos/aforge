@@ -54,7 +54,7 @@ namespace AForge.Video.DirectShow
         // received frames count
         private int framesReceived;
         // recieved byte count
-        private int bytesReceived;
+        private long bytesReceived;
         // prevent freezing
         private bool preventFreezing = false;
         // reference clock for the graph - when disabled, graph processes frames ASAP
@@ -132,11 +132,11 @@ namespace AForge.Video.DirectShow
         /// access to the property.
         /// </remarks>
         /// 
-        public int BytesReceived
+        public long BytesReceived
         {
             get
             {
-                int bytes = bytesReceived;
+                long bytes = bytesReceived;
                 bytesReceived = 0;
                 return bytes;
             }
