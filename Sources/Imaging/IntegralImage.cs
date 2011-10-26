@@ -64,14 +64,31 @@ namespace AForge.Imaging
         private int height;
 
         /// <summary>
+        /// Width of the source image the integral image was constructed for.
+        /// </summary>
+        public int Width
+        {
+            get { return width; }
+        }
+
+        /// <summary>
+        /// Height of the source image the integral image was constructed for.
+        /// </summary>
+        public int Height
+        {
+            get { return height; }
+        }
+
+        /// <summary>
         /// Provides access to internal array keeping integral image data.
         /// </summary>
         /// 
         /// <remarks>
         /// <para><note>The array should be accessed by [y, x] indexing.</note></para>
         /// 
-        /// <para><note>The array's size is [height+1, width+1]. The first row and column are filled with
-        /// zeros, what is done for more efficient calculation of rectangles' sums.</note></para>
+        /// <para><note>The array's size is [<see cref="Height"/>+1, <see cref="Width"/>+1]. The first
+        /// row and column are filled with zeros, what is done for more efficient calculation of
+        /// rectangles' sums.</note></para>
         /// </remarks>
         /// 
         public uint[,] InternalData
