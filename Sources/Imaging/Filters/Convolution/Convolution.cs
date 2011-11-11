@@ -259,7 +259,7 @@ namespace AForge.Imaging.Filters
             int processedKernelSize;
 
             // check pixel size to find if we deal with 8 or 16 bpp channels
-            if ( pixelSize <= 4 )
+            if ( ( pixelSize <= 4 ) && ( pixelSize != 2 ) )
             {
                 int srcStride = source.Stride;
                 int dstStride = destination.Stride;
