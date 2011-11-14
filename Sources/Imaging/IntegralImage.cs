@@ -244,6 +244,58 @@ namespace AForge.Imaging
         }
 
         /// <summary>
+        /// Calculate horizontal (X) haar wavelet at the specified point.
+        /// </summary>
+        /// 
+        /// <param name="x">X coordinate of the point to calculate wavelet at.</param>
+        /// <param name="y">Y coordinate of the point to calculate wavelet at.</param>
+        /// <param name="radius">Wavelet size to calculate.</param>
+        /// 
+        /// <returns>Returns value of the horizontal wavelet at the specified point.</returns>
+        ///
+        /// <remarks><para>The method calculates horizontal wavelet, which is a difference
+        /// of two horizontally adjacent boxes' sums, i.e. <b>A-B</b>. A is the sum of rectangle with coordinates
+        /// (x, y-radius, x+radius-1, y+radius-1). B is the sum of rectangle with coordinates
+        /// (x-radius, y-radius, x-1, y+radiys-1).</para></remarks>
+        ///
+        public int GetHaarXWavelet( int x, int y, int radius )
+        {
+            int y1 = y - radius;
+            int y2 = y + radius - 1;
+
+            uint a = GetRectangleSum( x, y1, x + radius - 1, y2 );
+            uint b = GetRectangleSum( x - radius, y1, x - 1, y2 );
+
+            return (int) ( a - b );
+        }
+
+        /// <summary>
+        /// Calculate vertical (Y) haar wavelet at the specified point.
+        /// </summary>
+        /// 
+        /// <param name="x">X coordinate of the point to calculate wavelet at.</param>
+        /// <param name="y">Y coordinate of the point to calculate wavelet at.</param>
+        /// <param name="radius">Wavelet size to calculate.</param>
+        /// 
+        /// <returns>Returns value of the vertical wavelet at the specified point.</returns>
+        ///
+        /// <remarks><para>The method calculates vertical wavelet, which is a difference
+        /// of two vertical adjacent boxes' sums, i.e. <b>A-B</b>. A is the sum of rectangle with coordinates
+        /// (x-radius, y, x+radius-1, y+radius-1). B is the sum of rectangle with coordinates
+        /// (x-radius, y-radius, x+radius-1, y-1).</para></remarks>
+        ///
+        public int GetHaarYWavelet( int x, int y, int radius )
+        {
+            int x1 = x - radius;
+            int x2 = x + radius - 1;
+
+            float a = GetRectangleSum( x1, y, x2, y + radius - 1 );
+            float b = GetRectangleSum( x1, y - radius, x2, y - 1 );
+
+            return (int) ( a - b );
+        }
+
+        /// <summary>
         /// Calculate sum of pixels in the specified rectangle without checking it's coordinates.
         /// </summary>
         /// 
