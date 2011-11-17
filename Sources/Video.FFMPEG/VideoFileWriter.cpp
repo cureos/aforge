@@ -60,10 +60,9 @@ public:
 #pragma endregion
 
 // Class constructor
-VideoFileWriter::VideoFileWriter( void )
+VideoFileWriter::VideoFileWriter( void ) :
+    data( nullptr ), disposed( false )
 {
-	data = nullptr;
-
 	libffmpeg::av_register_all( );
 }
 
@@ -85,6 +84,8 @@ void VideoFileWriter::Open( String^ fileName, int width, int height, int frameRa
 // Creates a video file with the specified name and properties
 void VideoFileWriter::Open( String^ fileName, int width, int height, int frameRate, VideoCodec codec, int bitRate )
 {
+    CheckIfDisposed( );
+
 	// close previous file if any open
 	Close( );
 
@@ -243,6 +244,8 @@ void VideoFileWriter::WriteVideoFrame( Bitmap^ frame )
 // Writes new video frame to the opened video file
 void VideoFileWriter::WriteVideoFrame( Bitmap^ frame, TimeSpan timestamp )
 {
+    CheckIfDisposed( );
+
 	if ( data == nullptr )
 	{
 		throw gcnew System::IO::IOException( "A video file was not opened yet." );

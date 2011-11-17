@@ -59,9 +59,9 @@ public:
 #pragma endregion
 
 // Class constructor
-VideoFileReader::VideoFileReader( void )
-{
-	data = nullptr;
+VideoFileReader::VideoFileReader( void ) :
+    data( nullptr ), disposed( false )
+{	
 	libffmpeg::av_register_all( );
 }
 
@@ -81,6 +81,8 @@ static libffmpeg::AVFormatContext* open_file( char* fileName )
 // Opens the specified video file
 void VideoFileReader::Open( String^ fileName )
 {
+    CheckIfDisposed( );
+
 	// close previous file if any was open
 	Close( );
 
@@ -208,6 +210,8 @@ void VideoFileReader::Close(  )
 // Read next video frame of the current video file
 Bitmap^ VideoFileReader::ReadVideoFrame(  )
 {
+    CheckIfDisposed( );
+
 	if ( data == nullptr )
 	{
 		throw gcnew System::IO::IOException( "Cannot read video frames since video file is not open." );

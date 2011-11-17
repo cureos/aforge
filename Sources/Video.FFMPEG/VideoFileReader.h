@@ -52,7 +52,7 @@ namespace AForge { namespace Video { namespace FFMPEG
 	/// </code>
     /// </remarks>
 	///
-	public ref class VideoFileReader
+	public ref class VideoFileReader : IDisposable
 	{
 	public:
 
@@ -146,6 +146,17 @@ namespace AForge { namespace Video { namespace FFMPEG
 			}
 		}
 
+    protected:
+
+        /// <summary>
+        /// Object's finalizer.
+        /// </summary>
+        /// 
+        !VideoFileReader( )
+        {
+            Close( );
+        }
+
 	public:
 
         /// <summary>
@@ -153,6 +164,16 @@ namespace AForge { namespace Video { namespace FFMPEG
         /// </summary>
         /// 
 		VideoFileReader( void );
+
+        /// <summary>
+        /// Disposes the object and frees its resources.
+        /// </summary>
+        /// 
+        ~VideoFileReader( )
+        {
+            this->!VideoFileReader( );
+            disposed = true;
+        }
 
 		/// <summary>
         /// Open video file with the specified name.
@@ -203,9 +224,19 @@ namespace AForge { namespace Video { namespace FFMPEG
 			}
 		}
 
+        // Check if the object was already disposed
+        void CheckIfDisposed( )
+        {
+            if ( disposed )
+            {
+                throw gcnew System::ObjectDisposedException( "The object was already disposed." );
+            }
+        }
+
 	private:
 		// private data of the class
 		ReaderPrivateData^ data;
+        bool disposed;
 	};
 
 } } }

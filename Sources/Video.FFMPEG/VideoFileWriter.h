@@ -50,7 +50,7 @@ namespace AForge { namespace Video { namespace FFMPEG
 	/// </code>
     /// </remarks>
 	///
-	public ref class VideoFileWriter
+    public ref class VideoFileWriter : IDisposable
 	{
 	public:
 
@@ -140,6 +140,17 @@ namespace AForge { namespace Video { namespace FFMPEG
 			}
 		}
 
+    protected:
+
+        /// <summary>
+        /// Object's finalizer.
+        /// </summary>
+        /// 
+        !VideoFileWriter( )
+        {
+            Close( );
+        }
+
 	public:
 
         /// <summary>
@@ -147,6 +158,16 @@ namespace AForge { namespace Video { namespace FFMPEG
         /// </summary>
         /// 
 		VideoFileWriter( void );
+
+        /// <summary>
+        /// Disposes the object and frees its resources.
+        /// </summary>
+        /// 
+        ~VideoFileWriter( )
+        {
+            this->!VideoFileWriter( );
+            disposed = true;
+        }
 
         /// <summary>
         /// Create video file with the specified name and attributes.
@@ -297,9 +318,19 @@ namespace AForge { namespace Video { namespace FFMPEG
 			}
 		}
 
+        // Check if the object was already disposed
+        void CheckIfDisposed( )
+        {
+            if ( disposed )
+            {
+                throw gcnew System::ObjectDisposedException( "The object was already disposed." );
+            }
+        }
+
 	private:
 		// private data of the class
 		WriterPrivateData^ data;
+        bool disposed;
 	};
 
 } } }
