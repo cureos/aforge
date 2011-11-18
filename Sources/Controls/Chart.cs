@@ -30,11 +30,13 @@ namespace AForge.Controls
     /// // fill data series
     /// for ( int i = 0; i &lt; 10; i++ )
     /// {
-    ///     testValues[i, 0] = i;
-    ///     testValues[i, 1] = Math.Sin( i / 18.0 * Math.PI );
+    ///     testValues[i, 0] = i; // X values
+    ///     testValues[i, 1] = Math.Sin( i / 18.0 * Math.PI ); // Y values
     /// }
     /// // add new data series to the chart
     /// chart.AddDataSeries( "Test", Color.DarkGreen, Chart.SeriesType.ConnectedDots, 3 );
+    /// // set X range to display
+    /// chart.RangeX = new AForge.Range( 0, 9 );
     /// // update the chart
     /// chart.UpdateDataSeries( "Test", testValues );
     /// </code>
