@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2005-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging.Filters
@@ -26,6 +26,10 @@ namespace AForge.Imaging.Filters
     /// 
     /// <para>With the above kernel the convolution filter is just calculates each pixel's value
     /// in result image as average of 9 corresponding pixels in the source image.</para>
+    /// 
+    /// <para><note>By default this filter sets <see cref="Convolution.ProcessAlpha"/> property to
+    /// <see langword="true"/>, so the alpha channel of 32 bpp and 64 bpp images is blurred as well.
+    /// </note></para>
     /// 
     /// <para>Sample usage:</para>
     /// <code>
@@ -53,6 +57,7 @@ namespace AForge.Imaging.Filters
 										{ 1, 1, 1 },
 										{ 1, 1, 1 } } )
 		{
+            base.ProcessAlpha = true;
 		}
 	}
 }
