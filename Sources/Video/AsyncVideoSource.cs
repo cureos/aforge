@@ -448,7 +448,7 @@ namespace AForge.Video
             return destination;
         }
 
-        public static Bitmap CloneImage( BitmapData sourceData )
+        private static Bitmap CloneImage( BitmapData sourceData )
         {
             // get source image size
             int width = sourceData.Width;

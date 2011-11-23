@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual C# Express 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C# Express 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Robotics.TeRK", "Robotics.TeRK.csproj", "{CB9BB289-ACC9-4A05-8403-98D453F23728}"
 EndProject
 Global
