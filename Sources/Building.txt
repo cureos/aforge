@@ -1,6 +1,9 @@
 AForge.NET framework building instructions
 ==========================================
 
+To build the framework from sources it is required to have installation
+of VS.NET 2010 (C#/C++ Express Edition 2010 is fine).
+
 Each individual library of the framework has its own project file and
 solution file, which allows building any of the libraries independently.
 These individual solution files can be found in the appropriate folders
