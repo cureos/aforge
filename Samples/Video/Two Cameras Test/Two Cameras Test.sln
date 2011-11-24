@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual C# Express 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C# Express 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Two Cameras Test", "Two Cameras Test.csproj", "{AB55ABF6-4AD9-4F8A-9E9D-8B61F89766A6}"
 EndProject
 Global
