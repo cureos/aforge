@@ -114,16 +114,16 @@ namespace AForge.Imaging.Filters
         private unsafe void ProcessFilter8bpc( UnmanagedImage sourceData, UnmanagedImage destinationData )
         {
             // get source image size
-            int width  = sourceData.Width;
-            int height = sourceData.Height;
-            double halfWidth  = (double) width / 2;
-            double halfHeight = (double) height / 2;
+            int    width      = sourceData.Width;
+            int    height     = sourceData.Height;
+            double oldXradius = (double) ( width  - 1 ) / 2;
+            double oldYradius = (double) ( height - 1 ) / 2;
 
             // get destination image size
-            int newWidth  = destinationData.Width;
-            int newHeight = destinationData.Height;
-            double halfNewWidth  = (double) newWidth / 2;
-            double halfNewHeight = (double) newHeight / 2;
+            int    newWidth   = destinationData.Width;
+            int    newHeight  = destinationData.Height;
+            double newXradius = (double) ( newWidth  - 1 ) / 2;
+            double newYradius = (double) ( newHeight - 1 ) / 2;
 
             // angle's sine and cosine
             double angleRad = -angle * Math.PI / 180;
@@ -154,15 +154,15 @@ namespace AForge.Imaging.Filters
             if ( destinationData.PixelFormat == PixelFormat.Format8bppIndexed )
             {
                 // grayscale
-                cy = -halfNewHeight;
+                cy = -newYradius;
                 for ( int y = 0; y < newHeight; y++ )
                 {
-                    cx = -halfNewWidth;
+                    cx = -newXradius;
                     for ( int x = 0; x < newWidth; x++, dst++ )
                     {
                         // coordinate of the nearest point
-                        ox = (int) (  angleCos * cx + angleSin * cy + halfWidth );
-                        oy = (int) ( -angleSin * cx + angleCos * cy + halfHeight );
+                        ox = (int) (  angleCos * cx + angleSin * cy + oldXradius );
+                        oy = (int) ( -angleSin * cx + angleCos * cy + oldYradius );
 
                         // validate source pixel's coordinates
                         if ( ( ox < 0 ) || ( oy < 0 ) || ( ox >= width ) || ( oy >= height ) )
@@ -184,15 +184,15 @@ namespace AForge.Imaging.Filters
             else
             {
                 // RGB
-                cy = -halfNewHeight;
+                cy = -newYradius;
                 for ( int y = 0; y < newHeight; y++ )
                 {
-                    cx = -halfNewWidth;
+                    cx = -newXradius;
                     for ( int x = 0; x < newWidth; x++, dst += 3 )
                     {
                         // coordinate of the nearest point
-                        ox = (int) (  angleCos * cx + angleSin * cy + halfWidth );
-                        oy = (int) ( -angleSin * cx + angleCos * cy + halfHeight );
+                        ox = (int) (  angleCos * cx + angleSin * cy + oldXradius );
+                        oy = (int) ( -angleSin * cx + angleCos * cy + oldYradius );
 
                         // validate source pixel's coordinates
                         if ( ( ox < 0 ) || ( oy < 0 ) || ( ox >= width ) || ( oy >= height ) )
