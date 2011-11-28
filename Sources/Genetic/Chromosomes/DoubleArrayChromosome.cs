@@ -2,14 +2,15 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2006-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2006-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Genetic
 {
     using System;
     using System.Text;
+    using AForge;
     using AForge.Math.Random;
 
     /// <summary>
@@ -60,7 +61,7 @@ namespace AForge.Genetic
         /// <remarks><para>This random number generator is used to select crossover
         /// and mutation points.</para></remarks>
         /// 
-        protected static Random rand = new Random( );
+        protected static ThreadSafeRandom rand = new ThreadSafeRandom( );
 
         /// <summary>
         /// Chromosome's maximum length.

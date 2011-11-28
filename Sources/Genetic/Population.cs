@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2006-2010
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2006-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Genetic
@@ -39,7 +39,7 @@ namespace AForge.Genetic
         private double		mutationRate	= 0.10;
 
         // random number generator
-        private static Random rand = new Random( );
+        private static ThreadSafeRandom rand = new ThreadSafeRandom( );
 
         //
         private double		fitnessMax = 0;

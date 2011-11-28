@@ -2,13 +2,14 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2006-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2006-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Genetic
 {
     using System;
+    using AForge;
 
     /// <summary>
     /// Genetic programming gene, which represents simple arithmetic functions and arguments.
@@ -59,7 +60,7 @@ namespace AForge.Genetic
         /// <summary>
         /// Random number generator for chromosoms generation.
         /// </summary>
-        protected static Random	rand = new Random( );
+        protected static ThreadSafeRandom rand = new ThreadSafeRandom( );
 
         /// <summary>
         /// Gene type.

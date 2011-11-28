@@ -2,13 +2,14 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2006-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2006-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Genetic
 {
     using System;
+    using AForge;
 
     /// <summary>
     /// Binary chromosome, which supports length from 2 till 64.
@@ -33,7 +34,7 @@ namespace AForge.Genetic
         /// <summary>
         /// Random number generator for chromosoms generation, crossover, mutation, etc.
         /// </summary>
-        protected static Random rand = new Random( );
+        protected static ThreadSafeRandom rand = new ThreadSafeRandom( );
 
         /// <summary>
         /// Chromosome's maximum length.

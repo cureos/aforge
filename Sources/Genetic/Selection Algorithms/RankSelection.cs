@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2006-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2006-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Genetic
@@ -11,6 +11,7 @@ namespace AForge.Genetic
 	using System;
 	using System.Collections;
     using System.Collections.Generic;
+    using AForge;
 
 	/// <summary>
 	/// Rank selection method.
@@ -31,7 +32,7 @@ namespace AForge.Genetic
 	public class RankSelection : ISelectionMethod
 	{
 		// random number generator
-		private static Random rand = new Random( );
+        private static ThreadSafeRandom rand = new ThreadSafeRandom( );
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="RankSelection"/> class.

@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2006-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2006-2011
+// contacts@aforgenet.com
 //
 
 namespace AForge.Genetic
@@ -11,6 +11,7 @@ namespace AForge.Genetic
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using AForge;
 
     /// <summary>
     /// Tree chromosome represents a tree of genes, which is is used for
@@ -42,7 +43,7 @@ namespace AForge.Genetic
         /// <summary>
         /// Random generator used for chromosoms' generation.
         /// </summary>
-        protected static Random	rand = new Random( );
+        protected static ThreadSafeRandom rand = new ThreadSafeRandom( );
 
         /// <summary>
         /// Maximum initial level of genetic trees, [1, 25].

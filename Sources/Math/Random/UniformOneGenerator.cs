@@ -9,6 +9,7 @@
 namespace AForge.Math.Random
 {
     using System;
+    using AForge;
 
     /// <summary>
     /// Uniform random numbers generator in the range of [0, 1).
@@ -34,7 +35,7 @@ namespace AForge.Math.Random
     public class UniformOneGenerator : IRandomNumberGenerator
     {
         // .NET random generator as a base
-        private Random rand = null;
+        private ThreadSafeRandom rand = null;
 
         /// <summary>
         /// Mean value of the generator.
@@ -62,7 +63,7 @@ namespace AForge.Math.Random
         /// 
         public UniformOneGenerator( )
         {
-            rand = new Random( 0 );
+            rand = new ThreadSafeRandom( 0 );
         }
 
         /// <summary>
@@ -73,7 +74,7 @@ namespace AForge.Math.Random
         /// 
         public UniformOneGenerator( int seed )
         {
-            rand = new Random( seed );
+            rand = new ThreadSafeRandom( seed );
         }
 
         /// <summary>
@@ -98,7 +99,7 @@ namespace AForge.Math.Random
         /// 
         public void SetSeed( int seed )
         {
-            rand = new Random( seed );
+            rand = new ThreadSafeRandom( seed );
         }
     }
 }
