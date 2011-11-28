@@ -24,6 +24,32 @@ namespace AForge
         private object sync = new object( );
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ThreadSafeRandom"/> class.
+        /// </summary>
+        /// 
+        /// <remarks>See <see cref="Random.Next()"/> for more information.</remarks>
+        /// 
+        public ThreadSafeRandom( )
+            : base( )
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ThreadSafeRandom"/> class.
+        /// </summary>
+        /// 
+        /// <remarks>A number used to calculate a starting value for the pseudo-random number sequence.
+        /// If a negative number is specified, the absolute value of the number is used.</remarks>
+        /// 
+        /// 
+        /// <remarks>See <see cref="Random.Next()"/> for more information.</remarks>
+        /// 
+        public ThreadSafeRandom( int seed )
+            : base( seed )
+        {
+        }
+
+        /// <summary>
         /// Returns a nonnegative random number.
         /// </summary>
         /// 
