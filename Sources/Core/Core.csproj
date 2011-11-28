@@ -73,6 +73,7 @@
     <Compile Include="Range.cs" />
     <Compile Include="SystemTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ThreadSafeRandom.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AForge.snk" />
