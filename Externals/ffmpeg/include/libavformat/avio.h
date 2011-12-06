@@ -28,12 +28,29 @@
 #include <stdint.h>
 
 #include "libavutil/common.h"
+#include "libavutil/dict.h"
 #include "libavutil/log.h"
 
 #include "libavformat/version.h"
 
 
 #define AVIO_SEEKABLE_NORMAL 0x0001 /**< Seeking works like for a local file */
+
+/**
+ * Callback for checking whether to abort blocking functions.
+ * AVERROR_EXIT is returned in this case by the interrupted
+ * function. During blocking operations, callback is called with
+ * opaque as parameter. If the callback returns 1, the
+ * blocking operation will be aborted.
+ *
+ * No members can be added to this struct without a major bump, if
+ * new elements have been added after this struct in AVFormatContext
+ * or AVIOContext.
+ */
+typedef struct {
+    int (*callback)(void*);
+    void *opaque;
+} AVIOInterruptCB;
 
 /**
  * Bytestream IO Context.
@@ -48,6 +65,21 @@
  *       function pointers specified in avio_alloc_context()
  */
 typedef struct {
+#if !FF_API_OLD_AVIO
+    /**
+     * A class for private options.
+     *
+     * If this AVIOContext is created by avio_open2(), av_class is set and
+     * passes the options down to protocols.
+     *
+     * If this AVIOContext is manually allocated, then av_class may be set by
+     * the caller.
+     *
+     * warning -- this field can be NULL, be sure to not pass this AVIOContext
+     * to any av_opt_* functions in that case.
+     */
+    AVClass *av_class;
+#endif
     unsigned char *buffer;  /**< Start of the buffer. */
     int buffer_size;        /**< Maximum buffer size */
     unsigned char *buf_ptr; /**< Current position in the buffer */
@@ -101,9 +133,7 @@ typedef struct {
  * @deprecated This struct will be made private
  */
 typedef struct URLContext {
-#if FF_API_URL_CLASS
     const AVClass *av_class; ///< information for av_log(). Set by url_open().
-#endif
     struct URLProtocol *prot;
     int flags;
     int is_streamed;  /**< true if streamed (no seek possible), default = false */
@@ -111,6 +141,7 @@ typedef struct URLContext {
     void *priv_data;
     char *filename; /**< specified URL */
     int is_connected;
+    AVIOInterruptCB interrupt_callback;
 } URLContext;
 
 #define URL_PROTOCOL_FLAG_NESTED_SCHEME 1 /*< The protocol name can be the first part of a nested protocol scheme */
@@ -147,14 +178,14 @@ typedef struct URLPollEntry {
 attribute_deprecated int url_poll(URLPollEntry *poll_table, int n, int timeout);
 
 /**
- * @defgroup open_modes URL open modes
+ * @name URL open modes
  * The flags argument to url_open and cosins must be one of the following
  * constants, optionally ORed with other flags.
  * @{
  */
-#define URL_RDONLY 0  /**< read-only */
-#define URL_WRONLY 1  /**< write-only */
-#define URL_RDWR   2  /**< read-write */
+#define URL_RDONLY 1  /**< read-only */
+#define URL_WRONLY 2  /**< write-only */
+#define URL_RDWR   (URL_RDONLY|URL_WRONLY)  /**< read-write */
 /**
  * @}
  */
@@ -178,7 +209,7 @@ extern URLInterruptCB *url_interrupt_cb;
 
 /**
  * @defgroup old_url_funcs Old url_* functions
- * @deprecated use the buffered API based on AVIOContext instead
+ * The following functions are deprecated. Use the buffered API based on #AVIOContext instead.
  * @{
  */
 attribute_deprecated int url_open_protocol (URLContext **puc, struct URLProtocol *up,
@@ -238,7 +269,7 @@ attribute_deprecated AVIOContext *av_alloc_put_byte(
 
 /**
  * @defgroup old_avio_funcs Old put_/get_*() functions
- * @deprecated use the avio_ -prefixed functions instead.
+ * The following functions are deprecated. Use the "avio_"-prefixed functions instead.
  * @{
  */
 attribute_deprecated int          get_buffer(AVIOContext *s, unsigned char *buf, int size);
@@ -275,7 +306,7 @@ attribute_deprecated int64_t av_url_read_fseek (AVIOContext *h,    int stream_in
 
 /**
  * @defgroup old_url_f_funcs Old url_f* functions
- * @deprecated use the avio_ -prefixed functions instead.
+ * The following functions are deprecated, use the "avio_"-prefixed functions instead.
  * @{
  */
 attribute_deprecated int url_fopen( AVIOContext **s, const char *url, int flags);
@@ -287,11 +318,7 @@ attribute_deprecated int64_t url_fsize(AVIOContext *s);
 #define URL_EOF (-1)
 attribute_deprecated int url_fgetc(AVIOContext *s);
 attribute_deprecated int url_setbufsize(AVIOContext *s, int buf_size);
-#ifdef __GNUC__
-attribute_deprecated int url_fprintf(AVIOContext *s, const char *fmt, ...) __attribute__ ((__format__ (__printf__, 2, 3)));
-#else
-attribute_deprecated int url_fprintf(AVIOContext *s, const char *fmt, ...);
-#endif
+attribute_deprecated int url_fprintf(AVIOContext *s, const char *fmt, ...) av_printf_format(2, 3);
 attribute_deprecated void put_flush_packet(AVIOContext *s);
 attribute_deprecated int url_open_dyn_buf(AVIOContext **s);
 attribute_deprecated int url_open_dyn_packet_buf(AVIOContext **s, int max_packet_size);
@@ -346,7 +373,7 @@ attribute_deprecated int url_exist(const char *url);
 #endif // FF_API_OLD_AVIO
 
 /**
- * Return AVIO_* access flags corresponding to the access permissions
+ * Return AVIO_FLAG_* access flags corresponding to the access permissions
  * of the resource in url, or a negative value corresponding to an
  * AVERROR code in case of failure. The returned access flags are
  * masked by the value in flags.
@@ -356,34 +383,19 @@ attribute_deprecated int url_exist(const char *url);
  * one call to another. Thus you should not trust the returned value,
  * unless you are sure that no other processes are accessing the
  * checked resource.
- *
- * @note This function is slightly broken until next major bump
- *       because of AVIO_RDONLY == 0. Don't use it until then.
  */
 int avio_check(const char *url, int flags);
 
+#if FF_API_OLD_INTERRUPT_CB
 /**
  * The callback is called in blocking functions to test regulary if
  * asynchronous interruption is needed. AVERROR_EXIT is returned
  * in this case by the interrupted function. 'NULL' means no interrupt
  * callback is given.
+ * @deprecated Use interrupt_callback in AVFormatContext/avio_open2
+ *             instead.
  */
-void avio_set_interrupt_cb(int (*interrupt_cb)(void));
-
-#if FF_API_REGISTER_PROTOCOL
-extern URLProtocol *first_protocol;
-#endif
-
-#if FF_API_REGISTER_PROTOCOL
-/**
- * @deprecated Use av_register_protocol() instead.
- */
-attribute_deprecated int register_protocol(URLProtocol *protocol);
-
-/**
- * @deprecated Use av_register_protocol2() instead.
- */
-attribute_deprecated int av_register_protocol(URLProtocol *protocol);
+attribute_deprecated void avio_set_interrupt_cb(int (*interrupt_cb)(void));
 #endif
 
 /**
@@ -391,6 +403,7 @@ attribute_deprecated int av_register_protocol(URLProtocol *protocol);
  * freed with av_free().
  *
  * @param buffer Memory block for input/output operations via AVIOContext.
+ *        The buffer must be allocated with av_malloc() and friends.
  * @param buffer_size The buffer size is very important for performance.
  *        For protocols with fixed blocksize it should be set to this blocksize.
  *        For others a typical size is a cache page, e.g. 4kb.
@@ -483,11 +496,7 @@ int64_t avio_size(AVIOContext *s);
 int url_feof(AVIOContext *s);
 
 /** @warning currently size is limited */
-#ifdef __GNUC__
-int avio_printf(AVIOContext *s, const char *fmt, ...) __attribute__ ((__format__ (__printf__, 2, 3)));
-#else
-int avio_printf(AVIOContext *s, const char *fmt, ...);
-#endif
+int avio_printf(AVIOContext *s, const char *fmt, ...) av_printf_format(2, 3);
 
 void avio_flush(AVIOContext *s);
 
@@ -499,7 +508,7 @@ void avio_flush(AVIOContext *s);
 int avio_read(AVIOContext *s, unsigned char *buf, int size);
 
 /**
- * @defgroup avio_read Functions for reading from AVIOContext.
+ * @name Functions for reading from AVIOContext
  * @{
  *
  * @note return 0 if EOF, so you cannot use it if EOF handling is
@@ -542,29 +551,15 @@ int avio_get_str16le(AVIOContext *pb, int maxlen, char *buf, int buflen);
 int avio_get_str16be(AVIOContext *pb, int maxlen, char *buf, int buflen);
 
 
-#if FF_API_URL_RESETBUF
-/** Reset the buffer for reading or writing.
- * @note Will drop any data currently in the buffer without transmitting it.
- * @param flags URL_RDONLY to set up the buffer for reading, or URL_WRONLY
- *        to set up the buffer for writing. */
-int url_resetbuf(AVIOContext *s, int flags);
-#endif
-
 /**
- * @defgroup open_modes URL open modes
+ * @name URL open modes
  * The flags argument to avio_open must be one of the following
  * constants, optionally ORed with other flags.
  * @{
  */
-#if LIBAVFORMAT_VERSION_MAJOR < 53
-#define AVIO_RDONLY 0  /**< read-only */
-#define AVIO_WRONLY 1  /**< write-only */
-#define AVIO_RDWR   2  /**< read-write */
-#else
-#define AVIO_RDONLY 1  /**< read-only */
-#define AVIO_WRONLY 2  /**< write-only */
-#define AVIO_RDWR   4  /**< read-write */
-#endif
+#define AVIO_FLAG_READ  1                                      /**< read-only */
+#define AVIO_FLAG_WRITE 2                                      /**< write-only */
+#define AVIO_FLAG_READ_WRITE (AVIO_FLAG_READ|AVIO_FLAG_WRITE)  /**< read-write pseudo flag */
 /**
  * @}
  */
@@ -581,11 +576,7 @@ int url_resetbuf(AVIOContext *s, int flags);
  * Warning: non-blocking protocols is work-in-progress; this flag may be
  * silently ignored.
  */
-#if LIBAVFORMAT_VERSION_MAJOR < 53
-#define AVIO_FLAG_NONBLOCK 4
-#else
 #define AVIO_FLAG_NONBLOCK 8
-#endif
 
 /**
  * Create and initialize a AVIOContext for accessing the
@@ -601,6 +592,26 @@ int url_resetbuf(AVIOContext *s, int flags);
  * AVERROR code in case of failure
  */
 int avio_open(AVIOContext **s, const char *url, int flags);
+
+/**
+ * Create and initialize a AVIOContext for accessing the
+ * resource indicated by url.
+ * @note When the resource indicated by url has been opened in
+ * read+write mode, the AVIOContext can be used only for writing.
+ *
+ * @param s Used to return the pointer to the created AVIOContext.
+ * In case of failure the pointed to value is set to NULL.
+ * @param flags flags which control how the resource indicated by url
+ * is to be opened
+ * @param int_cb an interrupt callback to be used at the protocols level
+ * @param options  A dictionary filled with protocol-private options. On return
+ * this parameter will be destroyed and replaced with a dict containing options
+ * that were not found. May be NULL.
+ * @return 0 in case of success, a negative value corresponding to an
+ * AVERROR code in case of failure
+ */
+int avio_open2(AVIOContext **s, const char *url, int flags,
+               const AVIOInterruptCB *int_cb, AVDictionary **options);
 
 /**
  * Close the resource accessed by the AVIOContext s and free it.
@@ -628,10 +639,6 @@ int avio_open_dyn_buf(AVIOContext **s);
  * @return the length of the byte buffer
  */
 int avio_close_dyn_buf(AVIOContext *s, uint8_t **pbuffer);
-
-#if FF_API_UDP_GET_FILE
-int udp_get_file_handle(URLContext *h);
-#endif
 
 /**
  * Iterate through names of available protocols.

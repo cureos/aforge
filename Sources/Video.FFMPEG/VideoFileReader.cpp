@@ -40,7 +40,6 @@ public:
 	struct libffmpeg::SwsContext*	ConvertContext;
 
 	libffmpeg::AVPacket* Packet;
-	libffmpeg::uint8_t*  RawData;
 	int BytesRemaining;
 
 	ReaderPrivateData( )
@@ -52,7 +51,6 @@ public:
 		ConvertContext	  = NULL;
 
 		Packet  = NULL;
-		RawData = NULL;
 		BytesRemaining = 0;
 	}
 };
@@ -114,7 +112,7 @@ void VideoFileReader::Open( String^ fileName )
 		// search for the first video stream
 		for ( unsigned int i = 0; i < data->FormatContext->nb_streams; i++ )
 		{
-			if( data->FormatContext->streams[i]->codec->codec_type == libffmpeg::CODEC_TYPE_VIDEO )
+			if( data->FormatContext->streams[i]->codec->codec_type == libffmpeg::AVMEDIA_TYPE_VIDEO )
 			{
 				// get the pointer to the codec context for the video stream
 				data->CodecContext = data->FormatContext->streams[i]->codec;
@@ -229,7 +227,7 @@ Bitmap^ VideoFileReader::ReadVideoFrame(  )
 		while ( data->BytesRemaining > 0 )
 		{
 			// decode the next chunk of data
-			bytesDecoded = libffmpeg::avcodec_decode_video( data->CodecContext, data->VideoFrame, &frameFinished, data->RawData, data->BytesRemaining );
+			bytesDecoded = libffmpeg::avcodec_decode_video2( data->CodecContext, data->VideoFrame, &frameFinished, data->Packet );
 
 			// was there an error?
 			if ( bytesDecoded < 0 )
@@ -238,7 +236,6 @@ Bitmap^ VideoFileReader::ReadVideoFrame(  )
 			}
 
 			data->BytesRemaining -= bytesDecoded;
-			data->RawData += bytesDecoded;
 					 
 			// did we finish the current frame? Then we can return
 			if ( frameFinished )
@@ -272,12 +269,11 @@ Bitmap^ VideoFileReader::ReadVideoFrame(  )
 			break;
 
 		data->BytesRemaining = data->Packet->size;
-		data->RawData = data->Packet->data;
 	}
 
 	// decode the rest of the last frame
-	bytesDecoded = libffmpeg::avcodec_decode_video(
-		data->CodecContext, data->VideoFrame, &frameFinished, data->RawData, data->BytesRemaining );
+	bytesDecoded = libffmpeg::avcodec_decode_video2(
+		data->CodecContext, data->VideoFrame, &frameFinished, data->Packet );
 
 	// free last packet
 	if ( data->Packet->data != NULL )

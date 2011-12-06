@@ -155,7 +155,7 @@ void VideoFileWriter::Open( String^ fileName, int width, int height, int frameRa
 		// open output file
 		if ( !( outputFormat->flags & AVFMT_NOFILE ) )
 		{
-			if ( libffmpeg::avio_open( &data->FormatContext->pb, nativeFileName, AVIO_WRONLY ) < 0 )
+			if ( libffmpeg::avio_open( &data->FormatContext->pb, nativeFileName, AVIO_FLAG_WRITE ) < 0 )
 			{
 				throw gcnew System::IO::IOException( "Cannot open the video file." );
 			}
