@@ -1,3 +1,93 @@
+AForge.NET Framework 2.2.3 release notes
+----------------------------------------
+09.12.2011.
+
+Version updates and fixes:
+
+* Fixed registered issues/requests:
+  - Issue 217: Support for Alpha component in Image.Drawing methods
+  - Issue 238: Build errors and warnings under VS 2010
+  - Issue 251: Cannot build from SVN
+  - Issue 252: Rotate filter incorrectly calculates the size of the image after rotation
+  - Issue 261: VideoFileWriter should implement IDisposable
+  - Issue 262: Convolution filter generating AccessViolationException for 640x480 16bpp gray scale image
+  - Issue 264: Support for the alpha channel in convolution filters
+  - Issue 266: GA: Donate thread-safety to chromosomes
+
+
+* General
+  - Updated project/solution files of the framework's sources, tool and unit tests to VS.NET 2010 (C#/C++ express 2010).
+
+  - Updated project/solution files of all sample to use C# express edition 2010.
+
+
+* AForge
+  - Added ThreadSafeRandom class which is a wrapper for the System.Random class providing thread safety for random numbers
+    generation methods.
+
+
+* AForge.Imaging
+  - Added implementation of Run Length Smoothing Algorithm (horizontal and vertical versions).
+
+  - Improved performance of grayscale filters so those are about ~4.5 times faster doing conversion of 24/32 bpp color
+    images to 8 bpp grayscale images, which is achieved by replacing floating point calculation with integer calculation.
+
+  - Fixing Convolution filter so it processes correctly 16bpp grayscale images. Previously there was a bug causing 16 bpp
+    grayscale images to be processed as 24/32 colour image.
+
+  - Adding Width and Height properties to IntegralImage.
+
+  - Added IntegralImage.GetHaarXWavelet() and IntegralImage.GetHaarYWavelet(), which calculate horizontal and vertical Haar wavelets.
+
+  - Convolution filter is extended to support processing of alpha channel for 32 bpp and 64 bpp images, which is controlled
+    by ProcessAlpha property (set to false by default). For filters like Blur, Mean and GaussianBlur the property is set to
+    true by default, so the alpha channel gets blurred also.
+
+  - Fixed rotation filters, so those don't shift image by one pixel, which was easy to notice when rotating by -90/90 angles.
+    The bug was caused by the fact that for edge pixels source position was calculated one pixel out of image's bounds.
+
+  - Added support for alpha blending for methods of AForge.Imaging.Drawing class.
+
+
+* AForge.Math
+  - Updated classes of AForge.Math namespaces to use new ThreadSafeRandom class, so random numbers generation in those
+    classes becomes thread safe.
+
+
+* AForge.Genetic
+  - Updated classes of AForge.Genetic namespaces to use new ThreadSafeRandom class, so random numbers generation in those
+    classes becomes thread safe.
+
+
+* AForge.Video
+  - Changing IVideoSource.BytesReceived property type from int to long, so it may fit higher values.
+
+  - Fixing AsyncVideoSource so it does full deep cloning of bitmap provided by nested video source instead of using
+    System.Drawing.Image.Clone(), which does not seem to be reliable.
+
+
+* AForge.Video.FFMPEG
+  - Allow specifying of video stream bit rate when open video file using VideoFileWriter, so user could trade between
+    video quality and file size.
+
+  - Implemented IDisposable interface for VideoFileReader and VideoFileWriter classes.
+
+  - Updating external FFMPEG library to version from November 30 2011. Updated AForge.Video.FFMPEG to build fine with
+    the new FFMPEG build.
+
+
+* AForge.Video.DirectShow
+  - Fixed BytesReceived property of FileVideoSource and VideoCaptureDevice, so those provide number of provided bytes.
+
+
+* Samples
+  - Fixing few bugs in Blobs Explorer sample application:
+    + If convex hull contain 3 point or less, then don't try finding its quadrilateral;
+    + If object's edge contains only one pixel, then need to draw it individually instead of using Graphics.DrawLines() method.
+
+
+
+
 AForge.NET Framework 2.2.2 release notes
 ----------------------------------------
 16.09.2011.

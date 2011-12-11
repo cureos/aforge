@@ -278,7 +278,7 @@
     <FeedbackEMailAddress>documentation@aforgenet.com</FeedbackEMailAddress>
     <FeedbackEMailLinkText>Feedback Contact</FeedbackEMailLinkText>
     <HeaderText />
-    <FooterText>&lt;a href="http://www.aforgenet.com/" target="_blank"&gt;AForge.NET&lt;/a&gt; © 2006-2011</FooterText>
+    <FooterText>&lt;a href="http://www.aforgenet.com/" target="_blank"&gt;AForge.NET&lt;/a&gt; © 2006-2012</FooterText>
     <ProjectLinkType>Local</ProjectLinkType>
     <SdkLinkType>Msdn</SdkLinkType>
     <SdkLinkTarget>Blank</SdkLinkTarget>
