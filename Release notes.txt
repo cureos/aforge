@@ -1,6 +1,6 @@
 AForge.NET Framework 2.2.3 release notes
 ----------------------------------------
-09.12.2011.
+12.12.2011.
 
 Version updates and fixes:
 
@@ -13,6 +13,7 @@ Version updates and fixes:
   - Issue 262: Convolution filter generating AccessViolationException for 640x480 16bpp gray scale image
   - Issue 264: Support for the alpha channel in convolution filters
   - Issue 266: GA: Donate thread-safety to chromosomes
+  - Issue 269: Support basic authentication when connecting to IP Cameras
 
 
 * General
@@ -64,6 +65,9 @@ Version updates and fixes:
 
   - Fixing AsyncVideoSource so it does full deep cloning of bitmap provided by nested video source instead of using
     System.Drawing.Image.Clone(), which does not seem to be reliable.
+
+  - Added ForceBasicAuthentication property for MJPEGStream and JPEGStream classes, which allows to force HTTP basic
+    authentication by adding required HTTP header.
 
 
 * AForge.Video.FFMPEG
