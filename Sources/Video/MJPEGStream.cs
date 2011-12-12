@@ -66,6 +66,8 @@ namespace AForge.Video
         private bool useSeparateConnectionGroup = true;
         // timeout value for web request
         private int requestTimeout = 10000;
+        // if we should use basic authentication when connecting to the video source
+        private bool forceBasicAuthentication = false;
 
         // buffer size used to download MJPEG stream
         private const int bufSize = 512 * 1024;
@@ -274,6 +276,24 @@ namespace AForge.Video
 		}
 
         /// <summary>
+        /// Force using of basic authentication when connecting to the video source.
+        /// </summary>
+        /// 
+        /// <remarks><para>For some IP cameras (TrendNET IP cameras, for example) using standard .NET's authentication via credentials
+        /// does not seem to be working (seems like camera does not request for authentication, but expects corresponding headers to be
+        /// present on connection request). So this property allows to force basic authentication by adding required HTTP headers when
+        /// request is sent.</para>
+        /// 
+        /// <para>Default value is set to <see langword="false"/>.</para>
+        /// </remarks>
+        /// 
+        public bool ForceBasicAuthentication
+        {
+            get { return forceBasicAuthentication; }
+            set { forceBasicAuthentication = value; }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="MJPEGStream"/> class.
         /// </summary>
         /// 
@@ -455,6 +475,13 @@ namespace AForge.Video
 					// set connection group name
 					if ( useSeparateConnectionGroup )
                         request.ConnectionGroupName = GetHashCode( ).ToString( );
+                    // force basic authentication through extra headers if required
+                    if ( forceBasicAuthentication )
+                    {
+                        string authInfo = string.Format( "{0}:{1}", login, password );
+                        authInfo = Convert.ToBase64String( Encoding.Default.GetBytes( authInfo ) );
+                        request.Headers["Authorization"] = "Basic " + authInfo;
+                    }
 					// get response
                     response = request.GetResponse( );
 

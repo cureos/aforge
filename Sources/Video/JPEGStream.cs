@@ -11,7 +11,8 @@ namespace AForge.Video
     using System;
 	using System.Drawing;
 	using System.IO;
-	using System.Threading;
+    using System.Text;
+    using System.Threading;
 	using System.Net;
     using System.Security;
 
@@ -78,6 +79,8 @@ namespace AForge.Video
 		private int frameInterval = 0;
         // timeout value for web request
         private int requestTimeout = 10000;
+        // if we should use basic authentication when connecting to the video source
+        private bool forceBasicAuthentication = false;
 
         // buffer size used to download JPEG image
 		private const int bufferSize = 512 * 1024;
@@ -286,6 +289,24 @@ namespace AForge.Video
 		}
 
         /// <summary>
+        /// Force using of basic authentication when connecting to the video source.
+        /// </summary>
+        /// 
+        /// <remarks><para>For some IP cameras (TrendNET IP cameras, for example) using standard .NET's authentication via credentials
+        /// does not seem to be working (seems like camera does not request for authentication, but expects corresponding headers to be
+        /// present on connection request). So this property allows to force basic authentication by adding required HTTP headers when
+        /// request is sent.</para>
+        /// 
+        /// <para>Default value is set to <see langword="false"/>.</para>
+        /// </remarks>
+        /// 
+        public bool ForceBasicAuthentication
+        {
+            get { return forceBasicAuthentication; }
+            set { forceBasicAuthentication = value; }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="JPEGStream"/> class.
         /// </summary>
         /// 
@@ -455,6 +476,13 @@ namespace AForge.Video
 					// set connection group name
 					if ( useSeparateConnectionGroup )
                         request.ConnectionGroupName = GetHashCode( ).ToString( );
+                    // force basic authentication through extra headers if required
+                    if ( forceBasicAuthentication )
+                    {
+                        string authInfo = string.Format( "{0}:{1}", login, password );
+                        authInfo = Convert.ToBase64String( Encoding.Default.GetBytes( authInfo ) );
+                        request.Headers["Authorization"] = "Basic " + authInfo;
+                    }
 					// get response
                     response = request.GetResponse( );
 					// get response stream
