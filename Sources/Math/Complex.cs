@@ -85,7 +85,7 @@ namespace AForge.Math
         /// 
         public double Phase
         {
-            get { return System.Math.Atan( Im / Re ); }
+            get { return System.Math.Atan2( Im, Re ); }
         }
 
         /// <summary>
