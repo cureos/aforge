@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © AForge.NET, 2007-2011
+// Copyright © AForge.NET, 2007-2012
 // contacts@aforgenet.com
 //
 
@@ -42,7 +42,7 @@ namespace AForge.Neuro
         /// 
         /// <remarks>The generator is used for neuron's weights randomization.</remarks>
         /// 
-        protected static Random rand = new Random( );
+        protected static ThreadSafeRandom rand = new ThreadSafeRandom( );
 
         /// <summary>
         /// Random generator range.
@@ -60,7 +60,7 @@ namespace AForge.Neuro
         /// <remarks>The property allows to initialize random generator with a custom seed. The generator is
         /// used for neuron's weights randomization.</remarks>
         /// 
-        public static Random RandGenerator
+        public static ThreadSafeRandom RandGenerator
         {
             get { return rand; }
             set
