@@ -332,7 +332,8 @@ namespace AForge.Video.DirectShow
                         }
                     }
                 }
-                return videoCapabilities;
+                // don't return null even capabilities are not provided for some reason
+                return ( videoCapabilities != null ) ? videoCapabilities : new VideoCapabilities[0];
             }
         }
 
@@ -374,7 +375,8 @@ namespace AForge.Video.DirectShow
                         }
                     }
                 }
-                return snapshotCapabilities;
+                // don't return null even capabilities are not provided for some reason
+                return ( snapshotCapabilities != null ) ? snapshotCapabilities : new VideoCapabilities[0];
             }
         }
 
