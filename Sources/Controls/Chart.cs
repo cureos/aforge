@@ -183,6 +183,9 @@ namespace AForge.Controls
             // draw a black rectangle
             g.DrawRectangle( blackPen, 0, 0, clientWidth - 1, clientHeight - 1 );
 
+            // set clipping rectangle
+            g.SetClip( new Rectangle( 2, 2, clientWidth - 4, clientHeight - 4 ) );
+
             // check if there are any data series
             if ( rangeX.Length != 0 )
             {
@@ -217,10 +220,7 @@ namespace AForge.Controls
                             x += 5;
                             y = clientHeight - 6 - y;
 
-                            if ( ( rangeX.IsInside( (float) data[i, 0] ) ) && ( rangeY.IsInside( (float) data[i, 1] ) ) )
-                            {
-                                g.FillRectangle( brush, x - r, y - r, width, width );
-                            }
+                            g.FillRectangle( brush, x - r, y - r, width, width );
                         }
                         brush.Dispose( );
                     }
@@ -248,13 +248,8 @@ namespace AForge.Controls
                             x2 += 5;
                             y2 = clientHeight - 6 - y2;
 
-                            if ( ( rangeX.IsInside( (float) data[i, 0] ) )     && ( rangeY.IsInside( (float) data[i, 1] ) ) &&
-                                 ( rangeX.IsInside( (float) data[i - 1, 0] ) ) && ( rangeY.IsInside( (float) data[i - 1, 1] ) ) )
-                            {
-                                g.FillRectangle( brush, x2 - r, y2 - r, width, width );
-
-                                g.DrawLine( pen, x1, y1, x2, y2 );
-                            }
+                            g.FillRectangle( brush, x2 - r, y2 - r, width, width );
+                            g.DrawLine( pen, x1, y1, x2, y2 );
 
                             x1 = x2;
                             y1 = y2;
@@ -283,11 +278,7 @@ namespace AForge.Controls
                             x2 += 5;
                             y2 = clientHeight - 6 - y2;
 
-                            if ( ( rangeX.IsInside( (float) data[i, 0] ) )     && ( rangeY.IsInside( (float) data[i, 1] ) ) &&
-                                 ( rangeX.IsInside( (float) data[i - 1, 0] ) ) && ( rangeY.IsInside( (float) data[i - 1, 1] ) ) )
-                            {
-                                g.DrawLine( pen, x1, y1, x2, y2 );
-                            }
+                            g.DrawLine( pen, x1, y1, x2, y2 );
 
                             x1 = x2;
                             y1 = y2;
