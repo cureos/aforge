@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © AForge.NET, 2005-2011
+// Copyright © AForge.NET, 2005-2012
 // contacts@aforgenet.com
 //
 
@@ -40,7 +40,7 @@ namespace AForge.Imaging
         // area of the blob
         private int area;
         // center of gravity
-        private IntPoint cog;
+        private AForge.Point cog;
         // fullness of the blob ( area / ( width * height ) )
         private double fullness;
         // mean color of the blob
@@ -138,7 +138,7 @@ namespace AForge.Imaging
         /// <remarks><para>The property keeps center of gravity point, which is calculated as
         /// mean value of X and Y coordinates of blob's points.</para></remarks>
         /// 
-        public IntPoint CenterOfGravity
+        public AForge.Point CenterOfGravity
         {
             get { return cog; }
             internal set { cog = value; }
@@ -179,14 +179,23 @@ namespace AForge.Imaging
         /// image may be extracted later using <see cref="BlobCounterBase.ExtractBlobsImage( Bitmap, Blob, bool )"/>
         /// or <see cref="BlobCounterBase.ExtractBlobsImage( UnmanagedImage, Blob, bool )"/> method.</para></remarks>
         /// 
-        internal Blob( int id, Rectangle rect )
+        public Blob( int id, Rectangle rect )
         {
             this.id   = id;
             this.rect = rect;
         }
 
-        // Copy constructur
-        internal Blob( Blob source )
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Blob"/> class.
+        /// </summary>
+        /// 
+        /// <param name="source">Source blob to copy.</param>
+        /// 
+        /// <remarks><para>This copy constructor leaves <see cref="Image"/> property not initialized. The blob's
+        /// image may be extracted later using <see cref="BlobCounterBase.ExtractBlobsImage( Bitmap, Blob, bool )"/>
+        /// or <see cref="BlobCounterBase.ExtractBlobsImage( UnmanagedImage, Blob, bool )"/> method.</para></remarks>
+        /// 
+        public Blob( Blob source )
         {
             // copy everything except image
             id   = source.id;
