@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2012
+// contacts@aforgenet.com
 //
 
 namespace AForge.Neuro.Learning
@@ -59,7 +59,7 @@ namespace AForge.Neuro.Learning
         public PerceptronLearning( ActivationNetwork network )
         {
             // check layers count
-            if ( network.LayersCount != 1 )
+            if ( network.Layers.Length != 1 )
             {
                 throw new ArgumentException( "Invalid nuaral network. It should have one layer only." );
             }
@@ -87,24 +87,24 @@ namespace AForge.Neuro.Learning
             double[] networkOutput = network.Compute( input );
 
             // get the only layer of the network
-            ActivationLayer layer = network[0];
+            Layer layer = network.Layers[0];
 
             // summary network absolute error
             double error = 0.0;
 
             // check output of each neuron and update weights
-            for ( int j = 0, k = layer.NeuronsCount; j < k; j++ )
+            for ( int j = 0; j < layer.Neurons.Length; j++ )
             {
                 double e = output[j] - networkOutput[j];
 
                 if ( e != 0 )
                 {
-                    ActivationNeuron perceptron = layer[j];
+                    ActivationNeuron perceptron = layer.Neurons[j] as ActivationNeuron;
 
                     // update weights
-                    for ( int i = 0, n = perceptron.InputsCount; i < n; i++ )
+                    for ( int i = 0; i < perceptron.Weights.Length; i++ )
                     {
-                        perceptron[i] += learningRate * e * input[i];
+                        perceptron.Weights[i] += learningRate * e * input[i];
                     }
 
                     // update threshold value

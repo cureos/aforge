@@ -541,11 +541,11 @@ namespace TSP
 				// show current path
 				for ( int j = 0; j < neurons; j++ )
 				{
-					path[j, 0] = network[0][j][0];
-					path[j, 1] = network[0][j][1];
+					path[j, 0] = network.Layers[0].Neurons[j].Weights[0];
+					path[j, 1] = network.Layers[0].Neurons[j].Weights[1];
 				}
-				path[neurons, 0] = network[0][0][0];
-				path[neurons, 1] = network[0][0][1];
+				path[neurons, 0] = network.Layers[0].Neurons[0].Weights[0];
+				path[neurons, 1] = network.Layers[0].Neurons[0].Weights[1];
 
 				chart.UpdateDataSeries( "path", path );
 

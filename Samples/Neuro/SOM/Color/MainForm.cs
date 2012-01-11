@@ -352,7 +352,7 @@ namespace Color
 
 			int stride = mapData.Stride;
 			int offset = stride - 200 * 3;
-			Layer layer = network[0];
+			Layer layer = network.Layers[0];
 
 			unsafe
 			{
@@ -364,17 +364,17 @@ namespace Color
 					// for all pixels
 					for ( int x = 0; x < 100; x++, i++, ptr += 6 )
 					{
-						Neuron neuron = layer[i];
+						Neuron neuron = layer.Neurons[i];
 
 						// red
 						ptr[2] = ptr[2 + 3] = ptr[2 + stride] = ptr[2 + 3 + stride]	=
-							(byte) Math.Max( 0, Math.Min( 255, neuron[0] ) );
+							(byte) Math.Max( 0, Math.Min( 255, neuron.Weights[0] ) );
 						// green
 						ptr[1] = ptr[1 + 3] = ptr[1 + stride] = ptr[1 + 3 + stride]	=
-							(byte) Math.Max( 0, Math.Min( 255, neuron[1] ) );
+                            (byte) Math.Max( 0, Math.Min( 255, neuron.Weights[1] ) );
 						// blue
 						ptr[0] = ptr[0 + 3] = ptr[0 + stride] = ptr[0 + 3 + stride]	=
-							(byte) Math.Max( 0, Math.Min( 255, neuron[2] ) );
+                            (byte) Math.Max( 0, Math.Min( 255, neuron.Weights[2] ) );
 					}
 
 					ptr += offset;

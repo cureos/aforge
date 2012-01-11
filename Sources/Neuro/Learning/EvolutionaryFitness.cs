@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2008-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2012
+// contacts@aforgenet.com
 //
 // Copyright © Cezary Wagner, 2008
 // Initial implementation of evolutionary learning algorithm
@@ -15,7 +15,7 @@ namespace AForge.Neuro.Learning
     using System;
     using System.Diagnostics;
     using AForge.Genetic;
-    
+
     /// <summary>
     /// Fitness function used for chromosomes representing collection of neural network's weights.
     /// </summary>
@@ -55,8 +55,8 @@ namespace AForge.Neuro.Learning
             }
 
             this.network = network;
-            this.input   = input;
-            this.output  = output;
+            this.input = input;
+            this.output = output;
         }
 
         /// <summary>
@@ -78,17 +78,17 @@ namespace AForge.Neuro.Learning
             int totalNumberOfWeights = 0;
 
             // asign new weights and thresholds to network from the given chromosome
-            for ( int i = 0, layersCount = network.LayersCount; i < layersCount; i++ )
+            for ( int i = 0, layersCount = network.Layers.Length; i < layersCount; i++ )
             {
-                ActivationLayer layer = network[i];
+                Layer layer = network.Layers[i];
 
-                for ( int j = 0, neuronsCount = layer.NeuronsCount; j < neuronsCount; j++ )
+                for ( int j = 0; j < layer.Neurons.Length; j++ )
                 {
-                    ActivationNeuron neuron = layer[j];
+                    ActivationNeuron neuron = layer.Neurons[j] as ActivationNeuron;
 
-                    for ( int k = 0, weightsCount = neuron.InputsCount; k < weightsCount; k++ )
+                    for ( int k = 0; k < neuron.Weights.Length; k++ )
                     {
-                        neuron[k] = chromosomeGenes[totalNumberOfWeights++];
+                        neuron.Weights[k] = chromosomeGenes[totalNumberOfWeights++];
                     }
                     neuron.Threshold = chromosomeGenes[totalNumberOfWeights++];
                 }

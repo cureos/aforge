@@ -483,7 +483,7 @@ namespace Classifier
 						// search for min value
 						if ( tempData[samples, 0] < minX )
 							minX = tempData[samples, 0];
-						// search for max value
+                        // search for max value
 						if ( tempData[samples, 0] > maxX )
 							maxX = tempData[samples, 0];
 
@@ -520,7 +520,7 @@ namespace Classifier
 				if ( showChart )
 				{
 					chart.RangeX = new Range( minX, maxX );
-					ShowTrainingData( );
+                    ShowTrainingData( );
 				}
 
 				chart.Visible = showChart;
@@ -694,7 +694,7 @@ namespace Classifier
 
 			// create perceptron
 			ActivationNetwork	network = new ActivationNetwork( new ThresholdFunction( ), variables, 1 );
-			ActivationNeuron	neuron = network[0][0];
+			ActivationNeuron	neuron = network.Layers[0].Neurons[0] as ActivationNeuron;
 			// create teacher
 			PerceptronLearning teacher = new PerceptronLearning( network );
 			// set learning rate
@@ -728,7 +728,7 @@ namespace Classifier
 					{
 						for ( int i = 0; i < variables; i++ )
 						{
-							weightsFile.Write( neuron[i] + "," );
+							weightsFile.Write( neuron.Weights[i] + "," );
 						}
 						weightsFile.WriteLine( neuron.Threshold );
 					}
@@ -747,16 +747,16 @@ namespace Classifier
 					}				
 
 					// show classifier in the case of 2 dimensional data
-					if ( ( neuron.InputsCount == 2 ) && ( neuron[1] != 0 ) )
+					if ( ( neuron.InputsCount == 2 ) && ( neuron.Weights[1] != 0 ) )
 					{
-						double k = - neuron[0] / neuron[1];
-						double b = - neuron.Threshold / neuron[1];
+						double k = - neuron.Weights[0] / neuron.Weights[1];
+						double b = - neuron.Threshold / neuron.Weights[1];
 
 						double[,] classifier = new double[2, 2] {
 							{ chart.RangeX.Min, chart.RangeX.Min * k + b },
 							{ chart.RangeX.Max, chart.RangeX.Max * k + b }
 																};
-						// update chart
+                        // update chart
 						chart.UpdateDataSeries( "classifier", classifier );
 					}
 
@@ -774,7 +774,7 @@ namespace Classifier
 				for ( int i = 0; i < variables; i++ )
 				{
                     item = AddListItem( weightsList, string.Format( "Weight {0}", i + 1 ) );
-                    AddListSubitem( item, neuron[i].ToString( "F6" ) );
+                    AddListSubitem( item, neuron.Weights[i].ToString( "F6" ) );
 				}
                 item = AddListItem( weightsList, "Threshold" );
                 AddListSubitem( item, neuron.Threshold.ToString( "F6" ) );

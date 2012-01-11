@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2012
+// contacts@aforgenet.com
 //
 
 namespace AForge.Neuro
@@ -49,11 +49,12 @@ namespace AForge.Neuro
         }
 
         /// <summary>
-        /// Layer's neurons count.
+        /// Layer's neurons.
         /// </summary>
-        public int NeuronsCount
+        /// 
+        public Neuron[] Neurons
         {
-            get { return neuronsCount; }
+            get { return neurons; }
         }
 
         /// <summary>
@@ -70,19 +71,6 @@ namespace AForge.Neuro
         public double[] Output
         {
             get { return output; }
-        }
-
-        /// <summary>
-        /// Layer's neurons accessor.
-        /// </summary>
-        /// 
-        /// <param name="index">Neuron index.</param>
-        /// 
-        /// <remarks>Allows to access layer's neurons.</remarks>
-        /// 
-        public Neuron this[int index]
-        {
-            get { return neurons[index]; }
         }
 
         /// <summary>
@@ -130,7 +118,7 @@ namespace AForge.Neuro
             double[] output = new double[neuronsCount];
 
             // compute each neuron
-            for ( int i = 0; i < neuronsCount; i++ )
+            for ( int i = 0; i < neurons.Length; i++ )
                 output[i] = neurons[i].Compute( input );
 
             // assign output property as well (works correctly for single threaded usage)

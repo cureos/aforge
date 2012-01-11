@@ -104,18 +104,13 @@ namespace AForge.Neuro
             get { return output; }
         }
 
+
         /// <summary>
-        /// Neuron's weights accessor.
+        /// Neuron's weights.
         /// </summary>
-        /// 
-        /// <param name="index">Weight index.</param>
-        /// 
-        /// <remarks>Allows to access neuron's weights.</remarks>
-        /// 
-        public double this[int index]
+        public double[] Weights
         {
-            get { return weights[index]; }
-            set { weights[index] = value; }
+            get { return weights; }
         }
 
         /// <summary>

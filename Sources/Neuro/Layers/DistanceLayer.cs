@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2012
+// contacts@aforgenet.com
 //
 
 namespace AForge.Neuro
@@ -21,18 +21,6 @@ namespace AForge.Neuro
     [Serializable]
     public class DistanceLayer : Layer
     {
-        /// <summary>
-        /// Layer's neurons accessor.
-        /// </summary>
-        /// 
-        /// <param name="index">Neuron index.</param>
-        /// 
-        /// <remarks>Allows to access layer's neurons.</remarks>
-        /// 
-        public new DistanceNeuron this[int index]
-        {
-            get { return (DistanceNeuron) neurons[index]; }
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DistanceLayer"/> class.

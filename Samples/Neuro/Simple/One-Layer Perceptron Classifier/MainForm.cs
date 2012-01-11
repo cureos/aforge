@@ -642,7 +642,7 @@ namespace Classifier
 
 			// create perceptron
 			ActivationNetwork	network = new ActivationNetwork( new ThresholdFunction( ), 2, classesCount );
-			ActivationLayer		layer = network[0];
+			ActivationLayer		layer = network.Layers[0] as ActivationLayer;
 			// create teacher
 			PerceptronLearning teacher = new PerceptronLearning( network );
 			// set learning rate
@@ -677,9 +677,9 @@ namespace Classifier
 						for ( int i = 0; i < classesCount; i++ )
 						{
 							weightsFile.Write( "neuron" + i + "," );
-							weightsFile.Write( layer[i][0] + "," );
-							weightsFile.Write( layer[i][1] + "," );
-							weightsFile.WriteLine( layer[i].Threshold );
+							weightsFile.Write( layer.Neurons[i].Weights[0] + "," );
+							weightsFile.Write( layer.Neurons[i].Weights[1] + "," );
+							weightsFile.WriteLine( ( (ActivationNeuron) layer.Neurons[i] ).Threshold );
 						}
 					}
 
@@ -703,8 +703,8 @@ namespace Classifier
 					// show classifiers
 					for ( int j = 0; j < classesCount; j++ )
 					{
-						double k = ( layer[j][1] != 0 ) ? ( - layer[j][0] / layer[j][1] ) : 0;
-						double b = ( layer[j][1] != 0 ) ? ( - layer[j].Threshold / layer[j][1] ) : 0;
+						double k = ( layer.Neurons[j].Weights[1] != 0 ) ? ( - layer.Neurons[j].Weights[0] / layer.Neurons[j].Weights[1] ) : 0;
+						double b = ( layer.Neurons[j].Weights[1] != 0 ) ? ( - ( ( ActivationNeuron) layer.Neurons[j] ).Threshold / layer.Neurons[j].Weights[1] ) : 0;
 
 						double[,] classifier = new double[2, 2] {
 							{ chart.RangeX.Min, chart.RangeX.Min * k + b },
@@ -727,15 +727,15 @@ namespace Classifier
 					// weight 0
                     ListViewItem item = AddListItem( weightsList, neuronName );
                     AddListSubitem( item, "Weight 1" );
-                    AddListSubitem( item, layer[i][0].ToString( "F6" ) );
+                    AddListSubitem( item, layer.Neurons[i].Weights[0].ToString( "F6" ) );
 					// weight 1
                     item = AddListItem( weightsList, neuronName );
                     AddListSubitem( item, "Weight 2" );
-                    AddListSubitem( item, layer[i][1].ToString( "F6" ) );
+                    AddListSubitem( item, layer.Neurons[i].Weights[1].ToString( "F6" ) );
 					// threshold
                     item = AddListItem( weightsList, neuronName );
                     AddListSubitem( item, "Threshold" );
-                    AddListSubitem( item, layer[i].Threshold.ToString( "F6" ) );
+                    AddListSubitem( item, ( (ActivationNeuron) layer.Neurons[i] ).Threshold.ToString( "F6" ) );
 				}
 
 				// show error's dynamics

@@ -898,7 +898,7 @@ namespace Classifier
 			// create perceptron
 			ActivationNetwork	network = new ActivationNetwork(
 				new SigmoidFunction( sigmoidAlphaValue ), variables, neuronsCount );
-			ActivationLayer		layer = network[0];
+			ActivationLayer		layer = network.Layers[0] as ActivationLayer;
 			// create teacher
 			DeltaRuleLearning	teacher = new DeltaRuleLearning( network );
 			// set learning rate
@@ -934,8 +934,8 @@ namespace Classifier
 						{
 							weightsFile.Write( "neuron" + i + "," );
 							for ( int j = 0; j < variables; j++ )
-								weightsFile.Write( layer[i][j] + "," );
-							weightsFile.WriteLine( layer[i].Threshold );
+								weightsFile.Write( layer.Neurons[i].Weights[j] + "," );
+							weightsFile.WriteLine( ( (ActivationNeuron) layer.Neurons[i] ).Threshold );
 						}
 					}
 
@@ -973,12 +973,12 @@ namespace Classifier
 					{
                         item = AddListItem( weightsList, neuronName );
                         AddListSubitem( item, string.Format( "Weight {0}", j + 1 ) );
-                        AddListSubitem( item, layer[i][0].ToString( "F6" ) );
+                        AddListSubitem( item, layer.Neurons[i].Weights[0].ToString( "F6" ) );
 					}
 					// threshold
                     item = AddListItem( weightsList, neuronName );
                     AddListSubitem( item, "Threshold");
-                    AddListSubitem( item, layer[i].Threshold.ToString( "F6" ) );
+                    AddListSubitem( item, ( (ActivationNeuron) layer.Neurons[i] ).Threshold.ToString( "F6" ) );
 				}
 
 				// show error's dynamics

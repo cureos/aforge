@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2012
+// contacts@aforgenet.com
 //
 
 namespace AForge.Neuro.Learning
@@ -21,18 +21,18 @@ namespace AForge.Neuro.Learning
     public class ElasticNetworkLearning : IUnsupervisedLearning
     {
         // neural network to train
-        private DistanceNetwork	network;
+        private DistanceNetwork network;
 
         // array of distances between neurons
         private double[] distance;
 
         // learning rate
-        private double	learningRate = 0.1;
+        private double learningRate = 0.1;
         // learning radius
-        private double	learningRadius = 0.5;
+        private double learningRadius = 0.5;
 
         // squared learning radius multiplied by 2 (precalculated value to speed up computations)
-        private double	squaredRadius2 = 2 * 7 * 7;
+        private double squaredRadius2 = 2 * 7 * 7;
 
         /// <summary>
         /// Learning rate, [0, 1].
@@ -85,9 +85,9 @@ namespace AForge.Neuro.Learning
             this.network = network;
 
             // precalculate distances array
-            int     neurons = network[0].NeuronsCount;
-            double  deltaAlpha = Math.PI * 2.0 / neurons;
-            double  alpha = deltaAlpha;
+            int neurons = network.Layers[0].Neurons.Length;
+            double deltaAlpha = Math.PI * 2.0 / neurons;
+            double alpha = deltaAlpha;
 
             distance = new double[neurons];
             distance[0] = 0.0;
@@ -128,24 +128,24 @@ namespace AForge.Neuro.Learning
             int winner = network.GetWinner( );
 
             // get layer of the network
-            Layer layer = network[0];
+            Layer layer = network.Layers[0];
 
             // walk through all neurons of the layer
-            for ( int j = 0, m = layer.NeuronsCount; j < m; j++ )
+            for ( int j = 0; j < layer.Neurons.Length; j++ )
             {
-                Neuron neuron = layer[j];
+                Neuron neuron = layer.Neurons[j];
 
                 // update factor
                 double factor = Math.Exp( -distance[Math.Abs( j - winner )] / squaredRadius2 );
 
                 // update weights of the neuron
-                for ( int i = 0, n = neuron.InputsCount; i < n; i++ )
+                for ( int i = 0; i < neuron.Weights.Length; i++ )
                 {
                     // calculate the error
-                    double e = ( input[i] - neuron[i] ) * factor;
+                    double e = ( input[i] - neuron.Weights[i] ) * factor;
                     error += Math.Abs( e );
                     // update weight
-                    neuron[i] += e * learningRate;
+                    neuron.Weights[i] += e * learningRate;
                 }
             }
             return error;

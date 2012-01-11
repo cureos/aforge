@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2012
+// contacts@aforgenet.com
 //
 
 namespace AForge.Neuro
@@ -33,18 +33,7 @@ namespace AForge.Neuro
     [Serializable]
     public class ActivationNetwork : Network
     {
-        /// <summary>
-        /// Network's layers accessor.
-        /// </summary>
-        /// 
-        /// <param name="index">Layer index.</param>
-        /// 
-        /// <remarks>Allows to access network's layer.</remarks>
-        /// 
-        public new ActivationLayer this[int index]
-        {
-            get { return ( (ActivationLayer) layers[index] ); }
-        }
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ActivationNetwork"/> class.
@@ -62,7 +51,7 @@ namespace AForge.Neuro
             : base( inputsCount, neuronsCount.Length )
         {
             // create each layer
-            for ( int i = 0; i < layersCount; i++ )
+            for ( int i = 0; i < layers.Length; i++ )
             {
                 layers[i] = new ActivationLayer(
                     // neurons count in the layer
@@ -85,7 +74,7 @@ namespace AForge.Neuro
         /// 
         public void SetActivationFunction( IActivationFunction function )
         {
-            for ( int i = 0; i < layersCount; i++ )
+            for ( int i = 0; i < layers.Length; i++ )
             {
                 ( (ActivationLayer) layers[i] ).SetActivationFunction( function );
             }

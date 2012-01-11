@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2012
+// contacts@aforgenet.com
 //
 
 namespace AForge.Neuro.Learning
@@ -59,7 +59,7 @@ namespace AForge.Neuro.Learning
         public DeltaRuleLearning( ActivationNetwork network )
         {
             // check layers count
-            if ( network.LayersCount != 1 )
+            if ( network.Layers.Length != 1 )
             {
                 throw new ArgumentException( "Invalid nuaral network. It should have one layer only." );
             }
@@ -86,27 +86,27 @@ namespace AForge.Neuro.Learning
             double[] networkOutput = network.Compute( input );
 
             // get the only layer of the network
-            ActivationLayer layer = network[0];
+            Layer layer = network.Layers[0];
             // get activation function of the layer
-            IActivationFunction activationFunction = layer[0].ActivationFunction;
+            IActivationFunction activationFunction = ( layer.Neurons[0] as ActivationNeuron ).ActivationFunction;
 
             // summary network absolute error
             double error = 0.0;
 
             // update weights of each neuron
-            for ( int j = 0, k = layer.NeuronsCount; j < k; j++ )
+            for ( int j = 0; j < layer.Neurons.Length; j++ )
             {
                 // get neuron of the layer
-                ActivationNeuron neuron = layer[j];
+                ActivationNeuron neuron = layer.Neurons[j] as ActivationNeuron;
                 // calculate neuron's error
                 double e = output[j] - networkOutput[j];
                 // get activation function's derivative
                 double functionDerivative = activationFunction.Derivative2( networkOutput[j] );
 
                 // update weights
-                for ( int i = 0, n = neuron.InputsCount; i < n; i++ )
+                for ( int i = 0; i < neuron.Weights.Length; i++ )
                 {
-                    neuron[i] += learningRate * e * functionDerivative * input[i];
+                    neuron.Weights[i] += learningRate * e * functionDerivative * input[i];
                 }
 
                 // update threshold value

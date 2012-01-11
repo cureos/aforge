@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © AForge.NET, 2005-2011
+// Copyright © AForge.NET, 2007-2012
 // contacts@aforgenet.com
 //
 
@@ -49,18 +49,18 @@ namespace AForge.Neuro.Learning
     public class SOMLearning : IUnsupervisedLearning
     {
         // neural network to train
-        private DistanceNetwork	network;
+        private DistanceNetwork network;
         // network's dimension
-        private int		width;
-        private int		height;
+        private int width;
+        private int height;
 
         // learning rate
-        private double	learningRate = 0.1;
+        private double learningRate = 0.1;
         // learning radius
-        private double	learningRadius = 7;
+        private double learningRadius = 7;
 
         // squared learning radius multiplied by 2 (precalculated value to speed up computations)
-        private double	squaredRadius2 = 2 * 7 * 7;
+        private double squaredRadius2 = 2 * 7 * 7;
 
         /// <summary>
         /// Learning rate, [0, 1].
@@ -119,7 +119,7 @@ namespace AForge.Neuro.Learning
         public SOMLearning( DistanceNetwork network )
         {
             // network's dimension was not specified, let's try to guess
-            int neuronsCount = network[0].NeuronsCount;
+            int neuronsCount = network.Layers[0].Neurons.Length;
             int width = (int) Math.Sqrt( neuronsCount );
 
             if ( width * width != neuronsCount )
@@ -129,8 +129,8 @@ namespace AForge.Neuro.Learning
 
             // ok, we got it
             this.network = network;
-            this.width   = width;
-            this.height  = width;
+            this.width = width;
+            this.height = width;
         }
 
 
@@ -152,7 +152,7 @@ namespace AForge.Neuro.Learning
         public SOMLearning( DistanceNetwork network, int width, int height )
         {
             // check network size
-            if ( network[0].NeuronsCount != width * height )
+            if ( network.Layers[0].Neurons.Length != width * height )
             {
                 throw new ArgumentException( "Invalid network size." );
             }
@@ -186,21 +186,21 @@ namespace AForge.Neuro.Learning
             int winner = network.GetWinner( );
 
             // get layer of the network
-            Layer layer = network[0];
+            Layer layer = network.Layers[0];
 
             // check learning radius
             if ( learningRadius == 0 )
             {
-                Neuron neuron = layer[winner];
+                Neuron neuron = layer.Neurons[winner];
 
                 // update weight of the winner only
-                for ( int i = 0, n = neuron.InputsCount; i < n; i++ )
+                for ( int i = 0; i < neuron.Weights.Length; i++ )
                 {
                     // calculate the error
-                    double e = input[i] - neuron[i];
+                    double e = input[i] - neuron.Weights[i];
                     error += Math.Abs( e );
                     // update weights
-                    neuron[i] += e * learningRate;
+                    neuron.Weights[i] += e * learningRate;
                 }
             }
             else
@@ -210,9 +210,9 @@ namespace AForge.Neuro.Learning
                 int wy = winner / width;
 
                 // walk through all neurons of the layer
-                for ( int j = 0, m = layer.NeuronsCount; j < m; j++ )
+                for ( int j = 0; j < layer.Neurons.Length; j++ )
                 {
-                    Neuron neuron = layer[j];
+                    Neuron neuron = layer.Neurons[j];
 
                     int dx = ( j % width ) - wx;
                     int dy = ( j / width ) - wy;
@@ -221,13 +221,13 @@ namespace AForge.Neuro.Learning
                     double factor = Math.Exp( -(double) ( dx * dx + dy * dy ) / squaredRadius2 );
 
                     // update weight of the neuron
-                    for ( int i = 0, n = neuron.InputsCount; i < n; i++ )
+                    for ( int i = 0; i < neuron.Weights.Length; i++ )
                     {
                         // calculate the error
-                        double e = ( input[i] - neuron[i] ) * factor;
+                        double e = ( input[i] - neuron.Weights[i] ) * factor;
                         error += Math.Abs( e );
                         // update weight
-                        neuron[i] += e * learningRate;
+                        neuron.Weights[i] += e * learningRate;
                     }
                 }
             }

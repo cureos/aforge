@@ -714,21 +714,21 @@ namespace SOMOrganizing
 		private void UpdateMap( DistanceNetwork network )
 		{
 			// get first layer
-			Layer layer = network[0];
+			Layer layer = network.Layers[0];
 
 			// lock
 			Monitor.Enter( this );
 
 			// run through all neurons
-			for ( int i = 0, n = layer.NeuronsCount; i < n; i++ )
+			for ( int i = 0; i < layer.Neurons.Length; i++ )
 			{
-				Neuron neuron = layer[i];
+				Neuron neuron = layer.Neurons[i];
 
 				int x = i % networkSize;
 				int y = i / networkSize;
 
-				map[y, x, 0] = (int) neuron[0];
-				map[y, x, 1] = (int) neuron[1];
+				map[y, x, 0] = (int) neuron.Weights[0];
+                map[y, x, 1] = (int) neuron.Weights[1];
 				map[y, x, 2] = 0;
 			}
 

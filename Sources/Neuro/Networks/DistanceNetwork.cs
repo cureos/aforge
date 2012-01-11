@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2012
+// contacts@aforgenet.com
 //
 
 namespace AForge.Neuro
@@ -21,18 +21,7 @@ namespace AForge.Neuro
     [Serializable]
     public class DistanceNetwork : Network
     {
-        /// <summary>
-        /// Network's layers accessor.
-        /// </summary>
-        /// 
-        /// <param name="index">Layer index.</param>
-        /// 
-        /// <remarks>Allows to access network's layer.</remarks>
-        /// 
-        public new DistanceLayer this[int index]
-        {
-            get { return ( (DistanceLayer) layers[index] ); }
-        }
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DistanceNetwork"/> class.
@@ -66,7 +55,7 @@ namespace AForge.Neuro
             double min = output[0];
             int    minIndex = 0;
 
-            for ( int i = 1, n = output.Length; i < n; i++ )
+            for ( int i = 1; i < output.Length; i++ )
             {
                 if ( output[i] < min )
                 {

@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2012
+// contacts@aforgenet.com
 //
 
 namespace AForge.Neuro
@@ -52,11 +52,11 @@ namespace AForge.Neuro
         }
 
         /// <summary>
-        /// Network's layers count.
+        /// Network's layers.
         /// </summary>
-        public int LayersCount
+        public Layer[] Layers
         {
-            get { return layersCount; }
+            get { return layers; }
         }
 
         /// <summary>
@@ -75,18 +75,7 @@ namespace AForge.Neuro
             get { return output; }
         }
 
-        /// <summary>
-        /// Network's layers accessor.
-        /// </summary>
-        /// 
-        /// <param name="index">Layer index.</param>
-        /// 
-        /// <remarks>Allows to access network's layer.</remarks>
-        /// 
-        public Layer this[int index]
-        {
-            get { return layers[index]; }
-        }
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Network"/> class.
@@ -130,12 +119,12 @@ namespace AForge.Neuro
         public virtual double[] Compute( double[] input )
         {
             // local variable to avoid mutlithread conflicts
-            double [] output = input;
+            double[] output = input;
 
             // compute each layer
-            foreach ( Layer layer in layers )
+            for ( int i = 0; i < layers.Length; i++ )
             {
-                output = layer.Compute( output );
+                output = layers[i].Compute( output );
             }
 
             // assign output property as well (works correctly for single threaded usage)

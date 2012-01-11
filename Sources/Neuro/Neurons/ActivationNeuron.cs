@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2007-2012
+// contacts@aforgenet.com
 //
 
 namespace AForge.Neuro
@@ -127,7 +127,7 @@ namespace AForge.Neuro
             double sum = 0.0;
 
             // compute weighted sum of inputs
-            for ( int i = 0; i < inputsCount; i++ )
+            for ( int i = 0; i < weights.Length; i++ )
             {
                 sum += weights[i] * input[i];
             }
