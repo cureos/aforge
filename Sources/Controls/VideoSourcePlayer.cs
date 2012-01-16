@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © AForge.NET, 2005-2011
+// Copyright © AForge.NET, 2005-2012
 // contacts@aforgenet.com
 //
 
@@ -370,7 +370,7 @@ namespace AForge.Controls
         /// Get clone of current video frame displayed by the control.
         /// </summary>
         /// 
-        /// <returns>Returns clone of the video frame, which is currently displayed
+        /// <returns>Returns copy of the video frame, which is currently displayed
         /// by the control - the last video frame received from video source. If the
         /// control did not receive any video frames yet, then the method returns
         /// <see langword="null"/>.</returns>
@@ -379,7 +379,7 @@ namespace AForge.Controls
         {
             lock ( sync )
             {
-                return ( currentFrame == null ) ? null : (Bitmap) currentFrame.Clone( );
+                return ( currentFrame == null ) ? null : AForge.Imaging.Image.Clone( currentFrame );
             }
         }
 
