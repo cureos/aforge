@@ -212,17 +212,18 @@ namespace AForge.Imaging.Tests
         {
             UnmanagedImage image = UnmanagedImage.Create( 320, 240, pixelFormat );
             Color color = Color.White;
+            byte value = 255;
 
             image.SetPixel( 0, 0, color );
             image.SetPixel( 319, 0, color );
             image.SetPixel( 0, 239, color );
-            image.SetPixel( 319, 239, color );
-            image.SetPixel( 160, 120, color );
+            image.SetPixel( 319, 239, value );
+            image.SetPixel( 160, 120, value );
 
             image.SetPixel( -1, -1, color );
             image.SetPixel( 320, 0, color );
-            image.SetPixel( 0, 240, color );
-            image.SetPixel( 320, 240, color );
+            image.SetPixel( 0, 240, value );
+            image.SetPixel( 320, 240, value );
 
             List<IntPoint> pixels = image.CollectActivePixels( );
 
@@ -233,6 +234,68 @@ namespace AForge.Imaging.Tests
             Assert.IsTrue( pixels.Contains( new IntPoint( 0, 239 ) ) );
             Assert.IsTrue( pixels.Contains( new IntPoint( 319, 239 ) ) );
             Assert.IsTrue( pixels.Contains( new IntPoint( 160, 120 ) ) );
+        }
+
+        [Test]
+        public void SetGetPixelGrayscale( )
+        {
+            UnmanagedImage image = UnmanagedImage.Create( 320, 240, PixelFormat.Format8bppIndexed );
+
+            image.SetPixel( 0, 0, 255 );
+            image.SetPixel( 319, 0, 127 );
+            image.SetPixel( 0, 239, Color.FromArgb( 64, 64, 64 ) );
+
+            Color color1 = image.GetPixel( 0, 0 );
+            Color color2 = image.GetPixel( 319, 0 );
+            Color color3 = image.GetPixel( 0, 239 );
+
+            Assert.AreEqual<int>( 255, color1.R );
+            Assert.AreEqual<int>( 255, color1.G );
+            Assert.AreEqual<int>( 255, color1.B );
+
+            Assert.AreEqual<int>( 127, color2.R );
+            Assert.AreEqual<int>( 127, color2.G );
+            Assert.AreEqual<int>( 127, color2.B );
+
+            Assert.AreEqual<int>( 64, color3.R );
+            Assert.AreEqual<int>( 64, color3.G );
+            Assert.AreEqual<int>( 64, color3.B );
+        }
+
+        [Test]
+        [Row( PixelFormat.Format24bppRgb )]
+        [Row( PixelFormat.Format32bppArgb )]
+        [Row( PixelFormat.Format32bppRgb )]
+        public void SetGetPixelColor( PixelFormat pixelFormat )
+        {
+            UnmanagedImage image = UnmanagedImage.Create( 320, 240, pixelFormat );
+
+            image.SetPixel( 0, 0, Color.FromArgb( 255, 10, 20, 30 ) );
+            image.SetPixel( 319, 0, Color.FromArgb( 127, 110, 120, 130 ) );
+            image.SetPixel( 0, 239, Color.FromArgb( 64, 210, 220, 230 ) );
+
+            Color color1 = image.GetPixel( 0, 0 );
+            Color color2 = image.GetPixel( 319, 0 );
+            Color color3 = image.GetPixel( 0, 239 );
+
+            Assert.AreEqual<int>( 10, color1.R );
+            Assert.AreEqual<int>( 20, color1.G );
+            Assert.AreEqual<int>( 30, color1.B );
+
+            Assert.AreEqual<int>( 110, color2.R );
+            Assert.AreEqual<int>( 120, color2.G );
+            Assert.AreEqual<int>( 130, color2.B );
+
+            Assert.AreEqual<int>( 210, color3.R );
+            Assert.AreEqual<int>( 220, color3.G );
+            Assert.AreEqual<int>( 230, color3.B );
+
+            if ( pixelFormat == PixelFormat.Format32bppArgb )
+            {
+                Assert.AreEqual<int>( 255, color1.A );
+                Assert.AreEqual<int>( 127, color2.A );
+                Assert.AreEqual<int>( 64, color3.A );
+            }
         }
 
         [Test]

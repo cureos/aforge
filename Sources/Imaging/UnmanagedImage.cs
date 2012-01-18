@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © AForge.NET, 2005-2011
+// Copyright © AForge.NET, 2005-2012
 // contacts@aforgenet.com
 //
 
@@ -848,8 +848,7 @@ namespace AForge.Imaging
         /// <param name="point">Point's coordiates to set color for.</param>
         /// <param name="color">Color to set for the pixel.</param>
         /// 
-        /// <remarks><para><note>For images having 16 bpp per color plane, the method extends the specified color
-        /// value to 16 bit by multiplying it by 256.</note></para></remarks>
+        /// <remarks><para>See <see cref="SetPixel(int, int, Color)"/> for more information.</para></remarks>
         ///
         public void SetPixel( IntPoint point, Color color )
         {
@@ -865,9 +864,43 @@ namespace AForge.Imaging
         /// <param name="color">Color to set for the pixel.</param>
         /// 
         /// <remarks><para><note>For images having 16 bpp per color plane, the method extends the specified color
-        /// value to 16 bit by multiplying it by 256.</note></para></remarks>
+        /// value to 16 bit by multiplying it by 256.</note></para>
+        /// 
+        /// <para>For grayscale images this method will calculate intensity value based on the below formula:
+        /// <code lang="none">
+        /// 0.2125 * Red + 0.7154 * Green + 0.0721 * Blue
+        /// </code>
+        /// </para>
+        /// </remarks>
         /// 
         public void SetPixel( int x, int y, Color color )
+        {
+            SetPixel( x, y, color.R, color.G, color.B, color.A );
+        }
+
+        /// <summary>
+        /// Set pixel with the specified coordinates to the specified value.
+        /// </summary>
+        ///
+        /// <param name="x">X coordinate of the pixel to set.</param>
+        /// <param name="y">Y coordinate of the pixel to set.</param>
+        /// <param name="value">Pixel value to set.</param>
+        /// 
+        /// <remarks><para>The method sets all color components of the pixel to the specified value.
+        /// If it is a grayscale image, then pixel's intensity is set to the specified value.
+        /// If it is a color image, then pixel's R/G/B components are set to the same specified value
+        /// (if an image has alpha channel, then it is set to maximum value - 255 or 65535).</para>
+        /// 
+        /// <para><note>For images having 16 bpp per color plane, the method extends the specified color
+        /// value to 16 bit by multiplying it by 256.</note></para>
+        /// </remarks>
+        /// 
+        public void SetPixel( int x, int y, byte value )
+        {
+            SetPixel( x, y, value, value, value, 255 );
+        }
+
+        private void SetPixel( int x, int y, byte r, byte g, byte b, byte a )
         {
             if ( ( x >= 0 ) && ( y >= 0 ) && ( x < width ) && ( y < height ) )
             {
@@ -880,38 +913,38 @@ namespace AForge.Imaging
                     switch ( pixelFormat )
                     {
                         case PixelFormat.Format8bppIndexed:
-                            *ptr = (byte) ( 0.2125 * color.R + 0.7154 * color.G + 0.0721 * color.B );
+                            *ptr = (byte) ( 0.2125 * r + 0.7154 * g + 0.0721 * b );
                             break;
 
                         case PixelFormat.Format24bppRgb:
                         case PixelFormat.Format32bppRgb:
-                            ptr[RGB.R] = color.R;
-                            ptr[RGB.G] = color.G;
-                            ptr[RGB.B] = color.B;
+                            ptr[RGB.R] = r;
+                            ptr[RGB.G] = g;
+                            ptr[RGB.B] = b;
                             break;
 
                         case PixelFormat.Format32bppArgb:
-                            ptr[RGB.R] = color.R;
-                            ptr[RGB.G] = color.G;
-                            ptr[RGB.B] = color.B;
-                            ptr[RGB.A] = color.A;
+                            ptr[RGB.R] = r;
+                            ptr[RGB.G] = g;
+                            ptr[RGB.B] = b;
+                            ptr[RGB.A] = a;
                             break;
 
                         case PixelFormat.Format16bppGrayScale:
-                            *ptr2 = (ushort) ( (ushort) ( 0.2125 * color.R + 0.7154 * color.G + 0.0721 * color.B ) << 8 );
+                            *ptr2 = (ushort) ( (ushort) ( 0.2125 * r + 0.7154 * g + 0.0721 * b ) << 8 );
                             break;
 
                         case PixelFormat.Format48bppRgb:
-                            ptr2[RGB.R] = (ushort) ( color.R << 8 );
-                            ptr2[RGB.G] = (ushort) ( color.G << 8 );
-                            ptr2[RGB.B] = (ushort) ( color.B << 8 );
+                            ptr2[RGB.R] = (ushort) ( r << 8 );
+                            ptr2[RGB.G] = (ushort) ( g << 8 );
+                            ptr2[RGB.B] = (ushort) ( b << 8 );
                             break;
 
                         case PixelFormat.Format64bppArgb:
-                            ptr2[RGB.R] = (ushort) ( color.R << 8 );
-                            ptr2[RGB.G] = (ushort) ( color.G << 8 );
-                            ptr2[RGB.B] = (ushort) ( color.B << 8 );
-                            ptr2[RGB.A] = (ushort) ( color.A << 8 );
+                            ptr2[RGB.R] = (ushort) ( r << 8 );
+                            ptr2[RGB.G] = (ushort) ( g << 8 );
+                            ptr2[RGB.B] = (ushort) ( b << 8 );
+                            ptr2[RGB.A] = (ushort) ( a << 8 );
                             break;
 
                         default:
@@ -919,6 +952,82 @@ namespace AForge.Imaging
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Get color of the pixel with the specified coordinates.
+        /// </summary>
+        /// 
+        /// <param name="point">Point's coordiates to get color of.</param>
+        /// 
+        /// <returns>Return pixel's color at the specified coordinates.</returns>
+        /// 
+        /// <remarks><para>See <see cref="GetPixel(int, int)"/> for more information.</para></remarks>
+        ///
+        public Color GetPixel( IntPoint point )
+        {
+            return GetPixel( point.X, point.Y );
+        }
+
+        /// <summary>
+        /// Get color of the pixel with the specified coordinates.
+        /// </summary>
+        /// 
+        /// <param name="x">X coordinate of the pixel to get.</param>
+        /// <param name="y">Y coordinate of the pixel to get.</param>
+        /// 
+        /// <returns>Return pixel's color at the specified coordinates.</returns>
+        /// 
+        /// <remarks>
+        /// <para><note>In the case if the image has 8 bpp grayscale format, the method will return a color with
+        /// all R/G/B components set to same value, which is grayscale intensity.</note></para>
+        /// 
+        /// <para><note>The method supports only 8 bpp grayscale images and 24/32 bpp color images so far.</note></para>
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentOutOfRangeException">The specified pixel coordinate is out of image's bounds.</exception>
+        /// <exception cref="UnsupportedImageFormatException">Pixel format of this image is not supported by the method.</exception>
+        /// 
+        public Color GetPixel( int x, int y )
+        {
+            if ( ( x < 0 ) || ( y < 0 ) )
+            {
+                throw new ArgumentOutOfRangeException( "x", "The specified pixel coordinate is out of image's bounds." );
+            }
+
+            if ( ( x >= width ) || ( y >= height ) )
+            {
+                throw new ArgumentOutOfRangeException( "y", "The specified pixel coordinate is out of image's bounds." );
+            }
+
+            Color color = new Color( );
+
+            unsafe
+            {
+                int pixelSize = Bitmap.GetPixelFormatSize( pixelFormat ) / 8;
+                byte* ptr = (byte*) imageData.ToPointer( ) + y * stride + x * pixelSize;
+
+                switch ( pixelFormat )
+                {
+                    case PixelFormat.Format8bppIndexed:
+                        color = Color.FromArgb( *ptr, *ptr, *ptr );
+                        break;
+
+                    case PixelFormat.Format24bppRgb:
+                    case PixelFormat.Format32bppRgb:
+                        color = Color.FromArgb( ptr[RGB.R], ptr[RGB.G], ptr[RGB.B] );
+                        break;
+
+                    case PixelFormat.Format32bppArgb:
+                        color = Color.FromArgb( ptr[RGB.A], ptr[RGB.R], ptr[RGB.G], ptr[RGB.B] );
+                        break;
+
+                    default:
+                        throw new UnsupportedImageFormatException( "The pixel format is not supported: " + pixelFormat );
+                }
+            }
+
+            return color;
         }
 
         /// <summary>
