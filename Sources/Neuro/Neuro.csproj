@@ -85,6 +85,7 @@
     <Compile Include="Learning\ISupervisedLearning.cs" />
     <Compile Include="Learning\IUnsupervisedLearning.cs" />
     <Compile Include="Learning\PerceptronLearning.cs" />
+    <Compile Include="Learning\ResilientBackPropagationLearning.cs" />
     <Compile Include="Learning\SOMLearning.cs" />
     <Compile Include="Networks\ActivationNetwork.cs" />
     <Compile Include="Networks\DistanceNetwork.cs" />

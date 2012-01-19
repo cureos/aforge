@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2012
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2005-2012
+// contacts@aforgenet.com
 //
 // Copyright © Cezary Wagner, 2008
 // changes optimizing algorithm performance
@@ -289,7 +289,7 @@ namespace AForge.Neuro.Learning
             // error value
             // double		error;
 
-            // 1 - calculate updates for the last layer fisrt
+            // 1 - calculate updates for the first layer
             layer = network.Layers[0];
             errors = neuronErrors[0];
             layerWeightsUpdates = weightsUpdates[0];
