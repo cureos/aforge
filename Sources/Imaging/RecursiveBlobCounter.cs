@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2010
-// andrew.kirillov@aforgenet.com
+// Copyright © AForge.NET, 2005-2012
+// contacts@aforgenet.com
 //
 
 namespace AForge.Imaging
@@ -140,6 +140,7 @@ namespace AForge.Imaging
             // check pixel format
             if ( ( image.PixelFormat != PixelFormat.Format8bppIndexed ) &&
                  ( image.PixelFormat != PixelFormat.Format24bppRgb ) &&
+                 ( image.PixelFormat != PixelFormat.Format32bppRgb ) &&
                  ( image.PixelFormat != PixelFormat.Format32bppArgb ) &&
                  ( image.PixelFormat != PixelFormat.Format32bppPArgb ) )
             {
