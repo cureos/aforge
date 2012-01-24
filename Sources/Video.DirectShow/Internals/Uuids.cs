@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © AForge.NET, 2009-2011
+// Copyright © AForge.NET, 2009-2012
 // contacts@aforgenet.com
 //
 
@@ -15,7 +15,7 @@ namespace AForge.Video.DirectShow.Internals
 	/// DirectShow class IDs.
 	/// </summary>
     [ComVisible( false )]
-    internal static class Clsid
+    static internal class Clsid
     {
         /// <summary>
         /// System device enumerator.
@@ -68,7 +68,7 @@ namespace AForge.Video.DirectShow.Internals
     /// </summary>
     /// 
     [ComVisible( false )]
-    internal class MediaType
+    static internal class MediaType
     {
         /// <summary>
         /// Video.
@@ -121,7 +121,7 @@ namespace AForge.Video.DirectShow.Internals
     /// </summary>
     /// 
     [ComVisible( false )]
-    internal class MediaSubType
+    static internal class MediaSubType
     {
         /// <summary>
         /// YUY2 (packed 4:2:2).
@@ -237,7 +237,7 @@ namespace AForge.Video.DirectShow.Internals
     /// </summary>
     /// 
     [ComVisible( false )]
-    internal class PinCategory
+    static internal class PinCategory
     {
         /// <summary>
         /// Capture pin.
@@ -256,5 +256,18 @@ namespace AForge.Video.DirectShow.Internals
         /// 
         public static readonly Guid StillImage =
             new Guid( 0xFB6C428A, 0x0353, 0x11D1, 0x90, 0x5F, 0x00, 0x00, 0xC0, 0xCC, 0x16, 0xBA );
+    }
+
+    // Below GUIDs are used by ICaptureGraphBuilder::FindInterface().
+    [ComVisible( false )]
+    static internal class FindDirection
+    {
+        /// <summary>Equals to LOOK_UPSTREAM_ONLY.</summary>
+        public static readonly Guid UpstreamOnly =
+            new Guid( 0xAC798BE0, 0x98E3, 0x11D1, 0xB3, 0xF1, 0x00, 0xAA, 0x00, 0x37, 0x61, 0xC5 );
+
+        /// <summary>Equals to LOOK_DOWNSTREAM_ONLY.</summary>
+        public static readonly Guid DownstreamOnly =
+            new Guid( 0xAC798BE1, 0x98E3, 0x11D1, 0xB3, 0xF1, 0x00, 0xAA, 0x00, 0x37, 0x61, 0xC5 );
     }
 }

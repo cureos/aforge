@@ -52,8 +52,11 @@ namespace MotionDetectorSample
             this.gridMotionAreaProcessingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator( );
             this.defineMotionregionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator( );
+            this.showMotionHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.localVideoCaptureSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
+            this.crossbarVideoSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog( );
@@ -64,8 +67,6 @@ namespace MotionDetectorSample
             this.panel1 = new System.Windows.Forms.Panel( );
             this.videoSourcePlayer = new AForge.Controls.VideoSourcePlayer( );
             this.alarmTimer = new System.Windows.Forms.Timer( this.components );
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator( );
-            this.showMotionHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem( );
             this.menuMenu.SuspendLayout( );
             this.statusBar.SuspendLayout( );
             this.panel1.SuspendLayout( );
@@ -249,10 +250,23 @@ namespace MotionDetectorSample
             this.defineMotionregionsToolStripMenuItem.Text = "Define motion &regions";
             this.defineMotionregionsToolStripMenuItem.Click += new System.EventHandler( this.defineMotionregionsToolStripMenuItem_Click );
             // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size( 227, 6 );
+            // 
+            // showMotionHistoryToolStripMenuItem
+            // 
+            this.showMotionHistoryToolStripMenuItem.Name = "showMotionHistoryToolStripMenuItem";
+            this.showMotionHistoryToolStripMenuItem.Size = new System.Drawing.Size( 230, 22 );
+            this.showMotionHistoryToolStripMenuItem.Text = "Show motion history";
+            this.showMotionHistoryToolStripMenuItem.Click += new System.EventHandler( this.showMotionHistoryToolStripMenuItem_Click );
+            // 
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.localVideoCaptureSettingsToolStripMenuItem} );
+            this.localVideoCaptureSettingsToolStripMenuItem,
+            this.crossbarVideoSettingsToolStripMenuItem} );
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size( 48, 20 );
             this.toolsToolStripMenuItem.Text = "&Tools";
@@ -264,6 +278,13 @@ namespace MotionDetectorSample
             this.localVideoCaptureSettingsToolStripMenuItem.Size = new System.Drawing.Size( 225, 22 );
             this.localVideoCaptureSettingsToolStripMenuItem.Text = "Local &Video Capture Settings";
             this.localVideoCaptureSettingsToolStripMenuItem.Click += new System.EventHandler( this.localVideoCaptureSettingsToolStripMenuItem_Click );
+            // 
+            // crossbarVideoSettingsToolStripMenuItem
+            // 
+            this.crossbarVideoSettingsToolStripMenuItem.Name = "crossbarVideoSettingsToolStripMenuItem";
+            this.crossbarVideoSettingsToolStripMenuItem.Size = new System.Drawing.Size( 225, 22 );
+            this.crossbarVideoSettingsToolStripMenuItem.Text = "Crossbar Video Settings";
+            this.crossbarVideoSettingsToolStripMenuItem.Click += new System.EventHandler( this.crossbarVideoSettingsToolStripMenuItem_Click );
             // 
             // helpToolStripMenuItem
             // 
@@ -348,18 +369,6 @@ namespace MotionDetectorSample
             this.alarmTimer.Interval = 200;
             this.alarmTimer.Tick += new System.EventHandler( this.alarmTimer_Tick );
             // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size( 227, 6 );
-            // 
-            // showMotionHistoryToolStripMenuItem
-            // 
-            this.showMotionHistoryToolStripMenuItem.Name = "showMotionHistoryToolStripMenuItem";
-            this.showMotionHistoryToolStripMenuItem.Size = new System.Drawing.Size( 230, 22 );
-            this.showMotionHistoryToolStripMenuItem.Text = "Show motion history";
-            this.showMotionHistoryToolStripMenuItem.Click += new System.EventHandler( this.showMotionHistoryToolStripMenuItem_Click );
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
@@ -421,6 +430,7 @@ namespace MotionDetectorSample
         private System.Windows.Forms.Timer alarmTimer;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem showMotionHistoryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem crossbarVideoSettingsToolStripMenuItem;
     }
 }
 

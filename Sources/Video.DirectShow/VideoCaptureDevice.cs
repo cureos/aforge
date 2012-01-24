@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © AForge.NET, 2009-2011
+// Copyright © AForge.NET, 2009-2012
 // contacts@aforgenet.com
 //
 
@@ -76,6 +76,7 @@ namespace AForge.Video.DirectShow
 
         private bool needToSimulateTrigger = false;
         private bool needToDisplayPropertyPage = false;
+        private bool needToDisplayCrossBarPropertyPage = false;
         private IntPtr parentWindowForPropertyPage = IntPtr.Zero;
 
         // video capture source object
@@ -86,6 +87,9 @@ namespace AForge.Video.DirectShow
 
         // dummy object to lock for synchronization
         private object sync = new object( );
+
+        // flag specifying if IAMCrossbar interface is supported by the running graph/source object
+        private bool? isCrossbarAvailable = null;
 
         /// <summary>
         /// Specifies if snapshots should be provided or not.
@@ -432,6 +436,7 @@ namespace AForge.Video.DirectShow
 
                 framesReceived = 0;
                 bytesReceived = 0;
+                isCrossbarAvailable = null;
 
                 // create events
                 stopEvent = new ManualResetEvent( false );
@@ -535,7 +540,7 @@ namespace AForge.Video.DirectShow
         {
             // check source
             if ( ( deviceMoniker == null ) || ( deviceMoniker == string.Empty ) )
-                throw new ArgumentException( "Video source is not specified" );
+                throw new ArgumentException( "Video source is not specified." );
 
             lock ( sync )
             {
@@ -564,24 +569,81 @@ namespace AForge.Video.DirectShow
                     throw new NotSupportedException( "The video source does not support configuration property page." );
                 }
 
-                // retrieve ISpecifyPropertyPages interface of the device
-                ISpecifyPropertyPages pPropPages = (ISpecifyPropertyPages) tempSourceObject;
+                DisplayPropertyPage( parentWindow, tempSourceObject );
 
-                // get property pages from the property bag
-                CAUUID caGUID;
-                pPropPages.GetPages( out caGUID );
-
-                // get filter info
-                FilterInfo filterInfo = new FilterInfo( deviceMoniker );
-
-                // create and display the OlePropertyFrame form
-                Win32.OleCreatePropertyFrame( parentWindow, 0, 0, filterInfo.Name, 1, ref tempSourceObject, caGUID.cElems, caGUID.pElems, 0, 0, IntPtr.Zero );
-
-                // release COM objects
-                Marshal.FreeCoTaskMem( caGUID.pElems );
                 Marshal.ReleaseComObject( tempSourceObject );
             }
         }
+
+        /// <summary>
+        /// Display property page of video crossbar (Analog Video Crossbar filter).
+        /// </summary>
+        /// 
+        /// <param name="parentWindow">Handle of parent window.</param>
+        /// 
+        /// <remarks><para>The Analog Video Crossbar filter is modeled after a general switching matrix,
+        /// with n inputs and m outputs. For example, a video card might have two external connectors:
+        /// a coaxial connector for TV, and an S-video input. These would be represented as input pins on
+        /// the filter. The displayed property page allows to configure the crossbar by selecting input
+        /// of a video card to use.</para>
+        /// 
+        /// <para><note>This method can be invoked only when video source is running (<see cref="IsRunning"/> is
+        /// <see langword="true"/>). Otherwise it generates exception.</note></para>
+        /// 
+        /// <para>Use <see cref="CheckIfCrossbarAvailable"/> method to check if running video source provides
+        /// crossbar configuration.</para>
+        /// </remarks>
+        /// 
+        /// <exception cref="ApplicationException">The video source must be running in order to display crossbar property page.</exception>
+        /// <exception cref="NotSupportedException">Crossbar configuration is not supported by currently running video source.</exception>
+        /// 
+        public void DisplayCrossbarPropertyPage( IntPtr parentWindow )
+        {
+            lock ( this )
+            {
+                if ( !CheckIfCrossbarAvailable( ) )
+                {
+                    throw new NotSupportedException( "Crossbar configuration is not supported by currently running video source." );
+                }
+
+                // pass the request to background thread if video source is running
+                parentWindowForPropertyPage = parentWindow;
+                needToDisplayCrossBarPropertyPage = true;
+            }
+        }
+
+        /// <summary>
+        /// Check if running video source provides crossbar for configuration.
+        /// </summary>
+        /// 
+        /// <returns>Returns <see langword="true"/> if crossbar configuration is available or
+        /// <see langword="false"/> otherwise.</returns>
+        /// 
+        /// <remarks><para>The method reports if currently running video source provides crossbar configuration
+        /// using <see cref="DisplayCrossbarPropertyPage"/>.</para>
+        /// 
+        /// <para><note>This method can be invoked only when video source is running (<see cref="IsRunning"/> is
+        /// <see langword="true"/>). Otherwise it generates exception.</note></para>
+        /// </remarks>
+        /// 
+        /// <exception cref="ApplicationException">The video source must be running in order to display crossbar property page.</exception>
+        ///
+        public bool CheckIfCrossbarAvailable( )
+        {
+            // wait max 5 seconds till the flag gets initialized
+            for ( int i = 0; ( i < 20 ) && ( !isCrossbarAvailable.HasValue ) && ( IsRunning ); i++ )
+            {
+                Thread.Sleep( 500 );
+            }
+
+            if ( ( !IsRunning ) || ( !isCrossbarAvailable.HasValue ) )
+            {
+                throw new ApplicationException( "The video source must be running in order to display crossbar property page." );
+            }
+
+            return isCrossbarAvailable.Value;
+        }
+
 
         /// <summary>
         /// Simulates an external trigger.
@@ -623,6 +685,7 @@ namespace AForge.Video.DirectShow
             object graphObject = null;
             object videoGrabberObject = null;
             object snapshotGrabberObject = null;
+            object crossbarObject = null;
 
             // interfaces
             ICaptureGraphBuilder2 captureGraph = null;
@@ -636,6 +699,7 @@ namespace AForge.Video.DirectShow
             IAMVideoControl videoControl = null;
             IMediaEventEx   mediaEvent = null;
             IPin            pinStillImage = null;
+            IAMCrossbar     crossbar = null;
 
             try
             {
@@ -704,6 +768,14 @@ namespace AForge.Video.DirectShow
 
                 videoSampleGrabber.SetMediaType( mediaType );
                 snapshotSampleGrabber.SetMediaType( mediaType );
+
+                // get crossbar object to to allows configuring pins of capture card
+                captureGraph.FindInterface( FindDirection.UpstreamOnly, Guid.Empty, sourceBase, typeof( IAMCrossbar ).GUID, out crossbarObject );
+                if ( crossbarObject != null )
+                {
+                    crossbar = (IAMCrossbar) crossbarObject;
+                }
+                isCrossbarAvailable = ( crossbar != null );
 
                 if ( videoControl != null )
                 {
@@ -821,27 +893,16 @@ namespace AForge.Video.DirectShow
                         if ( needToDisplayPropertyPage )
                         {
                             needToDisplayPropertyPage = false;
+                            DisplayPropertyPage( parentWindowForPropertyPage, sourceObject );
+                        }
 
-                            try
+                        if ( needToDisplayCrossBarPropertyPage )
+                        {
+                            needToDisplayCrossBarPropertyPage = false;
+
+                            if ( crossbar != null )
                             {
-                                // retrieve ISpecifyPropertyPages interface of the device
-                                ISpecifyPropertyPages pPropPages = (ISpecifyPropertyPages) sourceObject;
-
-                                // get property pages from the property bag
-                                CAUUID caGUID;
-                                pPropPages.GetPages( out caGUID );
-
-                                // get filter info
-                                FilterInfo filterInfo = new FilterInfo( deviceMoniker );
-
-                                // create and display the OlePropertyFrame
-                                Win32.OleCreatePropertyFrame( parentWindowForPropertyPage, 0, 0, filterInfo.Name, 1, ref sourceObject, caGUID.cElems, caGUID.pElems, 0, 0, IntPtr.Zero );
-
-                                // release COM objects
-                                Marshal.FreeCoTaskMem( caGUID.pElems );
-                            }
-                            catch
-                            {
+                                DisplayPropertyPage( parentWindowForPropertyPage, crossbar );
                             }
                         }
                     }
@@ -866,6 +927,7 @@ namespace AForge.Video.DirectShow
                 videoControl    = null;
                 mediaEvent      = null;
                 pinStillImage   = null;
+                crossbar        = null;
 
                 videoGrabberBase      = null;
                 snapshotGrabberBase   = null;
@@ -896,6 +958,11 @@ namespace AForge.Video.DirectShow
                 {
                     Marshal.ReleaseComObject( captureGraphObject );
                     captureGraphObject = null;
+                }
+                if ( crossbarObject != null )
+                {
+                    Marshal.ReleaseComObject( crossbarObject );
+                    crossbarObject = null;
                 }
             }
 
@@ -1012,6 +1079,32 @@ namespace AForge.Video.DirectShow
             if ( capabilities == null )
             {
                 capabilities = new VideoCapabilities[0];
+            }
+        }
+
+        // Display property page for the specified object
+        private void DisplayPropertyPage( IntPtr parentWindow, object sourceObject )
+        {
+            try
+            {
+                // retrieve ISpecifyPropertyPages interface of the device
+                ISpecifyPropertyPages pPropPages = (ISpecifyPropertyPages) sourceObject;
+
+                // get property pages from the property bag
+                CAUUID caGUID;
+                pPropPages.GetPages( out caGUID );
+
+                // get filter info
+                FilterInfo filterInfo = new FilterInfo( deviceMoniker );
+
+                // create and display the OlePropertyFrame
+                Win32.OleCreatePropertyFrame( parentWindow, 0, 0, filterInfo.Name, 1, ref sourceObject, caGUID.cElems, caGUID.pElems, 0, 0, IntPtr.Zero );
+
+                // release COM objects
+                Marshal.FreeCoTaskMem( caGUID.pElems );
+            }
+            catch
+            {
             }
         }
 

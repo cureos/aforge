@@ -2,7 +2,7 @@
 // AForge.NET Framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © AForge.NET, 2006-2011
+// Copyright © AForge.NET, 2006-2012
 // contacts@aforgenet.com
 //
 
@@ -143,6 +143,8 @@ namespace MotionDetectorSample
             {
                 // create video source
                 VideoCaptureDevice videoSource = new VideoCaptureDevice( form.VideoDevice );
+
+                // videoSource.DisplayPropertyPage( IntPtr.Zero );
 
                 // open it
                 OpenVideoSource( videoSource );
@@ -496,6 +498,8 @@ namespace MotionDetectorSample
         {
             localVideoCaptureSettingsToolStripMenuItem.Enabled =
                 ( ( videoSource != null ) && ( videoSource is VideoCaptureDevice ) );
+            crossbarVideoSettingsToolStripMenuItem.Enabled =
+                ( ( videoSource != null ) && ( videoSource is VideoCaptureDevice ) && ( videoSource.IsRunning ) );
         }
 
         // Display properties of local capture device
@@ -507,10 +511,25 @@ namespace MotionDetectorSample
                 {
                     ( (VideoCaptureDevice) videoSource ).DisplayPropertyPage( this.Handle );
                 }
-                catch ( NotSupportedException )
+                catch ( NotSupportedException ex )
                 {
-                    MessageBox.Show( "The video source does not support configuration property page.", "Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error );
+                    MessageBox.Show( ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                }
+            }
+        }
+
+        // Display properties of crossbar filter
+        private void crossbarVideoSettingsToolStripMenuItem_Click( object sender, EventArgs e )
+        {
+            if ( ( videoSource != null ) && ( videoSource is VideoCaptureDevice ) && ( videoSource.IsRunning ) )
+            {
+                try
+                {
+                    ( (VideoCaptureDevice) videoSource ).DisplayCrossbarPropertyPage( this.Handle );
+                }
+                catch ( NotSupportedException ex )
+                {
+                    MessageBox.Show( ex.Message, "Error",  MessageBoxButtons.OK, MessageBoxIcon.Error );
                 }
             }
         }
