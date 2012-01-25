@@ -20,6 +20,18 @@ namespace AForge.Video.DirectShow.Internals
     internal interface IAMCrossbar
     {
         /// <summary>
+        /// Retrieves the number of input and output pins on the crossbar filter.
+        /// </summary>
+        /// 
+        /// <param name="outputPinCount">Variable that receives the number of output pins.</param>
+        /// <param name="inputPinCount">Variable that receives the number of input pins.</param>
+        /// 
+        /// <returns>Return's <b>HRESULT</b> error code.</returns>
+        /// 
+        [PreserveSig]
+        int get_PinCounts( [Out] out int outputPinCount, [Out] out int inputPinCount );
+   
+        /// <summary>
         /// Queries whether a specified input pin can be routed to a specified output pin.
         /// </summary>
         /// 
@@ -30,6 +42,30 @@ namespace AForge.Video.DirectShow.Internals
         /// 
         [PreserveSig]
         int CanRoute( [In] int outputPinIndex, [In] int inputPinIndex );
+
+        /// <summary>
+        /// Routes an input pin to an output pin.
+        /// </summary>
+        /// 
+        /// <param name="outputPinIndex">Specifies the index of the output pin.</param>
+        /// <param name="inputPinIndex">Specifies the index of the input pin.</param>
+        /// 
+        /// <returns>Return's <b>HRESULT</b> error code.</returns>
+        /// 
+        [PreserveSig]
+        int Route( [In] int outputPinIndex, [In] int inputPinIndex );
+
+        /// <summary>
+        /// Retrieves the input pin that is currently routed to the specified output pin.
+        /// </summary>
+        /// 
+        /// <param name="outputPinIndex">Specifies the index of the output pin.</param>
+        /// <param name="inputPinIndex">Variable that receives the index of the input pin, or -1 if no input pin is routed to this output pin.</param>
+        /// 
+        /// <returns>Return's <b>HRESULT</b> error code.</returns>
+        /// 
+        [PreserveSig]
+        int get_IsRoutedTo( [In] int outputPinIndex, [Out] out int inputPinIndex );
 
         /// <summary>
         /// Retrieves information about a specified pin.
@@ -47,63 +83,6 @@ namespace AForge.Video.DirectShow.Internals
             [In, MarshalAs( UnmanagedType.Bool )] bool isInputPin,
             [In] int pinIndex,
             [Out] out int pinIndexRelated,
-            [Out] out PhysicalConnectorType physicalType
-            );
-
-        /// <summary>
-        /// Retrieves the input pin that is currently routed to the specified output pin.
-        /// </summary>
-        /// 
-        /// <param name="outputPinIndex">Specifies the index of the output pin.</param>
-        /// <param name="inputPinIndex">Variable that receives the index of the input pin, or -1 if no input pin is routed to this output pin.</param>
-        /// 
-        /// <returns>Return's <b>HRESULT</b> error code.</returns>
-        /// 
-        [PreserveSig]
-        int get_IsRoutedTo( [In] int outputPinIndex, [Out] out int inputPinIndex );
-
-        /// <summary>
-        /// Retrieves the number of input and output pins on the crossbar filter.
-        /// </summary>
-        /// 
-        /// <param name="outputPinCount">Variable that receives the number of output pins.</param>
-        /// <param name="inputPinCount">Variable that receives the number of input pins.</param>
-        /// 
-        /// <returns>Return's <b>HRESULT</b> error code.</returns>
-        /// 
-        [PreserveSig]
-        int get_PinCounts( [Out] out int outputPinCount, [Out] out int inputPinCount );
-        
-        /// <summary>
-        /// Routes an input pin to an output pin.
-        /// </summary>
-        /// 
-        /// <param name="outputPinIndex">Specifies the index of the output pin.</param>
-        /// <param name="inputPinIndex">Specifies the index of the input pin.</param>
-        /// 
-        /// <returns>Return's <b>HRESULT</b> error code.</returns>
-        /// 
-        [PreserveSig]
-        int Route( [In] int outputPinIndex, [In] int inputPinIndex );
-    }
-
-    internal enum PhysicalConnectorType
-    {
-        Video_Default = 0,
-        Video_Tuner = 1,
-        Video_Composite,
-        Video_SVideo,
-        Video_RGB,
-        Video_YRYBY,
-        Video_SerialDigital,
-        Video_ParallelDigital,
-        Video_SCSI,
-        Video_AUX,
-        Video_1394,
-        Video_USB,
-        Video_VideoDecoder,
-        Video_VideoEncoder,
-        Video_SCART,
-        Video_Black
+            [Out] out PhysicalConnectorType physicalType );
     }
 }
