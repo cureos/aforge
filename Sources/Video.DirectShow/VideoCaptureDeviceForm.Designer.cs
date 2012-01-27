@@ -38,6 +38,8 @@
             this.label2 = new System.Windows.Forms.Label( );
             this.label1 = new System.Windows.Forms.Label( );
             this.pictureBox = new System.Windows.Forms.PictureBox( );
+            this.videoInputsCombo = new System.Windows.Forms.ComboBox( );
+            this.label3 = new System.Windows.Forms.Label( );
             this.groupBox1.SuspendLayout( );
             ( (System.ComponentModel.ISupportInitialize) ( this.pictureBox ) ).BeginInit( );
             this.SuspendLayout( );
@@ -46,7 +48,7 @@
             // 
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cancelButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.cancelButton.Location = new System.Drawing.Point( 239, 140 );
+            this.cancelButton.Location = new System.Drawing.Point( 239, 190 );
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size( 75, 23 );
             this.cancelButton.TabIndex = 11;
@@ -56,7 +58,7 @@
             // 
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.okButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.okButton.Location = new System.Drawing.Point( 149, 140 );
+            this.okButton.Location = new System.Drawing.Point( 149, 190 );
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size( 75, 23 );
             this.okButton.TabIndex = 10;
@@ -75,6 +77,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add( this.videoInputsCombo );
+            this.groupBox1.Controls.Add( this.label3 );
             this.groupBox1.Controls.Add( this.snapshotsLabel );
             this.groupBox1.Controls.Add( this.snapshotResolutionsCombo );
             this.groupBox1.Controls.Add( this.videoResolutionsCombo );
@@ -84,7 +88,7 @@
             this.groupBox1.Controls.Add( this.devicesCombo );
             this.groupBox1.Location = new System.Drawing.Point( 10, 10 );
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size( 440, 120 );
+            this.groupBox1.Size = new System.Drawing.Size( 440, 165 );
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Video capture device settings";
@@ -143,13 +147,31 @@
             this.pictureBox.TabIndex = 10;
             this.pictureBox.TabStop = false;
             // 
+            // videoInputsCombo
+            // 
+            this.videoInputsCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.videoInputsCombo.FormattingEnabled = true;
+            this.videoInputsCombo.Location = new System.Drawing.Point( 100, 130 );
+            this.videoInputsCombo.Name = "videoInputsCombo";
+            this.videoInputsCombo.Size = new System.Drawing.Size( 150, 21 );
+            this.videoInputsCombo.TabIndex = 17;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point( 100, 115 );
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size( 63, 13 );
+            this.label3.TabIndex = 16;
+            this.label3.Text = "Video input:";
+            // 
             // VideoCaptureDeviceForm
             // 
             this.AcceptButton = this.okButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size( 462, 171 );
+            this.ClientSize = new System.Drawing.Size( 462, 221 );
             this.Controls.Add( this.groupBox1 );
             this.Controls.Add( this.cancelButton );
             this.Controls.Add( this.okButton );
@@ -177,5 +199,7 @@
         private System.Windows.Forms.ComboBox snapshotResolutionsCombo;
         private System.Windows.Forms.ComboBox videoResolutionsCombo;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox videoInputsCombo;
+        private System.Windows.Forms.Label label3;
     }
 }

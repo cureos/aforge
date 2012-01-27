@@ -41,6 +41,9 @@ namespace AForge.Video.DirectShow
         private Dictionary<string, VideoCapabilities> videoCapabilitiesDictionary = new Dictionary<string, VideoCapabilities>( );
         private Dictionary<string, VideoCapabilities> snapshotCapabilitiesDictionary = new Dictionary<string, VideoCapabilities>( );
 
+        // available video inputs
+        private VideoInput[] availableVideoInputs = null;
+
         // flag telling if user wants to configure snapshots as well
         private bool configureSnapshots = false;
 
@@ -90,6 +93,7 @@ namespace AForge.Video.DirectShow
         private string videoDeviceMoniker = string.Empty;
         private Size captureSize = new Size( 0, 0 );
         private Size snapshotSize = new Size( 0, 0 );
+        private VideoInput videoInput = VideoInput.Default;
 
         /// <summary>
         /// Moniker string of the selected video device.
@@ -131,6 +135,19 @@ namespace AForge.Video.DirectShow
         {
             get { return snapshotSize; }
             set { snapshotSize = value; }
+        }
+
+        /// <summary>
+        /// Video input to use with video capture card.
+        /// </summary>
+        /// 
+        /// <remarks><para>The property allows to get video input of the selected device
+        /// on form completion or set it to be selected by default on form loading.</para></remarks>
+        /// 
+        public VideoInput VideoInput
+        {
+            get { return videoInput; }
+            set { videoInput = value; }
         }
 
         /// <summary>
@@ -211,6 +228,12 @@ namespace AForge.Video.DirectShow
                     snapshotSize = caps.FrameSize;
                 }
             }
+
+            if ( availableVideoInputs.Length != 0 )
+            {
+                videoInput = availableVideoInputs[videoInputsCombo.SelectedIndex];
+                videoDevice.CrossbarVideoInput = videoInput;
+            }
         }
 
         // New video device is selected
@@ -230,6 +253,7 @@ namespace AForge.Video.DirectShow
 
             videoResolutionsCombo.Items.Clear( );
             snapshotResolutionsCombo.Items.Clear( );
+            videoInputsCombo.Items.Clear( );
 
             videoCapabilitiesDictionary.Clear( );
             snapshotCapabilitiesDictionary.Clear( );
@@ -306,6 +330,29 @@ namespace AForge.Video.DirectShow
 
                     snapshotResolutionsCombo.SelectedIndex = snapshotResolutionIndex;
                 }
+
+                // get video inputs
+                availableVideoInputs = videoDevice.AvailableCrossbarVideoInputs;
+                int videoInputIndex = 0;
+
+                foreach ( VideoInput input in availableVideoInputs )
+                {
+                    string item = string.Format( "{0}: {1}", input.Index, input.Type );
+
+                    if ( ( input.Index == videoInput.Index ) && ( input.Type == videoInput.Type ) )
+                    {
+                        videoInputIndex = videoInputsCombo.Items.Count;
+                    }
+
+                    videoInputsCombo.Items.Add( item );
+                }
+
+                if ( availableVideoInputs.Length == 0 )
+                {
+                    videoInputsCombo.Items.Add( "Not supported" );
+                }
+
+                videoInputsCombo.SelectedIndex = videoInputIndex;
             }
             finally
             {
