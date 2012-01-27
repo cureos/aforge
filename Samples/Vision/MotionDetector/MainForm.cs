@@ -144,8 +144,6 @@ namespace MotionDetectorSample
                 // create video source
                 VideoCaptureDevice videoSource = new VideoCaptureDevice( form.VideoDevice );
 
-                // videoSource.DisplayPropertyPage( IntPtr.Zero );
-
                 // open it
                 OpenVideoSource( videoSource );
             }
@@ -162,7 +160,6 @@ namespace MotionDetectorSample
                 // open it
                 OpenVideoSource( fileSource );
             }
-
         }
 
         // Open video source
@@ -523,6 +520,8 @@ namespace MotionDetectorSample
         {
             if ( ( videoSource != null ) && ( videoSource is VideoCaptureDevice ) && ( videoSource.IsRunning ) )
             {
+                Console.WriteLine( "Current input: " + ( (VideoCaptureDevice) videoSource ).CrossbarVideoInput );
+
                 try
                 {
                     ( (VideoCaptureDevice) videoSource ).DisplayCrossbarPropertyPage( this.Handle );

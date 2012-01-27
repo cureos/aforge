@@ -9,6 +9,7 @@
 namespace AForge.Video.DirectShow
 {
     using System;
+    using System.Collections.Generic;
     using System.Drawing;
     using System.Drawing.Imaging;
     using System.Threading;
@@ -74,6 +75,7 @@ namespace AForge.Video.DirectShow
         private VideoCapabilities[] videoCapabilities;
         private VideoCapabilities[] snapshotCapabilities;
 
+        private bool needToSetVideoInput = false;
         private bool needToSimulateTrigger = false;
         private bool needToDisplayPropertyPage = false;
         private bool needToDisplayCrossBarPropertyPage = false;
@@ -90,6 +92,79 @@ namespace AForge.Video.DirectShow
 
         // flag specifying if IAMCrossbar interface is supported by the running graph/source object
         private bool? isCrossbarAvailable = null;
+
+        private VideoInput[] crossbarVideoInputs = null;
+        private VideoInput crossbarVideoInput = VideoInput.Default;
+
+        /// <summary>
+        /// Current video input of capture card.
+        /// </summary>
+        /// 
+        /// <remarks><para>The property specifies video input to use for video devices like capture cards
+        /// (those which provide crossbar configuration). List of available video inputs can be obtained
+        /// from <see cref="AvailableCrossbarVideoInputs"/> property.</para>
+        /// 
+        /// <para>To check if the video device supports crossbar configuration, the <see cref="CheckIfCrossbarAvailable"/>
+        /// method can be used.</para>
+        /// 
+        /// <para><note>This property can be set as before running video device, as while running it.</note></para>
+        /// 
+        /// <para>By default this property is set to <see cref="VideoInput.Default"/>, which means video input
+        /// will not be set when running video device, but currently configured will be used. After video device
+        /// is started this property will be updated anyway to tell current video input.</para>
+        /// </remarks>
+        /// 
+        public VideoInput CrossbarVideoInput
+        {
+            get { return crossbarVideoInput; }
+            set
+            {
+                needToSetVideoInput = true;
+                crossbarVideoInput = value;
+            }
+        }
+
+        /// <summary>
+        /// Available inputs of the video capture card.
+        /// </summary>
+        /// 
+        /// <remarks><para>The property provides list of video inputs for devices like video capture cards.
+        /// Such devices usually provide several video inputs, which can be selected using crossbar.
+        /// If video device represented by the object of this class supports crossbar, then this property
+        /// will list all video inputs. However if it is a regular USB camera, for example, which does not
+        /// provide crossbar configuration, the property will provide zero length array.</para>
+        /// 
+        /// <para>Video input to be used can be selected using <see cref="CrossbarVideoInput"/>. See also
+        /// <see cref="DisplayCrossbarPropertyPage"/> method, which provides crossbar configuration dialog.</para>
+        /// 
+        /// <para><note>It is recomended not to call this property immediately after <see cref="Start"/> method, since
+        /// device may not start yet and provide its information. It is better to call the property
+        /// before starting device or a bit after (but not immediately after).</note></para>
+        /// </remarks>
+        /// 
+        public VideoInput[] AvailableCrossbarVideoInputs
+        {
+            get
+            {
+                if ( crossbarVideoInputs == null )
+                {
+                    if ( !IsRunning )
+                    {
+                        // create graph without playing to collect available inputs
+                        WorkerThread( false );
+                    }
+                    else
+                    {
+                        for ( int i = 0; ( i < 500 ) && ( crossbarVideoInputs == null ); i++ )
+                        {
+                            Thread.Sleep( 10 );
+                        }
+                    }
+                }
+                // don't return null even capabilities are not provided for some reason
+                return ( crossbarVideoInputs != null ) ? crossbarVideoInputs : new VideoInput[0];
+            }
+        }
 
         /// <summary>
         /// Specifies if snapshots should be provided or not.
@@ -173,7 +248,15 @@ namespace AForge.Video.DirectShow
         public virtual string Source
         {
             get { return deviceMoniker; }
-            set { deviceMoniker = value; }
+            set
+            {
+                deviceMoniker = value;
+
+                videoCapabilities = null;
+                snapshotCapabilities = null;
+                crossbarVideoInputs = null;
+                isCrossbarAvailable = null;
+            }
         }
 
         /// <summary>
@@ -311,7 +394,7 @@ namespace AForge.Video.DirectShow
         /// 
         /// <remarks><para>The property provides list of device's video capabilities.</para>
         /// 
-        /// <para><note>Do not call this property immediately after <see cref="Start"/> method, since
+        /// <para><note>It is recomended not to call this property immediately after <see cref="Start"/> method, since
         /// device may not start yet and provide its information. It is better to call the property
         /// before starting device or a bit after (but not immediately after).</note></para>
         /// </remarks>
@@ -352,7 +435,7 @@ namespace AForge.Video.DirectShow
         /// 
         /// <para>See documentation to <see cref="ProvideSnapshots"/> for additional information.</para>
         /// 
-        /// <para><note>Do not call this property immediately after <see cref="Start"/> method, since
+        /// <para><note>It is recomended not to call this property immediately after <see cref="Start"/> method, since
         /// device may not start yet and provide its information. It is better to call the property
         /// before starting device or a bit after (but not immediately after).</note></para>
         /// </remarks>
@@ -437,6 +520,7 @@ namespace AForge.Video.DirectShow
                 framesReceived = 0;
                 bytesReceived = 0;
                 isCrossbarAvailable = null;
+                needToSetVideoInput = true;
 
                 // create events
                 stopEvent = new ManualResetEvent( false );
@@ -599,9 +683,20 @@ namespace AForge.Video.DirectShow
         /// 
         public void DisplayCrossbarPropertyPage( IntPtr parentWindow )
         {
-            lock ( this )
+            lock ( sync )
             {
-                if ( !CheckIfCrossbarAvailable( ) )
+                // wait max 5 seconds till the flag gets initialized
+                for ( int i = 0; ( i < 500 ) && ( !isCrossbarAvailable.HasValue ) && ( IsRunning ); i++ )
+                {
+                    Thread.Sleep( 10 );
+                }
+
+                if ( ( !IsRunning ) || ( !isCrossbarAvailable.HasValue ) )
+                {
+                    throw new ApplicationException( "The video source must be running in order to display crossbar property page." );
+                }
+
+                if ( !isCrossbarAvailable.Value )
                 {
                     throw new NotSupportedException( "Crossbar configuration is not supported by currently running video source." );
                 }
@@ -619,29 +714,32 @@ namespace AForge.Video.DirectShow
         /// <returns>Returns <see langword="true"/> if crossbar configuration is available or
         /// <see langword="false"/> otherwise.</returns>
         /// 
-        /// <remarks><para>The method reports if currently running video source provides crossbar configuration
+        /// <remarks><para>The method reports if the video source provides crossbar configuration
         /// using <see cref="DisplayCrossbarPropertyPage"/>.</para>
-        /// 
-        /// <para><note>This method can be invoked only when video source is running (<see cref="IsRunning"/> is
-        /// <see langword="true"/>). Otherwise it generates exception.</note></para>
         /// </remarks>
-        /// 
-        /// <exception cref="ApplicationException">The video source must be running in order to display crossbar property page.</exception>
         ///
         public bool CheckIfCrossbarAvailable( )
         {
-            // wait max 5 seconds till the flag gets initialized
-            for ( int i = 0; ( i < 20 ) && ( !isCrossbarAvailable.HasValue ) && ( IsRunning ); i++ )
+            lock ( sync )
             {
-                Thread.Sleep( 500 );
-            }
+                if ( !isCrossbarAvailable.HasValue )
+                {
+                    if ( !IsRunning )
+                    {
+                        // create graph without playing to collect available inputs
+                        WorkerThread( false );
+                    }
+                    else
+                    {
+                        for ( int i = 0; ( i < 500 ) && ( !isCrossbarAvailable.HasValue ); i++ )
+                        {
+                            Thread.Sleep( 10 );
+                        }
+                    }
+                }
 
-            if ( ( !IsRunning ) || ( !isCrossbarAvailable.HasValue ) )
-            {
-                throw new ApplicationException( "The video source must be running in order to display crossbar property page." );
+                return ( !isCrossbarAvailable.HasValue ) ? false : isCrossbarAvailable.Value;
             }
-
-            return isCrossbarAvailable.Value;
         }
 
 
@@ -776,6 +874,7 @@ namespace AForge.Video.DirectShow
                     crossbar = (IAMCrossbar) crossbarObject;
                 }
                 isCrossbarAvailable = ( crossbar != null );
+                crossbarVideoInputs = ( crossbar != null ) ? ColletCrossbarVideoInputs( crossbar ) : new VideoInput[0];
 
                 if ( videoControl != null )
                 {
@@ -862,10 +961,8 @@ namespace AForge.Video.DirectShow
                         videoControl.SetMode( pinStillImage, VideoControlFlags.ExternalTriggerEnable );
                     }
 
-                    while ( !stopEvent.WaitOne( 0, false ) )
+                    do
                     {
-                        Thread.Sleep( 100 );
-
                         if ( mediaEvent != null )
                         {
                             if ( mediaEvent.GetEvent( out code, out p1, out p2, 0 ) >= 0 )
@@ -877,6 +974,16 @@ namespace AForge.Video.DirectShow
                                     reasonToStop = ReasonToFinishPlaying.DeviceLost;
                                     break;
                                 }
+                            }
+                        }
+
+                        if ( needToSetVideoInput )
+                        {
+                            // set/check current input type of a video card (frame grabber)
+                            if ( isCrossbarAvailable.Value )
+                            {
+                                SetCurrentCrossbarInput( crossbar, crossbarVideoInput );
+                                crossbarVideoInput = GetCurrentCrossbarInput( crossbar );
                             }
                         }
 
@@ -894,6 +1001,11 @@ namespace AForge.Video.DirectShow
                         {
                             needToDisplayPropertyPage = false;
                             DisplayPropertyPage( parentWindowForPropertyPage, sourceObject );
+
+                            if ( crossbar != null )
+                            {
+                                crossbarVideoInput = GetCurrentCrossbarInput( crossbar );
+                            }
                         }
 
                         if ( needToDisplayCrossBarPropertyPage )
@@ -903,9 +1015,12 @@ namespace AForge.Video.DirectShow
                             if ( crossbar != null )
                             {
                                 DisplayPropertyPage( parentWindowForPropertyPage, crossbar );
+                                crossbarVideoInput = GetCurrentCrossbarInput( crossbar );
                             }
                         }
                     }
+                    while ( !stopEvent.WaitOne( 100, false ) );
+
                     mediaControl.Stop( );
                 }
             }
@@ -1105,6 +1220,135 @@ namespace AForge.Video.DirectShow
             }
             catch
             {
+            }
+        }
+
+        // Collect all video inputs of the specified crossbar
+        private VideoInput[] ColletCrossbarVideoInputs( IAMCrossbar crossbar )
+        {
+            List<VideoInput> videoInputsList = new List<VideoInput>( );
+
+            int inPinsCount, outPinsCount;
+
+            // gen number of pins in the crossbar
+            if ( crossbar.get_PinCounts( out outPinsCount, out inPinsCount ) == 0 )
+            {
+                // collect all video inputs
+                for ( int i = 0; i < inPinsCount; i++ )
+                {
+                    int pinIndexRelated;
+                    PhysicalConnectorType type;
+
+                    if ( crossbar.get_CrossbarPinInfo( true, i, out pinIndexRelated, out type ) != 0 )
+                        continue;
+
+                    if ( type < PhysicalConnectorType.AudioTuner )
+                    {
+                        videoInputsList.Add( new VideoInput( i, type ) );
+                    }
+                }
+            }
+
+            VideoInput[] videoInputs = new VideoInput[videoInputsList.Count];
+            videoInputsList.CopyTo( videoInputs );
+
+            return videoInputs;
+        }
+
+        // Get type of input connected to video output of the crossbar
+        private VideoInput GetCurrentCrossbarInput( IAMCrossbar crossbar )
+        {
+            VideoInput videoInput = VideoInput.Default;
+
+            int inPinsCount, outPinsCount;
+
+            // gen number of pins in the crossbar
+            if ( crossbar.get_PinCounts( out outPinsCount, out inPinsCount ) == 0 )
+            {
+                int videoOutputPinIndex = -1;
+                int pinIndexRelated;
+                PhysicalConnectorType type;
+
+                // find index of the video output pin
+                for ( int i = 0; i < outPinsCount; i++ )
+                {
+                    if ( crossbar.get_CrossbarPinInfo( false, i, out pinIndexRelated, out type ) != 0 )
+                        continue;
+
+                    if ( type == PhysicalConnectorType.VideoDecoder )
+                    {
+                        videoOutputPinIndex = i;
+                        break;
+                    }
+                }
+
+                if ( videoOutputPinIndex != -1 )
+                {
+                    int videoInputPinIndex;
+
+                    // get index of the input pin connected to the output
+                    if ( crossbar.get_IsRoutedTo( videoOutputPinIndex, out videoInputPinIndex ) == 0 )
+                    {
+                        PhysicalConnectorType inputType;
+
+                        crossbar.get_CrossbarPinInfo( true, videoInputPinIndex, out pinIndexRelated, out inputType );
+
+                        videoInput = new VideoInput( videoInputPinIndex, inputType );
+                    }
+                }
+            }
+
+            return videoInput;
+        }
+
+        // Set type of input connected to video output of the crossbar
+        private void SetCurrentCrossbarInput( IAMCrossbar crossbar, VideoInput videoInput )
+        {
+            if ( videoInput.Type != PhysicalConnectorType.Default )
+            {
+                int inPinsCount, outPinsCount;
+
+                // gen number of pins in the crossbar
+                if ( crossbar.get_PinCounts( out outPinsCount, out inPinsCount ) == 0 )
+                {
+                    int videoOutputPinIndex = -1;
+                    int videoInputPinIndex = -1;
+                    int pinIndexRelated;
+                    PhysicalConnectorType type;
+
+                    // find index of the video output pin
+                    for ( int i = 0; i < outPinsCount; i++ )
+                    {
+                        if ( crossbar.get_CrossbarPinInfo( false, i, out pinIndexRelated, out type ) != 0 )
+                            continue;
+
+                        if ( type == PhysicalConnectorType.VideoDecoder )
+                        {
+                            videoOutputPinIndex = i;
+                            break;
+                        }
+                    }
+
+                    // find index of the required input pin
+                    for ( int i = 0; i < inPinsCount; i++ )
+                    {
+                        if ( crossbar.get_CrossbarPinInfo( true, i, out pinIndexRelated, out type ) != 0 )
+                            continue;
+
+                        if ( type == videoInput.Type )
+                        {
+                            videoInputPinIndex = i;
+                            break;
+                        }
+                    }
+
+                    // try connecting pins
+                    if ( ( videoInputPinIndex != -1 ) && ( videoOutputPinIndex != -1 ) &&
+                         ( crossbar.CanRoute( videoOutputPinIndex, videoInputPinIndex ) == 0 ) )
+                    {
+                        crossbar.Route( videoOutputPinIndex, videoInputPinIndex );
+                    }
+                }
             }
         }
 

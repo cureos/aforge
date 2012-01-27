@@ -112,6 +112,7 @@
     <Compile Include="VideoCaptureDeviceForm.Designer.cs">
       <DependentUpon>VideoCaptureDeviceForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="VideoInput.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AForge.Video.DirectShow.snk" />
