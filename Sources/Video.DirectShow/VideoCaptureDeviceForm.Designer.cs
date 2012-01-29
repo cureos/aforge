@@ -32,14 +32,14 @@
             this.okButton = new System.Windows.Forms.Button( );
             this.devicesCombo = new System.Windows.Forms.ComboBox( );
             this.groupBox1 = new System.Windows.Forms.GroupBox( );
+            this.videoInputsCombo = new System.Windows.Forms.ComboBox( );
+            this.label3 = new System.Windows.Forms.Label( );
             this.snapshotsLabel = new System.Windows.Forms.Label( );
             this.snapshotResolutionsCombo = new System.Windows.Forms.ComboBox( );
             this.videoResolutionsCombo = new System.Windows.Forms.ComboBox( );
             this.label2 = new System.Windows.Forms.Label( );
             this.label1 = new System.Windows.Forms.Label( );
             this.pictureBox = new System.Windows.Forms.PictureBox( );
-            this.videoInputsCombo = new System.Windows.Forms.ComboBox( );
-            this.label3 = new System.Windows.Forms.Label( );
             this.groupBox1.SuspendLayout( );
             ( (System.ComponentModel.ISupportInitialize) ( this.pictureBox ) ).BeginInit( );
             this.SuspendLayout( );
@@ -62,7 +62,7 @@
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size( 75, 23 );
             this.okButton.TabIndex = 10;
-            this.okButton.Text = "Ok";
+            this.okButton.Text = "OK";
             this.okButton.Click += new System.EventHandler( this.okButton_Click );
             // 
             // devicesCombo
@@ -92,6 +92,24 @@
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Video capture device settings";
+            // 
+            // videoInputsCombo
+            // 
+            this.videoInputsCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.videoInputsCombo.FormattingEnabled = true;
+            this.videoInputsCombo.Location = new System.Drawing.Point( 100, 130 );
+            this.videoInputsCombo.Name = "videoInputsCombo";
+            this.videoInputsCombo.Size = new System.Drawing.Size( 150, 21 );
+            this.videoInputsCombo.TabIndex = 17;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point( 100, 115 );
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size( 63, 13 );
+            this.label3.TabIndex = 16;
+            this.label3.Text = "Video input:";
             // 
             // snapshotsLabel
             // 
@@ -146,24 +164,6 @@
             this.pictureBox.Size = new System.Drawing.Size( 64, 64 );
             this.pictureBox.TabIndex = 10;
             this.pictureBox.TabStop = false;
-            // 
-            // videoInputsCombo
-            // 
-            this.videoInputsCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.videoInputsCombo.FormattingEnabled = true;
-            this.videoInputsCombo.Location = new System.Drawing.Point( 100, 130 );
-            this.videoInputsCombo.Name = "videoInputsCombo";
-            this.videoInputsCombo.Size = new System.Drawing.Size( 150, 21 );
-            this.videoInputsCombo.TabIndex = 17;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point( 100, 115 );
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size( 63, 13 );
-            this.label3.TabIndex = 16;
-            this.label3.Text = "Video input:";
             // 
             // VideoCaptureDeviceForm
             // 
