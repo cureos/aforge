@@ -96,6 +96,11 @@ namespace AForge.Video.DirectShow
         private VideoInput[] crossbarVideoInputs = null;
         private VideoInput crossbarVideoInput = VideoInput.Default;
 
+        // cache for video/snapshot capabilities and video inputs
+        private static Dictionary<string, VideoCapabilities[]> cacheVideoCapabilities = new Dictionary<string,VideoCapabilities[]>( );
+        private static Dictionary<string, VideoCapabilities[]> cacheSnapshotCapabilities = new Dictionary<string,VideoCapabilities[]>( );
+        private static Dictionary<string, VideoInput[]> cacheCrossbarVideoInputs = new Dictionary<string,VideoInput[]>( );
+
         /// <summary>
         /// Current video input of capture card.
         /// </summary>
@@ -148,16 +153,28 @@ namespace AForge.Video.DirectShow
             {
                 if ( crossbarVideoInputs == null )
                 {
-                    if ( !IsRunning )
+                    if ( ( !string.IsNullOrEmpty( deviceMoniker ) ) && ( cacheCrossbarVideoInputs.ContainsKey( deviceMoniker ) ) )
                     {
-                        // create graph without playing to collect available inputs
-                        WorkerThread( false );
+                        crossbarVideoInputs = cacheCrossbarVideoInputs[deviceMoniker];
                     }
                     else
                     {
-                        for ( int i = 0; ( i < 500 ) && ( crossbarVideoInputs == null ); i++ )
+                        if ( !IsRunning )
                         {
-                            Thread.Sleep( 10 );
+                            // create graph without playing to collect available inputs
+                            WorkerThread( false );
+                        }
+                        else
+                        {
+                            for ( int i = 0; ( i < 500 ) && ( crossbarVideoInputs == null ); i++ )
+                            {
+                                Thread.Sleep( 10 );
+                            }
+                        }
+
+                        if ( ( !string.IsNullOrEmpty( deviceMoniker ) ) && ( crossbarVideoInputs != null ) )
+                        {
+                            cacheCrossbarVideoInputs.Add( deviceMoniker, crossbarVideoInputs );
                         }
                     }
                 }
@@ -405,17 +422,24 @@ namespace AForge.Video.DirectShow
             {
                 if ( videoCapabilities == null )
                 {
-                    if ( !IsRunning )
+                    if ( ( !string.IsNullOrEmpty( deviceMoniker ) ) && ( cacheVideoCapabilities.ContainsKey( deviceMoniker ) ) )
                     {
-                        // create graph without playing to get the video/snapshot capabilities only.
-                        // not very clean but it works
-                        WorkerThread( false );
+                        videoCapabilities = cacheVideoCapabilities[deviceMoniker];
                     }
                     else
                     {
-                        for ( int i = 0; ( i < 500 ) && ( videoCapabilities == null ); i++ )
+                        if ( !IsRunning )
                         {
-                            Thread.Sleep( 10 );
+                            // create graph without playing to get the video/snapshot capabilities only.
+                            // not very clean but it works
+                            WorkerThread( false );
+                        }
+                        else
+                        {
+                            for ( int i = 0; ( i < 500 ) && ( videoCapabilities == null ); i++ )
+                            {
+                                Thread.Sleep( 10 );
+                            }
                         }
                     }
                 }
@@ -448,17 +472,24 @@ namespace AForge.Video.DirectShow
             {
                 if ( snapshotCapabilities == null )
                 {
-                    if ( !IsRunning )
+                    if ( ( !string.IsNullOrEmpty( deviceMoniker ) ) && ( cacheSnapshotCapabilities.ContainsKey( deviceMoniker ) ) )
                     {
-                        // create graph without playing to get the video/snapshot capabilities only.
-                        // not very clean but it works
-                        WorkerThread( false );
+                        snapshotCapabilities = cacheSnapshotCapabilities[deviceMoniker];
                     }
                     else
                     {
-                        for ( int i = 0; ( i < 500 ) && ( snapshotCapabilities == null ); i++ )
+                        if ( !IsRunning )
                         {
-                            Thread.Sleep( 10 );
+                            // create graph without playing to get the video/snapshot capabilities only.
+                            // not very clean but it works
+                            WorkerThread( false );
+                        }
+                        else
+                        {
+                            for ( int i = 0; ( i < 500 ) && ( snapshotCapabilities == null ); i++ )
+                            {
+                                Thread.Sleep( 10 );
+                            }
                         }
                     }
                 }
@@ -514,8 +545,8 @@ namespace AForge.Video.DirectShow
             if ( !IsRunning )
             {
                 // check source
-                if ( ( deviceMoniker == null ) || ( deviceMoniker == string.Empty ) )
-                    throw new ArgumentException( "Video source is not specified" );
+                if ( string.IsNullOrEmpty( deviceMoniker ) )
+                    throw new ArgumentException( "Video source is not specified." );
 
                 framesReceived = 0;
                 bytesReceived = 0;
@@ -913,6 +944,16 @@ namespace AForge.Video.DirectShow
                     snapshotCapabilities = new VideoCapabilities[0];
                 }
 
+                // put video/snapshot capabilities into cache
+                if ( ( videoCapabilities != null ) && ( !cacheVideoCapabilities.ContainsKey( deviceMoniker ) ) )
+                {
+                    cacheVideoCapabilities.Add( deviceMoniker, videoCapabilities );
+                }
+                if ( ( snapshotCapabilities != null ) && ( !cacheSnapshotCapabilities.ContainsKey( deviceMoniker ) ) )
+                {
+                    cacheSnapshotCapabilities.Add( deviceMoniker, snapshotCapabilities );
+                }
+
                 if ( runGraph )
                 {
                     // render capture pin
@@ -1226,6 +1267,11 @@ namespace AForge.Video.DirectShow
         // Collect all video inputs of the specified crossbar
         private VideoInput[] ColletCrossbarVideoInputs( IAMCrossbar crossbar )
         {
+            if ( cacheCrossbarVideoInputs.ContainsKey( deviceMoniker ) )
+            {
+                return cacheCrossbarVideoInputs[deviceMoniker];
+            }
+
             List<VideoInput> videoInputsList = new List<VideoInput>( );
 
             int inPinsCount, outPinsCount;
@@ -1251,6 +1297,8 @@ namespace AForge.Video.DirectShow
 
             VideoInput[] videoInputs = new VideoInput[videoInputsList.Count];
             videoInputsList.CopyTo( videoInputs );
+
+            cacheCrossbarVideoInputs.Add( deviceMoniker, videoInputs );
 
             return videoInputs;
         }
