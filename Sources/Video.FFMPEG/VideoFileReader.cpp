@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © AForge.NET, 2009-2011
+// Copyright © AForge.NET, 2009-2012
 // contacts@aforgenet.com
 //
 
@@ -90,9 +90,12 @@ void VideoFileReader::Open( String^ fileName )
 
 	bool success = false;
 
-	// convert specified managed String to unmanaged string
-	IntPtr ptr = System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi( fileName );
-	char* nativeFileName = reinterpret_cast<char*>( static_cast<void*>( ptr ) );
+	// convert specified managed String to UTF8 unmanaged string
+	IntPtr ptr = System::Runtime::InteropServices::Marshal::StringToHGlobalUni( fileName );
+    wchar_t* nativeFileNameUnicode = (wchar_t*) ptr.ToPointer( );
+    int utf8StringSize = WideCharToMultiByte( CP_UTF8, 0, nativeFileNameUnicode, -1, NULL, 0, NULL, NULL );
+    char* nativeFileName = new char[utf8StringSize];
+    WideCharToMultiByte( CP_UTF8, 0, nativeFileNameUnicode, -1, nativeFileName, utf8StringSize, NULL, NULL );
 
 	try
 	{
@@ -163,6 +166,7 @@ void VideoFileReader::Open( String^ fileName )
 	finally
 	{
 		System::Runtime::InteropServices::Marshal::FreeHGlobal( ptr );
+        delete [] nativeFileName;
 
 		if ( !success )
 		{

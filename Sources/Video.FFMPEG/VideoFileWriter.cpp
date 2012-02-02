@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © AForge.NET, 2009-2011
+// Copyright © AForge.NET, 2009-2012
 // contacts@aforgenet.com
 //
 
@@ -111,8 +111,11 @@ void VideoFileWriter::Open( String^ fileName, int width, int height, int frameRa
 	m_bitRate = bitRate;
 	
 	// convert specified managed String to unmanaged string
-	IntPtr ptr = System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi( fileName );
-	char* nativeFileName = reinterpret_cast<char*>( static_cast<void*>( ptr ) );
+	IntPtr ptr = System::Runtime::InteropServices::Marshal::StringToHGlobalUni( fileName );
+    wchar_t* nativeFileNameUnicode = (wchar_t*) ptr.ToPointer( );
+    int utf8StringSize = WideCharToMultiByte( CP_UTF8, 0, nativeFileNameUnicode, -1, NULL, 0, NULL, NULL );
+    char* nativeFileName = new char[utf8StringSize];
+    WideCharToMultiByte( CP_UTF8, 0, nativeFileNameUnicode, -1, nativeFileName, utf8StringSize, NULL, NULL );
 
 	try
 	{
@@ -168,6 +171,7 @@ void VideoFileWriter::Open( String^ fileName, int width, int height, int frameRa
 	finally
 	{
 		System::Runtime::InteropServices::Marshal::FreeHGlobal( ptr );
+        delete [] nativeFileName;
 
 		if ( !success )
 		{
