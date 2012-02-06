@@ -192,6 +192,7 @@
     <Compile Include="Filters\Other\VerticalRunLengthSmoothing.cs" />
     <Compile Include="Filters\Other\WaterWave.cs" />
     <Compile Include="Filters\Smooting\AdaptiveSmooth.cs" />
+    <Compile Include="Filters\Smooting\BilateralSmoothing.cs" />
     <Compile Include="Filters\Smooting\ConservativeSmoothing.cs" />
     <Compile Include="Filters\Smooting\Median.cs" />
     <Compile Include="Filters\Transform\BackwardQuadrilateralTransformation.cs" />
