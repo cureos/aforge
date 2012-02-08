@@ -1,55 +1,133 @@
-﻿// Developed by Maxim Saplin
-// 2012
-// LGPL License
-
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
-using M = System.Math;
+﻿// AForge Image Processing Library
+// AForge.NET framework
+// http://www.aforgenet.com/framework/
+//
+// Copyright © AForge.NET, 2012
+// contacts@aforgenet.com
+//
+// Original implementation by Maxim Saplin, 2012
+//
 
 namespace AForge.Imaging.Filters
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Drawing.Imaging;
+    using M = System.Math;
+
     /// <summary>
-    /// Bilaterla filter implementation. Edge preserving smoothing and noise reduction that uses chromatic and spatial factors.
+    /// Bilateral filter implementation - edge preserving smoothing and noise reduction that uses chromatic and spatial factors.
     /// </summary>
+    /// 
     /// <remarks>
-    /// <para>
-    /// Bilateral filter conducts "selective" gausian smoothing of areas of same color (domains) which removes noise and contrast artifacts
-    /// while preserving sharp edges.
-    /// </para>
-    /// <para>
-    /// 2 major parameters <see cref="BilateralSmoothing.SpatialFactor"/> and <see cref="BilateralSmoothing.ColorFactor"/> define the reults of the filter. 
-    /// By changing the params you may achive either only noise reduction with little change to the image or get sliky look effect to the entire image.
-    /// </para>
-    /// <para>
-    /// Although the filter incorporates parallel processing large <see cref="BilateralSmoothing.KernelSize"/> values (&gt; 25) on high resolution images
-    /// may decrease speed of processing. Also on high resolution images small KernelSize values ( &lt; 9) may not provide noticible results.
-    /// </para>
-    /// <para>
-    /// More details on the alogorithm can be found here: http://saplin.blogspot.com/2012/01/bilateral-image-filter-edge-preserving.html
-    /// </para>
+    /// <para>Bilateral filter conducts "selective" Gaussian smoothing of areas of same color (domains) which removes noise and contrast artifacts
+    /// while preserving sharp edges.</para>
+    /// 
+    /// <para>Two major parameters <see cref="SpatialFactor"/> and <see cref="ColorFactor"/> define the result of the filter. 
+    /// By changing these parameters you may achieve either only noise reduction with little change to the
+    /// image or get nice looking effect to the entire image.</para>
+    ///
+    /// <para>Although the filter can use parallel processing large <see cref="KernelSize"/> values
+    /// (greater than 25) on high resolution images may decrease speed of processing. Also on high
+    /// resolution images small <see cref="KernelSize"/> values (less than 9) may not provide noticeable
+    /// results.</para>
+    /// 
+    /// <para>More details on the algorithm can be found by following this
+    /// <a href="http://saplin.blogspot.com/2012/01/bilateral-image-filter-edge-preserving.html">link</a>.</para>
+    /// 
+    /// <para>The filter accepts 8 bpp grayscale images and 24/32 bpp color images for processing.</para>
+    /// 
+    /// <para>Sample usage:</para>
+    /// <code>
+    /// // create filter
+    /// BilateralSmoothing filter = new BilateralSmoothing( );
+    /// filter.KernelSize    = 7;
+    /// filter.SpatialFactor = 10;
+    /// filter.ColorFactor   = 60;
+    /// filter.ColorPower    = 0.5;
+    /// // apply the filter
+    /// filter.ApplyInPlace( image );
+    /// </code>
+    /// 
+    /// <para><b>Initial image:</b></para>
+    /// <img src="img/imaging/sample13.png" width="480" height="361" />
+    /// <para><b>Result image:</b></para>
+    /// <img src="img/imaging/bilateral.jpg" width="480" height="361" />
     /// </remarks>
+    /// 
     public class BilateralSmoothing : BaseUsingCopyPartialFilter
     {
-        private uint kernelSize = 3;
+        private Dictionary<PixelFormat, PixelFormat> formatTranslations = new Dictionary<PixelFormat, PixelFormat>( );
 
-        private const int maxKernelSize = 256;
+        private const int maxKernelSize = 255;
+        private const int colorsCount = 256;
+
+        private int kernelSize = 9;
+        private double spatialFactor = 10;
+        private double spatialPower = 2;
+        private double colorFactor = 50;
+        private double colorPower = 2;
+
+        private bool spatialPropertiesChanged = true;
+        private bool colorPropertiesChanged = true;
+
+        private bool limitKernelSize = true;
+        private bool enableParallelProcessing = false;
 
         /// <summary>
-        /// Whther to throw an exception in case a large kernel size is used which may lead to significant performance issues
+        /// Specifies if exception must be thrown in the case a large
+        /// <see cref="KernelSize">kernel size</see> is used which may lead
+        /// to significant performance issues.
         /// </summary>
-        public bool LimitKernelSize {get;set;}
-
-        /// <summary>
-        /// Size of a square for limiting surrounding pixels that take part in calculations
-        /// </summary>
+        /// 
         /// <remarks>
-        /// The greater the value the more is the general power of the filter. Small values ( &lt 9) on high-res images (3000px) do not give significant results.
-        /// Large values increase the number of calculations and degrade performance
+        /// <para>Default value is set to <see langword="true"/>.</para>
         /// </remarks>
-        public uint KernelSize
+        /// 
+        public bool LimitKernelSize
+        {
+            get { return limitKernelSize; }
+            set { limitKernelSize = value; }
+        }
+
+        /// <summary>
+        /// Enable or not parallel processing on multi-core CPUs.
+        /// </summary>
+        /// 
+        /// <remarks><para>If the property is set to <see langword="true"/>, then this image processing
+        /// routine will run in parallel on the systems with multiple core/CPUs. The <see cref="AForge.Parallel.For"/>
+        /// is used to make it parallel.</para>
+        /// 
+        /// <para>Default value is set to <see langword="false"/>.</para>
+        /// </remarks>
+        /// 
+        public bool EnableParallelProcessing
+        {
+            get { return enableParallelProcessing; }
+            set { enableParallelProcessing = value; }
+        }
+
+        /// <summary>
+        /// Size of a square for limiting surrounding pixels that take part in calculations, [3, 255].
+        /// </summary>
+        /// 
+        /// <remarks><para>The greater the value the more is the general power of the filter. Small values
+        /// (less than 9) on high resolution images (3000 pixels wide) do not give significant results.
+        /// Large values increase the number of calculations and degrade performance.</para>
+        /// 
+        /// <para><note>The value of this property must be an odd integer in the [3, 255] range if
+        /// <see cref="LimitKernelSize"/> is set to <see langword="false"/> or in the [3, 25] range
+        /// otherwise.</note></para>
+        /// 
+        /// <para>Default value is set to <b>9</b>.</para>
+        /// </remarks>
+        /// 
+        /// <exception cref="ArgumentOutOfRangeException">The specified value is out of range (see
+        /// eception message for details).</exception>
+        /// <exception cref="ArgumentException">The value of this must be an odd integer.</exception>
+        /// 
+        public int KernelSize
         {
             get
             {
@@ -57,21 +135,35 @@ namespace AForge.Imaging.Filters
             }
             set
             {
-                if (value > maxKernelSize) throw new ArgumentOutOfRangeException("KernelSize must be less than " + maxKernelSize.ToString());
-                if (value < 3) throw new ArgumentOutOfRangeException("KernelSize must be greater than 3");
-                if (LimitKernelSize && (value > 25)) throw new ArgumentOutOfRangeException("KernerlSize is larger then 25. Time for applying is significant and may lead to application freezing. In order to use any KernelSize value set property 'LimitKernelSize' to false");
-                if (value % 2 == 0) throw new ArgumentException("KernerlSize must be an odd integer");
+                if ( value > maxKernelSize )
+                {
+                    throw new ArgumentOutOfRangeException( "Maximum allowed value of KernelSize property is " + maxKernelSize.ToString( ) );
+                }
+                if ( ( limitKernelSize ) && ( value > 25 ) )
+                {
+                    throw new ArgumentOutOfRangeException( "KernerlSize is larger then 25. Time for applying is significant and may lead to application freezing. In order to use any KernelSize value set property 'LimitKernelSize' to false." );
+                }
+                if ( value < 3 )
+                {
+                    throw new ArgumentOutOfRangeException( "KernelSize must be greater than 3" );
+                }
+                if ( value % 2 == 0 )
+                {
+                    throw new ArgumentException( "KernerlSize must be an odd integer." );
+                }
 
                 kernelSize = value;
             }
         }
 
-        private double spatialFactor;
-        private bool spatialChanged = true;
-
         /// <summary>
-        /// Determines smothing power within a color domain (neighbour pixels of similar color)
+        /// Determines smoothing power within a color domain (neighbor pixels of similar color).
         /// </summary>
+        /// 
+        /// <remarks>
+        /// <para>Default value is set to <b>10</b>.</para>
+        /// </remarks>
+        /// 
         public double SpatialFactor
         {
             get
@@ -81,21 +173,18 @@ namespace AForge.Imaging.Filters
             set
             {
                 spatialFactor = value;
-                spatialChanged = true;
+                spatialPropertiesChanged = true;
             }
         }
 
-        private double spatialPower;
-        private bool spatialPowerChanged = true;
-
         /// <summary>
-        /// Exponent power, used in Spatial function calucalation
+        /// Exponent power, used in Spatial function calculation.
         /// </summary>
+        /// 
         /// <remarks>
-        /// The greater the value is the more distinctive drop in weigh coefficient (color, spatial closeness) is. E.g. for default value "2" weigh cofecients for colors  (128, 130),  (128,150) and (128,200) can be 0.8 and 0.7 and 0.6.
-        /// For power "6" the corresponding coefficients can be 0.85, 0.8, 0.5. When evaluating color or spatial closeness (i.e. corresponding wigh coefficients) greater power the interval (spatial, color) in which surrounding pixels will have the most affect.
-        /// Color values (so as distance values) in range 0-10 may have same affect on the resulting pixel while it'll significantly drop after 11.
+        /// <para>Default value is set to <b>2</b>.</para>
         /// </remarks>
+        /// 
         public double SpatialPower
         {
             get
@@ -105,23 +194,18 @@ namespace AForge.Imaging.Filters
             set
             {
                 spatialPower = value;
-                spatialPowerChanged = true;
+                spatialPropertiesChanged = true;
             }
         }
 
-        private double colorFactor;
-        private bool colorChanged = true;
-
-        private const int colorsCount = 256;
-
         /// <summary>
-        /// Determines the variance of color for a color domain 
+        /// Determines the variance of color for a color domain .
         /// </summary>
+        /// 
         /// <remarks>
-        /// The greater the value is the more distinctive drop in weigh coefficient (color, spatial closeness) is. E.g. for default value "2" weigh cofecients for colors  (128, 130),  (128,150) and (128,200) can be 0.8 and 0.7 and 0.6.
-        /// For power "6" the corresponding coefficients can be 0.85, 0.8, 0.5. When evaluating color or spatial closeness (i.e. corresponding wigh coefficients) greater power the interval (spatial, color) in which surrounding pixels will have the most affect.
-        /// Color values (so as distance values) in range 0-10 may have same affect on the resulting pixel while it'll significantly drop after 11.
+        /// <para>Default value is set to <b>50</b>.</para>
         /// </remarks>
+        /// 
         public double ColorFactor
         {
             get
@@ -131,19 +215,18 @@ namespace AForge.Imaging.Filters
             set
             {
                 colorFactor = value;
-                colorChanged = true;
+                colorPropertiesChanged = true;
             }
         }
 
-        private double colorPower;
-        private bool colorPowerChanged = true;
-
         /// <summary>
-        /// Exponent power, used in Color function calucalation
+        /// Exponent power, used in Color function calculation.
         /// </summary>
+        /// 
         /// <remarks>
-        /// You may play with it if you'd like to but in most cases default values should be fine
+        /// <para>Default value is set to <b>2</b>.</para>
         /// </remarks>
+        /// 
         public double ColorPower
         {
             get
@@ -153,163 +236,193 @@ namespace AForge.Imaging.Filters
             set
             {
                 colorPower = value;
-                colorPowerChanged = true;
+                colorPropertiesChanged = true;
             }
         }
 
-        private Dictionary<PixelFormat, PixelFormat> formatTranslations = new Dictionary<PixelFormat, PixelFormat>();
-
         /// <summary>
-        /// The algorithm is tweaked for and natively works only with a single format: 24bppRgb
+        /// Format translations dictionary.
         /// </summary>
+        /// 
+        /// <remarks><para>See <see cref="IFilterInformation.FormatTranslations"/>
+        /// documentation for additional information.</para></remarks>
+        ///
         public override Dictionary<PixelFormat, PixelFormat> FormatTranslations
         {
             get { return formatTranslations; }
         }
 
         /// <summary>
-        /// Public constructor
+        /// Initializes a new instance of the <see cref="BilateralSmoothing"/> class.
         /// </summary>
-        public BilateralSmoothing()
+        /// 
+        public BilateralSmoothing( )
         {
-            LimitKernelSize = true;
-            KernelSize = 9;
-            SpatialFactor = 10;
-            ColorFactor = 50;
-            SpatialPower = 2;
-            ColorPower = 2;
             formatTranslations[PixelFormat.Format8bppIndexed] = PixelFormat.Format8bppIndexed;
-            formatTranslations[PixelFormat.Format24bppRgb] = PixelFormat.Format24bppRgb;
-            formatTranslations[PixelFormat.Format32bppRgb] = PixelFormat.Format32bppRgb;
-            formatTranslations[PixelFormat.Format32bppArgb] = PixelFormat.Format32bppArgb;
+            formatTranslations[PixelFormat.Format24bppRgb]    = PixelFormat.Format24bppRgb;
+            formatTranslations[PixelFormat.Format32bppRgb]    = PixelFormat.Format32bppRgb;
+            formatTranslations[PixelFormat.Format32bppArgb]   = PixelFormat.Format32bppArgb;
         }
 
         private double[,] spatialFunc;
         private double[,] colorFunc;
 
-        /// <summary>
-        /// For performance improvements Color and Spatial functions are precalculated prior to filter execution and put to 2 dimensional arrays
-        /// </summary>
-        private void InitSpatialFunc()
+        // For performance improvements Color and Spatial functions are recalculated prior to filter execution and put into 2 dimensional arrays
+        private void InitSpatialFunc( )
         {
-            if ((spatialFunc == null) || (spatialFunc.Length != KernelSize * KernelSize) || spatialChanged || spatialPowerChanged)
+            if ( ( spatialFunc == null ) || ( spatialFunc.Length != kernelSize * kernelSize ) ||
+                 ( spatialPropertiesChanged ) )
             {
-                if ((spatialFunc == null) || spatialFunc.Length != KernelSize * KernelSize) spatialFunc = new double[KernelSize, KernelSize];
+                if ( ( spatialFunc == null ) || ( spatialFunc.Length != kernelSize * kernelSize ) )
+                {
+                    spatialFunc = new double[kernelSize, kernelSize];
+                }
 
-                uint c = KernelSize / 2;
+                int kernelRadius = kernelSize / 2;
 
-                for (int i = 0; i < KernelSize; i++)
-                    for (int k = 0; k < KernelSize; k++)
-                        spatialFunc[i, k] = M.Exp(-0.5 * (M.Pow(M.Sqrt((i - c) * (i - c) + (k - c) * (k - c) / spatialFactor), SpatialPower)));
+                for ( int i = 0; i < kernelSize; i++ )
+                {
+                    int ti  = i - kernelRadius;
+                    int ti2 = ti * ti;
 
-                spatialChanged = false;
-                spatialPowerChanged = false;
+                    for ( int k = 0; k < kernelSize; k++ )
+                    {
+                        int tk = k - kernelRadius;
+                        int tk2 = tk * tk;
+
+                        spatialFunc[i, k] = M.Exp( -0.5 * M.Pow( M.Sqrt( ( ti2 + tk2 ) / spatialFactor ), spatialPower ) );
+                    }
+                }
+
+                spatialPropertiesChanged = false;
             }
         }
 
-        /// <summary>
-        /// For performance improvements Color and Spatial functions are precalculated prior to filter execution and put to 2 dimensional arrays
-        /// </summary>
-        private void InitColorFunc()
+        // For performance improvements Color and Spatial functions are recalculated prior to filter execution and put into 2 dimensional arrays
+        private void InitColorFunc( )
         {
-            if ((colorFunc == null) || colorChanged || colorPowerChanged)
+            if ( ( colorFunc == null ) || ( colorPropertiesChanged ) )
             {
-                if (colorFunc == null) colorFunc = new double[colorsCount, colorsCount];
-                for (int i = 0; i < colorsCount; i++)
-                    for (int k = 0; k < colorsCount; k++)
-                        colorFunc[i, k] = M.Exp(-0.5 * (M.Pow(M.Abs(i - k) / colorFactor, colorPower)));
+                if ( colorFunc == null )
+                {
+                    colorFunc = new double[colorsCount, colorsCount];
+                }
 
-                colorChanged = false;
-                colorPowerChanged = false;
+                for ( int i = 0; i < colorsCount; i++ )
+                {
+                    for ( int k = 0; k < colorsCount; k++ )
+                    {
+                        colorFunc[i, k] = M.Exp( -0.5 * ( M.Pow( M.Abs( i - k ) / colorFactor, colorPower ) ) );
+                    }
+                }
+
+                colorPropertiesChanged = false;
             }
         }
 
-        private void InitFilter()
+        private void InitFilter( )
         {
-            InitSpatialFunc();
-            InitColorFunc();
+            InitSpatialFunc( );
+            InitColorFunc( );
         }
 
         /// <summary>
-        /// Set to false to disable multithreaded filter application despite the number of cores CPU has
+        /// Process the filter on the specified image.
         /// </summary>
-        public bool DisableParallelProcessing { get; set; }
-
-        /// <summary>
-        /// Applies filter
-        /// </summary>
-        /// <remarks>
-        /// The routine automatically decies whether to use parallel processing to boost performance
-        /// </remarks>
-        protected override unsafe void ProcessFilter(UnmanagedImage source, UnmanagedImage destination, Rectangle rect)
+        /// 
+        /// <param name="source">Source image data.</param>
+        /// <param name="destination">Destination image data.</param>
+        /// <param name="rect">Image rectangle for processing by the filter.</param>
+        /// 
+        protected override unsafe void ProcessFilter( UnmanagedImage source, UnmanagedImage destination, Rectangle rect )
         {
-            InitFilter();
+            int kernelHalf = kernelSize / 2;
 
-            int kernelHalf = (int)kernelSize / 2;
+            InitFilter( );
 
-            var x = Stopwatch.StartNew();
-
-            if (source.Width <= kernelSize || source.Height <= kernelSize) 
-                ProcessWithEdgeChecks(source, destination, new Rectangle(0, 0, source.Width, source.Height));
+            if ( ( rect.Width <= kernelSize ) || ( rect.Height <= kernelSize ) )
+            {
+                ProcessWithEdgeChecks( source, destination, rect );
+            }
             else
             {
-                // For performance reasons there're 2 separate methods doing similar stuff 
-                // For center pixels we may avoid unnecessary checks while for pixels closer to the boundaries checks a compulsory
-                // This separation gives ~10% boost over single call to ProcessWithEdgeChecks
+                Rectangle safeArea = rect;
+                safeArea.Inflate( -kernelHalf, -kernelHalf );
 
-                // Parallel processing on dual core Intel Core i5 HT (4 virtual cores) gave 3.25x performance boost
-                if (Environment.ProcessorCount > 1 && !DisableParallelProcessing)
-                    ProcessWithoutChecksParallel(source, destination, new Rectangle(kernelHalf, kernelHalf, source.Width - (int) kernelSize + 1, source.Height - (int) kernelSize + 1)); // center
-                else
-                    ProcessWithoutChecks(source, destination, new Rectangle(kernelHalf, kernelHalf, source.Width - (int)kernelSize + 1, source.Height - (int)kernelSize + 1)); // center
-                
-                ProcessWithEdgeChecks(source, destination, new Rectangle(0, 0, source.Width, (int) kernelHalf)); // top
-                ProcessWithEdgeChecks(source, destination, new Rectangle(source.Width - (int) kernelHalf, 0, (int) kernelHalf, source.Height)); // right
-                ProcessWithEdgeChecks(source, destination, new Rectangle(0, source.Height - kernelHalf, source.Width, (int) kernelHalf)); // bottom
-                ProcessWithEdgeChecks(source, destination, new Rectangle(0, 0, (int) kernelHalf, source.Height)); // left
-            }
-
-            x.Stop();
-
-            ExecutionTime = x.ElapsedMilliseconds;
-        }
-
-        /// <summary>
-        /// Time in ms measured during past execution
-        /// </summary>
-        public long ExecutionTime
-        {
-            get;
-            private set;
-        }
-
-        // For Format32bppArgb alpha channel is not used for calculations
-        private unsafe void ProcessWithoutChecksParallel(UnmanagedImage source, UnmanagedImage destination, Rectangle rect)
-        {
-            var pixelSize = System.Drawing.Image.GetPixelFormatSize(source.PixelFormat) / 8;
-            var kernelHalf = kernelSize / 2;
-            var bytesInKernelRow = kernelSize * pixelSize;
-            var srcRow = (byte*)source.ImageData;
-            var dstRow = (byte*)destination.ImageData;
-
-            if (pixelSize > 1) // For 24bpp, and 32bpp formats
-            {
-                Parallel.For(rect.Top, rect.Height + rect.Top, i =>
+                if ( ( Environment.ProcessorCount > 1 ) && ( enableParallelProcessing ) )
                 {
-                    uint x, y;
+                    ProcessWithoutChecksParallel( source, destination, safeArea );
+                }
+                else
+                {
+                    ProcessWithoutChecks( source, destination, safeArea );
+                }
+
+                // top
+                ProcessWithEdgeChecks( source, destination,
+                    new Rectangle( rect.Left, rect.Top, rect.Width, kernelHalf ) );
+                // bottom
+                ProcessWithEdgeChecks( source, destination,
+                    new Rectangle( rect.Left, rect.Bottom - kernelHalf, rect.Width, kernelHalf ) );
+                // left
+                ProcessWithEdgeChecks( source, destination,
+                    new Rectangle( rect.Left, rect.Top + kernelHalf, kernelHalf, rect.Height - kernelHalf * 2 ) );
+                // right
+                ProcessWithEdgeChecks( source, destination,
+                    new Rectangle( rect.Right - kernelHalf, rect.Top + kernelHalf, kernelHalf, rect.Height - kernelHalf  * 2 ) );
+            }
+        }
+
+        // Perform parallel image processing without checking pixels' coordinates to make sure those are in bounds
+        private unsafe void ProcessWithoutChecksParallel( UnmanagedImage source, UnmanagedImage destination, Rectangle rect )
+        {
+            int startX = rect.Left;
+            int startY = rect.Top;
+            int stopX  = rect.Right;
+            int stopY  = rect.Bottom;
+
+            int pixelSize = System.Drawing.Image.GetPixelFormatSize( source.PixelFormat ) / 8;
+            int kernelHalf = kernelSize / 2;
+            int bytesInKernelRow = kernelSize * pixelSize;
+
+            int srcStride = source.Stride;
+            int dstStride = destination.Stride;
+
+            int srcOffset = srcStride - rect.Width * pixelSize;
+            int dstOffset = dstStride - rect.Width * pixelSize;
+
+            // offset of the first kernel's pixel
+            int srcKernelFistPixelOffset = kernelHalf * ( srcStride + pixelSize );
+            // offset to move to the next kernel's pixel after processing one kernel's row
+            int srcKernelOffset = srcStride - bytesInKernelRow;
+
+            byte* srcBase = (byte*) source.ImageData.ToPointer( );
+            byte* dstBase = (byte*) destination.ImageData.ToPointer( );
+
+            // allign pointers to the left most pixel in the first row
+            srcBase += startX * pixelSize;
+            dstBase += startX * pixelSize;
+
+            if ( pixelSize > 1 )
+            {
+                Parallel.For( startY, stopY, delegate( int y )
+                {
+                    byte* src = srcBase + y * srcStride;
+                    byte* dst = dstBase + y * dstStride;
+
                     byte srcR, srcG, srcB;
-                    byte dstR, dstG, dstB;
                     byte srcR0, srcG0, srcB0;
                     byte* srcPixel;
-                    byte* srcPixel0;
-                    byte* dstPixel0;
+
+                    int tx, ty;
+
                     double sCoefR, sCoefG, sCoefB, sMembR, sMembG, sMembB, coefR, coefG, coefB;
 
-                    for (uint k = (uint)rect.Left; k < rect.Width + rect.Left; k++) //columns, x
+                    for ( int x = startX; x < stopX; x++, src += pixelSize, dst += pixelSize )
                     {
-                        srcPixel0 = srcRow + (uint)(source.Stride * i) + (uint)(pixelSize * k);
-                        dstPixel0 = dstRow + (uint)(destination.Stride * i) + (uint)(pixelSize * k);
-                        srcPixel = srcPixel0 + kernelHalf * (source.Stride + pixelSize); // lower right corner - to start processing from that point
+                        // lower right corner - to start processing from that point
+                        srcPixel = src + srcKernelFistPixelOffset;
+
                         sCoefR = 0;
                         sCoefG = 0;
                         sCoefB = 0;
@@ -317,27 +430,28 @@ namespace AForge.Imaging.Filters
                         sMembG = 0;
                         sMembB = 0;
 
-                        srcR0 = *(srcPixel0 + 2);
-                        srcG0 = *(srcPixel0 + 1);
-                        srcB0 = *(srcPixel0);
+                        srcR0 = src[RGB.R];
+                        srcG0 = src[RGB.G];
+                        srcB0 = src[RGB.B];
 
-                        y = kernelSize;
                         // move from lower right to upper left corner
-                        while (y != 0)
+                        ty = kernelSize;
+                        while ( ty != 0 )
                         {
-                            y--;
-                            x = kernelSize;
-                            while (x != 0)
+                            ty--;
+
+                            tx = kernelSize;
+                            while ( tx != 0 )
                             {
-                                x--;
+                                tx--;
 
-                                srcR = *(srcPixel + 2);
-                                srcG = *(srcPixel + 1);
-                                srcB = *(srcPixel);
+                                srcR = srcPixel[RGB.R];
+                                srcG = srcPixel[RGB.G];
+                                srcB = srcPixel[RGB.B];
 
-                                coefR = spatialFunc[x, y] * colorFunc[srcR, srcR0];
-                                coefG = spatialFunc[x, y] * colorFunc[srcG, srcG0];
-                                coefB = spatialFunc[x, y] * colorFunc[srcB, srcB0];
+                                coefR = spatialFunc[tx, ty] * colorFunc[srcR, srcR0];
+                                coefG = spatialFunc[tx, ty] * colorFunc[srcG, srcG0];
+                                coefB = spatialFunc[tx, ty] * colorFunc[srcB, srcB0];
 
                                 sCoefR += coefR;
                                 sCoefG += coefG;
@@ -350,104 +464,116 @@ namespace AForge.Imaging.Filters
                                 srcPixel -= pixelSize;
                             }
 
-                            srcPixel = srcPixel - source.Stride + bytesInKernelRow;
+                            srcPixel -= srcKernelOffset;
                         }
 
-                        dstR = (byte)(sMembR / sCoefR);
-                        dstG = (byte)(sMembG / sCoefG);
-                        dstB = (byte)(sMembB / sCoefB);
-
-                        *(dstPixel0 + 2) = dstR;
-                        *(dstPixel0 + 1) = dstG;
-                        *(dstPixel0) = dstB;
+                        dst[RGB.R] = (byte) ( sMembR / sCoefR );
+                        dst[RGB.G] = (byte) ( sMembG / sCoefG );
+                        dst[RGB.B] = (byte) ( sMembB / sCoefB );
                     }
-                });
+                } );
             }
-            else // 8bpp grayscale
+            else
             {
-                Parallel.For(rect.Top, rect.Height + rect.Top, i =>
+                // 8bpp grayscale images
+                Parallel.For( startY, stopY, delegate( int y )
                 {
-                    uint x, y;
+                    byte* src = srcBase + y * srcStride;
+                    byte* dst = dstBase + y * dstStride;
+
                     byte srcC;
-                    byte dstC;
                     byte srcC0;
                     byte* srcPixel;
-                    byte* srcPixel0;
-                    byte* dstPixel0;
                     double sCoefC, sMembC, coefC;
 
-                    for (uint k = (uint)rect.Left; k < rect.Width + rect.Left; k++) //columns, x
+                    int tx, ty;
+
+                    for ( int x = startX; x < stopX; x++, src++, dst++ )
                     {
-                        srcPixel0 = srcRow + (uint)(source.Stride * i) + (uint)(pixelSize * k);
-                        dstPixel0 = dstRow + (uint)(destination.Stride * i) + (uint)(pixelSize * k);
-                        srcPixel = srcPixel0 + kernelHalf * (source.Stride + pixelSize); // lower right corner - to start processing from that point
+                        // lower right corner - to start processing from that point
+                        srcPixel = src + srcKernelFistPixelOffset;
+
                         sCoefC = 0;
                         sMembC = 0;
 
-                        srcC0 = *(srcPixel0);
+                        srcC0 = *src;
 
-                        y = kernelSize;
                         // move from lower right to upper left corner
-                        while (y != 0)
+                        ty = kernelSize;
+                        while ( ty != 0 )
                         {
-                            y--;
-                            x = kernelSize;
-                            while (x != 0)
+                            ty--;
+
+                            tx = kernelSize;
+                            while ( tx != 0 )
                             {
-                                x--;
+                                tx--;
 
-                                srcC = *(srcPixel);
-
-                                coefC = spatialFunc[x, y] * colorFunc[srcC, srcC0];
+                                srcC = *( srcPixel );
+                                coefC = spatialFunc[tx, ty] * colorFunc[srcC, srcC0];
 
                                 sCoefC += coefC;
-     
                                 sMembC += coefC * srcC;
 
                                 srcPixel -= pixelSize;
                             }
 
-                            srcPixel = srcPixel - source.Stride + bytesInKernelRow;
+                            srcPixel -= srcKernelOffset;
                         }
 
-                        dstC = (byte)(sMembC / sCoefC);
-
-                        *(dstPixel0) = dstC;
+                        *dst = (byte) ( sMembC / sCoefC );
                     }
-                });
+                } );
             }
         }
 
-        // For Format32bppArgb alpha channel is not used for calculations
-        private unsafe void ProcessWithoutChecks(UnmanagedImage source, UnmanagedImage destination, Rectangle rect)
+        // Perform image processing without checking pixels' coordinates to make sure those are in bounds
+        private unsafe void ProcessWithoutChecks( UnmanagedImage source, UnmanagedImage destination, Rectangle rect )
         {
-            var pixelSize = System.Drawing.Image.GetPixelFormatSize(source.PixelFormat) / 8;
-            var kernelHalf = kernelSize / 2;
-            var bytesInKernelRow = kernelSize * pixelSize;
-            var srcRow = (byte*)source.ImageData;
-            var dstRow = (byte*)destination.ImageData;
+            int startX = rect.Left;
+            int startY = rect.Top;
+            int stopX  = rect.Right;
+            int stopY  = rect.Bottom;
 
-            if (pixelSize > 1) // For 24bpp, and 32bpp formats
+            int pixelSize = System.Drawing.Image.GetPixelFormatSize( source.PixelFormat ) / 8;
+            int kernelHalf = kernelSize / 2;
+            int bytesInKernelRow = kernelSize * pixelSize;
+
+            int srcStride = source.Stride;
+            int dstStride = destination.Stride;
+
+            int srcOffset = srcStride - rect.Width * pixelSize;
+            int dstOffset = dstStride - rect.Width * pixelSize;
+
+            // offset of the first kernel's pixel
+            int srcKernelFistPixelOffset = kernelHalf * ( srcStride + pixelSize );
+            // offset to move to the next kernel's pixel after processing one kernel's row
+            int srcKernelOffset = srcStride - bytesInKernelRow;
+
+            int tx, ty;
+
+            byte* src = (byte*) source.ImageData.ToPointer( );
+            byte* dst = (byte*) destination.ImageData.ToPointer( );
+
+            // allign pointers to the first pixel to process
+            src += startY * srcStride + startX * pixelSize;
+            dst += startY * dstStride + startX * pixelSize;
+
+            if ( pixelSize > 1 )
             {
-                uint x, y;
                 byte srcR, srcG, srcB;
-                byte dstR, dstG, dstB;
                 byte srcR0, srcG0, srcB0;
                 byte* srcPixel;
-                byte* srcPixel0;
-                byte* dstPixel0;
+
                 double sCoefR, sCoefG, sCoefB, sMembR, sMembG, sMembB, coefR, coefG, coefB;
 
-                for (uint i = (uint)rect.Top; i < rect.Height + rect.Top; i++) //lines, y
+                for ( int y = startY; y < stopY; y++ )
                 {
-                    //if (i % 3 == 0) progress = (uint)(i / rect.Height);
-
-                    for (uint k = (uint)rect.Left; k < rect.Width + rect.Left; k++) //columns, x
+                    for ( int x = startX; x < stopX; x++, src += pixelSize, dst += pixelSize )
                     {
-                        srcPixel0 = srcRow + (uint)(source.Stride * i) + (uint)(pixelSize * k);
-                        dstPixel0 = dstRow + (uint)(destination.Stride * i) + (uint)(pixelSize * k);
-                        srcPixel = srcPixel0 + kernelHalf * (source.Stride + pixelSize);
                         // lower right corner - to start processing from that point
+                        srcPixel = src + srcKernelFistPixelOffset;
+
                         sCoefR = 0;
                         sCoefG = 0;
                         sCoefB = 0;
@@ -455,26 +581,28 @@ namespace AForge.Imaging.Filters
                         sMembG = 0;
                         sMembB = 0;
 
-                        srcR0 = *(srcPixel0 + 2);
-                        srcG0 = *(srcPixel0 + 1);
-                        srcB0 = *(srcPixel0);
+                        srcR0 = src[RGB.R];
+                        srcG0 = src[RGB.G];
+                        srcB0 = src[RGB.B];
 
-                        y = kernelSize; // move from lower right to upper left corner
-                        while (y != 0)
+                        // move from lower right to upper left corner
+                        ty = kernelSize;
+                        while ( ty != 0 )
                         {
-                            y--;
-                            x = kernelSize;
-                            while (x != 0)
+                            ty--;
+
+                            tx = kernelSize;
+                            while ( tx != 0 )
                             {
-                                x--;
+                                tx--;
 
-                                srcR = *(srcPixel + 2);
-                                srcG = *(srcPixel + 1);
-                                srcB = *(srcPixel);
+                                srcR = srcPixel[RGB.R];
+                                srcG = srcPixel[RGB.G];
+                                srcB = srcPixel[RGB.B];
 
-                                coefR = spatialFunc[x, y] * colorFunc[srcR, srcR0];
-                                coefG = spatialFunc[x, y] * colorFunc[srcG, srcG0];
-                                coefB = spatialFunc[x, y] * colorFunc[srcB, srcB0];
+                                coefR = spatialFunc[tx, ty] * colorFunc[srcR, srcR0];
+                                coefG = spatialFunc[tx, ty] * colorFunc[srcG, srcG0];
+                                coefB = spatialFunc[tx, ty] * colorFunc[srcB, srcB0];
 
                                 sCoefR += coefR;
                                 sCoefG += coefG;
@@ -487,242 +615,249 @@ namespace AForge.Imaging.Filters
                                 srcPixel -= pixelSize;
                             }
 
-                            srcPixel = srcPixel - source.Stride + bytesInKernelRow;
+                            srcPixel -= srcKernelOffset;
                         }
 
-                        dstR = (byte)(sMembR / sCoefR);
-                        dstG = (byte)(sMembG / sCoefG);
-                        dstB = (byte)(sMembB / sCoefB);
-
-                        *(dstPixel0 + 2) = dstR;
-                        *(dstPixel0 + 1) = dstG;
-                        *(dstPixel0) = dstB;
+                        dst[RGB.R] = (byte) ( sMembR / sCoefR );
+                        dst[RGB.G] = (byte) ( sMembG / sCoefG );
+                        dst[RGB.B] = (byte) ( sMembB / sCoefB );
                     }
+                    src += srcOffset;
+                    dst += dstOffset;
                 }
             }
-            else // 8bpp grayscale
+            else
             {
-                for (uint i = (uint) rect.Top; i < rect.Height + rect.Top; i++) //lines, y
-                {
-                    uint x, y;
-                    byte srcC;
-                    byte dstC;
-                    byte srcC0;
-                    byte* srcPixel;
-                    byte* srcPixel0;
-                    byte* dstPixel0;
-                    double sCoefC, sMembC, coefC;
-
-                    for (uint k = (uint) rect.Left; k < rect.Width + rect.Left; k++) //columns, x
-                    {
-                        srcPixel0 = srcRow + (uint) (source.Stride*i) + (uint) (pixelSize*k);
-                        dstPixel0 = dstRow + (uint) (destination.Stride*i) + (uint) (pixelSize*k);
-                        srcPixel = srcPixel0 + kernelHalf*(source.Stride + pixelSize); // lower right corner - to start processing from that point
-                        sCoefC = 0;
-                        sMembC = 0;
-
-                        srcC0 = *(srcPixel0);
-
-                        y = kernelSize;
-                        // move from lower right to upper left corner
-                        while (y != 0)
-                        {
-                            y--;
-                            x = kernelSize;
-                            while (x != 0)
-                            {
-                                x--;
-
-                                srcC = *(srcPixel);
-
-                                coefC = spatialFunc[x, y]*colorFunc[srcC, srcC0];
-
-                                sCoefC += coefC;
-
-                                sMembC += coefC*srcC;
-
-                                srcPixel -= pixelSize;
-                            }
-
-                            srcPixel = srcPixel - source.Stride + bytesInKernelRow;
-                        }
-
-                        dstC = (byte) (sMembC/sCoefC);
-
-                        *(dstPixel0) = dstC;
-                    }
-                }
-            }
-        }
-
-        // The method is different from ProcessCenter in 2 checks to avoid getting out of bounds
-        // For Format32bppArgb alpha channel is not used for calculations
-        private unsafe void ProcessWithEdgeChecks(UnmanagedImage source, UnmanagedImage destination, Rectangle rect)
-        {
-            var pixelSize = System.Drawing.Image.GetPixelFormatSize(source.PixelFormat)/8;
-            var kernelHalf = kernelSize/2;
-            var bytesInKernelRow = kernelSize*pixelSize;
-            var srcRow = (byte*) source.ImageData;
-            var dstRow = (byte*) destination.ImageData;
-
-            if (pixelSize > 1) // For 24bpp, and 32bpp formats
-            {
-                int rx, ry;
-                uint x, y;
-                byte srcR, srcG, srcB;
-                byte dstR, dstG, dstB;
-                byte srcR0, srcG0, srcB0;
-                byte* srcPixel;
-                byte* srcPixel0;
-                byte* dstPixel0;
-                double sCoefR, sCoefG, sCoefB, sMembR, sMembG, sMembB, coefR, coefG, coefB;
-
-                for (uint i = (uint) rect.Top; i < rect.Height + rect.Top; i++) //lines, y
-                {
-                    for (uint k = (uint) rect.Left; k < rect.Width + rect.Left; k++) //columns, x
-                    {
-                        srcPixel0 = srcRow + (uint) (source.Stride*i) + (uint) (pixelSize*k);
-                        dstPixel0 = dstRow + (uint) (destination.Stride*i) + (uint) (pixelSize*k);
-                        srcPixel = srcPixel0 + kernelHalf*(source.Stride + pixelSize);
-                            // lower right corner - to start processing from that point
-                        sCoefR = 0;
-                        sCoefG = 0;
-                        sCoefB = 0;
-                        sMembR = 0;
-                        sMembG = 0;
-                        sMembB = 0;
-
-                        srcR0 = *(srcPixel0 + 2);
-                        srcG0 = *(srcPixel0 + 1);
-                        srcB0 = *(srcPixel0);
-
-                        y = kernelSize; // move from lower right to upper left corner
-                        while (y != 0)
-                        {
-                            y--;
-
-                            ry = (int) (y - kernelHalf);
-                            if ((ry + i >= source.Height) || (ry + i < 0)) // bounds check
-                            {
-                                srcPixel = srcPixel - source.Stride;
-                                continue;
-                            }
-
-                            x = kernelSize;
-                            while (x != 0)
-                            {
-                                x--;
-
-                                rx = (int) (x - kernelHalf);
-
-                                if ((rx + k >= source.Width) || (rx + k < 0)) // bounds check
-                                {
-                                    srcPixel -= pixelSize;
-                                    continue;
-                                }
-
-                                srcR = *(srcPixel + 2);
-                                srcG = *(srcPixel + 1);
-                                srcB = *(srcPixel);
-
-                                coefR = spatialFunc[x, y]*colorFunc[srcR, srcR0];
-                                coefG = spatialFunc[x, y]*colorFunc[srcG, srcG0];
-                                coefB = spatialFunc[x, y]*colorFunc[srcB, srcB0];
-
-                                sCoefR += coefR;
-                                sCoefG += coefG;
-                                sCoefB += coefB;
-
-                                sMembR += coefR*srcR;
-                                sMembG += coefG*srcG;
-                                sMembB += coefB*srcB;
-
-                                srcPixel -= pixelSize;
-                            }
-
-                            srcPixel = srcPixel - source.Stride + bytesInKernelRow;
-                        }
-
-                        dstR = (byte) (sMembR/sCoefR);
-                        dstG = (byte) (sMembG/sCoefG);
-                        dstB = (byte) (sMembB/sCoefB);
-
-                        *(dstPixel0 + 2) = dstR;
-                        *(dstPixel0 + 1) = dstG;
-                        *(dstPixel0) = dstB;
-                    }
-                }
-            }
-            else // 8bpp grayscale
-            {
-                int rx, ry;
-                uint x, y;
+                // 8bpp grayscale images
                 byte srcC;
-                byte dstC;
                 byte srcC0;
                 byte* srcPixel;
-                byte* srcPixel0;
-                byte* dstPixel0;
                 double sCoefC, sMembC, coefC;
 
-                for (uint i = (uint)rect.Top; i < rect.Height + rect.Top; i++) //lines, y
+                for ( int y = startY; y < stopY; y++ )
                 {
-                    for (uint k = (uint)rect.Left; k < rect.Width + rect.Left; k++) //columns, x
+                    for ( int x = startX; x < stopX; x++, src++, dst++ )
                     {
-                        srcPixel0 = srcRow + (uint)(source.Stride * i) + (uint)(pixelSize * k);
-                        dstPixel0 = dstRow + (uint)(destination.Stride * i) + (uint)(pixelSize * k);
-                        srcPixel = srcPixel0 + kernelHalf * (source.Stride + pixelSize);
                         // lower right corner - to start processing from that point
-                        
+                        srcPixel = src + srcKernelFistPixelOffset;
+
                         sCoefC = 0;
                         sMembC = 0;
 
-                        srcC0 = *(srcPixel0);
+                        srcC0 = *src;
 
-                        y = kernelSize; // move from lower right to upper left corner
-                        while (y != 0)
+                        // move from lower right to upper left corner
+                        ty = kernelSize;
+                        while ( ty != 0 )
                         {
-                            y--;
+                            ty--;
 
-                            ry = (int)(y - kernelHalf);
-                            if ((ry + i >= source.Height) || (ry + i < 0)) // bounds check
+                            tx = kernelSize;
+                            while ( tx != 0 )
                             {
-                                srcPixel = srcPixel - source.Stride;
-                                continue;
-                            }
+                                tx--;
 
-                            x = kernelSize;
-                            while (x != 0)
-                            {
-                                x--;
-
-                                rx = (int)(x - kernelHalf);
-
-                                if ((rx + k >= source.Width) || (rx + k < 0)) // bounds check
-                                {
-                                    srcPixel -= pixelSize;
-                                    continue;
-                                }
-
-                                srcC = *(srcPixel);
-
-                                coefC = spatialFunc[x, y] * colorFunc[srcC, srcC0];
+                                srcC = *( srcPixel );
+                                coefC = spatialFunc[tx, ty] * colorFunc[srcC, srcC0];
 
                                 sCoefC += coefC;
-
                                 sMembC += coefC * srcC;
 
                                 srcPixel -= pixelSize;
                             }
 
-                            srcPixel = srcPixel - source.Stride + bytesInKernelRow;
+                            srcPixel -= srcKernelOffset;
                         }
 
-                        dstC = (byte)(sMembC / sCoefC);
-
-                        *(dstPixel0) = dstC;
+                        *dst = (byte) ( sMembC / sCoefC );
                     }
-                }               
+                    src += srcOffset;
+                    dst += dstOffset;
+                }
+            }
+        }
+
+        // Perform image processing with checking pixels' coordinates to make sure those are in bounds
+        private unsafe void ProcessWithEdgeChecks( UnmanagedImage source, UnmanagedImage destination, Rectangle rect )
+        {
+            int width  = source.Width;
+            int height = source.Height;
+
+            int startX = rect.Left;
+            int startY = rect.Top;
+            int stopX  = rect.Right;
+            int stopY  = rect.Bottom;
+
+            int pixelSize = System.Drawing.Image.GetPixelFormatSize( source.PixelFormat ) / 8;
+            int kernelHalf = kernelSize / 2;
+            int bytesInKernelRow = kernelSize * pixelSize;
+
+            int srcStride = source.Stride;
+            int dstStride = destination.Stride;
+
+            int srcOffset = srcStride - rect.Width * pixelSize;
+            int dstOffset = dstStride - rect.Width * pixelSize;
+
+            // offset of the first kernel's pixel
+            int srcKernelFistPixelOffset = kernelHalf * ( srcStride + pixelSize );
+            // offset to move to the next kernel's pixel after processing one kernel's row
+            int srcKernelOffset = srcStride - bytesInKernelRow;
+
+            int rx, ry;
+            int tx, ty;
+
+            byte* src = (byte*) source.ImageData.ToPointer( );
+            byte* dst = (byte*) destination.ImageData.ToPointer( );
+
+            // allign pointers to the first pixel to process
+            src += startY * srcStride + startX * pixelSize;
+            dst += startY * dstStride + startX * pixelSize;
+
+            if ( pixelSize > 1 )
+            {
+                // color images
+                byte srcR, srcG, srcB;
+                byte srcR0, srcG0, srcB0;
+                byte* srcPixel;
+
+                double sCoefR, sCoefG, sCoefB, sMembR, sMembG, sMembB, coefR, coefG, coefB;
+
+                for ( int y = startY; y < stopY; y++ )
+                {
+                    for ( int x = startX; x < stopX; x++, src += pixelSize, dst += pixelSize )
+                    {
+                        // lower right corner - to start processing from that point
+                        srcPixel = src + srcKernelFistPixelOffset;
+
+                        sCoefR = 0;
+                        sCoefG = 0;
+                        sCoefB = 0;
+                        sMembR = 0;
+                        sMembG = 0;
+                        sMembB = 0;
+
+                        srcR0 = src[RGB.R];
+                        srcG0 = src[RGB.G];
+                        srcB0 = src[RGB.B];
+
+                        // move from lower right to upper left corner
+                        ty = kernelSize;
+                        while ( ty != 0 )
+                        {
+                            ty--;
+                            ry = ty - kernelHalf;
+
+                            if ( ( ry + y >= height ) || ( ry + y < 0 ) ) // bounds check
+                            {
+                                srcPixel -= srcStride;
+                                continue;
+                            }
+
+                            tx = kernelSize;
+                            while ( tx != 0 )
+                            {
+                                tx--;
+                                rx = tx - kernelHalf;
+
+                                if ( ( rx + x >= width ) || ( rx + x < 0 ) ) // bounds check
+                                {
+                                    srcPixel -= pixelSize;
+                                    continue;
+                                }
+
+                                srcR = srcPixel[RGB.R];
+                                srcG = srcPixel[RGB.G];
+                                srcB = srcPixel[RGB.B];
+
+                                coefR = spatialFunc[tx, ty] * colorFunc[srcR, srcR0];
+                                coefG = spatialFunc[tx, ty] * colorFunc[srcG, srcG0];
+                                coefB = spatialFunc[tx, ty] * colorFunc[srcB, srcB0];
+
+                                sCoefR += coefR;
+                                sCoefG += coefG;
+                                sCoefB += coefB;
+
+                                sMembR += coefR * srcR;
+                                sMembG += coefG * srcG;
+                                sMembB += coefB * srcB;
+
+                                srcPixel -= pixelSize;
+                            }
+
+                            srcPixel -= srcKernelOffset;
+                        }
+
+                        dst[RGB.R] = (byte) ( sMembR / sCoefR );
+                        dst[RGB.G] = (byte) ( sMembG / sCoefG );
+                        dst[RGB.B] = (byte) ( sMembB / sCoefB );
+                    }
+
+                    src += srcOffset;
+                    dst += dstOffset;
+                }
+            }
+            else
+            {
+                // 8bpp grayscale images
+                byte srcC;
+                byte srcC0;
+                byte* srcPixel;
+                double sCoefC, sMembC, coefC;
+
+                for ( int y = startY; y < stopY; y++ )
+                {
+                    for ( int x = startX; x < stopX; x++, src++, dst++ )
+                    {
+                        // lower right corner - to start processing from that point
+                        srcPixel = src + srcKernelFistPixelOffset;
+
+                        sCoefC = 0;
+                        sMembC = 0;
+
+                        srcC0 = *src;
+
+                        // move from lower right to upper left corner
+                        ty = kernelSize;
+                        while ( ty != 0 )
+                        {
+                            ty--;
+                            ry = (int) ( ty - kernelHalf );
+
+                            if ( ( ry + y >= height ) || ( ry + y < 0 ) ) // bounds check
+                            {
+                                srcPixel -= srcStride;
+                                continue;
+                            }
+
+                            tx = kernelSize;
+                            while ( tx != 0 )
+                            {
+                                tx--;
+                                rx = (int) ( tx - kernelHalf );
+
+                                if ( ( rx + x >= source.Width ) || ( rx + x < 0 ) ) // bounds check
+                                {
+                                    srcPixel -= pixelSize;
+                                    continue;
+                                }
+
+                                srcC = *( srcPixel );
+                                coefC = spatialFunc[tx, ty] * colorFunc[srcC, srcC0];
+
+                                sCoefC += coefC;
+                                sMembC += coefC * srcC;
+
+                                srcPixel -= pixelSize;
+                            }
+
+                            srcPixel -= srcKernelOffset;
+                        }
+
+                        *dst = (byte) ( sMembC / sCoefC );
+                    }
+                    src += srcOffset;
+                    dst += dstOffset;
+                }
             }
         }
     }
