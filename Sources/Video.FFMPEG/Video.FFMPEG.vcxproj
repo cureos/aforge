@@ -89,10 +89,14 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <TargetMachine>MachineX86</TargetMachine>
       <KeyFile>AForge.Video.FFMPEG.snk</KeyFile>
+      <DelaySign>true</DelaySign>
     </Link>
     <Xdcmake>
       <DocumentLibraryDependencies>false</DocumentLibraryDependencies>
     </Xdcmake>
+    <PostBuildEvent>
+      <Command>sn -Ra $(TargetPath) $(ProjectDir)AForge.Video.FFMPEG.snk</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Reference Include="AForge.Video, Version=2.2.3.0, Culture=neutral, PublicKeyToken=cbfb6e07d173c401">
