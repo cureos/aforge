@@ -465,10 +465,8 @@ namespace AForge.Video.DirectShow
                 // run
                 mediaControl.Run( );
 
-                while ( !stopEvent.WaitOne( 0, false ) )
+                do
                 {
-                    Thread.Sleep( 100 );
-
                     if ( mediaEvent != null )
                     {
                         if ( mediaEvent.GetEvent( out code, out p1, out p2, 0 ) >= 0 )
@@ -483,6 +481,8 @@ namespace AForge.Video.DirectShow
                         }
                     }
                 }
+                while ( !stopEvent.WaitOne( 100, false ) );
+
                 mediaControl.Stop( );
             }
             catch ( Exception exception )

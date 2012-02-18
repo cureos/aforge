@@ -112,14 +112,11 @@ namespace AForge.Imaging.Filters
                 // for each pixel
                 for ( int x = startX; x < stopX; x++, src++, dst++ )
                 {
-                    max = 0;
-
                     // left diagonal
-                    d = (int) src[-srcStride - 1] - src[srcStride + 1];
-                    if ( d < 0 )
-                        d = -d;
-                    if ( d > max )
-                        max = d;
+                    max = (int) src[-srcStride - 1] - src[srcStride + 1];
+                    if ( max < 0 )
+                        max = -max;
+
                     // right diagonal
                     d = (int) src[-srcStride + 1] - src[srcStride - 1];
                     if ( d < 0 )

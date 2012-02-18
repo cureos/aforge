@@ -144,6 +144,8 @@ namespace AForge.Imaging
                 throw new InvalidImagePropertiesException( "BlobCounter cannot process images that are one pixel wide. Rotate the image or use RecursiveBlobCounter." );
             }
 
+            int imageWidthM1 = imageWidth - 1;
+
             // allocate labels array
             objectLabels = new int[imageWidth * imageHeight];
             // initial labels count
@@ -227,7 +229,7 @@ namespace AForge.Imaging
                         ++p;
 
                         // check left pixel and three upper pixels for the rest of pixels
-                        for ( int x = 1; x < imageWidth - 1; x++, src++, p++ )
+                        for ( int x = 1; x < imageWidthM1; x++, src++, p++ )
                         {
                             if ( *src > backgroundThresholdG )
                             {
