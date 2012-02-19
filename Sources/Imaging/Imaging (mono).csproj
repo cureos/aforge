@@ -108,9 +108,11 @@
     <Compile Include="Filters\Binarization\Threshold.cs" />
     <Compile Include="Filters\Binarization\ThresholdWithCarry.cs" />
     <Compile Include="Filters\Color Filters\BayerFilter.cs" />
+    <Compile Include="Filters\Color Filters\BrightnessCorrection.cs" />
     <Compile Include="Filters\Color Filters\ChannelFiltering.cs" />
     <Compile Include="Filters\Color Filters\ColorFiltering.cs" />
     <Compile Include="Filters\Color Filters\ColorRemapping.cs" />
+    <Compile Include="Filters\Color Filters\ContrastCorrection.cs" />
     <Compile Include="Filters\Color Filters\ContrastStretch.cs" />
     <Compile Include="Filters\Color Filters\BayerFilterOptimized.cs" />
     <Compile Include="Filters\Color Filters\EuclideanColorFiltering.cs" />
@@ -143,8 +145,6 @@
     <Compile Include="Filters\FilterIterator.cs" />
     <Compile Include="Filters\FiltersSequence.cs" />
     <Compile Include="Filters\Flood Fillers\PointedMeanFloodFill.cs" />
-    <Compile Include="Filters\HSL Filters\BrightnessCorrection.cs" />
-    <Compile Include="Filters\HSL Filters\ContrastCorrection.cs" />
     <Compile Include="Filters\HSL Filters\HSLFiltering.cs" />
     <Compile Include="Filters\HSL Filters\HSLLinear.cs" />
     <Compile Include="Filters\HSL Filters\HueModifier.cs" />
