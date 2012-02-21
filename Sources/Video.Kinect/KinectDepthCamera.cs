@@ -372,7 +372,10 @@ namespace AForge.Video.Kinect
                 {
                     if ( device != null )
                     {
-                        KinectNative.freenect_stop_depth( device.RawDevice );
+                        if ( !device.IsDeviceFailed( deviceID ) )
+                        {
+                            KinectNative.freenect_stop_depth( device.RawDevice );
+                        }
 
                         device.Dispose( );
                         device = null;

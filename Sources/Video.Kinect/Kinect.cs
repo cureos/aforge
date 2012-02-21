@@ -49,14 +49,14 @@ namespace AForge.Video.Kinect
         {
             public IntPtr Device;
             public int ReferenceCounter;
-            public int ErrorCounter;
+            public bool DeviceFailed;
             public KinectNative.TiltState TiltState;
 
             public DeviceContext( IntPtr device )
             {
                 Device = device;
                 ReferenceCounter = 0;
-                ErrorCounter = 0;
+                DeviceFailed = false;
             }
         }
 
@@ -191,7 +191,10 @@ namespace AForge.Video.Kinect
                 // decrease reference counter and check if we need to close the device
                 if ( --openDevices[deviceID].ReferenceCounter == 0 )
                 {
-                    KinectNative.freenect_close_device( rawDevice );
+                    if ( !openDevices[deviceID].DeviceFailed )
+                    {
+                        KinectNative.freenect_close_device( rawDevice );
+                    }
                     openDevices.Remove( deviceID );
                 }
 
@@ -347,7 +350,10 @@ namespace AForge.Video.Kinect
             lock ( statusThreadSync )
             {
                 stopEvent.Set( );
-                updateStatusThread.Join( );
+                if ( !updateStatusThread.Join( 2000 ) )
+                {
+                    updateStatusThread.Abort( );
+                }
 
                 stopEvent.Close( );
                 updateStatusThread = null;
@@ -358,7 +364,7 @@ namespace AForge.Video.Kinect
         // Kinect's status thread to process freenect's events
         private static void KinectStatusThread( )
         {
-            while ( !stopEvent.WaitOne( 0, false ) )
+            while ( !stopEvent.WaitOne( 100, false ) )
             {
                 lock ( openDevices )
                 {
@@ -367,14 +373,17 @@ namespace AForge.Video.Kinect
                         // update the status for each open device
                         foreach ( DeviceContext deviceContext in openDevices.Values )
                         {
+                            if ( deviceContext.DeviceFailed )
+                            {
+                                continue;
+                            }
+
                             if ( KinectNative.freenect_update_tilt_state( deviceContext.Device ) < 0 )
                             {
-                                deviceContext.ErrorCounter++;
+                                deviceContext.DeviceFailed = true;
                             }
                             else
                             {
-                                deviceContext.ErrorCounter = 0;
-
                                 // get updated device status
                                 IntPtr ptr = KinectNative.freenect_get_tilt_state( deviceContext.Device );
                                 deviceContext.TiltState = (KinectNative.TiltState)
@@ -385,7 +394,7 @@ namespace AForge.Video.Kinect
                 }
 
                 // let the kinect library handle any pending stuff on the usb stream
-                KinectNative.freenect_process_events( KinectNative.Context );
+                KinectNative.freenect_process_events_timeout( KinectNative.Context, 0 );
             }
         }
 
@@ -397,6 +406,10 @@ namespace AForge.Video.Kinect
             }
         }
 
+        internal bool IsDeviceFailed( int deviceID )
+        {
+            return ( ( openDevices.ContainsKey( deviceID ) ) && ( openDevices[deviceID].DeviceFailed ) );
+        }
         #endregion
     }
 }

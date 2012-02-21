@@ -151,6 +151,14 @@ namespace AForge.Video.Kinect
             public byte IsValid;
         }
 
+        // BSD like time value
+        [StructLayout( LayoutKind.Sequential )]
+        internal class timeval
+        {
+            public int sec;
+            public int usec;
+        }
+
         // Native callback for freenect library logging
         [UnmanagedFunctionPointer( CallingConvention.Cdecl )]
         public delegate void FreenectLogCallback( IntPtr device, LogLevelOptions logLevel, string message );
@@ -174,6 +182,22 @@ namespace AForge.Video.Kinect
             lock ( sync )
             {
                 return native_freenect_process_events( context );
+            }
+        }
+
+        [DllImport( "freenect", EntryPoint = "freenect_process_events_timeout", CallingConvention = CallingConvention.Cdecl )]
+        private static extern int native_freenect_process_events_timeout( IntPtr context, [In, Out, MarshalAs( UnmanagedType.LPStruct )] ref timeval timeout );
+
+        public static int freenect_process_events_timeout( IntPtr context, int timeout )
+        {
+            lock ( sync )
+            {
+                timeval time = new timeval( );
+
+                time.sec  = timeout / 1000;
+                time.usec = ( timeout % 1000 ) * 1000;
+
+                return native_freenect_process_events_timeout( context, ref time );
             }
         }
 
