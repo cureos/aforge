@@ -331,6 +331,8 @@ namespace AForge.Video.Kinect
 
                             success = true;
                             runningCameras.Add( deviceID );
+
+                            device.AddFailureHandler( deviceID, Stop );
                         }
                         finally
                         {
@@ -394,7 +396,9 @@ namespace AForge.Video.Kinect
                 {
                     if ( device != null )
                     {
-                        if ( !device.IsDeviceFailed( deviceID ) )
+                        bool deviceFailed = device.IsDeviceFailed( deviceID );
+
+                        if ( !deviceFailed )
                         {
                             KinectNative.freenect_stop_video( device.RawDevice );
                         }
@@ -405,7 +409,8 @@ namespace AForge.Video.Kinect
 
                         if ( PlayingFinished != null )
                         {
-                            PlayingFinished( this, ReasonToFinishPlaying.StoppedByUser );
+                            PlayingFinished( this, ( !deviceFailed ) ?
+                                ReasonToFinishPlaying.StoppedByUser : ReasonToFinishPlaying.DeviceLost );
                         }
                     }
 

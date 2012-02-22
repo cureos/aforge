@@ -45,6 +45,8 @@ namespace AForge.Video.Kinect
     ///
     public class Kinect : IDisposable
     {
+        internal delegate void DeviceFailureHandler( );
+
         private class DeviceContext
         {
             public IntPtr Device;
@@ -52,11 +54,34 @@ namespace AForge.Video.Kinect
             public bool DeviceFailed;
             public KinectNative.TiltState TiltState;
 
+            private object sync = new object( );
+            private List<DeviceFailureHandler> failureHanlders = new List<DeviceFailureHandler>( );
+
             public DeviceContext( IntPtr device )
             {
                 Device = device;
                 ReferenceCounter = 0;
                 DeviceFailed = false;
+            }
+
+            public void AddFailureHandler( DeviceFailureHandler handler )
+            {
+                lock ( sync )
+                {
+                    failureHanlders.Add( handler );
+                }
+            }
+
+            public void FireFailureHandlers( )
+            {
+                lock ( sync )
+                {
+                    foreach ( DeviceFailureHandler handler in failureHanlders )
+                    {
+                        handler( );
+                    }
+                    failureHanlders.Clear( );
+                }
             }
         }
 
@@ -340,6 +365,7 @@ namespace AForge.Video.Kinect
             {
                 stopEvent = new ManualResetEvent( false );
                 updateStatusThread = new Thread( KinectStatusThread );
+                updateStatusThread.IsBackground = true;
                 updateStatusThread.Start( );
             }
         }
@@ -381,6 +407,7 @@ namespace AForge.Video.Kinect
                             if ( KinectNative.freenect_update_tilt_state( deviceContext.Device ) < 0 )
                             {
                                 deviceContext.DeviceFailed = true;
+                                deviceContext.FireFailureHandlers( );
                             }
                             else
                             {
@@ -394,7 +421,7 @@ namespace AForge.Video.Kinect
                 }
 
                 // let the kinect library handle any pending stuff on the usb stream
-                KinectNative.freenect_process_events_timeout( KinectNative.Context, 0 );
+                KinectNative.freenect_process_events_timeout0( KinectNative.Context );
             }
         }
 
@@ -409,6 +436,14 @@ namespace AForge.Video.Kinect
         internal bool IsDeviceFailed( int deviceID )
         {
             return ( ( openDevices.ContainsKey( deviceID ) ) && ( openDevices[deviceID].DeviceFailed ) );
+        }
+
+        internal void AddFailureHandler( int deviceID, DeviceFailureHandler handler )
+        {
+            if ( openDevices.ContainsKey( deviceID ) )
+            {
+                openDevices[deviceID].AddFailureHandler( handler );
+            }
         }
         #endregion
     }

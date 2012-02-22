@@ -186,18 +186,13 @@ namespace AForge.Video.Kinect
         }
 
         [DllImport( "freenect", EntryPoint = "freenect_process_events_timeout", CallingConvention = CallingConvention.Cdecl )]
-        private static extern int native_freenect_process_events_timeout( IntPtr context, [In, Out, MarshalAs( UnmanagedType.LPStruct )] ref timeval timeout );
+        private static extern int native_freenect_process_events_timeout( IntPtr context, [In] IntPtr timeout );
 
-        public static int freenect_process_events_timeout( IntPtr context, int timeout )
+        public static int freenect_process_events_timeout0( IntPtr context )
         {
             lock ( sync )
             {
-                timeval time = new timeval( );
-
-                time.sec  = timeout / 1000;
-                time.usec = ( timeout % 1000 ) * 1000;
-
-                return native_freenect_process_events_timeout( context, ref time );
+                return native_freenect_process_events_timeout( context, IntPtr.Zero );
             }
         }
 
