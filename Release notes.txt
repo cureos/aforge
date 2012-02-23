@@ -1,3 +1,103 @@
+AForge.NET Framework 2.2.4 release notes
+----------------------------------------
+23.02.2012.
+
+Version updates and fixes:
+
+* Fixed registered issues/requests:
+  - Issue  53: Video Capture
+  - Issue  76: Can?t open video camera tv card
+  - Issue 271: Complex.Phase is slightly incorrect (or at least non-standard)
+  - Issue 272: Patch for /trunk/Sources/Neuro/Neurons/ActivationNeuron.cs
+  - Issue 273: static Random doesn't work in multi threading without locking...
+  - Issue 275: Resilient Backpropagation Learning
+  - Issue 277: Test if videoCapabilities is null
+  - Issue 279: Blob and BlobCounter cannot be extended as their constructors are internal. It would be good if we can extend these class.
+  - Issue 280: DisplayCrossbarPropertPage method for CaptureVideoDevices.
+  - Issue 281: GetPixel in UnmanagedImage class
+  - Issue 282: Image is not capturing from Capture Card
+  - Issue 283: Bilateral filter
+
+
+* AForge.Math
+  - Fixed Complex.Phase property, so it provides proper value for cases when real part is less than zero.
+
+
+* AForge.Imaging
+  - Blob'c constructor is made public, so could be reused by using inheritance.
+  
+  - Blob.CenterOfGravity property is changed to have AForge.Point type, which is float, so now calculated CoG is more accurate.
+  
+  - Added UnmanagedImage.GetPixel() method, which allows to get pixel out of 8/24/32 bpp image.
+  
+  - Added UnmanagedImage.SetPixel(int, int, byte) method, which allows setting pixel with all color component set to same value
+    (for grayscale image this method is more intuitive since there is no RGB-to-grayscale conversion).
+    
+  - Added support of 32 bpp RGB (not ARGB) images for BlobCounter.
+  
+  - Added implementation of Bilateral smoothing image processing routine.
+  
+  - Changing BrightnessCorrection and ContrastCorrection filter to use RGB color space instead of HSL:
+        1) It makes those filters faster;
+        2) It removes HSL related artifacts related to Hue;
+        3) It makes those filters simpler and more straight forward to users.
+        If someone is unhappy by this change, he can still use HSLLinear filter to get the effect as before.
+  
+
+* AForge.Neuro
+  - Replaced Neuron's static random numbers generator with its thread safe version.
+  
+  - Exposed Neuron.Weights, Layer.Neurons, Network.Layers properties instead of using [] accessors.
+  
+  - Optimized access to arrays to eliminate bound-checking.
+  
+  - Added implementation RProp (Resilient Back Propagation) neural network learning algorithm contributed by Cesar Souza.
+  
+  
+* AForge.Video.DirechShow
+  - VideoCaptureDevice is updated to never provide null for VideoCapabilities property. If device does not support video
+    capabilities or it failed providing them, then the property will return 0 length array, but not null.
+    
+  - Added VideoCaptureDevice.DisplayCrossbarPropertyPage() method, which allows showing property page of a crossbar for
+    the currently running video source (if it provide crossbar configuration).    
+
+  - Added VideoCaptureDevice.AvailableCrossbarVideoInputs property, which lists available video inputs of the capture card.
+    This can be used to select video input to use before running video device using your own UI.
+    
+  - Added VideoCaptureDevice.CrossbarVideoInput property, which allows setting video input to use by the video device.
+  
+  - VideoCaptureDeviceForm is updated to allow selecting video input for capture cards.
+  
+  
+* AForge.Video.FFMPEG
+  - Fixing VideoFileReader and VideoFileWriter classes so they convert file name to UTF8 string before opening file.
+  
+  - Fixing signing of AForge.Video.FFMPEG.dll assembly, so now it has valid signature.
+  
+  
+* AForge.Video.Kinect
+  - Updating libfreenect library with newer version which is checked out from master branch and built on February 20 2012.
+  
+  - Updated Kinect cameras' stopping routines, so they don't block when device was disconnected and user tries to stop cameras.
+  
+  - Added Kinect disconnection routine, so when Kinect device gets disconnected, cameras will stop automatically and
+    specify DeviceLost as a reason.
+    
+  - KNOWN ISSUES: It seems like libfreenect's freenect_process_events_timeout() function still blocks when device gets lost
+    causing some issue on the USB side, making it hardly possible to gracefully stop managed Kinect's status thread.
+    As a workaround the AForge.NET's code sets thread type to "background", so it does not stop application from exiting.
+
+
+* AForge.Controls
+  - Updated Chart control so it does not check if points coordinates are in X/Y range of the control when drawing them.
+    Instead of this the control sets clipping rectangle, so unwanted point/lines are not drawn.
+    
+  - Updated VideoSourcePlayer.GetCurrentVideoFrame() method so it returns complete copy of the current frame rather than
+    the object produced by Bitmap.Clone().
+    
+    
+
+
 AForge.NET Framework 2.2.3 release notes
 ----------------------------------------
 12.12.2011.
