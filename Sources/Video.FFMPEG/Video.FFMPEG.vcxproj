@@ -99,7 +99,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Reference Include="AForge.Video, Version=2.2.3.0, Culture=neutral, PublicKeyToken=cbfb6e07d173c401">
+    <Reference Include="AForge.Video, Version=2.2.4.0, Culture=neutral, PublicKeyToken=cbfb6e07d173c401">
       <HintPath>..\..\Release\AForge.Video.dll</HintPath>
     </Reference>
     <Reference Include="System">

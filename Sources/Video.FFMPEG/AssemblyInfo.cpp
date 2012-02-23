@@ -16,7 +16,7 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyConfigurationAttribute("")];
 [assembly:AssemblyCompanyAttribute("AForge")];
 [assembly:AssemblyProductAttribute("AForge.NET")];
-[assembly:AssemblyCopyrightAttribute("AForge © 2011")];
+[assembly:AssemblyCopyrightAttribute("AForge © 2012")];
 [assembly:AssemblyTrademarkAttribute("")];
 [assembly:AssemblyCultureAttribute("")];
 
@@ -31,8 +31,8 @@ using namespace System::Security::Permissions;
 // You can specify all the value or you can default the Revision and Build Numbers
 // by using the '*' as shown below:
 
-[assembly:AssemblyVersionAttribute("2.2.3.0")];
-[assembly:AssemblyFileVersionAttribute("2.2.3.0")]
+[assembly:AssemblyVersionAttribute("2.2.4.0")];
+[assembly:AssemblyFileVersionAttribute("2.2.4.0")]
 
 [assembly:ComVisible(false)];
 
