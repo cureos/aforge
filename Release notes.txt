@@ -1,3 +1,20 @@
+AForge.NET Framework 2.2.4.1 release notes
+----------------------------------------
+28.02.2012.
+
+Version updates and fixes:
+
+* Fixed registered issues/requests:
+  - Issue 290: Very noticeable video flicker/blinking using multiple different devices
+
+
+* AForge.Video.DirechShow
+  - Resetting flag which requires update of crossbar input right after the input type was set. There was a bug
+    in the code which was resulting setting crossbar input type again and again causing flickering.
+
+
+
+
 AForge.NET Framework 2.2.4 release notes
 ----------------------------------------
 23.02.2012.
