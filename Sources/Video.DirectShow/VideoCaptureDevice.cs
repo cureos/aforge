@@ -1020,6 +1020,7 @@ namespace AForge.Video.DirectShow
 
                         if ( needToSetVideoInput )
                         {
+                            needToSetVideoInput = false;
                             // set/check current input type of a video card (frame grabber)
                             if ( isCrossbarAvailable.Value )
                             {
