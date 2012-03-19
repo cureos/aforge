@@ -49,6 +49,7 @@ namespace AForge.Imaging.Filters
     public class HorizontalRunLengthSmoothing : BaseInPlacePartialFilter
     {
         private int maxGapSize = 10;
+        private bool processGapsWithImageBorders = false;
 
         /// <summary>
         /// Maximum gap size to fill (in pixels).
@@ -65,6 +66,22 @@ namespace AForge.Imaging.Filters
         {
             get { return maxGapSize; }
             set { maxGapSize = Math.Max( 1, Math.Min( 1000, value ) ); }
+        }
+
+        /// <summary>
+        /// Process gaps between objects and image borders or not.
+        /// </summary>
+        /// 
+        /// <remarks><para>The property sets if gaps between image borders and objects must be treated as
+        /// gaps between objects and also filled.</para>
+        /// 
+        /// <para>Default value is set to <see langword="false"/>.</para>
+        /// </remarks>
+        /// 
+        public bool ProcessGapsWithImageBorders
+        {
+            get { return processGapsWithImageBorders; }
+            set { processGapsWithImageBorders = value; }
         }
 
         // private format translation dictionary
@@ -120,6 +137,7 @@ namespace AForge.Imaging.Filters
 
             for ( int y = startY; y < stopY; y++ )
             {
+                byte* lineStart = ptr;
                 byte* lineEndPtr = ptr + width;
                 
                 // fill gaps between white pixels
@@ -136,10 +154,14 @@ namespace AForge.Imaging.Filters
                     // fill the gap between white areas
                     if ( ptr - gapStart <= maxGapSize )
                     {
-                        while ( gapStart < ptr )
+                        if ( ( processGapsWithImageBorders ) ||
+                           ( ( gapStart != lineStart ) && ( ptr != lineEndPtr ) ) )
                         {
-                            *gapStart = 255;
-                            gapStart++;
+                            while ( gapStart < ptr )
+                            {
+                                *gapStart = 255;
+                                gapStart++;
+                            }
                         }
                     }
 
