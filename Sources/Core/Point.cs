@@ -76,6 +76,23 @@ namespace AForge
         }
 
         /// <summary>
+        /// Calculate squared Euclidean distance between two points.
+        /// </summary>
+        /// 
+        /// <param name="anotherPoint">Point to calculate distance to.</param>
+        /// 
+        /// <returns>Returns squared Euclidean distance between this point and
+        /// <paramref name="anotherPoint"/> points.</returns>
+        /// 
+        public float SquaredDistanceTo( Point anotherPoint )
+        {
+            float dx = X - anotherPoint.X;
+            float dy = Y - anotherPoint.Y;
+
+            return dx * dx + dy * dy;
+        }
+
+        /// <summary>
         /// Addition operator - adds values of two points.
         /// </summary>
         /// 
