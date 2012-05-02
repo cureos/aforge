@@ -189,7 +189,10 @@ namespace AForge.Imaging.ColorReduction
             try
             {
                 result = Apply( new UnmanagedImage( data ) );
-                result.SetResolution( sourceImage.HorizontalResolution, sourceImage.VerticalResolution );
+                if ( ( sourceImage.HorizontalResolution > 0 ) && ( sourceImage.VerticalResolution > 0 ) )
+                {
+                    result.SetResolution( sourceImage.HorizontalResolution, sourceImage.VerticalResolution );
+                }
             }
             finally
             {
