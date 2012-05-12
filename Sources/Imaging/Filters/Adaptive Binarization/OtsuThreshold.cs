@@ -206,19 +206,15 @@ namespace AForge.Imaging.Filters
                 double max = double.MinValue;
 
                 // initial class probabilities
-                double class1ProbabiltyInit = 0;
-                double class2ProbabiltyInit = 1;
+                double class1Probability = 0;
+                double class2Probability = 1;
 
                 // initial class 1 mean value
                 double class1MeanInit = 0;
 
                 // check all thresholds
-                for ( int t = 0; t < 256; t++ )
+                for ( int t = 0; ( t < 256 ) && ( class2Probability > 0 ); t++ )
                 {
-                    // calculate class probabilities for the given threshold
-                    double class1Probability = class1ProbabiltyInit;
-                    double class2Probability = class2ProbabiltyInit;
-
                     // calculate class means for the given threshold
                     double class1Mean = class1MeanInit;
                     double class2Mean = ( imageMean - ( class1Mean * class1Probability ) ) / class2Probability;
@@ -234,15 +230,17 @@ namespace AForge.Imaging.Filters
                     }
 
                     // update initial probabilities and mean value
-                    class1MeanInit *= class1ProbabiltyInit;
+                    class1MeanInit *= class1Probability;
 
-                    class1ProbabiltyInit += histogram[t];
-                    class2ProbabiltyInit -= histogram[t];
+                    class1Probability += histogram[t];
+                    class2Probability -= histogram[t];
 
                     class1MeanInit += (double) t * (double) histogram[t];
 
-                    if ( class1ProbabiltyInit != 0 )
-                        class1MeanInit /= class1ProbabiltyInit;
+                    if ( class1Probability != 0 )
+                    {
+                        class1MeanInit /= class1Probability;
+                    }
                 }
             }
 
