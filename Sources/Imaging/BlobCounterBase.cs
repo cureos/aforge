@@ -1247,7 +1247,7 @@ namespace AForge.Imaging
                 for ( int j = 1; j <= objectsCount; j++ )
                 {
                     meanR[j] = meanB[j] = meanG[j];
-                    stdDevR[j] = stdDevB[j] = meanG[j];
+                    stdDevR[j] = stdDevB[j] = stdDevG[j];
                 }
             }
             else
