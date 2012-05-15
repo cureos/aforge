@@ -153,11 +153,15 @@ namespace AForge.Video.DirectShow
             {
                 if ( crossbarVideoInputs == null )
                 {
-                    if ( ( !string.IsNullOrEmpty( deviceMoniker ) ) && ( cacheCrossbarVideoInputs.ContainsKey( deviceMoniker ) ) )
+                    lock ( cacheCrossbarVideoInputs )
                     {
-                        crossbarVideoInputs = cacheCrossbarVideoInputs[deviceMoniker];
+                        if ( ( !string.IsNullOrEmpty( deviceMoniker ) ) && ( cacheCrossbarVideoInputs.ContainsKey( deviceMoniker ) ) )
+                        {
+                            crossbarVideoInputs = cacheCrossbarVideoInputs[deviceMoniker];
+                        }
                     }
-                    else
+
+                    if ( crossbarVideoInputs == null )
                     {
                         if ( !IsRunning )
                         {
@@ -171,14 +175,9 @@ namespace AForge.Video.DirectShow
                                 Thread.Sleep( 10 );
                             }
                         }
-
-                        if ( ( !string.IsNullOrEmpty( deviceMoniker ) ) && ( crossbarVideoInputs != null ) )
-                        {
-                            cacheCrossbarVideoInputs.Add( deviceMoniker, crossbarVideoInputs );
-                        }
                     }
                 }
-                // don't return null even capabilities are not provided for some reason
+                // don't return null even if capabilities are not provided for some reason
                 return ( crossbarVideoInputs != null ) ? crossbarVideoInputs : new VideoInput[0];
             }
         }
@@ -422,11 +421,15 @@ namespace AForge.Video.DirectShow
             {
                 if ( videoCapabilities == null )
                 {
-                    if ( ( !string.IsNullOrEmpty( deviceMoniker ) ) && ( cacheVideoCapabilities.ContainsKey( deviceMoniker ) ) )
+                    lock ( cacheVideoCapabilities )
                     {
-                        videoCapabilities = cacheVideoCapabilities[deviceMoniker];
+                        if ( ( !string.IsNullOrEmpty( deviceMoniker ) ) && ( cacheVideoCapabilities.ContainsKey( deviceMoniker ) ) )
+                        {
+                            videoCapabilities = cacheVideoCapabilities[deviceMoniker];
+                        }
                     }
-                    else
+
+                    if ( videoCapabilities == null )
                     {
                         if ( !IsRunning )
                         {
@@ -472,11 +475,15 @@ namespace AForge.Video.DirectShow
             {
                 if ( snapshotCapabilities == null )
                 {
-                    if ( ( !string.IsNullOrEmpty( deviceMoniker ) ) && ( cacheSnapshotCapabilities.ContainsKey( deviceMoniker ) ) )
+                    lock ( cacheSnapshotCapabilities )
                     {
-                        snapshotCapabilities = cacheSnapshotCapabilities[deviceMoniker];
+                        if ( ( !string.IsNullOrEmpty( deviceMoniker ) ) && ( cacheSnapshotCapabilities.ContainsKey( deviceMoniker ) ) )
+                        {
+                            snapshotCapabilities = cacheSnapshotCapabilities[deviceMoniker];
+                        }
                     }
-                    else
+
+                    if ( snapshotCapabilities == null )
                     {
                         if ( !IsRunning )
                         {
@@ -905,7 +912,7 @@ namespace AForge.Video.DirectShow
                     crossbar = (IAMCrossbar) crossbarObject;
                 }
                 isCrossbarAvailable = ( crossbar != null );
-                crossbarVideoInputs = ( crossbar != null ) ? ColletCrossbarVideoInputs( crossbar ) : new VideoInput[0];
+                crossbarVideoInputs = ColletCrossbarVideoInputs( crossbar );
 
                 if ( videoControl != null )
                 {
@@ -945,13 +952,19 @@ namespace AForge.Video.DirectShow
                 }
 
                 // put video/snapshot capabilities into cache
-                if ( ( videoCapabilities != null ) && ( !cacheVideoCapabilities.ContainsKey( deviceMoniker ) ) )
+                lock ( cacheVideoCapabilities )
                 {
-                    cacheVideoCapabilities.Add( deviceMoniker, videoCapabilities );
+                    if ( ( videoCapabilities != null ) && ( !cacheVideoCapabilities.ContainsKey( deviceMoniker ) ) )
+                    {
+                        cacheVideoCapabilities.Add( deviceMoniker, videoCapabilities );
+                    }
                 }
-                if ( ( snapshotCapabilities != null ) && ( !cacheSnapshotCapabilities.ContainsKey( deviceMoniker ) ) )
+                lock ( cacheSnapshotCapabilities )
                 {
-                    cacheSnapshotCapabilities.Add( deviceMoniker, snapshotCapabilities );
+                    if ( ( snapshotCapabilities != null ) && ( !cacheSnapshotCapabilities.ContainsKey( deviceMoniker ) ) )
+                    {
+                        cacheSnapshotCapabilities.Add( deviceMoniker, snapshotCapabilities );
+                    }
                 }
 
                 if ( runGraph )
@@ -1268,40 +1281,46 @@ namespace AForge.Video.DirectShow
         // Collect all video inputs of the specified crossbar
         private VideoInput[] ColletCrossbarVideoInputs( IAMCrossbar crossbar )
         {
-            if ( cacheCrossbarVideoInputs.ContainsKey( deviceMoniker ) )
+            lock ( cacheCrossbarVideoInputs )
             {
-                return cacheCrossbarVideoInputs[deviceMoniker];
-            }
-
-            List<VideoInput> videoInputsList = new List<VideoInput>( );
-
-            int inPinsCount, outPinsCount;
-
-            // gen number of pins in the crossbar
-            if ( crossbar.get_PinCounts( out outPinsCount, out inPinsCount ) == 0 )
-            {
-                // collect all video inputs
-                for ( int i = 0; i < inPinsCount; i++ )
+                if ( cacheCrossbarVideoInputs.ContainsKey( deviceMoniker ) )
                 {
-                    int pinIndexRelated;
-                    PhysicalConnectorType type;
+                    return cacheCrossbarVideoInputs[deviceMoniker];
+                }
 
-                    if ( crossbar.get_CrossbarPinInfo( true, i, out pinIndexRelated, out type ) != 0 )
-                        continue;
+                List<VideoInput> videoInputsList = new List<VideoInput>( );
 
-                    if ( type < PhysicalConnectorType.AudioTuner )
+                if ( crossbar != null )
+                {
+                    int inPinsCount, outPinsCount;
+
+                    // gen number of pins in the crossbar
+                    if ( crossbar.get_PinCounts( out outPinsCount, out inPinsCount ) == 0 )
                     {
-                        videoInputsList.Add( new VideoInput( i, type ) );
+                        // collect all video inputs
+                        for ( int i = 0; i < inPinsCount; i++ )
+                        {
+                            int pinIndexRelated;
+                            PhysicalConnectorType type;
+
+                            if ( crossbar.get_CrossbarPinInfo( true, i, out pinIndexRelated, out type ) != 0 )
+                                continue;
+
+                            if ( type < PhysicalConnectorType.AudioTuner )
+                            {
+                                videoInputsList.Add( new VideoInput( i, type ) );
+                            }
+                        }
                     }
                 }
+
+                VideoInput[] videoInputs = new VideoInput[videoInputsList.Count];
+                videoInputsList.CopyTo( videoInputs );
+
+                cacheCrossbarVideoInputs.Add( deviceMoniker, videoInputs );
+
+                return videoInputs;
             }
-
-            VideoInput[] videoInputs = new VideoInput[videoInputsList.Count];
-            videoInputsList.CopyTo( videoInputs );
-
-            cacheCrossbarVideoInputs.Add( deviceMoniker, videoInputs );
-
-            return videoInputs;
         }
 
         // Get type of input connected to video output of the crossbar
