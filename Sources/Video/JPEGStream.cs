@@ -83,7 +83,7 @@ namespace AForge.Video
         private bool forceBasicAuthentication = false;
 
         // buffer size used to download JPEG image
-		private const int bufferSize = 512 * 1024;
+		private const int bufferSize = 1024 * 1024;
         // size of portion to read at once
 		private const int readSize = 1024;		
 
