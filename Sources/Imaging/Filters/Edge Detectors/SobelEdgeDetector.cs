@@ -158,17 +158,18 @@ namespace AForge.Imaging.Filters
                 dst += dstOffset;
             }
 
+            
             // do we need scaling
             if ( ( scaleIntensity ) && ( max != 255 ) )
             {
                 // make the second pass for intensity scaling
                 double factor = 255.0 / (double) max;
-                dst = (byte*) destination.ImageData.ToPointer( ) + dstStride;
+                dst = (byte*) destination.ImageData.ToPointer( );
+                dst += dstStride * startY + startX;
 
                 // for each line
                 for ( int y = startY; y < stopY; y++ )
                 {
-                    dst++;
                     // for each pixel
                     for ( int x = startX; x < stopX; x++, dst++ )
                     {
@@ -177,7 +178,7 @@ namespace AForge.Imaging.Filters
                     dst += dstOffset;
                 }
             }
-
+            
             // draw black rectangle to remove those pixels, which were not processed
             // (this needs to be done for those cases, when filter is applied "in place" -
             // source image is modified instead of creating new copy)
