@@ -122,6 +122,8 @@ namespace AForge
                 {
                     instance.threadIdle[i].WaitOne( );
                 }
+
+                instance.loopBody = null;
             }
         }
 
