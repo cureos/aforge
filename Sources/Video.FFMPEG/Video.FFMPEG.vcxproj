@@ -95,7 +95,7 @@
       <DocumentLibraryDependencies>false</DocumentLibraryDependencies>
     </Xdcmake>
     <PostBuildEvent>
-      <Command>sn -Ra $(TargetPath) $(ProjectDir)AForge.Video.FFMPEG.snk</Command>
+      <Command>sn -Ra "$(TargetPath)" "$(ProjectDir)AForge.Video.FFMPEG.snk"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
