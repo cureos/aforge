@@ -1403,7 +1403,7 @@ namespace AForge.Video.DirectShow
                         if ( crossbar.get_CrossbarPinInfo( true, i, out pinIndexRelated, out type ) != 0 )
                             continue;
 
-                        if ( type == videoInput.Type )
+                        if ( ( type == videoInput.Type ) && ( i == videoInput.Index ) )
                         {
                             videoInputPinIndex = i;
                             break;
