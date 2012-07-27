@@ -101,6 +101,7 @@ namespace AForge.Vision.Motion
 
             if ( ( videoFrame.PixelFormat != PixelFormat.Format8bppIndexed ) &&
                  ( videoFrame.PixelFormat != PixelFormat.Format24bppRgb ) &&
+                 ( videoFrame.PixelFormat != PixelFormat.Format32bppRgb ) &&
                  ( videoFrame.PixelFormat != PixelFormat.Format32bppArgb ) )
             {
                 throw new UnsupportedImageFormatException( "Video frame must be 8 bpp grayscale image or 24/32 bpp color image." );
