@@ -1,8 +1,9 @@
 // AForge Neural Net Library
 // AForge.NET framework
+// http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2008
-// andrew.kirillov@gmail.com
+// Copyright © AForge.NET, 2007-2012
+// contacts@aforgenet.com
 //
 
 namespace AForge.Neuro
@@ -33,7 +34,7 @@ namespace AForge.Neuro
     /// </remarks>
     /// 
     [Serializable]
-    public class BipolarSigmoidFunction : IActivationFunction
+    public class BipolarSigmoidFunction : IActivationFunction, ICloneable
     {
         // sigmoid's alpha value
         private double alpha = 2;
@@ -125,6 +126,19 @@ namespace AForge.Neuro
         public double Derivative2( double y )
         {
             return ( alpha * ( 1 - y * y ) / 2 );
+        }
+
+        /// <summary>
+        /// Creates a new object that is a copy of the current instance.
+        /// </summary>
+        /// 
+        /// <returns>
+        /// A new object that is a copy of this instance.
+        /// </returns>
+        /// 
+        public object Clone( )
+        {
+            return new BipolarSigmoidFunction( alpha );
         }
     }
 }
