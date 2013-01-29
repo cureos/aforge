@@ -289,8 +289,8 @@ namespace AForge.Imaging
                 rgb.Red   = (byte) ( 255 * Hue_2_RGB( v1, v2, hue + ( 1.0f / 3 ) ) );
                 rgb.Green = (byte) ( 255 * Hue_2_RGB( v1, v2, hue ) );
                 rgb.Blue  = (byte) ( 255 * Hue_2_RGB( v1, v2, hue - ( 1.0f / 3 ) ) );
-                rgb.Alpha = 255;
             }
+            rgb.Alpha = 255;
         }
 
         /// <summary>
