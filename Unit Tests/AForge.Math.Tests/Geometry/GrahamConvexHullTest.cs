@@ -9,6 +9,7 @@ namespace AForge.Math.Geometry.Tests
     [TestFixture]
     public class GrahamConvexHullTest
     {
+        private List<IntPoint> pointsList0 = new List<IntPoint>( );
         private List<IntPoint> pointsList1 = new List<IntPoint>( );
         private List<IntPoint> pointsList2 = new List<IntPoint>( );
         private List<IntPoint> pointsList3 = new List<IntPoint>( );
@@ -27,6 +28,9 @@ namespace AForge.Math.Geometry.Tests
 
         public GrahamConvexHullTest( )
         {
+            // prepare 0st list
+            pointsList0.Add( new IntPoint( 0, 0 ) );
+
             // prepare 1st list
             pointsList1.Add( new IntPoint( 0, 0 ) );
             pointsList1.Add( new IntPoint( 100, 0 ) );
@@ -74,6 +78,7 @@ namespace AForge.Math.Geometry.Tests
             pointsList9.Add( new IntPoint( 10, 50 ) );
 
             // now prepare list of tests
+            pointsLists.Add( pointsList0 );
             pointsLists.Add( pointsList1 );
             pointsLists.Add( pointsList2 );
             pointsLists.Add( pointsList3 );
