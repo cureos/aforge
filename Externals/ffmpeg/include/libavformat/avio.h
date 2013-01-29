@@ -22,6 +22,7 @@
 
 /**
  * @file
+ * @ingroup lavf_io
  * Buffered I/O operations
  */
 
@@ -119,6 +120,12 @@ typedef struct {
      * A combination of AVIO_SEEKABLE_ flags or 0 when the stream is not seekable.
      */
     int seekable;
+
+    /**
+     * max filesize, used to limit allocations
+     * This field is internal to libavformat and access from outside is not allowed.
+     */
+     int64_t maxsize;
 } AVIOContext;
 
 /* unbuffered I/O */
@@ -145,6 +152,7 @@ typedef struct URLContext {
 } URLContext;
 
 #define URL_PROTOCOL_FLAG_NESTED_SCHEME 1 /*< The protocol name can be the first part of a nested protocol scheme */
+#define URL_PROTOCOL_FLAG_NETWORK       2 /*< The protocol uses network */
 
 /**
  * @deprecated This struct is to be made private. Use the higher-level
@@ -202,7 +210,7 @@ attribute_deprecated int url_poll(URLPollEntry *poll_table, int n, int timeout);
  * Warning: non-blocking protocols is work-in-progress; this flag may be
  * silently ignored.
  */
-#define URL_FLAG_NONBLOCK 4
+#define URL_FLAG_NONBLOCK 8
 
 typedef int URLInterruptCB(void);
 extern URLInterruptCB *url_interrupt_cb;
@@ -211,6 +219,7 @@ extern URLInterruptCB *url_interrupt_cb;
  * @defgroup old_url_funcs Old url_* functions
  * The following functions are deprecated. Use the buffered API based on #AVIOContext instead.
  * @{
+ * @ingroup lavf_io
  */
 attribute_deprecated int url_open_protocol (URLContext **puc, struct URLProtocol *up,
                                             const char *url, int flags);
@@ -271,6 +280,7 @@ attribute_deprecated AVIOContext *av_alloc_put_byte(
  * @defgroup old_avio_funcs Old put_/get_*() functions
  * The following functions are deprecated. Use the "avio_"-prefixed functions instead.
  * @{
+ * @ingroup lavf_io
  */
 attribute_deprecated int          get_buffer(AVIOContext *s, unsigned char *buf, int size);
 attribute_deprecated int          get_partial_buffer(AVIOContext *s, unsigned char *buf, int size);
@@ -308,6 +318,7 @@ attribute_deprecated int64_t av_url_read_fseek (AVIOContext *h,    int stream_in
  * @defgroup old_url_f_funcs Old url_f* functions
  * The following functions are deprecated, use the "avio_"-prefixed functions instead.
  * @{
+ * @ingroup lavf_io
  */
 attribute_deprecated int url_fopen( AVIOContext **s, const char *url, int flags);
 attribute_deprecated int url_fclose(AVIOContext *s);
@@ -668,13 +679,13 @@ int     avio_pause(AVIOContext *h, int pause);
  *        If stream_index is (-1) the timestamp should be in AV_TIME_BASE
  *        units from the beginning of the presentation.
  *        If a stream_index >= 0 is used and the protocol does not support
- *        seeking based on component streams, the call will fail with ENOTSUP.
+ *        seeking based on component streams, the call will fail.
  * @param timestamp timestamp in AVStream.time_base units
  *        or if there is no stream specified then in AV_TIME_BASE units.
  * @param flags Optional combination of AVSEEK_FLAG_BACKWARD, AVSEEK_FLAG_BYTE
  *        and AVSEEK_FLAG_ANY. The protocol may silently ignore
  *        AVSEEK_FLAG_BACKWARD and AVSEEK_FLAG_ANY, but AVSEEK_FLAG_BYTE will
- *        fail with ENOTSUP if used and not supported.
+ *        fail if used and not supported.
  * @return >= 0 on success
  * @see AVInputFormat::read_seek
  */
