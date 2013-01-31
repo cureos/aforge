@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © AForge.NET, 2009-2011
+// Copyright © AForge.NET, 2009-2013
 // contacts@aforgenet.com
 //
 
@@ -217,7 +217,76 @@ namespace AForge.Video.DirectShow.Internals
         public BitmapInfoHeader BmiHeader;
     }
 
-    // BITMAPINFOHEADER
+    // VIDEOINFOHEADER2
+
+    /// <summary>
+    /// The structure describes the bitmap and color information for a video image (v2).
+    /// </summary>
+    /// 
+    [ComVisible( false ),
+    StructLayout( LayoutKind.Sequential )]
+    internal struct VideoInfoHeader2
+    {
+        /// <summary>
+        /// <see cref="RECT"/> structure that specifies the source video window.
+        /// </summary>
+        public RECT SrcRect;
+
+        /// <summary>
+        /// <see cref="RECT"/> structure that specifies the destination video window.
+        /// </summary>
+        public RECT TargetRect;
+
+        /// <summary>
+        /// Approximate data rate of the video stream, in bits per second.
+        /// </summary>
+        public int BitRate;
+
+        /// <summary>
+        /// Data error rate, in bit errors per second.
+        /// </summary>
+        public int BitErrorRate;
+
+        /// <summary>
+        /// The desired average display time of the video frames, in 100-nanosecond units.
+        /// </summary>
+        public long AverageTimePerFrame;
+
+        /// <summary>
+        /// Flags that specify how the video is interlaced.
+        /// </summary>
+        public int InterlaceFlags;
+
+        /// <summary>
+        /// Flag set to indicate that the duplication of the stream should be restricted.
+        /// </summary>
+        public int CopyProtectFlags;
+
+        /// <summary>
+        /// The X dimension of picture aspect ratio.
+        /// </summary>
+        public int PictAspectRatioX;
+
+        /// <summary>
+        /// The Y dimension of picture aspect ratio.
+        /// </summary>
+        public int PictAspectRatioY;
+
+        /// <summary>
+        /// Reserved for future use.
+        /// </summary>
+        public int Reserved1;
+
+        /// <summary>
+        /// Reserved for future use. 
+        /// </summary>
+        public int Reserved2;
+
+        /// <summary>
+        /// <see cref="BitmapInfoHeader"/> structure that contains color and dimension information for the video image bitmap.
+        /// </summary>
+        public BitmapInfoHeader BmiHeader;
+    }
 
     /// <summary>
     /// The structure contains information about the dimensions and color format of a device-independent bitmap (DIB).

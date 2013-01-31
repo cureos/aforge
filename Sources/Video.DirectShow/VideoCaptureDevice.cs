@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © AForge.NET, 2009-2012
+// Copyright © AForge.NET, 2009-2013
 // contacts@aforgenet.com
 //
 
@@ -60,12 +60,11 @@ namespace AForge.Video.DirectShow
         private int framesReceived;
         // recieved byte count
         private long bytesReceived;
-        // specifies desired size of captured video frames
-        private Size desiredFrameSize = new Size( 0, 0 );
-        // specifies desired video capture frame rate
-        private int desiredFrameRate = 0;
-        // specifies desired size of captured snapshot frames
-        private Size desiredSnapshotSize = new Size( 0, 0 );
+
+        // video and snapshot resolutions to set
+        private VideoCapabilities videoResolution = null;
+        private VideoCapabilities snapshotResolution = null;
+
         // provide snapshots or not
         private bool provideSnapshots = false;
 
@@ -193,7 +192,7 @@ namespace AForge.Video.DirectShow
         /// event.</para>
         /// 
         /// <para>Check supported sizes of snapshots using <see cref="SnapshotCapabilities"/> property and set the
-        /// desired size using <see cref="DesiredSnapshotSize"/> property.</para>
+        /// desired size using <see cref="SnapshotResolution"/> property.</para>
         /// 
         /// <para><note>The property must be set before running the video source to take effect.</note></para>
         /// 
@@ -335,73 +334,82 @@ namespace AForge.Video.DirectShow
         }
 
         /// <summary>
-        /// Desired size of captured video frames.
+        /// Obsolete - no longer in use
         /// </summary>
         /// 
-        /// <remarks><para>The property sets desired video frame size. However capture
-        /// device may not always provide video frames of configured size due to the fact
-        /// that the size is not supported by it.</para>
+        /// <remarks><para>The property is obsolete. Use <see cref="VideoResolution"/> property instead.
+        /// Setting this property does not have any effect.</para></remarks>
         /// 
-        /// <para>If the property is set to size (0, 0), then capture device uses its own
-        /// default video frame size configuration.</para>
-        /// 
-        /// <para>Default value of the property is set to (0, 0).</para>
-        /// 
-        /// <para><note>The property should be configured before video source is started
-        /// to take effect.</note></para></remarks>
-        /// 
+        [Obsolete]
         public Size DesiredFrameSize
         {
-            get { return desiredFrameSize; }
-            set { desiredFrameSize = value; }
+            get { return Size.Empty; }
+            set { }
         }
 
         /// <summary>
-        /// Desired size of captured snapshot frames.
+        /// Obsolete - no longer in use
         /// </summary>
         /// 
-        /// <remarks><para>The property sets desired snapshot size. However capture
-        /// device may not always provide snapshots of configured size due to the fact
-        /// that the size is not supported by it.</para>
+        /// <remarks><para>The property is obsolete. Use <see cref="SnapshotResolution"/> property instead.
+        /// Setting this property does not have any effect.</para></remarks>
         /// 
-        /// <para>If the property is set to size (0, 0), then capture device uses its own
-        /// default snapshot size configuration.</para>
-        /// 
-        /// <para>See documentation to <see cref="ProvideSnapshots"/> for additional information.</para>
-        /// 
-        /// <para>Default value of the property is set to (0, 0).</para>
-        /// 
-        /// <para><note>The property should be configured before video source is started
-        /// to take effect.</note></para></remarks>
-        /// 
-        /// <seealso cref="ProvideSnapshots"/>
-        /// 
+        [Obsolete]
         public Size DesiredSnapshotSize
         {
-            get { return desiredSnapshotSize; }
-            set { desiredSnapshotSize = value; }
+            get { return Size.Empty; }
+            set { }
         }
 
         /// <summary>
-        /// Desired capture frame rate.
+        /// Obsolete - no longer in use.
         /// </summary>
         /// 
-        /// <remarks><para>The property sets desired capture frame rate. However capture
-        /// device may not always provide the exact configured frame rate due to its
-        /// capabilities, system performance, etc.</para>
+        /// <remarks><para>The property is obsolete. Setting this property does not have any effect.</para></remarks>
         /// 
-        /// <para>If the property is set to 0, then capture device uses its own default
-        /// frame rate.</para>
-        /// 
-        /// <para>Default value of the property is set to 0.</para>
-        /// 
-        /// <para><note>The property should be configured before video source is started
-        /// to take effect.</note></para></remarks>
-        /// 
+        [Obsolete]
         public int DesiredFrameRate
         {
-            get { return desiredFrameRate; }
-            set { desiredFrameRate = value; }
+            get { return 0; }
+            set { }
+        }
+
+        /// <summary>
+        /// Video resolution to set.
+        /// </summary>
+        /// 
+        /// <remarks><para>The property allows to set one of the video resolutions supported by the camera.
+        /// Use <see cref="VideoCapabilities"/> property to get the list of supported video resolutions.</para>
+        /// 
+        /// <para><note>The property must be set before camera is started to make any effect.</note></para>
+        /// 
+        /// <para>Default value of the property is set to <see langword="null"/>, which means default video
+        /// resolution is used.</para>
+        /// </remarks>
+        /// 
+        public VideoCapabilities VideoResolution
+        {
+            get { return videoResolution; }
+            set { videoResolution = value; }
+        }
+
+        /// <summary>
+        /// Snapshot resolution to set.
+        /// </summary>
+        /// 
+        /// <remarks><para>The property allows to set one of the snapshot resolutions supported by the camera.
+        /// Use <see cref="SnapshotCapabilities"/> property to get the list of supported snapshot resolutions.</para>
+        /// 
+        /// <para><note>The property must be set before camera is started to make any effect.</note></para>
+        /// 
+        /// <para>Default value of the property is set to <see langword="null"/>, which means default snapshot
+        /// resolution is used.</para>
+        /// </remarks>
+        /// 
+        public VideoCapabilities SnapshotResolution
+        {
+            get { return snapshotResolution; }
+            set { snapshotResolution = value; }
         }
 
         /// <summary>
@@ -940,11 +948,11 @@ namespace AForge.Video.DirectShow
 
                 // configure pins
                 GetPinCapabilitiesAndConfigureSizeAndRate( captureGraph, sourceBase,
-                    PinCategory.Capture, desiredFrameSize, desiredFrameRate, ref videoCapabilities );
+                    PinCategory.Capture, videoResolution, ref videoCapabilities );
                 if ( isSapshotSupported )
                 {
                     GetPinCapabilitiesAndConfigureSizeAndRate( captureGraph, sourceBase,
-                        PinCategory.StillImage, desiredSnapshotSize, 0, ref snapshotCapabilities );
+                        PinCategory.StillImage, snapshotResolution, ref snapshotCapabilities );
                 }
                 else
                 {
@@ -1142,70 +1150,51 @@ namespace AForge.Video.DirectShow
             }
         }
 
-        // Set frame's size and rate for the specified stream configuration
-        private void SetFrameSizeAndRate( IAMStreamConfig streamConfig, Size size, int frameRate )
+        // Set resolution for the specified stream configuration
+        private void SetResolution( IAMStreamConfig streamConfig, VideoCapabilities resolution )
         {
-            bool sizeSet = false;
-            AMMediaType mediaType;
-
-            // get current format
-            streamConfig.GetFormat( out mediaType );
-
-            // change frame size if required
-            if ( ( size.Width != 0 ) && ( size.Height != 0 ) )
+            if ( resolution == null )
             {
-                // iterate through device's capabilities to find mediaType for desired resolution
-                int capabilitiesCount = 0, capabilitySize = 0;
-                AMMediaType newMediaType = null;
-                VideoStreamConfigCaps caps = new VideoStreamConfigCaps( );
+                return;
+            }
 
-                streamConfig.GetNumberOfCapabilities( out capabilitiesCount, out capabilitySize );
+            // iterate through device's capabilities to find mediaType for desired resolution
+            int capabilitiesCount = 0, capabilitySize = 0;
+            AMMediaType newMediaType = null;
+            VideoStreamConfigCaps caps = new VideoStreamConfigCaps( );
 
-                for ( int i = 0; i < capabilitiesCount; i++ )
+            streamConfig.GetNumberOfCapabilities( out capabilitiesCount, out capabilitySize );
+
+            for ( int i = 0; i < capabilitiesCount; i++ )
+            {
+                try
                 {
-                    if ( streamConfig.GetStreamCaps( i, out newMediaType, caps ) == 0 )
+                    VideoCapabilities vc = new VideoCapabilities( streamConfig, i );
+
+                    if ( resolution == vc )
                     {
-                        if ( caps.InputSize == size )
+                        if ( streamConfig.GetStreamCaps( i, out newMediaType, caps ) == 0 )
                         {
-                            mediaType.Dispose( );
-                            mediaType = newMediaType;
-                            sizeSet = true;
                             break;
-                        }
-                        else
-                        {
-                            newMediaType.Dispose( );
                         }
                     }
                 }
+                catch
+                {
+                }
             }
-
-            VideoInfoHeader infoHeader = (VideoInfoHeader) Marshal.PtrToStructure( mediaType.FormatPtr, typeof( VideoInfoHeader ) );
-
-            // try changing size manually if failed finding mediaType before
-            if ( ( size.Width != 0 ) && ( size.Height != 0 ) && ( !sizeSet ) )
-            {
-                infoHeader.BmiHeader.Width  = size.Width;
-                infoHeader.BmiHeader.Height = size.Height;
-            }
-            // change frame rate if required
-            if ( frameRate != 0 )
-            {
-                infoHeader.AverageTimePerFrame = 10000000 / frameRate;
-            }
-
-            // copy the media structure back
-            Marshal.StructureToPtr( infoHeader, mediaType.FormatPtr, false );
 
             // set the new format
-            streamConfig.SetFormat( mediaType );
-
-            mediaType.Dispose( );
+            if ( newMediaType != null )
+            {
+                streamConfig.SetFormat( newMediaType );
+                newMediaType.Dispose( );
+            }
         }
 
         // Configure specified pin and collect its capabilities if required
         private void GetPinCapabilitiesAndConfigureSizeAndRate( ICaptureGraphBuilder2 graphBuilder, IBaseFilter baseFilter,
-            Guid pinCategory, Size size, int frameRate, ref VideoCapabilities[] capabilities )
+            Guid pinCategory, VideoCapabilities resolutionToSet, ref VideoCapabilities[] capabilities )
         {
             object streamConfigObject;
             graphBuilder.FindInterface( pinCategory, MediaType.Video, baseFilter, typeof( IAMStreamConfig ).GUID, out streamConfigObject );
@@ -1237,9 +1226,9 @@ namespace AForge.Video.DirectShow
                     }
 
                     // check if it is required to change capture settings
-                    if ( ( frameRate != 0 ) || ( ( size.Width != 0 ) && ( size.Height != 0 ) ) )
+                    if ( resolutionToSet != null )
                     {
-                        SetFrameSizeAndRate( streamConfig, size, frameRate );
+                        SetResolution( streamConfig, resolutionToSet );
                     }
                 }
             }

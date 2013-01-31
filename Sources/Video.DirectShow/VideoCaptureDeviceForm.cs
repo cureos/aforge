@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © AForge.NET, 2009-2011
+// Copyright © AForge.NET, 2009-2013
 // contacts@aforgenet.com
 //
 
@@ -209,9 +209,7 @@ namespace AForge.Video.DirectShow
             {
                 VideoCapabilities caps = videoCapabilitiesDictionary[(string) videoResolutionsCombo.SelectedItem];
 
-                videoDevice.DesiredFrameSize = caps.FrameSize;
-                videoDevice.DesiredFrameRate = caps.FrameRate;
-
+                videoDevice.VideoResolution = caps;
                 captureSize = caps.FrameSize;
             }
 
@@ -223,7 +221,7 @@ namespace AForge.Video.DirectShow
                     VideoCapabilities caps = snapshotCapabilitiesDictionary[(string) snapshotResolutionsCombo.SelectedItem];
 
                     videoDevice.ProvideSnapshots = true;
-                    videoDevice.DesiredSnapshotSize = caps.FrameSize;
+                    videoDevice.SnapshotResolution = caps;
 
                     snapshotSize = caps.FrameSize;
                 }
@@ -282,13 +280,6 @@ namespace AForge.Video.DirectShow
                     if ( !videoCapabilitiesDictionary.ContainsKey( item ) )
                     {
                         videoCapabilitiesDictionary.Add( item, capabilty );
-                    }
-                    else
-                    {
-                        if ( capabilty.FrameRate > videoCapabilitiesDictionary[item].FrameRate )
-                        {
-                            videoCapabilitiesDictionary[item] = capabilty;
-                        }
                     }
                 }
 

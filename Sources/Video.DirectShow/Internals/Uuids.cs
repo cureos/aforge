@@ -2,7 +2,7 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © AForge.NET, 2009-2012
+// Copyright © AForge.NET, 2009-2013
 // contacts@aforgenet.com
 //
 
@@ -64,7 +64,33 @@ namespace AForge.Video.DirectShow.Internals
     }
 
     /// <summary>
-    /// DirectShow media typesþ
+    /// DirectShow format types.
+    /// </summary>
+    /// 
+    [ComVisible( false )]
+    static internal class FormatType
+    {
+        /// <summary>
+        /// VideoInfo.
+        /// </summary>
+        /// 
+        /// <remarks>Equals to FORMAT_VideoInfo.</remarks>
+        /// 
+        public static readonly Guid VideoInfo =
+            new Guid( 0x05589F80, 0xC356, 0x11CE, 0xBF, 0x01, 0x00, 0xAA, 0x00, 0x55, 0x59, 0x5A );
+
+        /// <summary>
+        /// VideoInfo2.
+        /// </summary>
+        /// 
+        /// <remarks>Equals to FORMAT_VideoInfo2.</remarks>
+        /// 
+        public static readonly Guid VideoInfo2 =
+            new Guid( 0xf72A76A0, 0xEB0A, 0x11D0, 0xAC, 0xE4, 0x00, 0x00, 0xC0, 0xCC, 0x16, 0xBA );
+    }
+
+    /// <summary>
+    /// DirectShow media types.
     /// </summary>
     /// 
     [ComVisible( false )]

@@ -99,18 +99,14 @@ namespace Snapshot_Maker
 
                 foreach ( VideoCapabilities capabilty in videoCapabilities )
                 {
-                    if ( !videoResolutionsCombo.Items.Contains( capabilty.FrameSize ) )
-                    {
-                        videoResolutionsCombo.Items.Add( capabilty.FrameSize );
-                    }
+                    videoResolutionsCombo.Items.Add( string.Format( "{0} x {1}",
+                        capabilty.FrameSize.Width, capabilty.FrameSize.Height ) );
                 }
 
                 foreach ( VideoCapabilities capabilty in snapshotCapabilities )
                 {
-                    if ( !snapshotResolutionsCombo.Items.Contains( capabilty.FrameSize ) )
-                    {
-                        snapshotResolutionsCombo.Items.Add( capabilty.FrameSize );
-                    }
+                    snapshotResolutionsCombo.Items.Add( string.Format( "{0} x {1}",
+                        capabilty.FrameSize.Width, capabilty.FrameSize.Height ) );
                 }
 
                 if ( videoCapabilities.Length == 0 )
@@ -138,13 +134,13 @@ namespace Snapshot_Maker
             {
                 if ( ( videoCapabilities != null ) && ( videoCapabilities.Length != 0 ) )
                 {
-                    videoDevice.DesiredFrameSize = (Size) videoResolutionsCombo.SelectedItem;
+                    videoDevice.VideoResolution = videoCapabilities[videoResolutionsCombo.SelectedIndex];
                 }
 
                 if ( ( snapshotCapabilities != null ) && ( snapshotCapabilities.Length != 0 ) )
                 {
                     videoDevice.ProvideSnapshots = true;
-                    videoDevice.DesiredSnapshotSize = (Size) snapshotResolutionsCombo.SelectedItem;
+                    videoDevice.SnapshotResolution = snapshotCapabilities[snapshotResolutionsCombo.SelectedIndex];
                     videoDevice.SnapshotFrame += new NewFrameEventHandler( videoDevice_SnapshotFrame );
                 }
 
