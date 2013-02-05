@@ -830,12 +830,12 @@ namespace AForge.Video.DirectShow
                     throw new ApplicationException( "Failed creating device object for moniker." );
                 }
 
-                if ( !( sourceObject is IAMCameraControl ) )
+                if ( !( tempSourceObject is IAMCameraControl ) )
                 {
                     throw new NotSupportedException( "The video source does not support camera control." );
                 }
 
-                IAMCameraControl pCamControl = (IAMCameraControl) sourceObject;
+                IAMCameraControl pCamControl = (IAMCameraControl) tempSourceObject;
                 int hr = pCamControl.Set( property, value, controlFlags );
 
                 ret = ( hr >= 0 );
@@ -870,12 +870,12 @@ namespace AForge.Video.DirectShow
                     throw new ApplicationException( "Failed creating device object for moniker." );
                 }
 
-                if ( !( sourceObject is IAMCameraControl ) )
+                if ( !( tempSourceObject is IAMCameraControl ) )
                 {
                     throw new NotSupportedException( "The video source does not support camera control." );
                 }
 
-                IAMCameraControl pCamControl = (IAMCameraControl) sourceObject;
+                IAMCameraControl pCamControl = (IAMCameraControl) tempSourceObject;
                 int hr = pCamControl.Get( property, out value, out controlFlags );
 
                 ret = ( hr >= 0 );
@@ -910,12 +910,12 @@ namespace AForge.Video.DirectShow
                     throw new ApplicationException( "Failed creating device object for moniker." );
                 }
 
-                if ( !( sourceObject is IAMCameraControl ) )
+                if ( !( tempSourceObject is IAMCameraControl ) )
                 {
                     throw new NotSupportedException( "The video source does not support camera control." );
                 }
 
-                IAMCameraControl pCamControl = (IAMCameraControl) sourceObject;
+                IAMCameraControl pCamControl = (IAMCameraControl) tempSourceObject;
                 int hr = pCamControl.GetRange( property, out minValue, out maxValue, out stepSize, out defaultValue, out controlFlags );
 
                 ret = ( hr >= 0 );
