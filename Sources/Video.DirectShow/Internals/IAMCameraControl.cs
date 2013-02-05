@@ -21,7 +21,7 @@ namespace AForge.Video.DirectShow.Internals
     internal interface IAMCameraControl
     {
         /// <summary>
-        /// Gets the current setting of a camera property.
+        /// Gets the range and default value of a specified camera property.
         /// </summary>
         /// 
         /// <param name="Property">Specifies the property to query.</param>
@@ -44,7 +44,7 @@ namespace AForge.Video.DirectShow.Internals
             );
 
         /// <summary>
-        /// Gets the range and default value of a specified camera property.
+        /// Sets a specified property on the camera.
         /// </summary>
         /// 
         /// <param name="Property">Specifies the property to set.</param>
@@ -61,7 +61,7 @@ namespace AForge.Video.DirectShow.Internals
             );
 
         /// <summary>
-        /// Sets a specified property on the camera.
+        /// Gets the current setting of a camera property.
         /// </summary>
         /// 
         /// <param name="Property">Specifies the property to retrieve.</param>

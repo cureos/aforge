@@ -806,6 +806,20 @@ namespace AForge.Video.DirectShow
             needToSimulateTrigger = true;
         }
 
+        /// <summary>
+        /// Sets a specified property on the camera.
+        /// </summary>
+        /// 
+        /// <param name="property">Specifies the property to set.</param>
+        /// <param name="value">Specifies the new value of the property.</param>
+        /// <param name="controlFlags">Specifies the desired control setting.</param>
+        /// 
+        /// <returns>Returns true on sucee or false otherwise.</returns>
+        /// 
+        /// <exception cref="ArgumentException">Video source is not specified - device moniker is not set.</exception>
+        /// <exception cref="ApplicationException">Failed creating device object for moniker.</exception>
+        /// <exception cref="NotSupportedException">The video source does not support camera control.</exception>
+        /// 
         public bool SetCameraProperty( CameraControlProperty property, int value, CameraControlFlags controlFlags )
         {
             bool ret = true;
@@ -846,6 +860,20 @@ namespace AForge.Video.DirectShow
             return ret;
         }
 
+        /// <summary>
+        /// Gets the current setting of a camera property.
+        /// </summary>
+        /// 
+        /// <param name="property">Specifies the property to retrieve.</param>
+        /// <param name="value">Receives the value of the property.</param>
+        /// <param name="controlFlags">Receives the value indicating whether the setting is controlled manually or automatically</param>
+        /// 
+        /// <returns>Returns true on sucee or false otherwise.</returns>
+        /// 
+        /// <exception cref="ArgumentException">Video source is not specified - device moniker is not set.</exception>
+        /// <exception cref="ApplicationException">Failed creating device object for moniker.</exception>
+        /// <exception cref="NotSupportedException">The video source does not support camera control.</exception>
+        /// 
         public bool GetCameraProperty( CameraControlProperty property, out int value, out CameraControlFlags controlFlags )
         {
             bool ret = true;
@@ -886,6 +914,23 @@ namespace AForge.Video.DirectShow
             return ret;
         }
 
+        /// <summary>
+        /// Gets the range and default value of a specified camera property.
+        /// </summary>
+        /// 
+        /// <param name="property">Specifies the property to query.</param>
+        /// <param name="minValue">Receives the minimum value of the property.</param>
+        /// <param name="maxValue">Receives the maximum value of the property.</param>
+        /// <param name="stepSize">Receives the step size for the property.</param>
+        /// <param name="defaultValue">Receives the default value of the property.</param>
+        /// <param name="controlFlags">Receives a member of the <see cref="CameraControlFlags"/> enumeration, indicating whether the property is controlled automatically or manually.</param>
+        /// 
+        /// <returns>Returns true on sucee or false otherwise.</returns>
+        /// 
+        /// <exception cref="ArgumentException">Video source is not specified - device moniker is not set.</exception>
+        /// <exception cref="ApplicationException">Failed creating device object for moniker.</exception>
+        /// <exception cref="NotSupportedException">The video source does not support camera control.</exception>
+        /// 
         public bool GetCameraPropertyRange( CameraControlProperty property, out int minValue, out int maxValue, out int stepSize, out int defaultValue, out CameraControlFlags controlFlags )
         {
             bool ret = true;
