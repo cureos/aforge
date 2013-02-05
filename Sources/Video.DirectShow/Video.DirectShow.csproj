@@ -66,7 +66,9 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CameraControlProperty.cs" />
     <Compile Include="FileVideoSource.cs" />
+    <Compile Include="Internals\IAMCameraControl.cs" />
     <Compile Include="Internals\IAMCrossbar.cs" />
     <Compile Include="Internals\IAMStreamConfig.cs" />
     <Compile Include="Internals\IAMVideoControl.cs" />

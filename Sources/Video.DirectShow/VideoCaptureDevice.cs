@@ -806,6 +806,126 @@ namespace AForge.Video.DirectShow
             needToSimulateTrigger = true;
         }
 
+        public bool SetCameraProperty( CameraControlProperty property, int value, CameraControlFlags controlFlags )
+        {
+            bool ret = true;
+
+            // check if source was set
+            if ( ( deviceMoniker == null ) || ( string.IsNullOrEmpty( deviceMoniker ) ) )
+            {
+                throw new ArgumentException( "Video source is not specified." );
+            }
+
+            lock ( sync )
+            {
+                object tempSourceObject = null;
+
+                // create source device's object
+                try
+                {
+                    tempSourceObject = FilterInfo.CreateFilter( deviceMoniker );
+                }
+                catch
+                {
+                    throw new ApplicationException( "Failed creating device object for moniker." );
+                }
+
+                if ( !( sourceObject is IAMCameraControl ) )
+                {
+                    throw new NotSupportedException( "The video source does not support camera control." );
+                }
+
+                IAMCameraControl pCamControl = (IAMCameraControl) sourceObject;
+                int hr = pCamControl.Set( property, value, controlFlags );
+
+                ret = ( hr >= 0 );
+
+                Marshal.ReleaseComObject( tempSourceObject );
+            }
+
+            return ret;
+        }
+
+        public bool GetCameraProperty( CameraControlProperty property, out int value, out CameraControlFlags controlFlags )
+        {
+            bool ret = true;
+
+            // check if source was set
+            if ( ( deviceMoniker == null ) || ( string.IsNullOrEmpty( deviceMoniker ) ) )
+            {
+                throw new ArgumentException( "Video source is not specified." );
+            }
+
+            lock ( sync )
+            {
+                object tempSourceObject = null;
+
+                // create source device's object
+                try
+                {
+                    tempSourceObject = FilterInfo.CreateFilter( deviceMoniker );
+                }
+                catch
+                {
+                    throw new ApplicationException( "Failed creating device object for moniker." );
+                }
+
+                if ( !( sourceObject is IAMCameraControl ) )
+                {
+                    throw new NotSupportedException( "The video source does not support camera control." );
+                }
+
+                IAMCameraControl pCamControl = (IAMCameraControl) sourceObject;
+                int hr = pCamControl.Get( property, out value, out controlFlags );
+
+                ret = ( hr >= 0 );
+
+                Marshal.ReleaseComObject( tempSourceObject );
+            }
+
+            return ret;
+        }
+
+        public bool GetCameraPropertyRange( CameraControlProperty property, out int minValue, out int maxValue, out int stepSize, out int defaultValue, out CameraControlFlags controlFlags )
+        {
+            bool ret = true;
+
+            // check if source was set
+            if ( ( deviceMoniker == null ) || ( string.IsNullOrEmpty( deviceMoniker ) ) )
+            {
+                throw new ArgumentException( "Video source is not specified." );
+            }
+
+            lock ( sync )
+            {
+                object tempSourceObject = null;
+
+                // create source device's object
+                try
+                {
+                    tempSourceObject = FilterInfo.CreateFilter( deviceMoniker );
+                }
+                catch
+                {
+                    throw new ApplicationException( "Failed creating device object for moniker." );
+                }
+
+                if ( !( sourceObject is IAMCameraControl ) )
+                {
+                    throw new NotSupportedException( "The video source does not support camera control." );
+                }
+
+                IAMCameraControl pCamControl = (IAMCameraControl) sourceObject;
+                int hr = pCamControl.GetRange( property, out minValue, out maxValue, out stepSize, out defaultValue, out controlFlags );
+
+                ret = ( hr >= 0 );
+
+                Marshal.ReleaseComObject( tempSourceObject );
+            }
+
+            return ret;
+        }
+
         /// <summary>
         /// Worker thread.
         /// </summary>
