@@ -72,6 +72,7 @@ namespace AForge.Controls
 
         private Size frameSize = new Size( 320, 240 );
         private bool autosize = false;
+        private bool keepRatio = false; 
         private bool needSizeUpdate = false;
         private bool firstFrameNotProcessed = true;
         private volatile bool requestedToStop = false;
@@ -103,6 +104,21 @@ namespace AForge.Controls
             {
                 autosize = value;
                 UpdatePosition( );
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets whether the player should keep the aspect ratio of the images being shown.
+        /// </summary>
+        /// 
+        [DefaultValue( false )]
+        public bool KeepAspectRatio
+        {
+            get { return keepRatio; }
+            set
+            {
+                keepRatio = value;
+                Invalidate( );
             }
         }
 
@@ -383,9 +399,14 @@ namespace AForge.Controls
             }
         }
 
-        // Paing control
+        // Paint control
         private void VideoSourcePlayer_Paint( object sender, PaintEventArgs e )
         {
+            if ( !Visible )
+            {
+                return;
+            }
+
             // is it required to update control's size/position
             if ( ( needSizeUpdate ) || ( firstFrameNotProcessed ) )
             {
@@ -406,9 +427,33 @@ namespace AForge.Controls
                 {
                     if ( ( currentFrame != null ) && ( lastMessage == null ) )
                     {
-                        // draw current frame
-                        g.DrawImage( ( convertedFrame != null ) ? convertedFrame : currentFrame,
-                            rect.X + 1, rect.Y + 1, rect.Width - 2, rect.Height - 2 );
+                        Bitmap frame = ( convertedFrame != null ) ? convertedFrame : currentFrame;
+
+                        if ( keepRatio )
+                        {
+                            double ratio = (double) frame.Width / frame.Height;
+                            Rectangle newRect = rect;
+
+                            if ( rect.Width < rect.Height * ratio )
+                            {
+                                newRect.Height = (int) ( rect.Width / ratio );
+                            }
+                            else
+                            {
+                                newRect.Width = (int) ( rect.Height * ratio );
+                            }
+
+                            newRect.X = ( rect.Width - newRect.Width ) / 2;
+                            newRect.Y = ( rect.Height - newRect.Height ) / 2;
+
+                            g.DrawImage( frame, newRect.X + 1, newRect.Y + 1, newRect.Width - 2, newRect.Height - 2);
+                        }
+                        else
+                        {
+                            // draw current frame
+                            g.DrawImage( frame, rect.X + 1, rect.Y + 1, rect.Width - 2, rect.Height - 2);
+                        }
+
                         firstFrameNotProcessed = false;
                     }
                     else
