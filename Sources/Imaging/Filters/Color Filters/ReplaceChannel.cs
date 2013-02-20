@@ -105,13 +105,13 @@ namespace AForge.Imaging.Filters
             get { return channelImage; }
             set
             {
-                // check for not null
-                if ( value == null )
-                    throw new NullReferenceException( "Channel image was not specified." );
-                // check for valid format
-                if ( ( value.PixelFormat != PixelFormat.Format8bppIndexed ) &&
-                     ( value.PixelFormat != PixelFormat.Format16bppGrayScale ) )
-                    throw new InvalidImagePropertiesException( "Channel image should be 8 bpp indexed or 16 bpp grayscale image." );
+                if ( value != null )
+                {
+                    // check for valid format
+                    if ( ( value.PixelFormat != PixelFormat.Format8bppIndexed ) &&
+                         ( value.PixelFormat != PixelFormat.Format16bppGrayScale ) )
+                        throw new InvalidImagePropertiesException( "Channel image should be 8 bpp indexed or 16 bpp grayscale image." );
+                }
 
                 channelImage = value;
                 unmanagedChannelImage = null;
@@ -134,14 +134,13 @@ namespace AForge.Imaging.Filters
             get { return unmanagedChannelImage; }
             set
             {
-                // check for not null
-                if ( value == null )
-                    throw new NullReferenceException( "Channel image was not specified." );
-
-                // check for valid format
-                if ( ( value.PixelFormat != PixelFormat.Format8bppIndexed ) &&
-                     ( value.PixelFormat != PixelFormat.Format16bppGrayScale ) )
-                    throw new InvalidImagePropertiesException( "Channel image should be 8 bpp indexed or 16 bpp grayscale image." );
+                if ( value != null )
+                {
+                    // check for valid format
+                    if ( ( value.PixelFormat != PixelFormat.Format8bppIndexed ) &&
+                         ( value.PixelFormat != PixelFormat.Format16bppGrayScale ) )
+                        throw new InvalidImagePropertiesException( "Channel image should be 8 bpp indexed or 16 bpp grayscale image." );
+                }
 
                 channelImage = null;
                 unmanagedChannelImage = value;
@@ -157,6 +156,18 @@ namespace AForge.Imaging.Filters
             formatTranslations[PixelFormat.Format32bppArgb] = PixelFormat.Format32bppArgb;
             formatTranslations[PixelFormat.Format48bppRgb]  = PixelFormat.Format16bppGrayScale;
             formatTranslations[PixelFormat.Format64bppArgb] = PixelFormat.Format16bppGrayScale;
+        }
+
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReplaceChannel"/> class.
+        /// </summary>
+        /// 
+        /// <param name="channel">ARGB channel to replace.</param>
+        /// 
+        public ReplaceChannel( short channel ) : this( )
+        {
+            this.Channel = channel;
         }
 
         /// <summary>
@@ -193,6 +204,7 @@ namespace AForge.Imaging.Filters
         /// <param name="image">Source image data.</param>
         /// <param name="rect">Image rectangle for processing by the filter.</param>
         /// 
+        /// <exception cref="NullReferenceException">Channel image was not specified.</exception>
         /// <exception cref="InvalidImagePropertiesException">Channel image size does not match source
         /// image size.</exception>
         /// <exception cref="InvalidImagePropertiesException">Channel image's format does not correspond to format of the source image.</exception>
@@ -202,6 +214,11 @@ namespace AForge.Imaging.Filters
         /// 
         protected override unsafe void ProcessFilter( UnmanagedImage image, Rectangle rect )
         {
+            if ( ( channelImage == null ) && ( unmanagedChannelImage == null ) )
+            {
+                throw new NullReferenceException( "Channel image was not specified." );
+            }
+
             int pixelSize = Image.GetPixelFormatSize( image.PixelFormat ) / 8;
 
             if ( ( channel == RGB.A ) && ( pixelSize != 4 ) && ( pixelSize != 8 ) )

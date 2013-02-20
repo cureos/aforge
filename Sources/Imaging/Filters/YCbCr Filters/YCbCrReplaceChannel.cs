@@ -108,12 +108,12 @@ namespace AForge.Imaging.Filters
             get { return channelImage; }
             set
             {
-                // check for not null
-                if ( value == null )
-                    throw new NullReferenceException( "Channel image was not specified." );
-                // check for valid format
-                if ( value.PixelFormat != PixelFormat.Format8bppIndexed )
-                    throw new InvalidImagePropertiesException( "Channel image should be 8bpp indexed image (grayscale)." );
+                if ( value != null )
+                {
+                    // check for valid format
+                    if ( value.PixelFormat != PixelFormat.Format8bppIndexed )
+                        throw new InvalidImagePropertiesException( "Channel image should be 8bpp indexed image (grayscale)." );
+                }
 
                 channelImage = value;
                 unmanagedChannelImage = null;
@@ -136,13 +136,12 @@ namespace AForge.Imaging.Filters
             get { return unmanagedChannelImage; }
             set
             {
-                // check for not null
-                if ( value == null )
-                    throw new NullReferenceException( "Channel image was not specified." );
-
-                // check for valid format
-                if ( value.PixelFormat != PixelFormat.Format8bppIndexed )
-                    throw new InvalidImagePropertiesException( "Channel image should be 8bpp indexed image (grayscale)." );
+                if ( value != null )
+                {
+                    // check for valid format
+                    if ( value.PixelFormat != PixelFormat.Format8bppIndexed )
+                        throw new InvalidImagePropertiesException( "Channel image should be 8bpp indexed image (grayscale)." );
+                }
 
                 channelImage = null;
                 unmanagedChannelImage = value;
@@ -156,6 +155,17 @@ namespace AForge.Imaging.Filters
             formatTranslations[PixelFormat.Format24bppRgb]  = PixelFormat.Format24bppRgb;
             formatTranslations[PixelFormat.Format32bppRgb]  = PixelFormat.Format32bppRgb;
             formatTranslations[PixelFormat.Format32bppArgb] = PixelFormat.Format32bppArgb;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="YCbCrReplaceChannel"/> class.
+        /// </summary>
+        /// 
+        /// <param name="channel">YCbCr channel to replace.</param>
+        /// 
+        public YCbCrReplaceChannel( short channel ) : this( )
+        {
+            this.Channel = channel;
         }
 
         /// <summary>
@@ -191,11 +201,17 @@ namespace AForge.Imaging.Filters
         /// <param name="image">Source image data.</param>
         /// <param name="rect">Image rectangle for processing by the filter.</param>
         /// 
+        /// <exception cref="NullReferenceException">Channel image was not specified.</exception>
         /// <exception cref="InvalidImagePropertiesException">Channel image size does not match source
         /// image size.</exception>
         ///
         protected override unsafe void ProcessFilter( UnmanagedImage image, Rectangle rect )
         {
+            if ( ( channelImage == null ) && ( unmanagedChannelImage == null ) )
+            {
+                throw new NullReferenceException( "Channel image was not specified." );
+            }
+
             int pixelSize = Image.GetPixelFormatSize( image.PixelFormat ) / 8;
 
             int width   = image.Width;
