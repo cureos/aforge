@@ -71,7 +71,7 @@ namespace AForge.Imaging.Filters
                 factor = Math.Max( -127, Math.Min( 127, value ) );
 
 
-                if ( factor > 1 )
+                if ( factor > 0 )
                 {
                     baseFilter.InRed = baseFilter.InGreen = baseFilter.InBlue = baseFilter.InGray =
                         new IntRange( factor, 255 - factor );
