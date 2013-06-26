@@ -199,6 +199,7 @@ namespace AForge.Imaging
             if ( ( mustBeDisposed ) && ( imageData != IntPtr.Zero ) )
             {
                 System.Runtime.InteropServices.Marshal.FreeHGlobal( imageData );
+                System.GC.RemoveMemoryPressure( stride * height );
                 imageData = IntPtr.Zero;
             }
         }
@@ -215,6 +216,7 @@ namespace AForge.Imaging
         {
             // allocate memory for the image
             IntPtr newImageData = System.Runtime.InteropServices.Marshal.AllocHGlobal( stride * height );
+            System.GC.AddMemoryPressure( stride * height );
 
             UnmanagedImage newImage = new UnmanagedImage( newImageData, width, height, stride, pixelFormat );
             newImage.mustBeDisposed = true;
@@ -351,6 +353,7 @@ namespace AForge.Imaging
             // allocate memory for the image
             IntPtr imageData = System.Runtime.InteropServices.Marshal.AllocHGlobal( stride * height );
             AForge.SystemTools.SetUnmanagedMemory( imageData, 0, stride * height );
+            System.GC.AddMemoryPressure( stride * height );
 
             UnmanagedImage image = new UnmanagedImage( imageData, width, height, stride, pixelFormat );
             image.mustBeDisposed = true;
@@ -526,6 +529,7 @@ namespace AForge.Imaging
 
             // allocate memory for the image
             IntPtr dstImageData = System.Runtime.InteropServices.Marshal.AllocHGlobal( imageData.Stride * imageData.Height );
+            System.GC.AddMemoryPressure( imageData.Stride * imageData.Height );
 
             UnmanagedImage image = new UnmanagedImage( dstImageData, imageData.Width, imageData.Height, imageData.Stride, pixelFormat );
             AForge.SystemTools.CopyUnmanagedMemory( dstImageData, imageData.Scan0, imageData.Stride * imageData.Height );
