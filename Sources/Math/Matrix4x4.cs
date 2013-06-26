@@ -17,6 +17,7 @@ namespace AForge.Math
     /// <remarks><para>The structure incapsulates elements of a 4x4 matrix and
     /// provides some operations with it.</para></remarks>
     /// 
+    [Serializable]
     public struct Matrix4x4
     {
         /// <summary>

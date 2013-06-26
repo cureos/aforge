@@ -17,6 +17,7 @@ namespace AForge.Math
     /// <remarks><para>The structure incapsulates X, Y, Z and W coordinates of a 4D vector and
     /// provides some operations with it.</para></remarks>
     /// 
+    [Serializable]
     public struct Vector4
     {
         /// <summary>
