@@ -41,6 +41,8 @@ namespace AForge.Robotics.TeRK
         /// <remarks><para>The class allows to manipulate Qwerk's on-boar LED's. The total number
         /// of available on-board LEDs equals to <see cref="Leds.Count"/>.</para>
         /// 
+        /// <para><note>The class is deprecated.</note></para>
+        /// 
         /// <para>Sample usage:</para>
         /// <code>
         /// // get Qwerk's LEDs service
@@ -62,6 +64,7 @@ namespace AForge.Robotics.TeRK
         /// </code>
         /// </remarks>
         /// 
+        [Obsolete( "The class is deprecated." )]
         public class Leds
         {
             // Qwerk's LED controller

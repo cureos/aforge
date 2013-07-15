@@ -28,6 +28,8 @@ namespace AForge.Robotics.TeRK
         /// them through <see cref="NewFrame"/> event. The video frame rate can be configured
         /// using <see cref="FrameInterval"/> property, which sets time interval between frames.</para>
         /// 
+        /// <para><note>The class is deprecated.</note></para>
+        /// 
         /// <para>Sample usage:</para>
         /// <code>
         /// // get Qwerk's video service
@@ -50,6 +52,7 @@ namespace AForge.Robotics.TeRK
         /// </code>
         /// </remarks>
         /// 
+        [Obsolete( "The class is deprecated." )]
         public class Video : IVideoSource
         {
             // Qwerk's video streamer

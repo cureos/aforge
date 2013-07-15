@@ -30,6 +30,8 @@ namespace AForge.Robotics.TeRK
         /// to [10, 20], for example, then physically the servo will move only in this range. But logical
         /// position is still may be set in [0, 255] range, which is mapped to physical range.</para>
         /// 
+        /// <para><note>The class is deprecated.</note></para>
+        /// 
         /// <para>Sample usage:</para>
         /// <code>
         /// // get Qwerk's servos service
@@ -47,6 +49,7 @@ namespace AForge.Robotics.TeRK
         /// </code>
         /// </remarks>
         /// 
+        [Obsolete( "The class is deprecated." )]
         public class Servos
         {
             // Qwerk's servo controller

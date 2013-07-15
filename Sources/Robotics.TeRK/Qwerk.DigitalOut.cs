@@ -22,6 +22,8 @@ namespace AForge.Robotics.TeRK
         /// <remarks><para>The class allows to manipulate Qwerk's digital outputs. The total number
         /// of available digital outputs equals to <see cref="DigitalOut.Count"/>.</para>
         /// 
+        /// <para><note>The class is deprecated.</note></para>
+        /// 
         /// <para>Sample usage:</para>
         /// <code>
         /// // get Qwerk's digital outs service
@@ -37,6 +39,7 @@ namespace AForge.Robotics.TeRK
         /// </code>
         /// </remarks>
         /// 
+        [Obsolete( "The class is deprecated." )]
         public class DigitalOut
         {
             // Qwerk's digital out controller

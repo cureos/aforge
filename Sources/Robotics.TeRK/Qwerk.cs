@@ -30,6 +30,8 @@ namespace AForge.Robotics.TeRK
     /// based on <a href="http://www.zeroc.com/ice.html">Internet Communication Engine (ICE)</a>,
     /// the ICE runtime should be installed in order to use Qwerk classes.</note></para>
     /// 
+    /// <para><note>The class is deprecated.</note></para>
+    /// 
     /// <para>Sample usage:</para>
     /// <code>
     /// Qwerk qwerk = new Qwerk( );
@@ -49,7 +51,8 @@ namespace AForge.Robotics.TeRK
     /// bool[] inputs = qwerk.GetDigitalInService( ).GetInputs( );
     /// </code>
     /// </remarks>
-    /// 
+    ///
+    [Obsolete( "The class is deprecated." )]
     public partial class Qwerk
     {
         private Ice.Communicator iceCommunicator = null;

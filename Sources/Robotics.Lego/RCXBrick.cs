@@ -28,6 +28,8 @@ namespace AForge.Robotics.Lego
     /// <para><note>The class uses GhostAPI to communicate with Lego RCX device, so its
     /// libraries (GhostAPI.dll, PbkComm32.dll and PbkUsbPort.dll) should be placed into applications folder.</note></para>
     /// 
+    /// <para><note>The class is deprecated.</note></para>
+    /// 
     /// <para>Sample usage:</para>
     /// <code>
     /// // create an instance of RCX brick
@@ -58,6 +60,7 @@ namespace AForge.Robotics.Lego
     /// 
     /// </remarks>
     /// 
+    [Obsolete( "The class is deprecated." )]
     public class RCXBrick
     {
         #region Embedded types

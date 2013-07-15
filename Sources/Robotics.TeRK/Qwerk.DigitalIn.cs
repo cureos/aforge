@@ -22,6 +22,8 @@ namespace AForge.Robotics.TeRK
         /// <remarks><para>The class allows to retrieve state of Qwerk's digital inputs. The total
         /// number of available digital inputs equals to <see cref="DigitalIn.Count"/>.</para>
         /// 
+        /// <para><note>The class is deprecated.</note></para>
+        /// 
         /// <para>Sample usage:</para>
         /// <code>
         /// // get Qwerk's digital inputs service
@@ -33,6 +35,7 @@ namespace AForge.Robotics.TeRK
         /// </code>
         /// </remarks>
         /// 
+        [Obsolete( "The class is deprecated." )]
         public class DigitalIn
         {
             // Qwerk's digital in controller

@@ -22,6 +22,8 @@ namespace AForge.Robotics.TeRK
         /// <remarks><para>The class allows to retrieve state of Qwerk's analog inputs. The total
         /// number of available analog inputs equals to <see cref="AnalogIn.Count"/>.</para>
         /// 
+        /// <para><note>The class is deprecated.</note></para>
+        /// 
         /// <para>Sample usage:</para>
         /// <code>
         /// // get Qwerk's analog inputs service
@@ -33,6 +35,7 @@ namespace AForge.Robotics.TeRK
         /// </code>
         /// </remarks>
         /// 
+        [Obsolete( "The class is deprecated." )]
         public class AnalogIn
         {
             // Qwerk's analog in controller
