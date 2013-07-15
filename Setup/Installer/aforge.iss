@@ -2,7 +2,7 @@
 
 [Setup]
 AppName=AForge.NET Framework
-AppVerName=AForge.NET Framework 2.2.4.1
+AppVerName=AForge.NET Framework 2.2.5
 AppPublisher=AForge.NET
 AppPublisherURL=http://www.aforgenet.com/framework/
 AppSupportURL=http://www.aforgenet.com/framework/
@@ -13,7 +13,7 @@ AllowNoIcons=yes
 OutputBaseFilename=setup
 Compression=lzma
 SolidCompression=yes
-LicenseFile=lgpl-3.0.txt
+LicenseFile=license.txt
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -30,6 +30,7 @@ Name: "tests"; Description: "Unit Tests"; Types: full custom
 Source: "Files\Copyright.txt"; DestDir: "{app}"; Components: libs
 Source: "Files\Release notes.txt"; DestDir: "{app}"; Components: libs
 Source: "Files\lgpl-3.0.txt"; DestDir: "{app}"; Components: libs
+Source: "Files\gpl-3.0.txt"; DestDir: "{app}"; Components: libs
 Source: "Files\License.txt"; DestDir: "{app}"; Components: libs
 Source: "Files\Docs\*"; DestDir: "{app}\Docs"; Components: docs
 Source: "Files\Externals\*"; DestDir: "{app}\Externals"; Components: ext; Flags: recursesubdirs
