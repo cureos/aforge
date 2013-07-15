@@ -276,10 +276,10 @@
     <Language>en-US</Language>
     <CopyrightHref />
     <CopyrightText />
-    <FeedbackEMailAddress>documentation@aforgenet.com</FeedbackEMailAddress>
+    <FeedbackEMailAddress>contacts@aforgenet.com</FeedbackEMailAddress>
     <FeedbackEMailLinkText>Feedback Contact</FeedbackEMailLinkText>
     <HeaderText />
-    <FooterText>&lt;a href="http://www.aforgenet.com/" target="_blank"&gt;AForge.NET&lt;/a&gt; © 2006-2012</FooterText>
+    <FooterText>&lt;a href="http://www.aforgenet.com/" target="_blank"&gt;AForge.NET&lt;/a&gt; © 2006-2013</FooterText>
     <ProjectLinkType>Local</ProjectLinkType>
     <SdkLinkType>Msdn</SdkLinkType>
     <SdkLinkTarget>Blank</SdkLinkTarget>
