@@ -1041,5 +1041,19 @@ namespace AForge.Math
             return new Complex( value, 0 );
         }
         #endregion
+
+        #region ICloneable Members
+
+        /// <summary>
+        /// Creates an exact copy of this <see cref="Complex"/> object.
+        /// </summary>
+        /// 
+        /// <returns>Returns clone of the complex number.</returns>
+        /// 
+        public Complex Clone()
+        {
+            return new Complex(this);
+        }
+        #endregion
     }
 }

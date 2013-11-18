@@ -25,7 +25,7 @@ namespace AForge.Genetic
     /// programming tree may represent its sub tree or even entire tree.</para>
     /// </remarks>
     /// 
-    public class GPTreeNode : ICloneable
+    public class GPTreeNode
     {
         /// <summary>
         /// Gene represented by the chromosome.
