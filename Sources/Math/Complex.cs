@@ -39,7 +39,7 @@ namespace AForge.Math
     /// </code>
     /// </remarks>
     /// 
-    public struct Complex : ICloneable, ISerializable
+    public struct Complex
     {
         /// <summary>
         /// Real part of the complex number.
@@ -1039,45 +1039,6 @@ namespace AForge.Math
         public static explicit operator Complex( double value )
         {
             return new Complex( value, 0 );
-        }
-        #endregion
-
-        #region ICloneable Members
-        /// <summary>
-        /// Creates an exact copy of this <see cref="Complex"/> object.
-        /// </summary>
-        /// 
-        /// <returns>Returns clone of the complex number.</returns>
-        /// 
-        object ICloneable.Clone( )
-        {
-            return new Complex( this );
-        }
-
-        /// <summary>
-        /// Creates an exact copy of this <see cref="Complex"/> object.
-        /// </summary>
-        /// 
-        /// <returns>Returns clone of the complex number.</returns>
-        /// 
-        public Complex Clone( )
-        {
-            return new Complex( this );
-        }
-        #endregion
-
-        #region ISerializable Members
-        /// <summary>
-        /// Populates a <see cref="SerializationInfo"/> with the data needed to serialize the target object.
-        /// </summary>
-        /// 
-        /// <param name="info">The <see cref="SerializationInfo"/> to populate with data. </param>
-        /// <param name="context">The destination (see <see cref="StreamingContext"/>) for this serialization.</param>
-        /// 
-        public void GetObjectData( SerializationInfo info, StreamingContext context )
-        {
-            info.AddValue( "Real", this.Re );
-            info.AddValue( "Imaginary", this.Im );
         }
         #endregion
     }

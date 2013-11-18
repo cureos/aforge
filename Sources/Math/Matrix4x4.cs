@@ -6,6 +6,8 @@
 // contacts@aforgenet.com
 //
 
+using System.Runtime.Serialization;
+
 namespace AForge.Math
 {
     using System;
@@ -17,75 +19,91 @@ namespace AForge.Math
     /// <remarks><para>The structure incapsulates elements of a 4x4 matrix and
     /// provides some operations with it.</para></remarks>
     /// 
-    [Serializable]
+    [DataContract]
     public struct Matrix4x4
     {
         /// <summary>
         /// Row 0 column 0 element of the matrix.
         /// </summary>
+        [DataMember]
         public float V00;
         /// <summary>
         /// Row 0 column 1 element of the matrix.
         /// </summary>
+        [DataMember]
         public float V01;
         /// <summary>
         /// Row 0 column 2 element of the matrix.
         /// </summary>
+        [DataMember]
         public float V02;
         /// <summary>
         /// Row 0 column 3 element of the matrix.
         /// </summary>
+        [DataMember]
         public float V03;
 
         /// <summary>
         /// Row 1 column 0 element of the matrix.
         /// </summary>
+        [DataMember]
         public float V10;
         /// <summary>
         /// Row 1 column 1 element of the matrix.
         /// </summary>
+        [DataMember]
         public float V11;
         /// <summary>
         /// Row 1 column 2 element of the matrix.
         /// </summary>
+        [DataMember]
         public float V12;
         /// <summary>
         /// Row 1 column 3 element of the matrix.
         /// </summary>
+        [DataMember]
         public float V13;
 
         /// <summary>
         /// Row 2 column 0 element of the matrix.
         /// </summary>
+        [DataMember]
         public float V20;
         /// <summary>
         /// Row 2 column 1 element of the matrix.
         /// </summary>
+        [DataMember]
         public float V21;
         /// <summary>
         /// Row 2 column 2 element of the matrix.
         /// </summary>
+        [DataMember]
         public float V22;
         /// <summary>
         /// Row 2 column 3 element of the matrix.
         /// </summary>
+        [DataMember]
         public float V23;
 
         /// <summary>
         /// Row 3 column 0 element of the matrix.
         /// </summary>
+        [DataMember]
         public float V30;
         /// <summary>
         /// Row 3 column 1 element of the matrix.
         /// </summary>
+        [DataMember]
         public float V31;
         /// <summary>
         /// Row 3 column 2 element of the matrix.
         /// </summary>
+        [DataMember]
         public float V32;
         /// <summary>
         /// Row 3 column 3 element of the matrix.
         /// </summary>
+        [DataMember]
         public float V33;
 
         /// <summary>

@@ -6,6 +6,8 @@
 // contacts@aforgenet.com
 //
 
+using System.Runtime.Serialization;
+
 namespace AForge.Math
 {
     using System;
@@ -28,16 +30,23 @@ namespace AForge.Math
     /// </code>
     /// </remarks>
     ///
-    [Serializable]
+    [DataContract]
     public class Histogram
     {
-        private int[]   values;
-        private double  mean = 0;
-        private double  stdDev = 0;
-        private int     median = 0;
-        private int     min;
-        private int     max;
-        private long    total;
+        [DataMember]
+        private int[] values;
+        [DataMember]
+        private double mean = 0;
+        [DataMember]
+        private double stdDev = 0;
+        [DataMember]
+        private int median = 0;
+        [DataMember]
+        private int min;
+        [DataMember]
+        private int max;
+        [DataMember]
+        private long total;
 
         /// <summary>
         /// Values of the histogram.
