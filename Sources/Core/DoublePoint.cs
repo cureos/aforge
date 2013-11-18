@@ -6,6 +6,8 @@
 // contacts@aforgenet.com
 //
 
+using System.Runtime.Serialization;
+
 namespace AForge
 {
     using System;
@@ -30,19 +32,21 @@ namespace AForge
     /// </code>
     /// </remarks>
     /// 
-    [Serializable]
+    [DataContract]
     public struct DoublePoint
     {
         /// <summary> 
         /// X coordinate.
         /// </summary> 
         /// 
+        [DataMember]
         public double X;
 
         /// <summary> 
         /// Y coordinate.
         /// </summary> 
         /// 
+        [DataMember]
         public double Y;
 
         /// <summary>

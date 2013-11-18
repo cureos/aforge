@@ -6,6 +6,8 @@
 // contacts@aforgenet.com
 //
 
+using System.Runtime.Serialization;
+
 namespace AForge
 {
     using System;
@@ -43,10 +45,14 @@ namespace AForge
     /// </code>
     /// </remarks>
     /// 
-    [Serializable]
+    [DataContract]
     public struct DoubleRange
     {
-        private double min, max;
+        [DataMember]
+        private double min;
+
+        [DataMember]
+        private double max;
 
         /// <summary>
         /// Minimum value of the range.
