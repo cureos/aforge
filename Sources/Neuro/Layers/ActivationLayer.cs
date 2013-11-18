@@ -6,6 +6,8 @@
 // contacts@aforgenet.com
 //
 
+using System.Runtime.Serialization;
+
 namespace AForge.Neuro
 {
     using System;
@@ -17,7 +19,7 @@ namespace AForge.Neuro
     /// <remarks>Activation layer is a layer of <see cref="ActivationNeuron">activation neurons</see>.
     /// The layer is usually used in multi-layer neural networks.</remarks>
     ///
-    [Serializable]
+    [DataContract]
     public class ActivationLayer : Layer
     {
 

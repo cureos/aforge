@@ -6,6 +6,8 @@
 // contacts@aforgenet.com
 //
 
+using System.Runtime.Serialization;
+
 namespace AForge.Neuro
 {
     using System;
@@ -27,8 +29,8 @@ namespace AForge.Neuro
     /// <img src="img/neuro/threshold.bmp" width="242" height="172" />
     /// </remarks>
     ///
-    [Serializable]
-    public class ThresholdFunction : IActivationFunction, ICloneable
+    [DataContract]
+    public class ThresholdFunction : IActivationFunction
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ThresholdFunction"/> class.
