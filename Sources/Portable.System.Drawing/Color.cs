@@ -98,7 +98,7 @@ namespace System.Drawing
         {
             unchecked
             {
-                int hashCode = _a.GetHashCode();
+                var hashCode = _a.GetHashCode();
                 hashCode = (hashCode * 397) ^ _r.GetHashCode();
                 hashCode = (hashCode * 397) ^ _g.GetHashCode();
                 hashCode = (hashCode * 397) ^ _b.GetHashCode();

@@ -13,7 +13,7 @@ using System.IO;
 
 namespace System.Drawing
 {
-    public class Bitmap : Image
+    public class Bitmap : IDisposable
     {
         #region FIELDS
 
@@ -72,6 +72,11 @@ namespace System.Drawing
 
         #region METHODS
 
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
         public void UnlockBits(BitmapData sourceData)
         {
             throw new NotImplementedException();
@@ -91,6 +96,11 @@ namespace System.Drawing
         {
             HorizontalResolution = horizontalResolution;
             VerticalResolution = verticalResolution;
+        }
+
+        public static int GetPixelFormatSize(PixelFormat pixelFormat)
+        {
+            return Image.GetPixelFormatSize(pixelFormat);
         }
         
         #endregion
