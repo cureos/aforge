@@ -5,7 +5,9 @@
 // Copyright © AForge.NET, 2007-2011
 // contacts@aforgenet.com
 //
+#if NETFX_CORE
 #define MONO
+#endif
 
 namespace AForge
 {
