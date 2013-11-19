@@ -1,26 +1,46 @@
-﻿namespace System.Drawing
+﻿// AForge Image Processing Library
+// AForge.NET framework
+// http://www.aforgenet.com/framework/
+//
+// Portable Adaptations
+//
+// Copyright © Cureos AB, 2013
+// info at cureos dot com
+//
+
+namespace System.Drawing
 {
     public struct Size
     {
-        private int _width;
-        private int _height;
+        #region FIELDS
+
+        private readonly int _width;
+        private readonly int _height;
+        
+        #endregion
+
+        #region CONSTRUCTORS
 
         public Size(int width, int height)
         {
             _width = width;
             _height = height;
         }
+        
+        #endregion
+
+        #region PROPERTIES
 
         public int Width
         {
             get { return _width; }
-            set { _width = value; }
         }
 
         public int Height
         {
             get { return _height; }
-            set { _height = value; }
         }
+        
+        #endregion
     }
 }

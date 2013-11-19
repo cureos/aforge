@@ -1,41 +1,67 @@
-﻿namespace System.Drawing.Imaging
+﻿// AForge Image Processing Library
+// AForge.NET framework
+// http://www.aforgenet.com/framework/
+//
+// Portable Adaptations
+//
+// Copyright © Cureos AB, 2013
+// info at cureos dot com
+//
+
+namespace System.Drawing.Imaging
 {
     public class BitmapData
     {
-        private int _stride;
-        private IntPtr _scan0;
-        private int _width;
-        private int _height;
-        private PixelFormat _pixelFormat;
+        #region FIELDS
 
-        public int Stride
+        private readonly IntPtr _scan0;
+        private readonly int _stride;
+        private readonly int _width;
+        private readonly int _height;
+        private readonly PixelFormat _pixelFormat;
+        
+        #endregion
+
+        #region CONSTRUCTORS
+
+        internal BitmapData(IntPtr scan0, int stride, int width, int height, PixelFormat pixelFormat)
         {
-            get { return _stride; }
-            set { _stride = value; }
+            _scan0 = scan0;
+            _stride = stride;
+            _width = width;
+            _height = height;
+            _pixelFormat = pixelFormat;
         }
+
+        #endregion
+
+        #region PROPERTIES
 
         public IntPtr Scan0
         {
             get { return _scan0; }
-            set { _scan0 = value; }
+        }
+
+        public int Stride
+        {
+            get { return _stride; }
         }
 
         public int Width
         {
             get { return _width; }
-            set { _width = value; }
         }
 
         public int Height
         {
             get { return _height; }
-            set { _height = value; }
         }
 
         public PixelFormat PixelFormat
         {
             get { return _pixelFormat; }
-            set { _pixelFormat = value; }
         }
+        
+        #endregion
     }
 }
