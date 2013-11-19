@@ -104,7 +104,7 @@ namespace AForge.Imaging.Formats
     /// height, etc. Classes, which inherit from this, may define more properties describing certain
     /// image formats.</para></remarks>
     /// 
-    public class ImageInfo : ICloneable
+    public class ImageInfo
     {
         /// <summary>
         /// Image's width.
@@ -134,7 +134,6 @@ namespace AForge.Imaging.Formats
         /// <summary>
         /// Image's width.
         /// </summary>
-        [Category( "General" )]
         public int Width
         {
             get { return width; }
@@ -144,7 +143,6 @@ namespace AForge.Imaging.Formats
         /// <summary>
         /// Image's height.
         /// </summary>
-        [Category( "General" )]
         public int Height
         {
             get { return height; }
@@ -154,7 +152,6 @@ namespace AForge.Imaging.Formats
         /// <summary>
         /// Number of bits per image's pixel.
         /// </summary>
-        [Category( "General" )]
         public int BitsPerPixel
         {
             get { return bitsPerPixel; }
@@ -168,7 +165,6 @@ namespace AForge.Imaging.Formats
         /// <remarks><para>Some image formats support storing multiple frames in one image file.
         /// The property specifies index of a particular frame.</para></remarks>
         /// 
-        [Category( "General" )]
         public int FrameIndex
         {
             get { return frameIndex; }
@@ -182,7 +178,6 @@ namespace AForge.Imaging.Formats
         /// <remarks><para>Some image formats support storing multiple frames in one image file.
         /// The property specifies total number of frames in image file.</para></remarks>
         /// 
-        [Category( "General" )]
         public int TotalFrames
         {
             get { return totalFrames; }

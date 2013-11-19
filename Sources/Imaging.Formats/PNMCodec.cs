@@ -27,7 +27,6 @@ namespace AForge.Imaging.Formats
         /// <summary>
         /// PNM file version (format), [1, 6].
         /// </summary>
-        [Category( "PNM Info" )]
         public int Version
         {
             get { return version; }
@@ -42,7 +41,6 @@ namespace AForge.Imaging.Formats
         /// from original data range to the range of
         /// <see cref="ImageInfo.BitsPerPixel">supported bits per pixel</see> format.</para></remarks>
         /// 
-        [Category( "PNM Info" )]
         public int MaxDataValue
         {
             get { return maxDataValue; }
@@ -401,7 +399,7 @@ namespace AForge.Imaging.Formats
             // complete reading useful value
             bytesRead += ReadUntilSpace( stream, buffer, 1 );
 
-            return int.Parse( Encoding.ASCII.GetString( buffer, 0, bytesRead ) );
+            return int.Parse( Encoding.UTF8.GetString( buffer, 0, bytesRead ) );
         }
 
         // Skip spaces (spaces, new lines, tabs and comment lines) in the specified stream

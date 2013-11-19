@@ -36,7 +36,6 @@ namespace AForge.Imaging.Formats
         /// type for pixel encoding), -64 (64 bit image with double data type for pixel encoding).
         /// </para></remarks>
         /// 
-        [Category( "FITS Info" )]
         public int OriginalBitsPerPixl
         {
             get { return originalBitsPerPixl; }
@@ -51,7 +50,6 @@ namespace AForge.Imaging.Formats
         /// them from <see cref="OriginalBitsPerPixl">original bits per pixel</see> format to
         /// <see cref="ImageInfo.BitsPerPixel">supported bits per pixel</see> format.</para></remarks>
         /// 
-        [Category( "FITS Info" )]
         public double MinDataValue
         {
             get { return minDataValue; }
@@ -66,7 +64,6 @@ namespace AForge.Imaging.Formats
         /// them from <see cref="OriginalBitsPerPixl">original bits per pixel</see> format to
         /// <see cref="ImageInfo.BitsPerPixel">supported bits per pixel</see> format.</para></remarks>
         /// 
-        [Category( "FITS Info" )]
         public double MaxDataValue
         {
             get { return maxDataValue; }
@@ -76,7 +73,6 @@ namespace AForge.Imaging.Formats
         /// <summary>
         /// Telescope used for object's observation.
         /// </summary>
-        [Category( "FITS Info" )]
         public string Telescope
         {
             get { return telescope; }
@@ -86,7 +82,6 @@ namespace AForge.Imaging.Formats
         /// <summary>
         /// Object acquired during observation.
         /// </summary>
-        [Category( "FITS Info" )]
         public string Object
         {
             get { return acquiredObject; }
@@ -96,7 +91,6 @@ namespace AForge.Imaging.Formats
         /// <summary>
         /// Observer doing object's acquiring.
         /// </summary>
-        [Category( "FITS Info" )]
         public string Observer
         {
             get { return observer; }
@@ -106,7 +100,6 @@ namespace AForge.Imaging.Formats
         /// <summary>
         /// Instrument used for observation.
         /// </summary>
-        [Category( "FITS Info" )]
         public string Instrument
         {
             get { return instrument; }
@@ -291,14 +284,14 @@ namespace AForge.Imaging.Formats
             // read first record and check for correct image
             if (
                 ( Tools.ReadStream( stream, headerRecord, 0, 80 ) < 80 ) ||
-                ( Encoding.ASCII.GetString( headerRecord, 0, 8 ) != "SIMPLE  " ) )
+                ( Encoding.UTF8.GetString( headerRecord, 0, 8 ) != "SIMPLE  " ) )
             {
                 throw new FormatException( "The stream does not contatin FITS image." );
             }
             else
             {
                 // check if the image has standard FITS format
-                if ( Encoding.ASCII.GetString( headerRecord, 10, 70 ).Split( '/' )[0].Trim( ) != "T" )
+                if ( Encoding.UTF8.GetString( headerRecord, 10, 70 ).Split( '/' )[0].Trim( ) != "T" )
                 {
                     throw new NotSupportedException( "The stream contains not standard FITS data file." );
                 }
@@ -315,7 +308,7 @@ namespace AForge.Imaging.Formats
                 recordsRead++;
 
                 // get keyword
-                string keyword = Encoding.ASCII.GetString( headerRecord, 0, 8 );
+                string keyword = Encoding.UTF8.GetString( headerRecord, 0, 8 );
 
                 // skip commenct and history
                 if ( ( keyword == "COMMENT " ) || ( keyword == "HISTORY " ) )
@@ -344,7 +337,7 @@ namespace AForge.Imaging.Formats
                 else
                 {
                     // get string representation of value/comments
-                    string strValue = Encoding.ASCII.GetString( headerRecord, 10, 70 );
+                    string strValue = Encoding.UTF8.GetString( headerRecord, 10, 70 );
 
                     // check important keywords
                     if ( keyword == "BITPIX  " )
@@ -360,7 +353,7 @@ namespace AForge.Imaging.Formats
                         imageInfo.BitsPerPixel = ( value == 8 ) ? 8 : 16;
                         imageInfo.OriginalBitsPerPixl = value;
                     }
-                    else if ( Encoding.ASCII.GetString( headerRecord, 0, 5 ) == "NAXIS" )
+                    else if ( Encoding.UTF8.GetString( headerRecord, 0, 5 ) == "NAXIS" )
                     {
                         // information about data axis
                         int value = ExtractIntegerValue( strValue );
