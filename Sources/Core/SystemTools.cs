@@ -5,6 +5,7 @@
 // Copyright © AForge.NET, 2007-2011
 // contacts@aforgenet.com
 //
+#define MONO
 
 namespace AForge
 {

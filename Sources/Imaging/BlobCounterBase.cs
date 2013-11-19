@@ -527,7 +527,7 @@ namespace AForge.Imaging
         {
             // check if objects map was collected
             if ( objectLabels == null )
-                throw new ApplicationException( "Image should be processed before to collect objects map." );
+                throw new InvalidOperationException( "Image should be processed before to collect objects map." );
 
             Rectangle[] rects = new Rectangle[objectsCount];
 
@@ -579,7 +579,7 @@ namespace AForge.Imaging
         {
             // check if objects map was collected
             if ( objectLabels == null )
-                throw new ApplicationException( "Image should be processed before to collect objects map." );
+                throw new InvalidOperationException( "Image should be processed before to collect objects map." );
 
             Blob[] blobsToReturn = new Blob[objectsCount];
 
@@ -665,7 +665,7 @@ namespace AForge.Imaging
         {
             // check if objects map was collected
             if ( objectLabels == null )
-                throw new ApplicationException( "Image should be processed before to collect objects map." );
+                throw new InvalidOperationException( "Image should be processed before to collect objects map." );
 
             if (
                 ( image.PixelFormat != PixelFormat.Format24bppRgb ) &&
@@ -829,7 +829,7 @@ namespace AForge.Imaging
         {
             // check if objects map was collected
             if ( objectLabels == null )
-                throw new ApplicationException( "Image should be processed before to collect objects map." );
+                throw new InvalidOperationException( "Image should be processed before to collect objects map." );
 
             if (
                 ( image.PixelFormat != PixelFormat.Format24bppRgb ) &&
@@ -935,7 +935,7 @@ namespace AForge.Imaging
         {
             // check if objects map was collected
             if ( objectLabels == null )
-                throw new ApplicationException( "Image should be processed before to collect objects map." );
+                throw new InvalidOperationException( "Image should be processed before to collect objects map." );
 
             leftEdge  = new List<IntPoint>( );
             rightEdge = new List<IntPoint>( );
@@ -998,7 +998,7 @@ namespace AForge.Imaging
         {
             // check if objects map was collected
             if ( objectLabels == null )
-                throw new ApplicationException( "Image should be processed before to collect objects map." );
+                throw new InvalidOperationException( "Image should be processed before to collect objects map." );
 
             topEdge    = new List<IntPoint>( );
             bottomEdge = new List<IntPoint>( );
@@ -1062,7 +1062,7 @@ namespace AForge.Imaging
         {
             // check if objects map was collected
             if ( objectLabels == null )
-                throw new ApplicationException( "Image should be processed before to collect objects map." );
+                throw new InvalidOperationException( "Image should be processed before to collect objects map." );
 
             List<IntPoint> edgePoints = new List<IntPoint>( );
 

@@ -9,7 +9,7 @@
 namespace AForge.Imaging
 {
     using System;
-    using System.Collections;
+    using System.Collections.Generic;
     using System.Drawing;
     using System.Drawing.Imaging;
 
@@ -263,7 +263,7 @@ namespace AForge.Imaging
 
         private int 		localPeakRadius = 4;
         private short       minLineIntensity = 10;
-        private ArrayList   lines = new ArrayList( );
+        private List<HoughLine> lines = new List<HoughLine>();
 
         /// <summary>
         /// Steps per degree.
@@ -543,7 +543,7 @@ namespace AForge.Imaging
             // check if Hough transformation was made already
             if ( houghMap == null )
             {
-                throw new ApplicationException( "Hough transformation was not done yet." );
+                throw new InvalidOperationException( "Hough transformation was not done yet." );
             }
 
             int width = houghMap.GetLength( 1 );

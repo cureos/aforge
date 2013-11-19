@@ -6,6 +6,8 @@
 // contacts@aforgenet.com
 //
 
+using System.Collections.Generic;
+
 namespace AForge.Imaging.Filters
 {
 	using System;
@@ -37,7 +39,7 @@ namespace AForge.Imaging.Filters
     /// </code>
     /// </remarks>
     /// 
-	public class FiltersSequence : CollectionBase, IFilter
+	public class FiltersSequence : List<IFilter>, IFilter
 	{
         /// <summary>
         /// Initializes a new instance of the <see cref="FiltersSequence"/> class.
@@ -53,7 +55,7 @@ namespace AForge.Imaging.Filters
         /// 
         public FiltersSequence( params IFilter[] filters )
 		{
-			InnerList.AddRange( filters );
+			base.AddRange( filters );
 		}
 
         /// <summary>
@@ -66,7 +68,7 @@ namespace AForge.Imaging.Filters
         /// 
 		public IFilter this[int index]
 		{
-			get { return ((IFilter) InnerList[index]); }
+			get { return ((IFilter) base[index]); }
 		}
 
         /// <summary>
@@ -77,7 +79,7 @@ namespace AForge.Imaging.Filters
         /// 
 		public void Add( IFilter filter )
 		{
-			InnerList.Add( filter );
+			base.Add( filter );
 		}
 
         /// <summary>
@@ -163,23 +165,23 @@ namespace AForge.Imaging.Filters
         ///
         public UnmanagedImage Apply( UnmanagedImage image )
         {
-            int n = InnerList.Count;
+            int n = base.Count;
 
             // check for empty sequence
             if ( n == 0 )
-                throw new ApplicationException( "No filters in the sequence." );
+                throw new InvalidOperationException( "No filters in the sequence." );
 
             UnmanagedImage dstImg = null;
             UnmanagedImage tmpImg = null;
 
             // apply the first filter
-            dstImg = ( (IFilter) InnerList[0] ).Apply( image );
+            dstImg = ( (IFilter) base[0] ).Apply( image );
 
             // apply other filters
             for ( int i = 1; i < n; i++ )
             {
                 tmpImg = dstImg;
-                dstImg = ( (IFilter) InnerList[i] ).Apply( tmpImg );
+                dstImg = ( (IFilter) base[i] ).Apply( tmpImg );
                 tmpImg.Dispose( );
             }
 
@@ -204,15 +206,15 @@ namespace AForge.Imaging.Filters
         ///
         public void Apply( UnmanagedImage sourceImage, UnmanagedImage destinationImage )
         {
-            int n = InnerList.Count;
+            int n = base.Count;
 
             // check for empty sequence
             if ( n == 0 )
-                throw new ApplicationException( "No filters in the sequence." );
+                throw new InvalidOperationException( "No filters in the sequence." );
 
             if ( n == 1 )
             {
-                ( (IFilter) InnerList[0] ).Apply( sourceImage, destinationImage );
+                ( (IFilter) base[0] ).Apply( sourceImage, destinationImage );
             }
             else
             {
@@ -220,18 +222,18 @@ namespace AForge.Imaging.Filters
                 UnmanagedImage tmpImg2 = null;
 
                 // apply the first filter
-                tmpImg1 = ( (IFilter) InnerList[0] ).Apply( sourceImage );
+                tmpImg1 = ( (IFilter) base[0] ).Apply( sourceImage );
 
                 // apply other filters, except the last one
                 n--;
                 for ( int i = 1; i < n; i++ )
                 {
                     tmpImg2 = tmpImg1;
-                    tmpImg1 = ( (IFilter) InnerList[i] ).Apply( tmpImg2 );
+                    tmpImg1 = ( (IFilter) base[i] ).Apply( tmpImg2 );
                     tmpImg2.Dispose( );
                 }
 
-                ( (IFilter) InnerList[n] ).Apply( tmpImg1, destinationImage );
+                ( (IFilter) base[n] ).Apply( tmpImg1, destinationImage );
             }
         }
 	}

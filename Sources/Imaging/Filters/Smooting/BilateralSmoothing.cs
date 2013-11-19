@@ -405,7 +405,7 @@ namespace AForge.Imaging.Filters
 
             if ( pixelSize > 1 )
             {
-                Parallel.For( startY, stopY, delegate( int y )
+                for ( int y = startY; y < stopY; ++y  )
                 {
                     byte* src = srcBase + y * srcStride;
                     byte* dst = dstBase + y * dstStride;
@@ -471,12 +471,12 @@ namespace AForge.Imaging.Filters
                         dst[RGB.G] = (byte) ( sMembG / sCoefG );
                         dst[RGB.B] = (byte) ( sMembB / sCoefB );
                     }
-                } );
+                }
             }
             else
             {
                 // 8bpp grayscale images
-                Parallel.For( startY, stopY, delegate( int y )
+                for ( int y = startY; y < stopY; ++y  )
                 {
                     byte* src = srcBase + y * srcStride;
                     byte* dst = dstBase + y * dstStride;
@@ -523,7 +523,7 @@ namespace AForge.Imaging.Filters
 
                         *dst = (byte) ( sMembC / sCoefC );
                     }
-                } );
+                }
             }
         }
 

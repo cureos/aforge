@@ -6,10 +6,11 @@
 // andrew.kirillov@aforgenet.com
 //
 
+
 namespace AForge.Imaging
 {
     using System;
-    using System.Collections;
+    using System.Collections.Generic;
     using System.Drawing;
     using System.Drawing.Imaging;
 
@@ -138,7 +139,7 @@ namespace AForge.Imaging
 
         private int localPeakRadius = 4;
         private short minCircleIntensity = 10;
-        private ArrayList circles = new ArrayList( );
+        private List<HoughCircle> circles = new List<HoughCircle>();
 
         /// <summary>
         /// Minimum circle's intensity in Hough map to recognize a circle.
@@ -324,7 +325,7 @@ namespace AForge.Imaging
             // check if Hough transformation was made already
             if ( houghMap == null )
             {
-                throw new ApplicationException( "Hough transformation was not done yet." );
+                throw new InvalidOperationException( "Hough transformation was not done yet." );
             }
 
             int width = houghMap.GetLength( 1 );

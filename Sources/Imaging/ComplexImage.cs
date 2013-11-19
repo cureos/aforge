@@ -37,7 +37,7 @@ namespace AForge.Imaging
     /// <img src="img/imaging/fourier.jpg" width="256" height="256" />
     /// </remarks>
     /// 
-    public class ComplexImage : ICloneable
+    public class ComplexImage
     {
         // image complex data
         private Complex[,] data;

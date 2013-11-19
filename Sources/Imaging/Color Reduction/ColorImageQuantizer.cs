@@ -367,9 +367,7 @@ namespace AForge.Imaging.ColorReduction
         }
 
         #region Helper methods
-        [NonSerialized]
         private Color[] paletteToUse;
-        [NonSerialized]
         private Dictionary<Color, int> cache = new Dictionary<Color, int>( );
 
         // Get closest color from palette to specified color

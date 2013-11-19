@@ -341,7 +341,7 @@ namespace AForge.Imaging.Filters
             if ( ( width != filteredImage1.Width ) || ( height != filteredImage1.Height ) )
             {
                 filteredImage1.Dispose( );
-                throw new ApplicationException( "Filters should not change image dimension." );
+                throw new InvalidOperationException( "Filters should not change image dimension." );
             }
 
             // convert 1st image to RGB if required
@@ -364,7 +364,7 @@ namespace AForge.Imaging.Filters
                     filteredImage1.Dispose( );
                     filteredImage2.Dispose( );
                     // we are not handling such situations yet
-                    throw new ApplicationException( "Filters should not change image dimension." );
+                    throw new InvalidOperationException( "Filters should not change image dimension." );
                 }
 
                 // convert 2nd image to RGB if required
