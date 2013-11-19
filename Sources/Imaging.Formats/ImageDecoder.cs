@@ -13,6 +13,11 @@ namespace AForge.Imaging.Formats
     using System.Drawing.Imaging;
     using System.IO;
 
+#if NETFX_CORE
+    using System.Threading.Tasks;
+    using Windows.Storage;
+#endif
+
     /// <summary>
     /// Image decoder to decode different custom image file formats.
     /// </summary>
@@ -131,7 +136,16 @@ namespace AForge.Imaging.Formats
                     IImageDecoder decoder = decoders[fileExtension];
 
                     // open stream
+#if NETFX_CORE
+                    var stream = Task.Run(async () =>
+                    {
+                        var storageFile = await StorageFile.GetFileFromPathAsync(fileName);
+                        var storageStream = await storageFile.OpenSequentialReadAsync();
+                        return storageStream.AsStreamForRead();
+                    }).Result;
+#else
                     FileStream stream = new FileStream( fileName, FileMode.Open );
+#endif
                     // open decoder
                     decoder.Open( stream );
                     // read the first frame
@@ -139,7 +153,6 @@ namespace AForge.Imaging.Formats
 
                     // close decoder and stream
                     decoder.Close( );
-                    stream.Close( );
                     stream.Dispose( );
 
                     return bitmap;
@@ -157,33 +170,41 @@ namespace AForge.Imaging.Formats
         private static System.Drawing.Bitmap FromFile( string fileName )
         {
             Bitmap loadedImage = null;
-            FileStream stream = null;
+            Stream stream = null;
 
             try
             {
                 // read image to temporary memory stream
+#if NETFX_CORE
+                stream = Task.Run(async () =>
+                {
+                    var storageFile = await StorageFile.GetFileFromPathAsync(fileName);
+                    var storageStream = await storageFile.OpenSequentialReadAsync();
+                    return storageStream.AsStreamForRead();
+                }).Result;
+#else
                 stream = File.OpenRead( fileName );
-                MemoryStream memoryStream = new MemoryStream( );
+#endif
+                MemoryStream memoryStream = new MemoryStream();
 
                 byte[] buffer = new byte[10000];
-                while ( true )
+                while (true)
                 {
-                    int read = stream.Read( buffer, 0, 10000 );
+                    int read = stream.Read(buffer, 0, 10000);
 
-                    if ( read == 0 )
+                    if (read == 0)
                         break;
 
-                    memoryStream.Write( buffer, 0, read );
+                    memoryStream.Write(buffer, 0, read);
                 }
 
-                loadedImage = (Bitmap) Bitmap.FromStream( memoryStream );
+                loadedImage = (Bitmap)Bitmap.FromStream(memoryStream);
             }
             finally
             {
-                if ( stream != null )
+                if (stream != null)
                 {
-                    stream.Close( );
-                    stream.Dispose( );
+                    stream.Dispose();
                 }
             }
 
