@@ -10,14 +10,14 @@
 
 namespace System.Drawing
 {
-    public class Graphics : IDisposable
+    public sealed class Graphics : IDisposable
     {
         public static Graphics FromImage(Bitmap bitmap)
         {
             throw new NotImplementedException();
         }
 
-        public void DrawImage(Bitmap source, int i, int i1, int width, int height)
+        public void DrawImage(Bitmap source, int x, int y, int width, int height)
         {
             throw new NotImplementedException();
         }

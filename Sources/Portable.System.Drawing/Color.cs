@@ -8,25 +8,53 @@
 // info at cureos dot com
 //
 
+#if NETFX_CORE
+using ActualColor = Windows.UI.Color;
+#endif
+
 namespace System.Drawing
 {
     public struct Color
     {
         #region FIELDS
 
-        public static Color Red; public static Color Green; public static Color Blue; public static Color Yellow;
-        public static Color Violet; public static Color Brown; public static Color Olive; public static Color Cyan;
-        public static Color Magenta; public static Color Gold; public static Color Indigo; public static Color Ivory;
-        public static Color HotPink; public static Color DarkRed; public static Color DarkGreen; public static Color DarkBlue;
-        public static Color DarkSeaGreen; public static Color Gray; public static Color DarkKhaki; public static Color DarkGray;
-        public static Color LimeGreen; public static Color Tomato; public static Color SteelBlue; public static Color SkyBlue;
-        public static Color Silver; public static Color Salmon; public static Color SaddleBrown; public static Color RosyBrown;
-        public static Color PowderBlue; public static Color Plum; public static Color PapayaWhip; public static Color Orange;
-        public static Color Black;
-        public static Color White;
-        public static Color DarkCyan;
-        public static Color DarkMagenta;
-        public static Color LightGray;
+        public static readonly Color Red = new Color(0xff, 0xff, 0x00, 0x00); 
+        public static readonly Color Green = new Color(0xff, 0x00, 0x80, 0x00);
+        public static readonly Color Blue = new Color(0xff, 0x00, 0x00, 0xff); 
+        public static readonly Color Yellow;
+        public static readonly Color Violet; 
+        public static readonly Color Brown; 
+        public static readonly Color Olive; 
+        public static readonly Color Cyan;
+        public static readonly Color Magenta; 
+        public static readonly Color Gold; 
+        public static readonly Color Indigo; 
+        public static readonly Color Ivory;
+        public static readonly Color HotPink; 
+        public static readonly Color DarkRed; 
+        public static readonly Color DarkGreen; 
+        public static readonly Color DarkBlue;
+        public static readonly Color DarkSeaGreen; 
+        public static readonly Color Gray; 
+        public static readonly Color DarkKhaki; 
+        public static readonly Color DarkGray;
+        public static readonly Color LimeGreen; 
+        public static readonly Color Tomato; 
+        public static readonly Color SteelBlue; 
+        public static readonly Color SkyBlue;
+        public static readonly Color Silver; 
+        public static readonly Color Salmon; 
+        public static readonly Color SaddleBrown; 
+        public static readonly Color RosyBrown;
+        public static readonly Color PowderBlue; 
+        public static readonly Color Plum; 
+        public static readonly Color PapayaWhip; 
+        public static readonly Color Orange;
+        public static readonly Color Black = new Color(0xff, 0x00, 0x00, 0x00);
+        public static readonly Color White = new Color(0xff, 0xff, 0xff, 0xff);
+        public static readonly Color DarkCyan;
+        public static readonly Color DarkMagenta;
+        public static readonly Color LightGray;
         
         private readonly byte _a;
         private readonly byte _r;
@@ -119,7 +147,17 @@ namespace System.Drawing
         {
             return !(lhs == rhs);
         }
-        
+
+        public static implicit operator ActualColor(Color color)
+        {
+            return global::Windows.UI.Color.FromArgb(color._a, color._r, color._g, color._b);
+        }
+
+        public static implicit operator Color(ActualColor color)
+        {
+            return FromArgb(color.A, color.R, color.G, color.B);
+        }
+
         #endregion
     }
 }

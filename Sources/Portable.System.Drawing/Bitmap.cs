@@ -10,7 +10,7 @@
 
 using System.Drawing.Imaging;
 using System.IO;
-using Windows.Graphics.Imaging;
+
 #if NETFX_CORE
 using Windows.UI.Xaml.Media.Imaging;
 #endif
@@ -22,7 +22,6 @@ namespace System.Drawing
         #region FIELDS
 
         private readonly WriteableBitmap _self;
-
         private readonly PixelFormat _pixelFormat;
 
         #endregion
@@ -39,6 +38,12 @@ namespace System.Drawing
         {
             _self = BitmapFactory.New(width, height);
             _pixelFormat = pixelFormat;
+        }
+
+        private Bitmap(WriteableBitmap bitmap)
+        {
+            _self = bitmap;
+            _pixelFormat = PixelFormat.Format32bppArgb;
         }
 
         #endregion
@@ -70,7 +75,7 @@ namespace System.Drawing
 
         #region METHODS
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             throw new NotImplementedException();
         }
@@ -101,6 +106,20 @@ namespace System.Drawing
             return Image.GetPixelFormatSize(pixelFormat);
         }
         
+        #endregion
+
+        #region OPERATORS
+
+        public static implicit operator WriteableBitmap(Bitmap bitmap)
+        {
+            return bitmap._self;
+        }
+
+        public static implicit operator Bitmap(WriteableBitmap bitmap)
+        {
+            return new Bitmap(bitmap);
+        }
+
         #endregion
     }
 }
