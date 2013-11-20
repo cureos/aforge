@@ -10,6 +10,10 @@
 
 using System.Drawing.Imaging;
 using System.IO;
+using Windows.Graphics.Imaging;
+#if NETFX_CORE
+using Windows.UI.Xaml.Media.Imaging;
+#endif
 
 namespace System.Drawing
 {
@@ -17,11 +21,9 @@ namespace System.Drawing
     {
         #region FIELDS
 
+        private readonly WriteableBitmap _self;
+
         private readonly PixelFormat _pixelFormat;
-        private readonly IntPtr _imageData;
-        private readonly int _width;
-        private readonly int _height;
-        private readonly int _stride;
 
         #endregion
 
@@ -29,18 +31,14 @@ namespace System.Drawing
 
         public Bitmap(int width, int height, PixelFormat pixelFormat)
         {
-            _width = width;
-            _height = height;
+            _self = BitmapFactory.New(width, height);
             _pixelFormat = pixelFormat;
         }
 
         public Bitmap(int width, int height, int stride, PixelFormat pixelFormat, IntPtr imageData)
         {
-            _width = width;
-            _height = height;
-            _stride = stride;
+            _self = BitmapFactory.New(width, height);
             _pixelFormat = pixelFormat;
-            _imageData = imageData;
         }
 
         #endregion
@@ -54,12 +52,12 @@ namespace System.Drawing
 
         public int Width
         {
-            get { return _width; }
+            get { return _self.PixelWidth; }
         }
 
         public int Height
         {
-            get { return _height; }
+            get { return _self.PixelHeight; }
         }
 
         public ColorPalette Palette { get; set; }
@@ -82,7 +80,7 @@ namespace System.Drawing
             throw new NotImplementedException();
         }
 
-        public BitmapData LockBits(Rectangle rectangle, object readOnly, PixelFormat pixelFormat)
+        public BitmapData LockBits(Rectangle rectangle, ImageLockMode readOnly, PixelFormat pixelFormat)
         {
             throw new NotImplementedException();
         }
