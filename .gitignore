@@ -1,7 +1,9 @@
-Release
+[Rr]elease
 [Oo]bj
 [Bb]in
+[Pp]ackages
 *.suo
+*.DotSettings
 
 /Sources/Controls/AForge.Controls.xml
 /Sources/Core/AForge.xml
@@ -19,5 +21,3 @@ Release
 /Sources/Video.Ximea/AForge.Video.Ximea.xml
 /Sources/Video/AForge.Video.xml
 /Sources/Vision/AForge.Vision.xml
-
-*.DotSettings

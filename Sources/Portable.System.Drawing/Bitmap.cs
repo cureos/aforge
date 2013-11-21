@@ -17,9 +17,11 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace System.Drawing
 {
-    public class Bitmap : IDisposable
+    public sealed class Bitmap : IDisposable
     {
         #region FIELDS
+
+        private bool _disposed = false;
 
         private readonly WriteableBitmap _self;
         private readonly PixelFormat _pixelFormat;
@@ -44,6 +46,11 @@ namespace System.Drawing
         {
             _self = bitmap;
             _pixelFormat = PixelFormat.Format32bppArgb;
+        }
+
+        ~Bitmap()
+        {
+            Dispose(false);
         }
 
         #endregion
@@ -75,9 +82,10 @@ namespace System.Drawing
 
         #region METHODS
 
-        public virtual void Dispose()
+        public void Dispose()
         {
-            throw new NotImplementedException();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public void UnlockBits(BitmapData sourceData)
@@ -105,7 +113,21 @@ namespace System.Drawing
         {
             return Image.GetPixelFormatSize(pixelFormat);
         }
-        
+
+        private void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+
+            if (disposing)
+            {
+                // Free managed disposable objects
+            }
+
+            // Free unmanaged objects
+
+            _disposed = true;
+        }
+
         #endregion
 
         #region OPERATORS
