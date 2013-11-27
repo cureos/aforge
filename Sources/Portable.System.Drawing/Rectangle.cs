@@ -71,7 +71,7 @@ namespace System.Drawing
 
         public void Intersect(Rectangle rectangle)
         {
-            throw new NotImplementedException();
+            //TODO throw new NotImplementedException();
         }
 
         public bool Contains(int x, int y)

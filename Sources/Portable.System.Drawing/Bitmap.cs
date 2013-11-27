@@ -159,7 +159,6 @@ namespace System.Drawing
 
         public static implicit operator WriteableBitmap(Bitmap bitmap)
         {
-            // TODO Handle all pixel format types
             var bytes = new byte[bitmap._stride * bitmap._height];
             Marshal.Copy(bitmap._scan0, bytes, 0, bytes.Length);
 
