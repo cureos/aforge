@@ -24,7 +24,7 @@ namespace System.Drawing.Imaging
 
         #region CONSTRUCTORS
 
-        internal BitmapData(IntPtr scan0, int stride, int width, int height, PixelFormat pixelFormat)
+        internal BitmapData(int width, int height, int stride, PixelFormat pixelFormat, IntPtr scan0)
         {
             _scan0 = scan0;
             _stride = stride;

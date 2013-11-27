@@ -13,18 +13,19 @@ namespace System.Drawing.Imaging
     public enum PixelFormat
     {
 // ReSharper disable InconsistentNaming
-        Format1bppIndexed,
-        Format4bppIndexed,
-        Format8bppIndexed,
-        Format16bppGrayScale,
-        Format24bppRgb,
-        Format32bppRgb,
-        Format32bppArgb,
-        Format32bppPArgb,
-        Format48bppRgb,
-        Format64bppArgb,
-        Format64bppPArgb,
+        Format1bppIndexed = 196865,
+        Format4bppIndexed = 197634,
+        Format8bppIndexed = 198659,
+        Format16bppGrayScale = 1052676,
+        Format24bppRgb = 137224,
+        Format32bppRgb = 139273,
+        Format32bppArgb = 2498570,
+        Format32bppPArgb = 925707,
+        Format48bppRgb = 1060876,
+        Format64bppArgb = 3424269,
+        Format64bppPArgb = 1851406,
 // ReSharper restore InconsistentNaming
-        Indexed
+        Indexed = 65536,
+        Undefined = 0
     }
 }
