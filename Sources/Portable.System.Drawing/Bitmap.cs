@@ -170,7 +170,7 @@ namespace System.Drawing
         {
             var width = writeableBitmap.PixelWidth;
             var height = writeableBitmap.PixelHeight;
-            const PixelFormat format = PixelFormat.Format32bppPArgb;
+            const PixelFormat format = PixelFormat.Format32bppArgb;
             var bytes = writeableBitmap.ToByteArray();
 
             var bitmap = new Bitmap(width, height, format);

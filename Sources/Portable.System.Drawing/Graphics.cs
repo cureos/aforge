@@ -9,7 +9,6 @@
 //
 
 using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
 using AForge;
 
 namespace System.Drawing
@@ -52,6 +51,7 @@ namespace System.Drawing
             var bitmapData = _bitmap.LockBits(new Rectangle(x, y, width, height), ImageLockMode.ReadWrite,
                 _bitmap.PixelFormat);
 
+            //var bytes = GetConvertedByteArray(source, _bitmap.PixelFormat);
             // TODO Obtain pixels from source and draw them onto _bitmap in _bitmap pixel format
             SystemTools.CopyUnmanagedMemory(bitmapData.Scan0, sourceData.Scan0,
                 Math.Min(bitmapData.Stride * bitmapData.Height, sourceData.Stride * sourceData.Height));
