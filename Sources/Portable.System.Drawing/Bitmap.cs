@@ -8,10 +8,15 @@
 // info at cureos dot com
 //
 
+using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 using ImagePixelEnumerator.Extensions;
+using ImagePixelEnumerator.Helpers;
+using ImagePixelEnumerator.Quantizers;
+using ImagePixelEnumerator.Quantizers.DistinctCompetition;
+
 #if NETFX_CORE
 using Windows.UI.Xaml.Media.Imaging;
 #endif
@@ -21,6 +26,8 @@ namespace System.Drawing
     public sealed class Bitmap : Image, IDisposable
     {
         #region FIELDS
+
+        private static readonly IColorQuantizer Quantizer;
 
         private bool _disposed = false;
 
@@ -35,6 +42,11 @@ namespace System.Drawing
         #endregion
 
         #region CONSTRUCTORS
+
+        static Bitmap()
+        {
+            Quantizer = new DistinctSelectionQuantizer();
+        }
 
         public Bitmap(int width, int height, PixelFormat pixelFormat)
         {
@@ -104,20 +116,60 @@ namespace System.Drawing
             GC.SuppressFinalize(this);
         }
 
-        public void UnlockBits(BitmapData sourceData)
+        public Bitmap Clone(PixelFormat pixelFormat)
         {
-            // TODO Need to do anything here?
+            List<Color> palette = null;
+
+            // indexed formats require 2 passes - one more pass to determines colors for palette beforehand
+            if (pixelFormat.IsIndexed())
+            {
+                Quantizer.Prepare(this);
+
+                // Pass: scan
+                ImageBuffer.ProcessPerPixel(this, null, 4, (passIndex, pixel) =>
+                {
+                    var color = pixel.GetColor();
+                    Quantizer.AddColor(color, pixel.X, pixel.Y);
+                    return true;
+                });
+
+                // determines palette
+                palette = Quantizer.GetPalette(pixelFormat.GetColorCount());
+            }
+
+            // Pass: apply
+            Image result;
+            ImageBuffer.TransformImagePerPixel(this, pixelFormat, palette, out result, null, 4, (passIndex, sourcePixel, targetPixel) =>
+            {
+                var color = sourcePixel.GetColor();
+                targetPixel.SetColor(color, Quantizer);
+                return true;
+            });
+
+            return (Bitmap)result;
         }
 
         public BitmapData LockBits(Rectangle rectangle, ImageLockMode readOnly, PixelFormat pixelFormat)
         {
-            if (pixelFormat.Equals(PixelFormat.Indexed) || pixelFormat.Equals(PixelFormat.Undefined))
-                throw new ArgumentException("LockBits method only applicable to pixel formats with prefix Format",
-                    "pixelFormat");
+            switch (pixelFormat)
+            {
+                case PixelFormat.Alpha:
+                case PixelFormat.PAlpha:
+                case PixelFormat.Indexed:
+                case PixelFormat.Undefined:
+                    throw new ArgumentException("LockBits method only applicable to pixel formats with prefix Format",
+                        "pixelFormat");
+            }
+                
             if (!pixelFormat.Equals(_pixelFormat))
                 throw new ArgumentException(String.Format("Bitmap.PixelFormat = {0}", _pixelFormat), "pixelFormat");
 
             return new BitmapData(_width, _height, _stride, _pixelFormat, _scan0);
+        }
+
+        public void UnlockBits(BitmapData sourceData)
+        {
+            // TODO Need to do anything here?
         }
 
         public static Bitmap FromStream(Stream stream)
@@ -131,11 +183,6 @@ namespace System.Drawing
             HorizontalResolution = horizontalResolution;
             VerticalResolution = verticalResolution;
         }
-
-/*        public static int GetPixelFormatSize(PixelFormat pixelFormat)
-        {
-            return Image.GetPixelFormatSize(pixelFormat);
-        }*/
 
         private void Dispose(bool disposing)
         {
@@ -165,6 +212,9 @@ namespace System.Drawing
 
         public static implicit operator WriteableBitmap(Bitmap bitmap)
         {
+            if (bitmap.PixelFormat != PixelFormat.Format32bppArgb)
+                bitmap = bitmap.Clone(PixelFormat.Format32bppArgb);
+
             var bytes = new byte[bitmap._stride * bitmap._height];
             Marshal.Copy(bitmap._scan0, bytes, 0, bytes.Length);
 

@@ -64,7 +64,7 @@ namespace System.Drawing
             {
                 Quantizer.Prepare(source);
 
-                // Pass: scan grayscale
+                // Pass: scan
                 ImageBuffer.ProcessPerPixel(source, null, 4, (passIndex, pixel) =>
                 {
                     var color = pixel.GetColor();
@@ -76,7 +76,7 @@ namespace System.Drawing
                 palette = Quantizer.GetPalette(targetFormat.GetColorCount());
             }
 
-            // Pass: apply grayscale
+            // Pass: apply
             ImageBuffer.TransformImagePerPixel(source, palette, ref _bitmap, null, 4, (passIndex, sourcePixel, targetPixel) =>
             {
                 var color = sourcePixel.GetColor();
