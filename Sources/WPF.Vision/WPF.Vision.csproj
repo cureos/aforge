@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F09564B3-02CF-4FAA-A2F7-BE6EF916F91F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AForge.Vision</RootNamespace>
+    <AssemblyName>AForge.Vision</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>AForge.Vision.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Vision\Motion\BlobCountingObjectsProcessing.cs">
+      <Link>Motion\BlobCountingObjectsProcessing.cs</Link>
+    </Compile>
+    <Compile Include="..\Vision\Motion\CustomFrameDifferenceDetector.cs">
+      <Link>Motion\CustomFrameDifferenceDetector.cs</Link>
+    </Compile>
+    <Compile Include="..\Vision\Motion\GridMotionAreaProcessing.cs">
+      <Link>Motion\GridMotionAreaProcessing.cs</Link>
+    </Compile>
+    <Compile Include="..\Vision\Motion\IMotionDetector.cs">
+      <Link>Motion\IMotionDetector.cs</Link>
+    </Compile>
+    <Compile Include="..\Vision\Motion\IMotionProcessing.cs">
+      <Link>Motion\IMotionProcessing.cs</Link>
+    </Compile>
+    <Compile Include="..\Vision\Motion\MotionAreaHighlighting.cs">
+      <Link>Motion\MotionAreaHighlighting.cs</Link>
+    </Compile>
+    <Compile Include="..\Vision\Motion\MotionBorderHighlighting.cs">
+      <Link>Motion\MotionBorderHighlighting.cs</Link>
+    </Compile>
+    <Compile Include="..\Vision\Motion\MotionDetector.cs">
+      <Link>Motion\MotionDetector.cs</Link>
+    </Compile>
+    <Compile Include="..\Vision\Motion\SimpleBackgroundModelingDetector.cs">
+      <Link>Motion\SimpleBackgroundModelingDetector.cs</Link>
+    </Compile>
+    <Compile Include="..\Vision\Motion\TwoFramesDifferenceDetector.cs">
+      <Link>Motion\TwoFramesDifferenceDetector.cs</Link>
+    </Compile>
+    <Compile Include="..\Vision\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Vision\Tools.cs">
+      <Link>Tools.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AForge.Vision.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WPF.Imaging\WPF.Imaging.csproj">
+      <Project>{d8b4fa2a-d86e-4d94-9066-4826dc7166c7}</Project>
+      <Name>WPF.Imaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPF.System.Drawing\WPF.System.Drawing.csproj">
+      <Project>{1b0a9e59-7e3a-474b-bd18-77be20a2cd22}</Project>
+      <Name>WPF.System.Drawing</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

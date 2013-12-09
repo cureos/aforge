@@ -110,10 +110,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <ProjectReference Include="..\Core\Portable.Core.csproj">
-      <Project>{d4354d92-07cf-4f27-bd68-69347cf5aa3f}</Project>
-      <Name>Portable.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Imaging\Store.Imaging.csproj">
       <Project>{6a6b3a73-60a9-44ce-8617-56b7f7227a6b}</Project>
       <Name>Store.Imaging</Name>
