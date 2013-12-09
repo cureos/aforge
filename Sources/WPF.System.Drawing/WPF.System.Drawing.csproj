@@ -208,6 +208,11 @@
     <None Include="packages.config" />
     <None Include="System.Drawing.snk" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Portable.System.Drawing\_Licenses\CPOL_PixelFormatConversion.htm">
+      <Link>_Licenses\CPOL_PixelFormatConversion.htm</Link>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
