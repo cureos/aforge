@@ -12,8 +12,20 @@ using System.Drawing.Imaging;
 
 namespace System.Drawing
 {
-    public static class Image
+    public abstract class Image
     {
+        #region PROPERTIES
+
+        public abstract PixelFormat PixelFormat { get; }
+
+        public abstract int Width { get; }
+
+        public abstract int Height { get; }
+
+        public abstract ColorPalette Palette { get; set; }
+
+        #endregion
+
         #region METHODS
 
         public static int GetPixelFormatSize(PixelFormat pixelFormat)

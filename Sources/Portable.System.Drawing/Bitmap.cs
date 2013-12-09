@@ -11,14 +11,14 @@
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
-
+using ImagePixelEnumerator.Extensions;
 #if NETFX_CORE
 using Windows.UI.Xaml.Media.Imaging;
 #endif
 
 namespace System.Drawing
 {
-    public sealed class Bitmap : IDisposable
+    public sealed class Bitmap : Image, IDisposable
     {
         #region FIELDS
 
@@ -45,6 +45,9 @@ namespace System.Drawing
 
             _scan0 = Marshal.AllocHGlobal(_stride * height);
             _freeScan0 = true;
+
+            if (pixelFormat.IsIndexed())
+                Palette = new ColorPalette(new Color[pixelFormat.GetColorCount()]);
         }
 
         public Bitmap(int width, int height, int stride, PixelFormat pixelFormat, IntPtr scan0)
@@ -56,6 +59,9 @@ namespace System.Drawing
 
             _scan0 = scan0;
             _freeScan0 = false;
+
+            if (pixelFormat.IsIndexed())
+                Palette = new ColorPalette(new Color[pixelFormat.GetColorCount()]);
         }
 
         ~Bitmap()
@@ -67,22 +73,22 @@ namespace System.Drawing
 
         #region PROPERTIES
 
-        public PixelFormat PixelFormat
+        public override PixelFormat PixelFormat
         {
             get { return _pixelFormat; }
         }
 
-        public int Width
+        public override int Width
         {
             get { return _width; }
         }
 
-        public int Height
+        public override int Height
         {
             get { return _height; }
         }
 
-        public ColorPalette Palette { get; set; }
+        public override ColorPalette Palette { get; set; }
 
         public int HorizontalResolution { get; private set; }
 
@@ -126,10 +132,10 @@ namespace System.Drawing
             VerticalResolution = verticalResolution;
         }
 
-        public static int GetPixelFormatSize(PixelFormat pixelFormat)
+/*        public static int GetPixelFormatSize(PixelFormat pixelFormat)
         {
             return Image.GetPixelFormatSize(pixelFormat);
-        }
+        }*/
 
         private void Dispose(bool disposing)
         {

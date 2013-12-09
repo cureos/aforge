@@ -125,7 +125,7 @@ namespace System.Drawing
                 (Top > r.Bottom) || (Bottom < r.Top));
         }
 
-        private static Rectangle FromLTRB(int left, int top, int right, int bottom)
+        internal static Rectangle FromLTRB(int left, int top, int right, int bottom)
         {
             return new Rectangle(left, top, right - left, bottom - top);
         }

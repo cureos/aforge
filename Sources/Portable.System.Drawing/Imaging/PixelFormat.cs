@@ -16,7 +16,10 @@ namespace System.Drawing.Imaging
         Format1bppIndexed = 196865,
         Format4bppIndexed = 197634,
         Format8bppIndexed = 198659,
+        Format16bppArgb1555 = 397319,
         Format16bppGrayScale = 1052676,
+        Format16bppRgb555 = 135173,
+        Format16bppRgb565 = 135174,
         Format24bppRgb = 137224,
         Format32bppRgb = 139273,
         Format32bppArgb = 2498570,
@@ -25,6 +28,8 @@ namespace System.Drawing.Imaging
         Format64bppArgb = 3424269,
         Format64bppPArgb = 1851406,
 // ReSharper restore InconsistentNaming
+        Alpha = 262144,
+        PAlpha = 524288,
         Indexed = 65536,
         Undefined = 0
     }

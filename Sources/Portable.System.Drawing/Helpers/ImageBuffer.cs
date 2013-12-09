@@ -536,6 +536,25 @@ namespace ImagePixelEnumerator.Helpers
             }
         }
 
+        public void TransformPerPixel(List<Color> palette, ref Image targetImage, IList<Point> path = null,
+            Int32 parallelTaskCount = 4, params TransformPixelFunction[] passes)
+        {
+            // checks parameters
+            Guard.CheckNull(targetImage, "targetImage");
+
+            // creates a target bitmap in an appropriate format
+            var targetFormat = targetImage.PixelFormat;
+
+            // sets image palette if needed
+            if (targetFormat.IsIndexed()) targetImage.SetPalette(palette);
+
+            // wraps target image to a buffer
+            using (var target = new ImageBuffer(targetImage, ImageLockMode.WriteOnly))
+            {
+                TransformPerPixelBase(target, path, parallelTaskCount, passes);
+            }
+        }
+
         public void TransformPerPixelAdvanced(PixelFormat targetFormat, List<Color> palette, out  Image targetImage, IList<Point> path = null, Int32 parallelTaskCount = 4, params TransformPixelAdvancedFunction[] passes)
         {
             // checks parameters
@@ -583,6 +602,18 @@ namespace ImagePixelEnumerator.Helpers
             using (ImageBuffer source = new ImageBuffer(sourceImage, ImageLockMode.ReadWrite))
             {
                 source.TransformPerPixel(targetFormat, palette, out targetImage, path, parallelTaskCount, passes);
+            }
+        }
+
+        public static void TransformImagePerPixel(Image sourceImage, List<Color> palette, ref Image targetImage, IList<Point> path = null, Int32 parallelTaskCount = 4, params TransformPixelFunction[] passes)
+        {
+            // checks parameters
+            Guard.CheckNull(sourceImage, "sourceImage");
+
+            // wraps source image to a buffer
+            using (var source = new ImageBuffer(sourceImage, ImageLockMode.ReadWrite))
+            {
+                source.TransformPerPixel(palette, ref targetImage, path, parallelTaskCount, passes);
             }
         }
 

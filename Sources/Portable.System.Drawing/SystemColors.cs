@@ -8,12 +8,14 @@
 // info at cureos dot com
 //
 
-namespace System.Drawing.Imaging
+namespace System.Drawing
 {
-    public enum ImageLockMode
+    public sealed class SystemColors
     {
-        ReadOnly,
-        ReadWrite,
-        WriteOnly
+        #region FIELDS
+
+        public static readonly Color Control = Color.FromArgb(0xff, 0xb0, 0xb0, 0xb0);
+
+        #endregion
     }
 }

@@ -8,8 +8,11 @@
 // info at cureos dot com
 //
 
-using System.Drawing.Imaging;
-using AForge;
+using System.Collections.Generic;
+using ImagePixelEnumerator.Extensions;
+using ImagePixelEnumerator.Helpers;
+using ImagePixelEnumerator.Quantizers;
+using ImagePixelEnumerator.Quantizers.DistinctCompetition;
 
 namespace System.Drawing
 {
@@ -17,15 +20,22 @@ namespace System.Drawing
     {
         #region FIELDS
 
+        private static readonly IColorQuantizer Quantizer;
+
         private bool _disposed = false;
 
-        private Bitmap _bitmap;
+        private Image _bitmap;
 
         #endregion
 
         #region CONSTRUCTORS
 
-        private Graphics(Bitmap bitmap)
+        static Graphics()
+        {
+            Quantizer = new DistinctSelectionQuantizer();
+        }
+
+        private Graphics(Image bitmap)
         {
             _bitmap = bitmap;
         }
@@ -46,18 +56,33 @@ namespace System.Drawing
 
         public void DrawImage(Bitmap source, int x, int y, int width, int height)
         {
-            var sourceData = source.LockBits(new Rectangle(x, y, width, height), ImageLockMode.ReadOnly,
-                source.PixelFormat);
-            var bitmapData = _bitmap.LockBits(new Rectangle(x, y, width, height), ImageLockMode.ReadWrite,
-                _bitmap.PixelFormat);
+            var targetFormat = _bitmap.PixelFormat;
+            List<Color> palette = null;
 
-            //var bytes = GetConvertedByteArray(source, _bitmap.PixelFormat);
-            // TODO Obtain pixels from source and draw them onto _bitmap in _bitmap pixel format
-            SystemTools.CopyUnmanagedMemory(bitmapData.Scan0, sourceData.Scan0,
-                Math.Min(bitmapData.Stride * bitmapData.Height, sourceData.Stride * sourceData.Height));
+            // indexed formats require 2 passes - one more pass to determines colors for palette beforehand
+            if (targetFormat.IsIndexed())
+            {
+                Quantizer.Prepare(source);
 
-            _bitmap.UnlockBits(bitmapData);
-            source.UnlockBits(sourceData);
+                // Pass: scan grayscale
+                ImageBuffer.ProcessPerPixel(source, null, 4, (passIndex, pixel) =>
+                {
+                    var color = pixel.GetColor();
+                    Quantizer.AddColor(color, pixel.X, pixel.Y);
+                    return true;
+                });
+
+                // determines palette
+                palette = Quantizer.GetPalette(targetFormat.GetColorCount());
+            }
+
+            // Pass: apply grayscale
+            ImageBuffer.TransformImagePerPixel(source, palette, ref _bitmap, null, 4, (passIndex, sourcePixel, targetPixel) =>
+            {
+                var color = sourcePixel.GetColor();
+                targetPixel.SetColor(color, Quantizer);
+                return true;
+            });
         }
 
         public void Dispose()

@@ -7,6 +7,40 @@
 // Copyright © Cureos AB, 2013
 // info at cureos dot com
 //
+// Parts of code have been adapted from Mono, 
+// https://github.com/mono/sysdrawing-coregraphics/blob/master/System.Drawing/Color.cs
+//
+// Authors:
+//         Dennis Hayes (dennish@raytek.com)
+//         Ben Houston  (ben@exocortex.org)
+//         Gonzalo Paniagua (gonzalo@ximian.com)
+//         Juraj Skripsky (juraj@hotfeet.ch)
+//        Sebastien Pouliot  <sebastien@ximian.com>
+//
+// (C) 2002 Dennis Hayes
+// (c) 2002 Ximian, Inc. (http://www.ximiam.com)
+// (C) 2005 HotFeet GmbH (http://www.hotfeet.ch)
+// Copyright (C) 2004,2006-2007 Novell, Inc (http://www.novell.com)
+//
+// Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to
+// the following conditions:
+// 
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
 
 #if NETFX_CORE
 using TrueColor = Windows.UI.Color;
@@ -109,6 +143,68 @@ namespace System.Drawing
         public static Color FromArgb(int r, int g, int b)
         {
             return new Color(0xff, (byte)r, (byte)g, (byte)b);
+        }
+
+        public static Color FromArgb(int argb)
+        {
+            return FromArgb((argb >> 24) & 0x0ff, (argb >> 16) & 0x0ff, (argb >> 8) & 0x0ff, argb & 0x0ff);
+        }
+
+        public int ToArgb()
+        {
+            return (int)((uint)_a << 24) + (_r << 16) + (_g << 8) + _b;
+        }
+
+        public float GetBrightness()
+        {
+            var minval = Math.Min(R, Math.Min(G, B));
+            var maxval = Math.Max(R, Math.Max(G, B));
+
+            return (float)(maxval + minval) / 510;
+        }
+
+        public float GetSaturation()
+        {
+            var minval = (byte)Math.Min(R, Math.Min(G, B));
+            var maxval = (byte)Math.Max(R, Math.Max(G, B));
+
+            if (maxval == minval)
+                return 0.0f;
+
+            var sum = maxval + minval;
+            if (sum > 255)
+                sum = 510 - sum;
+
+            return (float)(maxval - minval) / sum;
+        }
+
+        public float GetHue()
+        {
+            int r = R;
+            int g = G;
+            int b = B;
+            var minval = (byte)Math.Min(r, Math.Min(g, b));
+            var maxval = (byte)Math.Max(r, Math.Max(g, b));
+
+            if (maxval == minval)
+                return 0.0f;
+
+            var diff = (float)(maxval - minval);
+            var rnorm = (maxval - r) / diff;
+            var gnorm = (maxval - g) / diff;
+            var bnorm = (maxval - b) / diff;
+
+            var hue = 0.0f;
+            if (r == maxval)
+                hue = 60.0f * (6.0f + bnorm - gnorm);
+            if (g == maxval)
+                hue = 60.0f * (2.0f + rnorm - bnorm);
+            if (b == maxval)
+                hue = 60.0f * (4.0f + gnorm - rnorm);
+            if (hue > 360.0f)
+                hue = hue - 360.0f;
+
+            return hue;
         }
 
         public bool Equals(Color other)
