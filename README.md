@@ -39,3 +39,8 @@ The same approach can be applied in both WPF and Windows Store applications.
 
     // Use implicit operator to convert back from Bitmap to WriteableBitmap
     aWriteableBitmapObject = bitmap;
+
+Building the library
+--------------------
+
+Open the *Portable Build All* solution in the *Sources* folder and build the entire solution or selected projects.
