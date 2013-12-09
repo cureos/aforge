@@ -1,8 +1,9 @@
-![Portable AForge.NET Framework](http://aforge.googlecode.com/svn/wiki/images/aforgenetf.jpg)
+![AForge.NET Framework](http://www.aforgenet.com/img/aforgenetf.jpg)
 
-=Portable AForge.NET Framework
+Portable AForge.NET Framework
+=============================
 
-Copyright (c) AForge.NET, 2006-2013, Portable Class Library, WPF and Windows Store adaptations (c) 2013 Anders Gustafsson, Cureos AB.
+Copyright (c) AForge.NET, 2006-2013; Portable Class Library, WPF and Windows Store adaptations (c) 2013 Anders Gustafsson, Cureos AB.
 
 This project is a fork of Andrew Kirillow's original [AForge.NET Framework](https://code.google.com/p/aforge/) project. 
 For general information and tutorials, see [here](http://www.aforgenet.com/aforge/framework/).
@@ -22,7 +23,8 @@ image processing.
 When using the WPF `System.Drawing` mock assembly, the real `System.Drawing` assembly from .NET Framework cannot be referenced, for obvious reasons. If there is a need to reference 
 the real `System.Drawing` assembly, you are recommended to use the original *AForge.NET Framework* libraries and use WPF hosting controls to display image processing results instead.
 
-==Example usage
+Example usage
+-------------
 
 The same approach can be applied in both WPF and Windows Store applications.
 
