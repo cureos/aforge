@@ -169,7 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="WriteableBitmapEx.WinRT">
-      <HintPath>..\packages\WriteableBitmapEx.1.0.8.0\lib\NetCore45\WriteableBitmapEx.WinRT.dll</HintPath>
+      <HintPath>..\packages\WriteableBitmapEx.1.0.9.0\lib\NetCore45\WriteableBitmapEx.WinRT.dll</HintPath>
     </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">

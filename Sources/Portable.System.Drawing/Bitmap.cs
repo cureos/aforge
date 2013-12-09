@@ -19,6 +19,10 @@ using ImagePixelEnumerator.Quantizers.DistinctCompetition;
 
 #if NETFX_CORE
 using Windows.UI.Xaml.Media.Imaging;
+#else
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using PixelFormat = System.Drawing.Imaging.PixelFormat;
 #endif
 
 namespace System.Drawing
@@ -175,7 +179,11 @@ namespace System.Drawing
         public static Bitmap FromStream(Stream stream)
         {
             var writeableBitmap = BitmapFactory.New(1, 1);
+#if NETFX_CORE
             return writeableBitmap.FromStream(stream).Result;
+#else
+            return writeableBitmap.FromStream(stream);
+#endif
         }
 
         public void SetResolution(int horizontalResolution, int verticalResolution)
@@ -224,6 +232,10 @@ namespace System.Drawing
 
         public static implicit operator Bitmap(WriteableBitmap writeableBitmap)
         {
+#if !NETFX_CORE
+            if (writeableBitmap.Format != PixelFormats.Pbgra32)
+                writeableBitmap = BitmapFactory.ConvertToPbgra32Format(writeableBitmap);
+#endif
             var width = writeableBitmap.PixelWidth;
             var height = writeableBitmap.PixelHeight;
             const PixelFormat format = PixelFormat.Format32bppArgb;

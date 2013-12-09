@@ -44,6 +44,8 @@
 
 #if NETFX_CORE
 using TrueColor = Windows.UI.Color;
+#else
+using TrueColor = System.Windows.Media.Color;
 #endif
 
 namespace System.Drawing
@@ -165,8 +167,8 @@ namespace System.Drawing
 
         public float GetSaturation()
         {
-            var minval = (byte)Math.Min(R, Math.Min(G, B));
-            var maxval = (byte)Math.Max(R, Math.Max(G, B));
+            var minval = Math.Min(R, Math.Min(G, B));
+            var maxval = Math.Max(R, Math.Max(G, B));
 
             if (maxval == minval)
                 return 0.0f;

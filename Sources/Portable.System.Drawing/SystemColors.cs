@@ -14,7 +14,7 @@ namespace System.Drawing
     {
         #region FIELDS
 
-        public static readonly Color Control = Color.FromArgb(0xff, 0xb0, 0xb0, 0xb0);
+        public static readonly Color Control = Color.FromArgb(0xff, 0xec, 0xe9, 0xd8);
 
         #endregion
     }
