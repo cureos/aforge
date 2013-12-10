@@ -232,7 +232,7 @@ namespace System.Drawing
 
         public static implicit operator Bitmap(WriteableBitmap writeableBitmap)
         {
-#if !NETFX_CORE
+#if !NETFX_CORE && !WINDOWS_PHONE
             if (writeableBitmap.Format != PixelFormats.Pbgra32)
                 writeableBitmap = BitmapFactory.ConvertToPbgra32Format(writeableBitmap);
 #endif
