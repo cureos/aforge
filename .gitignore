@@ -3,6 +3,7 @@
 [Bb]in
 [Pp]ackages
 *.suo
+*.user
 *.DotSettings
 
 /Sources/Controls/AForge.Controls.xml
