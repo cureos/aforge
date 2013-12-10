@@ -3,21 +3,23 @@
 Portable AForge.NET Framework
 =============================
 
-Copyright (c) AForge.NET, 2006-2013; Portable Class Library, WPF and Windows Store adaptations (c) 2013 Anders Gustafsson, Cureos AB.
+Copyright (c) 2006-2013 AForge.NET; Portable Class Library, WPF, Windows Store and Windows Phone adaptations (c) 2013 Anders Gustafsson, Cureos AB.
 
 This project is a fork of Andrew Kirillow's original [AForge.NET Framework](https://code.google.com/p/aforge/) project. 
 For general information and tutorials, see [here](http://www.aforgenet.com/aforge/framework/).
 
 The repository currently provides:
 
-* Portable Class Libraries for base functionality, and
-* WPF and Windows Store libraries for imaging functionality. 
+* Portable Class Libraries for base functionality (Core, Math, Genetic, Fuzzy, MachineLearning, Neuro), 
+* WPF class libraries for imaging functionality (Imaging, Imaging.Formats and Vision),
+* Windows Store (Windows 8.1) class libraries for imaging functionality, and 
+* Windows Phone 8 class libraries for imaging functionality.
 
-`WriteableBitmap`:s provide input and output to the imaging functionality in the WPF and Windows Store libraries. To reduce rewriting of the original *AForge.NET Framework* code, 
+`WriteableBitmap`:s provide input and output to the imaging functionality in the WPF, Windows Store and Windows Store libraries. To reduce rewriting of the original *AForge.NET Framework* code, 
 this repository provides a mock implementation of the `System.Drawing` assembly.  `WriteableBitmap` and `Bitmap` in the `System.Drawing` assembly are interchangeable through
 implicit casting.
 
-All image processing is performed on the mock `System.Drawing.Bitmap` class, `WriteableBitmap` objects should only be used as initial input to and final output fromthe
+All image processing is performed on the mock `System.Drawing.Bitmap` class, `WriteableBitmap` objects should only be used as initial input to and final output from the
 image processing.
 
 When using the WPF `System.Drawing` mock assembly, the real `System.Drawing` assembly from .NET Framework cannot be referenced, for obvious reasons. If there is a need to reference 
@@ -26,7 +28,7 @@ the real `System.Drawing` assembly, you are recommended to use the original *AFo
 Example usage
 -------------
 
-The same approach can be applied in both WPF and Windows Store applications.
+This same approach can be applied in WPF, Windows Store and Windows Phone applications.
 
     // Use implicit operator to convert from WriteableBitmap to Bitmap
     Bitmap bitmap = aWriteableBitmapObject;
@@ -43,4 +45,4 @@ The same approach can be applied in both WPF and Windows Store applications.
 Building the library
 --------------------
 
-Open the *Portable Build All* solution in the *Sources* folder and build the entire solution or selected projects.
+Open the *Portable Build All.sln* solution file located in the *Sources* folder and build the entire solution or selected projects. Visual Studio 2013 Professional or higher is required.
