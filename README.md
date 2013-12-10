@@ -42,7 +42,7 @@ This same approach can be applied in WPF, Windows Store and Windows Phone applic
     // Use implicit operator to convert back from Bitmap to WriteableBitmap
     aWriteableBitmapObject = bitmap;
 
-Building the library
---------------------
+Building the libraries
+----------------------
 
 Open the *Portable Build All.sln* solution file located in the *Sources* folder and build the entire solution or selected projects. Visual Studio 2013 Professional or higher is required.
