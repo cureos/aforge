@@ -42,15 +42,9 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#if NETFX_CORE
-using TrueColor = Windows.UI.Color;
-#else
-using TrueColor = System.Windows.Media.Color;
-#endif
-
 namespace System.Drawing
 {
-    public struct Color
+    public partial struct Color
     {
         #region FIELDS
 
@@ -244,16 +238,6 @@ namespace System.Drawing
         public static bool operator !=(Color lhs, Color rhs)
         {
             return !(lhs == rhs);
-        }
-
-        public static implicit operator TrueColor(Color color)
-        {
-            return TrueColor.FromArgb(color._a, color._r, color._g, color._b);
-        }
-
-        public static implicit operator Color(TrueColor trueColor)
-        {
-            return FromArgb(trueColor.A, trueColor.R, trueColor.G, trueColor.B);
         }
 
         #endregion

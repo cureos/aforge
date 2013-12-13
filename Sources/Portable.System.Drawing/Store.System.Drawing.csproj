@@ -123,6 +123,8 @@
     <Compile Include="ColorCaches\IColorCache.cs" />
     <Compile Include="ColorCaches\Octree\OctreeCacheNode.cs" />
     <Compile Include="ColorCaches\Octree\OctreeColorCache.cs" />
+    <Compile Include="Bitmap.NoPcl.cs" />
+    <Compile Include="Color.NoPcl.cs" />
     <Compile Include="Ditherers\IColorDitherer.cs" />
     <Compile Include="Extensions\Extend.IEnumerable.cs" />
     <Compile Include="Extensions\Extend.Image.cs" />
@@ -166,11 +168,11 @@
     <Compile Include="Size.cs" />
     <Compile Include="SystemColors.cs" />
   </ItemGroup>
-   <ItemGroup>
+  <ItemGroup>
     <Reference Include="WriteableBitmapEx.WinRT">
       <HintPath>..\packages\WriteableBitmapEx.1.0.9.0\lib\NetCore45\WriteableBitmapEx.WinRT.dll</HintPath>
     </Reference>
-   </ItemGroup>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="_Licenses\CPOL_PixelFormatConversion.htm" />
   </ItemGroup>

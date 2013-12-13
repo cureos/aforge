@@ -95,8 +95,14 @@
     <Compile Include="..\Portable.System.Drawing\Bitmap.cs">
       <Link>Bitmap.cs</Link>
     </Compile>
+    <Compile Include="..\Portable.System.Drawing\Bitmap.NoPcl.cs">
+      <Link>Bitmap.NoPcl.cs</Link>
+    </Compile>
     <Compile Include="..\Portable.System.Drawing\Color.cs">
       <Link>Color.cs</Link>
+    </Compile>
+    <Compile Include="..\Portable.System.Drawing\Color.NoPcl.cs">
+      <Link>Color.NoPcl.cs</Link>
     </Compile>
     <Compile Include="..\Portable.System.Drawing\ColorCaches\BaseColorCache.cs">
       <Link>ColorCaches\BaseColorCache.cs</Link>
