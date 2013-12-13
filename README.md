@@ -12,7 +12,7 @@ The repository currently provides:
 
 * Portable Class Libraries for base functionality (Core, Math, Genetic, Fuzzy, MachineLearning, Neuro), 
 * WPF class libraries for imaging functionality (Imaging, Imaging.Formats and Vision),
-* Windows Store (Windows 8.1) class libraries for imaging functionality, and 
+* Windows Store (Windows 8 and higher) class libraries for imaging functionality, and 
 * Windows Phone 8 class libraries for imaging functionality.
 
 `WriteableBitmap`:s provide input and output to the imaging functionality in the WPF, Windows Store and Windows Store libraries. To reduce rewriting of the original *AForge.NET Framework* code, 
@@ -45,4 +45,4 @@ This same approach can be applied in WPF, Windows Store and Windows Phone applic
 Building the libraries
 ----------------------
 
-Open the *Portable Build All.sln* solution file located in the *Sources* folder and build the entire solution or selected projects. Visual Studio 2013 Professional or higher is required.
+Open the *Portable Build All.sln* solution file located in the *Sources* folder and build the entire solution or selected projects. Visual Studio 2012 Professional or higher is required.

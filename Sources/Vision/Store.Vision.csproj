@@ -1,19 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{6CE73886-9BF1-45A0-B4BB-C588958DAA67}</ProjectGuid>
+    <ProjectGuid>{22DED540-2E2D-447D-B298-4B45104A1AE1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AForge.Vision</RootNamespace>
     <AssemblyName>AForge.Vision</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
-    <TargetPlatformVersion>8.1</TargetPlatformVersion>
-    <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
@@ -110,16 +108,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <ProjectReference Include="..\Imaging\Store.Imaging.csproj">
-      <Project>{6a6b3a73-60a9-44ce-8617-56b7f7227a6b}</Project>
-      <Name>Store.Imaging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Portable.System.Drawing\Store.System.Drawing.csproj">
-      <Project>{783455b4-315f-4448-beb1-e8bcdd619462}</Project>
-      <Name>Store.System.Drawing</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="AForge.Vision.snk" />
   </ItemGroup>
   <ItemGroup>
@@ -136,8 +124,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools.cs" />
   </ItemGroup>
-  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
-    <VisualStudioVersion>12.0</VisualStudioVersion>
+  <ItemGroup>
+    <ProjectReference Include="..\Imaging\Store.Imaging.csproj">
+      <Project>{ead3f8d8-2e1e-4058-93d7-0eb5c928dfd0}</Project>
+      <Name>Store.Imaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Portable.System.Drawing\Store.System.Drawing.csproj">
+      <Project>{59cd638a-bd45-407c-81be-a51cbca948d7}</Project>
+      <Name>Store.System.Drawing</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
+    <VisualStudioVersion>11.0</VisualStudioVersion>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
