@@ -49,6 +49,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.System", "System\_Sto
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phone.System", "System\_Phone\Phone.System.csproj", "{8A8A3EC5-94B0-4579-9C09-C4DD6431F958}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portable.System.Drawing", "System.Drawing\Portable.System.Drawing.csproj", "{995CFA14-7F81-457D-BEB4-52FB5712A3BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -331,6 +333,16 @@ Global
 		{8A8A3EC5-94B0-4579-9C09-C4DD6431F958}.Release|x64.ActiveCfg = Release|Any CPU
 		{8A8A3EC5-94B0-4579-9C09-C4DD6431F958}.Release|x86.ActiveCfg = Release|x86
 		{8A8A3EC5-94B0-4579-9C09-C4DD6431F958}.Release|x86.Build.0 = Release|x86
+		{995CFA14-7F81-457D-BEB4-52FB5712A3BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{995CFA14-7F81-457D-BEB4-52FB5712A3BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{995CFA14-7F81-457D-BEB4-52FB5712A3BB}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{995CFA14-7F81-457D-BEB4-52FB5712A3BB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{995CFA14-7F81-457D-BEB4-52FB5712A3BB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{995CFA14-7F81-457D-BEB4-52FB5712A3BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{995CFA14-7F81-457D-BEB4-52FB5712A3BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{995CFA14-7F81-457D-BEB4-52FB5712A3BB}.Release|ARM.ActiveCfg = Release|Any CPU
+		{995CFA14-7F81-457D-BEB4-52FB5712A3BB}.Release|x64.ActiveCfg = Release|Any CPU
+		{995CFA14-7F81-457D-BEB4-52FB5712A3BB}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -340,5 +352,6 @@ Global
 		{816E086D-DA84-4997-8BD9-448C92A1514F} = {CC637069-50E1-47C4-A561-637DF5586129}
 		{AB25D53A-A1C1-4815-9CC8-15012FB7E416} = {CC637069-50E1-47C4-A561-637DF5586129}
 		{8A8A3EC5-94B0-4579-9C09-C4DD6431F958} = {CC637069-50E1-47C4-A561-637DF5586129}
+		{995CFA14-7F81-457D-BEB4-52FB5712A3BB} = {BAC0CE2F-5E18-46BA-A2E5-5C26B3EE5D82}
 	EndGlobalSection
 EndGlobal
