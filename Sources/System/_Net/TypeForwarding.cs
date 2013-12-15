@@ -45,10 +45,12 @@ using System.Threading.Tasks;
 [assembly: TypeForwardedTo(typeof(Trace))]
 
 // System.IO
+[assembly: TypeForwardedTo(typeof(File))]
 [assembly: TypeForwardedTo(typeof(FileMode))]
 [assembly: TypeForwardedTo(typeof(FileStream))]
 
 // System.Runtime.InteropServices
+[assembly: TypeForwardedTo(typeof(GuidAttribute))]
 [assembly: TypeForwardedTo(typeof(Marshal))]
 
 // System.Runtime.Serialization

@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 [assembly: TypeForwardedTo(typeof(ConcurrentDictionary<,>))]
 
 // System.Runtime.InteropServices
+[assembly: TypeForwardedTo(typeof(GuidAttribute))]
 [assembly: TypeForwardedTo(typeof(Marshal))]
 
 // System.Threading.Tasks

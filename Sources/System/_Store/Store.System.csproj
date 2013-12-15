@@ -144,6 +144,9 @@
     <Compile Include="..\ICloneable.cs">
       <Link>ICloneable.cs</Link>
     </Compile>
+    <Compile Include="..\IO\File.cs">
+      <Link>IO\File.cs</Link>
+    </Compile>
     <Compile Include="..\IO\FileMode.cs">
       <Link>IO\FileMode.cs</Link>
     </Compile>

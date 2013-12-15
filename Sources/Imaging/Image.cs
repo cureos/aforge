@@ -14,11 +14,6 @@ namespace AForge.Imaging
     using System.Drawing.Imaging;
     using AForge;
 
-#if NETFX_CORE
-    using System.Threading.Tasks;
-    using Windows.Storage;
-#endif
-
     /// <summary>
     /// Core image relatad methods.
     /// </summary>
@@ -303,16 +298,7 @@ namespace AForge.Imaging
             try
             {
                 // read image to temporary memory stream
-#if NETFX_CORE
-                stream = Task.Run(async () =>
-                {
-                    var storageFile = await StorageFile.GetFileFromPathAsync(fileName);
-                    var storageStream = await storageFile.OpenSequentialReadAsync();
-                    return storageStream.AsStreamForRead();
-                }).Result;
-#else
                 stream = File.OpenRead(fileName);
-#endif
                 MemoryStream memoryStream = new MemoryStream();
 
                 byte[] buffer = new byte[10000];

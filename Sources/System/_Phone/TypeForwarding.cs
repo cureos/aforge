@@ -14,7 +14,9 @@ using System.Runtime.InteropServices;
 [assembly: TypeForwardedTo(typeof(DBNull))]
 
 // System.IO
+[assembly: TypeForwardedTo(typeof(File))]
 [assembly: TypeForwardedTo(typeof(FileMode))]
 
 // System.Runtime.InteropServices
+[assembly: TypeForwardedTo(typeof(GuidAttribute))]
 [assembly: TypeForwardedTo(typeof(Marshal))]
