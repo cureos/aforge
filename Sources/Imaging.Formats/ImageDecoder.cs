@@ -13,11 +13,6 @@ namespace AForge.Imaging.Formats
     using System.Drawing.Imaging;
     using System.IO;
 
-#if NETFX_CORE
-    using System.Threading.Tasks;
-    using Windows.Storage;
-#endif
-
     /// <summary>
     /// Image decoder to decode different custom image file formats.
     /// </summary>
@@ -136,17 +131,9 @@ namespace AForge.Imaging.Formats
                     IImageDecoder decoder = decoders[fileExtension];
 
                     // open stream
-#if NETFX_CORE
-                    var stream = Task.Run(async () =>
-                    {
-                        var storageFile = await StorageFile.GetFileFromPathAsync(fileName);
-                        var storageStream = await storageFile.OpenSequentialReadAsync();
-                        return storageStream.AsStreamForRead();
-                    }).Result;
-#else
                     FileStream stream = new FileStream( fileName, FileMode.Open );
-#endif
-                    // open decoder
+
+					// open decoder
                     decoder.Open( stream );
                     // read the first frame
                     bitmap = decoder.DecodeFrame( 0, out imageInfo );
@@ -175,16 +162,7 @@ namespace AForge.Imaging.Formats
             try
             {
                 // read image to temporary memory stream
-#if NETFX_CORE
-                stream = Task.Run(async () =>
-                {
-                    var storageFile = await StorageFile.GetFileFromPathAsync(fileName);
-                    var storageStream = await storageFile.OpenSequentialReadAsync();
-                    return storageStream.AsStreamForRead();
-                }).Result;
-#else
                 stream = File.OpenRead( fileName );
-#endif
                 MemoryStream memoryStream = new MemoryStream();
 
                 byte[] buffer = new byte[10000];
