@@ -50,6 +50,8 @@ using System.Threading.Tasks;
 [assembly: TypeForwardedTo(typeof(FileStream))]
 
 // System.Runtime.InteropServices
+[assembly: TypeForwardedTo(typeof(GCHandle))]
+[assembly: TypeForwardedTo(typeof(GCHandleType))]
 [assembly: TypeForwardedTo(typeof(GuidAttribute))]
 [assembly: TypeForwardedTo(typeof(Marshal))]
 

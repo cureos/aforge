@@ -180,6 +180,9 @@
     <Compile Include="..\Point.cs">
       <Link>Point.cs</Link>
     </Compile>
+    <Compile Include="..\PointF.cs">
+      <Link>PointF.cs</Link>
+    </Compile>
     <Compile Include="..\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
@@ -203,6 +206,9 @@
     </Compile>
     <Compile Include="..\Size.cs">
       <Link>Size.cs</Link>
+    </Compile>
+    <Compile Include="..\SizeF.cs">
+      <Link>SizeF.cs</Link>
     </Compile>
     <Compile Include="..\SystemColors.cs">
       <Link>SystemColors.cs</Link>

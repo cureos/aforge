@@ -10,18 +10,18 @@
 
 namespace System.Drawing
 {
-    public struct Point
+    public struct PointF
     {
         #region FIELDS
 
-        private readonly int _x;
-        private readonly int _y;
+        private readonly float _x;
+        private readonly float _y;
 
         #endregion
 
         #region CONSTRUCTORS
 
-        public Point(int x, int y)
+        public PointF(float x, float y)
         {
             _x = x;
             _y = y;
@@ -31,12 +31,12 @@ namespace System.Drawing
 
         #region PROPERTIES
 
-        public int X
+        public float X
         {
             get { return _x; }
         }
 
-        public int Y
+        public float Y
         {
             get { return _y; }
         }

@@ -63,6 +63,8 @@
     <Compile Include="NonSerializedAttribute.cs" />
     <Compile Include="ICloneable.cs" />
     <Compile Include="NotFiniteNumberException.cs" />
+    <Compile Include="Runtime\InteropServices\GCHandle.cs" />
+    <Compile Include="Runtime\InteropServices\GCHandleType.cs" />
     <Compile Include="Runtime\InteropServices\Marshal.cs" />
     <Compile Include="Runtime\InteropServices\GuidAttribute.cs" />
     <Compile Include="Runtime\Serialization\Formatters\Binary\BinaryFormatter.cs" />

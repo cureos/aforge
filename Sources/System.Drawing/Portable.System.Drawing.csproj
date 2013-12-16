@@ -53,6 +53,8 @@
     <Compile Include="ColorCaches\IColorCache.cs" />
     <Compile Include="ColorCaches\Octree\OctreeCacheNode.cs" />
     <Compile Include="ColorCaches\Octree\OctreeColorCache.cs" />
+    <Compile Include="SizeF.cs" />
+    <Compile Include="PointF.cs" />
     <Compile Include="Ditherers\IColorDitherer.cs" />
     <Compile Include="Extensions\Extend.IEnumerable.cs" />
     <Compile Include="Extensions\Extend.Image.cs" />
