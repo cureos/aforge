@@ -85,13 +85,14 @@ namespace System.Drawing
         public static readonly Color DarkCyan = new Color(0xff, 0x00, 0x8b, 0x8b);
         public static readonly Color DarkMagenta = new Color(0xff, 0x8b, 0x00, 0x8b);
         public static readonly Color LightGray = new Color(0xff, 0xd3, 0xd3, 0xd3);
+	    public static readonly Color Transparent = new Color(0x00, 0xff, 0xff, 0xff);
         
         private readonly byte _a;
         private readonly byte _r;
         private readonly byte _g;
         private readonly byte _b;
 
-        #endregion
+	    #endregion
 
         #region CONSTRUCTORS
 
@@ -140,6 +141,11 @@ namespace System.Drawing
         {
             return new Color(0xff, (byte)r, (byte)g, (byte)b);
         }
+
+		public static Color FromArgb(int alpha, Color baseColor)
+		{
+			return FromArgb(alpha, baseColor.R, baseColor.G, baseColor.B);
+		}
 
         public static Color FromArgb(int argb)
         {

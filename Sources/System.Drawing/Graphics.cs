@@ -85,6 +85,16 @@ namespace System.Drawing
             });
         }
 
+		public void DrawEllipse(Pen pen, int x, int y, int width, int height)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void DrawLine(Pen pen, Point pt1, Point pt2)
+		{
+			throw new NotImplementedException();
+		}
+			
         public void Dispose()
         {
             Dispose(true);

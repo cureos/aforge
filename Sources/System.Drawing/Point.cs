@@ -42,5 +42,21 @@ namespace System.Drawing
         }
 
         #endregion
+
+		#region METHODS
+
+	    public static Point Round(PointF value)
+	    {
+		    int x, y;
+		    checked
+		    {
+			    x = (int)Math.Round(value.X);
+			    y = (int)Math.Round(value.Y);
+		    }
+
+		    return new Point(x, y);
+	    }
+
+	    #endregion
     }
 }

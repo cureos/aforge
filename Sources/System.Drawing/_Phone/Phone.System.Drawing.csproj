@@ -227,6 +227,9 @@
     <Compile Include="..\PathProviders\StandardPathProvider.cs">
       <Link>PathProviders\StandardPathProvider.cs</Link>
     </Compile>
+    <Compile Include="..\Pen.cs">
+      <Link>Pen.cs</Link>
+    </Compile>
     <Compile Include="..\Point.cs">
       <Link>Point.cs</Link>
     </Compile>

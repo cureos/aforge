@@ -10,39 +10,29 @@
 
 namespace System.Drawing
 {
-	public struct PointF
+	public sealed class Pen : IDisposable
 	{
 		#region FIELDS
 
-		private float _x;
-		private float _y;
+		private readonly Color _color;
 
 		#endregion
-
+		
 		#region CONSTRUCTORS
 
-		public PointF(float x, float y)
+		public Pen(Color color)
 		{
-			_x = x;
-			_y = y;
+			_color = color;
 		}
 
 		#endregion
+		
+		#region METHODS
 
-		#region PROPERTIES
-
-		public float X
+		public void Dispose()
 		{
-			get { return _x; }
-			set { _x = value; }
 		}
-
-		public float Y
-		{
-			get { return _y; }
-			set { _y = value; }
-		}
-
+		
 		#endregion
 	}
 }
