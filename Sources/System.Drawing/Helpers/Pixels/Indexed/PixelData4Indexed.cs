@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace ImagePixelEnumerator.Helpers.Pixels.Indexed
 {
     [StructLayout(LayoutKind.Sequential, Size = 1)]
-    public struct PixelData4Indexed : IIndexedPixel
+    internal struct PixelData4Indexed : IIndexedPixel
     {
         // raw component values
         private Byte index;

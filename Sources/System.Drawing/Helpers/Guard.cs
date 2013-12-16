@@ -2,7 +2,7 @@
 
 namespace ImagePixelEnumerator.Helpers
 {
-    public static class Guard
+    internal static class Guard
     {
         /// <summary>
         /// Checks if an argument is null

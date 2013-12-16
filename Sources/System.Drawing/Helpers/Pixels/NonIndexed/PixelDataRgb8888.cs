@@ -10,7 +10,7 @@ namespace ImagePixelEnumerator.Helpers.Pixels.NonIndexed
     /// Byte |00000000000000000000000|11111111111111111111111|22222222222222222222222|33333333333333333333333|
     /// </summary>
     [StructLayout(LayoutKind.Explicit, Size = 4)]
-    public struct PixelDataRgb8888 : INonIndexedPixel
+    internal struct PixelDataRgb8888 : INonIndexedPixel
     {
         // raw component values
         [FieldOffset(0)] private readonly Byte blue;    // 00 - 07

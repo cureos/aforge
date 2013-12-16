@@ -2,7 +2,7 @@
 
 namespace ImagePixelEnumerator.Helpers.Pixels
 {
-    public interface IIndexedPixel
+    internal interface IIndexedPixel
     {
         // index methods
         Byte GetIndex(Int32 offset);

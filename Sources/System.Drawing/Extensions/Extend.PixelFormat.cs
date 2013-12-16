@@ -6,7 +6,7 @@ namespace ImagePixelEnumerator.Extensions
     /// <summary>
     /// The utility extender class.
     /// </summary>
-    public static partial class Extend
+    internal static partial class Extend
     {
         /// <summary>
         /// Gets the bit count for a given pixel format.

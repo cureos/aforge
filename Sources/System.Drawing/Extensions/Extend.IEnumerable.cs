@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ImagePixelEnumerator.Extensions
 {
-    public static partial class Extend
+    internal static partial class Extend
     {
         /// <summary>
         /// Selects distinct items by a given selector.

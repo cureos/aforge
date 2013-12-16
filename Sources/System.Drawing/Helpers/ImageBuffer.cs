@@ -12,7 +12,7 @@ using ImagePixelEnumerator.Quantizers;
 
 namespace ImagePixelEnumerator.Helpers
 {
-    public class ImageBuffer : IDisposable
+    internal class ImageBuffer : IDisposable
     {
         #region | Fields |
 

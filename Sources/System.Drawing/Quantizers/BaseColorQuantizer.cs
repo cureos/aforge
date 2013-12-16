@@ -9,7 +9,7 @@ using ImagePixelEnumerator.PathProviders;
 
 namespace ImagePixelEnumerator.Quantizers
 {
-    public abstract class BaseColorQuantizer : IColorQuantizer
+    internal abstract class BaseColorQuantizer : IColorQuantizer
     {
         #region | Constants |
 

@@ -6,7 +6,7 @@ using ImagePixelEnumerator.Helpers;
 
 namespace ImagePixelEnumerator.Quantizers
 {
-    public abstract class BaseColorCacheQuantizer : BaseColorQuantizer
+    internal abstract class BaseColorCacheQuantizer : BaseColorQuantizer
     {
         #region | Fields |
 

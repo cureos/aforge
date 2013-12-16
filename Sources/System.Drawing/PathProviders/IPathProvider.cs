@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace ImagePixelEnumerator.PathProviders
 {
-    public interface IPathProvider
+    internal interface IPathProvider
     {
         /// <summary>
         /// Retrieves the path throughout the image to determine the order in which pixels will be scanned.

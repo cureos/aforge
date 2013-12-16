@@ -14,7 +14,7 @@ namespace ImagePixelEnumerator.Quantizers.DistinctCompetition
     /// This is my baby. Read more in the article on the Code Project:
     /// http://www.codeproject.com/KB/recipes/SimplePaletteQuantizer.aspx
     /// </summary>
-    public class DistinctSelectionQuantizer : BaseColorCacheQuantizer
+    internal class DistinctSelectionQuantizer : BaseColorCacheQuantizer
     {
         #region | Fields |
 

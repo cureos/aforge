@@ -9,7 +9,7 @@ namespace ImagePixelEnumerator.Extensions
     /// <summary>
     /// The utility extender class.
     /// </summary>
-    public static partial class Extend
+    internal static partial class Extend
     {
         #region | Palette methods |
 

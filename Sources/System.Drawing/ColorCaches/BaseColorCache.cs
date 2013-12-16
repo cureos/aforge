@@ -6,7 +6,7 @@ using ImagePixelEnumerator.ColorCaches.Common;
 
 namespace ImagePixelEnumerator.ColorCaches
 {
-    public abstract class BaseColorCache : IColorCache
+    internal abstract class BaseColorCache : IColorCache
     {
         #region | Fields |
 

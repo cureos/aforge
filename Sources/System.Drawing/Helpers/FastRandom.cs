@@ -2,7 +2,7 @@
 
 namespace ImagePixelEnumerator.Helpers
 {
-    public class FastRandom
+    internal class FastRandom
     {
         private const Double RealUnitInt = 1.0/(Int32.MaxValue + 1.0);
 

@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace ImagePixelEnumerator.ColorCaches.Octree
 {
-    public class OctreeCacheNode
+    internal class OctreeCacheNode
     {
         private static readonly Byte[] Mask = new Byte[] { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
 

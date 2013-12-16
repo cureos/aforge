@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace ImagePixelEnumerator.Helpers.Pixels
 {
-    public interface INonIndexedPixel
+    internal interface INonIndexedPixel
     {
         // components
         Int32 Alpha { get; }

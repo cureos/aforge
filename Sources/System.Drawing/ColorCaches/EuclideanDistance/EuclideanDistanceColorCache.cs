@@ -6,7 +6,7 @@ using ImagePixelEnumerator.Helpers;
 
 namespace ImagePixelEnumerator.ColorCaches.EuclideanDistance
 {
-    public class EuclideanDistanceColorCache : BaseColorCache
+    internal class EuclideanDistanceColorCache : BaseColorCache
     {
         #region | Fields |
 

@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace ImagePixelEnumerator.PathProviders
 {
-    public class StandardPathProvider : IPathProvider
+    internal class StandardPathProvider : IPathProvider
     {
         public IList<Point> GetPointPath(Int32 width, Int32 height)
         {

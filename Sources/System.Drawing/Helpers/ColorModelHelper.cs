@@ -5,7 +5,7 @@ using ImagePixelEnumerator.ColorCaches.Common;
 
 namespace ImagePixelEnumerator.Helpers
 {
-    public class ColorModelHelper
+    internal class ColorModelHelper
     {
         #region | Constants |
 

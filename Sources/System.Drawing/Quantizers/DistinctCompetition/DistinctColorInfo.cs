@@ -6,7 +6,7 @@ namespace ImagePixelEnumerator.Quantizers.DistinctCompetition
     /// <summary>
     /// Stores all the informations about single color only once, to be used later.
     /// </summary>
-    public class DistinctColorInfo
+    internal class DistinctColorInfo
     {
         private const Int32 Factor = 5000000;
 

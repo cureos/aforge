@@ -13,7 +13,7 @@ namespace ImagePixelEnumerator.Helpers
     /// <summary>
     /// This is a pixel format independent pixel.
     /// </summary>
-    public class Pixel : IDisposable
+    internal class Pixel : IDisposable
     {
         #region | Constants |
 

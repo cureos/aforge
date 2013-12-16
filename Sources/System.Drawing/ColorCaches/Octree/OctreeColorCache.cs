@@ -7,7 +7,7 @@ using ImagePixelEnumerator.Helpers;
 
 namespace ImagePixelEnumerator.ColorCaches.Octree
 {
-    public class OctreeColorCache : BaseColorCache
+    internal class OctreeColorCache : BaseColorCache
     {
         #region | Fields |
 

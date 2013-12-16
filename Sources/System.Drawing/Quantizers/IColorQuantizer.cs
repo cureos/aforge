@@ -8,7 +8,7 @@ namespace ImagePixelEnumerator.Quantizers
     /// <summary>
     /// This interface provides a color quantization capabilities.
     /// </summary>
-    public interface IColorQuantizer : IPathProvider
+    internal interface IColorQuantizer : IPathProvider
     {
         /// <summary>
         /// Gets a value indicating whether to allow parallel processing.

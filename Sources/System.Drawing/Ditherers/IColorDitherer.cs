@@ -5,7 +5,7 @@ using ImagePixelEnumerator.Quantizers;
 
 namespace ImagePixelEnumerator.Ditherers
 {
-    public interface IColorDitherer : IPathProvider
+    internal interface IColorDitherer : IPathProvider
     {
         /// <summary>
         /// Gets a value indicating whether this ditherer uses only actually process pixel.

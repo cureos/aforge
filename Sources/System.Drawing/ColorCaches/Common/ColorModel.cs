@@ -1,6 +1,6 @@
 ﻿namespace ImagePixelEnumerator.ColorCaches.Common
 {
-    public enum ColorModel
+    internal enum ColorModel
     {
         /// <summary>
         /// The RGB color model is an additive color model in which red, green, and blue light is added together 

@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace ImagePixelEnumerator.Helpers
 {
-    public class QuantizationHelper
+    internal class QuantizationHelper
     {
         private const int Alpha = 255 << 24;
         private static readonly Color BackgroundColor;

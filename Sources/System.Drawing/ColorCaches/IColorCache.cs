@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace ImagePixelEnumerator.ColorCaches
 {
-    public interface IColorCache
+    internal interface IColorCache
     {
         /// <summary>
         /// Prepares color cache for next use.
