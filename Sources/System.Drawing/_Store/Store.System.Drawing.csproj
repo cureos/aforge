@@ -281,10 +281,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\_Licenses\CPOL_PixelFormatConversion.htm">
+    <None Include="..\_Licenses\CPOL_PixelFormatConversion.htm">
       <Link>_Licenses\CPOL_PixelFormatConversion.htm</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="WriteableBitmapEx.WinRT">

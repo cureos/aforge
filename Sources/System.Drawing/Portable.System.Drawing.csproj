@@ -106,9 +106,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="_Licenses\CPOL_PixelFormatConversion.htm">
+    <None Include="_Licenses\CPOL_PixelFormatConversion.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="AForge.System.Drawing.snk" />

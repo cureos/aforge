@@ -268,10 +268,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\_Licenses\CPOL_PixelFormatConversion.htm">
+    <None Include="..\_Licenses\CPOL_PixelFormatConversion.htm">
       <Link>_Licenses\CPOL_PixelFormatConversion.htm</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="WriteableBitmapExWinPhone, Version=1.0.9.0, Culture=neutral, PublicKeyToken=50375ca6144f1c69, processorArchitecture=MSIL">
