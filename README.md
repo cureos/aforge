@@ -10,19 +10,20 @@ For general information and tutorials, see [here](http://www.aforgenet.com/aforg
 
 The repository currently provides:
 
-* Portable Class Libraries for base functionality (Core, Math, Genetic, Fuzzy, MachineLearning, Neuro), 
-* WPF class libraries for imaging functionality (Imaging, Imaging.Formats and Vision),
-* Windows Store (Windows 8 and higher) class libraries for imaging functionality, and 
-* Windows Phone 8 class libraries for imaging functionality.
+* Portable Class Libraries for base and imaging functionality functionality (Core, Math, Genetic, Fuzzy, MachineLearning, Neuro, Imaging, Imaging.Formats, Vision), 
+* Portable Class Libraries *AForge.System* and *AForge.System.Drawing* to substitute .NET *System* core and *System.Drawing* types not covered by PCL, and
+* Target specific (type forwarding) *AForge.System* and *AForge.System.Drawing* libraries.
 
-`WriteableBitmap`:s provide input and output to the imaging functionality in the WPF, Windows Store and Windows Store libraries. To reduce rewriting of the original *AForge.NET Framework* code, 
-this repository provides a mock implementation of the `System.Drawing` assembly.  `WriteableBitmap` and `Bitmap` in the `System.Drawing` assembly are interchangeable through
-implicit casting.
+The portable class libraries reference the portable *AForge.System* and/or *AForge.System.Drawing* assemblies. In applications however, the target specific (Windows Store, Windows Phone or WPF)
+*AForge.System* and *AForge.System.Drawing* assemblies should be referenced, to ensure that the target specific version of each type is used.
+ 
+`WriteableBitmap`:s provide input and output to the imaging functionality in the WPF, Windows Store and Windows Store libraries. The target specific *AForge.System.Drawing* assembly 
+incorporates implicit cast operators between `WriteableBitmap` and `System.Drawing.Bitmap`.
 
 All image processing is performed on the mock `System.Drawing.Bitmap` class, `WriteableBitmap` objects should only be used as initial input to and final output from the
 image processing.
 
-When using the WPF `System.Drawing` mock assembly, the real `System.Drawing` assembly from .NET Framework cannot be referenced, for obvious reasons. If there is a need to reference 
+When using the WPF `AForge.System.Drawing` assembly, the real `System.Drawing` assembly from .NET Framework cannot be referenced for obvious reasons. If there is a need to reference 
 the real `System.Drawing` assembly, you are recommended to use the original *AForge.NET Framework* libraries and use WPF hosting controls to display image processing results instead.
 
 Example usage
