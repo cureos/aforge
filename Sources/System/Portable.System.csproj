@@ -43,6 +43,7 @@
     <None Include="AForge.System.snk" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\Concurrent\ConcurrentBag.cs" />
     <Compile Include="Collections\Concurrent\ConcurrentDictionary.cs" />
     <Compile Include="Collections\Concurrent\ConcurrentStack.cs" />
     <Compile Include="ComponentModel\BrowsableAttribute.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="SerializableAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Threading\Tasks\Parallel.cs" />
+    <Compile Include="Threading\Tasks\ParallelLoopState.cs" />
     <Compile Include="Threading\Tasks\ParallelOptions.cs" />
   </ItemGroup>
   <ItemGroup />

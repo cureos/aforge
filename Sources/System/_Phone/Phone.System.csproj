@@ -83,6 +83,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Collections\Concurrent\ConcurrentBag.cs">
+      <Link>Collections\Concurrent\ConcurrentBag.cs</Link>
+    </Compile>
     <Compile Include="..\Collections\Concurrent\ConcurrentDictionary.cs">
       <Link>Collections\Concurrent\ConcurrentDictionary.cs</Link>
     </Compile>
@@ -148,6 +151,9 @@
     </Compile>
     <Compile Include="..\Threading\Tasks\Parallel.cs">
       <Link>Threading\Tasks\Parallel.cs</Link>
+    </Compile>
+    <Compile Include="..\Threading\Tasks\ParallelLoopState.cs">
+      <Link>Threading\Tasks\ParallelLoopState.cs</Link>
     </Compile>
     <Compile Include="..\Threading\Tasks\ParallelOptions.cs">
       <Link>Threading\Tasks\ParallelOptions.cs</Link>

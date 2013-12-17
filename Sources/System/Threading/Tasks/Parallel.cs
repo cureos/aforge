@@ -18,7 +18,12 @@ namespace System.Threading.Tasks
 			for (var i = fromInclusive; i < toExclusive; ++i) body(i);
 		}
 
-		public static void For(int fromInclusive, int toExclusive, ParallelOptions parallelOptions, Action<int> body)
+	    public static void For(int fromInclusive, int toExclusive, Action<int, ParallelLoopState> body)
+	    {
+            for (var i = fromInclusive; i < toExclusive; ++i) body(i, new ParallelLoopState());
+        }
+
+	    public static void For(int fromInclusive, int toExclusive, ParallelOptions parallelOptions, Action<int> body)
 		{
 			for (var i = fromInclusive; i < toExclusive; ++i) body(i);
 		}

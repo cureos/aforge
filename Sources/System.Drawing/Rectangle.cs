@@ -88,7 +88,15 @@ namespace System.Drawing
 		{
 			get { return _y + _height; }
 		}
-		
+
+        public bool IsEmpty
+        {
+            get
+            {
+                return (_x == 0 && _y == 0 && _width == 0 && _height == 0);
+            }
+        }
+
 		#endregion
 
 		#region METHODS
@@ -121,10 +129,20 @@ namespace System.Drawing
 			this = Intersect(this, rect);
 		}
 
-		public bool Contains(int x, int y)
+	    public bool IntersectsWith(Rectangle rect)
+	    {
+	        return !(Left >= rect.Right || Right <= rect.Left || Top >= rect.Bottom || Bottom <= rect.Top);
+	    }
+
+	    public bool Contains(int x, int y)
 		{
 			return ((x >= Left) && (x < Right) && (y >= Top) && (y < Bottom));
 		}
+
+        public bool Contains(Rectangle rect)
+        {
+            return (rect == Intersect(this, rect));
+        }
 
 		public static Rectangle Intersect(Rectangle a, Rectangle b)
 		{

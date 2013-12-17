@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 // System.Collections.Concurrent
+[assembly: TypeForwardedTo(typeof(ConcurrentBag<>))]
 [assembly: TypeForwardedTo(typeof(ConcurrentStack<>))]
 [assembly: TypeForwardedTo(typeof(ConcurrentDictionary<,>))]
 
@@ -22,4 +23,5 @@ using System.Threading.Tasks;
 
 // System.Threading.Tasks
 [assembly: TypeForwardedTo(typeof(Parallel))]
+[assembly: TypeForwardedTo(typeof(ParallelLoopState))]
 [assembly: TypeForwardedTo(typeof(ParallelOptions))]
