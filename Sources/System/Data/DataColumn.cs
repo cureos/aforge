@@ -7,12 +7,23 @@
 
 namespace System.Data
 {
-    public class DataColumn
+    public sealed class DataColumn
     {
         #region FIELDS
 
         private string _caption;
         
+        #endregion
+
+        #region CONSTRUCTORS
+
+        internal DataColumn(DataTable table, string columnName, Type dataType)
+        {
+            Table = table;
+            ColumnName = columnName;
+            DataType = dataType;
+        }
+
         #endregion
 
         #region PROPERTIES

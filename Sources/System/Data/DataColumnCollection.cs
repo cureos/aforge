@@ -6,16 +6,32 @@
 //
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace System.Data
 {
-    public class DataColumnCollection : List<DataColumn>
+    public sealed class DataColumnCollection : List<DataColumn>
     {
+        #region FIELDS
+
+        private readonly DataTable _table;
+
+        #endregion
+
+        #region CONSTRUCTORS
+
+        internal DataColumnCollection(DataTable table)
+        {
+            _table = table;
+        }
+
+        #endregion
+
         #region INDEXERS
 
         public DataColumn this[string columnName]
         {
-            get { throw new NotImplementedException(); }
+            get { return this.Single(col => col.ColumnName.Equals(columnName)); }
         }
 
         #endregion
@@ -24,12 +40,12 @@ namespace System.Data
 
         public void Add(string columnName, Type type)
         {
-            throw new NotImplementedException();
+            Add(new DataColumn(_table, columnName, type));
         }
 
-        public bool Contains(string value)
+        public bool Contains(string columnName)
         {
-            throw new NotImplementedException();
+            return this.Any(col => col.ColumnName.Equals(columnName));
         }
 
         #endregion

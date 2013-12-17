@@ -6,11 +6,24 @@
 //
 
 using System.Globalization;
+using System.Linq;
 
 namespace System.Data
 {
-    public class DataTable
+    public sealed class DataTable
     {
+        #region CONSTRUCTORS
+
+        public DataTable()
+        {
+            Columns = new DataColumnCollection(this);
+            Rows = new DataRowCollection(this);
+            Locale = CultureInfo.CurrentCulture;
+            DefaultView = new DataView(this);
+        }
+
+        #endregion
+
         #region PROPERTIES
 
         public DataColumnCollection Columns { get; private set; }
@@ -27,25 +40,35 @@ namespace System.Data
 
         public DataTable Clone()
         {
-            throw new NotImplementedException();
+            var table = new DataTable { Locale = this.Locale };
+            table.Columns.AddRange(this.Columns.Select(col => new DataColumn(table, col.ColumnName, col.DataType)));
+            return table;
         }
 
         public DataTable Copy()
         {
-            throw new NotImplementedException();
+            var table = Clone();
+            table.Rows.AddRange(this.Rows.Select(row => new DataRow(table, row.Values)));
+            return table;
         }
 
         public void ImportRow(DataRow row)
         {
-            throw new NotImplementedException();
+            var newRow = new DataRow(this);
+            foreach (var kv in row)
+            {
+                if (Columns.Contains(kv.Key.ColumnName))
+                    newRow[kv.Key.ColumnName] = kv.Value;
+            }
+            Rows.Add(newRow);
         }
 
         public DataRow NewRow()
         {
-            throw new NotImplementedException();
+            return new DataRow(this);
         }
 
-        public object Compute(string p0, string empty)
+        public object Compute(string expression, string filter)
         {
             throw new NotImplementedException();
         }

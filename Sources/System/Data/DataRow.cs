@@ -6,38 +6,39 @@
 //
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace System.Data
 {
-    public class DataRow : List<object>
+    public sealed class DataRow : Dictionary<DataColumn, object>
     {
-        #region FIELDS
-
-        private readonly List<object> _cells;
- 
-        #endregion
-
         #region CONSTRUCTORS
 
-        public DataRow(IEnumerable<object> cells)
+        internal DataRow(DataTable table, IEnumerable<object> cells)
+            : base(table.Columns.Zip(cells, Tuple.Create).ToDictionary(tuple => tuple.Item1, tuple => tuple.Item2))
         {
-            _cells = new List<object>(cells);
+            Table = table;
+        }
+
+        internal DataRow(DataTable table)
+            : base(table.Columns.ToDictionary(col => col, col => (object)null))
+        {
+            Table = table;
         }
 
         #endregion
 
         #region INDEXERS
 
-        public object this[string columnName]
+        public object this[int index]
         {
-            get { return null; }
-            set { }
+            get { return Values.ElementAt(index); }
         }
 
-        public object this[DataColumn columnName]
+        public object this[string columnName]
         {
-            get { return null; }
-            set { }
+            get { return this[GetDataColumn(columnName)]; }
+            set { this[GetDataColumn(columnName)] = value; }
         }
 
         #endregion
@@ -45,7 +46,16 @@ namespace System.Data
         #region PROPERTIES
 
         public DataTable Table { get; private set; }
-        
+
+        #endregion
+
+        #region METHODS
+
+        private DataColumn GetDataColumn(string columnName)
+        {
+            return this.Single(kv => kv.Key.ColumnName.Equals(columnName)).Key;
+        }
+
         #endregion
     }
 }

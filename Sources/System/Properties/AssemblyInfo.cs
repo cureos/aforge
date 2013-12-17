@@ -1,17 +1,15 @@
 ﻿using System.Resources;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Portability.Pcl")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("System")]
+[assembly: AssemblyDescription("Replacement assembly for System base types accessed by PCL")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Portability.Pcl")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
+[assembly: AssemblyCompany("Cureos AB")]
+[assembly: AssemblyProduct("AForge")]
+[assembly: AssemblyCopyright("Copyright Cureos AB © 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en")]
