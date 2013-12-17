@@ -73,12 +73,12 @@ namespace System.Data
             throw new NotImplementedException();
         }
 
-        public DataRow[] Select(string filter)
+        public DataRow[] Select(string filterExpression)
         {
             throw new NotImplementedException();
         }
 
-        public DataRow[] Select(string expression, string orderBy)
+        public DataRow[] Select(string filterExpression, string sort)
         {
             throw new NotImplementedException();
         }

@@ -7,7 +7,7 @@
 
 namespace System
 {
-    public class NotFiniteNumberException : Exception
+    public sealed class NotFiniteNumberException : Exception
     {
         #region CONSTRUCTORS
 
