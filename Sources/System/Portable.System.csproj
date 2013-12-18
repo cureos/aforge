@@ -73,6 +73,7 @@
     <Compile Include="SerializableAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Threading\Tasks\Parallel.cs" />
+    <Compile Include="Threading\Tasks\ParallelLoopResult.cs" />
     <Compile Include="Threading\Tasks\ParallelLoopState.cs" />
     <Compile Include="Threading\Tasks\ParallelOptions.cs" />
   </ItemGroup>

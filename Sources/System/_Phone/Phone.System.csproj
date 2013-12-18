@@ -152,6 +152,9 @@
     <Compile Include="..\Threading\Tasks\Parallel.cs">
       <Link>Threading\Tasks\Parallel.cs</Link>
     </Compile>
+    <Compile Include="..\Threading\Tasks\ParallelLoopResult.cs">
+      <Link>Threading\Tasks\ParallelLoopResult.cs</Link>
+    </Compile>
     <Compile Include="..\Threading\Tasks\ParallelLoopState.cs">
       <Link>Threading\Tasks\ParallelLoopState.cs</Link>
     </Compile>

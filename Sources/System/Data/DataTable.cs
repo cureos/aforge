@@ -68,16 +68,6 @@ namespace System.Data
             return new DataRow(this);
         }
 
-        public object Compute(string expression, string filter)
-        {
-            throw new NotImplementedException();
-        }
-
-        public DataRow[] Select(string filterExpression)
-        {
-            throw new NotImplementedException();
-        }
-
         public DataRow[] Select(string filterExpression, string sort)
         {
             throw new NotImplementedException();

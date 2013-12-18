@@ -64,5 +64,6 @@ using System.Threading.Tasks;
 
 // System.Threading.Tasks
 [assembly: TypeForwardedTo(typeof(Parallel))]
+[assembly: TypeForwardedTo(typeof(ParallelLoopResult))]
 [assembly: TypeForwardedTo(typeof(ParallelLoopState))]
 [assembly: TypeForwardedTo(typeof(ParallelOptions))]

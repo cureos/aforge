@@ -11,7 +11,8 @@ namespace System
     {
         #region CONSTRUCTORS
 
-        public NotFiniteNumberException(string message, object value) : base(message)
+        public NotFiniteNumberException(string message, double offendingNumber)
+            : base(message)
         {
         }
 

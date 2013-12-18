@@ -13,39 +13,45 @@ namespace System.Threading.Tasks
 	{
 		#region METHODS
 
-		public static void For(int fromInclusive, int toExclusive, Action<int> body)
+		public static ParallelLoopResult For(int fromInclusive, int toExclusive, Action<int> body)
 		{
 			for (var i = fromInclusive; i < toExclusive; ++i) body(i);
+            return new ParallelLoopResult();
 		}
 
-	    public static void For(int fromInclusive, int toExclusive, Action<int, ParallelLoopState> body)
+        public static ParallelLoopResult For(int fromInclusive, int toExclusive, Action<int, ParallelLoopState> body)
 	    {
             for (var i = fromInclusive; i < toExclusive; ++i) body(i, new ParallelLoopState());
+            return new ParallelLoopResult();
         }
 
-	    public static void For(int fromInclusive, int toExclusive, ParallelOptions parallelOptions, Action<int> body)
+        public static ParallelLoopResult For(int fromInclusive, int toExclusive, ParallelOptions parallelOptions, Action<int> body)
 		{
 			for (var i = fromInclusive; i < toExclusive; ++i) body(i);
-		}
+            return new ParallelLoopResult();
+        }
 
-		public static void For<TLocal>(int fromInclusive, int toExclusive, Func<TLocal> localInit,
+        public static ParallelLoopResult For<TLocal>(int fromInclusive, int toExclusive, Func<TLocal> localInit,
 			Func<int, object, TLocal, TLocal> body, Action<TLocal> localFinally)
 		{
 			for (var i = fromInclusive; i < toExclusive; ++i)
 				localFinally(body(i, null, localInit()));
-		}
+            return new ParallelLoopResult();
+        }
 
-		public static void For<TLocal>(int fromInclusive, int toExclusive, ParallelOptions parallelOptions,
+        public static ParallelLoopResult For<TLocal>(int fromInclusive, int toExclusive, ParallelOptions parallelOptions,
 			Func<TLocal> localInit, Func<int, object, TLocal, TLocal> body, Action<TLocal> localFinally)
 		{
 			for (var i = fromInclusive; i < toExclusive; ++i)
 				localFinally(body(i, null, localInit()));
-		}
+            return new ParallelLoopResult();
+        }
 
-		public static void ForEach<TSource>(IEnumerable<TSource> source, Action<TSource> body)
+        public static ParallelLoopResult ForEach<TSource>(IEnumerable<TSource> source, Action<TSource> body)
 		{
 			foreach (var item in source) body(item);
-		}
+            return new ParallelLoopResult();
+        }
 		
 		#endregion
 	}
