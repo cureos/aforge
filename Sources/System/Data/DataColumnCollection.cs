@@ -38,9 +38,11 @@ namespace System.Data
 
         #region METHODS
 
-        public void Add(string columnName, Type type)
+        public DataColumn Add(string columnName, Type type)
         {
-            Add(new DataColumn(_table, columnName, type));
+            var column = new DataColumn(_table, columnName, type);
+            Add(column);
+            return column;
         }
 
         public bool Contains(string columnName)
