@@ -32,7 +32,7 @@ namespace System.Threading.Tasks
         }
 
         public static ParallelLoopResult For<TLocal>(int fromInclusive, int toExclusive, Func<TLocal> localInit,
-			Func<int, object, TLocal, TLocal> body, Action<TLocal> localFinally)
+			Func<int, ParallelLoopState, TLocal, TLocal> body, Action<TLocal> localFinally)
 		{
 			for (var i = fromInclusive; i < toExclusive; ++i)
 				localFinally(body(i, null, localInit()));
@@ -40,7 +40,7 @@ namespace System.Threading.Tasks
         }
 
         public static ParallelLoopResult For<TLocal>(int fromInclusive, int toExclusive, ParallelOptions parallelOptions,
-			Func<TLocal> localInit, Func<int, object, TLocal, TLocal> body, Action<TLocal> localFinally)
+			Func<TLocal> localInit, Func<int, ParallelLoopState, TLocal, TLocal> body, Action<TLocal> localFinally)
 		{
 			for (var i = fromInclusive; i < toExclusive; ++i)
 				localFinally(body(i, null, localInit()));
