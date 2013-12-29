@@ -5,51 +5,90 @@
 // info at cureos dot com
 //
 
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace System.Data
 {
-    public sealed class DataColumnCollection : List<DataColumn>
-    {
-        #region FIELDS
+	public sealed class DataColumnCollection : ICollection
+	{
+		#region FIELDS
 
-        private readonly DataTable _table;
+		private readonly DataTable _table;
+		private readonly List<DataColumn> _columns;
+		private readonly object _syncRoot;
 
-        #endregion
+		#endregion
 
-        #region CONSTRUCTORS
+		#region CONSTRUCTORS
 
-        internal DataColumnCollection(DataTable table)
-        {
-            _table = table;
-        }
+		internal DataColumnCollection(DataTable table)
+		{
+			_table = table;
+			_columns = new List<DataColumn>();
+			_syncRoot = new object();
+		}
 
-        #endregion
+		#endregion
 
-        #region INDEXERS
+		#region INDEXERS
 
-        public DataColumn this[string columnName]
-        {
-            get { return this.Single(col => col.ColumnName.Equals(columnName)); }
-        }
+		public DataColumn this[string columnName]
+		{
+			get { return _columns.Single(col => col.ColumnName.Equals(columnName)); }
+		}
 
-        #endregion
+		public DataColumn this[int index]
+		{
+			get { return _columns[index]; }
+		}
 
-        #region METHODS
+		#endregion
 
-        public DataColumn Add(string columnName, Type type)
-        {
-            var column = new DataColumn(_table, columnName, type);
-            Add(column);
-            return column;
-        }
+		#region PROPERTIES
 
-        public bool Contains(string columnName)
-        {
-            return this.Any(col => col.ColumnName.Equals(columnName));
-        }
+		public int Count
+		{
+			get { return _columns.Count; }
+		}
 
-        #endregion
-    }
+		public bool IsSynchronized
+		{
+			get { return true; }
+		}
+
+		public object SyncRoot
+		{
+			get { return _syncRoot; }
+		}
+
+		#endregion
+		
+		#region METHODS
+
+		public DataColumn Add(string columnName, Type type)
+		{
+			var column = new DataColumn(_table, columnName, type);
+			_columns.Add(column);
+			return column;
+		}
+
+		public bool Contains(string columnName)
+		{
+			return _columns.Any(col => col.ColumnName.Equals(columnName));
+		}
+
+		public IEnumerator GetEnumerator()
+		{
+			return _columns.GetEnumerator();
+		}
+
+		public void CopyTo(Array array, int index)
+		{
+			throw new NotImplementedException();
+		}
+
+		#endregion
+	}
 }
