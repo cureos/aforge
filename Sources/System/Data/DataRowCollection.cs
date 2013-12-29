@@ -66,9 +66,11 @@ namespace System.Data
 			_rows.Add(row);
 		}
 
-		public void Add(IEnumerable cells)
+		public DataRow Add(object[] values)
 		{
-			_rows.Add(new DataRow(_table, cells));
+			var row = new DataRow(_table, values);
+			_rows.Add(row);
+			return row;
 		}
 
 		public void Remove(DataRow row)
