@@ -546,7 +546,7 @@ namespace ImagePixelEnumerator.Helpers
             var targetFormat = targetImage.PixelFormat;
 
             // sets image palette if needed
-            if (targetFormat.IsIndexed()) targetImage.SetPalette(palette);
+            if (palette != null && targetFormat.IsIndexed()) targetImage.SetPalette(palette);
 
             // wraps target image to a buffer
             using (var target = new ImageBuffer(targetImage, ImageLockMode.WriteOnly))

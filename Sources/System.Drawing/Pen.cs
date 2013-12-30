@@ -26,7 +26,16 @@ namespace System.Drawing
 		}
 
 		#endregion
+
+		#region PROPERTIES
+
+		public Color Color
+		{
+			get { return _color; }
+		}
 		
+		#endregion		
+
 		#region METHODS
 
 		public void Dispose()
