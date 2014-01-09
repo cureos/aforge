@@ -47,3 +47,9 @@ Building the libraries
 ----------------------
 
 Open the *Portable Build All.sln* solution file located in the *Sources* folder and build the entire solution or selected projects. Visual Studio 2012 Professional or higher is required.
+
+IMPORTANT!
+----------
+
+* To be able to reference the target specific (Windows Store, WP8, .NET/WPF) *AForge.System* and *AForge.System.Drawing* assemblies, all underlying assemblies need to have a strong name, i.e. be signed. For WP8, the official WP8 *WriteableBitmapEx* assembly is *not* signed. A signed *WriteableBitmapEx* assembly for WP8 is instead available in the binary release of this project, which you can download [here](https://github.com/cureos/aforge/releases/tag/v2.2.5).
+* PCL projects cannot be built in Express versions of Visual Studio, but prebuilt PCL binaries can still be referenced. Prebuilt binaries for Portable AForge can be downloaded [here](https://github.com/cureos/aforge/releases/tag/v2.2.5).
