@@ -190,6 +190,12 @@ namespace AForge.Imaging.Filters
                 int gc = (int) ( 0x10000 * GreenCoefficient );
                 int bc = (int) ( 0x10000 * BlueCoefficient );
 
+                // make sure sum of coefficients equals to 0x10000
+                while ( rc + gc + bc < 0x10000 )
+                {
+                    bc++;
+                }
+
                 // do the job
                 byte* src = (byte*) sourceData.ImageData.ToPointer( );
                 byte* dst = (byte*) destinationData.ImageData.ToPointer( );

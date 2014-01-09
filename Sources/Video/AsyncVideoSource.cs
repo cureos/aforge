@@ -303,6 +303,7 @@ namespace AForge.Video
         public void SignalToStop( )
         {
             nestedVideoSource.SignalToStop( );
+            Free( );
         }
 
         /// <summary>
