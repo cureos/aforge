@@ -9,6 +9,6 @@ namespace System.Runtime.InteropServices
 {
 	public enum GCHandleType
 	{
-		Pinned
+		Pinned = 3
 	}
 }
