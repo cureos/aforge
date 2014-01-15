@@ -5,12 +5,10 @@
 // info at cureos dot com
 //
 
-namespace System.IO
+namespace System.Runtime.InteropServices
 {
-    public enum FileMode
+    public enum UnmanagedType
     {
-        Create = 2,
-        Open = 3,
-        OpenOrCreate = 4
+        ByValArray = 30
     }
 }

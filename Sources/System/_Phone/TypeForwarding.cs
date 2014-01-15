@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 // System
 [assembly: TypeForwardedTo(typeof(DBNull))]
@@ -22,3 +23,8 @@ using System.Runtime.InteropServices;
 [assembly: TypeForwardedTo(typeof(GCHandleType))]
 [assembly: TypeForwardedTo(typeof(GuidAttribute))]
 [assembly: TypeForwardedTo(typeof(Marshal))]
+[assembly: TypeForwardedTo(typeof(MarshalAsAttribute))]
+[assembly: TypeForwardedTo(typeof(UnmanagedType))]
+
+// System.Threading
+[assembly: TypeForwardedTo(typeof(Thread))]

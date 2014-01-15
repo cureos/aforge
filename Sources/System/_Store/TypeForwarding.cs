@@ -20,6 +20,8 @@ using System.Threading.Tasks;
 [assembly: TypeForwardedTo(typeof(GCHandleType))]
 [assembly: TypeForwardedTo(typeof(GuidAttribute))]
 [assembly: TypeForwardedTo(typeof(Marshal))]
+[assembly: TypeForwardedTo(typeof(MarshalAsAttribute))]
+[assembly: TypeForwardedTo(typeof(UnmanagedType))]
 
 // System.Threading.Tasks
 [assembly: TypeForwardedTo(typeof(Parallel))]

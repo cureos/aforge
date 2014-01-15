@@ -46,6 +46,7 @@
     <Compile Include="Collections\Concurrent\ConcurrentBag.cs" />
     <Compile Include="Collections\Concurrent\ConcurrentDictionary.cs" />
     <Compile Include="Collections\Concurrent\ConcurrentStack.cs" />
+    <Compile Include="ComponentModel\CategoryAttribute.cs" />
     <Compile Include="ComponentModel\BrowsableAttribute.cs" />
     <Compile Include="ComponentModel\DescriptionAttribute.cs" />
     <Compile Include="ComponentModel\DisplayNameAttribute.cs" />
@@ -66,8 +67,10 @@
     <Compile Include="NotFiniteNumberException.cs" />
     <Compile Include="Runtime\InteropServices\GCHandle.cs" />
     <Compile Include="Runtime\InteropServices\GCHandleType.cs" />
+    <Compile Include="Runtime\InteropServices\MarshalAsAttribute.cs" />
     <Compile Include="Runtime\InteropServices\Marshal.cs" />
     <Compile Include="Runtime\InteropServices\GuidAttribute.cs" />
+    <Compile Include="Runtime\InteropServices\UnmanagedType.cs" />
     <Compile Include="Runtime\Serialization\Formatters\Binary\BinaryFormatter.cs" />
     <Compile Include="Runtime\Serialization\OptionalFieldAttribute.cs" />
     <Compile Include="SerializableAttribute.cs" />
@@ -76,6 +79,10 @@
     <Compile Include="Threading\Tasks\ParallelLoopResult.cs" />
     <Compile Include="Threading\Tasks\ParallelLoopState.cs" />
     <Compile Include="Threading\Tasks\ParallelOptions.cs" />
+    <Compile Include="Timers\ElapsedEventArgs.cs" />
+    <Compile Include="ComponentModel\ISynchronizeInvoke.cs" />
+    <Compile Include="Threading\Thread.cs" />
+    <Compile Include="Timers\Timer.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

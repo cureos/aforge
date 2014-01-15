@@ -95,11 +95,17 @@
     <Compile Include="..\ComponentModel\BrowsableAttribute.cs">
       <Link>ComponentModel\BrowsableAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\ComponentModel\CategoryAttribute.cs">
+      <Link>ComponentModel\CategoryAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\ComponentModel\DescriptionAttribute.cs">
       <Link>ComponentModel\DescriptionAttribute.cs</Link>
     </Compile>
     <Compile Include="..\ComponentModel\DisplayNameAttribute.cs">
       <Link>ComponentModel\DisplayNameAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\ComponentModel\ISynchronizeInvoke.cs">
+      <Link>ComponentModel\ISynchronizeInvoke.cs</Link>
     </Compile>
     <Compile Include="..\Converter.cs">
       <Link>Converter.cs</Link>
@@ -161,11 +167,15 @@
     <Compile Include="..\Threading\Tasks\ParallelOptions.cs">
       <Link>Threading\Tasks\ParallelOptions.cs</Link>
     </Compile>
+    <Compile Include="..\Timers\ElapsedEventArgs.cs">
+      <Link>Timers\ElapsedEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\Timers\Timer.cs">
+      <Link>Timers\Timer.cs</Link>
+    </Compile>
     <Compile Include="TypeForwarding.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Runtime\InteropServices\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="AForge.System.snk" />
   </ItemGroup>

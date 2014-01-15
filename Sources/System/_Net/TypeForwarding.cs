@@ -15,9 +15,13 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading;
 using System.Threading.Tasks;
 
 // System
+using System.Timers;
+using Timer = System.Timers.Timer;
+
 [assembly: TypeForwardedTo(typeof(Converter<,>))]
 [assembly: TypeForwardedTo(typeof(DBNull))]
 [assembly: TypeForwardedTo(typeof(ICloneable))]
@@ -32,7 +36,9 @@ using System.Threading.Tasks;
 
 // System.ComponentModel
 [assembly: TypeForwardedTo(typeof(BrowsableAttribute))]
+[assembly: TypeForwardedTo(typeof(CategoryAttribute))]
 [assembly: TypeForwardedTo(typeof(DisplayNameAttribute))]
+[assembly: TypeForwardedTo(typeof(ISynchronizeInvoke))]
 
 // System.Data
 [assembly: TypeForwardedTo(typeof(DataColumn))]
@@ -55,6 +61,8 @@ using System.Threading.Tasks;
 [assembly: TypeForwardedTo(typeof(GCHandleType))]
 [assembly: TypeForwardedTo(typeof(GuidAttribute))]
 [assembly: TypeForwardedTo(typeof(Marshal))]
+[assembly: TypeForwardedTo(typeof(MarshalAsAttribute))]
+[assembly: TypeForwardedTo(typeof(UnmanagedType))]
 
 // System.Runtime.Serialization
 [assembly: TypeForwardedTo(typeof(OptionalFieldAttribute))]
@@ -62,8 +70,17 @@ using System.Threading.Tasks;
 // System.Runtime.Serialization.Formatters.Binary
 [assembly: TypeForwardedTo(typeof(BinaryFormatter))]
 
+// System.Threading
+[assembly: TypeForwardedTo(typeof(Thread))]
+[assembly: TypeForwardedTo(typeof(ThreadStart))]
+
 // System.Threading.Tasks
 [assembly: TypeForwardedTo(typeof(Parallel))]
 [assembly: TypeForwardedTo(typeof(ParallelLoopResult))]
 [assembly: TypeForwardedTo(typeof(ParallelLoopState))]
 [assembly: TypeForwardedTo(typeof(ParallelOptions))]
+
+// System.Timers
+[assembly: TypeForwardedTo(typeof(ElapsedEventArgs))]
+[assembly: TypeForwardedTo(typeof(ElapsedEventHandler))]
+[assembly: TypeForwardedTo(typeof(Timer))]
