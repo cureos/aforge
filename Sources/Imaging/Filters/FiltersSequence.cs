@@ -169,7 +169,7 @@ namespace AForge.Imaging.Filters
 
             // check for empty sequence
             if ( n == 0 )
-                throw new InvalidOperationException( "No filters in the sequence." );
+                throw new ApplicationException( "No filters in the sequence." );
 
             UnmanagedImage dstImg = null;
             UnmanagedImage tmpImg = null;
@@ -210,7 +210,7 @@ namespace AForge.Imaging.Filters
 
             // check for empty sequence
             if ( n == 0 )
-                throw new InvalidOperationException( "No filters in the sequence." );
+                throw new ApplicationException( "No filters in the sequence." );
 
             if ( n == 1 )
             {

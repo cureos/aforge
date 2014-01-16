@@ -298,7 +298,7 @@ namespace AForge.Math
 
                     if ( its == 30 )
                     {
-                        throw new OverflowException( "No convergence in 30 svdcmp iterations" );
+                        throw new ApplicationException( "No convergence in 30 svdcmp iterations" );
                     }
 
                     // shift from bottom 2-by-2 minor

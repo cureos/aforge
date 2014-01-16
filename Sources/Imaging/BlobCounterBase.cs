@@ -527,7 +527,7 @@ namespace AForge.Imaging
         {
             // check if objects map was collected
             if ( objectLabels == null )
-                throw new InvalidOperationException( "Image should be processed before to collect objects map." );
+                throw new ApplicationException( "Image should be processed before to collect objects map." );
 
             Rectangle[] rects = new Rectangle[objectsCount];
 

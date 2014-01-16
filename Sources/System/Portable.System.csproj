@@ -43,6 +43,7 @@
     <None Include="AForge.System.snk" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationException.cs" />
     <Compile Include="Collections\Concurrent\ConcurrentBag.cs" />
     <Compile Include="Collections\Concurrent\ConcurrentDictionary.cs" />
     <Compile Include="Collections\Concurrent\ConcurrentStack.cs" />

@@ -105,6 +105,9 @@
     <None Include="AForge.System.snk" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\ApplicationException.cs">
+      <Link>ApplicationException.cs</Link>
+    </Compile>
     <Compile Include="..\ComponentModel\BrowsableAttribute.cs">
       <Link>ComponentModel\BrowsableAttribute.cs</Link>
     </Compile>

@@ -83,6 +83,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\ApplicationException.cs">
+      <Link>ApplicationException.cs</Link>
+    </Compile>
     <Compile Include="..\Collections\Concurrent\ConcurrentBag.cs">
       <Link>Collections\Concurrent\ConcurrentBag.cs</Link>
     </Compile>

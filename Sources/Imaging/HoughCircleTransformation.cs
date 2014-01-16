@@ -325,7 +325,7 @@ namespace AForge.Imaging
             // check if Hough transformation was made already
             if ( houghMap == null )
             {
-                throw new InvalidOperationException( "Hough transformation was not done yet." );
+                throw new ApplicationException( "Hough transformation was not done yet." );
             }
 
             int width = houghMap.GetLength( 1 );
