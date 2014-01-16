@@ -36,7 +36,12 @@ namespace System.Runtime.InteropServices
 			throw new NotImplementedException();
 		}
 
-		public static void StructureToPtr(object structure, IntPtr ptr, bool fDeleteOld)
+        public static int SizeOf(Type t)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void StructureToPtr(object structure, IntPtr ptr, bool fDeleteOld)
 		{
 			throw new NotImplementedException();
 		}
