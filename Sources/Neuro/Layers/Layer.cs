@@ -6,8 +6,6 @@
 // contacts@aforgenet.com
 //
 
-using System.Runtime.Serialization;
-
 namespace AForge.Neuro
 {
     using System;
@@ -19,34 +17,27 @@ namespace AForge.Neuro
     /// <remarks>This is a base neural layer class, which represents
     /// collection of neurons.</remarks>
     /// 
-    [DataContract]
-    [KnownType(typeof(Neuron))]
-    [KnownType(typeof(ActivationNeuron))]
-    [KnownType(typeof(DistanceNeuron))]
+    [Serializable]
     public abstract class Layer
     {
         /// <summary>
         /// Layer's inputs count.
         /// </summary>
-        [DataMember]
         protected int inputsCount = 0;
 
         /// <summary>
         /// Layer's neurons count.
         /// </summary>
-        [DataMember]
         protected int neuronsCount = 0;
 
         /// <summary>
         /// Layer's neurons.
         /// </summary>
-        [DataMember]
         protected Neuron[] neurons;
 
         /// <summary>
         /// Layer's output vector.
         /// </summary>
-        [DataMember]
         protected double[] output;
 
         /// <summary>

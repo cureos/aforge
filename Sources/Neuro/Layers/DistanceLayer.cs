@@ -6,8 +6,6 @@
 // contacts@aforgenet.com
 //
 
-using System.Runtime.Serialization;
-
 namespace AForge.Neuro
 {
     using System;
@@ -20,7 +18,7 @@ namespace AForge.Neuro
     /// The layer is usually a single layer of such networks as Kohonen Self
     /// Organizing Map, Elastic Net, Hamming Memory Net.</remarks>
     /// 
-    [DataContract]
+    [Serializable]
     public class DistanceLayer : Layer
     {
 

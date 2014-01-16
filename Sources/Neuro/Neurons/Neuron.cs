@@ -6,8 +6,6 @@
 // contacts@aforgenet.com
 //
 
-using System.Runtime.Serialization;
-
 namespace AForge.Neuro
 {
     using System;
@@ -20,25 +18,22 @@ namespace AForge.Neuro
     /// <remarks>This is a base neuron class, which encapsulates such
     /// common properties, like neuron's input, output and weights.</remarks>
     /// 
-    [DataContract]
+    [Serializable]
     public abstract class Neuron
     {
         /// <summary>
         /// Neuron's inputs count.
         /// </summary>
-        [DataMember]
         protected int inputsCount = 0;
 
         /// <summary>
         /// Nouron's wieghts.
         /// </summary>
-        [DataMember]
         protected double[] weights = null;
 
         /// <summary>
         /// Neuron's output value.
         /// </summary>
-        [DataMember]
         protected double output = 0;
 
         /// <summary>

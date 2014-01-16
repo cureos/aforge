@@ -6,8 +6,6 @@
 // contacts@aforgenet.com
 //
 
-using System.Runtime.Serialization;
-
 namespace AForge.Math
 {
     using System;
@@ -42,26 +40,18 @@ namespace AForge.Math
     /// </code>
     /// </remarks>
     /// 
-    [DataContract]
+    [Serializable]
     public class ContinuousHistogram
     {
-        [DataMember]
         private int[] values;
-        [DataMember]
         private Range range;
 
-        [DataMember]
         private float mean;
-        [DataMember]
         private float stdDev;
-        [DataMember]
         private float median;
-        [DataMember]
         private float min;
-        [DataMember]
         private float max;
-        [DataMember]
-        private int total;
+        private int   total;
 
         /// <summary>
         /// Values of the histogram.

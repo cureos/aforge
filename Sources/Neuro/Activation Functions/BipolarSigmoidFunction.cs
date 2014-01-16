@@ -6,8 +6,6 @@
 // contacts@aforgenet.com
 //
 
-using System.Runtime.Serialization;
-
 namespace AForge.Neuro
 {
     using System;
@@ -35,11 +33,10 @@ namespace AForge.Neuro
     /// <img src="img/neuro/sigmoid_bipolar.bmp" width="242" height="172" />
     /// </remarks>
     /// 
-    [DataContract]
-    public class BipolarSigmoidFunction : IActivationFunction
+    [Serializable]
+    public class BipolarSigmoidFunction : IActivationFunction, ICloneable
     {
         // sigmoid's alpha value
-        [DataMember]
         private double alpha = 2;
 
         /// <summary>

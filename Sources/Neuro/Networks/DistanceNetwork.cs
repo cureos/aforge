@@ -6,8 +6,6 @@
 // contacts@aforgenet.com
 //
 
-using System.Runtime.Serialization;
-
 namespace AForge.Neuro
 {
     using System;
@@ -20,7 +18,7 @@ namespace AForge.Neuro
     /// layer</see>. The network is a base for such neural networks as SOM, Elastic net, etc.
     /// </remarks>
     ///
-    [DataContract]
+    [Serializable]
     public class DistanceNetwork : Network
     {
 

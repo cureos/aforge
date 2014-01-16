@@ -6,8 +6,6 @@
 // contacts@aforgenet.com
 //
 
-using System.Runtime.Serialization;
-
 namespace AForge.Math
 {
     using System;
@@ -19,55 +17,46 @@ namespace AForge.Math
     /// <remarks><para>The structure incapsulates elements of a 3x3 matrix and
     /// provides some operations with it.</para></remarks>
     /// 
-    [DataContract]
+    [Serializable]
     public struct Matrix3x3
     {
         /// <summary>
         /// Row 0 column 0 element of the matrix.
         /// </summary>
-        [DataMember]
         public float V00;
         /// <summary>
         /// Row 0 column 1 element of the matrix.
         /// </summary>
-        [DataMember]
         public float V01;
         /// <summary>
         /// Row 0 column 2 element of the matrix.
         /// </summary>
-        [DataMember]
         public float V02;
 
         /// <summary>
         /// Row 1 column 0 element of the matrix.
         /// </summary>
-        [DataMember]
         public float V10;
         /// <summary>
         /// Row 1 column 1 element of the matrix.
         /// </summary>
-        [DataMember]
         public float V11;
         /// <summary>
         /// Row 1 column 2 element of the matrix.
         /// </summary>
-        [DataMember]
         public float V12;
 
         /// <summary>
         /// Row 2 column 0 element of the matrix.
         /// </summary>
-        [DataMember]
         public float V20;
         /// <summary>
         /// Row 2 column 1 element of the matrix.
         /// </summary>
-        [DataMember]
         public float V21;
         /// <summary>
         /// Row 2 column 2 element of the matrix.
         /// </summary>
-        [DataMember]
         public float V22;
 
         /// <summary>

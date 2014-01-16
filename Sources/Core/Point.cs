@@ -6,8 +6,6 @@
 // contacts@aforgenet.com
 //
 
-using System.Runtime.Serialization;
-
 namespace AForge
 {
     using System;
@@ -32,21 +30,19 @@ namespace AForge
     /// </code>
     /// </remarks>
     /// 
-    [DataContract]
+    [Serializable]
     public struct Point
     {
         /// <summary> 
         /// X coordinate.
         /// </summary> 
         /// 
-        [DataMember]
         public float X;
 
         /// <summary> 
         /// Y coordinate.
         /// </summary> 
         /// 
-        [DataMember]
         public float Y;
 
         /// <summary>

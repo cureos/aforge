@@ -60,7 +60,9 @@
     <Compile Include="DBNull.cs" />
     <Compile Include="Diagnostics\Trace.cs" />
     <Compile Include="IO\File.cs" />
+    <Compile Include="IO\FileAccess.cs" />
     <Compile Include="IO\FileMode.cs" />
+    <Compile Include="IO\FileShare.cs" />
     <Compile Include="IO\FileStream.cs" />
     <Compile Include="NonSerializedAttribute.cs" />
     <Compile Include="ICloneable.cs" />
@@ -72,7 +74,9 @@
     <Compile Include="Runtime\InteropServices\GuidAttribute.cs" />
     <Compile Include="Runtime\InteropServices\UnmanagedType.cs" />
     <Compile Include="Runtime\Serialization\Formatters\Binary\BinaryFormatter.cs" />
+    <Compile Include="Runtime\Serialization\ISerializable.cs" />
     <Compile Include="Runtime\Serialization\OptionalFieldAttribute.cs" />
+    <Compile Include="Runtime\Serialization\SerializationInfo.cs" />
     <Compile Include="SerializableAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Threading\Tasks\Parallel.cs" />

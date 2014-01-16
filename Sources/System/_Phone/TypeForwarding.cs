@@ -16,7 +16,9 @@ using System.Threading;
 
 // System.IO
 [assembly: TypeForwardedTo(typeof(File))]
+[assembly: TypeForwardedTo(typeof(FileAccess))]
 [assembly: TypeForwardedTo(typeof(FileMode))]
+[assembly: TypeForwardedTo(typeof(FileShare))]
 
 // System.Runtime.InteropServices
 [assembly: TypeForwardedTo(typeof(GCHandle))]

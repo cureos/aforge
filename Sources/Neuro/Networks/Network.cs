@@ -11,6 +11,7 @@ namespace AForge.Neuro
     using System;
     using System.IO;
     using System.Runtime.Serialization;
+    using System.Runtime.Serialization.Formatters.Binary;
 
     /// <summary>
     /// Base neural network class.
@@ -19,34 +20,27 @@ namespace AForge.Neuro
     /// <remarks>This is a base neural netwok class, which represents
     /// collection of neuron's layers.</remarks>
     /// 
-    [DataContract]
-    [KnownType(typeof(Layer))]
-    [KnownType(typeof(ActivationLayer))]
-    [KnownType(typeof(DistanceLayer))]
+    [Serializable]
     public abstract class Network
     {
         /// <summary>
         /// Network's inputs count.
         /// </summary>
-        [DataMember]
         protected int inputsCount;
 
         /// <summary>
         /// Network's layers count.
         /// </summary>
-        [DataMember]
         protected int layersCount;
 
         /// <summary>
         /// Network's layers.
         /// </summary>
-        [DataMember]
         protected Layer[] layers;
 
         /// <summary>
         /// Network's output vector.
         /// </summary>
-        [DataMember]
         protected double[] output;
 
         /// <summary>
@@ -158,14 +152,48 @@ namespace AForge.Neuro
         /// Save network to specified file.
         /// </summary>
         /// 
+        /// <param name="fileName">File name to save network into.</param>
+        /// 
+        /// <remarks><para>The neural network is saved using .NET serialization (binary formatter is used).</para></remarks>
+        /// 
+        public void Save( string fileName )
+        {
+            FileStream stream = new FileStream( fileName, FileMode.Create, FileAccess.Write, FileShare.None );
+            Save( stream );
+            stream.Dispose( );
+        }
+
+        /// <summary>
+        /// Save network to specified file.
+        /// </summary>
+        /// 
         /// <param name="stream">Stream to save network into.</param>
         /// 
         /// <remarks><para>The neural network is saved using .NET serialization (binary formatter is used).</para></remarks>
         /// 
         public void Save( Stream stream )
         {
-            var formatter = new DataContractSerializer(typeof(Network) );
-            formatter.WriteObject( stream, this );
+            BinaryFormatter formatter = new BinaryFormatter( );
+            formatter.Serialize( stream, this );
+        }
+
+        /// <summary>
+        /// Load network from specified file.
+        /// </summary>
+        /// 
+        /// <param name="fileName">File name to load network from.</param>
+        /// 
+        /// <returns>Returns instance of <see cref="Network"/> class with all properties initialized from file.</returns>
+        /// 
+        /// <remarks><para>Neural network is loaded from file using .NET serialization (binary formater is used).</para></remarks>
+        /// 
+        public static Network Load( string fileName )
+        {
+            FileStream stream = new FileStream( fileName, FileMode.Open, FileAccess.Read, FileShare.Read );
+            Network network = Load( stream );
+            stream.Dispose( );
+
+            return network;
         }
 
         /// <summary>
@@ -180,8 +208,8 @@ namespace AForge.Neuro
         /// 
         public static Network Load( Stream stream )
         {
-            var formatter = new DataContractSerializer(typeof(Network) );
-            Network network = (Network) formatter.ReadObject( stream );
+            BinaryFormatter formatter = new BinaryFormatter( );
+            Network network = (Network) formatter.Deserialize( stream );
             return network;
         }
     }

@@ -6,8 +6,6 @@
 // contacts@aforgenet.com
 //
 
-using System.Runtime.Serialization;
-
 namespace AForge.Math
 {
     using System;
@@ -19,23 +17,20 @@ namespace AForge.Math
     /// <remarks><para>The structure incapsulates X, Y and Z coordinates of a 3D vector and
     /// provides some operations with it.</para></remarks>
     /// 
-    [DataContract]
+    [Serializable]
     public struct Vector3
     {
         /// <summary>
         /// X coordinate of the vector.
         /// </summary>
-        [DataMember]
         public float X;
         /// <summary>
         /// Y coordinate of the vector.
         /// </summary>
-        [DataMember]
         public float Y;
         /// <summary>
         /// Z coordinate of the vector.
         /// </summary>
-        [DataMember]
         public float Z;
 
         /// <summary>

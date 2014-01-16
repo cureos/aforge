@@ -6,8 +6,6 @@
 // contacts@aforgenet.com
 //
 
-using System.Runtime.Serialization;
-
 namespace AForge.Neuro
 {
     using System;
@@ -21,7 +19,7 @@ namespace AForge.Neuro
     /// values and corresponding inputs' values. The neuron is usually used in Kohonen
     /// Self Organizing Map.</para></remarks>
     /// 
-    [DataContract]
+    [Serializable]
     public class DistanceNeuron : Neuron
     {
         /// <summary>

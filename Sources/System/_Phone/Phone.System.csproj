@@ -149,8 +149,14 @@
     <Compile Include="..\Runtime\Serialization\Formatters\Binary\BinaryFormatter.cs">
       <Link>Runtime\Serialization\Formatters\Binary\BinaryFormatter.cs</Link>
     </Compile>
+    <Compile Include="..\Runtime\Serialization\ISerializable.cs">
+      <Link>Runtime\Serialization\ISerializable.cs</Link>
+    </Compile>
     <Compile Include="..\Runtime\Serialization\OptionalFieldAttribute.cs">
       <Link>Runtime\Serialization\OptionalFieldAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\Serialization\SerializationInfo.cs">
+      <Link>Runtime\Serialization\SerializationInfo.cs</Link>
     </Compile>
     <Compile Include="..\SerializableAttribute.cs">
       <Link>SerializableAttribute.cs</Link>

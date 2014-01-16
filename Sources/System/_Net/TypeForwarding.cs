@@ -53,7 +53,9 @@ using Timer = System.Timers.Timer;
 
 // System.IO
 [assembly: TypeForwardedTo(typeof(File))]
+[assembly: TypeForwardedTo(typeof(FileAccess))]
 [assembly: TypeForwardedTo(typeof(FileMode))]
+[assembly: TypeForwardedTo(typeof(FileShare))]
 [assembly: TypeForwardedTo(typeof(FileStream))]
 
 // System.Runtime.InteropServices
@@ -65,7 +67,9 @@ using Timer = System.Timers.Timer;
 [assembly: TypeForwardedTo(typeof(UnmanagedType))]
 
 // System.Runtime.Serialization
+[assembly: TypeForwardedTo(typeof(ISerializable))]
 [assembly: TypeForwardedTo(typeof(OptionalFieldAttribute))]
+[assembly: TypeForwardedTo(typeof(SerializationInfo))]
 
 // System.Runtime.Serialization.Formatters.Binary
 [assembly: TypeForwardedTo(typeof(BinaryFormatter))]

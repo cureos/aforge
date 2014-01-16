@@ -6,8 +6,6 @@
 // andrew.kirillov@aforgenet.com
 //
 
-using System.Runtime.Serialization;
-
 namespace AForge
 {
     using System;
@@ -45,14 +43,10 @@ namespace AForge
     /// </code>
     /// </remarks>
     ///
-    [DataContract]
+    [Serializable]
     public struct IntRange
     {
-        [DataMember]
-        private int min;
-
-        [DataMember]
-        private int max;
+        private int min, max;
 
         /// <summary>
         /// Minimum value of the range.

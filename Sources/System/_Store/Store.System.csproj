@@ -153,8 +153,14 @@
     <Compile Include="..\IO\File.cs">
       <Link>IO\File.cs</Link>
     </Compile>
+    <Compile Include="..\IO\FileAccess.cs">
+      <Link>IO\FileAccess.cs</Link>
+    </Compile>
     <Compile Include="..\IO\FileMode.cs">
       <Link>IO\FileMode.cs</Link>
+    </Compile>
+    <Compile Include="..\IO\FileShare.cs">
+      <Link>IO\FileShare.cs</Link>
     </Compile>
     <Compile Include="..\IO\FileStream.cs">
       <Link>IO\FileStream.cs</Link>
@@ -171,8 +177,14 @@
     <Compile Include="..\Runtime\Serialization\Formatters\Binary\BinaryFormatter.cs">
       <Link>Runtime\Serialization\Formatters\Binary\BinaryFormatter.cs</Link>
     </Compile>
+    <Compile Include="..\Runtime\Serialization\ISerializable.cs">
+      <Link>Runtime\Serialization\ISerializable.cs</Link>
+    </Compile>
     <Compile Include="..\Runtime\Serialization\OptionalFieldAttribute.cs">
       <Link>Runtime\Serialization\OptionalFieldAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\Serialization\SerializationInfo.cs">
+      <Link>Runtime\Serialization\SerializationInfo.cs</Link>
     </Compile>
     <Compile Include="..\SerializableAttribute.cs">
       <Link>SerializableAttribute.cs</Link>

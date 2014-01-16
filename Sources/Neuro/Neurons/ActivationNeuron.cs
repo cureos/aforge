@@ -6,8 +6,6 @@
 // contacts@aforgenet.com
 //
 
-using System.Runtime.Serialization;
-
 namespace AForge.Neuro
 {
     using System;
@@ -22,10 +20,7 @@ namespace AForge.Neuro
     /// 
     /// <seealso cref="IActivationFunction"/>
     /// 
-    [DataContract]
-    [KnownType(typeof(BipolarSigmoidFunction))]
-    [KnownType(typeof(SigmoidFunction))]
-    [KnownType(typeof(ThresholdFunction))]
+    [Serializable]
     public class ActivationNeuron : Neuron
     {
         /// <summary>
@@ -35,7 +30,6 @@ namespace AForge.Neuro
         /// <remarks>The value is added to inputs weighted sum before it is passed to activation
         /// function.</remarks>
         /// 
-        [DataMember]
         protected double threshold = 0.0;
 
         /// <summary>
@@ -45,7 +39,6 @@ namespace AForge.Neuro
         /// <remarks>The function is applied to inputs weighted sum plus
         /// threshold value.</remarks>
         /// 
-        [DataMember]
         protected IActivationFunction function = null;
 
         /// <summary>

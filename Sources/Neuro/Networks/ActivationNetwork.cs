@@ -6,8 +6,6 @@
 // contacts@aforgenet.com
 //
 
-using System.Runtime.Serialization;
-
 namespace AForge.Neuro
 {
     using System;
@@ -32,7 +30,7 @@ namespace AForge.Neuro
     ///	</code>
     /// </remarks>
     /// 
-    [DataContract]
+    [Serializable]
     public class ActivationNetwork : Network
     {
 
