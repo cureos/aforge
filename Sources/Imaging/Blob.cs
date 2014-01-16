@@ -56,6 +56,7 @@ namespace AForge.Imaging
         /// the image may be extracted using <see cref="BlobCounterBase.ExtractBlobsImage( Bitmap, Blob, bool )"/>
         /// or <see cref="BlobCounterBase.ExtractBlobsImage( UnmanagedImage, Blob, bool )"/> method.</para></remarks>
         ///
+        [Browsable( false )]
         public UnmanagedImage Image
         {
             get { return image; }
@@ -71,6 +72,7 @@ namespace AForge.Imaging
         /// size of original image. If the property is set to <see langword="false"/>, the blob's
         /// image size equals to size of actual blob.</para></remarks>
         /// 
+        [Browsable( false )]
         public bool OriginalSize
         {
             get { return originalSize; }
@@ -92,6 +94,7 @@ namespace AForge.Imaging
         /// <summary>
         /// Blob's ID in the original image.
         /// </summary>
+        [Browsable( false )]
         public int ID
         {
             get { return id; }

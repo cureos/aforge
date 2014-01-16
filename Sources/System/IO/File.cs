@@ -16,28 +16,28 @@ namespace System.IO
 	{
         #region METHODS
 
-        public static Stream OpenRead(string path)
+        public static FileStream OpenRead(string path)
         {
 #if NETFX_CORE
 				return Task.Run(async () =>
 				{
 					var storageFile = await StorageFile.GetFileFromPathAsync(path);
 					var storageStream = await storageFile.OpenSequentialReadAsync();
-					return storageStream.AsStreamForRead();
+					return new FileStream(storageStream.AsStreamForRead());
 				}).Result;
 #else
             throw new NotImplementedException();
 #endif
         }
         
-        public static Stream OpenWrite(string path)
+        public static FileStream OpenWrite(string path)
         {
 #if NETFX_CORE
 				return Task.Run(async () =>
 				{
 					var storageFile = await StorageFile.GetFileFromPathAsync(path);
 					var storageStream = await storageFile.OpenAsync(FileAccessMode.ReadWrite);
-					return storageStream.AsStreamForWrite();
+					return new FileStream(storageStream.AsStreamForWrite());
 				}).Result;
 #else
             throw new NotImplementedException();

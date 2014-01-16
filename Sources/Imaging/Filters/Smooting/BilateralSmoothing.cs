@@ -14,6 +14,7 @@ namespace AForge.Imaging.Filters
     using System.Collections.Generic;
     using System.Drawing;
     using System.Drawing.Imaging;
+    using System.Threading.Tasks;
     using M = System.Math;
 
     /// <summary>
@@ -405,7 +406,7 @@ namespace AForge.Imaging.Filters
 
             if ( pixelSize > 1 )
             {
-                for ( int y = startY; y < stopY; ++y  )
+                Parallel.For( startY, stopY, delegate( int y )
                 {
                     byte* src = srcBase + y * srcStride;
                     byte* dst = dstBase + y * dstStride;
@@ -471,12 +472,12 @@ namespace AForge.Imaging.Filters
                         dst[RGB.G] = (byte) ( sMembG / sCoefG );
                         dst[RGB.B] = (byte) ( sMembB / sCoefB );
                     }
-                }
+                } );
             }
             else
             {
                 // 8bpp grayscale images
-                for ( int y = startY; y < stopY; ++y  )
+                Parallel.For( startY, stopY, delegate( int y )
                 {
                     byte* src = srcBase + y * srcStride;
                     byte* dst = dstBase + y * dstStride;
@@ -523,7 +524,7 @@ namespace AForge.Imaging.Filters
 
                         *dst = (byte) ( sMembC / sCoefC );
                     }
-                }
+                } );
             }
         }
 

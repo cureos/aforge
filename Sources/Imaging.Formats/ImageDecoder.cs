@@ -132,8 +132,7 @@ namespace AForge.Imaging.Formats
 
                     // open stream
                     FileStream stream = new FileStream( fileName, FileMode.Open );
-
-					// open decoder
+                    // open decoder
                     decoder.Open( stream );
                     // read the first frame
                     bitmap = decoder.DecodeFrame( 0, out imageInfo );
@@ -157,32 +156,32 @@ namespace AForge.Imaging.Formats
         private static System.Drawing.Bitmap FromFile( string fileName )
         {
             Bitmap loadedImage = null;
-            Stream stream = null;
+            FileStream stream = null;
 
             try
             {
                 // read image to temporary memory stream
                 stream = File.OpenRead( fileName );
-                MemoryStream memoryStream = new MemoryStream();
+                MemoryStream memoryStream = new MemoryStream( );
 
                 byte[] buffer = new byte[10000];
-                while (true)
+                while ( true )
                 {
-                    int read = stream.Read(buffer, 0, 10000);
+                    int read = stream.Read( buffer, 0, 10000 );
 
-                    if (read == 0)
+                    if ( read == 0 )
                         break;
 
-                    memoryStream.Write(buffer, 0, read);
+                    memoryStream.Write( buffer, 0, read );
                 }
 
-                loadedImage = (Bitmap)Bitmap.FromStream(memoryStream);
+                loadedImage = (Bitmap) Bitmap.FromStream( memoryStream );
             }
             finally
             {
-                if (stream != null)
+                if ( stream != null )
                 {
-                    stream.Dispose();
+                    stream.Dispose( );
                 }
             }
 

@@ -36,6 +36,7 @@ namespace AForge.Imaging.Formats
         /// type for pixel encoding), -64 (64 bit image with double data type for pixel encoding).
         /// </para></remarks>
         /// 
+        [Category( "FITS Info" )]
         public int OriginalBitsPerPixl
         {
             get { return originalBitsPerPixl; }
@@ -50,6 +51,7 @@ namespace AForge.Imaging.Formats
         /// them from <see cref="OriginalBitsPerPixl">original bits per pixel</see> format to
         /// <see cref="ImageInfo.BitsPerPixel">supported bits per pixel</see> format.</para></remarks>
         /// 
+        [Category( "FITS Info" )]
         public double MinDataValue
         {
             get { return minDataValue; }
@@ -64,6 +66,7 @@ namespace AForge.Imaging.Formats
         /// them from <see cref="OriginalBitsPerPixl">original bits per pixel</see> format to
         /// <see cref="ImageInfo.BitsPerPixel">supported bits per pixel</see> format.</para></remarks>
         /// 
+        [Category( "FITS Info" )]
         public double MaxDataValue
         {
             get { return maxDataValue; }
@@ -73,6 +76,7 @@ namespace AForge.Imaging.Formats
         /// <summary>
         /// Telescope used for object's observation.
         /// </summary>
+        [Category( "FITS Info" )]
         public string Telescope
         {
             get { return telescope; }
@@ -82,6 +86,7 @@ namespace AForge.Imaging.Formats
         /// <summary>
         /// Object acquired during observation.
         /// </summary>
+        [Category( "FITS Info" )]
         public string Object
         {
             get { return acquiredObject; }
@@ -91,6 +96,7 @@ namespace AForge.Imaging.Formats
         /// <summary>
         /// Observer doing object's acquiring.
         /// </summary>
+        [Category( "FITS Info" )]
         public string Observer
         {
             get { return observer; }
@@ -100,6 +106,7 @@ namespace AForge.Imaging.Formats
         /// <summary>
         /// Instrument used for observation.
         /// </summary>
+        [Category( "FITS Info" )]
         public string Instrument
         {
             get { return instrument; }

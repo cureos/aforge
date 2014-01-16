@@ -310,6 +310,7 @@ namespace AForge.Imaging.ColorReduction
             return destImage;
         }
 
+        [NonSerialized]
         private Dictionary<Color, byte> cache = new Dictionary<Color, byte>( );
 
         // Get closest color from palette to the specified color
