@@ -108,7 +108,6 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="AForge.System.Drawing.snk" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Core\SystemTools.cs">
@@ -116,9 +115,6 @@
     </Compile>
     <Compile Include="..\Bitmap.cs">
       <Link>Bitmap.cs</Link>
-    </Compile>
-    <Compile Include="..\Bitmap.NoPcl.cs">
-      <Link>Bitmap.NoPcl.cs</Link>
     </Compile>
     <Compile Include="..\Color.cs">
       <Link>Color.cs</Link>
@@ -282,17 +278,13 @@
     <Compile Include="..\SystemColors.cs">
       <Link>SystemColors.cs</Link>
     </Compile>
+    <Compile Include="Bitmap.Store.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\_Licenses\CPOL_PixelFormatConversion.htm">
       <Link>_Licenses\CPOL_PixelFormatConversion.htm</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="WriteableBitmapEx.WinRT">
-      <HintPath>..\..\packages\WriteableBitmapEx.1.0.9.0\lib\NetCore45\WriteableBitmapEx.WinRT.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
