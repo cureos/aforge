@@ -44,10 +44,8 @@
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
-    <Reference Include="WriteableBitmapEx.Wpf">
-      <HintPath>..\..\packages\WriteableBitmapEx.1.0.9.0\lib\net40\WriteableBitmapEx.Wpf.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -56,9 +54,6 @@
     </Compile>
     <Compile Include="..\Bitmap.cs">
       <Link>Bitmap.cs</Link>
-    </Compile>
-    <Compile Include="..\Bitmap.NoPcl.cs">
-      <Link>Bitmap.NoPcl.cs</Link>
     </Compile>
     <Compile Include="..\Color.cs">
       <Link>Color.cs</Link>
@@ -219,6 +214,7 @@
     <Compile Include="..\SystemColors.cs">
       <Link>SystemColors.cs</Link>
     </Compile>
+    <Compile Include="Bitmap.Wpf.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\_Licenses\CPOL_PixelFormatConversion.htm">
@@ -228,7 +224,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AForge.System.Drawing.snk" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
