@@ -11,14 +11,8 @@
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
-
-#if NETFX_CORE
-using Windows.UI.Xaml.Media.Imaging;
-#else
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
-#endif
 
 namespace System.Drawing
 {
@@ -34,11 +28,8 @@ namespace System.Drawing
 
             var writeableBitmap = new WriteableBitmap(bitmapImage);
             bitmapImage.UriSource = null;
-#if NETFX_CORE
-			return writeableBitmap.FromStream(stream).Result;
-#else
-			return writeableBitmap;
-#endif
+
+            return writeableBitmap;
 		}
 
 		#endregion
@@ -63,12 +54,34 @@ namespace System.Drawing
 		{
 			var width = writeableBitmap.PixelWidth;
 			var height = writeableBitmap.PixelHeight;
-			const PixelFormat format = PixelFormat.Format32bppPArgb;
 
 		    var pixels = writeableBitmap.Pixels;
 			var bytes = new byte[Buffer.ByteLength(pixels)];
 		    Buffer.BlockCopy(pixels, 0, bytes, 0, bytes.Length);
 
+            // Remove alpha pre-multiplication.
+		    unsafe
+		    {
+		        var length = bytes.Length;
+		        fixed (byte* b0 = bytes)
+		        {
+		            var b = b0 + length;
+		            for (var i = 0; i < length; i += 4)
+		            {
+		                byte alpha;
+		                if ((alpha = *--b) == 0)
+		                {
+		                    b -= 3;
+                            continue;
+		                }
+		                *--b = (byte)(255 * *b / alpha);
+                        *--b = (byte)(255 * *b / alpha);
+                        *--b = (byte)(255 * *b / alpha);
+		            }
+		        }
+		    }
+
+			const PixelFormat format = PixelFormat.Format32bppArgb;
 			var bitmap = new Bitmap(width, height, format);
 			var data = bitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, format);
 			Marshal.Copy(bytes, 0, data.Scan0, bytes.Length);

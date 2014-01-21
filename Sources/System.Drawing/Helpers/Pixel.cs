@@ -220,7 +220,7 @@ namespace ImagePixelEnumerator.Helpers
                 case PixelFormat.Format24bppRgb: return typeof(PixelDataRgb888);
                 case PixelFormat.Format32bppRgb: return typeof(PixelDataRgb8888);
                 case PixelFormat.Format32bppArgb: return typeof(PixelDataArgb8888);
-                // case PixelFormat.Format32bppPArgb: return typeof (PixelDataPArgb8888);
+                case PixelFormat.Format32bppPArgb: return typeof (PixelDataPArgb8888);
                 case PixelFormat.Format48bppRgb: return typeof(PixelDataRgb48);
                 case PixelFormat.Format64bppArgb: return typeof(PixelDataArgb64);
                 // case PixelFormat.Format64bppPArgb: return typeof (PixelDataPArgb64);

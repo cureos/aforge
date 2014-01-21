@@ -201,6 +201,9 @@
     <Compile Include="..\Helpers\Pixels\NonIndexed\PixelDataGray16.cs">
       <Link>Helpers\Pixels\NonIndexed\PixelDataGray16.cs</Link>
     </Compile>
+    <Compile Include="..\Helpers\Pixels\NonIndexed\PixelDataPArgb8888.cs">
+      <Link>Helpers\Pixels\NonIndexed\PixelDataPArgb8888.cs</Link>
+    </Compile>
     <Compile Include="..\Helpers\Pixels\NonIndexed\PixelDataRgb48.cs">
       <Link>Helpers\Pixels\NonIndexed\PixelDataRgb48.cs</Link>
     </Compile>
