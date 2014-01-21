@@ -1,7 +1,7 @@
 ﻿//
-// Portability Class Library
+// Shim.System
 //
-// Copyright © Cureos AB, 2013
+// Copyright © Cureos AB, 2013-2014
 // info at cureos dot com
 //
 
