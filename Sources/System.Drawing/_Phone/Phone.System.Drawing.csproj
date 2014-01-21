@@ -104,9 +104,6 @@
     <Compile Include="..\Bitmap.cs">
       <Link>Bitmap.cs</Link>
     </Compile>
-    <Compile Include="..\Bitmap.NoPcl.cs">
-      <Link>Bitmap.NoPcl.cs</Link>
-    </Compile>
     <Compile Include="..\Color.cs">
       <Link>Color.cs</Link>
     </Compile>
@@ -266,18 +263,13 @@
     <Compile Include="..\SystemColors.cs">
       <Link>SystemColors.cs</Link>
     </Compile>
+    <Compile Include="Bitmap.Phone.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\_Licenses\CPOL_PixelFormatConversion.htm">
       <Link>_Licenses\CPOL_PixelFormatConversion.htm</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="WriteableBitmapExWinPhone, Version=1.0.9.0, Culture=neutral, PublicKeyToken=50375ca6144f1c69, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Externals\WriteableBitmapEx\WriteableBitmapExWinPhone.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
