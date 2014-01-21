@@ -1,10 +1,10 @@
 ﻿// AForge Image Processing Library
-// AForge.NET framework
-// http://www.aforgenet.com/framework/
+// Portable AForge.NET framework
+// https://github.com/cureos/aforge
 //
-// Portable Adaptations
+// Shim.System.Drawing
 //
-// Copyright © Cureos AB, 2013
+// Copyright © Cureos AB, 2013-2014
 // info at cureos dot com
 //
 // Some code in this implementation has been adapted from the Mono implementation of the
