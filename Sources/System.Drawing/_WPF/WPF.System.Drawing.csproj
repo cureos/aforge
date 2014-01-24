@@ -47,7 +47,16 @@
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="..\CPOL_PixelFormatConversion.htm">
+      <Link>CPOL_PixelFormatConversion.htm</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\gpl-3.0.txt">
+      <Link>gpl-3.0.txt</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Core\SystemTools.cs">
       <Link>Support\SystemTools.cs</Link>
@@ -218,12 +227,6 @@
       <Link>SystemColors.cs</Link>
     </Compile>
     <Compile Include="Bitmap.Wpf.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\_Licenses\CPOL_PixelFormatConversion.htm">
-      <Link>_Licenses\CPOL_PixelFormatConversion.htm</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="AForge.System.Drawing.snk" />

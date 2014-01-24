@@ -53,6 +53,12 @@
   <ItemGroup>
     <None Include="AForge.System.snk" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\gpl-3.0.txt">
+      <Link>gpl-3.0.txt</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

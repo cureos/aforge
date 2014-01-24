@@ -142,9 +142,14 @@
     </Compile>
     <Compile Include="TypeForwarding.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="AForge.System.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\gpl-3.0.txt">
+      <Link>gpl-3.0.txt</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>

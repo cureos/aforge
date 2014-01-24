@@ -33,9 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-  </ItemGroup>
-  <ItemGroup>
     <None Include="AForge.System.snk" />
   </ItemGroup>
   <ItemGroup>
@@ -136,6 +133,12 @@
       <Link>Timers\Timer.cs</Link>
     </Compile>
     <Compile Include="TypeForwarding.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\gpl-3.0.txt">
+      <Link>gpl-3.0.txt</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>

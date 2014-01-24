@@ -107,12 +107,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="_Licenses\CPOL_PixelFormatConversion.htm">
+    <None Include="CPOL_PixelFormatConversion.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="AForge.System.Drawing.snk" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="gpl-3.0.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

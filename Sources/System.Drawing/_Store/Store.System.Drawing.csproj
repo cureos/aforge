@@ -209,8 +209,12 @@
     <Compile Include="Bitmap.Store.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\_Licenses\CPOL_PixelFormatConversion.htm">
-      <Link>_Licenses\CPOL_PixelFormatConversion.htm</Link>
+    <None Include="..\CPOL_PixelFormatConversion.htm">
+      <Link>CPOL_PixelFormatConversion.htm</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\gpl-3.0.txt">
+      <Link>gpl-3.0.txt</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
