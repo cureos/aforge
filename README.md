@@ -27,6 +27,10 @@ image processing.
 When using the WPF `Shim.System.Drawing` assembly, the real `System.Drawing` assembly from .NET Framework cannot be referenced for obvious reasons. If there is a need to reference 
 the real `System.Drawing` assembly, you are recommended to use the original *AForge.NET Framework* libraries and use WPF hosting controls to display image processing results instead.
 
+**IMPORTANT!**<br />
+* PCL projects cannot be built in Express versions of Visual Studio, but prebuilt PCL binaries can still be referenced. The latest prebuilt binaries for Portable AForge can be downloaded [here](https://github.com/cureos/aforge/releases/tag/v2.2.5).
+* To be able to reference the target specific (Windows Store, WP8, .NET/WPF) *Shim.System* and *Shim.System.Drawing* assemblies, all underlying assemblies need to have a strong name, i.e. be signed. 
+
 Example usage
 -------------
 
@@ -49,8 +53,17 @@ Building the libraries
 
 Open the *Portable Build All.sln* solution file located in the *Sources* folder and build the entire solution or selected projects. Visual Studio 2012 Professional or higher is required.
 
-IMPORTANT!
-----------
+Notes on commercial use
+-----------------------
 
-* To be able to reference the target specific (Windows Store, WP8, .NET/WPF) *Shim.System* and *Shim.System.Drawing* assemblies, all underlying assemblies need to have a strong name, i.e. be signed. 
-* PCL projects cannot be built in Express versions of Visual Studio, but prebuilt PCL binaries can still be referenced. The latest prebuilt binaries for Portable AForge can be downloaded [here](https://github.com/cureos/aforge/releases/tag/v2.2.5).
+The *Shim.System* and *Shim.System.Drawing* assemblies that are required to build the Portable Class Library version of AForge.NET Framework are published under the General Public License, version 3.
+For those interested in using the PCL libraries without having to adhere to GPL, please contact the copyright holder of the *Shim* assemblies at
+
+license@cureos.com
+
+for commercial licensing alternatives.
+
+Please also note that *AForge.NET Framework* itself is licensed under LGPL version 3, and the copyright holder states the following on the *AForge.NET Framework* web site:
+
+> Regarding collaboration, contribution, offers, partnering, custom work/consulting, none GPL/LGPL licensing, etc., please, contact using the next e-mail:
+aforge.net [at] gmail {dot} com
