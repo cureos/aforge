@@ -35,11 +35,6 @@ namespace System.IO
 			throw new NotImplementedException();
 		}
 
-	    internal FileStream(Stream stream)
-	    {
-            throw new NotImplementedException();
-        }
-
 	    #endregion
 
 		#region PROPERTIES

@@ -19,45 +19,22 @@
  *  along with Shim.NET.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if NETFX_CORE
-	using System.Threading.Tasks;
-	using Windows.Storage;
-#endif
-
 namespace System.IO
 {
 	public static class File
 	{
-        #region METHODS
+		#region METHODS
 
-        public static FileStream OpenRead(string path)
-        {
-#if NETFX_CORE
-				return Task.Run(async () =>
-				{
-					var storageFile = await StorageFile.GetFileFromPathAsync(path);
-					var storageStream = await storageFile.OpenSequentialReadAsync();
-					return new FileStream(storageStream.AsStreamForRead());
-				}).Result;
-#else
-            throw new NotImplementedException();
-#endif
-        }
-        
-        public static FileStream OpenWrite(string path)
-        {
-#if NETFX_CORE
-				return Task.Run(async () =>
-				{
-					var storageFile = await StorageFile.GetFileFromPathAsync(path);
-					var storageStream = await storageFile.OpenAsync(FileAccessMode.ReadWrite);
-					return new FileStream(storageStream.AsStreamForWrite());
-				}).Result;
-#else
-            throw new NotImplementedException();
-#endif
-        }
+		public static FileStream OpenRead(string path)
+		{
+			return new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+		}
 
-        #endregion
+		public static FileStream OpenWrite(string path)
+		{
+			return new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
+		}
+
+		#endregion
 	}
 }

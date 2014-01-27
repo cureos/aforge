@@ -96,9 +96,6 @@
     <Compile Include="..\IO\FileShare.cs">
       <Link>IO\FileShare.cs</Link>
     </Compile>
-    <Compile Include="..\IO\FileStream.cs">
-      <Link>IO\FileStream.cs</Link>
-    </Compile>
     <Compile Include="..\NonSerializedAttribute.cs">
       <Link>NonSerializedAttribute.cs</Link>
     </Compile>
@@ -132,6 +129,7 @@
     <Compile Include="..\Timers\Timer.cs">
       <Link>Timers\Timer.cs</Link>
     </Compile>
+    <Compile Include="IO\FileStream.Store.cs" />
     <Compile Include="TypeForwarding.cs" />
   </ItemGroup>
   <ItemGroup>
