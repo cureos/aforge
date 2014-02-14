@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © Andrew Kirillov, 2005-2009
-// andrew.kirillov@aforgenet.com
+// Copyright © Andrew Kirillov, 2005-2014
+// aforge.net@gmail.com
 //
 
 namespace AForge.Imaging.Filters
@@ -129,6 +129,9 @@ namespace AForge.Imaging.Filters
             // structuring element's radius
             int r = size >> 1;
 
+            // flag to indicate if at least one pixel for the given structuring element was found
+            bool foundSomething;
+
             if ( ( pixelFormat == PixelFormat.Format8bppIndexed ) || ( pixelFormat == PixelFormat.Format24bppRgb ) )
             {
                 int pixelSize = ( pixelFormat == PixelFormat.Format8bppIndexed ) ? 1 : 3;
@@ -163,6 +166,7 @@ namespace AForge.Imaging.Filters
                         for ( int x = startX; x < stopX; x++, src++, dst++ )
                         {
                             max = 0;
+                            foundSomething = false;
 
                             // for each structuring element's row
                             for ( i = 0; i < size; i++ )
@@ -190,6 +194,7 @@ namespace AForge.Imaging.Filters
                                     {
                                         if ( se[i, j] == 1 )
                                         {
+                                            foundSomething = true;
                                             // get new MAX value
                                             v = src[ir * srcStride + jr];
                                             if ( v > max )
@@ -199,7 +204,7 @@ namespace AForge.Imaging.Filters
                                 }
                             }
                             // result pixel
-                            *dst = max;
+                            *dst = ( foundSomething ) ? max : *src;
                         }
                     }
                 }
@@ -223,6 +228,7 @@ namespace AForge.Imaging.Filters
                         for ( int x = startX; x < stopX; x++, src += 3, dst += 3 )
                         {
                             maxR = maxG = maxB = 0;
+                            foundSomething = false;
 
                             // for each structuring element's row
                             for ( i = 0; i < size; i++ )
@@ -250,6 +256,7 @@ namespace AForge.Imaging.Filters
                                     {
                                         if ( se[i, j] == 1 )
                                         {
+                                            foundSomething = true;
                                             // get new MAX values
                                             p = &src[ir * srcStride + jr * 3];
 
@@ -272,9 +279,18 @@ namespace AForge.Imaging.Filters
                                 }
                             }
                             // result pixel
-                            dst[RGB.R] = maxR;
-                            dst[RGB.G] = maxG;
-                            dst[RGB.B] = maxB;
+                            if ( foundSomething )
+                            {
+                                dst[RGB.R] = maxR;
+                                dst[RGB.G] = maxG;
+                                dst[RGB.B] = maxB;
+                            }
+                            else
+                            {
+                                dst[RGB.R] = src[RGB.R];
+                                dst[RGB.G] = src[RGB.G];
+                                dst[RGB.B] = src[RGB.B];
+                            }
                         }
                     }
                 }
@@ -313,6 +329,7 @@ namespace AForge.Imaging.Filters
                         for ( int x = startX; x < stopX; x++, src++, dst++ )
                         {
                             max = 0;
+                            foundSomething = false;
 
                             // for each structuring element's row
                             for ( i = 0; i < size; i++ )
@@ -340,6 +357,7 @@ namespace AForge.Imaging.Filters
                                     {
                                         if ( se[i, j] == 1 )
                                         {
+                                            foundSomething = true;
                                             // get new MAX value
                                             v = src[ir * srcStride + jr];
                                             if ( v > max )
@@ -349,7 +367,7 @@ namespace AForge.Imaging.Filters
                                 }
                             }
                             // result pixel
-                            *dst = max;
+                            *dst = ( foundSomething ) ? max : *src;
                         }
                     }
                 }
@@ -373,6 +391,7 @@ namespace AForge.Imaging.Filters
                         for ( int x = startX; x < stopX; x++, src += 3, dst += 3 )
                         {
                             maxR = maxG = maxB = 0;
+                            foundSomething = false;
 
                             // for each structuring element's row
                             for ( i = 0; i < size; i++ )
@@ -400,6 +419,7 @@ namespace AForge.Imaging.Filters
                                     {
                                         if ( se[i, j] == 1 )
                                         {
+                                            foundSomething = true;
                                             // get new MAX values
                                             p = &src[ir * srcStride + jr * 3];
 
@@ -422,9 +442,18 @@ namespace AForge.Imaging.Filters
                                 }
                             }
                             // result pixel
-                            dst[RGB.R] = maxR;
-                            dst[RGB.G] = maxG;
-                            dst[RGB.B] = maxB;
+                            if ( foundSomething )
+                            {
+                                dst[RGB.R] = maxR;
+                                dst[RGB.G] = maxG;
+                                dst[RGB.B] = maxB;
+                            }
+                            else
+                            {
+                                dst[RGB.R] = src[RGB.R];
+                                dst[RGB.G] = src[RGB.G];
+                                dst[RGB.B] = src[RGB.B];
+                            }
                         }
                     }
                 }
