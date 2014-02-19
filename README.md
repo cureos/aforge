@@ -59,7 +59,7 @@ Notes on commercial use
 The *Shim.System* and *Shim.System.Drawing* assemblies that are required to build the Portable Class Library version of AForge.NET Framework are published under the General Public License, version 3.
 For those interested in using the PCL libraries without having to adhere to GPL, please contact the copyright holder of the *Shim* assemblies at
 
-license@cureos.com
+licenses@cureos.com
 
 for commercial licensing alternatives.
 
