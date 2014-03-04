@@ -1,8 +1,8 @@
 // AForge Image Processing Library
 // AForge.NET framework
 //
-// Copyright © AForge.NET, 2007-2011
-// contacts@aforgenet.com
+// Copyright © AForge.NET, 2007-2014
+// aforge.net@gmail.com
 //
 
 namespace AForge.Imaging.Filters
@@ -41,7 +41,6 @@ namespace AForge.Imaging.Filters
     /// 
     public class SaturationCorrection : BaseInPlacePartialFilter
     {
-        private HSLLinear baseFilter = new HSLLinear( );
         private float adjustValue;	// [-1, 1]
 
         /// <summary>
@@ -54,22 +53,7 @@ namespace AForge.Imaging.Filters
         public float AdjustValue
         {
             get { return adjustValue; }
-            set
-            {
-                adjustValue = Math.Max( -1.0f, Math.Min( 1.0f, value ) );
-
-                // create saturation filter
-                if ( adjustValue > 0 )
-                {
-                    baseFilter.InSaturation  = new Range( 0.0f, 1.0f - adjustValue );
-                    baseFilter.OutSaturation = new Range( adjustValue, 1.0f );
-                }
-                else
-                {
-                    baseFilter.InSaturation  = new Range( -adjustValue, 1.0f );
-                    baseFilter.OutSaturation = new Range( 0.0f, 1.0f + adjustValue );
-                }
-            }
+            set { adjustValue = Math.Max( -1.0f, Math.Min( 1.0f, value ) ); }
         }
 
         // format translation dictionary
@@ -101,9 +85,10 @@ namespace AForge.Imaging.Filters
         {
             AdjustValue = adjustValue;
 
-            formatTranslations[PixelFormat.Format24bppRgb]  = PixelFormat.Format24bppRgb;
-            formatTranslations[PixelFormat.Format32bppRgb]  = PixelFormat.Format32bppRgb;
-            formatTranslations[PixelFormat.Format32bppArgb] = PixelFormat.Format32bppArgb;
+            formatTranslations[PixelFormat.Format24bppRgb]   = PixelFormat.Format24bppRgb;
+            formatTranslations[PixelFormat.Format32bppRgb]   = PixelFormat.Format32bppRgb;
+            formatTranslations[PixelFormat.Format32bppArgb]  = PixelFormat.Format32bppArgb;
+            formatTranslations[PixelFormat.Format32bppPArgb] = PixelFormat.Format32bppPArgb;
         }
 
         /// <summary>
@@ -115,7 +100,56 @@ namespace AForge.Imaging.Filters
         ///
         protected override unsafe void ProcessFilter( UnmanagedImage image, Rectangle rect )
         {
-            baseFilter.ApplyInPlace( image, rect );
+            int pixelSize = Bitmap.GetPixelFormatSize( image.PixelFormat ) / 8;
+
+            int startX  = rect.Left;
+            int startY  = rect.Top;
+            int stopX   = startX + rect.Width;
+            int stopY   = startY + rect.Height;
+            int offset  = image.Stride - rect.Width * pixelSize;
+
+            RGB rgb = new RGB( );
+            HSL hsl = new HSL( );
+
+            float desaturationChangeFactor = 1.0f + adjustValue;
+
+            // do the job
+            byte* ptr = (byte*) image.ImageData.ToPointer( );
+
+            // allign pointer to the first pixel to process
+            ptr += ( startY * image.Stride + startX * pixelSize );
+
+            // for each row
+            for ( int y = startY; y < stopY; y++ )
+            {
+                // for each pixel
+                for ( int x = startX; x < stopX; x++, ptr += pixelSize )
+                {
+                    rgb.Red   = ptr[RGB.R];
+                    rgb.Green = ptr[RGB.G];
+                    rgb.Blue  = ptr[RGB.B];
+
+                    // convert to HSL
+                    AForge.Imaging.HSL.FromRGB( rgb, hsl );
+
+                    if ( adjustValue > 0 )
+                    {
+                        hsl.Saturation += ( 1.0f - hsl.Saturation ) * adjustValue * hsl.Saturation;
+                    }
+                    else if ( adjustValue < 0 )
+                    {
+                        hsl.Saturation *= desaturationChangeFactor;
+                    }
+
+                    // convert back to RGB
+                    AForge.Imaging.HSL.ToRGB( hsl, rgb );
+
+                    ptr[RGB.R] = rgb.Red;
+                    ptr[RGB.G] = rgb.Green;
+                    ptr[RGB.B] = rgb.Blue;
+                }
+                ptr += offset;
+            }
         }
     }
 }
