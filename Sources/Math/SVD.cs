@@ -2,8 +2,8 @@
 // AForge.NET framework
 // http://www.aforgenet.com/framework/
 //
-// Copyright © AForge.NET, 2007-2011
-// contacts@aforgenet.com
+// Copyright © AForge.NET, 2007-2014
+// aforge.net@gmail.com
 //
 
 namespace AForge.Math
@@ -267,12 +267,12 @@ namespace AForge.Math
                                 c = g * h;
                                 s = -f * h;
 
-                                for ( j = 1; j <= m; j++ )
+                                for ( j = 0; j < m; j++ )
                                 {
                                     y = a[j, nm];
                                     z = a[j, i];
                                     a[j, nm] = y * c + z * s;
-                                    a[j, i] = z * c - y * s;
+                                    a[j, i]  = z * c - y * s;
                                 }
                             }
                         }
