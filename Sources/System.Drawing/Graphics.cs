@@ -124,7 +124,7 @@ namespace System.Drawing
 
 		public void DrawLine(Pen pen, Point pt1, Point pt2)
 		{
-			var linePixels = DrawLine(_bitmap.Width, _bitmap.Height, pt1.X, pt1.Y, pt2.X, pt2.X);
+			var linePixels = DrawLine(_bitmap.Width, _bitmap.Height, pt1.X, pt1.Y, pt2.X, pt2.Y);
 			var color = pen.Color;
 
 			if (_dummyImageBuffer == null)
