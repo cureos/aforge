@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF.System.Drawing", "Syste
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phone.System.Drawing", "System.Drawing\_Phone\Phone.System.Drawing.csproj", "{63C3A1DB-BF0B-41B7-ABC4-C3FD321E8B31}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portable.Video", "Video\Portable.Video.csproj", "{2674E3DB-032C-4804-9F84-A715C490D10B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -115,6 +117,10 @@ Global
 		{63C3A1DB-BF0B-41B7-ABC4-C3FD321E8B31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63C3A1DB-BF0B-41B7-ABC4-C3FD321E8B31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63C3A1DB-BF0B-41B7-ABC4-C3FD321E8B31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2674E3DB-032C-4804-9F84-A715C490D10B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2674E3DB-032C-4804-9F84-A715C490D10B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2674E3DB-032C-4804-9F84-A715C490D10B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2674E3DB-032C-4804-9F84-A715C490D10B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

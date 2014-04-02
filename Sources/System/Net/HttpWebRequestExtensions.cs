@@ -18,21 +18,37 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Shim.NET.  If not, see <http://www.gnu.org/licenses/>.
  */
-	
-namespace System
+
+namespace System.Net
 {
-    public sealed class ApplicationException : Exception
+    public static class HttpWebRequestExtensions
     {
-        #region CONSTRUCTORS
-
-        public ApplicationException()
+        public static void SetConnectionGroupName(this HttpWebRequest request, string groupName)
         {
+#if !PORTABLE && !NETFX_CORE && !WINDOWS_PHONE
+            request.ConnectionGroupName = groupName;
+#endif
         }
 
-        public ApplicationException(string message) : base(message)
+        public static void SetProxy(this HttpWebRequest request, IWebProxy proxy)
         {
+#if !PORTABLE && !NETFX_CORE && !WINDOWS_PHONE
+            request.Proxy = proxy;
+#endif
         }
 
-        #endregion
+        public static void SetTimeout(this HttpWebRequest request, int timeout)
+        {
+#if !PORTABLE && !NETFX_CORE && !WINDOWS_PHONE
+            request.Timeout = timeout;
+#endif
+        }
+
+        public static void SetUserAgent(this HttpWebRequest request, string userAgent)
+        {
+#if !PORTABLE && !NETFX_CORE && !WINDOWS_PHONE
+            request.UserAgent = userAgent;
+#endif
+        }
     }
 }

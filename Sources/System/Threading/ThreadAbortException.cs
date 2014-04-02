@@ -18,21 +18,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Shim.NET.  If not, see <http://www.gnu.org/licenses/>.
  */
-	
-namespace System
+
+namespace System.Threading
 {
-    public sealed class ApplicationException : Exception
+    public sealed class ThreadAbortException : Exception
     {
-        #region CONSTRUCTORS
-
-        public ApplicationException()
-        {
-        }
-
-        public ApplicationException(string message) : base(message)
-        {
-        }
-
-        #endregion
+         
     }
 }

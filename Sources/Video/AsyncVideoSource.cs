@@ -347,10 +347,10 @@ namespace AForge.Video
                 imageProcessingThread = null;
 
                 // release events
-                isNewFrameAvailable.Close( );
+                isNewFrameAvailable.Dispose( );
                 isNewFrameAvailable = null;
 
-                isProcessingThreadAvailable.Close( );
+                isProcessingThreadAvailable.Dispose( );
                 isProcessingThreadAvailable = null;
             }
         }
@@ -364,7 +364,7 @@ namespace AForge.Video
 
             if ( skipFramesIfBusy )
             {
-                if ( !isProcessingThreadAvailable.WaitOne( 0, false ) )
+                if ( !isProcessingThreadAvailable.WaitOne( 0 ) )
                 {
                     // return in the case if image processing thread is still busy and
                     // we are allowed to skip frames

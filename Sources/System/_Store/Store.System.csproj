@@ -96,6 +96,9 @@
     <Compile Include="..\IO\FileShare.cs">
       <Link>IO\FileShare.cs</Link>
     </Compile>
+    <Compile Include="..\Net\HttpWebRequestExtensions.cs">
+      <Link>Net\HttpWebRequestExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\NonSerializedAttribute.cs">
       <Link>NonSerializedAttribute.cs</Link>
     </Compile>
@@ -122,6 +125,9 @@
     </Compile>
     <Compile Include="..\Threading\Thread.cs">
       <Link>Threading\Thread.cs</Link>
+    </Compile>
+    <Compile Include="..\Threading\ThreadAbortException.cs">
+      <Link>Threading\ThreadAbortException.cs</Link>
     </Compile>
     <Compile Include="..\Timers\ElapsedEventArgs.cs">
       <Link>Timers\ElapsedEventArgs.cs</Link>

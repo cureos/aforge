@@ -82,6 +82,9 @@
     <Compile Include="..\ColorCaches\Octree\OctreeColorCache.cs">
       <Link>ColorCaches\Octree\OctreeColorCache.cs</Link>
     </Compile>
+    <Compile Include="..\CopyPixelOperation.cs">
+      <Link>CopyPixelOperation.cs</Link>
+    </Compile>
     <Compile Include="..\Ditherers\IColorDitherer.cs">
       <Link>Ditherers\IColorDitherer.cs</Link>
     </Compile>

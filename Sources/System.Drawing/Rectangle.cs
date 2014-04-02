@@ -109,7 +109,33 @@ namespace System.Drawing
             }
         }
 
-		#endregion
+        public Point Location
+        {
+            get
+            {
+                return new Point(_x, _y);
+            }
+            set
+            {
+                _x = value.X;
+                _y = value.Y;
+            }
+        }
+
+        public Size Size
+        {
+            get
+            {
+                return new Size(_width, _height);
+            }
+            set
+            {
+                _width = value.Width;
+                _height = value.Height;
+            }
+        }
+
+        #endregion
 
 		#region METHODS
 

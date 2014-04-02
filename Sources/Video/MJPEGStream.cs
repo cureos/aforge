@@ -408,9 +408,9 @@ namespace AForge.Video
 			thread = null;
 
 			// release events
-			stopEvent.Close( );
+			stopEvent.Dispose( );
 			stopEvent = null;
-			reloadEvent.Close( );
+			reloadEvent.Dispose( );
 			reloadEvent = null;
 		}
 
@@ -423,9 +423,9 @@ namespace AForge.Video
             byte[] jpegMagic = new byte[] { 0xFF, 0xD8, 0xFF };
             int jpegMagicLength = 3;
 
-            ASCIIEncoding encoding = new ASCIIEncoding( );
+            UTF8Encoding encoding = new UTF8Encoding( );
 
-            while ( !stopEvent.WaitOne( 0, false ) )
+            while ( !stopEvent.WaitOne( 0 ) )
 			{
 				// reset reload event
 				reloadEvent.Reset( );
@@ -458,32 +458,32 @@ namespace AForge.Video
                     // set user agent
                     if ( userAgent != null )
                     {
-                        request.UserAgent = userAgent;
+                        request.SetUserAgent(userAgent);
                     }
 
                     // set proxy
                     if ( proxy != null )
                     {
-                        request.Proxy = proxy;
+                        request.SetProxy(proxy);
                     }
 
                     // set timeout value for the request
-                    request.Timeout = requestTimeout;
+                    request.SetTimeout(requestTimeout);
                     // set login and password
 					if ( ( login != null ) && ( password != null ) && ( login != string.Empty ) )
                         request.Credentials = new NetworkCredential( login, password );
 					// set connection group name
-					if ( useSeparateConnectionGroup )
-                        request.ConnectionGroupName = GetHashCode( ).ToString( );
+				    if (useSeparateConnectionGroup)
+				        request.SetConnectionGroupName(GetHashCode().ToString());
                     // force basic authentication through extra headers if required
                     if ( forceBasicAuthentication )
                     {
                         string authInfo = string.Format( "{0}:{1}", login, password );
-                        authInfo = Convert.ToBase64String( Encoding.Default.GetBytes( authInfo ) );
+                        authInfo = Convert.ToBase64String( Encoding.UTF8.GetBytes( authInfo ) );
                         request.Headers["Authorization"] = "Basic " + authInfo;
                     }
 					// get response
-                    response = request.GetResponse( );
+                    response = request.EndGetResponse( request.BeginGetResponse(null, null));
 
 					// check content type
                     string contentType = response.ContentType;
@@ -531,7 +531,7 @@ namespace AForge.Video
                     stream.ReadTimeout = requestTimeout;
 
 					// loop
-					while ( ( !stopEvent.WaitOne( 0, false ) ) && ( !reloadEvent.WaitOne( 0, false ) ) )
+					while ( ( !stopEvent.WaitOne( 0 ) ) && ( !reloadEvent.WaitOne( 0 ) ) )
 					{
 						// check total read
 						if ( total > bufSize - readSize )
@@ -612,7 +612,7 @@ namespace AForge.Video
 								framesReceived ++;
 
 								// image at stop
-								if ( ( NewFrame != null ) && ( !stopEvent.WaitOne( 0, false ) ) )
+								if ( ( NewFrame != null ) && ( !stopEvent.WaitOne( 0 ) ) )
 								{
 									Bitmap bitmap = (Bitmap) Bitmap.FromStream ( new MemoryStream( buffer, start, stop - start ) );
 									// notify client
@@ -679,19 +679,19 @@ namespace AForge.Video
 					// close response stream
 					if ( stream != null )
 					{
-						stream.Close( );
+						stream.Dispose( );
 						stream = null;
 					}
 					// close response
 					if ( response != null )
 					{
-                        response.Close( );
+                        response.Dispose( );
                         response = null;
 					}
 				}
 
 				// need to stop ?
-				if ( stopEvent.WaitOne( 0, false ) )
+				if ( stopEvent.WaitOne( 0 ) )
 					break;
 			}
 

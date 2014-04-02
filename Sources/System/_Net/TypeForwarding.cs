@@ -25,6 +25,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
@@ -73,6 +74,9 @@ using Timer = System.Timers.Timer;
 [assembly: TypeForwardedTo(typeof(FileShare))]
 [assembly: TypeForwardedTo(typeof(FileStream))]
 
+// System.Net
+[assembly: TypeForwardedTo(typeof(IWebProxy))]
+
 // System.Runtime.InteropServices
 [assembly: TypeForwardedTo(typeof(GCHandle))]
 [assembly: TypeForwardedTo(typeof(GCHandleType))]
@@ -91,6 +95,7 @@ using Timer = System.Timers.Timer;
 
 // System.Threading
 [assembly: TypeForwardedTo(typeof(Thread))]
+[assembly: TypeForwardedTo(typeof(ThreadAbortException))]
 [assembly: TypeForwardedTo(typeof(ThreadStart))]
 
 // System.Threading.Tasks

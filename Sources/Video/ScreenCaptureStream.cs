@@ -310,7 +310,7 @@ namespace AForge.Video
             thread = null;
 
             // release events
-            stopEvent.Close( );
+            stopEvent.Dispose( );
             stopEvent = null;
         }
 
@@ -330,7 +330,7 @@ namespace AForge.Video
             DateTime start;
             TimeSpan span;
 
-            while ( !stopEvent.WaitOne( 0, false ) )
+            while ( !stopEvent.WaitOne( 0 ) )
             {
                 // set dowbload start time
                 start = DateTime.Now;
@@ -359,7 +359,7 @@ namespace AForge.Video
                         // miliseconds to sleep
                         int msec = frameInterval - (int) span.TotalMilliseconds;
 
-                        if ( ( msec > 0 ) && ( stopEvent.WaitOne( msec, false ) ) )
+                        if ( ( msec > 0 ) && ( stopEvent.WaitOne( msec ) ) )
                             break;
                     }
                 }
@@ -379,7 +379,7 @@ namespace AForge.Video
                 }
 
                 // need to stop ?
-                if ( stopEvent.WaitOne( 0, false ) )
+                if ( stopEvent.WaitOne( 0 ) )
                     break;
             }
 

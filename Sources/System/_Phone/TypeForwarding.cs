@@ -44,3 +44,5 @@ using System.Threading;
 
 // System.Threading
 [assembly: TypeForwardedTo(typeof(Thread))]
+[assembly: TypeForwardedTo(typeof(ThreadAbortException))]
+[assembly: TypeForwardedTo(typeof(ThreadStart))]

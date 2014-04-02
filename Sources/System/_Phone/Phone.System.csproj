@@ -98,6 +98,12 @@
     <Compile Include="..\IO\FileStream.cs">
       <Link>IO\FileStream.cs</Link>
     </Compile>
+    <Compile Include="..\Net\HttpWebRequestExtensions.cs">
+      <Link>Net\HttpWebRequestExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Net\IWebProxy.cs">
+      <Link>Net\IWebProxy.cs</Link>
+    </Compile>
     <Compile Include="..\NonSerializedAttribute.cs">
       <Link>NonSerializedAttribute.cs</Link>
     </Compile>

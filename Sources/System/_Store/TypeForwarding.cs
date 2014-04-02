@@ -20,6 +20,7 @@
  */
 
 using System.Collections.Concurrent;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -28,6 +29,9 @@ using System.Threading.Tasks;
 [assembly: TypeForwardedTo(typeof(ConcurrentBag<>))]
 [assembly: TypeForwardedTo(typeof(ConcurrentStack<>))]
 [assembly: TypeForwardedTo(typeof(ConcurrentDictionary<,>))]
+
+// System.Net
+[assembly: TypeForwardedTo(typeof(IWebProxy))]
 
 // System.Runtime.InteropServices
 [assembly: TypeForwardedTo(typeof(GCHandle))]

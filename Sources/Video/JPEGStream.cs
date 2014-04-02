@@ -420,7 +420,7 @@ namespace AForge.Video
 			thread = null;
 
 			// release events
-			stopEvent.Close( );
+			stopEvent.Dispose( );
 			stopEvent = null;
 		}
 
@@ -441,7 +441,7 @@ namespace AForge.Video
 			DateTime start;
 			TimeSpan span;
 
-            while ( !stopEvent.WaitOne( 0, false ) )
+            while ( !stopEvent.WaitOne( 0 ) )
 			{
 				int	read, total = 0;
 
@@ -465,32 +465,32 @@ namespace AForge.Video
                     // set proxy
                     if ( proxy != null )
                     {
-                        request.Proxy = proxy;
+                        request.SetProxy(proxy);
                     }
 
                     // set timeout value for the request
-                    request.Timeout = requestTimeout;
+                    request.SetTimeout(requestTimeout);
 					// set login and password
 					if ( ( login != null ) && ( password != null ) && ( login != string.Empty ) )
                         request.Credentials = new NetworkCredential( login, password );
 					// set connection group name
-					if ( useSeparateConnectionGroup )
-                        request.ConnectionGroupName = GetHashCode( ).ToString( );
+				    if (useSeparateConnectionGroup)
+				        request.SetConnectionGroupName(GetHashCode().ToString());
                     // force basic authentication through extra headers if required
                     if ( forceBasicAuthentication )
                     {
                         string authInfo = string.Format( "{0}:{1}", login, password );
-                        authInfo = Convert.ToBase64String( Encoding.Default.GetBytes( authInfo ) );
+                        authInfo = Convert.ToBase64String( Encoding.UTF8.GetBytes( authInfo ) );
                         request.Headers["Authorization"] = "Basic " + authInfo;
                     }
 					// get response
-                    response = request.GetResponse( );
+                    response = request.EndGetResponse(request.BeginGetResponse(null, null));
 					// get response stream
                     stream = response.GetResponseStream( );
                     stream.ReadTimeout = requestTimeout;
 
 					// loop
-					while ( !stopEvent.WaitOne( 0, false ) )
+					while ( !stopEvent.WaitOne( 0 ) )
 					{
 						// check total read
 						if ( total > bufferSize - readSize )
@@ -508,7 +508,7 @@ namespace AForge.Video
 						bytesReceived += read;
 					}
 
-					if ( !stopEvent.WaitOne( 0, false ) )
+					if ( !stopEvent.WaitOne( 0 ) )
 					{
 						// increment frames counter
 						framesReceived++;
@@ -533,7 +533,7 @@ namespace AForge.Video
 						// miliseconds to sleep
 						int msec = frameInterval - (int) span.TotalMilliseconds;
 
-                        if ( ( msec > 0 ) && ( stopEvent.WaitOne( msec, false ) ) )
+                        if ( ( msec > 0 ) && ( stopEvent.WaitOne( msec ) ) )
                             break;
 					}
 				}
@@ -562,19 +562,19 @@ namespace AForge.Video
 					// close response stream
 					if ( stream != null )
 					{
-						stream.Close( );
+						stream.Dispose( );
 						stream = null;
 					}
 					// close response
 					if ( response != null )
 					{
-                        response.Close( );
+                        response.Dispose( );
                         response = null;
 					}
 				}
 
 				// need to stop ?
-				if ( stopEvent.WaitOne( 0, false ) )
+				if ( stopEvent.WaitOne( 0 ) )
 					break;
 			}
 

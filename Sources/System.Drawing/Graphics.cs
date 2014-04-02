@@ -139,7 +139,13 @@ namespace System.Drawing
 					return true;
 				});
 		}
-			
+
+        public void CopyFromScreen(int sourceX, int sourceY, int destinationX, int destinationY, Size blockRegionSize,
+            CopyPixelOperation copyPixelOperation)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Dispose()
         {
             Dispose(true);

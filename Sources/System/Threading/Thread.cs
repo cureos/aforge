@@ -61,6 +61,11 @@ namespace System.Threading
             throw new NotImplementedException();
         }
 
+        public static void Sleep(int millisecondsTimeout)
+        {
+            new ManualResetEvent(false).WaitOne(millisecondsTimeout);
+        }
+
         #endregion
     }
 }
