@@ -25,28 +25,28 @@ namespace System.Net
     {
         public static void SetConnectionGroupName(this HttpWebRequest request, string groupName)
         {
-#if !PORTABLE && !NETFX_CORE && !WINDOWS_PHONE
+#if DOTNET
             request.ConnectionGroupName = groupName;
 #endif
         }
 
         public static void SetProxy(this HttpWebRequest request, IWebProxy proxy)
         {
-#if !PORTABLE && !NETFX_CORE && !WINDOWS_PHONE
+#if DOTNET
             request.Proxy = proxy;
 #endif
         }
 
         public static void SetTimeout(this HttpWebRequest request, int timeout)
         {
-#if !PORTABLE && !NETFX_CORE && !WINDOWS_PHONE
+#if DOTNET
             request.Timeout = timeout;
 #endif
         }
 
         public static void SetUserAgent(this HttpWebRequest request, string userAgent)
         {
-#if !PORTABLE && !NETFX_CORE && !WINDOWS_PHONE
+#if DOTNET
             request.UserAgent = userAgent;
 #endif
         }

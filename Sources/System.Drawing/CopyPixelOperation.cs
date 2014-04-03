@@ -21,7 +21,7 @@
 
 namespace System.Drawing
 {
-    public enum CopyPixelOperation
+    internal enum CopyPixelOperation
     {
         SourceCopy = 0x00CC0020
     }

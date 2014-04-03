@@ -32,7 +32,7 @@ namespace System.Drawing
 
         #region CONSTRUCTORS
 
-        public Point(int x, int y)
+        internal Point(int x, int y)
         {
             _x = x;
             _y = y;
@@ -42,12 +42,12 @@ namespace System.Drawing
 
         #region PROPERTIES
 
-        public int X
+        internal int X
         {
             get { return _x; }
         }
 
-        public int Y
+        internal int Y
         {
             get { return _y; }
         }
@@ -56,7 +56,7 @@ namespace System.Drawing
 
 		#region METHODS
 
-	    public static Point Round(PointF value)
+        internal static Point Round(PointF value)
 	    {
 		    int x, y;
 		    checked

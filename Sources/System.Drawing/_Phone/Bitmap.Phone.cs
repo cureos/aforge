@@ -31,7 +31,7 @@ namespace System.Drawing
 	{
 		#region METHODS
 
-		public static Bitmap FromStream(Stream stream)
+		internal static Bitmap FromStream(Stream stream)
 		{
             var bitmapImage = new BitmapImage();
             bitmapImage.SetSource(stream);

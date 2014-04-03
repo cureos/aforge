@@ -21,7 +21,7 @@
 
 namespace System.Drawing
 {
-    public sealed class SystemColors
+    internal sealed class SystemColors
     {
         #region FIELDS
 

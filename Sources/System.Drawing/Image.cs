@@ -27,19 +27,19 @@ namespace System.Drawing
     {
         #region PROPERTIES
 
-        public abstract PixelFormat PixelFormat { get; }
+        internal abstract PixelFormat PixelFormat { get; }
 
-        public abstract int Width { get; }
+        internal abstract int Width { get; }
 
-        public abstract int Height { get; }
+        internal abstract int Height { get; }
 
-        public abstract ColorPalette Palette { get; set; }
+        internal abstract ColorPalette Palette { get; set; }
 
         #endregion
 
         #region METHODS
 
-        public static int GetPixelFormatSize(PixelFormat pixelFormat)
+        internal static int GetPixelFormatSize(PixelFormat pixelFormat)
         {
             switch (pixelFormat)
             {

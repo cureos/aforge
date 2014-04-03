@@ -32,7 +32,7 @@ namespace System.Drawing
 
 		#region CONSTRUCTORS
 
-		public PointF(float x, float y)
+        internal PointF(float x, float y)
 		{
 			_x = x;
 			_y = y;
@@ -42,13 +42,13 @@ namespace System.Drawing
 
 		#region PROPERTIES
 
-		public float X
+        internal float X
 		{
 			get { return _x; }
 			set { _x = value; }
 		}
 
-		public float Y
+        internal float Y
 		{
 			get { return _y; }
 			set { _y = value; }

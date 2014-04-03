@@ -45,7 +45,7 @@ namespace System.Drawing
 			Empty = new Rectangle();
 		}
 
-		public Rectangle(int x, int y, int width, int height)
+        internal Rectangle(int x, int y, int width, int height)
 		{
 			_x = x;
 			_y = y;
@@ -57,51 +57,51 @@ namespace System.Drawing
 
 		#region PROPERTIES
 
-		public int X
+        internal int X
 		{
 			get { return _x; }
 			set { _x = value; }
 		}
 
-		public int Y
+        internal int Y
 		{
 			get { return _y; }
 			set { _y = value; }
 		}
 
-		public int Width
+        internal int Width
 		{
 			get { return _width; }
 			set { _width = value; }
 		}
 
-		public int Height
+        internal int Height
 		{
 			get { return _height; }
 			set { _height = value; }
 		}
 
-		public int Left
+        internal int Left
 		{
 			get { return _x; }
 		}
 
-		public int Top
+        internal int Top
 		{
 			get { return _y; }
 		}
 
-		public int Right
+        internal int Right
 		{
 			get { return _x + _width; }
 		}
 
-		public int Bottom
+        internal int Bottom
 		{
 			get { return _y + _height; }
 		}
 
-        public bool IsEmpty
+        internal bool IsEmpty
         {
             get
             {
@@ -109,7 +109,7 @@ namespace System.Drawing
             }
         }
 
-        public Point Location
+        internal Point Location
         {
             get
             {
@@ -122,7 +122,7 @@ namespace System.Drawing
             }
         }
 
-        public Size Size
+        internal Size Size
         {
             get
             {
@@ -162,27 +162,27 @@ namespace System.Drawing
 			}
 		}
 
-		public void Intersect(Rectangle rect)
+        internal void Intersect(Rectangle rect)
 		{
 			this = Intersect(this, rect);
 		}
 
-	    public bool IntersectsWith(Rectangle rect)
+        internal bool IntersectsWith(Rectangle rect)
 	    {
 	        return !(Left >= rect.Right || Right <= rect.Left || Top >= rect.Bottom || Bottom <= rect.Top);
 	    }
 
-	    public bool Contains(int x, int y)
+        internal bool Contains(int x, int y)
 		{
 			return ((x >= Left) && (x < Right) && (y >= Top) && (y < Bottom));
 		}
 
-        public bool Contains(Rectangle rect)
+        internal bool Contains(Rectangle rect)
         {
             return (rect == Intersect(this, rect));
         }
 
-		public static Rectangle Intersect(Rectangle a, Rectangle b)
+        internal static Rectangle Intersect(Rectangle a, Rectangle b)
 		{
 			if (!a.IntersectsWithInclusive(b)) return Empty;
 
@@ -190,7 +190,7 @@ namespace System.Drawing
 				Math.Min(a.Bottom, b.Bottom));
 		}
 
-		public void Inflate(int width, int height)
+        internal void Inflate(int width, int height)
 		{
 			_x -= width;
 			_y -= height;

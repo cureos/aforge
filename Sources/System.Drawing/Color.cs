@@ -60,44 +60,44 @@ namespace System.Drawing
     {
         #region FIELDS
 
-        public static readonly Color Red = new Color(0xff, 0xff, 0x00, 0x00); 
-        public static readonly Color Green = new Color(0xff, 0x00, 0x80, 0x00);
-        public static readonly Color Blue = new Color(0xff, 0x00, 0x00, 0xff); 
-        public static readonly Color Yellow = new Color(0xff, 0xff, 0xff, 0x00);
-        public static readonly Color Violet = new Color(0xff, 0xee, 0x82, 0xee); 
-        public static readonly Color Brown = new Color(0xff, 0xa5, 0x2a, 0x2a); 
-        public static readonly Color Olive = new Color(0xff, 0x80, 0x80, 0x00); 
-        public static readonly Color Cyan = new Color(0xff, 0x00, 0xff, 0xff);
-        public static readonly Color Magenta = new Color(0xff, 0xff, 0x00, 0xff);
-        public static readonly Color Gold = new Color(0xff, 0xff, 0xd7, 0x00); 
-        public static readonly Color Indigo = new Color(0xff, 0x4b, 0x00, 0x82); 
-        public static readonly Color Ivory = new Color(0xff, 0xff, 0xff, 0xf0);
-        public static readonly Color HotPink = new Color(0xff, 0xff, 0x69, 0xb4); 
-        public static readonly Color DarkRed = new Color(0xff, 0x8b, 0x00, 0x00); 
-        public static readonly Color DarkGreen = new Color(0xff, 0x00, 0x64, 0x00); 
-        public static readonly Color DarkBlue = new Color(0xff, 0x00, 0x00, 0x8b);
-        public static readonly Color DarkSeaGreen = new Color(0xff, 0x8f, 0xbc, 0x8f); 
-        public static readonly Color Gray = new Color(0xff, 0x80, 0x80, 0x80); 
-        public static readonly Color DarkKhaki = new Color(0xff, 0xbd, 0xb7, 0x6b); 
-        public static readonly Color DarkGray = new Color(0xff, 0xa9, 0xa9, 0xa9);
-        public static readonly Color LimeGreen = new Color(0xff, 0x32, 0xcd, 0x32); 
-        public static readonly Color Tomato = new Color(0xff, 0xff, 0x63, 0x47); 
-        public static readonly Color SteelBlue = new Color(0xff, 0x46, 0x82, 0xb4); 
-        public static readonly Color SkyBlue = new Color(0xff, 0x87, 0xce, 0xeb);
-        public static readonly Color Silver = new Color(0xff, 0xc0, 0xc0, 0xc0); 
-        public static readonly Color Salmon = new Color(0xff, 0xfa, 0x80, 0x72); 
-        public static readonly Color SaddleBrown = new Color(0xff, 0x8b, 0x45, 0x13); 
-        public static readonly Color RosyBrown = new Color(0xff, 0xbc, 0x8f, 0x8f);
-        public static readonly Color PowderBlue = new Color(0xff, 0xb0, 0xe0, 0xe6); 
-        public static readonly Color Plum = new Color(0xff, 0xdd, 0xa0, 0xdd); 
-        public static readonly Color PapayaWhip = new Color(0xff, 0xff, 0xef, 0xd5); 
-        public static readonly Color Orange = new Color(0xff, 0xff, 0xa5, 0x00);
-        public static readonly Color Black = new Color(0xff, 0x00, 0x00, 0x00);
-        public static readonly Color White = new Color(0xff, 0xff, 0xff, 0xff);
-        public static readonly Color DarkCyan = new Color(0xff, 0x00, 0x8b, 0x8b);
-        public static readonly Color DarkMagenta = new Color(0xff, 0x8b, 0x00, 0x8b);
-        public static readonly Color LightGray = new Color(0xff, 0xd3, 0xd3, 0xd3);
-	    public static readonly Color Transparent = new Color(0x00, 0xff, 0xff, 0xff);
+        internal static readonly Color Red = new Color(0xff, 0xff, 0x00, 0x00); 
+        internal static readonly Color Green = new Color(0xff, 0x00, 0x80, 0x00);
+        internal static readonly Color Blue = new Color(0xff, 0x00, 0x00, 0xff); 
+        internal static readonly Color Yellow = new Color(0xff, 0xff, 0xff, 0x00);
+        internal static readonly Color Violet = new Color(0xff, 0xee, 0x82, 0xee); 
+        internal static readonly Color Brown = new Color(0xff, 0xa5, 0x2a, 0x2a); 
+        internal static readonly Color Olive = new Color(0xff, 0x80, 0x80, 0x00); 
+        internal static readonly Color Cyan = new Color(0xff, 0x00, 0xff, 0xff);
+        internal static readonly Color Magenta = new Color(0xff, 0xff, 0x00, 0xff);
+        internal static readonly Color Gold = new Color(0xff, 0xff, 0xd7, 0x00); 
+        internal static readonly Color Indigo = new Color(0xff, 0x4b, 0x00, 0x82); 
+        internal static readonly Color Ivory = new Color(0xff, 0xff, 0xff, 0xf0);
+        internal static readonly Color HotPink = new Color(0xff, 0xff, 0x69, 0xb4); 
+        internal static readonly Color DarkRed = new Color(0xff, 0x8b, 0x00, 0x00); 
+        internal static readonly Color DarkGreen = new Color(0xff, 0x00, 0x64, 0x00); 
+        internal static readonly Color DarkBlue = new Color(0xff, 0x00, 0x00, 0x8b);
+        internal static readonly Color DarkSeaGreen = new Color(0xff, 0x8f, 0xbc, 0x8f); 
+        internal static readonly Color Gray = new Color(0xff, 0x80, 0x80, 0x80); 
+        internal static readonly Color DarkKhaki = new Color(0xff, 0xbd, 0xb7, 0x6b); 
+        internal static readonly Color DarkGray = new Color(0xff, 0xa9, 0xa9, 0xa9);
+        internal static readonly Color LimeGreen = new Color(0xff, 0x32, 0xcd, 0x32); 
+        internal static readonly Color Tomato = new Color(0xff, 0xff, 0x63, 0x47); 
+        internal static readonly Color SteelBlue = new Color(0xff, 0x46, 0x82, 0xb4); 
+        internal static readonly Color SkyBlue = new Color(0xff, 0x87, 0xce, 0xeb);
+        internal static readonly Color Silver = new Color(0xff, 0xc0, 0xc0, 0xc0); 
+        internal static readonly Color Salmon = new Color(0xff, 0xfa, 0x80, 0x72); 
+        internal static readonly Color SaddleBrown = new Color(0xff, 0x8b, 0x45, 0x13); 
+        internal static readonly Color RosyBrown = new Color(0xff, 0xbc, 0x8f, 0x8f);
+        internal static readonly Color PowderBlue = new Color(0xff, 0xb0, 0xe0, 0xe6); 
+        internal static readonly Color Plum = new Color(0xff, 0xdd, 0xa0, 0xdd); 
+        internal static readonly Color PapayaWhip = new Color(0xff, 0xff, 0xef, 0xd5); 
+        internal static readonly Color Orange = new Color(0xff, 0xff, 0xa5, 0x00);
+        internal static readonly Color Black = new Color(0xff, 0x00, 0x00, 0x00);
+        internal static readonly Color White = new Color(0xff, 0xff, 0xff, 0xff);
+        internal static readonly Color DarkCyan = new Color(0xff, 0x00, 0x8b, 0x8b);
+        internal static readonly Color DarkMagenta = new Color(0xff, 0x8b, 0x00, 0x8b);
+        internal static readonly Color LightGray = new Color(0xff, 0xd3, 0xd3, 0xd3);
+	    internal static readonly Color Transparent = new Color(0x00, 0xff, 0xff, 0xff);
         
         private readonly byte _a;
         private readonly byte _r;
@@ -120,22 +120,22 @@ namespace System.Drawing
 
         #region PROPERTIES
 
-        public byte A
+        internal byte A
         {
             get { return _a; }
         }
 
-        public byte R
+        internal byte R
         {
             get { return _r; }
         }
 
-        public byte G
+        internal byte G
         {
             get { return _g; }
         }
 
-        public byte B
+        internal byte B
         {
             get { return _b; }
         }
@@ -144,32 +144,32 @@ namespace System.Drawing
 
         #region METHODS
 
-        public static Color FromArgb(int a, int r, int g, int b)
+        internal static Color FromArgb(int a, int r, int g, int b)
         {
             return new Color((byte)a, (byte)r, (byte)g, (byte)b);
         }
 
-        public static Color FromArgb(int r, int g, int b)
+        internal static Color FromArgb(int r, int g, int b)
         {
             return new Color(0xff, (byte)r, (byte)g, (byte)b);
         }
 
-		public static Color FromArgb(int alpha, Color baseColor)
+        internal static Color FromArgb(int alpha, Color baseColor)
 		{
 			return FromArgb(alpha, baseColor.R, baseColor.G, baseColor.B);
 		}
 
-        public static Color FromArgb(int argb)
+        internal static Color FromArgb(int argb)
         {
             return FromArgb((argb >> 24) & 0x0ff, (argb >> 16) & 0x0ff, (argb >> 8) & 0x0ff, argb & 0x0ff);
         }
 
-        public int ToArgb()
+        internal int ToArgb()
         {
             return (int)((uint)_a << 24) + (_r << 16) + (_g << 8) + _b;
         }
 
-        public float GetBrightness()
+        internal float GetBrightness()
         {
             var minval = Math.Min(R, Math.Min(G, B));
             var maxval = Math.Max(R, Math.Max(G, B));
@@ -177,7 +177,7 @@ namespace System.Drawing
             return (float)(maxval + minval) / 510;
         }
 
-        public float GetSaturation()
+        internal float GetSaturation()
         {
             var minval = Math.Min(R, Math.Min(G, B));
             var maxval = Math.Max(R, Math.Max(G, B));
@@ -192,7 +192,7 @@ namespace System.Drawing
             return (float)(maxval - minval) / sum;
         }
 
-        public float GetHue()
+        internal float GetHue()
         {
             int r = R;
             int g = G;

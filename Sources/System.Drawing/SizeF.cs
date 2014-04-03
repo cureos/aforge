@@ -32,7 +32,7 @@ namespace System.Drawing
 
         #region CONSTRUCTORS
 
-        public SizeF(float width, float height)
+        internal SizeF(float width, float height)
         {
             _width = width;
             _height = height;
@@ -42,12 +42,12 @@ namespace System.Drawing
 
         #region PROPERTIES
 
-        public float Width
+        internal float Width
         {
             get { return _width; }
         }
 
-        public float Height
+        internal float Height
         {
             get { return _height; }
         }

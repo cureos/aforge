@@ -90,7 +90,7 @@ namespace System.Drawing
 
         #region METHODS
 
-        public static Bitmap FromStream(Stream stream)
+        internal static Bitmap FromStream(Stream stream)
         {
             var bitmapImage = new BitmapImage { StreamSource = stream };
             return bitmapImage;

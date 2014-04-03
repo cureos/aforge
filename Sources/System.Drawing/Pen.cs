@@ -21,7 +21,7 @@
 
 namespace System.Drawing
 {
-	public sealed class Pen : IDisposable
+	internal sealed class Pen : IDisposable
 	{
 		#region FIELDS
 

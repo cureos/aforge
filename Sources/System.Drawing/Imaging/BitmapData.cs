@@ -48,27 +48,27 @@ namespace System.Drawing.Imaging
 
         #region PROPERTIES
 
-        public IntPtr Scan0
+        internal IntPtr Scan0
         {
             get { return _scan0; }
         }
 
-        public int Stride
+        internal int Stride
         {
             get { return _stride; }
         }
 
-        public int Width
+        internal int Width
         {
             get { return _width; }
         }
 
-        public int Height
+        internal int Height
         {
             get { return _height; }
         }
 
-        public PixelFormat PixelFormat
+        internal PixelFormat PixelFormat
         {
             get { return _pixelFormat; }
         }

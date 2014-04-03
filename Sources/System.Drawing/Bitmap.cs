@@ -54,7 +54,7 @@ namespace System.Drawing
             Quantizer = new DistinctSelectionQuantizer();
         }
 
-        public Bitmap(int width, int height, PixelFormat pixelFormat)
+        internal Bitmap(int width, int height, PixelFormat pixelFormat)
         {
             _width = width;
             _height = height;
@@ -68,7 +68,7 @@ namespace System.Drawing
                 Palette = new ColorPalette(new Color[pixelFormat.GetColorCount()]);
         }
 
-        public Bitmap(int width, int height, int stride, PixelFormat pixelFormat, IntPtr scan0)
+        internal Bitmap(int width, int height, int stride, PixelFormat pixelFormat, IntPtr scan0)
         {
             _width = width;
             _height = height;
@@ -91,26 +91,26 @@ namespace System.Drawing
 
         #region PROPERTIES
 
-        public override PixelFormat PixelFormat
+        internal override PixelFormat PixelFormat
         {
             get { return _pixelFormat; }
         }
 
-        public override int Width
+        internal override int Width
         {
             get { return _width; }
         }
 
-        public override int Height
+        internal override int Height
         {
             get { return _height; }
         }
 
-        public override ColorPalette Palette { get; set; }
+        internal override ColorPalette Palette { get; set; }
 
-        public int HorizontalResolution { get; private set; }
+        internal int HorizontalResolution { get; private set; }
 
-        public int VerticalResolution { get; private set; }
+        internal int VerticalResolution { get; private set; }
         
         #endregion
 
@@ -155,7 +155,7 @@ namespace System.Drawing
             return (Bitmap)result;
         }
 
-        public BitmapData LockBits(Rectangle rectangle, ImageLockMode readOnly, PixelFormat pixelFormat)
+        internal BitmapData LockBits(Rectangle rectangle, ImageLockMode readOnly, PixelFormat pixelFormat)
         {
             switch (pixelFormat)
             {
@@ -173,12 +173,12 @@ namespace System.Drawing
             return new BitmapData(_width, _height, _stride, _pixelFormat, _scan0);
         }
 
-        public void UnlockBits(BitmapData sourceData)
+        internal void UnlockBits(BitmapData sourceData)
         {
             // TODO Need to do anything here?
         }
 
-        public void SetResolution(int horizontalResolution, int verticalResolution)
+        internal void SetResolution(int horizontalResolution, int verticalResolution)
         {
             HorizontalResolution = horizontalResolution;
             VerticalResolution = verticalResolution;

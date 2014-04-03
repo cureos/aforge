@@ -33,7 +33,7 @@ using ImagePixelEnumerator.Quantizers.DistinctCompetition;
 
 namespace System.Drawing
 {
-    public sealed class Graphics : IDisposable
+    internal sealed class Graphics : IDisposable
     {
         #region FIELDS
 

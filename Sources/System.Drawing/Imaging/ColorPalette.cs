@@ -21,7 +21,7 @@
 
 namespace System.Drawing.Imaging
 {
-    public class ColorPalette
+    internal class ColorPalette
     {
         #region FIELDS
 
