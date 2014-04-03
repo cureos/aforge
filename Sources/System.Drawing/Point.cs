@@ -32,7 +32,7 @@ namespace System.Drawing
 
         #region CONSTRUCTORS
 
-        internal Point(int x, int y)
+        public Point(int x, int y)
         {
             _x = x;
             _y = y;
@@ -42,12 +42,12 @@ namespace System.Drawing
 
         #region PROPERTIES
 
-        internal int X
+        public int X
         {
             get { return _x; }
         }
 
-        internal int Y
+        public int Y
         {
             get { return _y; }
         }

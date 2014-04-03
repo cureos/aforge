@@ -35,7 +35,7 @@ namespace System.Drawing.Imaging
 
         #region CONSTRUCTORS
 
-        internal BitmapData(int width, int height, int stride, PixelFormat pixelFormat, IntPtr scan0)
+        public BitmapData(int width, int height, int stride, PixelFormat pixelFormat, IntPtr scan0)
         {
             _scan0 = scan0;
             _stride = stride;
@@ -48,27 +48,27 @@ namespace System.Drawing.Imaging
 
         #region PROPERTIES
 
-        internal IntPtr Scan0
+        public IntPtr Scan0
         {
             get { return _scan0; }
         }
 
-        internal int Stride
+        public int Stride
         {
             get { return _stride; }
         }
 
-        internal int Width
+        public int Width
         {
             get { return _width; }
         }
 
-        internal int Height
+        public int Height
         {
             get { return _height; }
         }
 
-        internal PixelFormat PixelFormat
+        public PixelFormat PixelFormat
         {
             get { return _pixelFormat; }
         }

@@ -221,7 +221,7 @@ namespace System.Drawing
             return hue;
         }
 
-        public bool Equals(Color other)
+        internal bool Equals(Color other)
         {
             return  _a == other._a && _r == other._r && _g == other._g && _b == other._b;
         }

@@ -29,7 +29,7 @@ namespace System.Drawing
 	{
 		#region FIELDS
 
-		public static readonly Rectangle Empty;
+		internal static readonly Rectangle Empty;
 
 		private int _x;
 		private int _y;
@@ -45,7 +45,7 @@ namespace System.Drawing
 			Empty = new Rectangle();
 		}
 
-        internal Rectangle(int x, int y, int width, int height)
+        public Rectangle(int x, int y, int width, int height)
 		{
 			_x = x;
 			_y = y;
@@ -57,28 +57,28 @@ namespace System.Drawing
 
 		#region PROPERTIES
 
-        internal int X
+        public int X
 		{
 			get { return _x; }
-			set { _x = value; }
+			internal set { _x = value; }
 		}
 
-        internal int Y
+        public int Y
 		{
 			get { return _y; }
-			set { _y = value; }
+			internal set { _y = value; }
 		}
 
-        internal int Width
+        public int Width
 		{
 			get { return _width; }
-			set { _width = value; }
+			internal set { _width = value; }
 		}
 
-        internal int Height
+        public int Height
 		{
 			get { return _height; }
-			set { _height = value; }
+			internal set { _height = value; }
 		}
 
         internal int Left
