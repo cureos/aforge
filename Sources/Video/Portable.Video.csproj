@@ -62,9 +62,9 @@
       <Project>{d4354d92-07cf-4f27-bd68-69347cf5aa3f}</Project>
       <Name>Portable.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\System.Drawing\Portable.System.Drawing.csproj">
+    <ProjectReference Include="..\System.Drawing\Portable.Shim.Drawing.csproj">
       <Project>{995cfa14-7f81-457d-beb4-52fb5712a3bb}</Project>
-      <Name>Portable.System.Drawing</Name>
+      <Name>Portable.Shim.Drawing</Name>
     </ProjectReference>
     <ProjectReference Include="..\System\Portable.System.csproj">
       <Project>{a60b1e41-53ab-4777-8b2c-4f2d91dd864f}</Project>
