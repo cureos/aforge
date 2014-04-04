@@ -66,9 +66,9 @@
       <Project>{995cfa14-7f81-457d-beb4-52fb5712a3bb}</Project>
       <Name>Portable.Shim.Drawing</Name>
     </ProjectReference>
-    <ProjectReference Include="..\System\Portable.System.csproj">
+    <ProjectReference Include="..\System\Portable.Shim.csproj">
       <Project>{a60b1e41-53ab-4777-8b2c-4f2d91dd864f}</Project>
-      <Name>Portable.System</Name>
+      <Name>Portable.Shim</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

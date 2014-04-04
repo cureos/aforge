@@ -48,9 +48,9 @@
       <Project>{d99e9bd6-3db6-445b-bf5a-fd9830bfb4fa}</Project>
       <Name>Portable.Math</Name>
     </ProjectReference>
-    <ProjectReference Include="..\System\Portable.System.csproj">
+    <ProjectReference Include="..\System\Portable.Shim.csproj">
       <Project>{a60b1e41-53ab-4777-8b2c-4f2d91dd864f}</Project>
-      <Name>Portable.System</Name>
+      <Name>Portable.Shim</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
