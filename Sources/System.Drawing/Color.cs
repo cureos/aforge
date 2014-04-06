@@ -120,22 +120,22 @@ namespace System.Drawing
 
         #region PROPERTIES
 
-        internal byte A
+        public byte A
         {
             get { return _a; }
         }
 
-        internal byte R
+        public byte R
         {
             get { return _r; }
         }
 
-        internal byte G
+        public byte G
         {
             get { return _g; }
         }
 
-        internal byte B
+        public byte B
         {
             get { return _b; }
         }
@@ -144,7 +144,7 @@ namespace System.Drawing
 
         #region METHODS
 
-        internal static Color FromArgb(int a, int r, int g, int b)
+        public static Color FromArgb(int a, int r, int g, int b)
         {
             return new Color((byte)a, (byte)r, (byte)g, (byte)b);
         }

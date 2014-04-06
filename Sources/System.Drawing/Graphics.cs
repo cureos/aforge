@@ -67,12 +67,12 @@ namespace System.Drawing
 
         #region METHODS
 
-        public static Graphics FromImage(Bitmap bitmap)
+        internal static Graphics FromImage(Bitmap bitmap)
         {
             return new Graphics(bitmap);
         }
 
-        public void DrawImage(Bitmap source, int x, int y, int width, int height)
+        internal void DrawImage(Bitmap source, int x, int y, int width, int height)
         {
             var targetFormat = _bitmap.PixelFormat;
             List<Color> palette = null;
@@ -103,7 +103,7 @@ namespace System.Drawing
             });
         }
 
-		public void DrawEllipse(Pen pen, int x, int y, int width, int height)
+		internal void DrawEllipse(Pen pen, int x, int y, int width, int height)
 		{
 			var ellipsePixels = DrawEllipseCentered(_bitmap.Width, _bitmap.Height, x + width / 2, y + height / 2, width / 2,
 				height / 2);
@@ -122,7 +122,7 @@ namespace System.Drawing
 				});
 		}
 
-		public void DrawLine(Pen pen, Point pt1, Point pt2)
+		internal void DrawLine(Pen pen, Point pt1, Point pt2)
 		{
 			var linePixels = DrawLine(_bitmap.Width, _bitmap.Height, pt1.X, pt1.Y, pt2.X, pt2.Y);
 			var color = pen.Color;
@@ -140,7 +140,7 @@ namespace System.Drawing
 				});
 		}
 
-        public void CopyFromScreen(int sourceX, int sourceY, int destinationX, int destinationY, Size blockRegionSize,
+        internal void CopyFromScreen(int sourceX, int sourceY, int destinationX, int destinationY, Size blockRegionSize,
             CopyPixelOperation copyPixelOperation)
         {
             throw new NotImplementedException();
