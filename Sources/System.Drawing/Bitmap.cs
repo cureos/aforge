@@ -91,17 +91,17 @@ namespace System.Drawing
 
         #region PROPERTIES
 
-        internal override PixelFormat PixelFormat
+        public override PixelFormat PixelFormat
         {
             get { return _pixelFormat; }
         }
 
-        internal override int Width
+        public override int Width
         {
             get { return _width; }
         }
 
-        internal override int Height
+        public override int Height
         {
             get { return _height; }
         }

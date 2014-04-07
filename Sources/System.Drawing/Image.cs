@@ -27,11 +27,11 @@ namespace System.Drawing
     {
         #region PROPERTIES
 
-        internal abstract PixelFormat PixelFormat { get; }
+        public abstract PixelFormat PixelFormat { get; }
 
-        internal abstract int Width { get; }
+        public abstract int Width { get; }
 
-        internal abstract int Height { get; }
+        public abstract int Height { get; }
 
         internal abstract ColorPalette Palette { get; set; }
 
