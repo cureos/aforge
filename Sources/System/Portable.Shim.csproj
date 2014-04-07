@@ -54,6 +54,7 @@
     <Compile Include="Converter.cs" />
     <Compile Include="Data\DataColumn.cs" />
     <Compile Include="Data\DataColumnCollection.cs" />
+    <Compile Include="Data\DataColumnExtensions.cs" />
     <Compile Include="Data\DataRow.cs" />
     <Compile Include="Data\DataRowCollection.cs" />
     <Compile Include="Data\DataTable.cs" />

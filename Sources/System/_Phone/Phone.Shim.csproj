@@ -77,6 +77,9 @@
     <Compile Include="..\Data\DataColumnCollection.cs">
       <Link>Data\DataColumnCollection.cs</Link>
     </Compile>
+    <Compile Include="..\Data\DataColumnExtensions.cs">
+      <Link>Data\DataColumnExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\Data\DataRow.cs">
       <Link>Data\DataRow.cs</Link>
     </Compile>

@@ -53,6 +53,7 @@ using Timer = System.Timers.Timer;
 // System.ComponentModel
 [assembly: TypeForwardedTo(typeof(BrowsableAttribute))]
 [assembly: TypeForwardedTo(typeof(CategoryAttribute))]
+[assembly: TypeForwardedTo(typeof(DescriptionAttribute))]
 [assembly: TypeForwardedTo(typeof(DisplayNameAttribute))]
 [assembly: TypeForwardedTo(typeof(ISynchronizeInvoke))]
 

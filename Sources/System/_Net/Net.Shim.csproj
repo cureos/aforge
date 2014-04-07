@@ -45,6 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Data\DataColumnExtensions.cs">
+      <Link>Data\DataColumnExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\Net\HttpWebRequestExtensions.cs">
       <Link>Net\HttpWebRequestExtensions.cs</Link>
     </Compile>

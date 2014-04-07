@@ -19,33 +19,21 @@
  *  along with Shim.NET.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace System.ComponentModel
+namespace System.Data
 {
-    [AttributeUsageAttribute(AttributeTargets.All)]
-    public sealed class DescriptionAttribute : Attribute
+    public static class DataColumnExtensions
     {
-        #region FIELDS
-
-        private readonly string _description;
-        
-        #endregion
-
-        #region CONSTRUCTORS
-
-        public DescriptionAttribute(string description)
+        /// <summary>
+        /// Set max length of the data column.
+        /// </summary>
+        /// <param name="column">Data column.</param>
+        /// <param name="value">Maximum length.</param>
+        /// <remarks>This extension method is only relevant in .NET, where the full ADO.NET framework is available.</remarks>
+        public static void SetMaxLength(this DataColumn column, int value)
         {
-            _description = description;
+#if DOTNET
+            column.MaxLength = value;
+#endif
         }
-
-        #endregion
-
-        #region PROPERTIES
-
-        public string Description
-        {
-            get { return _description; }
-        }
-
-        #endregion
     }
 }
