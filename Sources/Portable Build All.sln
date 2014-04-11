@@ -54,6 +54,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{58098B
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AForge.Math.Tests", "..\Unit Tests\AForge.Math.Tests\AForge.Math.Tests.csproj", "{8CE6D122-788B-47C3-8749-15FD584C26F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -136,6 +138,10 @@ Global
 		{72B5500A-624D-4590-8C85-4318EFB57D76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72B5500A-624D-4590-8C85-4318EFB57D76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72B5500A-624D-4590-8C85-4318EFB57D76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CE6D122-788B-47C3-8749-15FD584C26F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CE6D122-788B-47C3-8749-15FD584C26F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CE6D122-788B-47C3-8749-15FD584C26F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CE6D122-788B-47C3-8749-15FD584C26F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -150,5 +156,6 @@ Global
 		{D1963A68-8848-4B70-9141-3EBB4CB6AF34} = {BAC0CE2F-5E18-46BA-A2E5-5C26B3EE5D82}
 		{63C3A1DB-BF0B-41B7-ABC4-C3FD321E8B31} = {BAC0CE2F-5E18-46BA-A2E5-5C26B3EE5D82}
 		{72B5500A-624D-4590-8C85-4318EFB57D76} = {2138CACD-C4F2-4AB7-A0A4-F7FF269270D9}
+		{8CE6D122-788B-47C3-8749-15FD584C26F6} = {2138CACD-C4F2-4AB7-A0A4-F7FF269270D9}
 	EndGlobalSection
 EndGlobal

@@ -5,14 +5,14 @@ namespace AForge.Tests
     [TestFixture]
     public class PointTest
     {
-        [TestCase( 0f, 0f, 0f )]
-        [TestCase( 0f, 1f, 1f )]
-        [TestCase( 0f, 10f, 10f )]
-        [TestCase( 10f, 0f, 10f )]
-        [TestCase( 3f, 4f, 5f )]
-        [TestCase( -3f, 4f, 5f )]
-        [TestCase( 3f, -4f, 5f )]
-        [TestCase( -3f, -4f, 5f )]
+        [TestCase( 0, 0, 0 )]
+        [TestCase( 0, 1, 1 )]
+        [TestCase( 0, 10, 10 )]
+        [TestCase( 10, 0, 10 )]
+        [TestCase( 3, 4, 5 )]
+        [TestCase( -3, 4, 5 )]
+        [TestCase( 3, -4, 5 )]
+        [TestCase( -3, -4, 5 )]
         [TestCase( 0.3f, 0.4f, 0.5f )]
         public void EuclideanNormTest( float x, float y, float expectedNorm )
         {
@@ -21,9 +21,9 @@ namespace AForge.Tests
             Assert.AreEqual( point.EuclideanNorm( ), expectedNorm );
         }
 
-        [TestCase( 0f, 0f, 0, 0 )]
-        [TestCase( 1f, 2f, 1, 2 )]
-        [TestCase( -1f, -2f, -1, -2 )]
+        [TestCase( 0, 0, 0, 0 )]
+        [TestCase( 1, 2, 1, 2 )]
+        [TestCase( -1, -2, -1, -2 )]
         [TestCase( 1.4f, 3.3f, 1, 3 )]
         [TestCase( 1.6f, 3.7f, 2, 4 )]
         [TestCase( -1.6f, -3.3f, -2, -3 )]

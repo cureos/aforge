@@ -5,14 +5,14 @@ namespace AForge.Tests
     [TestFixture]
     public class RangeTest
     {
-        [TestCase( 0f, 1f, 1f, 2f, true )]
-        [TestCase( 0f, 1f, 2f, 3f, false )]
-        [TestCase( 0f, 10f, 2f, 4f, true )]
-        [TestCase( 0f, 10f, 5f, 15f, true )]
-        [TestCase( 0f, 10f, -5f, 5f, true )]
-        [TestCase( 2f, 4f, 0f, 10f, true )]
-        [TestCase( 5f, 15f, 0f, 10f, true )]
-        [TestCase( -5f, 5f, 0f, 10f, true )]
+        [TestCase( 0, 1, 1, 2, true )]
+        [TestCase( 0, 1, 2, 3, false )]
+        [TestCase( 0, 10, 2, 4, true )]
+        [TestCase( 0, 10, 5, 15, true )]
+        [TestCase( 0, 10, -5, 5, true )]
+        [TestCase( 2, 4, 0, 10, true )]
+        [TestCase( 5, 15, 0, 10, true )]
+        [TestCase( -5, 5, 0, 10, true )]
         public void IsOverlappingTest( float min1, float max1, float min2, float max2, bool expectedResult )
         {
             Range range1 = new Range( min1, max1 );
