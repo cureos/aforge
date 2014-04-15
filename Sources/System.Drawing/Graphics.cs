@@ -37,12 +37,13 @@ namespace System.Drawing
     {
         #region FIELDS
 
-        private static readonly IColorQuantizer Quantizer;
+        private static readonly int ParallelTaskCount;
 
         private bool _disposed = false;
 
         private Image _bitmap;
 	    private ImageBuffer _dummyImageBuffer;
+        private readonly IColorQuantizer _quantizer;
 
         #endregion
 
@@ -50,12 +51,13 @@ namespace System.Drawing
 
         static Graphics()
         {
-            Quantizer = new DistinctSelectionQuantizer();
+            ParallelTaskCount = Environment.ProcessorCount;
         }
 
         private Graphics(Image bitmap)
         {
             _bitmap = bitmap;
+            _quantizer = new DistinctSelectionQuantizer();
         }
 
         ~Graphics()
@@ -80,27 +82,28 @@ namespace System.Drawing
             // indexed formats require 2 passes - one more pass to determines colors for palette beforehand
             if (targetFormat.IsIndexed())
             {
-                Quantizer.Prepare(source);
+                _quantizer.Prepare(source);
 
                 // Pass: scan
-                ImageBuffer.ProcessPerPixel(source, null, 4, (passIndex, pixel) =>
+                ImageBuffer.ProcessPerPixel(source, null, ParallelTaskCount, (passIndex, pixel) =>
                 {
                     var color = pixel.GetColor();
-                    Quantizer.AddColor(color, pixel.X, pixel.Y);
+                    _quantizer.AddColor(color, pixel.X, pixel.Y);
                     return true;
                 });
 
                 // determines palette
-                palette = Quantizer.GetPalette(targetFormat.GetColorCount());
+                palette = _quantizer.GetPalette(targetFormat.GetColorCount());
             }
 
             // Pass: apply
-            ImageBuffer.TransformImagePerPixel(source, palette, ref _bitmap, null, 4, (passIndex, sourcePixel, targetPixel) =>
-            {
-                var color = sourcePixel.GetColor();
-                targetPixel.SetColor(color, Quantizer);
-                return true;
-            });
+            ImageBuffer.TransformImagePerPixel(source, palette, ref _bitmap, null, ParallelTaskCount,
+                (passIndex, sourcePixel, targetPixel) =>
+                {
+                    var color = sourcePixel.GetColor();
+                    targetPixel.SetColor(color, _quantizer);
+                    return true;
+                });
         }
 
 		internal void DrawEllipse(Pen pen, int x, int y, int width, int height)
@@ -113,13 +116,13 @@ namespace System.Drawing
 				_dummyImageBuffer = new ImageBuffer(new Bitmap(_bitmap.Width, _bitmap.Height, _bitmap.PixelFormat),
 					ImageLockMode.ReadOnly);
 
-			_dummyImageBuffer.TransformPerPixel(null, ref _bitmap,
-				ellipsePixels.Select(idx => new Point(idx % _bitmap.Width, idx / _bitmap.Width)).ToList(), 4,
-				(passIndex, sourcePixel, targetPixel) =>
-				{
-					targetPixel.SetColor(color, Quantizer);
-					return true;
-				});
+		    _dummyImageBuffer.TransformPerPixel(null, ref _bitmap,
+		        ellipsePixels.Select(idx => new Point(idx % _bitmap.Width, idx / _bitmap.Width)).ToList(), ParallelTaskCount,
+		        (passIndex, sourcePixel, targetPixel) =>
+		        {
+		            targetPixel.SetColor(color, _quantizer);
+		            return true;
+		        });
 		}
 
 		internal void DrawLine(Pen pen, Point pt1, Point pt2)
@@ -131,13 +134,13 @@ namespace System.Drawing
 				_dummyImageBuffer = new ImageBuffer(new Bitmap(_bitmap.Width, _bitmap.Height, _bitmap.PixelFormat),
 					ImageLockMode.ReadOnly);
 
-			_dummyImageBuffer.TransformPerPixel(null, ref _bitmap,
-				linePixels.Select(idx => new Point(idx % _bitmap.Width, idx / _bitmap.Width)).ToList(), 4,
-				(passIndex, sourcePixel, targetPixel) =>
-				{
-					targetPixel.SetColor(color, Quantizer);
-					return true;
-				});
+		    _dummyImageBuffer.TransformPerPixel(null, ref _bitmap,
+		        linePixels.Select(idx => new Point(idx % _bitmap.Width, idx / _bitmap.Width)).ToList(), ParallelTaskCount,
+		        (passIndex, sourcePixel, targetPixel) =>
+		        {
+		            targetPixel.SetColor(color, _quantizer);
+		            return true;
+		        });
 		}
 
         internal void CopyFromScreen(int sourceX, int sourceY, int destinationX, int destinationY, Size blockRegionSize,

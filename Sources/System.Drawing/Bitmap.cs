@@ -20,6 +20,7 @@
  */
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using ImagePixelEnumerator.Extensions;
@@ -33,7 +34,7 @@ namespace System.Drawing
     {
         #region FIELDS
 
-        private static readonly IColorQuantizer Quantizer;
+        private static readonly int ParallelTaskCount;
 
         private bool _disposed = false;
 
@@ -45,13 +46,16 @@ namespace System.Drawing
         private readonly IntPtr _scan0;
         private readonly bool _freeScan0;
 
+        private ColorPalette _palette;
+        private IColorQuantizer _quantizer;
+
         #endregion
 
         #region CONSTRUCTORS
 
         static Bitmap()
         {
-            Quantizer = new DistinctSelectionQuantizer();
+            ParallelTaskCount = Environment.ProcessorCount;
         }
 
         internal Bitmap(int width, int height, PixelFormat pixelFormat)
@@ -64,8 +68,7 @@ namespace System.Drawing
             _scan0 = Marshal.AllocHGlobal(_stride * height);
             _freeScan0 = true;
 
-            if (pixelFormat.IsIndexed())
-                Palette = new ColorPalette(new Color[pixelFormat.GetColorCount()]);
+            ResetPalette();
         }
 
         internal Bitmap(int width, int height, int stride, PixelFormat pixelFormat, IntPtr scan0)
@@ -78,8 +81,7 @@ namespace System.Drawing
             _scan0 = scan0;
             _freeScan0 = false;
 
-            if (pixelFormat.IsIndexed())
-                Palette = new ColorPalette(new Color[pixelFormat.GetColorCount()]);
+            ResetPalette();
         }
 
         ~Bitmap()
@@ -106,7 +108,15 @@ namespace System.Drawing
             get { return _height; }
         }
 
-        internal override ColorPalette Palette { get; set; }
+        internal override ColorPalette Palette
+        {
+            get
+            {
+                UpdateQuantizer();
+                return _palette;
+            }
+            set { SetPalette(value); }
+        }
 
         internal int HorizontalResolution { get; private set; }
 
@@ -129,30 +139,53 @@ namespace System.Drawing
             // indexed formats require 2 passes - one more pass to determines colors for palette beforehand
             if (pixelFormat.IsIndexed())
             {
-                Quantizer.Prepare(this);
+                var quantizer = new DistinctSelectionQuantizer();
+                quantizer.Prepare(this);
 
                 // Pass: scan
-                ImageBuffer.ProcessPerPixel(this, null, 4, (passIndex, pixel) =>
+                ImageBuffer.ProcessPerPixel(this, null, ParallelTaskCount, (passIndex, pixel) =>
                 {
                     var color = pixel.GetColor();
-                    Quantizer.AddColor(color, pixel.X, pixel.Y);
+                    quantizer.AddColor(color, pixel.X, pixel.Y);
                     return true;
                 });
 
                 // determines palette
-                palette = Quantizer.GetPalette(pixelFormat.GetColorCount());
+                palette = quantizer.GetPalette(pixelFormat.GetColorCount());
             }
 
             // Pass: apply
             Image result;
-            ImageBuffer.TransformImagePerPixel(this, pixelFormat, palette, out result, null, 4, (passIndex, sourcePixel, targetPixel) =>
-            {
-                var color = sourcePixel.GetColor();
-                targetPixel.SetColor(color, Quantizer);
-                return true;
-            });
+            ImageBuffer.TransformImagePerPixel(this, pixelFormat, palette, out result, null, ParallelTaskCount,
+                (passIndex, sourcePixel, targetPixel) =>
+                {
+                    var color = sourcePixel.GetColor();
+                    targetPixel.SetColor(color, _quantizer);
+                    return true;
+                });
 
             return (Bitmap)result;
+        }
+
+        internal Color GetPixel(int x, int y)
+        {
+            var color = new Color();
+            ImageBuffer.ProcessPerPixel(this, new[] { new Point(x, y) }, 1, (passIndex, pixel) =>
+            {
+                color = pixel.GetColor();
+                return true;
+            });
+            return color;
+        }
+
+        internal void SetPixel(int x, int y, Color color)
+        {
+            UpdateQuantizer();
+            ImageBuffer.ProcessPerPixel(this, new[] { new Point(x, y) }, 1, (passIndex, pixel) =>
+            {
+                pixel.SetColor(color, _quantizer);
+                return true;
+            });
         }
 
         internal BitmapData LockBits(Rectangle rectangle, ImageLockMode readOnly, PixelFormat pixelFormat)
@@ -197,6 +230,39 @@ namespace System.Drawing
             if (_freeScan0) Marshal.FreeHGlobal(_scan0);
 
             _disposed = true;
+        }
+
+        private void UpdateQuantizer()
+        {
+            if (!_pixelFormat.IsIndexed() || _quantizer != null) return;
+
+            _quantizer = new DistinctSelectionQuantizer();
+            _quantizer.Prepare(this);
+
+            // Pass: scan
+            ImageBuffer.ProcessPerPixel(this, null, ParallelTaskCount, (passIndex, pixel) =>
+            {
+                var color = pixel.GetColor();
+                _quantizer.AddColor(color, pixel.X, pixel.Y);
+                return true;
+            });
+        }
+
+        private void SetPalette(ColorPalette palette)
+        {
+            if (!_pixelFormat.IsIndexed())
+                throw new InvalidOperationException("Not possible to set palette for non-indexed pixel formats.");
+            if (palette == null || palette.Entries == null) throw new ArgumentNullException("palette");
+
+            _palette = palette;
+            _quantizer = null;
+            UpdateQuantizer();
+        }
+
+        private void ResetPalette()
+        {
+            _palette = _pixelFormat.IsIndexed() ? new ColorPalette(new Color[_pixelFormat.GetColorCount()]) : null;
+            _quantizer = null;
         }
 
         private static int GetStride(int width, PixelFormat format)

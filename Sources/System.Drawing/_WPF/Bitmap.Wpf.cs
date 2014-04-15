@@ -57,7 +57,7 @@ namespace System.Drawing
 
         #region OPERATORS
 
-        public static implicit operator BitmapSource(Bitmap bitmap)
+        public static explicit operator BitmapSource(Bitmap bitmap)
 		{
             var width = bitmap.Width;
             var height = bitmap.Height;
@@ -71,7 +71,7 @@ namespace System.Drawing
             return bitmapSource;
 		}
 
-	    public static implicit operator Bitmap(BitmapSource bitmapSource)
+	    public static explicit operator Bitmap(BitmapSource bitmapSource)
 		{
             var width = bitmapSource.PixelWidth;
 			var height = bitmapSource.PixelHeight;
@@ -93,7 +93,7 @@ namespace System.Drawing
         internal static Bitmap FromStream(Stream stream)
         {
             var bitmapImage = new BitmapImage { StreamSource = stream };
-            return bitmapImage;
+            return (Bitmap)bitmapImage;
         }
 
         private static System.Windows.Media.PixelFormat GetBitmapSourcePixelFormat(System.Drawing.Imaging.PixelFormat bitmapPixelFormat)

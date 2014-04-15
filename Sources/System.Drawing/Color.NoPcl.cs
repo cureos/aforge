@@ -30,12 +30,12 @@ namespace System.Drawing
 	public partial struct Color
 	{
 
-		public static implicit operator TrueColor(Color color)
+		public static explicit operator TrueColor(Color color)
 		{
 			return TrueColor.FromArgb(color._a, color._r, color._g, color._b);
 		}
 
-		public static implicit operator Color(TrueColor trueColor)
+		public static explicit operator Color(TrueColor trueColor)
 		{
 			return FromArgb(trueColor.A, trueColor.R, trueColor.G, trueColor.B);
 		}

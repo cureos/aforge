@@ -66,7 +66,7 @@ namespace System.Drawing
 
 		#region OPERATORS
 
-	    public static implicit operator BitmapSource(Bitmap bitmap)
+	    public static explicit operator BitmapSource(Bitmap bitmap)
 	    {
 	        if (bitmap.PixelFormat != PixelFormat.Format32bppPArgb)
 	            bitmap = bitmap.Clone(PixelFormat.Format32bppPArgb);
@@ -80,7 +80,7 @@ namespace System.Drawing
 	        return bitmapImage;
 	    }
 
-	    public static implicit operator Bitmap(WriteableBitmap writeableBitmap)
+	    public static explicit operator Bitmap(WriteableBitmap writeableBitmap)
 		{
 			var width = writeableBitmap.PixelWidth;
 			var height = writeableBitmap.PixelHeight;

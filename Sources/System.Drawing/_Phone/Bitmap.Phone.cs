@@ -40,14 +40,14 @@ namespace System.Drawing
             var writeableBitmap = new WriteableBitmap(bitmapImage);
             bitmapImage.UriSource = null;
 
-            return writeableBitmap;
+            return (Bitmap)writeableBitmap;
 		}
 
 		#endregion
 
 		#region OPERATORS
 
-		public static implicit operator WriteableBitmap(Bitmap bitmap)
+		public static explicit operator WriteableBitmap(Bitmap bitmap)
 		{
 			if (bitmap.PixelFormat != PixelFormat.Format32bppPArgb)
 				bitmap = bitmap.Clone(PixelFormat.Format32bppPArgb);
@@ -61,7 +61,7 @@ namespace System.Drawing
 			return writeableBitmap;
 		}
 
-		public static implicit operator Bitmap(WriteableBitmap writeableBitmap)
+		public static explicit operator Bitmap(WriteableBitmap writeableBitmap)
 		{
 			var width = writeableBitmap.PixelWidth;
 			var height = writeableBitmap.PixelHeight;
