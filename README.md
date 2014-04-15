@@ -19,7 +19,7 @@ The portable class libraries reference the portable *Shim* and/or *Shim.Drawing*
 *Shim* and *Shim.Drawing* assemblies should be referenced, to ensure that the target specific version of each type is used.
  
 `WriteableBitmap`:s provide input and output to the imaging functionality in the WPF, Windows Store and Windows Store libraries. The target specific *Shim.Drawing* assembly 
-incorporates implicit cast operators between `WriteableBitmap` and `System.Drawing.Bitmap`.
+incorporates explicit cast operators between `WriteableBitmap` and `System.Drawing.Bitmap`.
 
 All image processing is performed on the mock `System.Drawing.Bitmap` class, `WriteableBitmap` objects should only be used as initial input to and final output from the
 image processing.
@@ -36,8 +36,8 @@ Example usage
 
 This same approach can be applied in WPF, Windows Store and Windows Phone applications.
 
-    // Use implicit operator to convert from WriteableBitmap to Bitmap
-    Bitmap bitmap = aWriteableBitmapObject;
+    // Use explicit operator to convert from WriteableBitmap to Bitmap
+    Bitmap bitmap = (Bitmap)aWriteableBitmapObject;
 
     // Apply one or more filter functions on the Bitmap object
     var filter1 = AForge.Imaging.Filters.Grayscale.CommonAlgorithms.RMY;
@@ -45,8 +45,8 @@ This same approach can be applied in WPF, Windows Store and Windows Phone applic
     var filter2 = new AForge.Imaging.Filters.CannyEdgeDetector();
     filter2.ApplyInPlace(bitmap);
 
-    // Use implicit operator to convert back from Bitmap to WriteableBitmap
-    aWriteableBitmapObject = bitmap;
+    // Use explicit operator to convert back from Bitmap to WriteableBitmap
+    aWriteableBitmapObject = (WriteableBitmap)bitmap;
 
 Building the libraries
 ----------------------
