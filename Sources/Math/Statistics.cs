@@ -47,7 +47,7 @@ namespace AForge.Math
         public static double Mean( int[] values )
         {
             int     hits;
-            long    total = 0;
+            double  total = 0;
             double  mean = 0;
 
             // for all values
@@ -55,7 +55,7 @@ namespace AForge.Math
             {
                 hits = values[i];
                 // accumulate mean
-                mean += i * hits;
+                mean += (double) i * hits;
                 // accumalate total
                 total += hits;
             }
