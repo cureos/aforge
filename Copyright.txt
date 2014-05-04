@@ -11,10 +11,3 @@ processing, neural networks, genetic algorithms, machine learning,
 robotics, etc.
 
 Please, contact project owners for any offers, remarks, ideas, etc.
-
-
-Shim.System and Shim.System.Drawing (class libraries required to build
-and run PCL version of AForge.NET Framework):
-
-Copyright © Cureos AB, 2013-2014
-info at cureos dot com

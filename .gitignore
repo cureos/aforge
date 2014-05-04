@@ -24,3 +24,20 @@
 /Sources/Vision/AForge.Vision.xml
 
 /Unit Tests/Build/
+src/Assembly-CSharp-Editor-firstpass-vs.csproj
+src/Assembly-CSharp-Editor-firstpass.csproj
+src/Assembly-CSharp-Editor-vs.csproj
+src/Assembly-CSharp-Editor.csproj
+src/Assembly-CSharp-firstpass-vs.csproj
+src/Assembly-CSharp-firstpass.csproj
+src/Assembly-CSharp-vs.csproj
+src/Assembly-CSharp.csproj
+src/Assembly-UnityScript-vs.unityproj
+src/Assembly-UnityScript.sln
+src/Assembly-UnityScript.unityproj
+src/Assembly-UnityScript.userprefs
+src/src-csharp.sln
+src/src.sln
+src/Library/
+src/Temp/
+src/src.userprefs
