@@ -280,7 +280,7 @@ namespace Accord.Math.Decompositions
         }
 
 
-        private /*unsafe*/ void LLt(decimal[][] value, bool inPlace = false)
+        private void LLt(decimal[][] value, bool inPlace = false)
         {
             dimension = value.Length;
             L = inPlace ? value : value.MemberwiseClone();
@@ -312,7 +312,7 @@ namespace Accord.Math.Decompositions
         }
 
 
-        private /*unsafe*/ void LDLt(decimal[][] value, bool inPlace)
+        private void LDLt(decimal[][] value, bool inPlace)
         {
             dimension = value.Length;
             L = inPlace ? value : value.MemberwiseClone();

@@ -830,7 +830,7 @@ namespace Accord.Math
         ///   Gets the trace of a matrix product.
         /// </summary>
         /// 
-        public static /*unsafe*/ double Trace(double[,] matrixA, double[,] matrixB)
+        public static double Trace(double[,] matrixA, double[,] matrixB)
         {
             if (matrixA.Length != matrixB.Length)
                 throw new DimensionMismatchException("matrixB", "Matrices must have the same length.");

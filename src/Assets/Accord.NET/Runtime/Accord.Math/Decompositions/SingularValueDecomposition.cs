@@ -340,7 +340,7 @@ namespace Accord.Math.Decompositions
         ///   <paramref name="value"/> will be destroyed in the process, resulting in less
         ///   memory comsumption.</param>
         /// 
-        public /*unsafe*/ SingularValueDecomposition(Double[,] value,
+        public SingularValueDecomposition(Double[,] value,
 		   bool computeLeftSingularVectors, bool computeRightSingularVectors, bool autoTranspose, bool inPlace)
         {
             if (value == null)

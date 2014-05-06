@@ -256,7 +256,7 @@ namespace Accord.Math.Decompositions
         }
 
 
-        private /*unsafe*/ void LLt(decimal[,] value)
+        private void LLt(decimal[,] value)
         {
             n = value.GetLength(0);
             L = new decimal[n, n];
@@ -300,7 +300,7 @@ namespace Accord.Math.Decompositions
 	        }
         }
 
-        private /*unsafe*/ void LDLt(decimal[,] value)
+        private void LDLt(decimal[,] value)
         {
             n = value.GetLength(0);
             L = new decimal[n, n];

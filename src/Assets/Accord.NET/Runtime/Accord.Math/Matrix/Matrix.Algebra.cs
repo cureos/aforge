@@ -349,7 +349,7 @@ namespace Accord.Math
         /// <param name="result">The matrix <c>R</c> to store the product <c>R = A*B</c>
         ///   of the given matrices <c>A</c> and <c>B</c>.</param>
         /// 
-        public static /*unsafe*/ void Multiply(this double[,] a, double[,] b, double[,] result)
+        public static void Multiply(this double[,] a, double[,] b, double[,] result)
         {
             // TODO: enable argument checking
             // if (a.GetLength(1) != b.GetLength(0))
@@ -427,7 +427,7 @@ namespace Accord.Math
         /// <param name="result">The matrix <c>R</c> to store the product <c>R = A*B</c>
         ///   of the given matrices <c>A</c> and <c>B</c>.</param>
         /// 
-        public static /*unsafe*/ void Multiply(this double[,] a, double[,] b, double[][] result)
+        public static void Multiply(this double[,] a, double[,] b, double[][] result)
         {
             // TODO: enable argument checking
             // if (a.GetLength(1) != b.GetLength(0))
@@ -544,7 +544,7 @@ namespace Accord.Math
         /// <param name="result">The matrix <c>R</c> to store the product <c>R = A*B</c>
         ///   of the given matrices <c>A</c> and <c>B</c>.</param>
         /// 
-        public static /*unsafe*/ void Multiply(this float[,] a, float[,] b, float[,] result)
+        public static void Multiply(this float[,] a, float[,] b, float[,] result)
         {
             int acols = a.GetLength(1);
             int arows = a.GetLength(0);
@@ -607,7 +607,7 @@ namespace Accord.Math
         /// <param name="result">The matrix <c>R</c> to store the product <c>R = A*B'</c>
         ///   of the given matrices <c>A</c> and <c>B</c>.</param>
         ///    
-        public static /*unsafe*/ void MultiplyByTranspose(this double[,] a, double[,] b, double[,] result)
+        public static void MultiplyByTranspose(this double[,] a, double[,] b, double[,] result)
         {
             int n = a.GetLength(1);
             int m = a.GetLength(0);
@@ -635,7 +635,7 @@ namespace Accord.Math
         /// <param name="result">The matrix <c>R</c> to store the product <c>R = A*B'</c>
         ///   of the given matrices <c>A</c> and <c>B</c>.</param>
         ///    
-        public static /*unsafe*/ void MultiplyByTranspose(this float[,] a, float[,] b, float[,] result)
+        public static void MultiplyByTranspose(this float[,] a, float[,] b, float[,] result)
         {
             int n = a.GetLength(1);
             int m = a.GetLength(0);
@@ -700,7 +700,7 @@ namespace Accord.Math
         /// <param name="result">The matrix <c>R</c> to store the product <c>R = A'*B</c>
         ///   of the given matrices <c>A</c> and <c>B</c>.</param>
         /// 
-        public static /*unsafe*/ void TransposeAndMultiply(this double[,] a, double[,] b, double[,] result)
+        public static void TransposeAndMultiply(this double[,] a, double[,] b, double[,] result)
         {
             if (a == null) throw new ArgumentNullException("a");
             if (b == null) throw new ArgumentNullException("b");
@@ -739,7 +739,7 @@ namespace Accord.Math
         /// <param name="result">The matrix <c>R</c> to store the product <c>R = A'*B</c>
         ///   of the given matrices <c>A</c> and <c>B</c>.</param>
         /// 
-        public static /*unsafe*/ void TransposeAndMultiply(this double[][] a, double[][] b, double[][] result)
+        public static void TransposeAndMultiply(this double[][] a, double[][] b, double[][] result)
         {
             if (a == null) throw new ArgumentNullException("a");
             if (b == null) throw new ArgumentNullException("b");
@@ -794,7 +794,7 @@ namespace Accord.Math
         /// <param name="result">The vector <c>r</c> to store the product <c>r = A'*b</c>
         ///   of the given matrix <c>A</c> and vector <c>b</c>.</param>
         /// 
-        public static /*unsafe*/ void TransposeAndMultiply(this double[,] a, double[] b, double[] result)
+        public static void TransposeAndMultiply(this double[,] a, double[] b, double[] result)
         {
             if (a == null) throw new ArgumentNullException("a");
             if (b == null) throw new ArgumentNullException("b");
@@ -835,7 +835,7 @@ namespace Accord.Math
         /// <param name="result">The matrix <c>R</c> to store the product <c>R = A*B</c>
         ///   of the given matrices <c>A</c> and <c>B</c>.</param>
         /// 
-        public static /*unsafe*/ void TransposeAndMultiplyByDiagonal(this double[,] a, double[] b, double[,] result)
+        public static void TransposeAndMultiplyByDiagonal(this double[,] a, double[] b, double[,] result)
         {
             if (a.GetLength(0) != b.Length)
                 throw new ArgumentException("Matrix dimensions must match.");
@@ -870,7 +870,7 @@ namespace Accord.Math
         /// <param name="result">The matrix <c>R</c> to store the product <c>R = A*B</c>
         ///   of the given matrices <c>A</c> and <c>B</c>.</param>
         /// 
-        public static /*unsafe*/ void MultiplyByDiagonal(this double[,] a, double[] b, double[,] result)
+        public static void MultiplyByDiagonal(this double[,] a, double[] b, double[,] result)
         {
             if (a.GetLength(1) != b.Length)
                 throw new ArgumentException("Matrix dimensions must match.");
@@ -905,7 +905,7 @@ namespace Accord.Math
         /// <param name="result">The matrix <c>R</c> to store the product <c>R = A*B</c>
         ///   of the given matrices <c>A</c> and <c>B</c>.</param>
         /// 
-        public static /*unsafe*/ void MultiplyByDiagonal(this float[,] a, float[] b, float[,] result)
+        public static void MultiplyByDiagonal(this float[,] a, float[] b, float[,] result)
         {
             if (a.GetLength(1) != b.Length)
                 throw new ArgumentException("Matrix dimensions must match.");
@@ -940,7 +940,7 @@ namespace Accord.Math
         /// <param name="result">The matrix <c>R</c> to store the product <c>R = A*B</c>
         ///   of the given matrices <c>A</c> and <c>B</c>.</param>
         /// 
-        public static /*unsafe*/ void DivideByDiagonal(this double[,] a, double[] b, double[,] result)
+        public static void DivideByDiagonal(this double[,] a, double[] b, double[,] result)
         {
             if (a.GetLength(1) != b.Length)
                 throw new ArgumentException("Matrix dimensions must match.");
@@ -1162,7 +1162,7 @@ namespace Accord.Math
         /// <param name="result">The matrix <c>R</c> to store the product <c>R=A*x</c>
         ///   of the multiplication of the given matrix <c>A</c> and scalar <c>x</c>.</param>
         /// 
-        public /*unsafe*/ static void Multiply(this double[,] matrix, double x, double[,] result)
+        public static void Multiply(this double[,] matrix, double x, double[,] result)
         {
             int rows = matrix.GetLength(0);
             int cols = matrix.GetLength(1);
@@ -1181,7 +1181,7 @@ namespace Accord.Math
         /// <param name="result">The matrix <c>R</c> to store the product <c>R=A*x</c>
         ///   of the multiplication of the given matrix <c>A</c> and scalar <c>x</c>.</param>
         /// 
-        public /*unsafe*/ static void Multiply(this float[,] matrix, float x, float[,] result)
+        public static void Multiply(this float[,] matrix, float x, float[,] result)
         {
             int rows = matrix.GetLength(0);
             int cols = matrix.GetLength(1);
@@ -1760,7 +1760,7 @@ namespace Accord.Math
         /// 
         /// <returns>The Kronecker product of the two matrices.</returns>
         /// 
-        public /*unsafe*/ static double[,] KroneckerProduct(this double[,] a, double[,] b)
+        public static double[,] KroneckerProduct(this double[,] a, double[,] b)
         {
             if (a == null) throw new ArgumentNullException("a");
             if (b == null) throw new ArgumentNullException("b");
@@ -1851,7 +1851,7 @@ namespace Accord.Math
         /// 
         /// <returns>The sum of the given matrices.</returns>
         /// 
-        public /*unsafe*/ static double[,] Add(this double[,] a, double[,] b)
+        public static double[,] Add(this double[,] a, double[,] b)
         {
             if (a.GetLength(0) != b.GetLength(0) || a.GetLength(1) != b.GetLength(1))
                 throw new ArgumentException("Matrix dimensions must match", "b");
@@ -2167,7 +2167,7 @@ namespace Accord.Math
         /// 
         /// <returns>The subtraction of the given matrices.</returns>
         /// 
-        public /*unsafe*/ static double[,] Subtract(this double[,] a, double[,] b, bool inPlace = false)
+        public static double[,] Subtract(this double[,] a, double[,] b, bool inPlace = false)
         {
             if (a == null) throw new ArgumentNullException("a");
             if (b == null) throw new ArgumentNullException("b");

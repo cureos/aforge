@@ -169,7 +169,7 @@ namespace Accord.Math
 		///   array.
 		/// </summary>
 		/// 
-		public /*unsafe*/ static double[,] ToDouble(this float[,] matrix)
+		public static double[,] ToDouble(this float[,] matrix)
 		{
 			int rows = matrix.GetLength(0);
 			int cols = matrix.GetLength(1);
@@ -189,7 +189,7 @@ namespace Accord.Math
 		///   array.
 		/// </summary>
 		/// 
-		public /*unsafe*/ static double[,] ToDouble(this int[,] matrix)
+		public static double[,] ToDouble(this int[,] matrix)
 		{
 			int rows = matrix.GetLength(0);
 			int cols = matrix.GetLength(1);
@@ -209,7 +209,7 @@ namespace Accord.Math
 		///   array.
 		/// </summary>
 		/// 
-		public /*unsafe*/ static float[,] ToSingle(this double[,] matrix)
+		public static float[,] ToSingle(this double[,] matrix)
 		{
 			int rows = matrix.GetLength(0);
 			int cols = matrix.GetLength(1);
@@ -228,7 +228,7 @@ namespace Accord.Math
 		/// </summary>
 		/// <param name="matrix">The matrix to be truncated.</param>
 		/// 
-		public /*unsafe*/ static int[,] ToInt32(this double[,] matrix)
+		public static int[,] ToInt32(this double[,] matrix)
 		{
 			int rows = matrix.GetLength(0);
 			int cols = matrix.GetLength(1);

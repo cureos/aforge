@@ -530,7 +530,7 @@ namespace Accord.Math
         ///   Fast inverse floating-point square root.
         /// </summary>
         /// 
-		public /*unsafe*/ static float InvSqrt(float x)
+		public static float InvSqrt(float x)
         {
 			float xhalf = 0.5f * x;
 			int i = BitConverter.ToInt32(BitConverter.GetBytes(x), 0);

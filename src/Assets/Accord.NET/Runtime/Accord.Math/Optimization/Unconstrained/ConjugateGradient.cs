@@ -511,7 +511,7 @@ namespace Accord.Math.Optimization
         double fy;
         double ftest1;
 
-        private /*unsafe*/ ConjugateGradientCode cvsmod(ref double f, double[] s, ref double stp, ref int info,
+        private ConjugateGradientCode cvsmod(ref double f, double[] s, ref double stp, ref int info,
              ref int nfev, double[] wa, ref double dginit, ref double dgout)
         {
             int n = NumberOfVariables;
