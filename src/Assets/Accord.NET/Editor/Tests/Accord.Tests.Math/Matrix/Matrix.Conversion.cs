@@ -26,11 +26,11 @@ namespace Accord.Tests.Math
     using NUnit.Framework;
     using System.Collections.Generic;
     using System;
+	using System.Data;
     using AForge;
 
     public partial class MatrixTest
     {
-				/*
         [Test]
         public void ToTableTest()
         {
@@ -77,6 +77,5 @@ namespace Accord.Tests.Math
 
             Assert.IsTrue(expected.IsEqual(actual));
         }
-*/
     }
 }

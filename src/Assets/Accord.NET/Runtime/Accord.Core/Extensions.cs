@@ -23,6 +23,7 @@
 namespace Accord
 {
     using System;
+	using System.Data;
     using System.Reflection;
     using System.ComponentModel;
 
@@ -32,6 +33,31 @@ namespace Accord
     /// 
     public static class Extensions
     {
+		/// <summary>
+		///   Creates and adds multiple <see cref="System.Data.DataColumn"/>
+		///   objects with the given names at once.
+		/// </summary>
+		/// 
+		/// <param name="collection">The <see cref="System.Data.DataColumnCollection"/>
+		/// to add in.</param>
+		/// <param name="columnNames">The names of the <see cref="System.Data.DataColumn"/> to
+		/// be created and added.</param>
+		/// 
+		/// <example>
+		///   <code>
+		///   DataTable table = new DataTable();
+		///   
+		///   // Add multiple columns at once:
+		///   table.Columns.Add("columnName1", "columnName2");
+		///   </code>
+		/// </example>
+		/// 
+		public static void Add(this DataColumnCollection collection, params string[] columnNames)
+		{
+			for (int i = 0; i < columnNames.Length; i++)
+				collection.Add(columnNames[i]);
+		}
+
         /// <summary>
         ///   Gets a the value of a <see cref="DescriptionAttribute"/>
         ///   associated with a particular enumeration value.

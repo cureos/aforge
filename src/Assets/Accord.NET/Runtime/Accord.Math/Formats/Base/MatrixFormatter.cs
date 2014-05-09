@@ -296,7 +296,6 @@ namespace Accord.Math
                 string row = strRow.Trim();
 				
                 // Remove starting and trailing tokens
-				UnityEngine.Debug.Log (provider.ParseRowStart + "\n" + strRow);
                 if (row.StartsWith(provider.ParseRowStart, StringComparison.Ordinal))
                     row = row.Remove(0, provider.ParseRowStart.Length);
                 if (row.EndsWith(provider.ParseRowEnd, StringComparison.Ordinal))

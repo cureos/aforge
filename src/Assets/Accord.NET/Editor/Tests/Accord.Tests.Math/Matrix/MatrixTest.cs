@@ -26,6 +26,7 @@ namespace Accord.Tests.Math
     using NUnit.Framework;
     using System.Collections.Generic;
     using System;
+	using System.Data;
     using AForge;
     using System.Linq;
     using Accord.Math.Decompositions;
@@ -705,6 +706,99 @@ namespace Accord.Tests.Math
 			
 			Assert.IsTrue(expected.IsEqual(actual));
         }
+
+
+		[Test]
+		public void ToArrayTest()
+		{
+			DataTable table = new DataTable("myData");
+			table.Columns.Add("Double", typeof(double));
+			table.Columns.Add("Integer", typeof(int));
+			table.Columns.Add("Boolean", typeof(bool));
+
+			table.Rows.Add(4.20, 42, true);
+			table.Rows.Add(-3.14, -17, false);
+			table.Rows.Add(21.00, 0, false);
+
+			double[] expected;
+			double[] actual;
+
+			expected = new double[] { 4.20, -3.14, 21 };
+			actual = table.Columns["Double"].ToArray();
+			Assert.IsTrue(expected.IsEqual(actual));
+
+			expected = new double[] { 42, -17, 0 };
+			actual = table.Columns["Integer"].ToArray();
+			Assert.IsTrue(expected.IsEqual(actual));
+
+			expected = new double[] { 1, 0, 0 };
+			actual = table.Columns["Boolean"].ToArray();
+			Assert.IsTrue(expected.IsEqual(actual));
+		}
+
+		[Test]
+		public void ToArrayTest1()
+		{
+			DataTable table = new DataTable("myData");
+			table.Columns.Add("Double", typeof(double));
+			table.Columns.Add("Integer", typeof(int));
+			table.Columns.Add("Boolean", typeof(bool));
+
+			table.Rows.Add(4.20, 42, true);
+			table.Rows.Add(-3.14, -17, false);
+			table.Rows.Add(21.00, 0, false);
+
+			double[][] expected =
+			{
+				new double[] {  4.20,  42, 1 },
+				new double[] { -3.14, -17, 0 },
+				new double[] { 21.00,   0, 0 },
+			};
+
+			double[][] actual = table.ToArray();
+
+			Assert.IsTrue(expected.IsEqual(actual));
+
+
+			string[] expectedNames = { "Double", "Integer", "Boolean" };
+			string[] actualNames;
+
+			table.ToArray(out actualNames);
+
+			Assert.IsTrue(expectedNames.IsEqual(actualNames));
+		}
+
+		[Test]
+		public void ToMatrixTest2()
+		{
+			DataTable table = new DataTable("myData");
+			table.Columns.Add("Double", typeof(double));
+			table.Columns.Add("Integer", typeof(int));
+			table.Columns.Add("Boolean", typeof(bool));
+
+			table.Rows.Add(4.20, 42, true);
+			table.Rows.Add(-3.14, -17, false);
+			table.Rows.Add(21.00, 0, false);
+
+			double[,] expected =
+			{
+				{  4.20,  42, 1 },
+				{ -3.14, -17, 0 },
+				{ 21.00,   0, 0 },
+			};
+
+			double[,] actual = table.ToMatrix();
+
+			Assert.IsTrue(expected.IsEqual(actual));
+
+
+			string[] expectedNames = { "Double", "Integer", "Boolean" };
+			string[] actualNames;
+
+			table.ToMatrix(out actualNames);
+
+			Assert.IsTrue(expectedNames.IsEqual(actualNames));
+		}
 
         [Test]
         public void ToDoubleTest()

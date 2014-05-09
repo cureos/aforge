@@ -25,6 +25,7 @@ namespace Accord.Math
 	using System;
 	using System.Globalization;
 	using System.Linq;
+	using System.Data;
 
 	public static partial class Matrix
 	{
@@ -401,6 +402,392 @@ namespace Accord.Math
 					result[i, j] = converter(matrix[i, j]);
 
 			return result;
+		}
+		#endregion
+
+		#region DataTable Conversions
+
+		/// <summary>
+		///   Converts a DataTable to a double[,] array.
+		/// </summary>
+		/// 
+		public static double[,] ToMatrix(this DataTable table)
+		{
+			String[] names;
+			return ToMatrix(table, out names);
+		}
+
+		/// <summary>
+		///   Converts a DataTable to a double[,] array.
+		/// </summary>
+		/// 
+		public static double[,] ToMatrix(this DataTable table, out string[] columnNames)
+		{
+			return ToMatrix<double>(table, out columnNames);
+		}
+
+		/// <summary>
+		///   Converts a DataTable to a double[,] array.
+		/// </summary>
+		/// 
+		public static T[,] ToMatrix<T>(this DataTable table, out string[] columnNames)
+		{
+			T[,] m = new T[table.Rows.Count, table.Columns.Count];
+			columnNames = new string[table.Columns.Count];
+
+			for (int j = 0; j < table.Columns.Count; j++)
+			{
+				for (int i = 0; i < table.Rows.Count; i++)
+					m[i, j] = (T)System.Convert.ChangeType(table.Rows[i][j], typeof(T));
+
+				columnNames[j] = table.Columns[j].Caption;
+			}
+
+			return m;
+		}
+
+		/// <summary>
+		///   Converts a DataTable to a double[,] array.
+		/// </summary>
+		/// 
+		public static double[,] ToMatrix(this DataTable table, string[] columnNames)
+		{
+			return ToMatrix<double>(table, columnNames);
+		}
+
+		/// <summary>
+		///   Converts a DataTable to a double[,] array.
+		/// </summary>
+		/// 
+		public static T[,] ToMatrix<T>(this DataTable table, string[] columnNames)
+		{
+			T[,] m = new T[table.Rows.Count, columnNames.Length];
+
+			for (int j = 0; j < columnNames.Length; j++)
+			{
+				for (int i = 0; i < table.Rows.Count; i++)
+					m[i, j] = (T)System.Convert.ChangeType(table.Rows[i][columnNames[j]], typeof(T));
+			}
+
+			return m;
+		}
+
+		/// <summary>
+		///   Converts a DataTable to a double[,] array.
+		/// </summary>
+		/// 
+		public static DataTable ToTable(this double[,] matrix)
+		{
+			int cols = matrix.GetLength(1);
+
+			String[] columnNames = new String[cols];
+			for (int i = 0; i < columnNames.Length; i++)
+				columnNames[i] = "Column " + i;
+			return ToTable(matrix, columnNames);
+		}
+
+		/// <summary>
+		///   Converts a DataTable to a double[,] array.
+		/// </summary>
+		/// 
+		public static DataTable ToTable(this double[,] matrix, string[] columnNames)
+		{
+			DataTable table = new DataTable();
+			table.Locale = CultureInfo.CurrentCulture;
+
+			int rows = matrix.GetLength(0);
+			int cols = matrix.GetLength(1);
+
+			for (int i = 0; i < cols; i++)
+				table.Columns.Add(columnNames[i], typeof(double));
+
+			for (int i = 0; i < rows; i++)
+				table.Rows.Add(matrix.GetRow(i).Convert(x => (object)x));
+
+			return table;
+		}
+
+		/// <summary>
+		///   Converts a DataTable to a double[,] array.
+		/// </summary>
+		/// 
+		public static DataTable ToTable(this double[][] matrix)
+		{
+			int cols = matrix.GetLength(1);
+
+			String[] columnNames = new String[cols];
+			for (int i = 0; i < columnNames.Length; i++)
+				columnNames[i] = "Column " + i;
+			return ToTable(matrix, columnNames);
+		}
+
+		/// <summary>
+		///   Converts a DataTable to a double[,] array.
+		/// </summary>
+		/// 
+		public static DataTable ToTable(this double[][] matrix, string[] columnNames)
+		{
+			DataTable table = new DataTable();
+			table.Locale = CultureInfo.CurrentCulture;
+
+			for (int i = 0; i < columnNames.Length; i++)
+				table.Columns.Add(columnNames[i], typeof(double));
+
+			for (int i = 0; i < matrix.Length; i++)
+				table.Rows.Add(matrix[i].Convert(x => (object)x));
+
+			return table;
+		}
+
+		/// <summary>
+		///   Converts an array of values into a <see cref="DataTable"/>,
+		///   attempting to guess column types by inspecting the data.
+		/// </summary>
+		/// 
+		/// <param name="values">The values to be converted.</param>
+		/// 
+		/// <returns>A <see cref="DataTable"/> containing the given values.</returns>
+		/// 
+		/// <example>
+		/// <code>
+		/// // Specify some data in a table format
+		/// //
+		/// object[,] data = 
+		/// {
+		///     { "Id", "IsSmoker", "Age" },
+		///     {   0,       1,        10  },
+		///     {   1,       1,        15  },
+		///     {   2,       0,        40  },
+		///     {   3,       1,        20  },
+		///     {   4,       0,        70  },
+		///     {   5,       0,        55  },
+		/// };
+		/// 
+		/// // Create a new table with the data
+		/// DataTable dataTable = data.ToTable();
+		/// </code>
+		/// </example>
+		/// 
+		public static DataTable ToTable(this object[,] values)
+		{
+			DataTable table = new DataTable();
+			table.Locale = System.Globalization.CultureInfo.InvariantCulture;
+
+			object[] headers = values.GetRow(0);
+
+			if (headers.All(x => x is String))
+			{
+				// Get first data row to set types
+				object[] first = values.GetRow(1);
+
+				// Assume first row is header row
+				for (int i = 0; i < first.Length; i++)
+					table.Columns.Add(headers[i] as String, first[i].GetType());
+
+				// Parse all the other rows
+				int rows = values.GetLength(0);
+				for (int i = 1; i < rows; i++)
+				{
+					var row = values.GetRow(i);
+					table.Rows.Add(row);
+				}
+			}
+			else
+			{
+				// Get first data row to set types
+				object[] first = values.GetRow(1);
+
+				for (int i = 0; i < first.Length; i++)
+					table.Columns.Add("Column " + i, first[i].GetType());
+
+				int rows = values.GetLength(0);
+				for (int i = 0; i < rows; i++)
+				{
+					var row = values.GetRow(i);
+					table.Rows.Add(row);
+				}
+			}
+
+			return table;
+		}
+
+
+
+		/// <summary>
+		///   Converts a DataTable to a double[][] array.
+		/// </summary>
+		/// 
+		public static double[][] ToArray(this DataTable table)
+		{
+			String[] names;
+			return ToArray(table, out names);
+		}
+
+		/// <summary>
+		///   Converts a DataTable to a double[][] array.
+		/// </summary>
+		/// 
+		public static double[][] ToArray(this DataTable table, IFormatProvider provider)
+		{
+			String[] names;
+			return ToArray(table, out names, provider);
+		}
+
+		/// <summary>
+		///   Converts a DataTable to a double[][] array.
+		/// </summary>
+		/// 
+		public static double[][] ToArray(this DataTable table, out string[] columnNames)
+		{
+			return ToArray<double>(table, out columnNames);
+		}
+
+		/// <summary>
+		///   Converts a DataTable to a double[][] array.
+		/// </summary>
+		/// 
+		public static double[][] ToArray(this DataTable table, out string[] columnNames, IFormatProvider provider)
+		{
+			return ToArray<double>(table, out columnNames, provider);
+		}
+
+		/// <summary>
+		///   Converts a DataTable to a double[][] array.
+		/// </summary>
+		/// 
+		public static T[][] ToArray<T>(this DataTable table, out string[] columnNames)
+		{
+			T[][] m = new T[table.Rows.Count][];
+			columnNames = new string[table.Columns.Count];
+
+			for (int i = 0; i < table.Rows.Count; i++)
+				m[i] = new T[table.Columns.Count];
+
+			for (int j = 0; j < table.Columns.Count; j++)
+			{
+				for (int i = 0; i < table.Rows.Count; i++)
+					m[i][j] = (T)System.Convert.ChangeType(table.Rows[i][j], typeof(T));
+
+				columnNames[j] = table.Columns[j].Caption;
+			}
+
+			return m;
+		}
+
+		/// <summary>
+		///   Converts a DataTable to a double[][] array.
+		/// </summary>
+		/// 
+		public static T[][] ToArray<T>(this DataTable table, out string[] columnNames, IFormatProvider provider)
+		{
+			T[][] m = new T[table.Rows.Count][];
+			columnNames = new string[table.Columns.Count];
+
+			for (int i = 0; i < table.Rows.Count; i++)
+				m[i] = new T[table.Columns.Count];
+
+			for (int j = 0; j < table.Columns.Count; j++)
+			{
+				for (int i = 0; i < table.Rows.Count; i++)
+					m[i][j] = (T)System.Convert.ChangeType(table.Rows[i][j], typeof(T), provider);
+
+				columnNames[j] = table.Columns[j].Caption;
+			}
+
+			return m;
+		}
+
+		/// <summary>
+		///   Converts a DataTable to a double[][] array.
+		/// </summary>
+		/// 
+		public static double[][] ToArray(this DataTable table, params string[] columnNames)
+		{
+			return ToArray<double>(table, columnNames);
+		}
+
+		/// <summary>
+		///   Converts a DataTable to a double[][] array.
+		/// </summary>
+		/// 
+		public static T[][] ToArray<T>(this DataTable table, params string[] columnNames)
+		{
+			T[][] m = new T[table.Rows.Count][];
+
+			for (int i = 0; i < table.Rows.Count; i++)
+				m[i] = new T[columnNames.Length];
+
+			for (int j = 0; j < columnNames.Length; j++)
+			{
+				DataColumn col = table.Columns[columnNames[j]];
+
+				for (int i = 0; i < table.Rows.Count; i++)
+					m[i][j] = (T)System.Convert.ChangeType(table.Rows[i][col], typeof(T));
+			}
+
+			return m;
+		}
+
+		/// <summary>
+		///   Converts a DataColumn to a double[] array.
+		/// </summary>
+		/// 
+		public static double[] ToArray(this DataColumn column)
+		{
+			return ToArray<double>(column);
+		}
+
+		/// <summary>
+		///   Converts a DataColumn to a double[] array.
+		/// </summary>
+		/// 
+		public static T[] ToArray<T>(this DataColumn column)
+		{
+			T[] m = new T[column.Table.Rows.Count];
+
+			for (int i = 0; i < m.Length; i++)
+				m[i] = (T)System.Convert.ChangeType(column.Table.Rows[i][column], typeof(T));
+
+			return m;
+		}
+
+		/// <summary>
+		///   Converts a DataColumn to a generic array.
+		/// </summary>
+		/// 
+		public static T[] ToArray<T>(this DataRow row, params string[] colNames)
+		{
+			T[] m = new T[colNames.Length];
+
+			for (int i = 0; i < m.Length; i++)
+				m[i] = (T)System.Convert.ChangeType(row[colNames[i]], typeof(T));
+
+			return m;
+		}
+
+		/// <summary>
+		///   Converts a DataColumn to a double[] array.
+		/// </summary>
+		/// 
+		public static double[] ToArray(this DataRow row, params string[] colNames)
+		{
+			return ToArray<double>(row, colNames);
+		}
+
+		/// <summary>
+		///   Converts a DataTable to a int[][] array.
+		/// </summary>
+		/// 
+		public static T[] ToArray<T>(this DataTable table, string columnNames)
+		{
+			T[] m = new T[table.Rows.Count];
+
+			DataColumn col = table.Columns[columnNames];
+
+			for (int i = 0; i < table.Rows.Count; i++)
+				m[i] = (T)System.Convert.ChangeType(table.Rows[i][col], typeof(T));
+
+			return m;
 		}
 		#endregion
 	}
