@@ -159,9 +159,7 @@ namespace Accord.Tests.Math
             actual = Matrix.Submatrix(value, null, null);
             Assert.IsTrue(Matrix.IsEqual(actual, value));
         }
-
-// FIXME: this test uses Statistics
-/*
+		
         [Test]
         public void SubgroupTest1()
         {
@@ -199,7 +197,7 @@ namespace Accord.Tests.Math
             }
 
         }
-*/
+		
         [Test]
         public void SubgroupTest2()
         {

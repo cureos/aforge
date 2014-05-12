@@ -224,12 +224,12 @@ namespace System.Data{
 				column.ColumnName = GetNextDefaultColumnName ();
 			}
 
-			//			if (Contains(column.ColumnName))
-			//				throw new DuplicateNameException("A DataColumn named '" + column.ColumnName + "' already belongs to this DataTable.");
+			if (Contains(column.ColumnName))
+				throw new DuplicateNameException("A DataColumn named '" + column.ColumnName + "' already belongs to this DataTable.");
 
 			if (column.Table != null)
 				throw new ArgumentException ("Column '" + column.ColumnName + "' already belongs to this or another DataTable.");
-
+			
 			column.SetTable (parentTable);
 			RegisterName (column.ColumnName, column);
 			int ordinal = base.List.Add (column);
@@ -307,6 +307,72 @@ namespace System.Data{
 				return IndexOf (dc);
 			
 			return IndexOf (columnName, false);
+		}
+
+		/// <summary>
+		/// Removes the specified DataColumn object from the collection.
+		/// </summary>
+		/// <param name="column">The DataColumn to remove.</param>
+		public void Remove (DataColumn column)
+		{
+			if (column == null)
+				throw new ArgumentNullException ("column", "'column' argument cannot be null.");
+
+			if (!Contains (column.ColumnName))
+				throw new ArgumentException ("Cannot remove a column that doesn't belong to this table.");
+			/*
+			string dependency = GetColumnDependency (column);
+			if (dependency != String.Empty)
+				throw new ArgumentException ("Cannot remove this column, because it is part of " + dependency);
+			*/
+			CollectionChangeEventArgs e = new CollectionChangeEventArgs (CollectionChangeAction.Remove, column);
+
+			int ordinal = column.Ordinal;
+			UnregisterName (column.ColumnName);
+			base.List.Remove (column);
+
+			// Reset column info
+			column.ResetColumnInfo ();
+
+			//Update the ordinals
+			for( int i = ordinal ; i < this.Count ; i ++ )
+				this[i].Ordinal = i;
+			
+			if (parentTable != null)
+				parentTable.OnRemoveColumn (column);
+
+			if (column.AutoIncrement)
+				autoIncrement.Remove (column);
+
+			column.PropertyChanged -= new PropertyChangedEventHandler (ColumnPropertyChanged);
+
+			OnCollectionChanged (e);
+		}
+
+		/// <summary>
+		/// Removes the DataColumn object with the specified name from the collection.
+		/// </summary>
+		/// <param name="name">The name of the column to remove.</param>
+		public void Remove (string name)
+		{
+			DataColumn column = this [name];
+
+			if (column == null)
+				throw new ArgumentException ("Column '" + name + "' does not belong to table " + ( parentTable == null ? "" : parentTable.TableName ) + ".");
+			Remove (column);
+		}
+
+		/// <summary>
+		/// Removes the column at the specified index from the collection.
+		/// </summary>
+		/// <param name="index">The index of the column to remove.</param>
+		public void RemoveAt (int index)
+		{
+			if (Count <= index)
+				throw new IndexOutOfRangeException ("Cannot find column " + index + ".");
+
+			DataColumn column = this [index];
+			Remove (column);
 		}
 		#endregion
 

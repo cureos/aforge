@@ -365,6 +365,42 @@ namespace System.Data{
 				*/
 			}
 		}
+
+		/// <summary>
+		/// Deletes the DataRow.
+		/// </summary>
+		public void Delete ()
+		{
+			_table.DeletingDataRow (this, DataRowAction.Delete);
+			switch (RowState) {
+			case DataRowState.Added:
+				CheckChildRows (DataRowAction.Delete);
+				Detach ();
+				break;
+			case DataRowState.Deleted:
+			case DataRowState.Detached:
+				break;
+			default:
+				// check what to do with child rows
+				CheckChildRows (DataRowAction.Delete);
+				break;
+			}
+			
+			if (Current >= 0) {
+				int current = Current;
+				DataRowState oldState = RowState;
+				if (Current != Original)
+					_table.RecordCache.DisposeRecord (Current);
+				
+				Current = -1;
+				/*
+				foreach (Index index in Table.Indexes)
+					index.Update (this, current, DataRowVersion.Current, oldState);
+				*/
+			}
+			
+			_table.DeletedDataRow (this, DataRowAction.Delete);
+		}
 		
 		/// <summary>
 		/// Ends the edit occurring on the row.

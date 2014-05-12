@@ -1107,7 +1107,7 @@ namespace Accord.Math
         /// <returns>The product <c>A*x</c> of the multiplication of the
         ///   given matrix <c>A</c> and scalar <c>x</c>.</returns>
         /// 
-        public static double[,] Multiply(this double[,] matrix, double x, bool inPlace = false)
+        public static double[,] Multiply(this double[,] matrix, double x, bool inPlace)
         {
             int rows = matrix.GetLength(0);
             int cols = matrix.GetLength(1);

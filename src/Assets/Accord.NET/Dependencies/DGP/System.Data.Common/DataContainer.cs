@@ -75,11 +75,13 @@ namespace System.Data.Common
 			set {
 				int old_capacity = Capacity;
 				if (value == old_capacity)
-					return;
+										//if (null_values != null)
+						return;
 				if (null_values == null)
 					null_values = new BitArray (value);
 				else
 					null_values.Length = value;
+				
 				Resize (value);
 			}
 		}
@@ -895,7 +897,7 @@ namespace System.Data.Common
 		{
 			return _values [index];
 		}
-
+		
 		protected override void ZeroOut (int index)
 		{
 			_values [index] = null;

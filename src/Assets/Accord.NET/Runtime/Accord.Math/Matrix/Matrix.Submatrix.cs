@@ -279,7 +279,7 @@ namespace Accord.Math
         /// <param name="indexes">Array of indices.</param>
         /// <param name="transpose">True to return a transposed matrix; false otherwise.</param>
         /// 
-        public static T[][] Submatrix<T>(this T[][] source, int[] indexes, bool transpose = false)
+        public static T[][] Submatrix<T>(this T[][] source, int[] indexes, bool transpose)
         {
             if (source == null)
                 throw new ArgumentNullException("source");

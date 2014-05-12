@@ -62,6 +62,52 @@ namespace System.Data{
 		public event DataColumnChangeEventHandler ColumnChanging;
 		
 		/// <summary>
+		/// Occurs after a DataRow has been changed successfully.
+		/// </summary>
+		[DataCategory ("Data")]
+		public event DataRowChangeEventHandler RowChanged;
+
+		/// <summary>
+		/// Occurs when a DataRow is changing.
+		/// </summary>
+		[DataCategory ("Data")]
+		public event DataRowChangeEventHandler RowChanging;
+		
+		/// <summary>
+		/// Occurs after a row in the table has been deleted.
+		/// </summary>
+		[DataCategory ("Data")]
+		public event DataRowChangeEventHandler RowDeleted;
+
+		/// <summary>
+		/// Occurs before a row in the table is about to be deleted.
+		/// </summary>
+		public event DataRowChangeEventHandler RowDeleting;
+		
+		/// <summary>
+		/// Occurs after the Clear method is called on the datatable.
+		/// </summary>
+		[DataCategory ("Data")]
+		public event DataTableClearEventHandler TableCleared;
+
+		[DataCategory ("Data")]
+		public event DataTableClearEventHandler TableClearing;
+
+		public event DataTableNewRowEventHandler TableNewRow;
+	#endregion
+
+	#region public instance properties
+		/// <summary>
+		/// Gets or sets the initial starting size for this table.
+		/// </summary>
+		[DataCategory ("Data")]
+		[DefaultValue (50)]
+		public int MinimumCapacity {
+			get { return _minimumCapacity; }
+			set { _minimumCapacity = value; }
+		}
+		
+		/// <summary>
 		/// Gets or sets the namespace for the XML represenation
 		/// of the data stored in the DataTable.
 		/// </summary>
@@ -76,29 +122,6 @@ namespace System.Data{
 			}
 			set { _nameSpace = value; }
 		}
-
-		/// <summary>
-		/// Occurs after a DataRow has been changed successfully.
-		/// </summary>
-		[DataCategory ("Data")]
-		public event DataRowChangeEventHandler RowChanged;
-		
-		/// <summary>
-		/// Occurs when a DataRow is changing.
-		/// </summary>
-		[DataCategory ("Data")]
-		public event DataRowChangeEventHandler RowChanging;
-
-		/// <summary>
-		/// Occurs after the Clear method is called on the datatable.
-		/// </summary>
-		[DataCategory ("Data")]
-		public event DataTableClearEventHandler TableCleared;
-
-		[DataCategory ("Data")]
-		public event DataTableClearEventHandler TableClearing;
-
-		public event DataTableNewRowEventHandler TableNewRow;
 		#endregion
 		
 		#region public instance properties
@@ -138,7 +161,28 @@ namespace System.Data{
 		public DataSet DataSet {
 			get { return dataSet; }
 		}
-
+		/*
+		/// <summary>
+		/// Gets a customized view of the table which may
+		/// include a filtered view, or a cursor position.
+		/// </summary>
+		[Browsable (false)]
+		public DataView DefaultView {
+			get {
+				if (_defaultView == null) {
+					lock(this){
+						if (_defaultView == null){
+							if (dataSet != null)
+								_defaultView = dataSet.DefaultViewManager.CreateDataView(this);
+							else
+								_defaultView = new DataView(this);
+						}
+					}
+				}
+				return _defaultView;
+			}
+		}
+		*/
 		/// <summary>
 		/// Gets or sets the locale information used to
 		/// compare strings within the table.
@@ -203,6 +247,7 @@ namespace System.Data{
 		private bool _caseSensitive;
 		private DataColumnCollection _columnCollection;
 		private int _defaultValuesRowIndex;
+		internal bool _duringDataLoad;
 		protected internal bool fInitInProgress;
 		private CultureInfo _locale;
 		private int _minimumCapacity;
@@ -275,6 +320,192 @@ namespace System.Data{
 			_tableName = tableName;
 		}
 		#endregion
+
+		#region public instance methods
+		/// <summary>
+		/// Clones the structure of the DataTable, including
+		///  all DataTable schemas and constraints.
+		/// </summary>
+		public virtual DataTable Clone ()
+		{
+			// Use Activator so we can use non-public constructors.
+			DataTable Copy = (DataTable) Activator.CreateInstance (GetType (), true);
+			CopyProperties (Copy);
+			return Copy;
+		}
+
+		/// <summary>
+		/// Computes the given expression on the current_rows that
+		/// pass the filter criteria.
+		/// </summary>
+		public object Compute (string expression, string filter)
+		{
+			// expression is an aggregate function
+			// filter is an expression used to limit rows
+
+			DataRow [] rows = Select (filter);
+
+			if (rows == null || rows.Length == 0)
+				return DBNull.Value;
+			
+			/*
+			Parser parser = new Parser (rows);
+			IExpression expr = parser.Compile (expression);
+			object obj = expr.Eval (rows [0]);
+
+			return obj;
+			*/
+			return DBNull.Value;
+		}
+		
+		/// <summary>
+		/// Copies both the structure and data for this DataTable.
+		/// </summary>
+		public DataTable Copy ()
+		{
+			DataTable copy = Clone ();
+
+			copy._duringDataLoad = true;
+			foreach (DataRow row in Rows) {
+				DataRow newRow = copy.NewNotInitializedRow ();
+				copy.Rows.AddInternal (newRow);
+				CopyRow (row, newRow);
+			}
+			copy._duringDataLoad = false;
+
+			// rebuild copy indexes after loading all rows
+			/*
+			copy.ResetIndexes ();
+			*/
+			return copy;
+		}
+
+		/// <summary>
+		/// Copies a DataRow into a DataTable, preserving any
+		/// property settings, as well as original and current values.
+		/// </summary>
+		public void ImportRow (DataRow row)
+		{
+			if (row.RowState == DataRowState.Detached)
+				return;
+
+			DataRow newRow = NewNotInitializedRow ();
+
+			int original = -1;
+			if (row.HasVersion (DataRowVersion.Original)) {
+				original = row.IndexFromVersion (DataRowVersion.Original);
+				newRow.Original = RecordCache.NewRecord ();
+				RecordCache.CopyRecord (row.Table, original, newRow.Original);
+			}
+
+			if (row.HasVersion (DataRowVersion.Current)) {
+				int current = row.IndexFromVersion (DataRowVersion.Current);
+				if (current == original) {
+					newRow.Current = newRow.Original;
+				} else {
+					newRow.Current = RecordCache.NewRecord ();
+					RecordCache.CopyRecord (row.Table, current, newRow.Current);
+				}
+			}
+
+			//Import the row only if RowState is not detached
+			//Validation for Deleted Rows happens during Accept/RejectChanges
+			if (row.RowState != DataRowState.Deleted) {
+				newRow.Validate ();
+			} else {
+				// AddRowToIndexes (newRow);
+			}
+			Rows.AddInternal(newRow);
+			
+			/*
+			if (row.HasErrors)
+				row.CopyErrors (newRow);
+			*/
+		}
+
+		/// <summary>
+		/// Gets an array of all DataRow objects.
+		/// </summary>
+		public DataRow[] Select ()
+		{
+			return Select (String.Empty, String.Empty, DataViewRowState.CurrentRows);
+		}
+
+		/// <summary>
+		/// Gets an array of all DataRow objects that match
+		/// the filter criteria in order of primary key (or
+		/// lacking one, order of addition.)
+		/// </summary>
+		public DataRow[] Select (string filterExpression)
+		{
+			return Select (filterExpression, String.Empty, DataViewRowState.CurrentRows);
+		}
+
+		/// <summary>
+		/// Gets an array of all DataRow objects that
+		/// match the filter criteria, in the the
+		/// specified sort order.
+		/// </summary>
+		public DataRow[] Select (string filterExpression, string sort)
+		{
+			return Select (filterExpression, sort, DataViewRowState.CurrentRows);
+		}
+
+		/// <summary>
+		/// Gets an array of all DataRow objects that match
+		/// the filter in the order of the sort, that match
+		/// the specified state.
+		/// </summary>
+		public DataRow [] Select (string filterExpression, string sort, DataViewRowState recordStates)
+		{
+						// FIXME: we need to implement this method
+						UnityEngine.Debug.Log ("????");
+			/*
+			if (filterExpression == null)
+				filterExpression = String.Empty;
+
+			IExpression filter = null;
+			if (filterExpression != String.Empty) {
+				Parser parser = new Parser ();
+				filter = parser.Compile (filterExpression);
+			}
+
+			DataColumn [] columns = _emptyColumnArray;
+			ListSortDirection [] sorts = null;
+
+			if (sort != null && !sort.Equals(String.Empty))
+				columns = ParseSortString (this, sort, out sorts, false);
+
+			if (Rows.Count == 0)
+				return NewRowArray (0);
+
+			//if sort order is not given, sort it in Ascending order of the
+			//columns involved in the filter
+			if (columns.Length == 0 && filter != null) {
+				ArrayList list = new ArrayList ();
+				for (int i = 0; i < Columns.Count; ++i) {
+					if (!filter.DependsOn (Columns [i]))
+						continue;
+					list.Add (Columns [i]);
+				}
+				columns = (DataColumn []) list.ToArray (typeof (DataColumn));
+			}
+
+			bool addIndex = true;
+			if (filterExpression != String.Empty)
+				addIndex = false;
+			Index index = GetIndex (columns, sorts, recordStates, filter, false, addIndex);
+
+			int [] records = index.GetAll ();
+			DataRow [] dataRows = NewRowArray (index.Size);
+			for (int i = 0; i < dataRows.Length; i++)
+				dataRows [i] = RecordCache [records [i]];
+
+			return dataRows;
+			*/
+			return null;
+		}
+		#endregion
 		
 		#region protected instance methods
 		/// <summary>
@@ -286,13 +517,32 @@ namespace System.Data{
 		}
 		
 		/// <summary>
+		/// Creates a new DataRow with the same schema as the table.
+		/// </summary>
+		public DataRow NewRow ()
+		{
+			/*
+			EnsureDefaultValueRowIndex();
+			*/
+			DataRow newRow = NewRowFromBuilder (RowBuilder);
+			newRow.Proposed = CreateRecord (null);
+			NewRowAdded (newRow);
+			return newRow;
+		}
+
+		protected virtual void NewRowAdded (DataRow dr)
+		{
+			OnTableNewRow (new DataTableNewRowEventArgs (dr));
+		}
+		
+		/// <summary>
 		/// Creates a new row from an existing row.
 		/// </summary>
 		protected virtual DataRow NewRowFromBuilder (DataRowBuilder builder)
 		{
 			return new DataRow (builder);
 		}
-
+		
 		/// <summary>
 		/// Raises the ColumnChanged event.
 		/// </summary>
@@ -309,6 +559,16 @@ namespace System.Data{
 		{
 			if (null != ColumnChanging)
 				ColumnChanging (this, e);
+		}
+		
+		/// <summary>
+		/// Notifies the DataTable that a DataColumn is being removed.
+		/// </summary>
+		protected internal virtual void OnRemoveColumn (DataColumn column)
+		{
+			/*
+			DropReferencedIndexes (column);
+			*/
 		}
 		
 		/// <summary>
@@ -330,6 +590,24 @@ namespace System.Data{
 		}
 		
 		/// <summary>
+		/// Raises the RowDeleted event.
+		/// </summary>
+		protected virtual void OnRowDeleted (DataRowChangeEventArgs e)
+		{
+			if (null != RowDeleted)
+				RowDeleted (this, e);
+		}
+
+		/// <summary>
+		/// Raises the RowDeleting event.
+		/// </summary>
+		protected virtual void OnRowDeleting (DataRowChangeEventArgs e)
+		{
+			if (null != RowDeleting)
+				RowDeleting (this, e);
+		}
+
+		/// <summary>
 		/// Raises TableCleared Event and delegates to subscribers
 		/// </summary>
 		protected virtual void OnTableCleared (DataTableClearEventArgs e)
@@ -347,6 +625,12 @@ namespace System.Data{
 		internal void RaiseOnColumnChanged (DataColumnChangeEventArgs e)
 		{
 			OnColumnChanged (e);
+		}
+		
+		protected virtual void OnTableNewRow (DataTableNewRowEventArgs e)
+		{
+			if (null != TableNewRow)
+				TableNewRow (this, e);
 		}
 		#endregion
 		
@@ -417,6 +701,18 @@ namespace System.Data{
 			OnTableClearing (new DataTableClearEventArgs (this));
 		}
 		
+		internal void DeletedDataRow (DataRow dr, DataRowAction action)
+		{
+			DataRowChangeEventArgs e = new DataRowChangeEventArgs (dr, action);
+			OnRowDeleted (e);
+		}
+
+		internal void DeletingDataRow (DataRow dr, DataRowAction action)
+		{
+			DataRowChangeEventArgs e = new DataRowChangeEventArgs (dr, action);
+			OnRowDeleting (e);
+		}
+
 		internal DataRow NewNotInitializedRow ()
 		{
 			/*
@@ -440,6 +736,79 @@ namespace System.Data{
 			if (size == 0)
 				empty_rows = rows;
 			return rows;
+		}
+		#endregion
+
+		#region private instance methods
+		private void CopyProperties (DataTable Copy)
+		{
+			Copy.CaseSensitive = CaseSensitive;
+			Copy._virginCaseSensitive = _virginCaseSensitive;
+
+			// Copy.ChildRelations
+			// Copy.Constraints
+			// Copy.Container
+			// Copy.DefaultView
+			// Copy.DesignMode
+			/*
+			Copy.DisplayExpression = DisplayExpression;
+			if (ExtendedProperties.Count > 0) {
+				//  Cannot copy extended properties directly as the property does not have a set accessor
+				Array tgtArray = Array.CreateInstance (typeof (object), ExtendedProperties.Count);
+				ExtendedProperties.Keys.CopyTo (tgtArray, 0);
+				for (int i=0; i < ExtendedProperties.Count; i++)
+					Copy.ExtendedProperties.Add (tgtArray.GetValue (i), ExtendedProperties[tgtArray.GetValue (i)]);
+			}
+			*/
+			Copy._locale = _locale;
+			Copy.MinimumCapacity = MinimumCapacity;
+			Copy.Namespace = Namespace;
+			// Copy.ParentRelations
+			/*
+			Copy.Prefix = Prefix;
+			Copy.Site = Site;
+			*/
+			Copy.TableName = TableName;
+
+			bool isEmpty = Copy.Columns.Count == 0;
+
+			// Copy columns
+			foreach (DataColumn column in Columns) {
+				// When cloning a table, the columns may be added in the default constructor.
+				if (isEmpty || !Copy.Columns.Contains (column.ColumnName))
+					Copy.Columns.Add (column.Clone ());
+			}
+			/*
+			foreach (DataColumn column in Copy.Columns)
+					column.CompileExpression ();
+
+			CopyConstraints (Copy);
+			// add primary key to the copy
+			if (PrimaryKey.Length > 0) {
+				DataColumn[] pColumns = new DataColumn[PrimaryKey.Length];
+				for (int i = 0; i < pColumns.Length; i++)
+					pColumns[i] = Copy.Columns[PrimaryKey[i].ColumnName];
+
+				Copy.PrimaryKey = pColumns;
+			}
+			*/
+		}
+
+		internal void CopyRow (DataRow fromRow, DataRow toRow)
+		{
+			/*
+			if (fromRow.HasErrors)
+				fromRow.CopyErrors (toRow);
+			*/
+			if (fromRow.HasVersion (DataRowVersion.Original))
+				toRow.Original = toRow.Table.RecordCache.CopyRecord (this, fromRow.Original, -1);
+
+			if (fromRow.HasVersion (DataRowVersion.Current)) {
+				if (fromRow.Original != fromRow.Current)
+					toRow.Current = toRow.Table.RecordCache.CopyRecord (this, fromRow.Current, -1);
+				else
+					toRow.Current = toRow.Original;
+			}
 		}
 		#endregion
 	}

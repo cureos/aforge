@@ -259,6 +259,47 @@ namespace System.Data{
 					_defaultValue = GetDefaultValueForType (DataType);
 			}
 		}
+		
+		[DefaultValue (DataSetDateTime.UnspecifiedLocal)]
+		[RefreshProperties (RefreshProperties.All)]
+		public DataSetDateTime DateTimeMode {
+			get { return _datetimeMode; }
+			set {
+				if (DataType != typeof (DateTime))
+					throw new InvalidOperationException (
+						"The DateTimeMode can be set only on DataColumns of type DateTime."
+					);
+
+				if (!Enum.IsDefined (typeof (DataSetDateTime), value))
+					throw new InvalidEnumArgumentException (string.Format (
+						CultureInfo.InvariantCulture, 
+						"The {0} enumeration value, {1}, is invalid",
+						typeof (DataSetDateTime).Name, 
+						value
+					));
+
+				if (_datetimeMode == value)
+					return;
+				if (_table == null || _table.Rows.Count == 0) {
+					_datetimeMode = value;
+					return;
+				}
+				if (
+					(_datetimeMode == DataSetDateTime.Unspecified || _datetimeMode == DataSetDateTime.UnspecifiedLocal)
+					&& 
+					(value == DataSetDateTime.Unspecified || value == DataSetDateTime.UnspecifiedLocal)
+				) {
+					_datetimeMode = value;
+					return;
+				}
+
+				throw new InvalidOperationException (String.Format (
+					"Cannot change DateTimeMode from '{0}' to '{1}' once the table has data.",
+					_datetimeMode, 
+					value
+				));
+			}
+		}
 
 		/// <summary>
 		///
@@ -291,6 +332,18 @@ namespace System.Data{
 				//only applies to string columns
 				_maxLength = value;
 			}
+		}
+
+		[DataCategory ("Data")]
+		public string Namespace {
+			get {
+				if (_nameSpace != null)
+					return _nameSpace;
+				if (Table != null && _columnMapping != MappingType.Attribute)
+					return Table.Namespace;
+				return String.Empty;
+			}
+			set { _nameSpace = value; }
 		}
 
 		//Need a good way to set the Ordinal when the column is added to a columnCollection.
@@ -329,6 +382,7 @@ namespace System.Data{
 		private MappingType _columnMapping;
 		private object _defaultValue;
 		private int _maxLength;
+		private string _nameSpace;
 		private int _ordinal;
 		private bool _readOnly;
 		private DataTable _table;
@@ -370,6 +424,7 @@ namespace System.Data{
 			// FIXME: include expression support
 			Expression = expr == null ? String.Empty : expr;
 			*/
+			DataContainer.FillValues (0);
 			ColumnMapping = type;
 		}
 		#endregion
@@ -397,6 +452,16 @@ namespace System.Data{
 		protected internal void RaisePropertyChanging (string name)
 		{
 			OnPropertyChanging (new PropertyChangedEventArgs (name));
+		}
+		
+		internal void ResetColumnInfo ()
+		{
+			_ordinal = -1;
+			_table = null;
+			/*
+			if (_compiledExpression != null)
+				_compiledExpression.ResetExpression ();
+			*/
 		}
 		
 		void SetDefaultValue (object value, bool forcedTypeCheck)
@@ -505,6 +570,47 @@ namespace System.Data{
 			return currentValue;
 		}
 
+		[MonoTODO]
+		internal DataColumn Clone ()
+		{
+			DataColumn copy = new DataColumn ();
+
+			// Copy all the properties of column
+			copy._allowDBNull = _allowDBNull;
+			copy._autoIncrement = _autoIncrement;
+			copy._autoIncrementSeed = _autoIncrementSeed;
+			copy._autoIncrementStep = _autoIncrementStep;
+			copy._caption = _caption;
+			copy._columnMapping = _columnMapping;
+			copy._columnName = _columnName;
+			//Copy.Container
+			copy.DataType = DataType;
+			copy._defaultValue = _defaultValue;
+
+			/*
+			// Do not use the Expression property to set the expression, the caller of Clone 
+			// must explicitly call CompileExpression on the returned DataColumn to update compiledExpression (if any).
+			copy._expression = _expression;
+			//Copy.ExtendedProperties
+			foreach (object key in _extendedProperties.Keys)
+					copy.ExtendedProperties.Add (key, ExtendedProperties[key]);
+			*/
+			copy._maxLength = _maxLength;
+			copy._nameSpace = _nameSpace;
+			/*
+			copy._prefix = _prefix;
+			*/
+			copy._readOnly = _readOnly;
+			//Copy.Site
+			//we do not copy the unique value - it will be copyied when copying the constraints.
+			//Copy.Unique = Column.Unique;
+			
+			if (DataType == typeof (DateTime))
+			copy.DateTimeMode = _datetimeMode;
+			
+			return copy;
+		}
+
 		internal long GetAutoIncrementValue ()
 		{
 			return _nextAutoIncrementValue;
@@ -536,18 +642,20 @@ namespace System.Data{
 				_table.Constraints.Add (uc);
 			}
 			*/
-
+			
 			// allocate space in the column data container
 			DataContainer.Capacity = _table.RecordCache.CurrentCapacity;
-
+						/*
 			int defaultValuesRowIndex = _table.DefaultValuesRowIndex;
 			if (defaultValuesRowIndex != -1) {
+				
 				// store default value in the table
 				DataContainer [defaultValuesRowIndex] = _defaultValue;
+				
 				// Set all the values in data container to default
 				// it's cheaper that raise event on each row.
 				DataContainer.FillValues (defaultValuesRowIndex);
-			}
+			}*/
 		}
 		#endregion
 	}

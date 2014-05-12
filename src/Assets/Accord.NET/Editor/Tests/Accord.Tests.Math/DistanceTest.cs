@@ -46,10 +46,7 @@ namespace Accord.Tests.Math
                 testContextInstance = value;
             }
         }
-
-
-// FIXME: this test uses Statistics
-/*
+		
         [Test]
         public void MahalanobisTest()
         {
@@ -62,10 +59,10 @@ namespace Accord.Tests.Math
             };
 
             // Computing the mean of y
-            double[] meanY = Statistics.Tools.Mean(y);
+			double[] meanY = global::Accord.Statistics.Tools.Mean(y);
 
             // Computing the covariance matrix of y
-            double[,] covY = Statistics.Tools.Covariance(y, meanY);
+			double[,] covY = global::Accord.Statistics.Tools.Covariance(y, meanY);
 
             // Inverting the covariance matrix
             double[,] precision = covY.Inverse();
@@ -76,8 +73,7 @@ namespace Accord.Tests.Math
 
             Assert.AreEqual(expected, actual, 0.0001);
         }
-*/
-
+		
         [Test]
         public void MahalanobisTest2()
         {

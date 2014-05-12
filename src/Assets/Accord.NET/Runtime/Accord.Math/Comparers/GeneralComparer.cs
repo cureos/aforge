@@ -66,7 +66,7 @@ namespace Accord.Math.Comparers
     /// <seealso cref="GeneralComparer"/>
     /// <seealso cref="CustomComparer{T}"/>
     /// 
-    public class GeneralComparer : IComparer<double>, IComparer<int>
+		public class GeneralComparer : IComparer<double>, IComparer<int>
     {
         Func<double, double> map;
         private int direction = 1;

@@ -2197,9 +2197,7 @@ namespace Accord.Tests.Math
 
 			Assert.IsTrue(Matrix.IsEqual(expected.ToMatrix<double>(), actual.ToMatrix<double>()));
         }
-
-// FIXME: this test uses Statistics
-/*
+		
         [Test]
         public void CenteringTest()
         {
@@ -2222,8 +2220,8 @@ namespace Accord.Tests.Math
             double[,] CX = Matrix.Centering(3).Multiply(X); // Remove means from rows
             double[,] XC = X.Multiply(Matrix.Centering(4)); // Remove means from columns
 
-            double[] colMean = Statistics.Tools.Mean(X, 1);
-            double[] rowMean = Statistics.Tools.Mean(X, 0);
+			double[] colMean = global::Accord.Statistics.Tools.Mean(X, 1);
+			double[] rowMean = global::Accord.Statistics.Tools.Mean(X, 0);
 
             Assert.IsTrue(rowMean.IsEqual(new double[] { 3.0, 4.0, 4.3333, 34.0 }, 0.001));
             Assert.IsTrue(colMean.IsEqual(new double[] { 2.0, 27.75, 4.25 }, 0.001));
@@ -2237,12 +2235,12 @@ namespace Accord.Tests.Math
 
             double[,] S1 = XC.Multiply(X.Transpose());
             double[,] S2 = Xc.Multiply(Xc.Transpose());
-            double[,] S3 = Statistics.Tools.Scatter(X, colMean, 1);
+			double[,] S3 = global::Accord.Statistics.Tools.Scatter(X, colMean, 1);
 
             Assert.IsTrue(Matrix.IsEqual(S1, S2));
             Assert.IsTrue(Matrix.IsEqual(S2, S3));
         }
-*/
+		
         [Test]
         public void MagicTest()
         {

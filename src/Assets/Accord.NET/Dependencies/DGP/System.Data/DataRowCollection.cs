@@ -151,6 +151,32 @@ namespace System.Data{
 			int id = row.RowID;
 			return (id >= 0 && id < List.Count && row == List [id]) ? id : -1;
 		}
+		
+		/// <summary>
+		/// Removes the specified DataRow from the collection.
+		/// </summary>
+		public void Remove (DataRow row)
+		{
+			if (IndexOf (row) < 0)
+				throw new IndexOutOfRangeException ("The given datarow is not in the current DataRowCollection.");
+
+			DataRowState state = row.RowState;
+			if (state != DataRowState.Deleted && state != DataRowState.Detached) {
+				row.Delete ();
+				// if the row was in added state it will be in Detached state after the
+				// delete operation, so we have to check it.
+				if (row.RowState != DataRowState.Detached)
+					row.AcceptChanges ();
+			}
+		}
+
+		/// <summary>
+		/// Removes the row at the specified index from the collection.
+		/// </summary>
+		public void RemoveAt (int index)
+		{
+			Remove (this [index]);
+		}
 		#endregion
 
 		#region internal instance methods

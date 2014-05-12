@@ -563,7 +563,7 @@ namespace Accord.Math
         ///   Creates a vector with the given dimension and starting values.
         /// </summary>
         /// 
-        public static double[] Vector(double a, double b, double increment = 1)
+        public static double[] Vector(double a, double b, double increment)
         {
             List<double> list = new List<double>();
 
@@ -580,7 +580,7 @@ namespace Accord.Math
         ///   Creates a vector with the given dimension and starting values.
         /// </summary>
         /// 
-        public static int[] Vector(int a, int b, int increment = 1)
+        public static int[] Vector(int a, int b, int increment)
         {
             List<int> list = new List<int>();
 
