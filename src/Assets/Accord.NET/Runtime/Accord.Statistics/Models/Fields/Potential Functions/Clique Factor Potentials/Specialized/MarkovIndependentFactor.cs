@@ -23,7 +23,7 @@
 namespace Accord.Statistics.Models.Fields.Functions.Specialized
 {
     using System;
-    using System.Runtime.Serialization;
+    //using System.Runtime.Serialization;
     using Accord.Statistics.Models.Fields.Features;
 
     /// <summary>

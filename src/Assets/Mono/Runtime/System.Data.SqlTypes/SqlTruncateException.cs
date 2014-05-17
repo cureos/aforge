@@ -35,7 +35,7 @@ using System.Runtime.Serialization;
 namespace System.Data.SqlTypes
 {
 	[Serializable]
-	public sealed class SqlTruncateException : SqlTypeException, ISerializable
+	public sealed class SqlTruncateException : SqlTypeException/*, ISerializable*/
 	{
 		public SqlTruncateException ()
 			: base ("This value is being truncated")
@@ -51,10 +51,11 @@ namespace System.Data.SqlTypes
 			: base (message, e)
 		{
 		}
-
+		/*
 		private SqlTruncateException (SerializationInfo si, StreamingContext sc)
 			: base (si.GetString("SqlTruncateExceptionMessage"))
 		{
 		}
+		*/
 	}
 }

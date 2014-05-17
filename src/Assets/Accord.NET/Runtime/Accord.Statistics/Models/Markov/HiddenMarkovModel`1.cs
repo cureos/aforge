@@ -24,7 +24,7 @@ namespace Accord.Statistics.Models.Markov
 {
     using System;
     using System.IO;
-    using System.Runtime.Serialization.Formatters.Binary;
+    //using System.Runtime.Serialization.Formatters.Binary;
     using Accord.Math;
     using Accord.Statistics.Distributions;
     using Accord.Statistics.Distributions.Multivariate;
@@ -842,7 +842,7 @@ namespace Accord.Statistics.Models.Markov
 
             // Create the mixture distribution defining the model likelihood in
             // assuming the next observation belongs will belong to each state.
-            TMultivariate[] b = Array.ConvertAll(B, x => (TMultivariate)x);
+            TMultivariate[] b = ArrayExtensions.ConvertAll(B, x => (TMultivariate)x);
             probabilities = new MultivariateMixture<TMultivariate>(weights[1].Exp(), b);
 
             return prediction;
@@ -868,7 +868,7 @@ namespace Accord.Statistics.Models.Markov
 
             // Create the mixture distribution defining the model likelihood in
             // assuming the next observation belongs will belong to each state.
-            TUnivariate[] b = Array.ConvertAll(B, x => (TUnivariate)x);
+            TUnivariate[] b = ArrayExtensions.ConvertAll(B, x => (TUnivariate)x);
             probabilities = new Mixture<TUnivariate>(weights[1].Exp(), b);
 
             return prediction[0];
@@ -986,7 +986,7 @@ namespace Accord.Statistics.Models.Markov
 
 
         #region Load & Save methods
-
+		/*
         /// <summary>
         ///   Saves the hidden Markov model to a stream.
         /// </summary>
@@ -1042,8 +1042,7 @@ namespace Accord.Statistics.Models.Markov
                 return Load(fs);
             }
         }
-
+		*/
         #endregion
-
     }
 }

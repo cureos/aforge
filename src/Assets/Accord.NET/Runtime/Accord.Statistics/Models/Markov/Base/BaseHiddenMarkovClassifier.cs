@@ -24,7 +24,7 @@ namespace Accord.Statistics.Models.Markov
 {
     using System;
     using System.Collections.Generic;
-    using System.Runtime.Serialization;
+    //using System.Runtime.Serialization;
     using System.Threading.Tasks;
     using Accord.Math;
 
@@ -342,7 +342,7 @@ namespace Accord.Statistics.Models.Markov
             return logLikelihood;
         }
 
-
+		/*
         [OnDeserializing]
         private void setSerializationDefaults(StreamingContext sc)
         {
@@ -351,7 +351,7 @@ namespace Accord.Statistics.Models.Markov
 
             this.weight = 1;
         }
-
+		*/
         /// <summary>
         ///   Returns an enumerator that iterates through the models in the classifier.
         /// </summary>

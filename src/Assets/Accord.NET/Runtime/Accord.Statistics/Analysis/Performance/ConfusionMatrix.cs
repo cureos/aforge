@@ -305,7 +305,7 @@ namespace Accord.Statistics.Analysis
         ///   of false positives and true negatives on the second.
         /// </value>
         /// 
-        [DisplayName("Row Totals")]
+        //[DisplayName("Row Totals")]
         public int[] RowTotals
         {
             get
@@ -328,7 +328,7 @@ namespace Accord.Statistics.Analysis
         ///   of false negatives and true negatives on the second.
         /// </value>
         /// 
-        [DisplayName("Column Totals")]
+        //[DisplayName("Column Totals")]
         public int[] ColumnTotals
         {
             get
@@ -346,7 +346,7 @@ namespace Accord.Statistics.Analysis
         ///   Gets the number of observations for this matrix
         /// </summary>
         /// 
-        [DisplayName("Number of samples")]
+        //[DisplayName("Number of samples")]
         public int Samples
         {
             get
@@ -365,7 +365,7 @@ namespace Accord.Statistics.Analysis
         ///   taking the sum of true positives and false negatives.
         /// </remarks>
         /// 
-        [DisplayName("Actual Positives")]
+        //[DisplayName("Actual Positives")]
         public int ActualPositives
         {
             get { return truePositives + falseNegatives; }
@@ -380,7 +380,7 @@ namespace Accord.Statistics.Analysis
         ///   taking the sum of true negatives and false positives.
         /// </remarks>
         /// 
-        [DisplayName("Actual Negatives")]
+        //[DisplayName("Actual Negatives")]
         public int ActualNegatives
         {
             get { return trueNegatives + falsePositives; }
@@ -396,7 +396,7 @@ namespace Accord.Statistics.Analysis
         ///   true positives and false positives.
         /// </remarks>
         /// 
-        [DisplayName("Predicted Positives")]
+        //[DisplayName("Predicted Positives")]
         public int PredictedPositives
         {
             get { return truePositives + falsePositives; }
@@ -412,7 +412,7 @@ namespace Accord.Statistics.Analysis
         ///   true negatives and false negatives.
         /// </remarks>
         /// 
-        [DisplayName("Predicted Negatives")]
+        //[DisplayName("Predicted Negatives")]
         public int PredictedNegatives
         {
             get { return trueNegatives + falseNegatives; }
@@ -422,7 +422,7 @@ namespace Accord.Statistics.Analysis
         ///   Cases correctly identified by the system as positives.
         /// </summary>
         /// 
-        [DisplayName("True Positives (TP)")]
+        //[DisplayName("True Positives (TP)")]
         public int TruePositives
         {
             get { return truePositives; }
@@ -432,7 +432,7 @@ namespace Accord.Statistics.Analysis
         ///   Cases correctly identified by the system as negatives.
         /// </summary>
         /// 
-        [DisplayName("True Negatives (TN)")]
+        //[DisplayName("True Negatives (TN)")]
         public int TrueNegatives
         {
             get { return trueNegatives; }
@@ -442,7 +442,7 @@ namespace Accord.Statistics.Analysis
         ///   Cases incorrectly identified by the system as positives.
         /// </summary>
         /// 
-        [DisplayName("False Positives (FP)")]
+        //[DisplayName("False Positives (FP)")]
         public int FalsePositives
         {
             get { return falsePositives; }
@@ -452,7 +452,7 @@ namespace Accord.Statistics.Analysis
         ///   Cases incorrectly identified by the system as negatives.
         /// </summary>
         /// 
-        [DisplayName("False Negatives (FN)")]
+        //[DisplayName("False Negatives (FN)")]
         public int FalseNegatives
         {
             get { return falseNegatives; }
@@ -539,7 +539,7 @@ namespace Accord.Statistics.Analysis
         ///   <c>PPV = TP / (TP + FP)</c>.</para>
         /// </remarks>
         /// 
-        [DisplayName("Positive Predictive Value (PPV)")]
+        //[DisplayName("Positive Predictive Value (PPV)")]
         public double PositivePredictiveValue
         {
             get
@@ -567,7 +567,7 @@ namespace Accord.Statistics.Analysis
         ///   <c>NPV = TN / (TN + FN)</c>.</para> 
         /// </remarks>
         /// 
-        [DisplayName("Negative Predictive Value (NPV)")]
+        //[DisplayName("Negative Predictive Value (NPV)")]
         public double NegativePredictiveValue
         {
             get
@@ -595,7 +595,7 @@ namespace Accord.Statistics.Analysis
         /// </para>
         /// </remarks>
         /// 
-        [DisplayName("False Positive Rate")]
+        //[DisplayName("False Positive Rate")]
         public double FalsePositiveRate
         {
             get
@@ -620,7 +620,7 @@ namespace Accord.Statistics.Analysis
         ///   <c>FDR = FP / (FP + TP)</c>.</para>
         /// </remarks>
         /// 
-        [DisplayName("False Discovery Rate")]
+        //[DisplayName("False Discovery Rate")]
         public double FalseDiscoveryRate
         {
             get
@@ -643,7 +643,7 @@ namespace Accord.Statistics.Analysis
         ///   average random prediction and −1 an inverse prediction.
         /// </remarks>
         /// 
-        [DisplayName("Mattews Correlation (φ)")]
+        //[DisplayName("Mattews Correlation (φ)")]
         public double MatthewsCorrelationCoefficient
         {
             get
@@ -673,7 +673,7 @@ namespace Accord.Statistics.Analysis
         ///   References: http://www.iph.ufrgs.br/corpodocente/marques/cd/rd/presabs.htm
         /// </remarks>
         /// 
-        [DisplayName("Odds Ratio")]
+        //[DisplayName("Odds Ratio")]
         public double OddsRatio
         {
             get
@@ -690,7 +690,7 @@ namespace Accord.Statistics.Analysis
         ///   References: http://www.iph.ufrgs.br/corpodocente/marques/cd/rd/presabs.htm
         /// </remarks>
         ///
-        [DisplayName("Kappa Coefficient (κ)")]
+        //[DisplayName("Kappa Coefficient (κ)")]
         public double Kappa
         {
             get
@@ -711,7 +711,7 @@ namespace Accord.Statistics.Analysis
         ///   coefficient of performance. 
         /// </summary>
         /// 
-        [DisplayName("Kappa (κ) Std. Error")]
+        //[DisplayName("Kappa (κ) Std. Error")]
         public double StandardError
         {
             get
@@ -732,7 +732,7 @@ namespace Accord.Statistics.Analysis
         ///   coefficient of performance. 
         /// </summary>
         /// 
-        [DisplayName("Kappa (κ) Variance")]
+        //[DisplayName("Kappa (κ) Variance")]
         public double Variance
         {
             get
@@ -754,7 +754,7 @@ namespace Accord.Statistics.Analysis
         ///   Kappa value is 0. 
         /// </summary>
         /// 
-        [DisplayName("Kappa (κ) H₀ Variance")]
+        //[DisplayName("Kappa (κ) H₀ Variance")]
         public double VarianceUnderNull
         {
             get
@@ -777,7 +777,7 @@ namespace Accord.Statistics.Analysis
         ///   value is 0. 
         /// </summary>
         /// 
-        [DisplayName("Kappa (κ) H₀ Std. Error")]
+        //[DisplayName("Kappa (κ) H₀ Std. Error")]
         public double StandardErrorUnderNull
         {
             get
@@ -798,7 +798,7 @@ namespace Accord.Statistics.Analysis
         ///   Diagnostic power.
         /// </summary>
         /// 
-        [DisplayName("Overall Diagnostic Power")]
+        //[DisplayName("Overall Diagnostic Power")]
         public double OverallDiagnosticPower
         {
             get { return (double)(falsePositives + trueNegatives) / Samples; }
@@ -808,7 +808,7 @@ namespace Accord.Statistics.Analysis
         ///   Normalized Mutual Information.
         /// </summary>
         /// 
-        [DisplayName("Normalized Mutual Information")]
+        //[DisplayName("Normalized Mutual Information")]
         public double NormalizedMutualInformation
         {
             get
@@ -851,7 +851,7 @@ namespace Accord.Statistics.Analysis
         ///   <see cref="Precision"/> and <see cref="Recall"/>.
         /// </summary>
         /// 
-        [DisplayName("F-Score")]
+        //[DisplayName("F-Score")]
         public double FScore
         {
             get { return 2.0 * (Precision * Recall) / (Precision + Recall); }
@@ -862,7 +862,7 @@ namespace Accord.Statistics.Analysis
         ///   have been generated just by chance.
         /// </summary>
         /// 
-        [DisplayName("Expected Values")]
+        //[DisplayName("Expected Values")]
         public double[,] ExpectedValues
         {
             get
@@ -884,7 +884,7 @@ namespace Accord.Statistics.Analysis
         ///   Gets the Chi-Square statistic for the contingency table.
         /// </summary>
         /// 
-        [DisplayName("Chi-Square (χ²)")]
+        //[DisplayName("Chi-Square (χ²)")]
         public double ChiSquare
         {
             get

@@ -60,11 +60,12 @@ namespace System{
 			string message, 
 			Exception innerException
 		) : base (message, innerException){}
-
+		/*
 		protected OperationCanceledExceptionDerived(
 			SerializationInfo info, 
 			StreamingContext context
 		) : base (info, context){}
+		*/
 		#endregion
 		
 		#region New Constructors

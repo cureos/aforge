@@ -27,7 +27,7 @@ namespace System.Collections.Generic
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using System.Runtime.Serialization;
+    //using System.Runtime.Serialization;
 
     /// <summary>
     ///   Minimum ISet implementation for .NET 3.5 to

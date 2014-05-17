@@ -35,7 +35,7 @@ using System.Runtime.Serialization;
 namespace System.Data.SqlTypes
 {
 	[Serializable]
-	public class SqlTypeException : SystemException, ISerializable
+	public class SqlTypeException : SystemException/*, ISerializable*/
 	{
 		public SqlTypeException()
 			: base ("A sql exception has occured.")
@@ -51,10 +51,11 @@ namespace System.Data.SqlTypes
 			: base (message, e)
 		{
 		}
-
+		/*
 		protected SqlTypeException (SerializationInfo si, StreamingContext sc)
 			: base (si.GetString("SqlTypeExceptionMessage"))
 		{
 		}
+		*/
 	}
 }

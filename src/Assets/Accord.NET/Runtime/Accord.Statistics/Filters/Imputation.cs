@@ -24,7 +24,7 @@ namespace Accord.Statistics.Filters
 {
     using System;
     using System.Data;
-    using System.Runtime.Serialization;
+    //using System.Runtime.Serialization;
     using Accord.Math;
 
     /// <summary>
@@ -132,7 +132,7 @@ namespace Accord.Statistics.Filters
         public class Options : ColumnOptionsBase, IAutoConfigurableColumn
         {
 
-            [OptionalField]
+            //[OptionalField]
             private Strategy strategy;
 
             /// <summary>

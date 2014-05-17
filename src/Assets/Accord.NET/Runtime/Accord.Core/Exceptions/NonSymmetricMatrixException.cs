@@ -23,7 +23,7 @@
 namespace Accord
 {
     using System;
-    using System.Runtime.Serialization;
+    //using System.Runtime.Serialization;
 
     /// <summary>
     ///   Non-Symmetric Matrix Exception.
@@ -60,7 +60,7 @@ namespace Accord
         public NonSymmetricMatrixException(string message, Exception innerException) :
             base(message, innerException) { }
 
-
+		/*
         /// <summary>
         /// Initializes a new instance of the <see cref="NonSymmetricMatrixException"/> class.
         /// </summary>
@@ -76,6 +76,6 @@ namespace Accord
         /// 
         protected NonSymmetricMatrixException(SerializationInfo info, StreamingContext context) :
             base(info, context) { }
-
+		*/
     }
 }

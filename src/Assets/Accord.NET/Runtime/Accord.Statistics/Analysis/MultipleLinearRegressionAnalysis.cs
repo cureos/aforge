@@ -597,21 +597,21 @@ namespace Accord.Statistics.Analysis
         ///   <c>true</c> if this coefficient is the intercept; otherwise, <c>false</c>.
         /// </value>
         /// 
-        [DisplayName("Intercept?")]
+        //[DisplayName("Intercept?")]
         public bool IsIntercept { get { return Analysis.regression.HasIntercept && index == Analysis.regression.Coefficients.Length - 1; } }
 
         /// <summary>
         ///   Gets the coefficient value.
         /// </summary>
         /// 
-        [DisplayName("Value")]
+        //[DisplayName("Value")]
         public double Value { get { return Analysis.regression.Coefficients[index]; } }
 
         /// <summary>
         ///   Gets the Standard Error for the current coefficient.
         /// </summary>
         /// 
-        [DisplayName("Std. Error")]
+        //[DisplayName("Std. Error")]
         public double StandardError { get { return Analysis.StandardErrors[index]; } }
 
         /// <summary>
@@ -640,14 +640,14 @@ namespace Accord.Statistics.Analysis
         ///   Gets the upper limit for the confidence interval.
         /// </summary>
         /// 
-        [DisplayName("Upper confidence limit")]
+        //[DisplayName("Upper confidence limit")]
         public double ConfidenceUpper { get { return Analysis.Confidences[index].Max; } }
 
         /// <summary>
         ///   Gets the lower limit for the confidence interval.
         /// </summary>
         /// 
-        [DisplayName("Lower confidence limit")]
+        //[DisplayName("Lower confidence limit")]
         public double ConfidenceLower { get { return Analysis.Confidences[index].Min; } }
 
     }

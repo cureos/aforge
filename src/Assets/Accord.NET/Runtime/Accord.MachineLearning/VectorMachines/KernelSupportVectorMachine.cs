@@ -24,7 +24,7 @@ namespace Accord.MachineLearning.VectorMachines
 {
     using System;
     using System.IO;
-    using System.Runtime.Serialization.Formatters.Binary;
+    //using System.Runtime.Serialization.Formatters.Binary;
     using Accord.Statistics.Kernels;
 
     /// <summary>
@@ -180,7 +180,7 @@ namespace Accord.MachineLearning.VectorMachines
 
             return output >= 0 ? +1 : -1;
         }
-
+		/*
         /// <summary>
         ///   Saves the machine to a stream.
         /// </summary>
@@ -222,6 +222,6 @@ namespace Accord.MachineLearning.VectorMachines
                 return Load(fs);
             }
         }
-
+		*/
     }
 }

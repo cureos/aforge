@@ -45,12 +45,12 @@ namespace System.Data
 		public DataException (string s) : base (s)
 		{
 		}
-
+		/*
 		protected DataException (SerializationInfo info, StreamingContext context)
 			: base (info, context)
 		{
 		}
-
+		*/
 		public DataException (string s, Exception innerException)
 			: base (s, innerException)
 		{

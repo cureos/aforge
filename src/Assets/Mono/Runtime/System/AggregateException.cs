@@ -52,11 +52,12 @@ namespace System
 				throw new ArgumentNullException ("innerException");
 			innerExceptions.Add (innerException);
 		}
-
+		/*
 		protected AggregateException (SerializationInfo info, StreamingContext context)
 			: base (info, context)
 		{
 		}
+		*/
 
 		public AggregateException (params Exception[] innerExceptions)
 			: this (string.Empty, innerExceptions)
@@ -147,7 +148,7 @@ namespace System
 			}
 			return finalMessage.ToString ();
 		}
-
+		/*
 		public override void GetObjectData (SerializationInfo info,	StreamingContext context)
 		{
 			if (info == null) {
@@ -156,7 +157,7 @@ namespace System
 			base.GetObjectData(info, context);
 			info.AddValue ("InnerExceptions", innerExceptions.ToArray(), typeof (Exception[]));
 		}
-
+		*/
 		public override Exception GetBaseException ()
 		{
 			if (innerExceptions == null || innerExceptions.Count == 0)

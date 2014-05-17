@@ -635,7 +635,7 @@ namespace System.Data {
 		{
 			CopyTo ((Array) array, index);
 		}
-
+		/*
 		internal void BinarySerialize (SerializationInfo si)
 		{
 			ArrayList l = new ArrayList ();
@@ -661,5 +661,6 @@ namespace System.Data {
 			}
 			si.AddValue ("DataSet.Relations", l, typeof (ArrayList));
 		}
+		*/
 	}
 }

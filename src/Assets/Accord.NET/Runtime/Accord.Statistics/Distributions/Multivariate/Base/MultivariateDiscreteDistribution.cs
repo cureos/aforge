@@ -156,7 +156,7 @@ namespace Accord.Statistics.Distributions.Multivariate
         /// 
         double IDistribution.DistributionFunction(double[] x)
         {
-            return DistributionFunction(Array.ConvertAll<double, int>(x, Convert.ToInt32));
+            return DistributionFunction(ArrayExtensions.ConvertAll<double, int>(x, Convert.ToInt32));
         }
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace Accord.Statistics.Distributions.Multivariate
         ///   
         double IDistribution.ProbabilityFunction(double[] x)
         {
-            return ProbabilityMassFunction(Array.ConvertAll<double, int>(x, Convert.ToInt32));
+            return ProbabilityMassFunction(ArrayExtensions.ConvertAll<double, int>(x, Convert.ToInt32));
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace Accord.Statistics.Distributions.Multivariate
         ///   
         double IDistribution.LogProbabilityFunction(double[] x)
         {
-            return LogProbabilityMassFunction(Array.ConvertAll<double, int>(x, Convert.ToInt32));
+            return LogProbabilityMassFunction(ArrayExtensions.ConvertAll<double, int>(x, Convert.ToInt32));
         }
 
         /// <summary>
@@ -223,7 +223,7 @@ namespace Accord.Statistics.Distributions.Multivariate
         /// 
         double IDistribution.ComplementaryDistributionFunction(double[] x)
         {
-            return ComplementaryDistributionFunction(Array.ConvertAll<double, int>(x, Convert.ToInt32));
+            return ComplementaryDistributionFunction(ArrayExtensions.ConvertAll<double, int>(x, Convert.ToInt32));
         }
 
         /// <summary>

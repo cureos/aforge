@@ -24,7 +24,7 @@ namespace Accord.MachineLearning
 {
     using System;
     using System.IO;
-    using System.Runtime.Serialization.Formatters.Binary;
+    //using System.Runtime.Serialization.Formatters.Binary;
 
     /// <summary>
     ///   Class for representing results acquired through
@@ -99,7 +99,7 @@ namespace Accord.MachineLearning
             this.Training = new CrossValidationStatistics(trainingCount, trainingValues, trainingVariances);
             this.Validation = new CrossValidationStatistics(validationCount, validationValues, validationVariances);
         }
-
+		/*
         /// <summary>
         ///   Saves the result to a stream.
         /// </summary>
@@ -149,6 +149,7 @@ namespace Accord.MachineLearning
         {
             return Load(new FileStream(path, FileMode.Open));
         }
+        */
     }
 
 }

@@ -25,8 +25,8 @@ namespace Accord.MachineLearning.VectorMachines
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization;
-    using System.Runtime.Serialization.Formatters.Binary;
+    //using System.Runtime.Serialization;
+    //using System.Runtime.Serialization.Formatters.Binary;
     using System.Threading;
     using System.Threading.Tasks;
     using Accord.Math;
@@ -983,7 +983,7 @@ namespace Accord.MachineLearning.VectorMachines
 
 
         #region Loading & Saving
-
+		/*
         /// <summary>
         ///   Saves the machine to a stream.
         /// </summary>
@@ -1045,6 +1045,7 @@ namespace Accord.MachineLearning.VectorMachines
         {
             initialize();
         }
+		*/
         #endregion
 
         #region IEnumerable members

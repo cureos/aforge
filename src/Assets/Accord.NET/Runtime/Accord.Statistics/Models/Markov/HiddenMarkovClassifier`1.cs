@@ -24,7 +24,7 @@ namespace Accord.Statistics.Models.Markov
 {
     using System;
     using System.IO;
-    using System.Runtime.Serialization.Formatters.Binary;
+    //using System.Runtime.Serialization.Formatters.Binary;
     using Accord.Statistics.Distributions;
     using Accord.Statistics.Models.Markov.Topology;
     using Accord.Statistics.Models.Markov.Learning;
@@ -321,7 +321,7 @@ namespace Accord.Statistics.Models.Markov
 
 
         #region Load & Save methods
-
+		/*
         /// <summary>
         ///   Saves the classifier to a stream.
         /// </summary>
@@ -377,8 +377,7 @@ namespace Accord.Statistics.Models.Markov
                 return Load(fs);
             }
         }
-
+		*/
         #endregion
-
     }
 }

@@ -13,7 +13,6 @@ namespace AForge.Math
 {
     using System;
     using System.Text.RegularExpressions;
-    using System.Runtime.Serialization;
 
     /// <summary>
     /// Complex number wrapper class.

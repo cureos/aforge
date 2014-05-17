@@ -410,7 +410,7 @@ namespace System.Data
 		{
 			CopyTo ((Array) array, index);
 		}
-
+		/*
 		internal void BinarySerialize_Schema (SerializationInfo si)
 		{
 			si.AddValue ("DataSet.Tables.Count", Count);
@@ -440,5 +440,6 @@ namespace System.Data
 				dt.BinarySerialize (si, "DataTable_" + i + ".");
 			}
 		}
+		*/
 	}
 }

@@ -23,7 +23,7 @@
 namespace Accord.Math.Optimization
 {
     using System;
-    using System.Runtime.Serialization;
+    //using System.Runtime.Serialization;
     using System.Security.Permissions;
 
 
@@ -90,7 +90,7 @@ namespace Accord.Math.Optimization
         public LineSearchFailedException(string message, Exception innerException)
             : base(message, innerException)
         { }
-
+		/*
         /// <summary>
         ///   Initializes a new instance of the <see cref="LineSearchFailedException"/> class.
         /// </summary>
@@ -129,6 +129,7 @@ namespace Accord.Math.Optimization
 
             info.AddValue("Information", this.info);
         }
+		*/
     }
 
 }

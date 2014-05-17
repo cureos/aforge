@@ -23,7 +23,7 @@
 namespace Accord
 {
     using System;
-    using System.Runtime.Serialization;
+    //using System.Runtime.Serialization;
 
     /// <summary>
     ///   Dimension Mismatch Exception.
@@ -71,7 +71,7 @@ namespace Accord
         public DimensionMismatchException(string message, Exception innerException) :
             base(message, innerException) { }
 
-
+		/*
         /// <summary>
         /// Initializes a new instance of the <see cref="DimensionMismatchException"/> class.
         /// </summary>
@@ -87,6 +87,6 @@ namespace Accord
         /// 
         protected DimensionMismatchException(SerializationInfo info, StreamingContext context) :
             base(info, context) { }
-
+		*/
     }
 }

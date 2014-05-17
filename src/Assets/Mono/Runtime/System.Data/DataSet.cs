@@ -793,7 +793,7 @@ namespace System.Data
 				reader.NextResult ();
 			}
 		}
-		*/
+
 		void BinaryDeserialize (SerializationInfo info)
 		{
 			ArrayList arrayList = null;
@@ -804,11 +804,11 @@ namespace System.Data
 			Locale = new CultureInfo (info.GetInt32 ("DataSet.LocaleLCID"));
 			EnforceConstraints = info.GetBoolean ("DataSet.EnforceConstraints");
 			Prefix = info.GetString ("DataSet.Prefix");
-			/*
-			  FIXME: Private variable available in SerializationInfo
-			  this.RemotingVersion = (System.Version) info.GetValue("DataSet.RemotingVersion",
-			  typeof(System.Version));
-			*/
+
+			//FIXME: Private variable available in SerializationInfo
+			//this.RemotingVersion = (System.Version) info.GetValue("DataSet.RemotingVersion",
+			//typeof(System.Version));
+
 			properties = (PropertyCollection) info.GetValue ("DataSet.ExtendedProperties",
 									 typeof (PropertyCollection));
 			int tableCount = info.GetInt32 ("DataSet.Tables.Count");
@@ -827,11 +827,11 @@ namespace System.Data
 										   ".DataColumn_" + j +
 										   ".Expression");
 				}
-				/*
-				  Not using
-				  int rowsCount = info.GetInt32 ("DataTable_" + i + ".Rows.Count");
-				  int recordsCount = info.GetInt32 ("DataTable_" + i + ".Records.Count");
-				*/
+
+				//Not using
+				//int rowsCount = info.GetInt32 ("DataTable_" + i + ".Rows.Count");
+				//int recordsCount = info.GetInt32 ("DataTable_" + i + ".Records.Count");
+
 				ArrayList nullBits = (ArrayList) info.GetValue ("DataTable_" + i + ".NullBits",
 										typeof (ArrayList));
 				arrayList = (ArrayList) info.GetValue ("DataTable_" + i + ".Records",
@@ -878,7 +878,7 @@ namespace System.Data
 					       false);
 			}
 		}
-
+		*/
 		private void OnDataSetInitialized (EventArgs e)
 		{
 			if (null != Initialized)
@@ -894,7 +894,7 @@ namespace System.Data
 		protected virtual void InitializeDerivedDataSet ()
 		{
 		}
-
+		/*
 		protected SchemaSerializationMode DetermineSchemaSerializationMode (SerializationInfo info, StreamingContext context)
 		{
 			SerializationInfoEnumerator e = info.GetEnumerator ();
@@ -916,5 +916,6 @@ namespace System.Data
 			}
 			return false;
 		}
+		*/
 	}
 }

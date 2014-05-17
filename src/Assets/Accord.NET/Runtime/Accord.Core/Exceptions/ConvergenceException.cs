@@ -23,7 +23,7 @@
 namespace Accord
 {
     using System;
-    using System.Runtime.Serialization;
+   //using System.Runtime.Serialization;
 
     /// <summary>
     ///   Algorithm Convergence Exception.
@@ -61,7 +61,7 @@ namespace Accord
         public ConvergenceException(string message, Exception innerException) :
             base(message, innerException) { }
 
-
+		/*
         /// <summary>
         ///   Initializes a new instance of the <see cref="ConvergenceException"/> class.
         /// </summary>
@@ -77,6 +77,6 @@ namespace Accord
         /// 
         protected ConvergenceException(SerializationInfo info, StreamingContext context) :
             base(info, context) { }
-
+		*/
     }
 }

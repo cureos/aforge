@@ -26,8 +26,8 @@ namespace Accord.Statistics.Analysis
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.IO;
-    using System.Runtime.Serialization;
-    using System.Runtime.Serialization.Formatters.Binary;
+    //using System.Runtime.Serialization;
+    //using System.Runtime.Serialization.Formatters.Binary;
     using Accord.Math;
     using Accord.Statistics.Visualizations;
     using Accord.Statistics.Testing;
@@ -688,7 +688,7 @@ namespace Accord.Statistics.Analysis
 
 
 
-
+		/*
         [OnDeserialized]
         private void onDeserialized(StreamingContext context)
         {
@@ -760,6 +760,7 @@ namespace Accord.Statistics.Analysis
                 Save(fs);
             }
         }
+        */
     }
 
 

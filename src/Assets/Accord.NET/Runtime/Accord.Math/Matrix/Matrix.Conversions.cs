@@ -358,7 +358,7 @@ namespace Accord.Math
 		/// 
 		public static TOutput[] Convert<TInput, TOutput>(this TInput[] vector, Converter<TInput, TOutput> converter)
 		{
-			return Array.ConvertAll(vector, converter);
+			return ArrayExtensions.ConvertAll(vector, converter);
 		}
 
 		/// <summary>

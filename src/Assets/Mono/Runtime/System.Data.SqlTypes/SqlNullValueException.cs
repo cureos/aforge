@@ -35,7 +35,7 @@ using System.Runtime.Serialization;
 namespace System.Data.SqlTypes
 {
 	[Serializable]
-	public sealed class SqlNullValueException : SqlTypeException, ISerializable
+	public sealed class SqlNullValueException : SqlTypeException/*, ISerializable*/
 	{
 		public SqlNullValueException ()
 			: base ("Data is Null. This method or property cannot be called on Null values.")
@@ -51,10 +51,11 @@ namespace System.Data.SqlTypes
 			: base (message, e)
 		{
 		}
-
+		/*
 		private SqlNullValueException (SerializationInfo si, StreamingContext sc) 
 			: base (si.GetString("SqlNullValueExceptionMessage"))
 		{
 		}
+		*/
 	}
 }

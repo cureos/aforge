@@ -24,7 +24,7 @@ namespace Accord.MachineLearning.Bayes
 {
     using System;
     using Accord.Math;
-    using System.Runtime.Serialization.Formatters.Binary;
+    //using System.Runtime.Serialization.Formatters.Binary;
     using System.IO;
     using Accord.Statistics.Distributions;
 
@@ -412,7 +412,7 @@ namespace Accord.MachineLearning.Bayes
         }
 
 
-
+		/*
         /// <summary>
         ///   Saves the Naïve Bayes model to a stream.
         /// </summary>
@@ -500,5 +500,6 @@ namespace Accord.MachineLearning.Bayes
                 return Load<TDistribution>(fs);
             }
         }
+        */
     }
 }

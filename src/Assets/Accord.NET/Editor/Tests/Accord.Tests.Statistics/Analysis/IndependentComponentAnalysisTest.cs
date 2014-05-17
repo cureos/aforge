@@ -26,7 +26,7 @@ namespace Accord.Tests.Statistics
     using Accord.Statistics.Analysis;
     using NUnit.Framework;
     using System.IO;
-    using System.Runtime.Serialization.Formatters.Binary;
+    //using System.Runtime.Serialization.Formatters.Binary;
 
     [TestFixture]
     public class IndependentComponentAnalysisTest
@@ -267,7 +267,7 @@ namespace Accord.Tests.Statistics
 
             Assert.IsTrue(expected.IsEqual(actual, 1e-4f));
         }
-
+		/*
         [Test]
         public void SerializeTest()
         {
@@ -320,9 +320,7 @@ namespace Accord.Tests.Statistics
 
             revertMatrix = revertMatrix.Divide(revertMatrix.Sum().Sum());
             Assert.IsTrue(expected.IsEqual(revertMatrix, 0.008));
-
-
         }
-
+		*/
     }
 }

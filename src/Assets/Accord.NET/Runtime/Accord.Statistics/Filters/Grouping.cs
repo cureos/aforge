@@ -25,7 +25,7 @@ namespace Accord.Statistics.Filters
     using System;
     using System.Collections.Generic;
     using System.Data;
-    using System.Runtime.Serialization;
+    //using System.Runtime.Serialization;
 
     /// <summary>
     ///   Grouping filter.
@@ -35,10 +35,10 @@ namespace Accord.Statistics.Filters
     public class Grouping : BaseFilter<Grouping.Options>
     {
 
-        [OptionalField]
+        //[OptionalField]
         private bool lockGroups;
 
-        [OptionalField]
+        //[OptionalField]
         private int[] groupIndices;
 
 

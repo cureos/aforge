@@ -51,10 +51,11 @@ namespace System.Data
 			: base (message, innerException)
 		{
 		}
-
+		/*
 		protected RowNotInTableException (SerializationInfo info, StreamingContext context)
 			: base (info, context)
 		{
 		}
+		*/
 	}
 }

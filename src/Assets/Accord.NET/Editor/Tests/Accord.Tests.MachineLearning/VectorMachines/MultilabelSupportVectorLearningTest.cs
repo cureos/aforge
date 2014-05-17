@@ -158,7 +158,7 @@ namespace Accord.Tests.MachineLearning
             for (int i = 0; i < evals.Length; i++)
                 Assert.AreEqual(msvm.SupportVectorUniqueCount, evals[i]);
         }
-
+		/*
         [Test]
         public void SerializeTest1()
         {
@@ -228,6 +228,6 @@ namespace Accord.Tests.MachineLearning
                 Assert.IsTrue(a.SupportVectors.IsEqual(b.SupportVectors));
             }
         }
-
+		*/
     }
 }

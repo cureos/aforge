@@ -24,7 +24,7 @@ namespace Accord.Statistics.Models.Fields
 {
     using System;
     using System.IO;
-    using System.Runtime.Serialization.Formatters.Binary;
+    //using System.Runtime.Serialization.Formatters.Binary;
     using System.Threading.Tasks;
     using Accord.Math;
     using Accord.Statistics.Models.Fields.Functions;
@@ -392,7 +392,7 @@ namespace Accord.Statistics.Models.Fields
             return logLikelihoods;
         }
 
-
+		/*
         /// <summary>
         ///   Saves the random field to a stream.
         /// </summary>
@@ -442,7 +442,7 @@ namespace Accord.Statistics.Models.Fields
         {
             return Load(new FileStream(path, FileMode.Open));
         }
-
+		*/
         #region ICloneable Members
 
         /// <summary>

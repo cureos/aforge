@@ -121,42 +121,42 @@ namespace Accord.Statistics.Testing
         ///   Gets the name of the variation source.
         /// </summary>
         /// 
-        [DisplayName("Source")]
+        //[DisplayName("Source")]
         public string Source { get; private set; }
 
         /// <summary>
         ///   Gets the sum of squares associated with the variation source.
         /// </summary>
         /// 
-        [DisplayName("Sum of Squares")]
+        //[DisplayName("Sum of Squares")]
         public double SumOfSquares { get; private set; }
 
         /// <summary>
         ///   Gets the degrees of freedom associated with the variation source.
         /// </summary>
         /// 
-        [DisplayName("Degrees of Freedom")]
+        //[DisplayName("Degrees of Freedom")]
         public int DegreesOfFreedom { get; private set; }
 
         /// <summary>
         ///   Get the mean squares, or the variance, associated with the source.
         /// </summary>
         /// 
-        [DisplayName("Mean Squares")]
+        //[DisplayName("Mean Squares")]
         public double MeanSquares { get; private set; }
 
         /// <summary>
         ///   Gets the significance of the source.
         /// </summary>
         /// 
-        [DisplayName("P-Value")]
+        //[DisplayName("P-Value")]
         public FTest Significance { get; private set; }
 
         /// <summary>
         ///   Gets the F-Statistic associated with the source's significance.
         /// </summary>
         /// 
-        [DisplayName("F-Statistic")]
+        //[DisplayName("F-Statistic")]
         public double? Statistic
         {
             get

@@ -107,7 +107,7 @@ namespace Accord.Statistics.Analysis
         ///   Gets the row marginals (proportions).
         /// </summary>
         /// 
-        [DisplayName("Weighted Row Proportions")]
+        //[DisplayName("Weighted Row Proportions")]
         public double[] WeightedRowProportions
         {
             get
@@ -129,7 +129,7 @@ namespace Accord.Statistics.Analysis
         ///   Gets the column marginals (proportions).
         /// </summary>
         /// 
-        [DisplayName("Weighted Column Proportions")]
+        //[DisplayName("Weighted Column Proportions")]
         public double[] WeightedColumnProportions
         {
             get
@@ -151,7 +151,7 @@ namespace Accord.Statistics.Analysis
         ///   Gets the Kappa coefficient of performance.
         /// </summary>
         /// 
-        [DisplayName("Kappa Coefficient (κ)")]
+        //[DisplayName("Kappa Coefficient (κ)")]
         public double WeightedKappa
         {
             get
@@ -173,7 +173,7 @@ namespace Accord.Statistics.Analysis
         ///   coefficient of performance. 
         /// </summary>
         /// 
-        [DisplayName("Kappa (κ) Std. Error")]
+        //[DisplayName("Kappa (κ) Std. Error")]
         public double WeightedStandardError
         {
             get
@@ -194,7 +194,7 @@ namespace Accord.Statistics.Analysis
         ///   coefficient of performance. 
         /// </summary>
         /// 
-        [DisplayName("Kappa (κ) Variance")]
+        //[DisplayName("Kappa (κ) Variance")]
         public double WeightedVariance
         {
             get
@@ -216,7 +216,7 @@ namespace Accord.Statistics.Analysis
         ///   Kappa value is 0. 
         /// </summary>
         /// 
-        [DisplayName("Kappa (κ) H₀ Variance")]
+        //[DisplayName("Kappa (κ) H₀ Variance")]
         public double WeightedVarianceUnderNull
         {
             get
@@ -239,7 +239,7 @@ namespace Accord.Statistics.Analysis
         ///   value is 0. 
         /// </summary>
         /// 
-        [DisplayName("Kappa (κ) H₀ Std. Error")]
+        //[DisplayName("Kappa (κ) H₀ Std. Error")]
         public double WeightedStandardErrorUnderNull
         {
             get
@@ -262,7 +262,7 @@ namespace Accord.Statistics.Analysis
         ///   Overall agreement.
         /// </summary>
         /// 
-        [DisplayName("Overall Agreement")]
+        //[DisplayName("Overall Agreement")]
         public double WeightedOverallAgreement
         {
             get
@@ -285,7 +285,7 @@ namespace Accord.Statistics.Analysis
         ///   were correctly classified by chance alone.
         /// </remarks>
         /// 
-        [DisplayName("Chance Agreement")]
+        //[DisplayName("Chance Agreement")]
         public double WeightedChanceAgreement
         {
             get

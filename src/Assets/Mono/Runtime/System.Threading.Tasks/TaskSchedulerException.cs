@@ -41,12 +41,13 @@ namespace System.Threading.Tasks
 		{
 
 		}
-
+		/*
 		protected TaskSchedulerException (SerializationInfo info, StreamingContext context)
 			: base (info, context)
 		{
 
 		}
+		*/
 
 		public TaskSchedulerException (Exception innerException)
 			: base (exceptionDefaultMessage, innerException)

@@ -1784,7 +1784,7 @@ namespace System.Data {
 				k++;
 			}
 		}
-
+		/*
 		void BinaryDeserializeTable (SerializationInfo info)
 		{
 			ArrayList arrayList = null;
@@ -1793,14 +1793,14 @@ namespace System.Data {
 			Namespace = info.GetString ("DataTable.Namespace");
 			Prefix = info.GetString ("DataTable.Prefix");
 			CaseSensitive = info.GetBoolean ("DataTable.CaseSensitive");
-			/*
-			  FIXME: Private variable available in SerializationInfo
-			  this.caseSensitiveAmbientCaseSensitive = info.GetBoolean("DataTable.caseSensitiveAmbientCaseSensitive");
-			  this.NestedInDataSet = info.GetBoolean("DataTable.NestedInDataSet");
-			  this.RepeatableElement = info.GetBoolean("DataTable.RepeatableElement");
-			  this.RemotingVersion = (System.Version) info.GetValue("DataTable.RemotingVersion",
-			  typeof(System.Version));
-			*/
+
+			//FIXME: Private variable available in SerializationInfo
+			//this.caseSensitiveAmbientCaseSensitive = info.GetBoolean("DataTable.caseSensitiveAmbientCaseSensitive");
+			//this.NestedInDataSet = info.GetBoolean("DataTable.NestedInDataSet");
+			//this.RepeatableElement = info.GetBoolean("DataTable.RepeatableElement");
+			//this.RemotingVersion = (System.Version) info.GetValue("DataTable.RemotingVersion",
+			//typeof(System.Version));
+
 			Locale = new CultureInfo (info.GetInt32 ("DataTable.LocaleLCID"));
 			_extendedProperties = (PropertyCollection) info.GetValue ("DataTable.ExtendedProperties",
 										 typeof (PropertyCollection));
@@ -1824,15 +1824,15 @@ namespace System.Data {
 				Columns[i].AutoIncrementSeed = info.GetInt64(prefix + "AutoIncrementSeed");
 				Columns[i].ReadOnly = info.GetBoolean (prefix + "ReadOnly");
 				Columns[i].MaxLength = info.GetInt32 (prefix + "MaxLength");
-				/*
-				  FIXME: Private variable available in SerializationInfo
-				  this.Columns[i].SimpleType = info.GetString("DataTable.DataColumn_" +
-				  i + ".SimpleType");
-				  this.Columns[i].AutoIncrementCurrent = info.GetInt64("DataTable.DataColumn_" +
-				  i + ".AutoIncrementCurrent");
-				  this.Columns[i].XmlDataType = info.GetString("DataTable.DataColumn_" +
-				  i + ".XmlDataType");
-				*/
+
+				//FIXME: Private variable available in SerializationInfo
+				//this.Columns[i].SimpleType = info.GetString("DataTable.DataColumn_" +
+				//i + ".SimpleType");
+				//this.Columns[i].AutoIncrementCurrent = info.GetInt64("DataTable.DataColumn_" +
+				//i + ".AutoIncrementCurrent");
+				//this.Columns[i].XmlDataType = info.GetString("DataTable.DataColumn_" +
+				//i + ".XmlDataType");
+
 				Columns[i].ExtendedProperties = (PropertyCollection) info.GetValue (prefix + "ExtendedProperties",
 												    typeof (PropertyCollection));
 				if (Columns[i].DataType == typeof (DataSetDateTime)) {
@@ -1878,10 +1878,10 @@ namespace System.Data {
 			info.AddValue ("DataTable.Namespace", Namespace);
 			info.AddValue ("DataTable.Prefix", Prefix);
 			info.AddValue ("DataTable.CaseSensitive", CaseSensitive);
-			/*
-			  FIXME: Required by MS.NET
-			  caseSensitiveAmbient, NestedInDataSet, RepeatableElement
-			*/
+
+			// FIXME: Required by MS.NET
+			// caseSensitiveAmbient, NestedInDataSet, RepeatableElement
+
 			info.AddValue ("DataTable.caseSensitiveAmbient", true);
 			info.AddValue ("DataTable.NestedInDataSet", true);
 			info.AddValue ("DataTable.RepeatableElement", false);
@@ -1920,10 +1920,10 @@ namespace System.Data {
 					       Columns[i].DateTimeMode);
 				info.AddValue ("DataTable.DataColumn_" + i + ".ColumnMapping",
 					       Columns[i].ColumnMapping, typeof (MappingType));
-				/*
-				  FIXME: Required by MS.NET
-				  SimpleType, AutoIncrementCurrent, XmlDataType
-				*/
+
+				//FIXME: Required by MS.NET
+				//SimpleType, AutoIncrementCurrent, XmlDataType
+
 				info.AddValue ("DataTable.DataColumn_" + i + ".SimpleType",
 					       null, typeof (string));
 				info.AddValue ("DataTable.DataColumn_" + i + ".AutoIncrementCurrent",
@@ -1931,10 +1931,10 @@ namespace System.Data {
 				info.AddValue ("DataTable.DataColumn_" + i + ".XmlDataType",
 					       null, typeof (string));
 			}
-			/*
-			  FIXME: Required by MS.NET
-			  TypeName
-			*/
+
+			//FIXME: Required by MS.NET
+			//TypeName
+
 			info.AddValue ("DataTable.TypeName", null, typeof (string));
 		}
 
@@ -2077,7 +2077,6 @@ namespace System.Data {
 				       htColumnErrors, typeof (Hashtable));
 		}
 
-		/*
 		//FIXME: public DataTableReader CreateDataReader ()
 		{
 			return new DataTableReader (this);

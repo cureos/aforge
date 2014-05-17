@@ -23,7 +23,7 @@
 namespace Accord
 {
     using System;
-    using System.Runtime.Serialization;
+    //using System.Runtime.Serialization;
 
     /// <summary>
     ///   Singular Matrix Exception.
@@ -60,7 +60,7 @@ namespace Accord
         public SingularMatrixException(string message, Exception innerException) :
             base(message, innerException) { }
 
-
+		/*
         /// <summary>
         /// Initializes a new instance of the <see cref="SingularMatrixException"/> class.
         /// </summary>
@@ -76,6 +76,6 @@ namespace Accord
         /// 
         protected SingularMatrixException(SerializationInfo info, StreamingContext context) :
             base(info, context) { }
-
+		*/
     }
 }

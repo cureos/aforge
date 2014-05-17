@@ -25,7 +25,7 @@ namespace Accord.Neuro.Networks
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization.Formatters.Binary;
+    //using System.Runtime.Serialization.Formatters.Binary;
     using Accord.Neuro.ActivationFunctions;
     using Accord.Neuro.Layers;
     using AForge.Neuro;
@@ -426,7 +426,7 @@ namespace Accord.Neuro.Networks
 
             return network;
         }
-
+		/*
         /// <summary>
         ///   Saves the network to a stream.
         /// </summary>
@@ -482,6 +482,6 @@ namespace Accord.Neuro.Networks
                 return Load(fs);
             }
         }
-
+		*/
     }
 }

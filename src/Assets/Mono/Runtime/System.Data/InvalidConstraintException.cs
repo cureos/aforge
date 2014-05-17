@@ -51,10 +51,11 @@ namespace System.Data
 			: base (message, innerException)
 		{
 		}
-		
+		/*
 		protected InvalidConstraintException (SerializationInfo info, StreamingContext context)
 			: base (info, context)
 		{
 		}
+		*/
 	}
 }

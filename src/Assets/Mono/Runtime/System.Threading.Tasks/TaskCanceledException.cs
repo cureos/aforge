@@ -49,12 +49,13 @@ namespace System.Threading.Tasks
 		{
 			this.task = task;
 		}
-
+		/*
 		protected TaskCanceledException (SerializationInfo info, StreamingContext context)
 			: base (info, context)
 		{
 
 		}
+		*/
 
 		public Task Task {
 			get {

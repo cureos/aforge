@@ -24,7 +24,7 @@ namespace Accord.MachineLearning
 {
     using System;
     using System.IO;
-    using System.Runtime.Serialization.Formatters.Binary;
+    //using System.Runtime.Serialization.Formatters.Binary;
 
     /// <summary>
     ///   Bootstrap validation analysis results.
@@ -91,7 +91,7 @@ namespace Accord.MachineLearning
 
             this.Estimate = 0.632 * Validation.Mean + 0.368 * Training.Mean;
         }
-
+		/*
         /// <summary>
         ///   Saves the result to a stream.
         /// </summary>
@@ -141,6 +141,6 @@ namespace Accord.MachineLearning
         {
             return Load(new FileStream(path, FileMode.Open));
         }
+        */
     }
-
 }

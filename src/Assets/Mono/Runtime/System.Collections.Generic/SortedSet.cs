@@ -44,7 +44,7 @@ namespace System.Collections.Generic {
 	[Serializable]
 	[DebuggerDisplay ("Count={Count}")]
 	[DebuggerTypeProxy (typeof (CollectionDebuggerView))]
-	public class SortedSet<T> : ISet<T>, ICollection, ISerializable, IDeserializationCallback
+	public class SortedSet<T> : ISet<T>, ICollection/*, ISerializable, IDeserializationCallback*/
 	{
 		class Node : RBTree.Node {
 
@@ -96,7 +96,7 @@ namespace System.Collections.Generic {
 
 		RBTree tree;
 		NodeHelper helper;
-		SerializationInfo si;
+		/*SerializationInfo si;*/
 
 		public SortedSet ()
 			: this (Comparer<T>.Default)
@@ -123,12 +123,12 @@ namespace System.Collections.Generic {
 			this.helper = NodeHelper.GetHelper (comparer);
 			this.tree = new RBTree (this.helper);
 		}
-
+		/*
 		protected SortedSet (SerializationInfo info, StreamingContext context)
 		{
 			this.si = info;
 		}
-
+		*/
 		public IComparer<T> Comparer {
 			get { return helper.comparer; }
 		}
@@ -290,7 +290,7 @@ namespace System.Collections.Generic {
 		{
 			throw new NotImplementedException ();
 		}
-
+		/*
 		[MonoTODO]
 		protected virtual void GetObjectData (SerializationInfo info, StreamingContext context)
 		{
@@ -301,6 +301,7 @@ namespace System.Collections.Generic {
 		{
 			GetObjectData (info, context);
 		}
+
 
 		[MonoTODO]
 		protected virtual void OnDeserialization (object sender)
@@ -315,7 +316,7 @@ namespace System.Collections.Generic {
 		{
 			OnDeserialization (sender);
 		}
-
+		*/
 		[MonoLimitation ("Isn't O(n) when other is SortedSet<T>")]
 		public void ExceptWith (IEnumerable<T> other)
 		{

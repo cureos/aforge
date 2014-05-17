@@ -93,7 +93,7 @@ namespace Accord.Statistics.Analysis
         ///   Gets the number of samples.
         /// </summary>
         /// 
-        [DisplayName("Number of samples")]
+        //[DisplayName("Number of samples")]
         public int Samples
         {
             get { return samples; }
@@ -103,7 +103,7 @@ namespace Accord.Statistics.Analysis
         ///   Gets the number of classes.
         /// </summary>
         /// 
-        [DisplayName("Number of classes")]
+        //[DisplayName("Number of classes")]
         public int Classes
         {
             get { return classes; }
@@ -173,7 +173,7 @@ namespace Accord.Statistics.Analysis
         ///   Gets the row totals.
         /// </summary>
         /// 
-        [DisplayName("Row Totals")]
+        //[DisplayName("Row Totals")]
         public int[] RowTotals
         {
             get
@@ -188,7 +188,7 @@ namespace Accord.Statistics.Analysis
         ///   Gets the column totals.
         /// </summary>
         /// 
-        [DisplayName("Column Totals")]
+        //[DisplayName("Column Totals")]
         public int[] ColumnTotals
         {
             get
@@ -203,7 +203,7 @@ namespace Accord.Statistics.Analysis
         ///   Gets the row marginals (proportions).
         /// </summary>
         /// 
-        [DisplayName("Row Proportions")]
+        //[DisplayName("Row Proportions")]
         public double[] RowProportions
         {
             get
@@ -218,7 +218,7 @@ namespace Accord.Statistics.Analysis
         ///   Gets the column marginals (proportions).
         /// </summary>
         /// 
-        [DisplayName("Column Proportions")]
+        //[DisplayName("Column Proportions")]
         public double[] ColumnProportions
         {
             get
@@ -248,7 +248,7 @@ namespace Accord.Statistics.Analysis
         ///   matches (the maximum over the diagonal)
         /// </summary>
         /// 
-        [DisplayName("Maximum Hits")]
+        //[DisplayName("Maximum Hits")]
         public double Max
         {
             get
@@ -264,7 +264,7 @@ namespace Accord.Statistics.Analysis
         ///   matches (the minimum over the diagonal)
         /// </summary>
         /// 
-        [DisplayName("Minimum Hits")]
+        //[DisplayName("Minimum Hits")]
         public double Min
         {
             get
@@ -280,7 +280,7 @@ namespace Accord.Statistics.Analysis
         ///   terms of cell percentages.
         /// </summary>
         /// 
-        [DisplayName("Proportion Matrix")]
+        //[DisplayName("Proportion Matrix")]
         public double[,] ProportionMatrix
         {
             get
@@ -295,7 +295,7 @@ namespace Accord.Statistics.Analysis
         ///   Gets the Kappa coefficient of performance.
         /// </summary>
         /// 
-        [DisplayName("Kappa Coefficient (κ)")]
+        //[DisplayName("Kappa Coefficient (κ)")]
         public double Kappa
         {
             get
@@ -317,7 +317,7 @@ namespace Accord.Statistics.Analysis
         ///   coefficient of performance. 
         /// </summary>
         /// 
-        [DisplayName("Kappa (κ) Std. Error")]
+        //[DisplayName("Kappa (κ) Std. Error")]
         public double StandardError
         {
             get
@@ -338,7 +338,7 @@ namespace Accord.Statistics.Analysis
         ///   coefficient of performance. 
         /// </summary>
         /// 
-        [DisplayName("Kappa (κ) Variance")]
+        //[DisplayName("Kappa (κ) Variance")]
         public double Variance
         {
             get
@@ -360,7 +360,7 @@ namespace Accord.Statistics.Analysis
         ///   Kappa value is 0. 
         /// </summary>
         /// 
-        [DisplayName("Kappa (κ) H₀ Variance")]
+        //[DisplayName("Kappa (κ) H₀ Variance")]
         public double VarianceUnderNull
         {
             get
@@ -383,7 +383,7 @@ namespace Accord.Statistics.Analysis
         ///   value is 0. 
         /// </summary>
         /// 
-        [DisplayName("Kappa (κ) H₀ Std. Error")]
+        //[DisplayName("Kappa (κ) H₀ Std. Error")]
         public double StandardErrorUnderNull
         {
             get
@@ -428,7 +428,7 @@ namespace Accord.Statistics.Analysis
         ///     </list></para>  
         /// </remarks>
         /// 
-        [DisplayName("Tau Coefficient (τ)")]
+        //[DisplayName("Tau Coefficient (τ)")]
         public double Tau
         {
             get
@@ -463,7 +463,7 @@ namespace Accord.Statistics.Analysis
         ///     http://www.psychstat.missouristate.edu/introbook/sbk28m.htm </para>
         /// </remarks>
         /// 
-        [DisplayName("Pearson Correlation (φ)")]
+        //[DisplayName("Pearson Correlation (φ)")]
         public double Phi
         {
             get { return Math.Sqrt(ChiSquare / samples); }
@@ -473,7 +473,7 @@ namespace Accord.Statistics.Analysis
         ///   Gets the Chi-Square statistic for the contingency table.
         /// </summary>
         /// 
-        [DisplayName("Chi-Square (χ²)")]
+        //[DisplayName("Chi-Square (χ²)")]
         public double ChiSquare
         {
             get
@@ -513,7 +513,7 @@ namespace Accord.Statistics.Analysis
         ///     http://en.wikipedia.org/wiki/Tschuprow's_T </para>  
         /// </remarks>
         /// 
-        [DisplayName("Tschuprow's T")]
+        //[DisplayName("Tschuprow's T")]
         public double Tschuprow
         {
             get { return Math.Sqrt(Phi / (samples * (classes - 1))); }
@@ -537,7 +537,7 @@ namespace Accord.Statistics.Analysis
         ///     http://en.wikipedia.org/wiki/Contingency_table </para>
         /// </remarks>
         /// 
-        [DisplayName("Pearson's C")]
+        //[DisplayName("Pearson's C")]
         public double Pearson
         {
             get { return Math.Sqrt(ChiSquare / (ChiSquare + samples)); }
@@ -557,7 +557,7 @@ namespace Accord.Statistics.Analysis
         ///     http://en.wikipedia.org/wiki/Contingency_table </para>
         /// </remarks>
         /// 
-        [DisplayName("Sakoda's V")]
+        //[DisplayName("Sakoda's V")]
         public double Sakoda
         {
             get { return Pearson / Math.Sqrt((classes - 1) / (double)classes); }
@@ -580,7 +580,7 @@ namespace Accord.Statistics.Analysis
         ///    http://www.acastat.com/Statbook/chisqassoc.htm </para>
         /// </remarks>
         /// 
-        [DisplayName("Cramér's V")]
+        //[DisplayName("Cramér's V")]
         public double Cramer
         {
             get { return Math.Sqrt(ChiSquare / (samples * (classes - 1))); }
@@ -595,7 +595,7 @@ namespace Accord.Statistics.Analysis
         ///   of the contingency table divided by the number of samples.
         /// </remarks>
         /// 
-        [DisplayName("Overall Agreement")]
+        //[DisplayName("Overall Agreement")]
         public double OverallAgreement
         {
             get { return matrix.Trace() / (double)samples; }
@@ -610,7 +610,7 @@ namespace Accord.Statistics.Analysis
         ///   diagonal elements of the confusion matrix.
         /// </remarks>
         /// 
-        [DisplayName("Geometric Agreement")]
+        //[DisplayName("Geometric Agreement")]
         public double GeometricAgreement
         {
             get { return Math.Exp(Accord.Statistics.Tools.LogGeometricMean(Diagonal)); }
@@ -625,7 +625,7 @@ namespace Accord.Statistics.Analysis
         ///   were correctly classified by chance alone.
         /// </remarks>
         /// 
-        [DisplayName("Chance Agreement")]
+        //[DisplayName("Chance Agreement")]
         public double ChanceAgreement
         {
             get
@@ -642,7 +642,7 @@ namespace Accord.Statistics.Analysis
         ///   have been generated just by chance.
         /// </summary>
         /// 
-        [DisplayName("Expected values")]
+        //[DisplayName("Expected values")]
         public double[,] ExpectedValues
         {
             get

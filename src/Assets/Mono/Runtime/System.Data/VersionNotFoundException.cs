@@ -46,12 +46,12 @@ namespace System.Data
 			: base (s)
 		{
 		}
-
+		/*
 		protected VersionNotFoundException (SerializationInfo info, StreamingContext context)
 			: base (info, context)
 		{
 		}
-		
+		*/
 		public VersionNotFoundException (string message, Exception innerException)
 			: base (message, innerException)
 		{

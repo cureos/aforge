@@ -51,10 +51,11 @@ namespace System.Data
 			: base (message, innerException)
 		{
 		}
-
+		/*
 		protected DuplicateNameException (SerializationInfo info, StreamingContext context)
 			: base (info, context)
 		{
 		}
+		*/
 	}
 }

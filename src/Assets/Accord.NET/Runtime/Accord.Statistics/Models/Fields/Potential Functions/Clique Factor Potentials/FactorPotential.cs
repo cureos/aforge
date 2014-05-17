@@ -24,7 +24,7 @@ namespace Accord.Statistics.Models.Fields.Functions
 {
     using System;
     using System.Collections.Generic;
-    using System.Runtime.Serialization;
+    //using System.Runtime.Serialization;
     using Accord.Statistics.Models.Fields.Features;
 
     /// <summary>
@@ -254,40 +254,5 @@ namespace Accord.Statistics.Models.Fields.Functions
             clone.Owner = newOwner;
             return clone;
         }
-
-
-
-        #region Backward compatibility
-
-        [OnDeserialized]
-        private void OnDeserializedMethod(StreamingContext context)
-        {
-#pragma warning disable 618,612
-            EdgeParameters = new ArraySegment<double>(Owner.Weights, EdgeParameterIndex, EdgeParameterCount);
-            StateParameters = new ArraySegment<double>(Owner.Weights, StateParameterIndex, StateParameterCount);
-            FactorParameters = new ArraySegment<double>(Owner.Weights, ParameterIndex, ParameterCount);
-#pragma warning restore 618,612
-        }
-
-        [Obsolete]
-        private int EdgeParameterIndex { get; set; }
-        [Obsolete]
-        private int EdgeParameterCount { get; set; }
-        [Obsolete]
-        private int StateParameterIndex { get; set; }
-        [Obsolete]
-        private int StateParameterCount { get; set; }
-        [Obsolete]
-        private int ParameterIndex { get; set; }
-        [Obsolete]
-        private int ParameterCount { get; set; }
-        [Obsolete]
-        private int EdgeParameterEnd { get; set; }
-        [Obsolete]
-        private int StateParameterEnd { get; set; }
-        [Obsolete]
-        private int ParameterEnd { get; set; }
-        #endregion
-
     }
 }

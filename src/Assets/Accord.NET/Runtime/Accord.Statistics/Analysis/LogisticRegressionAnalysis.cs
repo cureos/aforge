@@ -603,7 +603,7 @@ namespace Accord.Statistics.Analysis
         ///   Gets the Odds ratio for the current coefficient.
         /// </summary>
         /// 
-        [DisplayName("Odds ratio")]
+        //[DisplayName("Odds ratio")]
         public double OddsRatio
         {
             get { return analysis.OddsRatios[index]; }
@@ -613,7 +613,7 @@ namespace Accord.Statistics.Analysis
         ///   Gets the Standard Error for the current coefficient.
         /// </summary>
         /// 
-        [DisplayName("Std. Error")]
+        //[DisplayName("Std. Error")]
         public double StandardError
         {
             get { return analysis.StandardErrors[index]; }
@@ -633,7 +633,7 @@ namespace Accord.Statistics.Analysis
         ///   Gets the upper limit for the 95% confidence interval.
         /// </summary>
         /// 
-        [DisplayName("Upper confidence limit")]
+        //[DisplayName("Upper confidence limit")]
         public double ConfidenceUpper
         {
             get { return Confidence.Max; }
@@ -643,7 +643,7 @@ namespace Accord.Statistics.Analysis
         ///   Gets the lower limit for the 95% confidence interval.
         /// </summary>
         /// 
-        [DisplayName("Lower confidence limit")]
+        //[DisplayName("Lower confidence limit")]
         public double ConfidenceLower
         {
             get { return Confidence.Min; }
@@ -653,7 +653,7 @@ namespace Accord.Statistics.Analysis
         ///   Gets the coefficient value.
         /// </summary>
         /// 
-        [DisplayName("Value")]
+        //[DisplayName("Value")]
         public double Value
         {
             get { return analysis.CoefficientValues[index]; }
@@ -663,7 +663,7 @@ namespace Accord.Statistics.Analysis
         ///   Gets the Wald's test performed for this coefficient.
         /// </summary>
         /// 
-        [DisplayName("Wald p-value")]
+        //[DisplayName("Wald p-value")]
         public WaldTest Wald
         {
             get { return analysis.WaldTests[index]; }
@@ -673,7 +673,7 @@ namespace Accord.Statistics.Analysis
         ///   Gets the Likelihood-Ratio test performed for this coefficient.
         /// </summary>
         /// 
-        [DisplayName("Likelihood-Ratio p-value")]
+        //[DisplayName("Likelihood-Ratio p-value")]
         public ChiSquareTest LikelihoodRatio
         {
             get { return analysis.LikelihoodRatioTests[index]; }
