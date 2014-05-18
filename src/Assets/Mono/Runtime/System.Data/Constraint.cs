@@ -45,13 +45,13 @@ namespace System.Data {
 	[Serializable]
 	internal delegate void DelegateConstraintNameChange (object sender, string newName);
 
-	[DefaultProperty ("ConstraintName")]
+	//[DefaultProperty ("ConstraintName")]
 	[Serializable]
 	[TypeConverterAttribute (typeof (ConstraintConverter))]
 	public abstract class Constraint {
 		static readonly object beforeConstraintNameChange = new object ();
 
-		EventHandlerList events = new EventHandlerList ();
+		EventHandlerListDerived events = new EventHandlerListDerived ();
 
 		internal event DelegateConstraintNameChange BeforeConstraintNameChange {
 			add { events.AddHandler (beforeConstraintNameChange, value); }

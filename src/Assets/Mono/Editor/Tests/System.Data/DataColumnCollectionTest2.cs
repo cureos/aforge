@@ -265,7 +265,7 @@ namespace MonoTests.System.Data
 		{
 			DataTable dt = DataProvider.CreateParentDataTable();
 
-			dt.Columns.CollectionChanged+=new CollectionChangeEventHandler(Columns_CollectionChanged);
+			dt.Columns.CollectionChanged+=new CollectionChangeEventHandlerDerived(Columns_CollectionChanged);
 			counter = 0;
 			DataColumn c = dt.Columns.Add("tempCol");
 
@@ -277,7 +277,7 @@ namespace MonoTests.System.Data
 		{
 			DataTable dt = DataProvider.CreateParentDataTable();
 
-			dt.Columns.CollectionChanged+=new CollectionChangeEventHandler(Columns_CollectionChanged);
+			dt.Columns.CollectionChanged+=new CollectionChangeEventHandlerDerived(Columns_CollectionChanged);
 			DataColumn c = dt.Columns.Add("tempCol");
 			counter = 0;
 			dt.Columns.Remove("tempCol");
@@ -290,7 +290,7 @@ namespace MonoTests.System.Data
 		{
 			DataTable dt = DataProvider.CreateParentDataTable();
 
-			dt.Columns.CollectionChanged+=new CollectionChangeEventHandler(Columns_CollectionChanged);
+			dt.Columns.CollectionChanged+=new CollectionChangeEventHandlerDerived(Columns_CollectionChanged);
 			dt.Columns.Add("tempCol");
 			counter = 0;
 			dt.Columns[0].ColumnName = "tempCol2";
@@ -299,7 +299,7 @@ namespace MonoTests.System.Data
 		}
 
 		object change_element;
-		private void Columns_CollectionChanged(object sender, CollectionChangeEventArgs e)
+		private void Columns_CollectionChanged(object sender, CollectionChangeEventArgsDerived e)
 		{
 			counter++;
 			change_element = e.Element;
@@ -837,7 +837,7 @@ namespace MonoTests.System.Data
 		public void RemoveAt_Integer()
 		{
 			DataTable dt = DataProvider.CreateParentDataTable();
-			dt.Columns.CollectionChanged+=new CollectionChangeEventHandler(Columns_CollectionChanged1);
+			dt.Columns.CollectionChanged+=new CollectionChangeEventHandlerDerived(Columns_CollectionChanged1);
 			int originalColumnCount = dt.Columns.Count;
 			dt.Columns.RemoveAt(0);
 			Assert.AreEqual(originalColumnCount-1,dt.Columns.Count,"dccrai#1"); 
@@ -891,7 +891,7 @@ namespace MonoTests.System.Data
 			Assert.AreEqual (10, rows.Length);
 		}
 
-		private void Columns_CollectionChanged1(object sender, CollectionChangeEventArgs e)
+		private void Columns_CollectionChanged1(object sender, CollectionChangeEventArgsDerived e)
 		{
 			eventOccured = true;
 		}

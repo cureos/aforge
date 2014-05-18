@@ -38,16 +38,16 @@ using System.Collections;
 using System.ComponentModel;
 
 namespace System.Data {
-	[Editor]
+	//[Editor]
 	[Serializable]
 	internal delegate void DelegateValidateRemoveConstraint (ConstraintCollection sender, Constraint constraintToRemove, ref bool fail,ref string failReason);
 
 	/// <summary>
 	/// hold collection of constraints for data table
 	/// </summary>
-	[DefaultEvent ("CollectionChanged")]
+	//[DefaultEvent ("CollectionChanged")]
 	public partial class ConstraintCollection : InternalDataCollectionBase {
-		public event CollectionChangeEventHandler CollectionChanged;
+		public event CollectionChangeEventHandlerDerived CollectionChanged;
 		private DataTable table;
 
 		// Keep reference to most recent constraints passed to AddRange()
@@ -95,7 +95,7 @@ namespace System.Data {
 			foreach (Constraint cst in List) {
 				if (cst == excludeFromComparison)
 					continue;
-				if (String.Compare (constraintName, cst.ConstraintName, false, Table.Locale) == 0)
+				if (String.Equals (constraintName, cst.ConstraintName, StringComparison.CurrentCulture))
 					return true;
 			}
 
@@ -161,7 +161,7 @@ namespace System.Data {
 			if (constraint is UniqueConstraint && ((UniqueConstraint) constraint).IsPrimaryKey)
 				table.PrimaryKey = ((UniqueConstraint) constraint).Columns;
 
-			OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Add, this));
+			OnCollectionChanged (new CollectionChangeEventArgsDerived (CollectionChangeActionDerived.Add, this));
 		}
 
 		public Constraint Add (string name, DataColumn column, bool primaryKey)
@@ -256,7 +256,7 @@ namespace System.Data {
 			//thus violating the CanRemove logic
 			//CanRemove will throws Exception incase of the above
 			List.Clear (); //Will violate CanRemove rule
-			OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Refresh, this));
+			OnCollectionChanged (new CollectionChangeEventArgsDerived (CollectionChangeActionDerived.Refresh, this));
 		}
 
 		public bool Contains (string name)
@@ -311,7 +311,7 @@ namespace System.Data {
 			constraint.RemoveFromConstraintCollectionCleanup (this);
 			constraint.ConstraintCollection = null;
 			List.Remove (constraint);
-			OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Remove, this));
+			OnCollectionChanged (new CollectionChangeEventArgsDerived (CollectionChangeActionDerived.Remove, this));
 		}
 
 		public void Remove (string name)
@@ -332,7 +332,7 @@ namespace System.Data {
 			get { return base.List; }
 		}
 		
-		internal void OnCollectionChanged (CollectionChangeEventArgs ccevent)
+		internal void OnCollectionChanged (CollectionChangeEventArgsDerived ccevent)
 		{
 			if (null != CollectionChanged)
 				CollectionChanged(this, ccevent);

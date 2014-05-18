@@ -54,7 +54,7 @@ namespace System.Data {
 		public ArrayList columnNames = new ArrayList ();
 	}
 	
-	[DefaultEvent ("CollectionChanged")]
+	//[DefaultEvent ("CollectionChanged")]
 	public sealed class DataColumnCollection : InternalDataCollectionBase	{
 		//This hashtable maps between unique case insensetive column name to a doublet containing column ref and column count
 		private Hashtable columnNameCount = new Hashtable (StringComparer.OrdinalIgnoreCase);
@@ -267,7 +267,7 @@ namespace System.Data {
 				autoIncrement.Add (column);
 			
 			column.PropertyChanged += new PropertyChangedEventHandler (ColumnPropertyChanged);
-			OnCollectionChanged (new CollectionChangeEventArgs(CollectionChangeAction.Add, column));
+			OnCollectionChanged (new CollectionChangeEventArgsDerived(CollectionChangeActionDerived.Add, column));
 		}
 
 		/// <summary>
@@ -386,7 +386,7 @@ namespace System.Data {
 		/// </summary>
 		public void Clear ()
 		{
-			CollectionChangeEventArgs e = new CollectionChangeEventArgs(CollectionChangeAction.Refresh, this);
+			CollectionChangeEventArgsDerived e = new CollectionChangeEventArgsDerived(CollectionChangeActionDerived.Refresh, this);
 
 			// its not necessary to check if each column in the collection can removed.
 			// Can simply check, if there are any constraints/relations related to the table,
@@ -470,8 +470,8 @@ namespace System.Data {
 		/// <summary>
 		/// Raises the OnCollectionChanged event.
 		/// </summary>
-		/// <param name="ccevent">A CollectionChangeEventArgs that contains the event data.</param>
-		internal void OnCollectionChanged (CollectionChangeEventArgs ccevent)
+		/// <param name="ccevent">A CollectionChangeEventArgsDerived that contains the event data.</param>
+		internal void OnCollectionChanged (CollectionChangeEventArgsDerived ccevent)
 		{
 			parentTable.ResetPropertyDescriptorsCache ();
 			if (CollectionChanged != null)
@@ -481,8 +481,8 @@ namespace System.Data {
 		/// <summary>
 		/// Raises the OnCollectionChanging event.
 		/// </summary>
-		/// <param name="ccevent">A CollectionChangeEventArgs that contains the event data.</param>
-		internal void OnCollectionChanging (CollectionChangeEventArgs ccevent)
+		/// <param name="ccevent">A CollectionChangeEventArgsDerived that contains the event data.</param>
+		internal void OnCollectionChanging (CollectionChangeEventArgsDerived ccevent)
 		{
 			if (CollectionChanged != null) {
 				//FIXME: this is not right
@@ -507,7 +507,7 @@ namespace System.Data {
 			if (dependency != String.Empty)
 				throw new ArgumentException ("Cannot remove this column, because it is part of " + dependency);
 
-			CollectionChangeEventArgs e = new CollectionChangeEventArgs (CollectionChangeAction.Remove, column);
+			CollectionChangeEventArgsDerived e = new CollectionChangeEventArgsDerived (CollectionChangeActionDerived.Remove, column);
 
 			int ordinal = column.Ordinal;
 			UnregisterName (column.ColumnName);
@@ -608,12 +608,12 @@ namespace System.Data {
 		/// Occurs when the columns collection changes, either by adding or removing a column.
 		/// </summary>
 		[ResDescriptionAttribute ("Occurs whenever this collection's membership changes.")]
-		public event CollectionChangeEventHandler CollectionChanged;
+		public event CollectionChangeEventHandlerDerived CollectionChanged;
 
-		internal event CollectionChangeEventHandler CollectionMetaDataChanged;
+		internal event CollectionChangeEventHandlerDerived CollectionMetaDataChanged;
 		#endregion
 
-		private void OnCollectionMetaDataChanged (CollectionChangeEventArgs ccevent)
+		private void OnCollectionMetaDataChanged (CollectionChangeEventArgsDerived ccevent)
 		{
 			parentTable.ResetPropertyDescriptorsCache ();
 			if (CollectionMetaDataChanged != null)
@@ -622,7 +622,7 @@ namespace System.Data {
 
 		private void ColumnPropertyChanged (object sender, PropertyChangedEventArgs args)
 		{
-			OnCollectionMetaDataChanged (new CollectionChangeEventArgs(CollectionChangeAction.Refresh, sender));
+			OnCollectionMetaDataChanged (new CollectionChangeEventArgsDerived(CollectionChangeActionDerived.Refresh, sender));
 		}
 		
 		internal void MoveColumn (int oldOrdinal, int newOrdinal)

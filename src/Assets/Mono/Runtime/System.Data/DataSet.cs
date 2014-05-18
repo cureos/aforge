@@ -50,9 +50,9 @@ using System.Data.Common;
 
 namespace System.Data
 {
-	[DefaultProperty ("DataSetName")]
+	//[DefaultProperty ("DataSetName")]
 	[Serializable]
-	public partial class DataSet : MarshalByValueComponent, ISupportInitialize /*, IListSource, ISerializable*/{
+	public partial class DataSet : /*MarshalByValueComponent, */ISupportInitialize /*, IListSource, ISerializable*/{
 		private string dataSetName;
 		private string _namespace = string.Empty;
 		private string prefix;
@@ -290,20 +290,20 @@ namespace System.Data
 		}
 
 		[DataCategory ("Data")]
-		[DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+		//[DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
 		public DataRelationCollection Relations {
 			get { return relationCollection; }
 		}
-
+		/*
 		[Browsable (false)]
-		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+		//[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public override ISite Site {
 			get { return base.Site; }
 			set { base.Site = value; }
 		}
-
+		*/
 		[DataCategory ("Data")]
-		[DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+		//[DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
 		public DataTableCollection Tables {
 			get { return tableCollection; }
 		}
@@ -712,7 +712,7 @@ namespace System.Data
 		#endregion //Private Xml Serialisation
 	}
 
-	partial class DataSet : ISupportInitializeNotification {
+	partial class DataSet/* : ISupportInitializeNotification */{
 		private bool dataSetInitialized = true;
 		public event EventHandler Initialized;
 
@@ -728,7 +728,7 @@ namespace System.Data
 			get { return dataSetInitialized; }
 		}
 
-		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+		//[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		[Browsable (false)]
 		public virtual SchemaSerializationMode SchemaSerializationMode {
 			get { return SchemaSerializationMode.IncludeSchema; }
@@ -891,7 +891,7 @@ namespace System.Data
 			OnDataSetInitialized (e);
 		}
 
-		protected virtual void InitializeDerivedDataSet ()
+		protected virtual void InitializeDataSet ()
 		{
 		}
 		/*

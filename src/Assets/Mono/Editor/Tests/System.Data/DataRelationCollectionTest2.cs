@@ -39,7 +39,7 @@ namespace MonoTests.System.Data
 	{
 		private int changesCounter = 0;
 
-		private void Relations_CollectionChanged(object sender, CollectionChangeEventArgs e)
+		private void Relations_CollectionChanged(object sender, CollectionChangeEventArgsDerived e)
 		{
 			changesCounter++;
 		}
@@ -170,7 +170,7 @@ namespace MonoTests.System.Data
 			DataSet ds = getDataSet();
 
 			ds.Relations.Add(ds.Tables[0].Columns["ParentId"],ds.Tables[1].Columns["ParentId"]);
-			ds.Relations.CollectionChanged+=new CollectionChangeEventHandler(Relations_CollectionChanged);
+			ds.Relations.CollectionChanged+=new CollectionChangeEventHandlerDerived(Relations_CollectionChanged);
 			ds.Relations.Clear();
 			Assert.AreEqual(0, ds.Relations.Count, "DRC38");
 			Assert.AreEqual(1, changesCounter, "DRC39");
@@ -183,7 +183,7 @@ namespace MonoTests.System.Data
 		{
 			DataSet ds = getDataSet();
 
-			ds.Relations.CollectionChanged+=new CollectionChangeEventHandler(Relations_CollectionChanged);
+			ds.Relations.CollectionChanged+=new CollectionChangeEventHandlerDerived(Relations_CollectionChanged);
 
 			DataRelation rel = new DataRelation("rel1",ds.Tables[0].Columns["ParentId"]
 				,ds.Tables[1].Columns["ParentId"]);
@@ -413,7 +413,7 @@ namespace MonoTests.System.Data
 
 			Assert.AreEqual(2,ds.Relations.Count,"DRC84");
 
-			ds.Relations.CollectionChanged+=new CollectionChangeEventHandler(Relations_CollectionChanged);
+			ds.Relations.CollectionChanged+=new CollectionChangeEventHandlerDerived(Relations_CollectionChanged);
 			//Perform remove
 
 			ds.Relations.Remove(rel1);
@@ -451,7 +451,7 @@ namespace MonoTests.System.Data
 
 			Assert.AreEqual(ds.Relations.Count,2,"DRC91");
 
-			ds.Relations.CollectionChanged+=new CollectionChangeEventHandler(Relations_CollectionChanged);
+			ds.Relations.CollectionChanged+=new CollectionChangeEventHandlerDerived(Relations_CollectionChanged);
 			//Perform remove
 
 			ds.Relations.Remove("rel1");
@@ -500,7 +500,7 @@ namespace MonoTests.System.Data
 
 			Assert.AreEqual(2,ds.Relations.Count,"DRC100");
 
-			ds.Relations.CollectionChanged+=new CollectionChangeEventHandler(Relations_CollectionChanged);
+			ds.Relations.CollectionChanged+=new CollectionChangeEventHandlerDerived(Relations_CollectionChanged);
 			//Perform remove
 
 			ds.Relations.RemoveAt(0);

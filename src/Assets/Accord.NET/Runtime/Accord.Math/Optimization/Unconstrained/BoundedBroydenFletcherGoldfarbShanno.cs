@@ -497,7 +497,7 @@ namespace Accord.Math.Optimization
                     {
                         Tag = Tuple.Create(
                             (int[])isave.Clone(), (double[])dsave.Clone(),
-                            (bool[])lsave.Clone(), (String)csave.Clone(),
+                            (bool[])lsave.Clone(), /*(String)*/csave/*.Clone()*/,
                             (double[])work.Clone())
                     });
 
@@ -510,7 +510,7 @@ namespace Accord.Math.Optimization
                 {
                     Tag = Tuple.Create(
                         (int[])isave.Clone(), (double[])dsave.Clone(),
-                        (bool[])lsave.Clone(), (String)csave.Clone(),
+                        (bool[])lsave.Clone(), /*(String)*/csave/*.Clone()*/,
                         (double[])work.Clone())
                 });
 

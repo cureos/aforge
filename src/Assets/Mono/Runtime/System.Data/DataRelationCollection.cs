@@ -45,8 +45,8 @@ namespace System.Data {
 	/// <summary>
 	/// Represents the collection of DataRelation objects for this DataSet.
 	/// </summary>
-	[DefaultEvent ("CollectionChanged")]
-	[DefaultProperty ("Table")]
+	//[DefaultEvent ("CollectionChanged")]
+	//[DefaultProperty ("Table")]
 	public abstract partial class DataRelationCollection : InternalDataCollectionBase {
 		/// <summary>
 		/// Summary description for DataTableRelationCollection.
@@ -269,7 +269,7 @@ namespace System.Data {
 			inTransition = relation;
 
 			try {
-				CollectionChangeEventArgs e = new CollectionChangeEventArgs (CollectionChangeAction.Add, relation);
+				CollectionChangeEventArgsDerived e = new CollectionChangeEventArgsDerived (CollectionChangeActionDerived.Add, relation);
 				OnCollectionChanging (e);
 
 				this.AddCore (relation);
@@ -279,7 +279,7 @@ namespace System.Data {
 				relation.ParentTable.ResetPropertyDescriptorsCache ();
 				relation.ChildTable.ResetPropertyDescriptorsCache ();
 
-				e = new CollectionChangeEventArgs (CollectionChangeAction.Add, relation);
+				e = new CollectionChangeEventArgsDerived (CollectionChangeActionDerived.Add, relation);
 				OnCollectionChanged (e);
 			} finally {
 				inTransition = null;
@@ -520,9 +520,9 @@ namespace System.Data {
 			return (-1 != IndexOf (name, false));
 		}
 
-		private CollectionChangeEventArgs CreateCollectionChangeEvent (CollectionChangeAction action)
+		private CollectionChangeEventArgsDerived CreateCollectionChangeEvent (CollectionChangeActionDerived action)
 		{
-			return new CollectionChangeEventArgs (action, this);
+			return new CollectionChangeEventArgsDerived (action, this);
 		}
 
 		protected abstract DataSet GetDataSet ();
@@ -542,8 +542,8 @@ namespace System.Data {
 			int count = 0, match = -1;
 			for (int i = 0; i < List.Count; i++) {
 				String name2 = ((DataRelation) List[i]).RelationName;
-				if (String.Compare (name, name2, true) == 0) {
-					if (String.Compare (name, name2, false) == 0)
+				if (String.Compare (name, name2, StringComparison.CurrentCultureIgnoreCase) == 0) {
+					if (String.Compare (name, name2, StringComparison.CurrentCulture) == 0)
 						return i;
 					match = i;
 					count++;
@@ -556,13 +556,13 @@ namespace System.Data {
 			return -1;
 		}
 
-		protected virtual void OnCollectionChanged (CollectionChangeEventArgs ccevent)
+		protected virtual void OnCollectionChanged (CollectionChangeEventArgsDerived ccevent)
 		{
 			if (CollectionChanged != null)
 				CollectionChanged (this, ccevent);
 		}
 
-		protected virtual void OnCollectionChanging (CollectionChangeEventArgs ccevent)
+		protected virtual void OnCollectionChanging (CollectionChangeEventArgsDerived ccevent)
 		{
 			// LAME Spec: No associated events and it doesn't update CollectionChanged
 			// event too as specified in MSDN
@@ -585,7 +585,7 @@ namespace System.Data {
 				if (!(List.Contains (relation)))
 					throw new ArgumentException ("Relation doesnot belong to this Collection.");
 
-				CollectionChangeEventArgs e = new CollectionChangeEventArgs (CollectionChangeAction.Remove, relation);
+				CollectionChangeEventArgsDerived e = new CollectionChangeEventArgsDerived (CollectionChangeActionDerived.Remove, relation);
 				OnCollectionChanging (e);
 
 				RemoveCore (relation);
@@ -593,7 +593,7 @@ namespace System.Data {
 				if (relation.RelationName == name)
 					index--;
 
-				e = new CollectionChangeEventArgs (CollectionChangeAction.Remove, relation);
+				e = new CollectionChangeEventArgsDerived (CollectionChangeActionDerived.Remove, relation);
 				OnCollectionChanged (e);
 			} finally {
 				inTransition = null;
@@ -625,7 +625,7 @@ namespace System.Data {
 		#region Events
 
 		[ResDescriptionAttribute ("Occurs whenever this collection's membership changes.")]
-		public event CollectionChangeEventHandler CollectionChanged;
+		public event CollectionChangeEventHandlerDerived CollectionChanged;
 
 		#endregion
 	}

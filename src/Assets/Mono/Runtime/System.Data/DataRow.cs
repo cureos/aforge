@@ -250,7 +250,7 @@ namespace System.Data {
 					// TODO: Can we avoid the Eval each time by using the cached value?
 					object o = column.CompiledExpression.Eval (this);
 					if (o != null && o != DBNull.Value)
-						o = Convert.ChangeType (o, column.DataType);
+						o = ConvertExtensions.ChangeType (o, column.DataType);
 					column [recordIndex] = o;
 					return column [recordIndex];
 				}
@@ -594,7 +594,7 @@ namespace System.Data {
 		/// <summary>
 		/// Begins an edit operation on a DataRow object.
 		/// </summary>
-		[EditorBrowsable (EditorBrowsableState.Advanced)]
+		//[EditorBrowsable (EditorBrowsableState.Advanced)]
 		public void BeginEdit ()
 		{
 			if (_inChangingEvent)
@@ -615,7 +615,7 @@ namespace System.Data {
 		/// <summary>
 		/// Cancels the current edit on the row.
 		/// </summary>
-		[EditorBrowsable (EditorBrowsableState.Advanced)]
+		//[EditorBrowsable (EditorBrowsableState.Advanced)]
 		public void CancelEdit ()
 		{
 			 if (_inChangingEvent)
@@ -780,7 +780,7 @@ namespace System.Data {
 		/// <summary>
 		/// Ends the edit occurring on the row.
 		/// </summary>
-		[EditorBrowsable (EditorBrowsableState.Advanced)]
+		//[EditorBrowsable (EditorBrowsableState.Advanced)]
 		public void EndEdit ()
 		{
 			if (_inChangingEvent)

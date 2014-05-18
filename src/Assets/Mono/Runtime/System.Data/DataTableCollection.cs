@@ -45,8 +45,8 @@ namespace System.Data
 	/// <summary>
 	/// Represents the collection of tables for the DataSet.
 	/// </summary>
-	[DefaultEvent ("CollectionChanged")]
-	[ListBindable (false)]
+	//[DefaultEvent ("CollectionChanged")]
+	//[ListBindable (false)]
 	public partial class DataTableCollection : InternalDataCollectionBase {
 		DataSet dataSet;
 		DataTable[] mostRecentTables;
@@ -95,7 +95,7 @@ namespace System.Data
 
 		public void Add (DataTable table)
 		{
-			OnCollectionChanging (new CollectionChangeEventArgs (CollectionChangeAction.Add, table));
+			OnCollectionChanging (new CollectionChangeEventArgsDerived (CollectionChangeActionDerived.Add, table));
 			// check if the reference is a null reference
 			if (table == null)
 				throw new ArgumentNullException ("table");
@@ -125,7 +125,7 @@ namespace System.Data
 
 			List.Add (table);
 			table.dataSet = dataSet;
-			OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Add, table));
+			OnCollectionChanged (new CollectionChangeEventArgsDerived (CollectionChangeActionDerived.Add, table));
 		}
 
 		public DataTable Add (string name)
@@ -192,13 +192,13 @@ namespace System.Data
 
 		public void Remove (DataTable table)
 		{
-			OnCollectionChanging (new CollectionChangeEventArgs (CollectionChangeAction.Remove, table));
+			OnCollectionChanging (new CollectionChangeEventArgsDerived (CollectionChangeActionDerived.Remove, table));
 			if (CanRemove (table, true))
 				table.dataSet = null;
 
 			List.Remove (table);
 			table.dataSet = null;
-			OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Remove, table));
+			OnCollectionChanged (new CollectionChangeEventArgsDerived (CollectionChangeActionDerived.Remove, table));
 		}
 
 		public void Remove (string name)
@@ -217,14 +217,14 @@ namespace System.Data
 		#endregion
 
 		#region Protected methods
-		internal void OnCollectionChanging (CollectionChangeEventArgs ccevent)
+		internal void OnCollectionChanging (CollectionChangeEventArgsDerived ccevent)
 		{
 			if (CollectionChanging != null)
 				CollectionChanging (this, ccevent);
 		}
 
 
-		internal void OnCollectionChanged (CollectionChangeEventArgs ccevent)
+		internal void OnCollectionChanged (CollectionChangeEventArgsDerived ccevent)
 		{
 			if (CollectionChanged != null)
 				CollectionChanged (this, ccevent);
@@ -239,9 +239,9 @@ namespace System.Data
 			int count = 0, match = -1;
 			for (int i = start; i < List.Count; i++) {
 				String name2 = ((DataTable) List[i]).TableName;
-				if (String.Compare (name, name2, false, dataSet.Locale) == 0)
+				if (String.Compare (name, name2, StringComparison.CurrentCulture) == 0)
 					return i;
-				if (String.Compare (name, name2, true, dataSet.Locale) == 0) {
+				if (String.Compare (name, name2, StringComparison.CurrentCultureIgnoreCase) == 0) {
 					match = i;
 					count++;
 				}
@@ -328,9 +328,9 @@ namespace System.Data
 		#region Events
 
 		[ResDescriptionAttribute ("Occurs whenever this collection's membership changes.")]
-		public event CollectionChangeEventHandler CollectionChanged;
+		public event CollectionChangeEventHandlerDerived CollectionChanged;
 
-		public event CollectionChangeEventHandler CollectionChanging;
+		public event CollectionChangeEventHandlerDerived CollectionChanging;
 
 		#endregion
 	}

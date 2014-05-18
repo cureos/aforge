@@ -55,12 +55,12 @@ namespace System.Data {
 	/// Summary description for DataColumn.
 	/// </summary>
 	
-	[ToolboxItem (false)]
-	[DefaultProperty ("ColumnName")]
-	[DesignTimeVisible (false)]
-	public class DataColumn : MarshalByValueComponent {
+	//[ToolboxItem (false)]
+	//[DefaultProperty ("ColumnName")]
+	//[DesignTimeVisible (false)]
+	public class DataColumn/* : MarshalByValueComponent */{
 		#region Events
-		EventHandlerList _eventHandlers = new EventHandlerList ();
+		EventHandlerListDerived _eventHandlers = new EventHandlerListDerived ();
 
 		//used for constraint validation
 		//if an exception is fired during this event the change should be canceled
@@ -166,7 +166,7 @@ namespace System.Data {
 		
 		DataSetDateTime _datetimeMode = DataSetDateTime.UnspecifiedLocal;
 		[DefaultValue (DataSetDateTime.UnspecifiedLocal)]
-		[RefreshProperties (RefreshProperties.All)]
+		//[RefreshProperties (RefreshProperties.All)]
 		public DataSetDateTime DateTimeMode {
 			get { return _datetimeMode; }
 			set {
@@ -228,7 +228,7 @@ namespace System.Data {
 		///	</remarks>
 		[DataCategory ("Data")]
 		[DefaultValue (false)]
-		[RefreshProperties (RefreshProperties.All)]
+		//[RefreshProperties (RefreshProperties.All)]
 		public bool AutoIncrement {
 			get { return _autoIncrement; }
 			set {
@@ -313,7 +313,7 @@ namespace System.Data {
 		}
 
 		[DataCategory ("Data")]
-		[RefreshProperties (RefreshProperties.All)]
+		//[RefreshProperties (RefreshProperties.All)]
 		[DefaultValue ("")]
 		public string ColumnName {
 			get { return _columnName; }
@@ -321,8 +321,7 @@ namespace System.Data {
 				if (value == null)
 					value = String.Empty;
 
-				CultureInfo info = Table != null ? Table.Locale : CultureInfo.CurrentCulture;
-				if (String.Compare (value, _columnName, true, info) != 0) {
+				if (String.Compare (value, _columnName, StringComparison.CurrentCultureIgnoreCase) != 0) {
 					if (Table != null) {
 						if (value.Length == 0)
 							throw new ArgumentException ("ColumnName is required when it is part of a DataTable.");
@@ -337,7 +336,7 @@ namespace System.Data {
 
 					if (Table != null)
 						Table.ResetPropertyDescriptorsCache ();
-				} else if (String.Compare (value, _columnName, false, info) != 0) {
+				} else if (String.Compare (value, _columnName, StringComparison.CurrentCulture) != 0) {
 					RaisePropertyChanging ("ColumnName");
 					_columnName = value;
 
@@ -349,7 +348,7 @@ namespace System.Data {
 
 		[DataCategory ("Data")]
 		[DefaultValue (typeof (string))]
-		[RefreshProperties (RefreshProperties.All)]
+		//[RefreshProperties (RefreshProperties.All)]
 		[TypeConverterAttribute (typeof (ColumnTypeConverter))]
 		public Type DataType {
 			get { return DataContainer.Type; }
@@ -417,7 +416,7 @@ namespace System.Data {
 					_defaultValue = value;
 				else
 					try {
-						_defaultValue = Convert.ChangeType (value, DataType);
+						_defaultValue = ConvertExtensions.ChangeType (value, DataType);
 					} catch (InvalidCastException) {
 						string msg = String.Format ("Default Value of type '{0}' is not compatible with column type '{1}'", value.GetType (), DataType);
 						throw new DataException (msg);
@@ -431,7 +430,7 @@ namespace System.Data {
 
 		[DataCategory ("Data")]
 		[DefaultValue ("")]
-		[RefreshProperties (RefreshProperties.All)]
+		//[RefreshProperties (RefreshProperties.All)]
 		public string Expression {
 			get { return _expression; }
 			set {
@@ -529,7 +528,7 @@ namespace System.Data {
 		//Need a good way to set the Ordinal when the column is added to a columnCollection.
 		[Browsable (false)]
 		[DataCategory ("Data")]
-		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+		//[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public int Ordinal {
 			get { return _ordinal; }
 			internal set { _ordinal = value; }
@@ -559,7 +558,7 @@ namespace System.Data {
 
 		[Browsable (false)]
 		[DataCategory ("Data")]
-		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+		//[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public DataTable Table {
 			get { return _table; }
 			internal set { _table = value; }
@@ -567,7 +566,7 @@ namespace System.Data {
 
 		[DataCategory ("Data")]
 		[DefaultValue (false)]
-		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+		//[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public bool Unique {
 			get { return _unique; }
 			set {

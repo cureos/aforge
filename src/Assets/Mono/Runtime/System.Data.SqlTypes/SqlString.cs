@@ -130,8 +130,8 @@ namespace System.Data.SqlTypes
 		// and whether unicode is encoded or not
 		public SqlString (int lcid, SqlCompareOptions compareOptions, byte[] data, bool fUnicode) 
 		{
-			Encoding encoding = (fUnicode ? Encoding.Unicode : Encoding.ASCII);
-			this.value = encoding.GetString (data);
+			Encoding encoding = (fUnicode ? (Encoding)new UnicodeEncoding() : (Encoding)new ASCIIEncoding());
+			this.value = encoding.GetString (data, 0, data.Length);
 			this.lcid = lcid;
 			this.compareOptions = compareOptions;
 			if (value != null)
@@ -152,7 +152,7 @@ namespace System.Data.SqlTypes
 		// and whether unicode is encoded or not
 		public SqlString (int lcid, SqlCompareOptions compareOptions, byte[] data, int index, int count, bool fUnicode) 
 		{		       
-			Encoding encoding = (fUnicode ? Encoding.Unicode : Encoding.ASCII);
+			Encoding encoding = (fUnicode ? (Encoding)new UnicodeEncoding() : (Encoding)new ASCIIEncoding());
 			this.value = encoding.GetString (data, index, count);
 			this.lcid = lcid;
 			this.compareOptions = compareOptions;
@@ -310,12 +310,12 @@ namespace System.Data.SqlTypes
 
 		public byte[] GetNonUnicodeBytes() 
 		{
-			return Encoding.ASCII.GetBytes (value);
+			return new ASCIIEncoding().GetBytes (value);
 		}
 
 		public byte[] GetUnicodeBytes() 
 		{
-			return Encoding.Unicode.GetBytes (value);
+			return new UnicodeEncoding().GetBytes (value);
 		}
 
 		public static SqlBoolean GreaterThan(SqlString x, SqlString y) 

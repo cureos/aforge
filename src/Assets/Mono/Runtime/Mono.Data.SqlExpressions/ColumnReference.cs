@@ -114,7 +114,7 @@ namespace Mono.Data.SqlExpressions {
 					else
 						_cachedRelation = relations [0];
 				}
-				_cachedRelation.DataSet.Relations.CollectionChanged += new CollectionChangeEventHandler (OnRelationRemoved);
+				_cachedRelation.DataSet.Relations.CollectionChanged += new CollectionChangeEventHandlerDerived (OnRelationRemoved);
 			}
 			return _cachedRelation;
 		}
@@ -136,7 +136,7 @@ namespace Mono.Data.SqlExpressions {
 					throw new EvaluateException (String.Format ("Cannot find column [{0}].", columnName));
 
 				_cachedColumn.PropertyChanged += new PropertyChangedEventHandler (OnColumnPropertyChanged);
-				_cachedColumn.Table.Columns.CollectionChanged += new CollectionChangeEventHandler (OnColumnRemoved);
+				_cachedColumn.Table.Columns.CollectionChanged += new CollectionChangeEventHandlerDerived (OnColumnRemoved);
 			}
 			return _cachedColumn;
 		}
@@ -247,9 +247,9 @@ namespace Mono.Data.SqlExpressions {
 
 				// unregister column collection listener
 				if (columnCollection != null)	
-					columnCollection.CollectionChanged -= new CollectionChangeEventHandler (OnColumnRemoved);
+					columnCollection.CollectionChanged -= new CollectionChangeEventHandlerDerived (OnColumnRemoved);
 				else if (_cachedColumn.Table != null)
-					_cachedColumn.Table.Columns.CollectionChanged -= new CollectionChangeEventHandler (OnColumnRemoved);
+					_cachedColumn.Table.Columns.CollectionChanged -= new CollectionChangeEventHandlerDerived (OnColumnRemoved);
 				
 				_cachedColumn = null;
 			}
@@ -257,9 +257,9 @@ namespace Mono.Data.SqlExpressions {
 			if (_cachedRelation != null) {
 				// unregister relation collection listener
 				if (relationCollection != null)				
-					relationCollection.CollectionChanged -= new CollectionChangeEventHandler (OnRelationRemoved);
+					relationCollection.CollectionChanged -= new CollectionChangeEventHandlerDerived (OnRelationRemoved);
 				else if (_cachedRelation.DataSet != null)
-					_cachedRelation.DataSet.Relations.CollectionChanged -= new CollectionChangeEventHandler (OnRelationRemoved);
+					_cachedRelation.DataSet.Relations.CollectionChanged -= new CollectionChangeEventHandlerDerived (OnRelationRemoved);
 
 				_cachedRelation = null;
 			}			
@@ -275,12 +275,12 @@ namespace Mono.Data.SqlExpressions {
 				DropCached (null, null);
 		}
 
-		private void OnColumnRemoved (object sender, CollectionChangeEventArgs args)
+		private void OnColumnRemoved (object sender, CollectionChangeEventArgsDerived args)
 		{
 			if (!(args.Element is DataColumnCollection))
 				return;
 
-			if (args.Action != CollectionChangeAction.Remove)
+			if (args.Action != CollectionChangeActionDerived.Remove)
 				return;
 
 			DataColumnCollection columnCollection = (DataColumnCollection) args.Element;
@@ -288,12 +288,12 @@ namespace Mono.Data.SqlExpressions {
 				DropCached (columnCollection, null);
 		}
 
-		private void OnRelationRemoved (object sender, CollectionChangeEventArgs args)
+		private void OnRelationRemoved (object sender, CollectionChangeEventArgsDerived args)
 		{
 			if (!(args.Element is DataRelationCollection))
 				return;
 
-			if (args.Action != CollectionChangeAction.Remove)
+			if (args.Action != CollectionChangeActionDerived.Remove)
 				return;			
 
 			DataRelationCollection relationCollection = (DataRelationCollection) args.Element;

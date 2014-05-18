@@ -65,7 +65,7 @@ namespace MonoTests.System.Data
 
 		[Serializable()]
 		[DesignerCategoryAttribute("code")]
-		[ToolboxItem(true)]
+		//[ToolboxItem(true)]
 		public class myTypedDataSet : DataSet 
 		{        
 			private Order_DetailsDataTable tableOrder_Details;
@@ -77,13 +77,13 @@ namespace MonoTests.System.Data
 			public myTypedDataSet() 
 			{
 				this.InitClass();
-				CollectionChangeEventHandler schemaChangedHandler = new CollectionChangeEventHandler(this.SchemaChanged);
+				CollectionChangeEventHandlerDerived schemaChangedHandler = new CollectionChangeEventHandlerDerived(this.SchemaChanged);
 				this.Tables.CollectionChanged += schemaChangedHandler;
 				this.Relations.CollectionChanged += schemaChangedHandler;
 			}
         
 			[Browsable(false)]
-			[DesignerSerializationVisibilityAttribute(DesignerSerializationVisibility.Content)]
+			//[DesignerSerializationVisibilityAttribute(DesignerSerializationVisibility.Content)]
 			public Order_DetailsDataTable Order_Details 
 			{
 				get 
@@ -93,7 +93,7 @@ namespace MonoTests.System.Data
 			}
         
 			[Browsable(false)]
-			[DesignerSerializationVisibilityAttribute(DesignerSerializationVisibility.Content)]
+			//[DesignerSerializationVisibilityAttribute(DesignerSerializationVisibility.Content)]
 			public OrdersDataTable Orders 
 			{
 				get 
@@ -170,9 +170,9 @@ namespace MonoTests.System.Data
 				return false;
 			}
         
-			private void SchemaChanged(object sender, CollectionChangeEventArgs e) 
+			private void SchemaChanged(object sender, CollectionChangeEventArgsDerived e) 
 			{
-				if ((e.Action == CollectionChangeAction.Remove)) 
+				if ((e.Action == CollectionChangeActionDerived.Remove)) 
 				{
 					this.InitVars();
 				}

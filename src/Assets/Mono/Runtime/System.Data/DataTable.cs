@@ -53,12 +53,12 @@ using Mono.Data.SqlExpressions;
 
 namespace System.Data {
 	//[Designer]
-	[ToolboxItem (false)]
-	[DefaultEvent ("RowChanging")]
-	[DefaultProperty ("TableName")]
-	[DesignTimeVisible (false)]
+	//[ToolboxItem (false)]
+	//[DefaultEvent ("RowChanging")]
+	//[DefaultProperty ("TableName")]
+	//[DesignTimeVisible (false)]
 	[Serializable]
-	public partial class DataTable : MarshalByValueComponent, ISupportInitialize /*, IListSource, ISerializable*/ {
+	public partial class DataTable : /*MarshalByValueComponent, */ISupportInitialize /*, IListSource, ISerializable*/ {
 		#region Fields
 		internal DataSet dataSet;
 
@@ -204,7 +204,7 @@ namespace System.Data {
 		/// Gets the collection of child relations for this DataTable.
 		/// </summary>
 		[Browsable (false)]
-		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+		//[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public DataRelationCollection ChildRelations {
 			get { return _childRelations; }
 		}
@@ -213,7 +213,7 @@ namespace System.Data {
 		/// Gets the collection of columns that belong to this table.
 		/// </summary>
 		[DataCategory ("Data")]
-		[DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+		//[DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
 		public DataColumnCollection Columns {
 			get { return _columnCollection; }
 		}
@@ -222,7 +222,7 @@ namespace System.Data {
 		/// Gets the collection of constraints maintained by this table.
 		/// </summary>
 		[DataCategory ("Data")]
-		[DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+		//[DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
 		public ConstraintCollection Constraints {
 			get { return _constraintCollection; }
 			internal set { _constraintCollection = value; }
@@ -232,7 +232,7 @@ namespace System.Data {
 		/// Gets the DataSet that this table belongs to.
 		/// </summary>
 		[Browsable (false)]
-		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+		//[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public DataSet DataSet {
 			get { return dataSet; }
 		}
@@ -357,7 +357,7 @@ namespace System.Data {
 		/// this DataTable.
 		/// </summary>
 		[Browsable (false)]
-		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+		//[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public DataRelationCollection ParentRelations {
 			get { return _parentRelations; }
 		}
@@ -457,24 +457,24 @@ namespace System.Data {
 		public DataRowCollection Rows {
 			get { return _rows; }
 		}
-
+		/*
 		/// <summary>
 		/// Gets or sets an System.ComponentModel.ISite
 		/// for the DataTable.
 		/// </summary>
 		[Browsable (false)]
-		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+		//[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public override ISite Site {
 			get { return _site; }
 			set { _site = value; }
 		}
-
+		*/
 		/// <summary>
 		/// Gets or sets the name of the the DataTable.
 		/// </summary>
 		[DataCategory ("Data")]
 		[DefaultValue ("")]
-		[RefreshProperties (RefreshProperties.All)]
+		//[RefreshProperties (RefreshProperties.All)]
 		public string TableName {
 			get { return _tableName == null ? "" : _tableName; }
 			set { _tableName = value; }
@@ -612,7 +612,7 @@ namespace System.Data {
 				if (myRow.RowState != DataRowState.Detached)
 					i++;
 			}
-			_rows.OnListChanged (this, new ListChangedEventArgs (ListChangedType.Reset, -1, -1));
+			_rows.OnListChanged (this, new ListChangedEventArgsDerived (ListChangedTypeDerived.Reset, -1, -1));
 		}
 
 		/// <summary>
@@ -753,7 +753,7 @@ namespace System.Data {
 			Copy.Namespace = Namespace;
 			// Copy.ParentRelations
 			Copy.Prefix = Prefix;
-			Copy.Site = Site;
+			//Copy.Site = Site;
 			Copy.TableName = TableName;
 
 			bool isEmpty = Copy.Columns.Count == 0;
@@ -1601,7 +1601,7 @@ namespace System.Data {
 		}
 	}
 
-	partial class DataTable : ISupportInitializeNotification {
+	partial class DataTable/* : ISupportInitializeNotification */{
 		private bool tableInitialized = true;
 
 		[Browsable (false)]

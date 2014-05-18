@@ -143,7 +143,7 @@ namespace MonoTests.System.Data
 		{
 			counter = 0;
 			DataSet ds = new DataSet();
-			ds.Tables.CollectionChanged+=new global::System.ComponentModel.CollectionChangeEventHandler(Tables_CollectionChanged);
+			ds.Tables.CollectionChanged+=new global::System.ComponentModel.CollectionChangeEventHandlerDerived(Tables_CollectionChanged);
 			ds.Tables.Add();
 			ds.Tables.Add();
 			Assert.AreEqual(2, counter, "DTC15");
@@ -153,7 +153,7 @@ namespace MonoTests.System.Data
 			Assert.AreEqual(4, counter, "DTC16");
 		}
 
-		private void Tables_CollectionChanged(object sender, global::System.ComponentModel.CollectionChangeEventArgs e)
+		private void Tables_CollectionChanged(object sender, global::System.ComponentModel.CollectionChangeEventArgsDerived e)
 		{
 			counter++;
 		}
@@ -163,7 +163,7 @@ namespace MonoTests.System.Data
 		{
 			counter = 0;
 			DataSet ds = new DataSet();
-			ds.Tables.CollectionChanging+=new global::System.ComponentModel.CollectionChangeEventHandler(Tables_CollectionChanging);
+			ds.Tables.CollectionChanging+=new global::System.ComponentModel.CollectionChangeEventHandlerDerived(Tables_CollectionChanging);
 			ds.Tables.Add();
 			ds.Tables.Add();
 			Assert.AreEqual(2, counter, "DTC17");
@@ -173,7 +173,7 @@ namespace MonoTests.System.Data
 			Assert.AreEqual(4, counter, "DTC18");
 		}
 
-		private void Tables_CollectionChanging(object sender, global::System.ComponentModel.CollectionChangeEventArgs e)
+		private void Tables_CollectionChanging(object sender, global::System.ComponentModel.CollectionChangeEventArgsDerived e)
 		{
 			counter++;
 		}

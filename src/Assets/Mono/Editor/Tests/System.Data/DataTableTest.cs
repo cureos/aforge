@@ -2540,7 +2540,7 @@ namespace MonoTests.System.Data
 	{
 		public void Remote ()
 		{
-			int n = (int) Convert.ChangeType ("5", typeof (int));
+			int n = (int) ConvertExtensions.ChangeType ("5", typeof (int));
 			Assert.AreEqual (5, n, "n");
 		}
 		

@@ -40,7 +40,7 @@ using System.Runtime.InteropServices;
 using System.Data.Common;
 
 namespace System.Data {
-	[DefaultProperty ("ConstraintName")]
+	//[DefaultProperty ("ConstraintName")]
 	[Serializable]
 	public class UniqueConstraint : Constraint 
 	{

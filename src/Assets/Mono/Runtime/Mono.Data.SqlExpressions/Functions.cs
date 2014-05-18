@@ -188,7 +188,7 @@ namespace Mono.Data.SqlExpressions {
 				ThrowInvalidCastException (val);
 
 			//Convert throws the remaining invalid casts
-			return Convert.ChangeType (val, targetType);
+			return ConvertExtensions.ChangeType (val, targetType);
 
 		}
 		

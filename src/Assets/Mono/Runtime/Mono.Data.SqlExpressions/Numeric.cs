@@ -44,16 +44,16 @@ namespace Mono.Data.SqlExpressions {
 			case TypeCode.Byte:
 			case TypeCode.Int16:
 			case TypeCode.UInt16:
-				return (IConvertible)Convert.ChangeType (o, TypeCode.Int32);
+				return (IConvertible)ConvertExtensions.ChangeType (o, TypeCode.Int32);
 			
 			case TypeCode.UInt32:
-				return (IConvertible)Convert.ChangeType (o, TypeCode.Int64);
+				return (IConvertible)ConvertExtensions.ChangeType (o, TypeCode.Int64);
 				
 			case TypeCode.UInt64:
-				return (IConvertible)Convert.ChangeType (o, TypeCode.Decimal);
+				return (IConvertible)ConvertExtensions.ChangeType (o, TypeCode.Decimal);
 				
 			case TypeCode.Single:
-				return (IConvertible)Convert.ChangeType (o, TypeCode.Double);
+				return (IConvertible)ConvertExtensions.ChangeType (o, TypeCode.Double);
 			
 			default:
 				return o;
@@ -76,12 +76,12 @@ namespace Mono.Data.SqlExpressions {
 			// is it ok to make such assumptions about the order of an enum?
 			if (tc1 < tc2)
 			{
-				o1 = (IConvertible)Convert.ChangeType (o1, tc2);
+				o1 = (IConvertible)ConvertExtensions.ChangeType (o1, tc2);
 				return tc2;
 			}
 			else
 			{
-				o2 = (IConvertible)Convert.ChangeType (o2, tc1);
+				o2 = (IConvertible)ConvertExtensions.ChangeType (o2, tc1);
 				return tc1;
 			}
 		}

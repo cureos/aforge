@@ -438,7 +438,7 @@ namespace Accord.Math
 			for (int j = 0; j < table.Columns.Count; j++)
 			{
 				for (int i = 0; i < table.Rows.Count; i++)
-					m[i, j] = (T)System.Convert.ChangeType(table.Rows[i][j], typeof(T));
+					m[i, j] = (T)System.ConvertExtensions.ChangeType(table.Rows[i][j], typeof(T));
 
 				columnNames[j] = table.Columns[j].Caption;
 			}
@@ -466,7 +466,7 @@ namespace Accord.Math
 			for (int j = 0; j < columnNames.Length; j++)
 			{
 				for (int i = 0; i < table.Rows.Count; i++)
-					m[i, j] = (T)System.Convert.ChangeType(table.Rows[i][columnNames[j]], typeof(T));
+					m[i, j] = (T)System.ConvertExtensions.ChangeType(table.Rows[i][columnNames[j]], typeof(T));
 			}
 
 			return m;
@@ -666,7 +666,7 @@ namespace Accord.Math
 			for (int j = 0; j < table.Columns.Count; j++)
 			{
 				for (int i = 0; i < table.Rows.Count; i++)
-					m[i][j] = (T)System.Convert.ChangeType(table.Rows[i][j], typeof(T));
+					m[i][j] = (T)System.ConvertExtensions.ChangeType(table.Rows[i][j], typeof(T));
 
 				columnNames[j] = table.Columns[j].Caption;
 			}
@@ -689,7 +689,7 @@ namespace Accord.Math
 			for (int j = 0; j < table.Columns.Count; j++)
 			{
 				for (int i = 0; i < table.Rows.Count; i++)
-					m[i][j] = (T)System.Convert.ChangeType(table.Rows[i][j], typeof(T), provider);
+					m[i][j] = (T)System.ConvertExtensions.ChangeType(table.Rows[i][j], typeof(T), provider);
 
 				columnNames[j] = table.Columns[j].Caption;
 			}
@@ -722,7 +722,7 @@ namespace Accord.Math
 				DataColumn col = table.Columns[columnNames[j]];
 
 				for (int i = 0; i < table.Rows.Count; i++)
-					m[i][j] = (T)System.Convert.ChangeType(table.Rows[i][col], typeof(T));
+					m[i][j] = (T)System.ConvertExtensions.ChangeType(table.Rows[i][col], typeof(T));
 			}
 
 			return m;
@@ -746,7 +746,7 @@ namespace Accord.Math
 			T[] m = new T[column.Table.Rows.Count];
 
 			for (int i = 0; i < m.Length; i++)
-				m[i] = (T)System.Convert.ChangeType(column.Table.Rows[i][column], typeof(T));
+				m[i] = (T)System.ConvertExtensions.ChangeType(column.Table.Rows[i][column], typeof(T));
 
 			return m;
 		}
@@ -760,7 +760,7 @@ namespace Accord.Math
 			T[] m = new T[colNames.Length];
 
 			for (int i = 0; i < m.Length; i++)
-				m[i] = (T)System.Convert.ChangeType(row[colNames[i]], typeof(T));
+				m[i] = (T)System.ConvertExtensions.ChangeType(row[colNames[i]], typeof(T));
 
 			return m;
 		}
@@ -785,7 +785,7 @@ namespace Accord.Math
 			DataColumn col = table.Columns[columnNames];
 
 			for (int i = 0; i < table.Rows.Count; i++)
-				m[i] = (T)System.Convert.ChangeType(table.Rows[i][col], typeof(T));
+				m[i] = (T)System.ConvertExtensions.ChangeType(table.Rows[i][col], typeof(T));
 
 			return m;
 		}

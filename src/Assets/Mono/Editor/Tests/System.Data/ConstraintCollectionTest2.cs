@@ -95,7 +95,7 @@ namespace MonoTests.System.Data
 		{
 			DataTable dt = DataProvider.CreateParentDataTable();
 			CollectionChangedFlag = false;
-			dt.Constraints.CollectionChanged += new CollectionChangeEventHandler(Constraints_CollectionChangedHandler);	
+			dt.Constraints.CollectionChanged += new CollectionChangeEventHandlerDerived(Constraints_CollectionChangedHandler);	
 			dt = DataProvider.CreateUniqueConstraint(dt);
 			Assert.AreEqual(true, CollectionChangedFlag, "CN8"); 
 		}
@@ -329,7 +329,7 @@ namespace MonoTests.System.Data
 		{
 			DataTable dt = DataProvider.CreateUniqueConstraint();
 			CollectionChangedFlag = false;
-			dt.Constraints.CollectionChanged += new CollectionChangeEventHandler(Constraints_CollectionChangedHandler);
+			dt.Constraints.CollectionChanged += new CollectionChangeEventHandlerDerived(Constraints_CollectionChangedHandler);
 			dt.Constraints.Remove(dt.Constraints[0]);
 			Assert.AreEqual(true, CollectionChangedFlag, "CN31"); //Checking that event has raised
 		}
@@ -338,7 +338,7 @@ namespace MonoTests.System.Data
 		{
 			DataTable dt = DataProvider.CreateUniqueConstraint();
 			CollectionChangedFlag = false;
-			dt.Constraints.CollectionChanged += new CollectionChangeEventHandler(Constraints_CollectionChangedHandler);
+			dt.Constraints.CollectionChanged += new CollectionChangeEventHandlerDerived(Constraints_CollectionChangedHandler);
 			dt.Constraints.Remove("constraint1");
 			Assert.AreEqual(true, CollectionChangedFlag, "CN32"); //Checking that event has raised
 
@@ -348,12 +348,12 @@ namespace MonoTests.System.Data
 		{
 			DataTable dt = DataProvider.CreateParentDataTable();
 			CollectionChangedFlag = false;
-			dt.Constraints.CollectionChanged += new CollectionChangeEventHandler(Constraints_CollectionChangedHandler);	
+			dt.Constraints.CollectionChanged += new CollectionChangeEventHandlerDerived(Constraints_CollectionChangedHandler);	
 			dt = DataProvider.CreateUniqueConstraint(dt);
 			Assert.AreEqual(true, CollectionChangedFlag, "CN33"); 
 		}
 
-		private void Constraints_CollectionChangedHandler(object sender, CollectionChangeEventArgs e)
+		private void Constraints_CollectionChangedHandler(object sender, CollectionChangeEventArgsDerived e)
 		{
 			CollectionChangedFlag = true;
 		}
@@ -600,7 +600,7 @@ namespace MonoTests.System.Data
 			Assert.AreEqual("constraint2",dt.Constraints[0].ConstraintName,"ccrai#3");
 
 			dt = DataProvider.CreateUniqueConstraint();
-			dt.Constraints.CollectionChanged+=new CollectionChangeEventHandler(Constraints_CollectionChanged);
+			dt.Constraints.CollectionChanged+=new CollectionChangeEventHandlerDerived(Constraints_CollectionChanged);
 			dt.Constraints.RemoveAt(0);
 			Assert.AreEqual(true,collectionChanged,"ccrai#4"); //Checking that event has raised
 
@@ -609,7 +609,7 @@ namespace MonoTests.System.Data
 			TestException(new testExceptionMethodCallback(RemoveAt_I),arr);
 		}
 
-		private void Constraints_CollectionChanged(object sender, CollectionChangeEventArgs e)
+		private void Constraints_CollectionChanged(object sender, CollectionChangeEventArgsDerived e)
 		{
 			collectionChanged = true;
 		}

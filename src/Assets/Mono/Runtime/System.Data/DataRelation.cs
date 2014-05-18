@@ -44,7 +44,7 @@ namespace System.Data
 	/// DataRelation is used for a parent/child relationship
 	/// between two DataTable objects
 	/// </summary>
-	[DefaultProperty ("RelationName")]
+	//[DefaultProperty ("RelationName")]
 	[Serializable]
 	[TypeConverterAttribute (typeof (RelationshipConverter))]
 	public class DataRelation {
@@ -210,7 +210,7 @@ namespace System.Data
 		}
 
 		[Browsable (false)]
-		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+		//[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public virtual DataSet DataSet {
 			get { return childColumns [0].Table.DataSet; }
 		}

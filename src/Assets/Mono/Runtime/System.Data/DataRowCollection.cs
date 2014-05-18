@@ -46,7 +46,7 @@ namespace System.Data
 	public partial class DataRowCollection : InternalDataCollectionBase {
 		private DataTable table;
 
-		internal event ListChangedEventHandler ListChanged;
+		internal event ListChangedEventHandlerDerived ListChanged;
 
 		/// <summary>
 		/// Internal constructor used to build a DataRowCollection.
@@ -156,7 +156,7 @@ namespace System.Data
 			// Remove from indexes
 			table.ResetIndexes ();
 			table.DataTableCleared ();
-			OnListChanged (this, new ListChangedEventArgs (ListChangedType.Reset, -1, -1));
+			OnListChanged (this, new ListChangedEventArgsDerived (ListChangedTypeDerived.Reset, -1, -1));
 		}
 
 		/// <summary>
@@ -316,7 +316,7 @@ namespace System.Data
 			Remove (this [index]);
 		}
 
-		internal void OnListChanged (object sender, ListChangedEventArgs args)
+		internal void OnListChanged (object sender, ListChangedEventArgsDerived args)
 		{
 			if (ListChanged != null)
 				ListChanged (sender, args);

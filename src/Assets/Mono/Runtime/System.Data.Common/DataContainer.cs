@@ -929,7 +929,7 @@ namespace System.Data.Common
 					return ((IComparable)obj1).CompareTo (obj2);
 				} catch {
 					if (obj2 is IComparable) {
-						obj2 = Convert.ChangeType (obj2, Type.GetTypeCode (obj1.GetType ()));
+						obj2 = ConvertExtensions.ChangeType (obj2, Type.GetTypeCode (obj1.GetType ()));
 						return ((IComparable)obj1).CompareTo (obj2);
 					}
 				}
@@ -1001,7 +1001,18 @@ namespace System.Data.Common
 		protected override int DoCompareValues (int index1, int index2)
 		{
 			DataTable table = Column.Table;
-			return String.Compare ((string) this [index1], (string) this [index2], !table.CaseSensitive, table.Locale);
+			return String.Compare (
+				(string) this [index1]
+				, 
+				(string) this [index2]
+				,
+				table.CaseSensitive ?
+				StringComparison.CurrentCulture :
+				StringComparison.CurrentCultureIgnoreCase
+				//!table.CaseSensitive
+				//, 
+				//table.Locale
+			);
 		}
 	}
 }
