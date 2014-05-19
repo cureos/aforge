@@ -190,27 +190,10 @@ namespace Accord.Neuro.Learning
             double errors = 0;
             
 
-#if NET35
             var partial = storage.Value.Clear();
             for (int i = 0; i < input.Length; i++)
             {
                 int observationIndex = i;
-#else
-            Object lockObj = new Object();
-
-            // For each training instance
-            Parallel.For(0, input.Length,
-
-#if DEBUG
-				new ParallelOptions() { MaxDegreeOfParallelism = 1 },
-#endif
-
-                // Initialize
-                () => storage.Value.Clear(),
-
-                // Map
-                (observationIndex, loopState, partial) =>
-#endif
                 {
                     var observation = input[observationIndex];
 
@@ -290,31 +273,6 @@ namespace Accord.Neuro.Learning
                         double e = observation[j] - reconstruction[j];
                         partial.ErrorSumOfSquares += e * e;
                     }
-
-#if !NET35
-                    return partial; // Report partial solution
-                },
-
-                // Reduce
-                (partial) =>
-                {
-                    lock (lockObj)
-                    {
-                        // Accumulate partial solutions
-                        for (int i = 0; i < weightsGradient.Length; i++)
-                            for (int j = 0; j < weightsGradient[i].Length; j++)
-                                weightsGradient[i][j] += partial.WeightGradient[i][j];
-
-                        for (int i = 0; i < hiddenBiasGradient.Length; i++)
-                            hiddenBiasGradient[i] += partial.HiddenBiasGradient[i];
-
-                        for (int i = 0; i < visibleBiasGradient.Length; i++)
-                            visibleBiasGradient[i] += partial.VisibleBiasGradient[i];
-
-                        errors += partial.ErrorSumOfSquares;
-                    }
-                });
-#else
                 }
             }
 
@@ -322,7 +280,6 @@ namespace Accord.Neuro.Learning
             hiddenBiasGradient = partial.HiddenBiasGradient;
             visibleBiasGradient = partial.VisibleBiasGradient;
             errors = partial.ErrorSumOfSquares;
-#endif
 
             return errors;
         }

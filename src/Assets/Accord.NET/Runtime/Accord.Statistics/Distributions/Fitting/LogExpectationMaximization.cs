@@ -238,8 +238,6 @@ namespace Accord.Statistics.Distributions.Fitting
             TObservation[] observations)
         {
             double logLikelihood = 0.0;
-           
-#if NET35
             for (int i = 0; i < observations.Length; i++)
             {
                 var x = observations[i];
@@ -252,32 +250,6 @@ namespace Accord.Statistics.Distributions.Fitting
                 if (sum > 0) 
                     logLikelihood += Math.Log(sum);
             }
-#else
-            object syncObj = new object();
-
-            Parallel.For(0, observations.Length,
-
-                () => 0.0,
-
-                (i, status, partial) =>
-                {
-                    var x = observations[i];
-
-                    for (int k = 0; k < lnpi.Length; k++)
-                        partial = Special.LogSum(partial, lnpi[k] + pdf[k].LogProbabilityFunction(x));
-
-                    return partial;
-                },
-
-                (partial) =>
-                {
-                    lock (syncObj)
-                    {
-                        logLikelihood = Special.LogSum(logLikelihood, partial);
-                    }
-                }
-            );
-#endif
 
             System.Diagnostics.Debug.Assert(!Double.IsNaN(logLikelihood));
             

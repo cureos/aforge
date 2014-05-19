@@ -23,6 +23,7 @@
 using System;
 using System.Collections;
 using System.Reflection;
+using System.Globalization;
 
 namespace System.Data.Common
 {
@@ -1006,12 +1007,11 @@ namespace System.Data.Common
 				, 
 				(string) this [index2]
 				,
+				table.Locale
+				,
 				table.CaseSensitive ?
-				StringComparison.CurrentCulture :
-				StringComparison.CurrentCultureIgnoreCase
-				//!table.CaseSensitive
-				//, 
-				//table.Locale
+				CompareOptions.None :
+				CompareOptions.IgnoreCase
 			);
 		}
 	}

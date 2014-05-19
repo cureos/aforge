@@ -634,7 +634,6 @@ namespace Accord.Neuro.Learning
         {
             double sumOfSquaredErrors = 0;
 
-#if NET35
             for (int i = 0; i < input.Length; i++)
             {
                 // Compute network answer
@@ -646,36 +645,6 @@ namespace Accord.Neuro.Learning
                     sumOfSquaredErrors += e * e;
                 }
             }
-#else
-            Object lockSum = new Object();
-
-            Parallel.For(0, input.Length,
-
-                // Initialize
-                () => 0.0,
-
-                // Map
-                (i, loopState, partialSum) =>
-                {
-                    // Compute network answer
-                    double[] y = network.Compute(input[i]);
-
-                    for (int j = 0; j < y.Length; j++)
-                    {
-                        double e = (y[j] - output[i][j]);
-                        partialSum += e * e;
-                    }
-
-                    return partialSum;
-                },
-
-                // Reduce
-                (partialSum) =>
-                {
-                    lock (lockSum) sumOfSquaredErrors += partialSum;
-                }
-            );
-#endif
 
             return sumOfSquaredErrors / 2.0;
         }

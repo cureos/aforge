@@ -79,33 +79,32 @@ namespace MonoTests.System.Data.SqlTypes
 			Assert.AreEqual ("Test", TestString.Value, "#A01");
 
 			// SqlString (String, int)
-			TestString = new SqlString ("Test", 2057);
-			Assert.AreEqual (2057, TestString.LCID, "#A02");
+			TestString = new SqlString ("Test", "en-gb");
+			Assert.AreEqual ("en-gb", TestString.CultureName, "#A02");
 
 			// SqlString (int, SqlCompareOptions, byte[])
-			TestString = new SqlString (2057,
+			TestString = new SqlString ("en-gb",
 				SqlCompareOptions.BinarySort|SqlCompareOptions.IgnoreCase,
 				new byte [2] {123, 221});
-			Assert.AreEqual (2057, TestString.CompareInfo.LCID, "#A03");
 
 			// SqlString(string, int, SqlCompareOptions)
-			TestString = new SqlString ("Test", 2057, SqlCompareOptions.IgnoreNonSpace);
+			TestString = new SqlString ("Test", "en-gb", SqlCompareOptions.IgnoreNonSpace);
 			Assert.IsTrue (!TestString.IsNull, "#A04");
 
 			// SqlString (int, SqlCompareOptions, byte[], bool)
-			TestString = new SqlString (2057, SqlCompareOptions.BinarySort, new byte [4] {100, 100, 200, 45}, true);
+			TestString = new SqlString ("en-gb", SqlCompareOptions.BinarySort, new byte [4] {100, 100, 200, 45}, true);
 			Assert.AreEqual ((byte)63, TestString.GetNonUnicodeBytes () [0], "#A05");
-			TestString = new SqlString (2057, SqlCompareOptions.BinarySort, new byte [2] {113, 100}, false);
+			TestString = new SqlString ("en-gb", SqlCompareOptions.BinarySort, new byte [2] {113, 100}, false);
 			Assert.AreEqual ((String)"qd", TestString.Value, "#A06");
 
 			// SqlString (int, SqlCompareOptions, byte[], int, int)
-			TestString = new SqlString (2057, SqlCompareOptions.BinarySort, new byte [2] {113, 100}, 0, 2);
+			TestString = new SqlString ("en-gb", SqlCompareOptions.BinarySort, new byte [2] {113, 100}, 0, 2);
 			Assert.IsTrue (!TestString.IsNull, "#A07");
 
 			// SqlString (int, SqlCompareOptions, byte[], int, int, bool)
-			TestString = new SqlString (2057, SqlCompareOptions.IgnoreCase, new byte [3] {100, 111, 50}, 1, 2, false);
+			TestString = new SqlString ("en-gb", SqlCompareOptions.IgnoreCase, new byte [3] {100, 111, 50}, 1, 2, false);
 			Assert.AreEqual ("o2", TestString.Value, "#A08");
-			TestString = new SqlString (2057, SqlCompareOptions.IgnoreCase, new byte [3] {123, 111, 222}, 1, 2, true);
+			TestString = new SqlString ("en-gb", SqlCompareOptions.IgnoreCase, new byte [3] {123, 111, 222}, 1, 2, true);
 			Assert.IsTrue (!TestString.IsNull, "#A09");
 		}
 
@@ -113,14 +112,14 @@ namespace MonoTests.System.Data.SqlTypes
 		[ExpectedException(typeof (ArgumentOutOfRangeException))]
 		public void CtorArgumentOutOfRangeException1 ()
 		{
-			SqlString TestString = new SqlString (2057, SqlCompareOptions.BinarySort, new byte [2] {113, 100}, 2, 1);
+			SqlString TestString = new SqlString ("en-gb", SqlCompareOptions.BinarySort, new byte [2] {113, 100}, 2, 1);
 		}
 
 		[Test]
 		[ExpectedException(typeof (ArgumentOutOfRangeException))]
 		public void CtorArgumentOutOfRangeException2 ()
 		{
-			SqlString TestString = new SqlString (2057, SqlCompareOptions.BinarySort, new byte [2] {113, 100}, 0, 4);
+			SqlString TestString = new SqlString ("en-gb", SqlCompareOptions.BinarySort, new byte [2] {113, 100}, 0, 4);
 		}
 
 		// Test public fields
@@ -150,14 +149,11 @@ namespace MonoTests.System.Data.SqlTypes
 		[Test]
 		public void Properties()
 		{
-			// CompareInfo
-			Assert.AreEqual (3081, Test1.CompareInfo.LCID, "#C01");
-
 			// CultureInfo
-			Assert.AreEqual (3081, Test1.CultureInfo.LCID, "#C02");
+			Assert.AreEqual ("en-AU", Test1.CultureInfo.Name, "#C02");
 
-			// LCID
-			Assert.AreEqual (3081, Test1.LCID, "#C05");
+			// CultureName
+			Assert.AreEqual ("en-au", Test1.CultureName, "#C05");
 
 			// IsNull
 			Assert.IsTrue (!Test1.IsNull, "#C03");
@@ -185,15 +181,12 @@ namespace MonoTests.System.Data.SqlTypes
 		[ExpectedException(typeof(SqlTypeException))]
 		public void CompareToSqlTypeException ()
 		{
-			SqlString T1 = new SqlString ("test", 2057, SqlCompareOptions.IgnoreCase);
-			SqlString T2 = new SqlString ("TEST", 2057, SqlCompareOptions.None);
+			SqlString T1 = new SqlString ("test", "en-gb", SqlCompareOptions.IgnoreCase);
+			SqlString T2 = new SqlString ("TEST", "en-gb", SqlCompareOptions.None);
 			T1.CompareTo (T2);
 		}
 
 		[Test]
-#if TARGET_JVM
-		[Ignore ("The option CompareOptions.IgnoreWidth is not supported")]
-#endif
 		public void CompareTo()
 		{
 			SqlByte Test = new SqlByte (1);
@@ -203,38 +196,38 @@ namespace MonoTests.System.Data.SqlTypes
 			Assert.IsTrue (Test2.CompareTo (Test3) == 0, "#D03");
 			Assert.IsTrue (Test3.CompareTo (SqlString.Null) > 0, "#D04");
 
-			SqlString T1 = new SqlString ("test", 2057, SqlCompareOptions.IgnoreCase);
-			SqlString T2 = new SqlString ("TEST", 2057, SqlCompareOptions.None);
+			SqlString T1 = new SqlString ("test", "en-gb", SqlCompareOptions.IgnoreCase);
+			SqlString T2 = new SqlString ("TEST", "en-gb", SqlCompareOptions.None);
 
 			// IgnoreCase
-			T1 = new SqlString ("test", 2057, SqlCompareOptions.IgnoreCase);
-			T2 = new SqlString ("TEST", 2057, SqlCompareOptions.IgnoreCase);
+			T1 = new SqlString ("test", "en-gb", SqlCompareOptions.IgnoreCase);
+			T2 = new SqlString ("TEST", "en-gb", SqlCompareOptions.IgnoreCase);
 			Assert.IsTrue (T2.CompareTo (T1) == 0, "#D09");
 
-			T1 = new SqlString ("test", 2057);
-			T2 = new SqlString ("TEST", 2057);
+			T1 = new SqlString ("test", "en-gb");
+			T2 = new SqlString ("TEST", "en-gb");
 			Assert.IsTrue (T2.CompareTo (T1) == 0, "#D10");
 
-			T1 = new SqlString ("test", 2057, SqlCompareOptions.None);
-			T2 = new SqlString ("TEST", 2057, SqlCompareOptions.None);
+			T1 = new SqlString ("test", "en-gb", SqlCompareOptions.None);
+			T2 = new SqlString ("TEST", "en-gb", SqlCompareOptions.None);
 			Assert.IsTrue (T2.CompareTo (T1) != 0, "#D11");
 
 			// IgnoreNonSpace
-			T1 = new SqlString ("TEST\xF1", 2057, SqlCompareOptions.IgnoreNonSpace);
-			T2 = new SqlString ("TESTn", 2057, SqlCompareOptions.IgnoreNonSpace);
+			T1 = new SqlString ("TEST\xF1", "en-gb", SqlCompareOptions.IgnoreNonSpace);
+			T2 = new SqlString ("TESTn", "en-gb", SqlCompareOptions.IgnoreNonSpace);
 			Assert.IsTrue (T2.CompareTo (T1) == 0, "#D12");
 
-			T1 = new SqlString ("TESTñ", 2057, SqlCompareOptions.None);
-			T2 = new SqlString ("TESTn", 2057, SqlCompareOptions.None);
+			T1 = new SqlString ("TESTñ", "en-gb", SqlCompareOptions.None);
+			T2 = new SqlString ("TESTn", "en-gb", SqlCompareOptions.None);
 			Assert.IsTrue (T2.CompareTo (T1) != 0, "#D13");
 
 			// BinarySort
-			T1 = new SqlString ("01_", 2057, SqlCompareOptions.BinarySort);
-			T2 = new SqlString ("_01", 2057, SqlCompareOptions.BinarySort);
+			T1 = new SqlString ("01_", "en-gb", SqlCompareOptions.BinarySort);
+			T2 = new SqlString ("_01", "en-gb", SqlCompareOptions.BinarySort);
 			Assert.IsTrue (T1.CompareTo (T2) < 0, "#D14");
 
-			T1 = new SqlString ("01_", 2057, SqlCompareOptions.None);
-			T2 = new SqlString ("_01", 2057, SqlCompareOptions.None);
+			T1 = new SqlString ("01_", "en-gb", SqlCompareOptions.None);
+			T2 = new SqlString ("_01", "en-gb", SqlCompareOptions.None);
 			Assert.IsTrue (T1.CompareTo (T2) > 0, "#D15");
 		}
 
@@ -271,9 +264,6 @@ namespace MonoTests.System.Data.SqlTypes
 		}
 
 		[Test]
-#if TARGET_JVM
-		[Ignore ("The option CompareOptions.IgnoreWidth is not supported")]
-#endif
 		public void Greaters()
 		{
 			// GreateThan ()
@@ -288,9 +278,6 @@ namespace MonoTests.System.Data.SqlTypes
 		}
 
 		[Test]
-#if TARGET_JVM
-		[Ignore ("The option CompareOptions.IgnoreWidth is not supported")]
-#endif
 		public void Lessers()
 		{
 			// LessThan()

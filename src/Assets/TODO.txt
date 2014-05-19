@@ -2,12 +2,8 @@ Failed Tests:
 ———————————————————————
 Accord.Tests.MachineLearning.BootstrapTest.BootstrapConstructorTest3
 Accord.Tests.MachineLearning.DynamicalTimeWarping.*
-Accord.Tests.MachineLearning.GaussianMixtureModelTest.GaussianMixtureModelConstructorTest
+Accord.Tests.MachineLearning.GaussianMixtureModelTest.*
 Accord.Tests.MachineLearning.KModesTest.KModesConstructorTest
-Accord.Tests.MachineLearning.MulticlassSupportVectorMachineTest.ComputeTest1
-Accord.Tests.MachineLearning.MulticlassSupportVectorMachineTest.ComputeTest2
-Accord.Tests.MachineLearning.MulticlassSupportVectorMachineTest.LoadTest1
-Accord.Tests.MachineLearning.MulticlassSupportVectorMachineTest.LoadTest2
 Accord.Tests.MachineLearning.NaiveBayesGenericTest.ComputeTest
 Accord.Tests.MachineLearning.NaiveBayesGenericTest.ComputeTest2
 Accord.Tests.MachineLearning.NaiveBayesTest.ComputeTest
@@ -16,6 +12,8 @@ Accord.Tests.MachineLearning.SupportVectorMachineTest.ComputeTest4
 Accord.Tests.MachineLearning.SupportVectorMachineTest.ComputeTest6
 Accord.Tests.Math.AugmentedLagrangianSolverTest.AugmentedLagrangianSolverConstructorTest1
 Accord.Tests.Math.GammaTest.FunctionTest
+Accord.Tests.Math.MatrixFormatTest.ToStringTest
+Accord.Tests.Math.MatrixFormatTest.ToStringTest2
 Accord.Tests.Math.MatrixTest.SubgroupTest1
 Accord.Tests.Neuro.LevenbergMarquardtLearningTest.BlockHessianTest1
 Accord.Tests.Statistics.BinomialTestTest.BinomialTestConstructorTest3

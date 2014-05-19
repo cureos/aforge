@@ -46,7 +46,7 @@ namespace System.Data
 	/// </summary>
 	//[DefaultProperty ("RelationName")]
 	[Serializable]
-	[TypeConverterAttribute (typeof (RelationshipConverter))]
+	//[TypeConverterAttribute (typeof (RelationshipConverter))]
 	public class DataRelation {
 		private DataSet dataSet;
 		private string relationName;

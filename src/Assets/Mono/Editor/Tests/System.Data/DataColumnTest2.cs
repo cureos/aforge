@@ -842,12 +842,12 @@ namespace MonoTests.System.Data
 			try {
 				col.DateTimeMode = (DataSetDateTime)(-1);
 				Assert.Fail("#1");
-			} catch (InvalidEnumArgumentException e) {}
+			} catch (InvalidEnumArgumentExceptionDerived e) {}
 
 			try {
 				col.DateTimeMode = (DataSetDateTime)5;
 				Assert.Fail("#2");
-			} catch (InvalidEnumArgumentException e) {}
+			} catch (InvalidEnumArgumentExceptionDerived e) {}
 		}
 
 		[Test]

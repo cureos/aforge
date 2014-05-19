@@ -45,7 +45,7 @@ namespace Accord.Statistics.Models.Markov.Learning
         private HiddenMarkovModel template;
         private ITopology topology;
 
-
+/*
 #if !NET35
         private double bestLikelihood;
 
@@ -58,7 +58,7 @@ namespace Accord.Statistics.Models.Markov.Learning
             public double LogLikelihood { get; set; }
         }
 #endif
-
+*/
 
         /// <summary>
         ///   Gets the template model, used to create all other instances.
@@ -144,10 +144,10 @@ namespace Accord.Statistics.Models.Markov.Learning
         /// 
         public double Run(params int[][] observations)
         {
-#if NET35
+//#if NET35
             throw new NotSupportedException("This class requires .NET 4.0 or newer.");
         }
-#else
+/*#else
 
             // MarkovHelperMethods.checkArgs(observations, template.Symbols);
 
@@ -241,7 +241,7 @@ namespace Accord.Statistics.Models.Markov.Learning
             Array.Copy(from.Emissions, to.Emissions, to.Emissions.Length);
             Array.Copy(from.Probabilities, to.Probabilities, to.Probabilities.Length);
         }
-#endif
+#endif*/
 
 
         /// <summary>

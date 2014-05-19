@@ -59,7 +59,7 @@ namespace System.Data.SqlTypes
 		private bool notNull;
 
 		// FIXME: locale id is not working yet
-		private int lcid;
+		private string cultureName;
 		private SqlCompareOptions compareOptions;
 
 		public static readonly int BinarySort = 0x8000;
@@ -85,7 +85,7 @@ namespace System.Data.SqlTypes
 		public SqlString (string data) 
 		{
 			this.value = data;
-			lcid = CultureInfo.CurrentCulture.LCID;
+			this.cultureName = CultureInfo.CurrentCulture.Name.ToLower();
 			if (value != null)
 				notNull = true;
 			else
@@ -96,10 +96,10 @@ namespace System.Data.SqlTypes
 		}
 
 		// init with a string data and locale id values.
-		public SqlString (string data, int lcid) 
+		public SqlString (string data, string cultureName) 
 		{
 			this.value = data;
-			this.lcid = lcid;
+			this.cultureName = cultureName.ToLower();
 			if (value != null)
 				notNull = true;
 			else
@@ -111,14 +111,14 @@ namespace System.Data.SqlTypes
 
 		// init with locale id, compare options, 
 		// and an array of bytes data
-		public SqlString (int lcid, SqlCompareOptions compareOptions, byte[] data) 
-			: this (lcid, compareOptions, data, true) { }
+		public SqlString (string cultureName, SqlCompareOptions compareOptions, byte[] data) 
+			: this (cultureName, compareOptions, data, true) { }
 
 		// init with string data, locale id, and compare options
-		public SqlString (string data, int lcid, SqlCompareOptions compareOptions) 
+		public SqlString (string data, string cultureName, SqlCompareOptions compareOptions) 
 		{
 			this.value = data;
-			this.lcid = lcid;
+			this.cultureName = cultureName.ToLower();
 			this.compareOptions = compareOptions;
 			if (value != null)
 				notNull = true;
@@ -128,11 +128,11 @@ namespace System.Data.SqlTypes
 
 		// init with locale id, compare options, array of bytes data,
 		// and whether unicode is encoded or not
-		public SqlString (int lcid, SqlCompareOptions compareOptions, byte[] data, bool fUnicode) 
+		public SqlString (string cultureName, SqlCompareOptions compareOptions, byte[] data, bool fUnicode) 
 		{
 			Encoding encoding = (fUnicode ? (Encoding)new UnicodeEncoding() : (Encoding)new ASCIIEncoding());
 			this.value = encoding.GetString (data, 0, data.Length);
-			this.lcid = lcid;
+			this.cultureName = cultureName.ToLower();
 			this.compareOptions = compareOptions;
 			if (value != null)
 				notNull = true;
@@ -143,18 +143,18 @@ namespace System.Data.SqlTypes
 		// init with locale id, compare options, array of bytes data,
 		// starting index in the byte array, 
 		// and number of bytes to copy
-		public SqlString (int lcid, SqlCompareOptions compareOptions, byte[] data, 
+		public SqlString (string cultureName, SqlCompareOptions compareOptions, byte[] data, 
 				  int index, int count) 
-			: this (lcid, compareOptions, data, index, count, true) { }
+			: this (cultureName, compareOptions, data, index, count, true) { }
 
 		// init with locale id, compare options, array of bytes data,
 		// starting index in the byte array, number of byte to copy,
 		// and whether unicode is encoded or not
-		public SqlString (int lcid, SqlCompareOptions compareOptions, byte[] data, int index, int count, bool fUnicode) 
+		public SqlString (string cultureName, SqlCompareOptions compareOptions, byte[] data, int index, int count, bool fUnicode) 
 		{		       
 			Encoding encoding = (fUnicode ? (Encoding)new UnicodeEncoding() : (Encoding)new ASCIIEncoding());
 			this.value = encoding.GetString (data, index, count);
-			this.lcid = lcid;
+			this.cultureName = cultureName.ToLower();
 			this.compareOptions = compareOptions;
 			if (value != null)
 				notNull = true;
@@ -166,16 +166,9 @@ namespace System.Data.SqlTypes
 
 
 		#region Public Properties
-
-		public CompareInfo CompareInfo {
-			get { 
-				return new CultureInfo (lcid).CompareInfo;
-			}
-		}
-
 		public CultureInfo CultureInfo {
 			get { 
-				return new CultureInfo (lcid);
+				return new CultureInfo (cultureName);
 			}
 		}
 
@@ -184,9 +177,9 @@ namespace System.Data.SqlTypes
 		}
 
 		// geographics location and language (locale id)
-		public int LCID {
+		public string CultureName {
 			get { 
-				return lcid;
+				return cultureName;
 			}
 		}
 	
@@ -226,7 +219,7 @@ namespace System.Data.SqlTypes
 
 		public SqlString Clone() 
 		{
-			return new  SqlString (value, lcid, compareOptions);
+			return new  SqlString (value, cultureName, compareOptions);
 		}
 
 		public static CompareOptions CompareOptionsFromSqlCompareOptions (SqlCompareOptions compareOptions) 
@@ -302,7 +295,7 @@ namespace System.Data.SqlTypes
 			for (int i = 0; i < value.Length; i++)
 				result = 91 * result + (int)(value [i] ^ (value [i] >> 32));
 						
-			result = 91 * result + lcid.GetHashCode ();
+			result = 91 * result + cultureName.GetHashCode ();
 			result = 91 * result + (int)compareOptions;
 
 			return result;

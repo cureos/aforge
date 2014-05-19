@@ -34,7 +34,7 @@ namespace Accord.Neuro.Learning
     using System.Threading.Tasks;
     using AForge.Neuro;
     using AForge.Neuro.Learning;
-
+	/*
 #if !NET35
     /// <summary>
     ///   Resilient Backpropagation learning algorithm.
@@ -671,5 +671,5 @@ namespace Accord.Neuro.Learning
     }
 
 #endif
-
+*/
 }

@@ -47,7 +47,7 @@ namespace System.Data {
 
 	//[DefaultProperty ("ConstraintName")]
 	[Serializable]
-	[TypeConverterAttribute (typeof (ConstraintConverter))]
+	//[TypeConverterAttribute (typeof (ConstraintConverter))]
 	public abstract class Constraint {
 		static readonly object beforeConstraintNameChange = new object ();
 

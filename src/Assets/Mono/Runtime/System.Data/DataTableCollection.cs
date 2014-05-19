@@ -239,9 +239,9 @@ namespace System.Data
 			int count = 0, match = -1;
 			for (int i = start; i < List.Count; i++) {
 				String name2 = ((DataTable) List[i]).TableName;
-				if (String.Compare (name, name2, StringComparison.CurrentCulture) == 0)
+				if (String.Compare (name, name2, dataSet.Locale, CompareOptions.None) == 0)
 					return i;
-				if (String.Compare (name, name2, StringComparison.CurrentCultureIgnoreCase) == 0) {
+				if (String.Compare (name, name2, dataSet.Locale, CompareOptions.IgnoreCase) == 0) {
 					match = i;
 					count++;
 				}

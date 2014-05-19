@@ -20,35 +20,55 @@
 //    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-namespace System.Threading.Tasks
+#if NET35
+namespace System.Collections.Concurrent
 {
     using System;
     using System.Threading;
+    using System.Collections.Generic;
 
-    /// <summary>
-    ///   Minimum Parallel Tasks implementation for .NET 3.5 to make
-    ///   Accord.NET work. This is nowhere a functional implementation
-    ///   and exists only to provide compile-time compatibility with
-    ///   previous framework versions.
-    /// </summary>
-    /// 
-    internal static class Parallel
+    internal class ConcurrentStack<T> : IEnumerable<T>
     {
-        /// <summary>
-        ///   Loop body delegate.
-        /// </summary>
-        /// 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage ("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
-        public delegate void ForLoopBody(int index);
+        private Stack<T> stack;
 
-        /// <summary>
-        ///   Parallel for mock-up. The provided
-        ///   code will NOT be run in parallel.
-        /// </summary>
-        /// 
-        public static void For(int start, int stop, ForLoopBody loopBody)
+        public ConcurrentStack()
         {
-            for (int i = start; i < stop; i++) loopBody(i);
+            stack = new Stack<T>();
+        }
+
+        public void Push(T item)
+        {
+            lock (stack)
+            {
+                stack.Push(item);
+            }
+        }
+
+        public T[] ToArray()
+        {
+            lock (stack)
+            {
+                return stack.ToArray();
+            }
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            lock (stack)
+            {
+                foreach (T value in stack)
+                    yield return value;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            lock (stack)
+            {
+                foreach (T value in stack)
+                    yield return value;
+            }
         }
     }
 }
+#endif

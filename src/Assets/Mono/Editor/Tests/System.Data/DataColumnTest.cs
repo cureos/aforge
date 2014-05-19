@@ -204,9 +204,9 @@ namespace MonoTests.System.Data
 			try {
 				col.DateTimeMode = (DataSetDateTime) 666;
 				Assert.Fail ("#1");
-			} catch (InvalidEnumArgumentException ex) {
+			} catch (InvalidEnumArgumentExceptionDerived ex) {
 				// The DataSetDateTime enumeration value, 666, is invalid
-				Assert.AreEqual (typeof (InvalidEnumArgumentException), ex.GetType (), "#2");
+				Assert.AreEqual (typeof (InvalidEnumArgumentExceptionDerived), ex.GetType (), "#2");
 				Assert.IsNull (ex.InnerException, "#3");
 				Assert.IsNotNull (ex.Message, "#4");
 				Assert.IsTrue (ex.Message.IndexOf ("DataSetDateTime") != -1, "#5");

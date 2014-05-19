@@ -174,7 +174,7 @@ namespace System.Data {
 					throw new InvalidOperationException ("The DateTimeMode can be set only on DataColumns of type DateTime.");
 
 				if (!Enum.IsDefined (typeof (DataSetDateTime), value))
-					throw new InvalidEnumArgumentException (
+					throw new InvalidEnumArgumentExceptionDerived (
 						string.Format (
 							CultureInfo.InvariantCulture, "The {0} enumeration value, {1}, is invalid",
 							typeof (DataSetDateTime).Name, value));
@@ -334,14 +334,9 @@ namespace System.Data {
 					RaisePropertyChanging ("ColumnName");
 					_columnName = value;
 
-					if (Table != null)
-						Table.ResetPropertyDescriptorsCache ();
 				} else if (String.Compare (value, _columnName, StringComparison.CurrentCulture) != 0) {
 					RaisePropertyChanging ("ColumnName");
 					_columnName = value;
-
-					if (Table != null)
-						Table.ResetPropertyDescriptorsCache ();
 				}
 			}
 		}
@@ -349,7 +344,7 @@ namespace System.Data {
 		[DataCategory ("Data")]
 		[DefaultValue (typeof (string))]
 		//[RefreshProperties (RefreshProperties.All)]
-		[TypeConverterAttribute (typeof (ColumnTypeConverter))]
+		//[TypeConverterAttribute (typeof (ColumnTypeConverter))]
 		public Type DataType {
 			get { return DataContainer.Type; }
 			set {
@@ -396,7 +391,7 @@ namespace System.Data {
 		/// <exception cref="System.InvalidCastException"></exception>
 		/// <exception cref="System.ArgumentException"></exception>
 		[DataCategory ("Data")]
-		[TypeConverterAttribute (typeof (System.Data.DefaultValueTypeConverter))]
+		//[TypeConverterAttribute (typeof (System.Data.DefaultValueTypeConverter))]
 		public object DefaultValue {
 			get { return _defaultValue; }
 

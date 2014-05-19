@@ -27,7 +27,7 @@ namespace Accord.Tests.Neuro
     using AForge;
     using AForge.Neuro;
     using NUnit.Framework;
-
+	/*
     [TestFixture]
     public class ResilientBackPropagationLearningTest
     {
@@ -48,8 +48,6 @@ namespace Accord.Tests.Neuro
         }
 
 
-
-#if NET35
         [Test]
         public void RunEpochTest1()
         {
@@ -90,8 +88,6 @@ namespace Accord.Tests.Neuro
                 Assert.IsFalse(Double.IsNaN(actual));
             }
         }
-#endif
-
-
     }
+    */
 }

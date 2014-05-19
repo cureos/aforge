@@ -473,7 +473,6 @@ namespace System.Data {
 		/// <param name="ccevent">A CollectionChangeEventArgsDerived that contains the event data.</param>
 		internal void OnCollectionChanged (CollectionChangeEventArgsDerived ccevent)
 		{
-			parentTable.ResetPropertyDescriptorsCache ();
 			if (CollectionChanged != null)
 				CollectionChanged (this, ccevent);
 		}
@@ -615,7 +614,6 @@ namespace System.Data {
 
 		private void OnCollectionMetaDataChanged (CollectionChangeEventArgsDerived ccevent)
 		{
-			parentTable.ResetPropertyDescriptorsCache ();
 			if (CollectionMetaDataChanged != null)
 				CollectionMetaDataChanged (this, ccevent);
 		}

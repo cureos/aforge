@@ -18,12 +18,13 @@ using System.Data;
 namespace Mono.Data.SqlExpressions {
 
 	internal class Parser {
+		/*
 		static Parser ()
 		{
 			if (Environment.GetEnvironmentVariable ("MONO_DEBUG_SQLEXPRESSIONS") != null)
 				yacc_verbose_flag = 2;
 		}
-
+		*/
 		bool cacheAggregationResults = false;
 		DataRow[] aggregationRows = null;
 		static int yacc_verbose_flag;

@@ -20,35 +20,41 @@
 //    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-namespace System.Threading.Tasks
+namespace Accord
 {
     using System;
-    using System.Threading;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
 
     /// <summary>
-    ///   Minimum Parallel Tasks implementation for .NET 3.5 to make
-    ///   Accord.NET work. This is nowhere a functional implementation
-    ///   and exists only to provide compile-time compatibility with
-    ///   previous framework versions.
+    ///   Minimum CancellationToken implementation for .NET 3.5 to
+    ///   make Accord.NET work. This is not a complete implementation.
     /// </summary>
     /// 
-    internal static class Parallel
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1815:OverrideEqualsAndOperatorEqualsOnValueTypes"),
+     System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2218:OverrideGetHashCodeOnOverridingEquals")]
+    public struct CancellationToken
     {
         /// <summary>
-        ///   Loop body delegate.
+        ///   Gets or sets a value indicating whether this instance can be cancelled.
         /// </summary>
         /// 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage ("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
-        public delegate void ForLoopBody(int index);
+        public bool CanBeCancelled { get; set; }
 
         /// <summary>
-        ///   Parallel for mock-up. The provided
-        ///   code will NOT be run in parallel.
+        ///   Gets or sets a value indicating whether cancellation has been requested.
         /// </summary>
         /// 
-        public static void For(int start, int stop, ForLoopBody loopBody)
-        {
-            for (int i = start; i < stop; i++) loopBody(i);
-        }
+        public bool IsCancellationRequested { get; set; }
+
+        /// <summary>
+        ///   Gets an empty token.
+        /// </summary>
+        /// 
+        public static CancellationToken None { get { return none; } }
+
+        private static readonly CancellationToken none = new CancellationToken();
+
     }
 }

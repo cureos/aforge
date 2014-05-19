@@ -828,9 +828,6 @@ namespace Accord.MachineLearning.VectorMachines
             int[] vectors = cache.Vectors[classA - 1][classB];
 
             double[] values = cache.Products;
-#if !NET35
-            SpinLock[] locks = cache.SyncObjects;
-#endif
             double sum = machine.Threshold;
 
 
@@ -842,8 +839,6 @@ namespace Accord.MachineLearning.VectorMachines
             }
             else
             {
-
-#if NET35
                 #region Backward compatibility
                 for (int i = 0; i < vectors.Length; i++)
                 {
@@ -879,57 +874,6 @@ namespace Accord.MachineLearning.VectorMachines
                     sum += machine.Weights[i] * value;
                 }
                 #endregion
-#else
-                // For each support vector in the machine
-                Parallel.For<double>(0, vectors.Length,
-
-                    // Init
-                    () => 0.0,
-
-                    // Map
-                    (i, state, partialSum) =>
-                    {
-                        double value;
-
-                        // Check if it is a shared vector
-                        int j = vectors[i];
-
-                        if (j >= 0)
-                        {
-                            // This is a shared vector. Check
-                            // if it has already been computed
-
-                            bool taken = false;
-                            locks[j].Enter(ref taken);
-
-                            if (!Double.IsNaN(values[j]))
-                            {
-                                // Yes, it has. Retrieve the value from the cache
-                                value = values[j];
-                            }
-                            else
-                            {
-                                // No, it has not. Compute and store the computed value in the cache
-                                value = values[j] = machine.Kernel.Function(machine.SupportVectors[i], input);
-                                Interlocked.Increment(ref cache.Evaluations);
-                            }
-
-                            locks[j].Exit();
-                        }
-                        else
-                        {
-                            // This vector is not shared by any other machine. No need to cache
-                            value = machine.Kernel.Function(machine.SupportVectors[i], input);
-                            Interlocked.Increment(ref cache.Evaluations);
-                        }
-
-                        return partialSum + machine.Weights[i] * value;
-                    },
-
-                    // Reduce
-                    (partialSum) => { lock (locks) sum += partialSum; }
-                );
-#endif
             }
 
             // Produce probabilities if required
@@ -1131,12 +1075,6 @@ namespace Accord.MachineLearning.VectorMachines
             {
                 // The cache has not been created
                 cache.Products = new double[vectorCount];
-
-#if !NET35      // Create synchronization objects
-                cache.SyncObjects = new SpinLock[vectorCount];
-                for (int i = 0; i < cache.SyncObjects.Length; i++)
-                    cache.SyncObjects[i] = new SpinLock();
-#endif
             }
 
             // Initialize (or reset) the cache. A value of Not-a-Number
@@ -1232,9 +1170,6 @@ namespace Accord.MachineLearning.VectorMachines
             public int Evaluations;
             public double[] Products;
             public int[][][] Vectors;
-#if !NET35
-            public SpinLock[] SyncObjects;
-#endif
         }
 
         #endregion

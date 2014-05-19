@@ -94,7 +94,6 @@ namespace System.Data {
 		// CaseSensitive property. So when you lost you virginity it's gone for ever
 		private bool _virginCaseSensitive = true;
 
-		private PropertyDescriptorCollection _propertyDescriptorsCache;
 		static DataColumn[] _emptyColumnArray = new DataColumn[0];
 
 		// Regex to parse the Sort string.
@@ -1511,8 +1510,12 @@ namespace System.Data {
 
 		#endregion // Events
 
-		internal static DataColumn[] ParseSortString (DataTable table, string sort, out ListSortDirection[] sortDirections, bool rejectNoResult)
-		{
+		internal static DataColumn[] ParseSortString (
+			DataTable table, 
+			string sort, 
+			out ListSortDirection[] sortDirections, 
+			bool rejectNoResult
+		){
 			DataColumn[] sortColumns = _emptyColumnArray;
 			sortDirections = null;
 
@@ -1544,7 +1547,7 @@ namespace System.Data {
 					columns.Add (dc);
 
 					g = match.Groups["Order"];
-					if (!g.Success || String.Compare (g.Value, "ASC", true, CultureInfo.InvariantCulture) == 0)
+					if (!g.Success || String.Compare (g.Value, "ASC", CultureInfo.InvariantCulture, CompareOptions.IgnoreCase) == 0)
 						sorts.Add(ListSortDirection.Ascending);
 					else
 						sorts.Add (ListSortDirection.Descending);
@@ -1564,31 +1567,6 @@ namespace System.Data {
 			}
 
 			return sortColumns;
-		}
-
-		private void UpdatePropertyDescriptorsCache ()
-		{
-			PropertyDescriptor[] descriptors = new PropertyDescriptor[Columns.Count + ChildRelations.Count];
-			int index = 0;
-			foreach (DataColumn col in Columns)
-				descriptors [index++] = new DataColumnPropertyDescriptor (col);
-
-			foreach (DataRelation rel in ChildRelations)
-				descriptors [index++] = new DataRelationPropertyDescriptor (rel);
-
-			_propertyDescriptorsCache = new PropertyDescriptorCollection (descriptors);
-		}
-
-		internal PropertyDescriptorCollection GetPropertyDescriptorCollection()
-		{
-			if (_propertyDescriptorsCache == null)
-				UpdatePropertyDescriptorsCache ();
-			return _propertyDescriptorsCache;
-		}
-
-		internal void ResetPropertyDescriptorsCache ()
-		{
-			_propertyDescriptorsCache = null;
 		}
 
 		internal void SetRowsID()

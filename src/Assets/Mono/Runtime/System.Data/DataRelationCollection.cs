@@ -276,9 +276,6 @@ namespace System.Data {
 				if (relation.RelationName == string.Empty)
 					relation.RelationName = GenerateRelationName ();
 
-				relation.ParentTable.ResetPropertyDescriptorsCache ();
-				relation.ChildTable.ResetPropertyDescriptorsCache ();
-
 				e = new CollectionChangeEventArgsDerived (CollectionChangeActionDerived.Add, relation);
 				OnCollectionChanged (e);
 			} finally {

@@ -36,6 +36,7 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
+using System.Globalization;
 
 namespace System.Data {
 	//[Editor]
@@ -95,8 +96,16 @@ namespace System.Data {
 			foreach (Constraint cst in List) {
 				if (cst == excludeFromComparison)
 					continue;
-				if (String.Equals (constraintName, cst.ConstraintName, StringComparison.CurrentCulture))
+				if (
+					String.Compare (
+						constraintName, 
+						cst.ConstraintName, 
+						Table.Locale, 
+						CompareOptions.None
+					) == 0
+				){
 					return true;
+				}
 			}
 
 			return false;
@@ -283,8 +292,18 @@ namespace System.Data {
 
 			int index = 0;
 			foreach (Constraint con in List) {
-				if (String.Compare (constraintName, con.ConstraintName, !Table.CaseSensitive, Table.Locale) == 0)
+				if (
+					String.Compare (
+						constraintName, 
+						con.ConstraintName, 
+						Table.Locale,
+						Table.CaseSensitive 
+						? CompareOptions.None
+						: CompareOptions.IgnoreCase
+					) == 0
+				){
 					return index;
+				}
 				index++;
 			}
 			return -1; //not found

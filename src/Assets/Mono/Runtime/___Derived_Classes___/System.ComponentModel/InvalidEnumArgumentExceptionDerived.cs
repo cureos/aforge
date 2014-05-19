@@ -1,11 +1,13 @@
 //
-// System.ComponentModel.ListChangedEventArgsDerived.cs
+// System.ComponentModel.InvalidEnumArgumentExceptionDerived.cs 
 //
-// Author: Duncan Mak (duncan@ximian.com)
+// Authors:
+//	Duncan Mak (duncan@ximian.com)
+//  Andreas Nahr (ClassDevelopment@A-SoftTech.com)
 //
-// (C) Ximian, Inc.
-//
-
+// (C) 2002 Ximian, Inc.		http://www.ximian.com
+// (C) 2003 Andreas Nahr
+// Copyright (C) 2005 Novell, Inc (http://www.novell.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,40 +29,34 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System.ComponentModel;
+using System.Globalization;
+using System.Security.Permissions;
 
-namespace System.ComponentModel {
-	public class ListChangedEventArgsDerived : EventArgs
+namespace System.ComponentModel
+{
+	[Serializable]
+	public class InvalidEnumArgumentExceptionDerived : ArgumentException
 	{
-	
-		ListChangedTypeDerived changedType;
-		int oldIndex;
-		int newIndex;
 
-		public ListChangedEventArgsDerived (ListChangedTypeDerived listChangedType,
-					     int newIndex)
-			: this (listChangedType, newIndex, -1)
+		public InvalidEnumArgumentExceptionDerived () : this ((string) null)
 		{
 		}
 
-		public ListChangedEventArgsDerived (ListChangedTypeDerived listChangedType,
-					     int newIndex, int oldIndex)
+		public InvalidEnumArgumentExceptionDerived (string message) : base (message)
 		{
-			this.changedType = listChangedType;
-			this.newIndex = newIndex;
-			this.oldIndex = oldIndex;
 		}
 
-		public ListChangedTypeDerived ListChangedTypeDerived {
-			get { return changedType; }
+		public InvalidEnumArgumentExceptionDerived (string argumentName, int invalidValue, Type enumClass) :
+			base (string.Format (CultureInfo.CurrentCulture, "The value "
+					+ "of argument '{0}' ({1}) is invalid for "
+					+ "Enum type '{2}'.", argumentName, invalidValue,
+					enumClass.Name), argumentName)
+		{
 		}
-	
-		public int OldIndex {
-			get { return oldIndex; }
-		}
-	
-		public int NewIndex {
-			get { return newIndex; }
+
+		public InvalidEnumArgumentExceptionDerived (string message, Exception innerException)
+			: base (message, innerException)
+		{
 		}
 	}
 }

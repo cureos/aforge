@@ -20,35 +20,39 @@
 //    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //
 
-namespace System.Threading.Tasks
+#if NET35
+namespace System.Collections.Generic
 {
     using System;
-    using System.Threading;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    //using System.Runtime.Serialization;
 
     /// <summary>
-    ///   Minimum Parallel Tasks implementation for .NET 3.5 to make
-    ///   Accord.NET work. This is nowhere a functional implementation
-    ///   and exists only to provide compile-time compatibility with
-    ///   previous framework versions.
+    ///   Minimum ISet implementation for .NET 3.5 to
+    ///   make Accord.NET work. This is not a complete implementation.
     /// </summary>
     /// 
-    internal static class Parallel
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]       [Serializable]
+    public class ISet<T> : HashSet<T>
     {
         /// <summary>
-        ///   Loop body delegate.
+        ///   Initializes a new instance of the <see cref="ISet&lt;T&gt;"/> class.
         /// </summary>
         /// 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage ("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
-        public delegate void ForLoopBody(int index);
+        public ISet()
+            : base() { }
 
         /// <summary>
-        ///   Parallel for mock-up. The provided
-        ///   code will NOT be run in parallel.
+        ///   Initializes a new instance of the <see cref="ISet&lt;T&gt;"/> class.
         /// </summary>
         /// 
-        public static void For(int start, int stop, ForLoopBody loopBody)
-        {
-            for (int i = start; i < stop; i++) loopBody(i);
-        }
+        /// <param name="info">The info.</param>
+        /// <param name="context">The context.</param>
+        /// 
+        protected ISet(SerializationInfo info, StreamingContext context)
+            : base(info, context) { }
     }
 }
+#endif
