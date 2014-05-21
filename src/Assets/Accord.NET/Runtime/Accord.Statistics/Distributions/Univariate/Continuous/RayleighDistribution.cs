@@ -258,9 +258,9 @@ namespace Accord.Statistics.Distributions.Univariate
                 throw new ArgumentException("This distribution does not support weighted samples.");
 
             double sum = 0;
-            for (int i = 0; i < observations.Length; i++)
-                sum += observations[i] * observations[i];
-
+			for (int i = 0; i < observations.Length; i++) {
+				sum += observations [i] * observations [i];
+			}
             sigma = Math.Sqrt(1.0 / (2.0 * observations.Length) * sum);
         }
 
@@ -330,7 +330,12 @@ namespace Accord.Statistics.Distributions.Univariate
             double[] r = new double[samples];
             for (int i = 0; i < r.Length; i++)
             {
-                double u = Accord.Math.Tools.Random.Next();
+				//double u = Accord.Math.Tools.Random.Next();
+				double u = Accord.Math.Tools.Random.NextDouble();
+				if (u == 0.0){
+					u = 1.0;
+				}
+				
                 r[i] = Math.Sqrt(-2 * sigma * sigma * Math.Log(u));
             }
 
@@ -348,10 +353,8 @@ namespace Accord.Statistics.Distributions.Univariate
         /// 
         public static double Random(double sigma)
         {
-            double u = Accord.Math.Tools.Random.Next();
-            return Math.Sqrt(-2 * sigma * sigma * Math.Log(u));
+			return Random (sigma, 1) [0];
         }
-
         #endregion
 
 

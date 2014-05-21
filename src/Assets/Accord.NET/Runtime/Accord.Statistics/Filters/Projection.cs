@@ -102,19 +102,13 @@ namespace Accord.Statistics.Filters
         /// 
         public DataTable Apply(DataTable data)
         {
-            List<String> cols = new List<String>();
-
-            foreach (var col in Columns)
-            {
-                if (data.Columns.Contains(col))
-                    cols.Add(col);
-            }
-			
-			/*
-            //FIXME: return data.DefaultView.ToTable(false, Columns.ToArray());
-            */
-			
-			return data;
+			DataTable d = data.Copy ();
+			for (int i = d.Columns.Count - 1; i >= 0; --i) {
+				if (!this.Columns.Contains (d.Columns [i].ColumnName)) {
+					d.Columns.RemoveAt (i);
+				}
+			}
+			return d;
         }
 
     }

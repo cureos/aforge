@@ -49,7 +49,7 @@ namespace Accord.Tests.Statistics
                 testContextInstance = value;
             }
         }
-
+		
         [Test]
         public void ApplyTest1()
         {

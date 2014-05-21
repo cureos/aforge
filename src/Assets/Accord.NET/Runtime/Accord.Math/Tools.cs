@@ -33,7 +33,6 @@ namespace Accord.Math
     /// 
     public static class Tools
     {
-
         #region Framework-wide random number generator
         private static Random random = new ThreadSafeRandom();
 

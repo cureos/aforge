@@ -37,14 +37,12 @@ namespace System.ComponentModel {
 		int oldIndex;
 		int newIndex;
 
-		public ListChangedEventArgsDerived (ListChangedTypeDerived listChangedType,
-					     int newIndex)
-			: this (listChangedType, newIndex, -1)
+		public ListChangedEventArgsDerived (ListChangedTypeDerived listChangedType, int newIndex)
+		: this (listChangedType, newIndex, -1)
 		{
 		}
 
-		public ListChangedEventArgsDerived (ListChangedTypeDerived listChangedType,
-					     int newIndex, int oldIndex)
+		public ListChangedEventArgsDerived (ListChangedTypeDerived listChangedType, int newIndex, int oldIndex)
 		{
 			this.changedType = listChangedType;
 			this.newIndex = newIndex;

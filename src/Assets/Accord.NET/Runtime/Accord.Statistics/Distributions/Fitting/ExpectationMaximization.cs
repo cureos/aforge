@@ -128,7 +128,7 @@ namespace Accord.Statistics.Distributions.Fitting
 
             double[] coefficients = Coefficients;
             var components = Distributions;
-
+			
             double weightSum = 1;
             if (weights != null)
                 weightSum = weights.Sum();
@@ -258,9 +258,21 @@ namespace Accord.Statistics.Distributions.Fitting
         ///   for a given set of observations.
         /// </summary>
         /// 
-        internal static double LogLikelihood(double[] pi, IDistribution<TObservation>[] pdf,
-            TObservation[] observations, double[] weights, double weightSum)
-        {
+        internal static double LogLikelihood(
+			double[] pi, 
+			IDistribution<TObservation>[] pdf,
+            TObservation[] observations, 
+			double[] weights, 
+			double weightSum
+		){
+			if (weights == null) {
+				weights = new double[observations.Length];
+				for (int i = 0; i < weights.Length; ++i) {
+					weights [i] = 1.0;
+				}
+				weightSum = (double)(weights.Length);
+			}
+
             double logLikelihood = 0.0;
 
             for (int i = 0; i < observations.Length; i++)

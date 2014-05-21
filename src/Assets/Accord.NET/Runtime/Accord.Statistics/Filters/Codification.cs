@@ -608,18 +608,22 @@ namespace Accord.Statistics.Filters
                 var map = new Dictionary<string, int>();
                 Columns.Add(new Options(name, map));
 
-                // Do a select distinct to get distinct values
-				/*
-                // FIXME: DataTable d = data.DefaultView.ToTable(true, name);
-				*/
-				DataTable d = data;
-				
-                // For each distinct value, create a corresponding integer
-                for (int i = 0; i < d.Rows.Count; i++)
-                {
-                    // And register the String->Integer mapping
-                    map.Add(d.Rows[i][0] as string, i);
-                }
+				foreach (DataColumn c in data.Columns) {
+					if (c != null && string.Equals (c.ColumnName, name)) {
+						int index = 0;
+						foreach (DataRow r in data.Rows) {
+							if (r != null) {
+								string key = r [c] as string;
+
+								if (key != null && !map.ContainsKey (key)) {
+									map.Add (key, index);
+									++index;
+								}
+							}
+						}
+						break;
+					}
+				}
             }
         }
 

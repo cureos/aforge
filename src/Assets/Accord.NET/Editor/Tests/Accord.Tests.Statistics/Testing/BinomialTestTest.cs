@@ -89,7 +89,7 @@ namespace Accord.Tests.Statistics
             // GNU R (0.096248626708984375)
             // Wolfram Alpha reports 0.06357
 			
-			/*
+			
 			// Tested against Wolfram Alpha
 			BinomialTest target = new BinomialTest(5, 18);
 
@@ -98,8 +98,8 @@ namespace Accord.Tests.Statistics
 
             Assert.AreEqual(0.063564300537109319, target.PValue, 1e-4);
             Assert.IsFalse(target.Significant);
-            */
 			
+			/*
 			// Tested against GNU R
 			BinomialTest target = new BinomialTest(5, 18);
 
@@ -108,6 +108,7 @@ namespace Accord.Tests.Statistics
 
 			Assert.AreEqual(0.096248626708984375, target.PValue, 1e-4);
 			Assert.IsFalse(target.Significant);
+			*/
 		}
 		
 		[Test]
@@ -177,9 +178,9 @@ namespace Accord.Tests.Statistics
 		[TestCase(2, 0.382725376073)]
 		[TestCase(3, 1.00000000000)]
 		[TestCase(4, 0.34347252004)]
-		//[TestCase(5, 0.063564300537)] // Wolfram Alpha reports 0.
+		[TestCase(5, 0.063564300537)] // Wolfram Alpha reports 0.
 		// http://www.wolframalpha.com/input/?i=test+for+binomial+parameter+p0%3D0.5%2C+samples%3D18%2C+successes%3D5
-		[TestCase(5, 0.096248626708)] // GNU R reports 0.096248626708
+		//[TestCase(5, 0.096248626708)] // GNU R reports 0.096248626708
 		[TestCase(6, 0.00707077678)]
 		[TestCase(7, 0.00026908252)]
 		[TestCase(8, 0.000002519659)]

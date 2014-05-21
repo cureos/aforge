@@ -4164,10 +4164,17 @@ namespace Accord.Statistics
         {
             // Create the index vector
             int[] idx = new int[size];
-
-            double n = groups / (double)size;
-            for (int i = 0; i < idx.Length; i++)
-                idx[i] = (int)System.Math.Ceiling((i + 0.9) * n) - 1;
+			/*
+			double n = (double)(groups) / (double)(size);
+			for (int i = 0; i < idx.Length; i++) {
+				idx [i] = (int)System.Math.Ceiling ((i + 0.9) * n) - 1;
+				UnityEngine.Debug.Log (i + " ---> " + idx [i]);
+			}
+			*/
+			
+			for (int i = 0; i < idx.Length; ++i) {
+				idx [i] = i % groups;
+			}
 
             // Shuffle the indices vector
             Statistics.Tools.Shuffle(idx);

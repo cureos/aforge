@@ -253,12 +253,15 @@ namespace Accord.Tests.Statistics
             MultinomialLogisticRegression target = createExample1();
             MultinomialLogisticRegression actual = (MultinomialLogisticRegression)target.Clone();
 
-            Assert.AreNotEqual(target, actual);
+			//Assert.AreNotEqual(target, actual);
+			Assert.AreNotSame(target, actual);
             Assert.AreEqual(target.Categories, actual.Categories);
             Assert.AreEqual(target.Inputs, actual.Inputs);
-
-            Assert.AreNotEqual(target.Coefficients, actual.Coefficients);
-            Assert.AreNotEqual(target.StandardErrors, actual.StandardErrors);
+			
+			//Assert.AreNotEqual(target.Coefficients, actual.Coefficients);
+			//Assert.AreNotEqual(target.StandardErrors, actual.StandardErrors);
+			Assert.AreNotSame(target.Coefficients, actual.Coefficients);
+			Assert.AreNotSame(target.StandardErrors, actual.StandardErrors);
 
             for (int i = 0; i < target.Coefficients.Length; i++)
             {

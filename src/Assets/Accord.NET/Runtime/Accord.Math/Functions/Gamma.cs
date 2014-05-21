@@ -415,7 +415,8 @@ namespace Accord.Math
 
             double w = 1.0 / x;
             double y = Math.Exp(x);
-
+			if (double.IsInfinity(y)) return y;
+			
             w = 1.0 + w * Special.Polevl(w, STIR, 4);
 
             if (x > MAXSTIR)

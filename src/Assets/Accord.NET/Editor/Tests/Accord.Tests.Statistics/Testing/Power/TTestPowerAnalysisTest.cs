@@ -74,7 +74,8 @@ namespace Accord.Tests.Statistics
 					varA, 
 					varB, 
 					1.0,
-					0.8
+					0.8,
+					0.05
 				);
 
                 Assert.AreEqual(41, Math.Truncate(priori.Samples1));
@@ -187,7 +188,8 @@ namespace Accord.Tests.Statistics
 				varA, 
 				varB, 
 				1.0,
-				0.8
+				0.8,
+				0.05
 			);
 
             Assert.AreEqual(0.4568219, analysis.Effect, 1e-6);

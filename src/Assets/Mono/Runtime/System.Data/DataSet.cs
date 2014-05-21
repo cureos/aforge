@@ -110,10 +110,9 @@ namespace System.Data
 			get { return dataSetName; }
 			set { dataSetName = value; }
 		}
-
 		/*
 		[Browsable (false)]
-		//FIXME: public DataViewManager DefaultViewManager {
+		public DataViewManager DefaultViewManager {
 			get {
 				if (defaultView == null)
 					defaultView = new DataViewManager (this);
@@ -121,7 +120,6 @@ namespace System.Data
 			}
 		}
 		*/
-		
 		[DefaultValue (true)]
 		public bool EnforceConstraints {
 			get { return enforceConstraints; }
@@ -578,7 +576,7 @@ namespace System.Data
 
 		#region IListSource methods
 		/*
-		//FIXME: IList IListSource.GetList ()
+		DataViewManager IList IListSource.GetList ()
 		{
 			return DefaultViewManager;
 		}

@@ -315,7 +315,6 @@ namespace Accord.Statistics.Kernels
         /// 
         private double D(Locals locals, double[] sequence1, double[] sequence2)
         {
-			/*
             // Get the number of vectors in each sequence. The vectors
             // have been projected, so the length is augmented by one.
             int vectorSize = length + 1;
@@ -328,42 +327,30 @@ namespace Accord.Statistics.Kernels
                 locals.Create(vectorCount1, vectorCount2);
 
             double[,] DTW = locals.DTW;
-
-
-            fixed (double* start1 = sequence1)
-            fixed (double* start2 = sequence2)
-            {
-                double* vector1 = start1;
-
-                for (int i = 0; i < vectorCount1; i++, vector1 += vectorSize)
-                {
-                    double* vector2 = start2;
-
-                    for (int j = 0; j < vectorCount2; j++, vector2 += vectorSize)
-                    {
-                        double prod = 0; // inner product 
-                        for (int k = 0; k < vectorSize; k++)
-                            prod += vector1[k] * vector2[k];
-
-                        // Return the arc-cosine of the inner product
-                        double cost = Math.Acos(prod > 1 ? 1 : (prod < -1 ? -1 : prod));
-
-                        double insertion = DTW[i, j + 1];
-                        double deletion = DTW[i + 1, j];
-                        double match = DTW[i, j];
-
-                        double min = (insertion < deletion
-                            ? (insertion < match ? insertion : match)
-                            : (deletion < match ? deletion : match));
-
-                        DTW[i + 1, j + 1] = cost + min;
-                    }
-                }
-            }
-
-            return DTW[vectorCount1, vectorCount2]; // return the minimum global distance
-			*/
-			return 0;
+			for (int i = 0; i < vectorCount1; i++)
+			{
+				for (int j = 0; j < vectorCount2; j++)
+				{
+					double prod = 0; // inner product 
+					for (int k = 0; k < vectorSize; k++) {
+						prod += sequence1 [i * vectorSize + k] * sequence2 [j * vectorSize + k];
+					}
+					
+					// Return the arc-cosine of the inner product
+					double cost = Math.Acos(prod > 1 ? 1 : (prod < -1 ? -1 : prod));
+					
+					double insertion = DTW[i, j + 1];
+					double deletion = DTW[i + 1, j];
+					double match = DTW[i, j];
+					
+					double min = (insertion < deletion
+						? (insertion < match ? insertion : match)
+						: (deletion < match ? deletion : match));
+					
+					DTW[i + 1, j + 1] = cost + min;
+				}
+			}
+			return DTW[vectorCount1, vectorCount2]; // return the minimum global distance
         }
 
 
@@ -380,37 +367,27 @@ namespace Accord.Statistics.Kernels
         /// 
         private double[] snorm(double[] input)
         {
-			/*
-            // Get the number of vectors in the sequence
-            int n = input.Length / length;
+			// Get the number of vectors in the sequence
+			int n = input.Length / length;
 
-            // Create the augmented sequence projection
-            double[] projection = new double[input.Length + n];
+			// Create the augmented sequence projection
+			double[] projection = new double[input.Length + n];
+			for (int i = 0; i < n; i++)
+			{
+				double norm = alpha * alpha;
 
-            fixed (double* source = input)
-            fixed (double* result = projection)
-            {
-                double* src = source;
-                double* dst = result;
+				for (int j = 0; j < length; ++j) {
+					norm += input [i * length + j] * input [i * length + j];
+				}
+				norm = Math.Sqrt(norm);
 
-                for (int i = 0; i < n; i++)
-                {
-                    double norm = alpha * alpha;
+				for (int j = 0; j < length; ++j) {
+					projection [i * (length + 1) + j] = input [i * length + j] / norm;
+				}
+				projection[i * (length + 1) + length] = alpha / norm;
+			}
 
-                    for (int j = 0; j < length; j++)
-                        norm += src[j] * src[j];
-                    norm = Math.Sqrt(norm);
-
-                    for (int j = 0; j < length; j++, src++, dst++)
-                        *dst = *src / norm;
-
-                    *(dst++) = alpha / norm;
-                }
-            }
-
-            return projection; // return the projected sequence
-			*/
-			return new double[0];
+			return projection; // return the projected sequence
         }
 
         /// <summary>

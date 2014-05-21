@@ -364,10 +364,10 @@ namespace Accord.MachineLearning
                 Iterations = options.Iterations,
                 Logarithm = options.Logarithm
             };
-
+			
             // Check if we have weighted samples
             double[] weights = options.Weights;
-
+			
             // Fit a multivariate Gaussian distribution
             model.Fit(data, weights, mixtureOptions);
 

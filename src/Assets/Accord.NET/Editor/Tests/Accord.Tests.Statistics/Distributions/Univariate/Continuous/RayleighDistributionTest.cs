@@ -132,9 +132,9 @@ namespace Accord.Tests.Statistics
             RayleighDistribution target = new RayleighDistribution(2.5);
 
             double[] samples = target.Generate(1000000);
-
+			
             var actual = RayleighDistribution.Estimate(samples);
-            actual.Fit(samples);
+			//actual.Fit(samples);
 
             Assert.AreEqual(2, actual.Mean, 0.01);
             Assert.AreEqual(5, actual.Variance, 0.01);
@@ -150,8 +150,8 @@ namespace Accord.Tests.Statistics
                 samples[i] = target.Generate();
 
             var actual = RayleighDistribution.Estimate(samples);
-            actual.Fit(samples);
-
+			//actual.Fit(samples);
+			
             Assert.AreEqual(4, actual.Mean, 0.01);
             Assert.AreEqual(2, actual.Variance, 0.01);
         }

@@ -40,11 +40,12 @@ namespace Accord.Tests.Statistics
 
             SignTest target = new SignTest(sample, hypothesizedMedian: 30);
 
-            // Wolfram Alpha gives 0.02896
-            // GNU R gives 0.04329
+            
+            
 
             Assert.AreEqual(OneSampleHypothesis.ValueIsDifferentFromHypothesis, target.Hypothesis);
-            Assert.AreEqual(0.043285, target.PValue, 1e-4);
+			Assert.AreEqual(0.02896, target.PValue, 1e-4);		// Wolfram Alpha gives 0.02896
+			//Assert.AreEqual(0.043285, target.PValue, 1e-4);	// GNU R gives 0.04329
             Assert.IsTrue(target.Significant);
 
         }

@@ -172,8 +172,8 @@ namespace Accord.Tests.Math
             double[][] groups = value.Subgroups(idx);
 
             Assert.AreEqual(4, groups.Length);
-            Assert.AreEqual(3, groups[0].Length);
-            Assert.AreEqual(4, groups[1].Length);
+			Assert.AreEqual(4, groups[0].Length);
+			Assert.AreEqual(3, groups[1].Length);
             Assert.AreEqual(3, groups[2].Length);
             Assert.AreEqual(3, groups[3].Length);
 

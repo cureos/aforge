@@ -66,7 +66,7 @@ namespace System.Data {
 		private DataColumnCollection _columnCollection;
 		private ConstraintCollection _constraintCollection;
 		// never access it. Use DefaultView.
-		//FIXME: private DataView _defaultView = null;
+		//private DataView _defaultView = null;
 
 		private string _displayExpression;
 		private PropertyCollection _extendedProperties;
@@ -97,8 +97,10 @@ namespace System.Data {
 		static DataColumn[] _emptyColumnArray = new DataColumn[0];
 
 		// Regex to parse the Sort string.
-		static Regex SortRegex = new Regex ( @"^((\[(?<ColName>.+)\])|(?<ColName>\S+))([ ]+(?<Order>ASC|DESC))?$",
-							RegexOptions.IgnoreCase|RegexOptions.ExplicitCapture);
+		static Regex SortRegex = new Regex (
+			@"^((\[(?<ColName>.+)\])|(?<ColName>\S+))([ ]+(?<Order>ASC|DESC))?$",
+			RegexOptions.IgnoreCase|RegexOptions.ExplicitCapture
+		);
 
 
 		DataColumn [] _latestPrimaryKeyCols;
@@ -235,14 +237,13 @@ namespace System.Data {
 		public DataSet DataSet {
 			get { return dataSet; }
 		}
-
+		/*
 		/// <summary>
 		/// Gets a customized view of the table which may
 		/// include a filtered view, or a cursor position.
 		/// </summary>
 		[Browsable (false)]
-		/*
-		//FIXME: public DataView DefaultView {
+		public DataView DefaultView {
 			get {
 				if (_defaultView == null) {
 					lock(this){
@@ -258,7 +259,6 @@ namespace System.Data {
 			}
 		}
 		*/
-
 		/// <summary>
 		/// Gets or sets the expression that will return
 		/// a value used to represent this table in the user interface.
@@ -925,7 +925,7 @@ namespace System.Data {
 		/// or
 		/// System.Windows.Forms controls like a DataGrid
 		/// </summary>
-		//FIXME: IList IListSource.GetList ()
+		IList IListSource.GetList ()
 		{
 			IList list = (IList) DefaultView;
 			return list;
@@ -1266,15 +1266,24 @@ namespace System.Data {
 		/// <param name="strict">Indicates whenever the index found should correspond in its uniquness to the value of unique parameter specified.</param>
 		/// <param name="reset">Indicates whenever the already existing index should be forced to reset.</param>
 		/// <returns></returns>
-		internal Index GetIndex (DataColumn[] columns, ListSortDirection[] sort, DataViewRowState rowState, IExpression filter, bool reset)
-		{
+		internal Index GetIndex (
+			DataColumn[] columns, 
+			ListSortDirection[] sort, 
+			DataViewRowState rowState, 
+			IExpression filter, 
+			bool reset
+		){
 			return GetIndex (columns, sort, rowState, filter, reset, true);
 		}
 
-		internal Index GetIndex (DataColumn[] columns, ListSortDirection[] sort,
-					 DataViewRowState rowState, IExpression filter,
-					 bool reset, bool addIndex)
-		{
+		internal Index GetIndex (
+			DataColumn[] columns, 
+			ListSortDirection[] sort,
+			DataViewRowState rowState, 
+			IExpression filter,
+			bool reset, 
+			bool addIndex
+		){
 			Index index = FindIndex(columns, sort, rowState, filter);
 			if (index == null) {
 				index = new Index(new Key (this, columns, sort, rowState, filter));
@@ -1293,8 +1302,12 @@ namespace System.Data {
 			return FindIndex (columns, null, DataViewRowState.None, null);
 		}
 
-		internal Index FindIndex (DataColumn[] columns, ListSortDirection[] sort, DataViewRowState rowState, IExpression filter)
-		{
+		internal Index FindIndex (
+			DataColumn[] columns, 
+			ListSortDirection[] sort, 
+			DataViewRowState rowState, 
+			IExpression filter
+		){
 			if (Indexes != null) {
 				foreach (Index index in Indexes) {
 					if (index.Key.Equals (columns,sort,rowState, filter))

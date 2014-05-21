@@ -47,50 +47,49 @@ namespace Accord.Tests.Math
 
 
 
-        [Test]
-        public void FunctionTest()
+		[TestCase(1.0, 1.000000000000000e+00)]
+		[TestCase(1.1, 0.9513507698668732)]
+		[TestCase(1.2, 9.181687423997607e-01)]
+		[TestCase(1.3, 8.974706963062772e-01)]
+		[TestCase(1.4, 8.872638175030753e-01)]
+		[TestCase(1.5, 8.862269254527581e-01)]
+		[TestCase(1.6, 8.935153492876903e-01)]
+		[TestCase(1.7, 9.086387328532904e-01)]
+		[TestCase(1.8, 9.313837709802427e-01)]
+		[TestCase(1.9, 9.617658319073874e-01)]
+		[TestCase(2.0, 1.000000000000000e+00)]
+		[TestCase(3.1, 2.197620278392477e+00)]
+		[TestCase(5.7, 7.252763452022295e+01)]
+		[TestCase(56.2, 2.835938400359957e+73)]
+		[TestCase(53.8, 1.929366760161528e+69)]
+		[TestCase(5.1, 2.793175373836837e+01)]
+		[TestCase(6.5, 2.878852778150444e+02)]
+		[TestCase(8.8, 2.633998635450860e+04)]
+		[TestCase(114.2, 5.749274244634086e+184)]
+		[TestCase(1024.6271, Double.PositiveInfinity)]
+		[TestCase(-2, Double.NaN)]
+		[TestCase(-52.1252, -6.188338737526232e-68)]
+		[TestCase(-0.10817480950786047, -9.940515795403039e+00)]
+		[TestCase(-0.11961291417237133, -9.070713053754153e+00)]
+		[TestCase(-0.12078223763524518, -8.991245623853780e+00)]
+		[TestCase(0, Double.NaN)]
+		[TestCase(281982742.12985912, Double.PositiveInfinity)]
+		[TestCase(0.5212392, 1.701905559094028e+00)]
+		public void FunctionTest(double x, double expected)
         {
-            double[] x = 
-            {
-                1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0,
-                3.1, 5.7, 56.2, 53.8, 5.1, 6.5, 8.8, 114.2, 1024.6271,
-               -2, -52.1252, -0.10817480950786047, -0.11961291417237133,
-                -0.12078223763524518, 0, 281982742.12985912, 0.5212392
-            };
+	        if (Double.IsNaN(expected))
+	        {
+	            bool thrown = false;
+	            try { Gamma.Function(x); }
+	            catch { thrown = true; }
+	            Assert.IsTrue(thrown);
+	        }
+	        else
+	        {
+	            double actual = Gamma.Function(x);
 
-            double[] expected =    
-            {
-                  1.000000000000000e+00, 0.9513507698668732, 9.181687423997607e-01,
-                  8.974706963062772e-01, 8.872638175030753e-01, 8.862269254527581e-01,
-                  8.935153492876903e-01, 9.086387328532904e-01, 9.313837709802427e-01, 
-                  9.617658319073874e-01, 1.000000000000000e+00, 2.197620278392477e+00,
-                  7.252763452022295e+01, 2.835938400359957e+73, 1.929366760161528e+69,
-                  2.793175373836837e+01, 2.878852778150444e+02, 2.633998635450860e+04,
-                  5.749274244634086e+184, Double.PositiveInfinity, Double.NaN,
-                 -6.188338737526232e-68, -9.940515795403039e+00,  -9.070713053754153e+00,
-                 -8.991245623853780e+00, Double.NaN, Double.PositiveInfinity, 1.701905559094028e+00
-
-            };
-
-            for (int i = 0; i < x.Length; i++)
-            {
-                double xi = x[i];
-                double expectedi = expected[i];
-
-                if (Double.IsNaN(expectedi))
-                {
-                    bool thrown = false;
-                    try { Gamma.Function(xi); }
-                    catch { thrown = true; }
-                    Assert.IsTrue(thrown);
-                }
-                else
-                {
-                    double actual = Gamma.Function(xi);
-
-                    Assert.AreEqual(expectedi, actual, System.Math.Abs(expectedi) * 1e-12);
-                }
-            }
+	            Assert.AreEqual(expected, actual, System.Math.Abs(expected) * 1e-12);
+	        }
         }
 
 
