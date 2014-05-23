@@ -32,7 +32,7 @@ namespace AForge.Neuro.Learning
         private double learningRadius = 0.5;
 
         // squared learning radius multiplied by 2 (precalculated value to speed up computations)
-        private double squaredRadius2 = 2 * 7 * 7;
+        private double squaredRadius2 = 2 * 0.5 * 0.5;
 
         /// <summary>
         /// Learning rate, [0, 1].
