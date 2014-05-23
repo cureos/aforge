@@ -243,37 +243,6 @@ public class AI4UnityEditorWindow : EditorWindow {
 	#endregion
 
 	#region protected instance methods
-	protected virtual CompilerResults CompileDll(
-		string sourceFolder,
-		string dllFilename,
-		IEnumerable<string> referencedAssemblies
-	){
-		if (dllFilename != null) {
-			//dllFilename = dllFilename.Replace('/', Path.PathSeparator);
-			dllFilename = new FileInfo(dllFilename).FullName;
-		}
-
-		CSharpCodeProvider provider = new CSharpCodeProvider();
-		CompilerParameters parameters = new CompilerParameters();
-		parameters.IncludeDebugInformation = false;
-		parameters.GenerateExecutable = false;
-		parameters.GenerateInMemory = false;
-		parameters.OutputAssembly = dllFilename;
-
-		if (referencedAssemblies != null){
-			foreach (string assembly in referencedAssemblies){
-				if (!string.IsNullOrEmpty(assembly)){
-					parameters.ReferencedAssemblies.Add(assembly);
-				}
-			}
-		}
-
-		return provider.CompileAssemblyFromFile(
-			parameters, 
-			this.GetSourceFiles(sourceFolder)
-		);
-	}
-
 	protected string[] GetSourceFiles(string sourceFolder){
 		DirectoryInfo dir = new DirectoryInfo(sourceFolder);
 		List<string> files = new List<string> ();
@@ -297,7 +266,7 @@ public class AI4UnityEditorWindow : EditorWindow {
 		}else{
 			GUILayout.BeginHorizontal ();
 			GUILayout.Label ("Build Path:");
-			this.BuildPath = GUILayout.TextField (this.BuildPath);
+			this.BuildPath = GUILayout.TextField (this.BuildPath != null ? this.BuildPath : string.Empty);
 
 			if (GUILayout.Button ("+")) {
 				this.BuildPath = EditorUtility.SaveFolderPanel(
@@ -455,186 +424,177 @@ public class AI4UnityEditorWindow : EditorWindow {
 						this.BuildPath
 					);
 
+					Debug.Log("Generating DLLs..."); 
 					if (this.BuildAForgeCore){
-						CompilerResults results = this.CompileDll(
-							AI4UnityEditorWindow.AForgeCorePath,
-							aForgeCoreDll,
-							null
+						string[] results = EditorUtility.CompileCSharp(
+							this.GetSourceFiles(AI4UnityEditorWindow.AForgeCorePath),
+							new string[0],
+							new string[0],
+							new FileInfo(aForgeCoreDll).FullName
 						);
 
-						foreach (CompilerError error in results.Errors){
-							if (error.IsWarning){
-								warnings.AppendLine(error.ToString());
-							}else{
-								errors.AppendLine(error.ToString());
+						foreach (string result in results){
+							if (result.Contains("warning")){
+								warnings.AppendLine(result);
+							}else if (result.Contains("error")){
+								errors.AppendLine(result);
 							}
 						}
 					}
 
-					Debug.Log("Generating DLLs..."); 
 					if (this.BuildAForgeMath){
-						CompilerResults results = this.CompileDll(
-							AI4UnityEditorWindow.AForgeMathPath
-							,
-							aForgeMathDll
-							,
+						string[] results = EditorUtility.CompileCSharp(
+							this.GetSourceFiles(AI4UnityEditorWindow.AForgeMathPath),
 							new string[]{
 								"System.dll",
 								aForgeCoreDll
-							}
+							},
+							new string[0],
+							new FileInfo(aForgeMathDll).FullName
 						);
-
-						foreach (CompilerError error in results.Errors){
-							if (error.IsWarning){
-								warnings.AppendLine(error.ToString());
-							}else{
-								errors.AppendLine(error.ToString());
+						
+						foreach (string result in results){
+							if (result.Contains("warning")){
+								warnings.AppendLine(result);
+							}else if (result.Contains("error")){
+								errors.AppendLine(result);
 							}
 						}
 					}
 
 					if (this.BuildAForgeFuzzy){
-						CompilerResults results = this.CompileDll(
-							AI4UnityEditorWindow.AForgeFuzzyPath
-							,
-							aForgeFuzzyDll
-							,
+						string[] results = EditorUtility.CompileCSharp(
+							this.GetSourceFiles(AI4UnityEditorWindow.AForgeFuzzyPath),
 							new string[]{
 								"System.dll",
 								aForgeCoreDll,
 								aForgeMathDll
-							}
+							},
+							new string[0],
+							new FileInfo(aForgeFuzzyDll).FullName
 						);
-
-						foreach (CompilerError error in results.Errors){
-							if (error.IsWarning){
-								warnings.AppendLine(error.ToString());
-							}else{
-								errors.AppendLine(error.ToString());
+						
+						foreach (string result in results){
+							if (result.Contains("warning")){
+								warnings.AppendLine(result);
+							}else if (result.Contains("error")){
+								errors.AppendLine(result);
 							}
 						}
 					}
 
 					if (this.BuildAForgeGenetic){
-						CompilerResults results = this.CompileDll(
-							AI4UnityEditorWindow.AForgeGeneticPath
-							,
-							aForgeGeneticDll
-							,
+						string[] results = EditorUtility.CompileCSharp(
+							this.GetSourceFiles(AI4UnityEditorWindow.AForgeGeneticPath),
 							new string[]{
 								"System.dll",
 								"mscorlib.dll",
 								aForgeCoreDll,
 								aForgeMathDll
-							}
+							},
+							new string[0],
+							new FileInfo(aForgeGeneticDll).FullName
 						);
 
-						foreach (CompilerError error in results.Errors){
-							if (error.IsWarning){
-								warnings.AppendLine(error.ToString());
-							}else{
-								errors.AppendLine(error.ToString());
+						foreach (string result in results){
+							if (result.Contains("warning")){
+								warnings.AppendLine(result);
+							}else if (result.Contains("error")){
+								errors.AppendLine(result);
 							}
 						}
 					}
 
 					if (this.BuildAForgeNeuro){
-						CompilerResults results = this.CompileDll(
-							AI4UnityEditorWindow.AForgeNeuroPath
-							,
-							aForgeNeuroDll
-							,
+						string[] results = EditorUtility.CompileCSharp(
+							this.GetSourceFiles(AI4UnityEditorWindow.AForgeNeuroPath),
 							new string[]{
 								"System.dll",
 								"mscorlib.dll",
 								aForgeCoreDll,
 								aForgeMathDll,
 								aForgeGeneticDll
-							}
+							},
+							new string[0],
+							new FileInfo(aForgeNeuroDll).FullName
 						);
 
-						foreach (CompilerError error in results.Errors){
-							if (error.IsWarning){
-								warnings.AppendLine(error.ToString());
-							}else{
-								errors.AppendLine(error.ToString());
+						foreach (string result in results){
+							if (result.Contains("warning")){
+								warnings.AppendLine(result);
+							}else if (result.Contains("error")){
+								errors.AppendLine(result);
 							}
 						}
 					}
 
 					if (this.BuildAForgeMachineLearning){
-						CompilerResults results = this.CompileDll(
-							AI4UnityEditorWindow.AForgeMachineLearningPath
-							,
-							aForgeMachineLearningDll
-							,
+						string[] results = EditorUtility.CompileCSharp(
+							this.GetSourceFiles(AI4UnityEditorWindow.AForgeMachineLearningPath),
 							new string[]{
 								"System.dll",
 								aForgeCoreDll,
 								aForgeMathDll
-							}
+							},
+							new string[0],
+							new FileInfo(aForgeMachineLearningDll).FullName
 						);
 
-						foreach (CompilerError error in results.Errors){
-							if (error.IsWarning){
-								warnings.AppendLine(error.ToString());
-							}else{
-								errors.AppendLine(error.ToString());
+						foreach (string result in results){
+							if (result.Contains("warning")){
+								warnings.AppendLine(result);
+							}else if (result.Contains("error")){
+								errors.AppendLine(result);
 							}
 						}
 					}
 
 					if (this.BuildAccordCore){
-						CompilerResults results = this.CompileDll(
-							AI4UnityEditorWindow.AccordCorePath
-							,
-							accordCoreDll
-							,
+						string[] results = EditorUtility.CompileCSharp(
+							this.GetSourceFiles(AI4UnityEditorWindow.AccordCorePath),
 							new string[]{
 								"System.dll",
 								AI4UnityEditorWindow.MonoDll,
-							}
+							},
+							new string[0],
+							new FileInfo(accordCoreDll).FullName
 						);
-						
-						foreach (CompilerError error in results.Errors){
-							if (error.IsWarning){
-								warnings.AppendLine(error.ToString());
-							}else{
-								errors.AppendLine(error.ToString());
+
+						foreach (string result in results){
+							if (result.Contains("warning")){
+								warnings.AppendLine(result);
+							}else if (result.Contains("error")){
+								errors.AppendLine(result);
 							}
 						}
 					}
 
 					if (this.BuildAccordMath){
-						CompilerResults results = this.CompileDll(
-							AI4UnityEditorWindow.AccordMathPath
-							,
-							accordMathDll
-							,
+						string[] results = EditorUtility.CompileCSharp(
+							this.GetSourceFiles(AI4UnityEditorWindow.AccordMathPath),
 							new string[]{
 								"System.dll",
 								accordCoreDll,
 								aForgeCoreDll,
 								aForgeMathDll,
 								AI4UnityEditorWindow.MonoDll,
-							}
+							},
+							new string[0],
+							new FileInfo(accordMathDll).FullName
 						);
 						
-						foreach (CompilerError error in results.Errors){
-							if (error.IsWarning){
-								warnings.AppendLine(error.ToString());
-							}else{
-								errors.AppendLine(error.ToString());
+						foreach (string result in results){
+							if (result.Contains("warning")){
+								warnings.AppendLine(result);
+							}else if (result.Contains("error")){
+								errors.AppendLine(result);
 							}
 						}
 					}
 
 					if (this.BuildAccordStatistics){
-						CompilerResults results = this.CompileDll(
-							AI4UnityEditorWindow.AccordStatisticsPath
-							,
-							accordStatisticsDll
-							,
+						string[] results = EditorUtility.CompileCSharp(
+							this.GetSourceFiles(AI4UnityEditorWindow.AccordStatisticsPath),
 							new string[]{
 								"System.dll",
 								accordCoreDll,
@@ -642,24 +602,23 @@ public class AI4UnityEditorWindow : EditorWindow {
 								aForgeCoreDll,
 								aForgeMathDll,
 								AI4UnityEditorWindow.MonoDll,
-							}
+							},
+							new string[0],
+							new FileInfo(accordStatisticsDll).FullName
 						);
 						
-						foreach (CompilerError error in results.Errors){
-							if (error.IsWarning){
-								warnings.AppendLine(error.ToString());
-							}else{
-								errors.AppendLine(error.ToString());
+						foreach (string result in results){
+							if (result.Contains("warning")){
+								warnings.AppendLine(result);
+							}else if (result.Contains("error")){
+								errors.AppendLine(result);
 							}
 						}
 					}
 
 					if (this.BuildAccordNeuro){
-						CompilerResults results = this.CompileDll(
-							AI4UnityEditorWindow.AccordNeuroPath
-							,
-							accordNeuroDll
-							,
+						string[] results = EditorUtility.CompileCSharp(
+							this.GetSourceFiles(AI4UnityEditorWindow.AccordNeuroPath),
 							new string[]{
 								"System.dll",
 								accordCoreDll,
@@ -669,24 +628,23 @@ public class AI4UnityEditorWindow : EditorWindow {
 								aForgeMathDll,
 								aForgeNeuroDll,
 								AI4UnityEditorWindow.MonoDll,
-							}
+							},
+							new string[0],
+							new FileInfo(accordNeuroDll).FullName
 						);
 						
-						foreach (CompilerError error in results.Errors){
-							if (error.IsWarning){
-								warnings.AppendLine(error.ToString());
-							}else{
-								errors.AppendLine(error.ToString());
+						foreach (string result in results){
+							if (result.Contains("warning")){
+								warnings.AppendLine(result);
+							}else if (result.Contains("error")){
+								errors.AppendLine(result);
 							}
 						}
 					}
 
 					if (this.BuildAccordMachineLearning){
-						CompilerResults results = this.CompileDll(
-							AI4UnityEditorWindow.AccordMachineLearningPath
-							,
-							accordMachineLearningDll
-							,
+						string[] results = EditorUtility.CompileCSharp(
+							this.GetSourceFiles(AI4UnityEditorWindow.AccordMachineLearningPath),
 							new string[]{
 								"System.dll",
 								accordCoreDll,
@@ -696,14 +654,16 @@ public class AI4UnityEditorWindow : EditorWindow {
 								aForgeMathDll,
 								aForgeMachineLearningDll,
 								AI4UnityEditorWindow.MonoDll,
-							}
+							},
+							new string[0],
+							new FileInfo(accordMachineLearningDll).FullName
 						);
 						
-						foreach (CompilerError error in results.Errors){
-							if (error.IsWarning){
-								warnings.AppendLine(error.ToString());
-							}else{
-								errors.AppendLine(error.ToString());
+						foreach (string result in results){
+							if (result.Contains("warning")){
+								warnings.AppendLine(result);
+							}else if (result.Contains("error")){
+								errors.AppendLine(result);
 							}
 						}
 					}
