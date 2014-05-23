@@ -51,7 +51,7 @@ namespace Accord.Tests.Math
         [Test]
 		public void AugmentedLagrangianSolverConstructorTest1()
 		{
-			// Accord.Math.Tools.SetupGenerator(0);
+			Accord.Math.Tools.SetupGenerator(0);
 
 			// min 100(y-x*x)²+(1-x)²
 			//
@@ -66,34 +66,36 @@ namespace Accord.Tests.Math
 				,
 				gradient: (x) => new[] 
 				{
-						2.0 * (200.0 * x[0]*x[0]*x[0] - 200.0 * x[0] * x[1] + x[0] - 1), // df/dx
-						200 * (x[1] - x[0]*x[0])                                         // df/dy
+					2.0 * (200.0 * x[0]*x[0]*x[0] - 200.0 * x[0] * x[1] + x[0] - 1), // df/dx
+					200 * (x[1] - x[0]*x[0])                                         // df/dy
 				}
 			);
 
 
 			var constraints = new List<NonlinearConstraint>();
 
-			constraints.Add(new NonlinearConstraint(f,
-
+			constraints.Add(new NonlinearConstraint(
+				f,
 				function: (x) => x[0],
 				gradient: (x) => new[] { 1.0, 0.0 },
-
-				shouldBe: ConstraintType.LesserThanOrEqualTo, value: 0
+				shouldBe: ConstraintType.LesserThanOrEqualTo, 
+				value: 0
 			));
 
-			constraints.Add(new NonlinearConstraint(f,
-
+			constraints.Add(new NonlinearConstraint(
+				f,
 				function: (x) => x[1],
 				gradient: (x) => new[] { 0.0, 1.0 },
-
-				shouldBe: ConstraintType.LesserThanOrEqualTo, value: 0
+				shouldBe: ConstraintType.LesserThanOrEqualTo, 
+				value: 0
 			));
 
 			var solver = new AugmentedLagrangian(f, constraints);
 
 			Assert.IsTrue(solver.Minimize());
 			double minValue = solver.Value;
+
+						UnityEngine.Debug.Log (solver.Value + " - " + solver.Solution [0] + " - " + solver.Solution [1]);
 
 			Assert.AreEqual(1, minValue, 1e-5);
 			Assert.AreEqual(0, solver.Solution[0], 1e-5);

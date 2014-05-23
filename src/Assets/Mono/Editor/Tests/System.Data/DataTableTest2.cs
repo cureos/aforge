@@ -1571,8 +1571,8 @@ namespace MonoTests.System.Data
 			// Checking ExtendedProperties count
 			Assert.AreEqual (0, pc.Count, "DT150");
 		}
-
-		[Test]
+		
+		[Ignore, Test]
 		[Category ("NotWorking")]
 		public void PrimaryKey()
 		{

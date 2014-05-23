@@ -37,9 +37,9 @@ namespace System.Data
 	/// argument data for events RowChanged, RowChanging, 
 	/// OnRowDeleting, and OnRowDeleted
 	/// </summary>
-	public class DataRowChangeEventArgs : EventArgs {
+	public class DataRowChangeEventArgs : System.EventArgs {
 
-	        private DataRow row;
+	    private DataRow row;
 		private DataRowAction action; 
 	
 		public DataRowChangeEventArgs(DataRow row,

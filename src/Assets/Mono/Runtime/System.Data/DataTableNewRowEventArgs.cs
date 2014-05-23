@@ -32,9 +32,9 @@
 
 namespace System.Data
 {
-        public sealed class DataTableNewRowEventArgs : EventArgs
+		public sealed class DataTableNewRowEventArgs : System.EventArgs
         {
-                #region Fields
+        #region Fields
 		private readonly DataRow _row;
 		#endregion //Fields
 

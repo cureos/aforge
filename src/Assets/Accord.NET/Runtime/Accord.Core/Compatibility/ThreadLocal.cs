@@ -32,7 +32,7 @@ namespace Accord
     ///   Accord.NET work. This is not a complete implementation.
     /// </summary>
     /// 
-    internal class ThreadLocal<T> : IDisposable
+	public /*internal*/ class ThreadLocal<T> : IDisposable
     {
         [ThreadStatic]
         private static Dictionary<object, T> lookupTable;

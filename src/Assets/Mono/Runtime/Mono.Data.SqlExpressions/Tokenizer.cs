@@ -160,7 +160,9 @@ namespace Mono.Data.SqlExpressions {
 				case 't':
 					c = '\t';
 					break;
-
+				case ']':
+					c = ']';
+					break;
 				case '\\':
 					c = '\\';
 					break;

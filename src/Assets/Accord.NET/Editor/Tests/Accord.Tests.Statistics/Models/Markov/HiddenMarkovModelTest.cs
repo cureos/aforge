@@ -648,7 +648,7 @@ namespace Accord.Tests.Statistics
 
             // And the result will be: "those", "are", "words".
             string[] result = codebook.Translate("Words", sample);
-
+			
             Assert.AreEqual("those", result[0]);
             Assert.AreEqual("are", result[1]);
             Assert.AreEqual("words", result[2]);

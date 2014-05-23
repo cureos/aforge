@@ -33,7 +33,7 @@ namespace Accord
     ///   Accord.NET work. This is not a complete implementation.
     /// </summary>
     /// 
-    internal class Lazy<T>
+	public /*internal*/ class Lazy<T>
     {
         private readonly Func<T> valueFactory;
         private readonly object lockObj = new Object();

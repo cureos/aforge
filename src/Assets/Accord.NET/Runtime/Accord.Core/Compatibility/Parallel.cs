@@ -32,7 +32,7 @@ namespace System.Threading.Tasks
     ///   previous framework versions.
     /// </summary>
     /// 
-    internal static class Parallel
+    public /*internal*/ static class Parallel
     {
         /// <summary>
         ///   Loop body delegate.

@@ -14,58 +14,107 @@ public class AI4UnityEditorWindow : EditorWindow {
 	public static void ShowWindow () {
 		AI4UnityEditorWindow w = EditorWindow.GetWindow<AI4UnityEditorWindow>("AI4Unity", true);
 
-		if (PlayerPrefs.HasKey (AI4UnityEditorWindow.PlayerPrefs_BasePath)) {
-			w.BuildPath = PlayerPrefs.GetString (AI4UnityEditorWindow.PlayerPrefs_BasePath);
+		if (PlayerPrefs.HasKey (AI4UnityEditorWindow.PlayerPrefs_BuildBasePath)) {
+			w.BuildPath = PlayerPrefs.GetString (AI4UnityEditorWindow.PlayerPrefs_BuildBasePath);
+
+			DirectoryInfo directory = new DirectoryInfo(w.BuildPath);
+			if (!directory.Exists){
+				w.BuildPath = new DirectoryInfo(Application.dataPath).Parent.FullName;
+			}
 		} else {
-			w.BuildPath = Application.dataPath;
+			w.BuildPath = new DirectoryInfo(Application.dataPath).Parent.FullName;
 		}
 	}
 	#endregion
 
 	#region protected class properties
-	protected static readonly string BasePath = 
+
+	protected static readonly string AccordBasePath = 
+	Application.dataPath	+ Path.DirectorySeparatorChar + 
+	"Accord.NET"			+ Path.DirectorySeparatorChar + 
+	"Runtime"				+ Path.DirectorySeparatorChar;
+
+	protected static readonly string AccordCorePath = 
+	AI4UnityEditorWindow.AccordBasePath + "Accord.Core";
+
+	protected static readonly string AccordCoreDll = 
+	"Accord.Core.dll";
+
+	protected static readonly string AccordMachineLearningPath = 
+	AI4UnityEditorWindow.AccordBasePath + "Accord.MachineLearning";
+
+	protected static readonly string AccordMachineLearningDll = 
+	"Accord.MachineLearning.dll";
+
+	protected static readonly string AccordMathPath = 
+	AI4UnityEditorWindow.AccordBasePath + "Accord.Math";
+
+	protected static readonly string AccordMathDll = 
+	"Accord.Math.dll";
+
+	protected static readonly string AccordNeuroPath = 
+	AI4UnityEditorWindow.AccordBasePath + "Accord.Neuro";
+
+	protected static readonly string AccordNeuroDll = 
+	"Accord.Neuro.dll";
+
+	protected static readonly string AccordStatisticsPath = 
+	AI4UnityEditorWindow.AccordBasePath + "Accord.Statistics";
+
+	protected static readonly string AccordStatisticsDll = 
+	"Accord.Statistics.dll";
+
+	protected static readonly string AForgeBasePath = 
 	Application.dataPath	+ Path.DirectorySeparatorChar + 
 	"AForge.NET"			+ Path.DirectorySeparatorChar + 
 	"Runtime"				+ Path.DirectorySeparatorChar;
 
 	protected static readonly string AForgeCorePath = 
-	AI4UnityEditorWindow.BasePath + "Core";
+	AI4UnityEditorWindow.AForgeBasePath + "Core";
 
 	protected static readonly string AForgeCoreDll = 
 	"AForge.Core.dll";
 
 	protected static readonly string AForgeFuzzyPath = 
-	AI4UnityEditorWindow.BasePath + "Fuzzy";
+	AI4UnityEditorWindow.AForgeBasePath + "Fuzzy";
 
 	protected static readonly string AForgeFuzzyDll = 
 	"AForge.Fuzzy.dll";
 
 	protected static readonly string AForgeGeneticPath = 
-	AI4UnityEditorWindow.BasePath + "Genetic";
+	AI4UnityEditorWindow.AForgeBasePath + "Genetic";
 
 	protected static readonly string AForgeGeneticDll = 
 	"AForge.Genetic.dll";
 
 	protected static readonly string AForgeMachineLearningPath = 
-	AI4UnityEditorWindow.BasePath + "MachineLearning";
+	AI4UnityEditorWindow.AForgeBasePath + "MachineLearning";
 
 	protected static readonly string AForgeMachineLearningDll = 
 	"AForge.MachineLearning.dll";
 
 	protected static readonly string AForgeMathPath = 
-	AI4UnityEditorWindow.BasePath + "Math";
+	AI4UnityEditorWindow.AForgeBasePath + "Math";
 
 	protected static readonly string AForgeMathDll = 
 	"AForge.Math.dll";
 
 	protected static readonly string AForgeNeuroPath = 
-	AI4UnityEditorWindow.BasePath + "Neuro";
+	AI4UnityEditorWindow.AForgeBasePath + "Neuro";
 
 	protected static readonly string AForgeNeuroDll = 
 	"AForge.Neuro.dll";
 
-	protected static readonly string PlayerPrefs_BasePath = 
-	"AI4Unity_BasePath";
+	protected static readonly string Mono = 
+	Application.dataPath	+ Path.DirectorySeparatorChar + 
+	"Mono"					+ Path.DirectorySeparatorChar + 
+	"Runtime"				+ Path.DirectorySeparatorChar;
+
+	protected static readonly string MonoDll = 
+	"Mono.Extra.dll";
+
+	protected static readonly string PlayerPrefs_BuildBasePath = 
+	"BuildBasePath";
 	#endregion
 
 	#region public instance properties
@@ -75,6 +124,51 @@ public class AI4UnityEditorWindow : EditorWindow {
 		}
 		set{
 			this._buildPath = value;
+		}
+	}
+
+	public bool BuildAccordCore{
+		get{
+			return this._buildAccordCore;
+		}
+		set{
+			this._buildAccordCore = value;
+		}
+	}
+
+	public bool BuildAccordMachineLearning{
+		get{
+			return this._buildAccordMachineLearning;
+		}
+		set{
+			this._buildAccordMachineLearning = value;
+		}
+	}
+	
+	public bool BuildAccordMath{
+		get{
+			return this._buildAccordMath;
+		}
+		set{
+			this._buildAccordMath = value;
+		}
+	}
+	
+	public bool BuildAccordNeuro{
+		get{
+			return this._buildAccordNeuro;
+		}
+		set{
+			this._buildAccordNeuro = value;
+		}
+	}
+
+	public bool BuildAccordStatistics{
+		get{
+			return this._buildAccordStatistics;
+		}
+		set{
+			this._buildAccordStatistics = value;
 		}
 	}
 
@@ -131,16 +225,31 @@ public class AI4UnityEditorWindow : EditorWindow {
 			this._buildAForgeNeuro = value;
 		}
 	}
+
+	public bool BuildMono{
+		get{
+			return this._buildMono;
+		}
+		set{
+			this._buildMono = value;
+		}
+	}
 	#endregion
 
 	#region public instance properties
 	protected string _buildPath;
+	protected bool _buildAccordCore = true;
+	protected bool _buildAccordMachineLearning = true;
+	protected bool _buildAccordMath = true;
+	protected bool _buildAccordNeuro = true;
+	protected bool _buildAccordStatistics = true;
 	protected bool _buildAForgeCore = true;
 	protected bool _buildAForgeFuzzy = true;
 	protected bool _buildAForgeGenetic = true;
 	protected bool _buildAForgeMachineLearning = true;
 	protected bool _buildAForgeMath = true;
 	protected bool _buildAForgeNeuro = true;
+	protected bool _buildMono = true;
 	protected bool _compiling = false;
 	#endregion
 
@@ -227,9 +336,7 @@ public class AI4UnityEditorWindow : EditorWindow {
 				this.BuildAForgeFuzzy,
 				"AForge.NET Fuzzy"
 			);
-			GUILayout.EndVertical ();
 
-			GUILayout.BeginVertical ();
 			this.BuildAForgeGenetic = GUILayout.Toggle (
 				this.BuildAForgeGenetic,
 				"AForge.NET Genetic"
@@ -243,6 +350,39 @@ public class AI4UnityEditorWindow : EditorWindow {
 			this.BuildAForgeMachineLearning = GUILayout.Toggle (
 				this.BuildAForgeMachineLearning,
 				"AForge.NET Machine Learning"
+			);
+
+			GUILayout.EndVertical ();
+			GUILayout.BeginVertical ();
+
+			this.BuildMono = GUILayout.Toggle (
+				this.BuildMono,
+				"Mono (extra classes)"
+			);
+
+			this.BuildAccordCore = GUILayout.Toggle (
+				this.BuildAccordCore,
+				"Accord.NET Core"
+			);
+			
+			this.BuildAccordMath = GUILayout.Toggle (
+				this.BuildAccordMath,
+				"Accord.NET Math"
+			);
+
+			this.BuildAccordStatistics = GUILayout.Toggle (
+				this.BuildAccordStatistics,
+				"Accord.NET Statistics"
+			);
+			
+			this.BuildAccordNeuro = GUILayout.Toggle (
+				this.BuildAccordNeuro,
+				"Accord.NET Neuro"
+			);
+			
+			this.BuildAccordMachineLearning = GUILayout.Toggle (
+				this.BuildAccordMachineLearning,
+				"Accord.NET Machine Learning"
 			);
 			GUILayout.EndVertical ();
 			GUILayout.EndHorizontal ();
@@ -290,8 +430,50 @@ public class AI4UnityEditorWindow : EditorWindow {
 						AI4UnityEditorWindow.AForgeNeuroDll
 					).FullName;
 
+					string aForgeMachineLearningDll = new FileInfo(
+						this.BuildPath + 
+						Path.DirectorySeparatorChar + 
+						AI4UnityEditorWindow.AForgeMachineLearningDll
+					).FullName;
+
+					string monoDll = new FileInfo(
+						this.BuildPath + 
+						Path.DirectorySeparatorChar + 
+						AI4UnityEditorWindow.MonoDll
+					).FullName;
+
+					string accordCoreDll = new FileInfo( 
+						this.BuildPath + 
+						Path.DirectorySeparatorChar + 
+						AI4UnityEditorWindow.AccordCoreDll
+					).FullName;
+					
+					string accordMathDll = new FileInfo(
+						this.BuildPath + 
+						Path.DirectorySeparatorChar + 
+						AI4UnityEditorWindow.AccordMathDll
+					).FullName;
+					
+					string accordStatisticsDll = new FileInfo( 
+						this.BuildPath + 
+						Path.DirectorySeparatorChar + 
+						AI4UnityEditorWindow.AccordStatisticsDll
+					).FullName;
+
+					string accordNeuroDll = new FileInfo(
+						this.BuildPath + 
+						Path.DirectorySeparatorChar + 
+						AI4UnityEditorWindow.AccordNeuroDll
+					).FullName;
+
+					string accordMachineLearningDll = new FileInfo(
+						this.BuildPath + 
+						Path.DirectorySeparatorChar + 
+						AI4UnityEditorWindow.AccordMachineLearningDll
+					).FullName;
+
 					PlayerPrefs.SetString (
-						AI4UnityEditorWindow.PlayerPrefs_BasePath,
+						AI4UnityEditorWindow.PlayerPrefs_BuildBasePath,
 						this.BuildPath
 					);
 
@@ -406,9 +588,7 @@ public class AI4UnityEditorWindow : EditorWindow {
 						CompilerResults results = this.CompileDll(
 							AI4UnityEditorWindow.AForgeMachineLearningPath
 							,
-							this.BuildPath + 
-							Path.DirectorySeparatorChar + 
-							AI4UnityEditorWindow.AForgeMachineLearningDll
+							aForgeMachineLearningDll
 							,
 							new string[]{
 								"System.dll",
@@ -426,6 +606,151 @@ public class AI4UnityEditorWindow : EditorWindow {
 						}
 					}
 
+					if (this.BuildMono){
+						CompilerResults results = this.CompileDll(
+							AI4UnityEditorWindow.Mono
+							,
+							monoDll
+							,
+							new string[]{
+								"System.dll",
+								"mscorlib.dll",
+							}
+						);
+						
+						foreach (CompilerError error in results.Errors){
+							if (error.IsWarning){
+								warnings.AppendLine(error.ToString());
+							}else{
+								errors.AppendLine(error.ToString());
+							}
+						}
+					}
+					
+					if (this.BuildAccordCore){
+						CompilerResults results = this.CompileDll(
+							AI4UnityEditorWindow.AccordCorePath
+							,
+							accordCoreDll
+							,
+							new string[]{
+								"System.dll",
+								monoDll,
+							}
+						);
+						
+						foreach (CompilerError error in results.Errors){
+							if (error.IsWarning){
+								warnings.AppendLine(error.ToString());
+							}else{
+								errors.AppendLine(error.ToString());
+							}
+						}
+					}
+
+					if (this.BuildAccordMath){
+						CompilerResults results = this.CompileDll(
+							AI4UnityEditorWindow.AccordMathPath
+							,
+							accordMathDll
+							,
+							new string[]{
+								"System.dll",
+								accordCoreDll,
+								aForgeCoreDll,
+								aForgeMathDll,
+								monoDll,
+							}
+						);
+						
+						foreach (CompilerError error in results.Errors){
+							if (error.IsWarning){
+								warnings.AppendLine(error.ToString());
+							}else{
+								errors.AppendLine(error.ToString());
+							}
+						}
+					}
+
+					if (this.BuildAccordStatistics){
+						CompilerResults results = this.CompileDll(
+							AI4UnityEditorWindow.AccordStatisticsPath
+							,
+							accordStatisticsDll
+							,
+							new string[]{
+								"System.dll",
+								accordCoreDll,
+								accordMathDll,
+								aForgeCoreDll,
+								aForgeMathDll,
+								monoDll,
+							}
+						);
+						
+						foreach (CompilerError error in results.Errors){
+							if (error.IsWarning){
+								warnings.AppendLine(error.ToString());
+							}else{
+								errors.AppendLine(error.ToString());
+							}
+						}
+					}
+
+					if (this.BuildAccordNeuro){
+						CompilerResults results = this.CompileDll(
+							AI4UnityEditorWindow.AccordNeuroPath
+							,
+							accordNeuroDll
+							,
+							new string[]{
+								"System.dll",
+								accordCoreDll,
+								accordMathDll,
+								accordStatisticsDll,
+								aForgeCoreDll,
+								aForgeMathDll,
+								aForgeNeuroDll,
+								monoDll,
+							}
+						);
+						
+						foreach (CompilerError error in results.Errors){
+							if (error.IsWarning){
+								warnings.AppendLine(error.ToString());
+							}else{
+								errors.AppendLine(error.ToString());
+							}
+						}
+					}
+
+					if (this.BuildAccordMachineLearning){
+						CompilerResults results = this.CompileDll(
+							AI4UnityEditorWindow.AccordMachineLearningPath
+							,
+							accordMachineLearningDll
+							,
+							new string[]{
+								"System.dll",
+								accordCoreDll,
+								accordMathDll,
+								accordStatisticsDll,
+								aForgeCoreDll,
+								aForgeMathDll,
+								aForgeMachineLearningDll,
+								monoDll,
+							}
+						);
+						
+						foreach (CompilerError error in results.Errors){
+							if (error.IsWarning){
+								warnings.AppendLine(error.ToString());
+							}else{
+								errors.AppendLine(error.ToString());
+							}
+						}
+					}
+					
 					if (warnings.Length > 0){
 						Debug.LogWarning(warnings.ToString());
 					}

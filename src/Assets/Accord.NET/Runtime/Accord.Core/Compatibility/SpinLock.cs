@@ -30,7 +30,7 @@ namespace Accord
     ///   Accord.NET work. This is not a complete implementation.
     /// </summary>
     /// 
-    internal struct SpinLock
+	public /*internal*/ struct SpinLock
     {
         private int lockObj;
 

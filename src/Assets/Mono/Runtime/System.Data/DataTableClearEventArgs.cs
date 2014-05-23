@@ -32,7 +32,7 @@
 
 namespace System.Data 
 {
-	public sealed class DataTableClearEventArgs : EventArgs
+	public sealed class DataTableClearEventArgs : System.EventArgs
 	{
         #region Fields
         private readonly DataTable _table;
