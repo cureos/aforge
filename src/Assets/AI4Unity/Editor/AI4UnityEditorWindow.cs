@@ -105,13 +105,12 @@ public class AI4UnityEditorWindow : EditorWindow {
 	protected static readonly string AForgeNeuroDll = 
 	"AForge.Neuro.dll";
 
-	protected static readonly string Mono = 
-	Application.dataPath	+ Path.DirectorySeparatorChar + 
-	"Mono"					+ Path.DirectorySeparatorChar + 
-	"Runtime"				+ Path.DirectorySeparatorChar;
-
 	protected static readonly string MonoDll = 
-	"Mono.Extra.dll";
+	Application.dataPath	+ Path.DirectorySeparatorChar + 
+	"Accord.NET"			+ Path.DirectorySeparatorChar +
+	"Dependencies"			+ Path.DirectorySeparatorChar + 
+	"Mono4Unity"			+ Path.DirectorySeparatorChar +
+	"Mono4Unity.dll";
 
 	protected static readonly string PlayerPrefs_BuildBasePath = 
 	"BuildBasePath";
@@ -225,15 +224,6 @@ public class AI4UnityEditorWindow : EditorWindow {
 			this._buildAForgeNeuro = value;
 		}
 	}
-
-	public bool BuildMono{
-		get{
-			return this._buildMono;
-		}
-		set{
-			this._buildMono = value;
-		}
-	}
 	#endregion
 
 	#region public instance properties
@@ -249,7 +239,6 @@ public class AI4UnityEditorWindow : EditorWindow {
 	protected bool _buildAForgeMachineLearning = true;
 	protected bool _buildAForgeMath = true;
 	protected bool _buildAForgeNeuro = true;
-	protected bool _buildMono = true;
 	protected bool _compiling = false;
 	#endregion
 
@@ -355,11 +344,6 @@ public class AI4UnityEditorWindow : EditorWindow {
 			GUILayout.EndVertical ();
 			GUILayout.BeginVertical ();
 
-			this.BuildMono = GUILayout.Toggle (
-				this.BuildMono,
-				"Mono (extra classes)"
-			);
-
 			this.BuildAccordCore = GUILayout.Toggle (
 				this.BuildAccordCore,
 				"Accord.NET Core"
@@ -434,12 +418,6 @@ public class AI4UnityEditorWindow : EditorWindow {
 						this.BuildPath + 
 						Path.DirectorySeparatorChar + 
 						AI4UnityEditorWindow.AForgeMachineLearningDll
-					).FullName;
-
-					string monoDll = new FileInfo(
-						this.BuildPath + 
-						Path.DirectorySeparatorChar + 
-						AI4UnityEditorWindow.MonoDll
 					).FullName;
 
 					string accordCoreDll = new FileInfo( 
@@ -606,27 +584,6 @@ public class AI4UnityEditorWindow : EditorWindow {
 						}
 					}
 
-					if (this.BuildMono){
-						CompilerResults results = this.CompileDll(
-							AI4UnityEditorWindow.Mono
-							,
-							monoDll
-							,
-							new string[]{
-								"System.dll",
-								"mscorlib.dll",
-							}
-						);
-						
-						foreach (CompilerError error in results.Errors){
-							if (error.IsWarning){
-								warnings.AppendLine(error.ToString());
-							}else{
-								errors.AppendLine(error.ToString());
-							}
-						}
-					}
-					
 					if (this.BuildAccordCore){
 						CompilerResults results = this.CompileDll(
 							AI4UnityEditorWindow.AccordCorePath
@@ -635,7 +592,7 @@ public class AI4UnityEditorWindow : EditorWindow {
 							,
 							new string[]{
 								"System.dll",
-								monoDll,
+								AI4UnityEditorWindow.MonoDll,
 							}
 						);
 						
@@ -659,7 +616,7 @@ public class AI4UnityEditorWindow : EditorWindow {
 								accordCoreDll,
 								aForgeCoreDll,
 								aForgeMathDll,
-								monoDll,
+								AI4UnityEditorWindow.MonoDll,
 							}
 						);
 						
@@ -684,7 +641,7 @@ public class AI4UnityEditorWindow : EditorWindow {
 								accordMathDll,
 								aForgeCoreDll,
 								aForgeMathDll,
-								monoDll,
+								AI4UnityEditorWindow.MonoDll,
 							}
 						);
 						
@@ -711,7 +668,7 @@ public class AI4UnityEditorWindow : EditorWindow {
 								aForgeCoreDll,
 								aForgeMathDll,
 								aForgeNeuroDll,
-								monoDll,
+								AI4UnityEditorWindow.MonoDll,
 							}
 						);
 						
@@ -738,7 +695,7 @@ public class AI4UnityEditorWindow : EditorWindow {
 								aForgeCoreDll,
 								aForgeMathDll,
 								aForgeMachineLearningDll,
-								monoDll,
+								AI4UnityEditorWindow.MonoDll,
 							}
 						);
 						
