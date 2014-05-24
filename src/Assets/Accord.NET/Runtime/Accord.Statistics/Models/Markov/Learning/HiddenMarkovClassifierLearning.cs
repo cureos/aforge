@@ -215,7 +215,7 @@ namespace Accord.Statistics.Models.Markov.Learning
         public double ComputeError(int[][] inputs, int[] outputs)
         {
             int errors = 0;
-            Parallel.For(0, inputs.Length, i =>
+            global::Accord.Threading.Tasks.Parallel.For(0, inputs.Length, i =>
             {
                 int expectedOutput = outputs[i];
                 int actualOutput = Classifier.Compute(inputs[i]);

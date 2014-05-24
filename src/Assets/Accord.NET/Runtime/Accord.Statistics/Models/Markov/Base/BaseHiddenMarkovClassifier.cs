@@ -223,7 +223,7 @@ namespace Accord.Statistics.Models.Markov
 #if SERIAL
             for (int i = 0; i < models.Length+1; i++)
 #else
-            Parallel.For(0, models.Length + 1, i =>
+            global::Accord.Threading.Tasks.Parallel.For(0, models.Length + 1, i =>
 #endif
             {
                 if (i < models.Length)

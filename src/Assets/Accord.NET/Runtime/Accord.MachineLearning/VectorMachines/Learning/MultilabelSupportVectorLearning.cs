@@ -264,7 +264,7 @@ namespace Accord.MachineLearning.VectorMachines.Learning
             int progress = 0;
 
             // For each class i
-            Parallel.For(0, msvm.Machines.Length, i =>
+            global::Accord.Threading.Tasks.Parallel.For(0, msvm.Machines.Length, i =>
             {
                 // We will start the binary sub-problem
                 var args = new SubproblemEventArgs(i, -i);

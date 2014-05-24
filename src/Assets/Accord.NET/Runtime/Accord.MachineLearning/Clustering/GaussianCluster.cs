@@ -344,7 +344,7 @@ namespace Accord.MachineLearning
         {
             int[] labels = new int[points.Length];
 
-            Parallel.For(0, points.Length, i =>
+            global::Accord.Threading.Tasks.Parallel.For(0, points.Length, i =>
             {
                 labels[i] = Nearest(points[i]);
             });

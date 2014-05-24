@@ -340,7 +340,7 @@ namespace Accord.Math.Decompositions
                 // Use a tolerance for positive-definiteness
                 this.positiveDefinite &= (v[i] > (double)1e-14 * Math.Abs(L[i][i]));
 				
-                Parallel.For(i + 1, L.Length, k =>
+                global::Accord.Threading.Tasks.Parallel.For(i + 1, L.Length, k =>
                 {
                      double sum2 = 0;
                      for (int j = 0; j < i; j++)

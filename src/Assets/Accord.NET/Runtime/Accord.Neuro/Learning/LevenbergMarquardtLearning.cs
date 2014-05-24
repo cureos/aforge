@@ -498,7 +498,7 @@ namespace Accord.Neuro.Learning
                 // Compute Quasi-Hessian Matrix approximation
                 //  using the outer product Jacobian (H ~ J'J)
                 Trace.TraceInformation("Updating Hessian.");
-                Parallel.For(0, jacobian.Length, i =>
+                global::Accord.Threading.Tasks.Parallel.For(0, jacobian.Length, i =>
                 {
                     float[] ji = jacobian[i];
                     float[] hi = hessian[i];

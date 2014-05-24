@@ -784,7 +784,7 @@ namespace Accord.Statistics.Analysis
 
 
                     // For each component (in parallel)
-                    Parallel.For(0, components, i =>
+                    global::Accord.Threading.Tasks.Parallel.For(0, components, i =>
                     {
                         double[] wx = new double[n];
                         double[] dgwx = new double[n];

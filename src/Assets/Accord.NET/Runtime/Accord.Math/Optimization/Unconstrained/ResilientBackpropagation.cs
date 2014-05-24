@@ -234,7 +234,7 @@ namespace Accord.Math.Optimization
         {
             convergence.Clear();
 
-            Parallel.For(0, weightsUpdates.Length, i =>
+            global::Accord.Threading.Tasks.Parallel.For(0, weightsUpdates.Length, i =>
             {
                 for (int j = 0; j < weightsUpdates.Length; j++)
                     weightsUpdates[i] = rate;

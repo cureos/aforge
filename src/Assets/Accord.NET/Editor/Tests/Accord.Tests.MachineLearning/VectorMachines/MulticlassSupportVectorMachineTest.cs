@@ -214,7 +214,7 @@ namespace Accord.Tests.MachineLearning
             int[] evals = new int[input.Length];
             int[] evalexp = { 8, 8, 7, 7, 7, 7, 6, 6 };
 
-            Parallel.For(0, input.Length, i =>
+            global::Accord.Threading.Tasks.Parallel.For(0, input.Length, i =>
             {
                 double[] data = input[i];
                 double[] responses;
@@ -228,7 +228,7 @@ namespace Accord.Tests.MachineLearning
             for (int i = 0; i < evals.Length; i++)
                 Assert.AreEqual(evals[i], evalexp[i]);
 
-            Parallel.For(0, input.Length, i =>
+            global::Accord.Threading.Tasks.Parallel.For(0, input.Length, i =>
             {
                 double[] data = input[i];
                 double[] responses;

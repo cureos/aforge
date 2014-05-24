@@ -285,7 +285,7 @@ namespace Accord.MachineLearning
             tree = KDTree.FromData<int>(points, distance);
 
             // now, for each initial point 
-            Parallel.For(0, seeds.Length,
+            global::Accord.Threading.Tasks.Parallel.For(0, seeds.Length,
 #if DEBUG
  new ParallelOptions() { MaxDegreeOfParallelism = 1 },
 #endif

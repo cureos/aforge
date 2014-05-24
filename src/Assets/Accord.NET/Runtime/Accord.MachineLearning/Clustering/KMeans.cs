@@ -436,7 +436,7 @@ namespace Accord.MachineLearning
                 // information into the newClusters variable.
 
                 // For each point in the data set,
-                Parallel.For(0, data.Length, i =>
+                global::Accord.Threading.Tasks.Parallel.For(0, data.Length, i =>
                 {
                     // Get the point
                     double[] point = data[i];

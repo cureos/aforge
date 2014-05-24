@@ -254,7 +254,7 @@ namespace Accord.Statistics.Models.Fields.Learning
 #if SERIAL  // For each clique potential (factor potential function)
             for (int c = 0; c < function.Factors.Length; c++)
 #else
-            Parallel.For(0, function.Factors.Length, c =>
+            global::Accord.Threading.Tasks.Parallel.For(0, function.Factors.Length, c =>
 #endif
             {
                 FactorPotential<T> factor = function.Factors[c];

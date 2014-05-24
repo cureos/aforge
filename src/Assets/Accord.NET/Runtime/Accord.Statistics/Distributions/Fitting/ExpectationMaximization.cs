@@ -159,14 +159,14 @@ namespace Accord.Statistics.Distributions.Fitting
                 // 2. Expectation: Evaluate the component distributions 
                 //    responsibilities using the current parameter values.
 
-                Parallel.For(0, Gamma.Length, k =>
+                global::Accord.Threading.Tasks.Parallel.For(0, Gamma.Length, k =>
                 {
                     double[] gammak = Gamma[k];
                     for (int i = 0; i < observations.Length; i++)
                         gammak[i] = pi[k] * pdf[k].ProbabilityFunction(observations[i]);
                 });
 
-                Parallel.For(0, norms.Length, i =>
+                global::Accord.Threading.Tasks.Parallel.For(0, norms.Length, i =>
                 {
                     double sum = 0;
                     for (int k = 0; k < Gamma.Length; k++)
@@ -177,7 +177,7 @@ namespace Accord.Statistics.Distributions.Fitting
 
                 try
                 {
-                    Parallel.For(0, Gamma.Length, k =>
+                    global::Accord.Threading.Tasks.Parallel.For(0, Gamma.Length, k =>
                     {
                         double[] gammak = Gamma[k];
 

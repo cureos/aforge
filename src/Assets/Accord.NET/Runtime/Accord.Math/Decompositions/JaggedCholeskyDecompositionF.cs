@@ -2,10 +2,10 @@
 // The Accord.NET Framework
 // http://accord-framework.net
 //
-// Copyright © César Souza, 2009-2014
+// Copyright ï¿½ Cï¿½sar Souza, 2009-2014
 // cesarsouza at gmail.com
 //
-// Original work copyright © Lutz Roeder, 2000
+// Original work copyright ï¿½ Lutz Roeder, 2000
 //  Adapted from Mapack for .NET, September 2000
 //  Adapted from Mapack for COM and Jama routines
 //  http://www.aisto.com/roeder/dotnet
@@ -340,7 +340,7 @@ namespace Accord.Math.Decompositions
                 // Use a tolerance for positive-definiteness
                 this.positiveDefinite &= (v[i] > (float)1e-14 * Math.Abs(L[i][i]));
 				
-                Parallel.For(i + 1, L.Length, k =>
+                global::Accord.Threading.Tasks.Parallel.For(i + 1, L.Length, k =>
                 {
                      float sum2 = 0;
                      for (int j = 0; j < i; j++)

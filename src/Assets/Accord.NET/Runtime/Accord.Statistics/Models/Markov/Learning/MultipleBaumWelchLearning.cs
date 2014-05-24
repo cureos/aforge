@@ -184,7 +184,7 @@ namespace Accord.Statistics.Models.Markov.Learning
 
             bestLikelihood = 0;
 
-            Parallel.For(0, Trials,
+            global::Accord.Threading.Tasks.Parallel.For(0, Trials,
 
                 // Start
                 () => new Candidate()

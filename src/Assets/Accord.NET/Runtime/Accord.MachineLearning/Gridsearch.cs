@@ -192,7 +192,7 @@ namespace Accord.MachineLearning
             var msgs = new string[grid.Length];
 
             // Search the grid for the optimal parameters
-            Parallel.For(0, grid.Length, i =>
+            global::Accord.Threading.Tasks.Parallel.For(0, grid.Length, i =>
             {
                 // Get the current parameters for the current point
                 parameters[i] = new GridSearchParameterCollection(grid[i]);

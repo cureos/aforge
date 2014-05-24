@@ -179,7 +179,7 @@ namespace Accord.Statistics.Models.Fields.Learning
 #if SERIAL
                 for (int i = 0; i < observations.Length; i++)
 #else
-                Parallel.For(0, observations.Length, i =>
+                global::Accord.Threading.Tasks.Parallel.For(0, observations.Length, i =>
 #endif
                 {
 					calculator.Inputs = new T[1][] { observations[i] };

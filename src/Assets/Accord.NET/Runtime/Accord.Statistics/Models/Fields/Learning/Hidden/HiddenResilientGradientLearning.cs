@@ -247,7 +247,7 @@ namespace Accord.Statistics.Models.Fields.Learning
 #if SERIAL      // For each training point
                 for (int i = 0; i < observations.Length; i++)
 #else
-                Parallel.For(0, observations.Length, i =>
+                global::Accord.Threading.Tasks.Parallel.For(0, observations.Length, i =>
 #endif
                 {
 					calculator.Inputs = new T[1][] { observations[i] };
@@ -357,7 +357,7 @@ namespace Accord.Statistics.Models.Fields.Learning
         {
             convergence.Clear();
 
-            Parallel.For(0, weightsUpdates.Length, i =>
+            global::Accord.Threading.Tasks.Parallel.For(0, weightsUpdates.Length, i =>
             {
                 for (int j = 0; j < weightsUpdates.Length; j++)
                     weightsUpdates[i] = rate;

@@ -89,7 +89,7 @@ namespace AForge
         /// 
         /// <para>Sample usage:</para>
         /// <code>
-        /// Parallel.For( 0, 20, delegate( int i )
+        /// global::Accord.Threading.Tasks.Parallel.For( 0, 20, delegate( int i )
         /// // which is equivalent to
         /// // for ( int i = 0; i &lt; 20; i++ )
         /// {

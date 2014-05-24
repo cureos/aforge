@@ -279,7 +279,7 @@ namespace Accord.MachineLearning
 
             if (RunInParallel)
             {
-                Parallel.For(0, Subsamples.Length, i =>
+                global::Accord.Threading.Tasks.Parallel.For(0, Subsamples.Length, i =>
                 {
                     int[] trainingSet, validationSet;
 

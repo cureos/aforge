@@ -371,7 +371,7 @@ namespace Accord.Statistics.Models.Fields
 
             for (int y = 0; y < logLikelihoods.Length; y++)
 #else
-            Parallel.For(0, logLikelihoods.Length, y =>
+            global::Accord.Threading.Tasks.Parallel.For(0, logLikelihoods.Length, y =>
 #endif
             {
                 double logLikelihood;

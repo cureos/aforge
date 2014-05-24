@@ -319,10 +319,10 @@ namespace Accord.MachineLearning.VectorMachines.Learning
 
 
             // For each class i
-            Parallel.For(0, msvm.Classes, i =>
+            global::Accord.Threading.Tasks.Parallel.For(0, msvm.Classes, i =>
             {
                 // For each class j
-                Parallel.For(0, i, j =>
+                global::Accord.Threading.Tasks.Parallel.For(0, i, j =>
                 {
                     if (token.IsCancellationRequested) 
                         return;

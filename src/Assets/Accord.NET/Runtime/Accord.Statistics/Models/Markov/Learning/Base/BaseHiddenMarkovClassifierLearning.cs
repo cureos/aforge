@@ -163,7 +163,7 @@ namespace Accord.Statistics.Models.Markov.Learning
 
 
             // For each model,
-            Parallel.For(0, classes, i =>
+            global::Accord.Threading.Tasks.Parallel.For(0, classes, i =>
             {
                 // We will start the class model learning problem
                 var args = new GenerativeLearningEventArgs(i, classes);

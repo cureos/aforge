@@ -300,7 +300,7 @@ namespace Accord.Math.Optimization
                 // Compute Quasi-Hessian Matrix approximation
                 //  using the outer product Jacobian (H ~ J'J)
                 //
-                Parallel.For(0, jacobian.Length, i =>
+                global::Accord.Threading.Tasks.Parallel.For(0, jacobian.Length, i =>
                 {
                     double[] ji = jacobian[i];
                     double[] hi = hessian[i];

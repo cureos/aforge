@@ -325,7 +325,7 @@ namespace Accord.MachineLearning.VectorMachines
             double[] outputs = new double[machines.Length];
 
             // For each machine
-            Parallel.For(0, machines.Length, i =>
+            global::Accord.Threading.Tasks.Parallel.For(0, machines.Length, i =>
             {
                 labels[i] = computeSequential(i, inputs, out outputs[i], cache);
             });

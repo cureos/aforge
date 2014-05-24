@@ -576,7 +576,7 @@ namespace Accord.MachineLearning.VectorMachines
             int[] voting = new int[Classes];
 
             // For each class
-            Parallel.For(0, Classes, i =>
+            global::Accord.Threading.Tasks.Parallel.For(0, Classes, i =>
             {
                 // For each other class
                 for (int j = 0; j < i; j++)

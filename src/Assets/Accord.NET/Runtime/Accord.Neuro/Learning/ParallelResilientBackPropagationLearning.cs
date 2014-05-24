@@ -278,7 +278,7 @@ namespace Accord.Neuro.Learning
 
 
             // For all examples in batch
-            Parallel.For(0, input.Length,
+            global::Accord.Threading.Tasks.Parallel.For(0, input.Length,
 
                 // Initialize
                 () => 0.0,
@@ -412,7 +412,7 @@ namespace Accord.Neuro.Learning
             double sumOfSquaredErrors = 0;
 
 
-            Parallel.For(0, input.Length,
+            global::Accord.Threading.Tasks.Parallel.For(0, input.Length,
 
                 // Initialize
                 () => 0.0,
@@ -448,7 +448,7 @@ namespace Accord.Neuro.Learning
         /// 
         public void Reset(double rate)
         {
-            Parallel.For(0, weightsUpdates.Length, i =>
+            global::Accord.Threading.Tasks.Parallel.For(0, weightsUpdates.Length, i =>
             {
                 for (int j = 0; j < weightsUpdates[i].Length; j++)
                     for (int k = 0; k < weightsUpdates[i][j].Length; k++)
@@ -465,7 +465,7 @@ namespace Accord.Neuro.Learning
         /// 
         private void ResetGradient()
         {
-            Parallel.For(0, weightsDerivatives.Length, i =>
+            global::Accord.Threading.Tasks.Parallel.For(0, weightsDerivatives.Length, i =>
             {
                 for (int j = 0; j < weightsDerivatives[i].Length; j++)
                     Array.Clear(weightsDerivatives[i][j], 0, weightsDerivatives[i][j].Length);
