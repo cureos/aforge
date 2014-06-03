@@ -172,6 +172,9 @@
     <Compile Include="..\Imaging\ColorPalette.cs">
       <Link>Imaging\ColorPalette.cs</Link>
     </Compile>
+    <Compile Include="..\Imaging\ImageFormat.cs">
+      <Link>Imaging\ImageFormat.cs</Link>
+    </Compile>
     <Compile Include="..\Imaging\ImageLockMode.cs">
       <Link>Imaging\ImageLockMode.cs</Link>
     </Compile>
