@@ -34,7 +34,7 @@ namespace System.Drawing.Imaging
         private static readonly ImageFormat _png;
         private static readonly ImageFormat _tiff;
         private static readonly ImageFormat _wmf;
-
+        private static readonly ImageFormat _emf;
         #endregion
 
         #region CONSTRUCTORS
@@ -53,6 +53,7 @@ namespace System.Drawing.Imaging
             _png = new ImageFormat("PNG");
             _tiff = new ImageFormat("TIFF");
             _wmf = new ImageFormat("WMF");
+            _emf = new ImageFormat("EMF");
         }
 
         #endregion
@@ -112,6 +113,14 @@ namespace System.Drawing.Imaging
             get
             {
                 return _wmf;
+            }
+        }
+
+        public static ImageFormat Emf
+        {
+            get
+            {
+                return _emf;
             }
         }
 
