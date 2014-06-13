@@ -49,6 +49,7 @@
     <Compile Include="Collections\Concurrent\ConcurrentStack.cs" />
     <Compile Include="ComponentModel\CategoryAttribute.cs" />
     <Compile Include="ComponentModel\BrowsableAttribute.cs" />
+    <Compile Include="ComponentModel\DataAnnotations\RangeAttribute.cs" />
     <Compile Include="ComponentModel\DescriptionAttribute.cs" />
     <Compile Include="ComponentModel\DisplayNameAttribute.cs" />
     <Compile Include="Converter.cs" />

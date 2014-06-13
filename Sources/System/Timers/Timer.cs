@@ -29,7 +29,11 @@ namespace System.Timers
     {
         #region EVENTS
 
-        public event ElapsedEventHandler Elapsed;
+        public event ElapsedEventHandler Elapsed
+        {
+            add { }
+            remove { }
+        }
         
         #endregion
 
