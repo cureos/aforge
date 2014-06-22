@@ -21,6 +21,7 @@
 
 using System;
 using System.IO;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -33,6 +34,9 @@ using System.Threading;
 [assembly: TypeForwardedTo(typeof(FileAccess))]
 [assembly: TypeForwardedTo(typeof(FileMode))]
 [assembly: TypeForwardedTo(typeof(FileShare))]
+
+// System.Reflection
+[assembly: TypeForwardedTo(typeof(BindingFlags))]
 
 // System.Runtime.InteropServices
 [assembly: TypeForwardedTo(typeof(GCHandle))]

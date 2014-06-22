@@ -27,6 +27,7 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
@@ -81,6 +82,9 @@ using Timer = System.Timers.Timer;
 
 // System.Net
 [assembly: TypeForwardedTo(typeof(IWebProxy))]
+
+// System.Reflection
+[assembly: TypeForwardedTo(typeof(BindingFlags))]
 
 // System.Runtime.InteropServices
 [assembly: TypeForwardedTo(typeof(GCHandle))]

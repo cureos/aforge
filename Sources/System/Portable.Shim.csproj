@@ -72,6 +72,7 @@
     <Compile Include="NonSerializedAttribute.cs" />
     <Compile Include="ICloneable.cs" />
     <Compile Include="NotFiniteNumberException.cs" />
+    <Compile Include="Reflection\BindingFlags.cs" />
     <Compile Include="Runtime\InteropServices\GCHandle.cs" />
     <Compile Include="Runtime\InteropServices\GCHandleType.cs" />
     <Compile Include="Runtime\InteropServices\MarshalAsAttribute.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="ComponentModel\ISynchronizeInvoke.cs" />
     <Compile Include="Threading\Thread.cs" />
     <Compile Include="Timers\Timer.cs" />
+    <Compile Include="TypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="gpl-3.0.txt">
