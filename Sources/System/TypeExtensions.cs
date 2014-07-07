@@ -38,11 +38,9 @@ namespace System
         {
             var publicFlag = bindingAttr.HasFlag(BindingFlags.Public);
             var nonPublicFlag = bindingAttr.HasFlag(BindingFlags.NonPublic);
-            if (publicFlag == nonPublicFlag) throw new ArgumentException("Binding must be set to either public or non-public.");
 
             var staticFlag = bindingAttr.HasFlag(BindingFlags.Static);
             var instanceFlag = bindingAttr.HasFlag(BindingFlags.Instance);
-            if (staticFlag == instanceFlag) throw new ArgumentException("Binding must be set to either static or instance.");
 
             return ((fieldInfo.IsPublic && publicFlag) || (!fieldInfo.IsPublic && nonPublicFlag)) &&
                    ((fieldInfo.IsStatic && staticFlag) || (!fieldInfo.IsStatic && instanceFlag));
