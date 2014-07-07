@@ -25,6 +25,11 @@ namespace System.Diagnostics
     {
         #region METHODS
 
+        public static void Write(string message)
+        {
+            Debug.WriteLine(message);
+        }
+
         public static void WriteLine(string message)
         {
             Debug.WriteLine(message);
