@@ -62,6 +62,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Sources\packages\NUnitLite.1.0.0\lib\net45\nunitlite.dll</HintPath>
     </Reference>
+    <Reference Include="Shim">
+      <HintPath>..\..\Sources\packages\shim.0.9.0-pre\lib\net45\Shim.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -121,10 +124,6 @@
     <ProjectReference Include="..\..\Sources\Math\Portable.Math.csproj">
       <Project>{d99e9bd6-3db6-445b-bf5a-fd9830bfb4fa}</Project>
       <Name>Portable.Math</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Sources\System\_Net\Net.Shim.csproj">
-      <Project>{816e086d-da84-4997-8bd9-448c92a1514f}</Project>
-      <Name>Net.Shim</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

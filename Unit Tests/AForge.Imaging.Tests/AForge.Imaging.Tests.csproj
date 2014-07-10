@@ -68,6 +68,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Sources\packages\NUnitLite.1.0.0\lib\net40\nunitlite.dll</HintPath>
     </Reference>
+    <Reference Include="Shim, Version=0.9.0.0, Culture=neutral, PublicKeyToken=c55ec16d10c4b366, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Sources\packages\shim.0.9.0-pre\lib\net45\Shim.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -117,10 +121,6 @@
     <ProjectReference Include="..\..\Sources\System.Drawing\_WPF\WPF.Shim.Drawing.csproj">
       <Project>{d1963a68-8848-4b70-9141-3ebb4cb6af34}</Project>
       <Name>WPF.Shim.Drawing</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Sources\System\_Net\Net.Shim.csproj">
-      <Project>{816e086d-da84-4997-8bd9-448c92a1514f}</Project>
-      <Name>Net.Shim</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
