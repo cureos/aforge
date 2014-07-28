@@ -6,7 +6,7 @@
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{72B5500A-624D-4590-8C85-4318EFB57D76}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AForge.Tests</RootNamespace>
     <AssemblyName>AForge.Tests</AssemblyName>
@@ -58,9 +58,8 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunitlite">
-      <HintPath>..\..\Sources\packages\NUnitLite.1.0.0\lib\net40\nunitlite.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\Sources\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Shim, Version=1.0.0.0, Culture=neutral, PublicKeyToken=234f4008e59fda5b, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -75,7 +74,6 @@
     <Compile Include="IntPointTest.cs" />
     <Compile Include="IntRangeTest.cs" />
     <Compile Include="PointTest.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RangeTest.cs" />
   </ItemGroup>

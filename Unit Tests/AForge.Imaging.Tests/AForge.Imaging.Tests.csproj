@@ -6,7 +6,7 @@
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{539229BC-D68C-4FF0-84BC-904A90ECEBE0}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AForge.Imaging.Tests</RootNamespace>
     <AssemblyName>AForge.Imaging.Tests</AssemblyName>
@@ -64,9 +64,8 @@
     <AssemblyOriginatorKeyFile>AForge.Imaging.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunitlite, Version=1.0.0.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Sources\packages\NUnitLite.1.0.0\lib\net40\nunitlite.dll</HintPath>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\Sources\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Shim, Version=0.9.0.0, Culture=neutral, PublicKeyToken=c55ec16d10c4b366, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -79,7 +78,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IntegralImageTest.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnmanagedImageTest.cs" />
   </ItemGroup>
