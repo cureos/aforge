@@ -4,7 +4,7 @@ Portable AForge.NET Framework
 =============================
 
 *AForge.NET Framework*: Copyright (c) 2006-2013 AForge.NET; licensed under Lesser General Public License (LGPL) version 3.<br/>
-*Shim* and *Shim.Drawing* class libraries: Copyright (c) 2013-2014 Anders Gustafsson, Cureos AB; licensed under General Public License (GPL) version 3.
+*Shim.Drawing* class libraries: Copyright (c) 2013-2014 Anders Gustafsson, Cureos AB; licensed under General Public License (GPL) version 3.
 
 This project is a fork of Andrew Kirillow's original [AForge.NET Framework](https://code.google.com/p/aforge/) project. 
 For general information and tutorials, see [here](http://www.aforgenet.com/aforge/framework/).
@@ -12,10 +12,10 @@ For general information and tutorials, see [here](http://www.aforgenet.com/aforg
 The repository currently provides:
 
 * Portable Class Libraries for base and imaging functionality functionality (Core, Math, Genetic, Fuzzy, MachineLearning, Neuro, Imaging, Imaging.Formats, Vision), 
-* Portable Class Libraries *Shim* and *Shim.Drawing* to substitute .NET *System* core and *System.Drawing* types not covered by PCL, and
-* Target specific (type forwarding) *Shim* and *Shim.Drawing* libraries for .NET Framework, Windows Store and Windows Phone 8.
+* Portable Class Libraries *Shim.Drawing* to substitute .NET *System.Drawing* types not covered by PCL, and
+* Target specific *Shim.Drawing* libraries for .NET Framework, Windows Store and Windows Phone 8.
 
-The portable class libraries reference the portable *Shim* and/or *Shim.Drawing* assemblies. In applications however, the target specific (Windows Store, Windows Phone or WPF)
+The portable class libraries reference the portable [Shim](https://github.com/cureos/shim) and/or *Shim.Drawing* assemblies. In applications however, the target specific (Windows Store, Windows Phone or WPF)
 *Shim* and *Shim.Drawing* assemblies should be referenced, to ensure that the target specific version of each type is used.
  
 `WriteableBitmap`:s provide input and output to the imaging functionality in the WPF, Windows Store and Windows Store libraries. The target specific *Shim.Drawing* assembly 
@@ -24,11 +24,12 @@ incorporates explicit cast operators between `WriteableBitmap` and `System.Drawi
 All image processing is performed on the mock `System.Drawing.Bitmap` class, `WriteableBitmap` objects should only be used as initial input to and final output from the
 image processing.
 
-When using the WPF *Shim.Drawing* assembly, the real *System.Drawing* assembly from .NET Framework cannot be referenced for obvious reasons. If there is a need to reference 
+When using the WPF *Shim.Drawing* assembly, the *System.Drawing* assembly from .NET Framework cannot be referenced since this would lead to type name collisions. If there is a need to reference 
 the real *System.Drawing* assembly, you are recommended to use the original *AForge.NET Framework* libraries and use WPF hosting controls to display image processing results instead.
 
 **IMPORTANT!**<br />
-* PCL projects cannot be built in Express versions of Visual Studio, but prebuilt PCL binaries can still be referenced. The latest prebuilt binaries for Portable AForge can be downloaded [here](https://github.com/cureos/aforge/releases/tag/v2.2.5.2).
+* PCL projects cannot be built in Express versions of Visual Studio (prior to 2013 Update 2), but prebuilt PCL binaries can still be referenced. The latest prebuilt binaries for Portable AForge 
+can be downloaded [here](https://github.com/cureos/aforge/releases/tag/v2.2.5.4).
 * To be able to reference the target specific (Windows Store, WP8, .NET/WPF) *Shim* and *Shim.Drawing* assemblies, all underlying assemblies need to have a strong name, i.e. be signed. 
 
 Example usage
