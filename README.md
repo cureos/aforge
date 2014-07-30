@@ -12,10 +12,10 @@ For general information and tutorials, see [here](http://www.aforgenet.com/aforg
 The repository currently provides:
 
 * Portable Class Libraries for base and imaging functionality functionality (Core, Math, Genetic, Fuzzy, MachineLearning, Neuro, Imaging, Imaging.Formats, Vision), 
-* Portable Class Libraries *Shim.Drawing* to substitute .NET *System.Drawing* types not covered by PCL, and
+* Portable Class Library *Shim.Drawing* to substitute .NET *System.Drawing* types not covered by PCL, and
 * Target specific *Shim.Drawing* libraries for .NET Framework, Windows Store and Windows Phone 8.
 
-The portable class libraries reference the portable [Shim](https://github.com/cureos/shim) and/or *Shim.Drawing* assemblies. In applications however, the target specific (Windows Store, Windows Phone or WPF)
+The portable class libraries reference the portable [Shim (on NuGet)](https://github.com/cureos/shim) and/or *Shim.Drawing* assemblies. In applications however, the target specific (Windows Store, Windows Phone or WPF)
 *Shim* and *Shim.Drawing* assemblies should be referenced, to ensure that the target specific version of each type is used.
  
 `WriteableBitmap`:s provide input and output to the imaging functionality in the WPF, Windows Store and Windows Store libraries. The target specific *Shim.Drawing* assembly 
