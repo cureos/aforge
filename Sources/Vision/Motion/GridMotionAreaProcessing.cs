@@ -186,7 +186,7 @@ namespace AForge.Vision.Motion
         /// <param name="gridWidth">Width of motion grid (see <see cref="GridWidth"/> property).</param>
         /// <param name="gridHeight">Height of motion grid (see <see cref="GridHeight"/> property).</param>
         /// 
-        public GridMotionAreaProcessing( int gridWidth, int gridHeight ) : this( gridWidth, gridWidth, true ) { }
+        public GridMotionAreaProcessing( int gridWidth, int gridHeight ) : this( gridWidth, gridHeight, true ) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GridMotionAreaProcessing"/> class.
