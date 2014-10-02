@@ -60,51 +60,51 @@ namespace System.Drawing
     {
         #region FIELDS
 
-        internal static Color Red { get { return new Color(0xff, 0xff, 0x00, 0x00); } } 
-        internal static Color Green { get { return new Color(0xff, 0x00, 0x80, 0x00); } }
-        internal static Color Blue { get { return new Color(0xff, 0x00, 0x00, 0xff); } } 
-        internal static Color Yellow { get { return new Color(0xff, 0xff, 0xff, 0x00); } }
-        internal static Color Violet { get { return new Color(0xff, 0xee, 0x82, 0xee); } } 
-        internal static Color Brown { get { return new Color(0xff, 0xa5, 0x2a, 0x2a); } } 
-        internal static Color Olive { get { return new Color(0xff, 0x80, 0x80, 0x00); } } 
-        internal static Color Cyan { get { return new Color(0xff, 0x00, 0xff, 0xff); } }
-        internal static Color Magenta { get { return new Color(0xff, 0xff, 0x00, 0xff); } }
-        internal static Color Gold { get { return new Color(0xff, 0xff, 0xd7, 0x00); } } 
-        internal static Color Indigo { get { return new Color(0xff, 0x4b, 0x00, 0x82); } } 
-        internal static Color Ivory { get { return new Color(0xff, 0xff, 0xff, 0xf0); } }
-        internal static Color HotPink { get { return new Color(0xff, 0xff, 0x69, 0xb4); } } 
-        internal static Color DarkRed { get { return new Color(0xff, 0x8b, 0x00, 0x00); } } 
-        internal static Color DarkGreen { get { return new Color(0xff, 0x00, 0x64, 0x00); } } 
-        internal static Color DarkBlue { get { return new Color(0xff, 0x00, 0x00, 0x8b); } }
-        internal static Color DarkSeaGreen { get { return new Color(0xff, 0x8f, 0xbc, 0x8f); } } 
-        internal static Color Gray { get { return new Color(0xff, 0x80, 0x80, 0x80); } } 
-        internal static Color DarkKhaki { get { return new Color(0xff, 0xbd, 0xb7, 0x6b); } } 
-        internal static Color DarkGray { get { return new Color(0xff, 0xa9, 0xa9, 0xa9); } }
-        internal static Color LimeGreen { get { return new Color(0xff, 0x32, 0xcd, 0x32); } } 
-        internal static Color Tomato { get { return new Color(0xff, 0xff, 0x63, 0x47); } } 
-        internal static Color SteelBlue { get { return new Color(0xff, 0x46, 0x82, 0xb4); } } 
-        internal static Color SkyBlue { get { return new Color(0xff, 0x87, 0xce, 0xeb); } }
-        internal static Color Silver { get { return new Color(0xff, 0xc0, 0xc0, 0xc0); } } 
-        internal static Color Salmon { get { return new Color(0xff, 0xfa, 0x80, 0x72); } } 
-        internal static Color SaddleBrown { get { return new Color(0xff, 0x8b, 0x45, 0x13); } } 
-        internal static Color RosyBrown { get { return new Color(0xff, 0xbc, 0x8f, 0x8f); } }
-        internal static Color PowderBlue { get { return new Color(0xff, 0xb0, 0xe0, 0xe6); } } 
-        internal static Color Plum { get { return new Color(0xff, 0xdd, 0xa0, 0xdd); } } 
-        internal static Color PapayaWhip { get { return new Color(0xff, 0xff, 0xef, 0xd5); } } 
-        internal static Color Orange { get { return new Color(0xff, 0xff, 0xa5, 0x00); } }
-        internal static Color Black { get { return new Color(0xff, 0x00, 0x00, 0x00); } }
-        internal static Color White { get { return new Color(0xff, 0xff, 0xff, 0xff); } }
-        internal static Color DarkCyan { get { return new Color(0xff, 0x00, 0x8b, 0x8b); } }
-        internal static Color DarkMagenta { get { return new Color(0xff, 0x8b, 0x00, 0x8b); } }
-        internal static Color LightGray { get { return new Color(0xff, 0xd3, 0xd3, 0xd3); } }
-	    internal static Color Transparent { get { return new Color(0x00, 0xff, 0xff, 0xff); } }
+        private static readonly Color _red = new Color(0xff, 0xff, 0x00, 0x00); 
+        private static readonly Color _green = new Color(0xff, 0x00, 0x80, 0x00);
+        private static readonly Color _blue = new Color(0xff, 0x00, 0x00, 0xff); 
+        private static readonly Color _yellow = new Color(0xff, 0xff, 0xff, 0x00);
+        private static readonly Color _violet = new Color(0xff, 0xee, 0x82, 0xee); 
+        private static readonly Color _brown = new Color(0xff, 0xa5, 0x2a, 0x2a); 
+        private static readonly Color _olive = new Color(0xff, 0x80, 0x80, 0x00); 
+        private static readonly Color _cyan = new Color(0xff, 0x00, 0xff, 0xff);
+        private static readonly Color _magenta = new Color(0xff, 0xff, 0x00, 0xff);
+        private static readonly Color _gold = new Color(0xff, 0xff, 0xd7, 0x00); 
+        private static readonly Color _indigo = new Color(0xff, 0x4b, 0x00, 0x82); 
+        private static readonly Color _ivory = new Color(0xff, 0xff, 0xff, 0xf0);
+        private static readonly Color _hotPink = new Color(0xff, 0xff, 0x69, 0xb4); 
+        private static readonly Color _darkRed = new Color(0xff, 0x8b, 0x00, 0x00); 
+        private static readonly Color _darkGreen = new Color(0xff, 0x00, 0x64, 0x00); 
+        private static readonly Color _darkBlue = new Color(0xff, 0x00, 0x00, 0x8b);
+        private static readonly Color _darkSeaGreen = new Color(0xff, 0x8f, 0xbc, 0x8f); 
+        private static readonly Color _gray = new Color(0xff, 0x80, 0x80, 0x80); 
+        private static readonly Color _darkKhaki = new Color(0xff, 0xbd, 0xb7, 0x6b); 
+        private static readonly Color _darkGray = new Color(0xff, 0xa9, 0xa9, 0xa9);
+        private static readonly Color _limeGreen = new Color(0xff, 0x32, 0xcd, 0x32); 
+        private static readonly Color _tomato = new Color(0xff, 0xff, 0x63, 0x47); 
+        private static readonly Color _steelBlue = new Color(0xff, 0x46, 0x82, 0xb4); 
+        private static readonly Color _skyBlue = new Color(0xff, 0x87, 0xce, 0xeb);
+        private static readonly Color _silver = new Color(0xff, 0xc0, 0xc0, 0xc0); 
+        private static readonly Color _salmon = new Color(0xff, 0xfa, 0x80, 0x72); 
+        private static readonly Color _saddleBrown = new Color(0xff, 0x8b, 0x45, 0x13); 
+        private static readonly Color _rosyBrown = new Color(0xff, 0xbc, 0x8f, 0x8f);
+        private static readonly Color _powderBlue = new Color(0xff, 0xb0, 0xe0, 0xe6); 
+        private static readonly Color _plum = new Color(0xff, 0xdd, 0xa0, 0xdd); 
+        private static readonly Color _papayaWhip = new Color(0xff, 0xff, 0xef, 0xd5); 
+        private static readonly Color _orange = new Color(0xff, 0xff, 0xa5, 0x00);
+        private static readonly Color _black = new Color(0xff, 0x00, 0x00, 0x00);
+        private static readonly Color _white = new Color(0xff, 0xff, 0xff, 0xff);
+        private static readonly Color _darkCyan = new Color(0xff, 0x00, 0x8b, 0x8b);
+        private static readonly Color _darkMagenta = new Color(0xff, 0x8b, 0x00, 0x8b);
+        private static readonly Color _lightGray = new Color(0xff, 0xd3, 0xd3, 0xd3);
+        private static readonly Color _transparent = new Color(0x00, 0xff, 0xff, 0xff);
         
         private readonly byte _a;
         private readonly byte _r;
         private readonly byte _g;
         private readonly byte _b;
 
-	    #endregion
+        #endregion
 
         #region CONSTRUCTORS
 
@@ -139,7 +139,46 @@ namespace System.Drawing
         {
             get { return _b; }
         }
-        
+
+        internal static Color Red { get { return _red; } }
+        internal static Color Green { get { return _green; } }
+        internal static Color Blue { get { return _blue; } }
+        internal static Color Yellow { get { return _yellow; } }
+        internal static Color Violet { get { return _violet; } }
+        internal static Color Brown { get { return _brown; } }
+        internal static Color Olive { get { return _olive; } }
+        internal static Color Cyan { get { return _cyan; } }
+        internal static Color Magenta { get { return _magenta; } }
+        internal static Color Gold { get { return _gold; } }
+        internal static Color Indigo { get { return _indigo; } }
+        internal static Color Ivory { get { return _ivory; } }
+        internal static Color HotPink { get { return _hotPink; } }
+        internal static Color DarkRed { get { return _darkRed; } }
+        internal static Color DarkGreen { get { return _darkGreen; } }
+        internal static Color DarkBlue { get { return _darkBlue; } }
+        internal static Color DarkSeaGreen { get { return _darkSeaGreen; } }
+        internal static Color Gray { get { return _gray; } }
+        internal static Color DarkKhaki { get { return _darkKhaki; } }
+        internal static Color DarkGray { get { return _darkGray; } }
+        internal static Color LimeGreen { get { return _limeGreen; } }
+        internal static Color Tomato { get { return _tomato; } }
+        internal static Color SteelBlue { get { return _steelBlue; } }
+        internal static Color SkyBlue { get { return _skyBlue; } }
+        internal static Color Silver { get { return _silver; } }
+        internal static Color Salmon { get { return _salmon; } }
+        internal static Color SaddleBrown { get { return _saddleBrown; } }
+        internal static Color RosyBrown { get { return _rosyBrown; } }
+        internal static Color PowderBlue { get { return _powderBlue; } }
+        internal static Color Plum { get { return _plum; } }
+        internal static Color PapayaWhip { get { return _papayaWhip; } }
+        internal static Color Orange { get { return _orange; } }
+        internal static Color Black { get { return _black; } }
+        internal static Color White { get { return _white; } }
+        internal static Color DarkCyan { get { return _darkCyan; } }
+        internal static Color DarkMagenta { get { return _darkMagenta; } }
+        internal static Color LightGray { get { return _lightGray; } }
+        internal static Color Transparent { get { return _transparent; } }
+
         #endregion
 
         #region METHODS
@@ -155,9 +194,9 @@ namespace System.Drawing
         }
 
         internal static Color FromArgb(int alpha, Color baseColor)
-		{
-			return FromArgb(alpha, baseColor.R, baseColor.G, baseColor.B);
-		}
+        {
+            return FromArgb(alpha, baseColor.R, baseColor.G, baseColor.B);
+        }
 
         internal static Color FromArgb(int argb)
         {
