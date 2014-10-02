@@ -5,7 +5,7 @@
 // Copyright © AForge.NET, 2007-2011
 // contacts@aforgenet.com
 //
-#if NETFX_CORE || WINDOWS_PHONE || __IOS__
+#if NETFX_CORE || WINDOWS_PHONE || __IOS__ || __ANDROID__
 #define MONO
 #endif
 
