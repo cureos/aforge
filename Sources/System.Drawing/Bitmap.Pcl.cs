@@ -23,15 +23,22 @@ using System.IO;
 
 namespace System.Drawing
 {
-	public sealed partial class Bitmap
-	{
-		#region METHODS
+    using System.Drawing.Imaging;
 
-		internal static Bitmap FromStream(Stream stream)
-		{
-			throw new NotSupportedException();
-		}
+    public sealed partial class Bitmap
+    {
+        #region METHODS
 
-		#endregion
-	}
+        internal static Bitmap Create(Stream stream)
+        {
+            throw new NotImplementedException("PCL");
+        }
+
+        internal void WriteTo(Stream stream, ImageFormat format)
+        {
+            throw new NotImplementedException("PCL");
+        }
+
+        #endregion
+    }
 }

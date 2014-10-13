@@ -23,6 +23,8 @@ using System.Drawing.Imaging;
 
 namespace System.Drawing
 {
+    using System.IO;
+
     public abstract class Image
     {
         #region PROPERTIES
@@ -38,6 +40,19 @@ namespace System.Drawing
         #endregion
 
         #region METHODS
+
+        public static Image FromStream(Stream stream)
+        {
+            return Bitmap.Create(stream);
+        }
+
+        public void Save(Stream stream, ImageFormat format)
+        {
+            var bitmap = this as Bitmap;
+            if (bitmap == null) throw new InvalidOperationException("Image implementation must be of type bitmap");
+
+            bitmap.WriteTo(stream, format);
+        }
 
         internal static int GetPixelFormatSize(PixelFormat pixelFormat)
         {
