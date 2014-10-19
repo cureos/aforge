@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portable.Core", "Core\Portable.Core.csproj", "{D4354D92-07CF-4F27-BD68-69347CF5AA3F}"
 EndProject
@@ -47,6 +47,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AForge.Math.Tests", "..\Unit Tests\AForge.Math.Tests\AForge.Math.Tests.csproj", "{8CE6D122-788B-47C3-8749-15FD584C26F6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AForge.Imaging.Tests", "..\Unit Tests\AForge.Imaging.Tests\AForge.Imaging.Tests.csproj", "{539229BC-D68C-4FF0-84BC-904A90ECEBE0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Universal.Shim.Drawing", "System.Drawing\_Universal\Universal.Shim.Drawing.csproj", "{E7702CDF-EA0B-43D8-B5B1-A04FA7871D00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -122,6 +124,10 @@ Global
 		{539229BC-D68C-4FF0-84BC-904A90ECEBE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{539229BC-D68C-4FF0-84BC-904A90ECEBE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{539229BC-D68C-4FF0-84BC-904A90ECEBE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7702CDF-EA0B-43D8-B5B1-A04FA7871D00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7702CDF-EA0B-43D8-B5B1-A04FA7871D00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7702CDF-EA0B-43D8-B5B1-A04FA7871D00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7702CDF-EA0B-43D8-B5B1-A04FA7871D00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -134,5 +140,6 @@ Global
 		{72B5500A-624D-4590-8C85-4318EFB57D76} = {2138CACD-C4F2-4AB7-A0A4-F7FF269270D9}
 		{8CE6D122-788B-47C3-8749-15FD584C26F6} = {2138CACD-C4F2-4AB7-A0A4-F7FF269270D9}
 		{539229BC-D68C-4FF0-84BC-904A90ECEBE0} = {2138CACD-C4F2-4AB7-A0A4-F7FF269270D9}
+		{E7702CDF-EA0B-43D8-B5B1-A04FA7871D00} = {BAC0CE2F-5E18-46BA-A2E5-5C26B3EE5D82}
 	EndGlobalSection
 EndGlobal
