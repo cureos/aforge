@@ -105,6 +105,17 @@ public class AI4UnityEditorWindow : EditorWindow {
 	protected static readonly string AForgeNeuroDll = 
 	"AForge.Neuro.dll";
 
+	protected static readonly string AI4UnityBasePath = 
+	Application.dataPath	+ Path.DirectorySeparatorChar + 
+	"AI4Unity"				+ Path.DirectorySeparatorChar + 
+	"Runtime"				+ Path.DirectorySeparatorChar;
+
+	protected static readonly string AI4UnityFuzzyPath = 
+	AI4UnityEditorWindow.AI4UnityBasePath + "Fuzzy";
+
+	protected static readonly string AI4UnityDll = 
+	"AI4Unity.Fuzzy.dll";
+
 	protected static readonly string MonoDll = 
 	Application.dataPath	+ Path.DirectorySeparatorChar + 
 	"Accord.NET"			+ Path.DirectorySeparatorChar +
@@ -224,6 +235,15 @@ public class AI4UnityEditorWindow : EditorWindow {
 			this._buildAForgeNeuro = value;
 		}
 	}
+
+	public bool BuildAI4UnityFuzzy{
+		get{
+			return this._buildAI4UnityFuzzy;
+		}
+		set{
+			this._buildAI4UnityFuzzy = value;
+		}
+	}
 	#endregion
 
 	#region public instance properties
@@ -239,6 +259,7 @@ public class AI4UnityEditorWindow : EditorWindow {
 	protected bool _buildAForgeMachineLearning = true;
 	protected bool _buildAForgeMath = true;
 	protected bool _buildAForgeNeuro = true;
+	protected bool _buildAI4UnityFuzzy = true;
 	protected bool _compiling = false;
 	#endregion
 
@@ -337,6 +358,11 @@ public class AI4UnityEditorWindow : EditorWindow {
 				this.BuildAccordMachineLearning,
 				"Accord.NET Machine Learning"
 			);
+
+			this.BuildAI4UnityFuzzy = GUILayout.Toggle(
+				this.BuildAI4UnityFuzzy,
+				"AI4Unity Fuzzy"
+			);
 			GUILayout.EndVertical ();
 			GUILayout.EndHorizontal ();
 			GUILayout.Space (10);
@@ -419,10 +445,22 @@ public class AI4UnityEditorWindow : EditorWindow {
 						AI4UnityEditorWindow.AccordMachineLearningDll
 					).FullName;
 
+					string ai4unityFuzzyDll = new FileInfo(
+						this.BuildPath +
+						Path.DirectorySeparatorChar +
+						AI4UnityEditorWindow.AI4UnityDll
+					).FullName;
+
 					PlayerPrefs.SetString (
 						AI4UnityEditorWindow.PlayerPrefs_BuildBasePath,
 						this.BuildPath
 					);
+
+					string unityEngineDll = 
+						EditorApplication.applicationContentsPath + Path.DirectorySeparatorChar + 
+						(Application.platform == RuntimePlatform.OSXEditor ? "Frameworks" : "Data") +
+						Path.DirectorySeparatorChar + "Managed" +
+						Path.DirectorySeparatorChar + "UnityEngine.dll";
 
 					Debug.Log("Generating DLLs..."); 
 					if (this.BuildAForgeCore){
@@ -657,6 +695,29 @@ public class AI4UnityEditorWindow : EditorWindow {
 							},
 							new string[0],
 							new FileInfo(accordMachineLearningDll).FullName
+						);
+						
+						foreach (string result in results){
+							if (result.Contains("warning")){
+								warnings.AppendLine(result);
+							}else if (result.Contains("error")){
+								errors.AppendLine(result);
+							}
+						}
+					}
+
+					if (this.BuildAI4UnityFuzzy){
+						string[] results = EditorUtility.CompileCSharp(
+							this.GetSourceFiles(AI4UnityEditorWindow.AI4UnityFuzzyPath),
+							new string[]{
+								"System.dll",
+								aForgeCoreDll,
+								aForgeFuzzyDll,
+								AI4UnityEditorWindow.MonoDll,
+								unityEngineDll,
+							},
+							new string[0],
+							new FileInfo(ai4unityFuzzyDll).FullName
 						);
 						
 						foreach (string result in results){
