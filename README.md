@@ -60,7 +60,7 @@ Notes on commercial use
 The *Shim* and *Shim.Drawing* assemblies that are required to build the Portable Class Library version of AForge.NET Framework are published under the General Public License, version 3.
 For those interested in using the PCL libraries without having to adhere to GPL, please contact the copyright holder of the *Shim* assemblies at
 
-licenses@cureos.com
+[licenses@cureos.com](mailto:licenses@cureos.com)
 
 for commercial licensing alternatives.
 
@@ -68,3 +68,12 @@ Please also note that *AForge.NET Framework* itself is licensed under LGPL versi
 
 > Regarding collaboration, contribution, offers, partnering, custom work/consulting, none GPL/LGPL licensing, etc., please, contact using the next e-mail:
 aforge.net [at] gmail {dot} com
+
+Android and iOS support
+-----------------------
+
+There are now *Shim* and *Shim.Drawing* assemblies available for *Xamarin.Android* and *Xamarin.iOS*, making it possible to 
+incorporate *Portable AForge* assemblies in *Android* and *iPhone* or *iPad* apps. See for example [this](http://cureos.blogspot.com/2014/10/smartphone-image-processing-development.html) blog post. For
+more information of how to enable *Portable AForge* on *Android* and *iOS*, please send an e-mail to
+
+[licenses@cureos.com](mailto:licenses@cureos.com)
