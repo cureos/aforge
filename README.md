@@ -1,5 +1,7 @@
 ![AForge.NET Framework](http://www.aforgenet.com/img/aforgenetf.jpg)
+
 ![Accord.NET Framework](https://camo.githubusercontent.com/7ca11aa81f840d4b423f9b187b6ceb75d6b9e3d3/687474703a2f2f6163636f72642d6672616d65776f726b2e6e65742f646f63732f69636f6e732f6c6f676f2e706e67)
+
 ![Accord.NET Extensions](https://raw.githubusercontent.com/dajuric/accord-net-extensions/master/Deployment/Logo/logo-big.png)
 
 ai4unity
@@ -32,13 +34,11 @@ Working features:
 * AForge.Math: 
 	* The Complex class doesn't implements the ISerializable interface since it isn't supported on Windows Phone.
 * AForge.Neuro
-
 * Accord.Core
 * Accord.MachineLearning
 * Accord.Math
 * Accord.Neuro
 * Accord.Statistics
-
 * Accord.Extensions.Core: 
 	* The Platform class has been removed because it were using native functions.
 	* The PinneArray class has been removed because it required the AForge.Core.SystemTools class.
@@ -62,7 +62,6 @@ Removed features:
 * AForge.Robotics.Video.VFW
 * AForge.Robotics.Video.Ximea
 * AForge.Robotics.Vision
-
 * Accord.Audio
 * Accord.Audio.Formats
 * Accord.Audition
@@ -76,7 +75,6 @@ Removed features:
 * Accord.MachineLearning.GPL
 * Accord.Math.NonCommercial
 * Accord.Vision
-
 * Accord.Extensions.Imaging
 * Accord.Extensions.Visio
 
