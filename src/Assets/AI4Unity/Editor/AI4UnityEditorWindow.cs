@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System;
 using System.CodeDom.Compiler;
@@ -28,10 +28,14 @@ public class AI4UnityEditorWindow : EditorWindow {
 	#endregion
 
 	#region protected class properties
-
 	protected static readonly string AccordBasePath = 
 	Application.dataPath	+ Path.DirectorySeparatorChar + 
 	"Accord.NET"			+ Path.DirectorySeparatorChar + 
+	"Runtime"				+ Path.DirectorySeparatorChar;
+
+	protected static readonly string AccordExtensionsBasePath = 
+	Application.dataPath	+ Path.DirectorySeparatorChar + 
+	"Accord.NET Extensions"	+ Path.DirectorySeparatorChar + 
 	"Runtime"				+ Path.DirectorySeparatorChar;
 
 	protected static readonly string AccordCorePath = 
@@ -63,6 +67,24 @@ public class AI4UnityEditorWindow : EditorWindow {
 
 	protected static readonly string AccordStatisticsDll = 
 	"Accord.Statistics.dll";
+
+	protected static readonly string AccordExtensionsCorePath = 
+	AI4UnityEditorWindow.AccordExtensionsBasePath + "Core";
+	
+	protected static readonly string AccordExtensionsCoreDll = 
+	"Accord.Extensions.Core.dll";
+
+	protected static readonly string AccordExtensionsMathPath = 
+	AI4UnityEditorWindow.AccordExtensionsBasePath + "Math";
+	
+	protected static readonly string AccordExtensionsMathDll = 
+	"Accord.Extensions.Math.dll";
+
+	protected static readonly string AccordExtensionsStatisticsPath = 
+	AI4UnityEditorWindow.AccordExtensionsBasePath + "Statistics";
+	
+	protected static readonly string AccordExtensionsStatisticsDll = 
+	"Accord.Extensions.Statistics.dll";
 
 	protected static readonly string AForgeBasePath = 
 	Application.dataPath	+ Path.DirectorySeparatorChar + 
@@ -121,7 +143,16 @@ public class AI4UnityEditorWindow : EditorWindow {
 	"Accord.NET"			+ Path.DirectorySeparatorChar +
 	"Dependencies"			+ Path.DirectorySeparatorChar + 
 	"Mono4Unity"			+ Path.DirectorySeparatorChar +
-	"Mono4Unity.dll";
+	"Mono4Unity-Runtime.dll";
+	/*
+	protected static readonly string MonoEditorDll = 
+	Application.dataPath	+ Path.DirectorySeparatorChar + 
+	"Accord.NET"			+ Path.DirectorySeparatorChar +
+	"Dependencies"			+ Path.DirectorySeparatorChar + 
+	"Mono4Unity"			+ Path.DirectorySeparatorChar +
+	"Editor"				+ Path.DirectorySeparatorChar +
+	"Mono4Unity-Editor.dll";
+	*/
 
 	protected static readonly string PlayerPrefs_BuildBasePath = 
 	"BuildBasePath";
@@ -179,6 +210,33 @@ public class AI4UnityEditorWindow : EditorWindow {
 		}
 		set{
 			this._buildAccordStatistics = value;
+		}
+	}
+
+	public bool BuildAccordExtensionsCore{
+		get{
+			return this._buildAccordExtensionsCore;
+		}
+		set{
+			this._buildAccordExtensionsCore = value;
+		}
+	}
+
+	public bool BuildAccordExtensionsMath{
+		get{
+			return this._buildAccordExtensionsMath;
+		}
+		set{
+			this._buildAccordExtensionsMath = value;
+		}
+	}
+
+	public bool BuildAccordExtensionsStatistics{
+		get{
+			return this._buildAccordExtensionsStatistics;
+		}
+		set{
+			this._buildAccordExtensionsStatistics = value;
 		}
 	}
 
@@ -253,6 +311,9 @@ public class AI4UnityEditorWindow : EditorWindow {
 	protected bool _buildAccordMath = true;
 	protected bool _buildAccordNeuro = true;
 	protected bool _buildAccordStatistics = true;
+	protected bool _buildAccordExtensionsCore = true;
+	protected bool _buildAccordExtensionsMath = true;
+	protected bool _buildAccordExtensionsStatistics = true;
 	protected bool _buildAForgeCore = true;
 	protected bool _buildAForgeFuzzy = true;
 	protected bool _buildAForgeGenetic = true;
@@ -280,14 +341,16 @@ public class AI4UnityEditorWindow : EditorWindow {
 
 	#region EditorWindow methods
 	public virtual void OnGUI(){
-		GUILayout.Space (30);
+		EditorGUILayout.Space ();
+		EditorGUILayout.Space ();
+		EditorGUILayout.Space ();
 
 		if (this._compiling) {
-			GUILayout.Label ("Compiling...");
+			EditorGUILayout.LabelField ("Compiling...");
 		}else{
-			GUILayout.BeginHorizontal ();
-			GUILayout.Label ("Build Path:");
-			this.BuildPath = GUILayout.TextField (this.BuildPath != null ? this.BuildPath : string.Empty);
+			EditorGUILayout.BeginHorizontal ();
+			EditorGUILayout.LabelField ("Build Path:");
+			this.BuildPath = EditorGUILayout.TextField (this.BuildPath != null ? this.BuildPath : string.Empty);
 
 			if (GUILayout.Button ("+")) {
 				this.BuildPath = EditorUtility.SaveFolderPanel(
@@ -296,76 +359,105 @@ public class AI4UnityEditorWindow : EditorWindow {
 					string.Empty
 				);
 			}
-			GUILayout.EndHorizontal ();
-			GUILayout.Space (10);
+			EditorGUILayout.EndHorizontal ();
+			EditorGUILayout.Space ();
 
-			GUILayout.BeginHorizontal ();
-			GUILayout.BeginVertical ();
-			this.BuildAForgeCore = GUILayout.Toggle (
-				this.BuildAForgeCore,
-				"AForge.NET Core"
+			float labelWidth = EditorGUIUtility.labelWidth;
+			EditorGUIUtility.labelWidth = 200f;
+
+			EditorGUILayout.BeginHorizontal ();
+			EditorGUILayout.BeginVertical ();
+			this.BuildAForgeCore = EditorGUILayout.Toggle (
+				"AForge.NET Core",
+				this.BuildAForgeCore
 			);
 
-			this.BuildAForgeMath = GUILayout.Toggle (
-				this.BuildAForgeMath,
-				"AForge.NET Math"
+			this.BuildAForgeMath = EditorGUILayout.Toggle (
+				"AForge.NET Math",
+				this.BuildAForgeMath
 			);
 
-			this.BuildAForgeFuzzy = GUILayout.Toggle (
-				this.BuildAForgeFuzzy,
-				"AForge.NET Fuzzy"
+			this.BuildAForgeFuzzy = EditorGUILayout.Toggle (
+				"AForge.NET Fuzzy",
+				this.BuildAForgeFuzzy
 			);
 
-			this.BuildAForgeGenetic = GUILayout.Toggle (
-				this.BuildAForgeGenetic,
-				"AForge.NET Genetic"
+			this.BuildAForgeGenetic = EditorGUILayout.Toggle (
+				"AForge.NET Genetic",
+				this.BuildAForgeGenetic
 			);
 
-			this.BuildAForgeNeuro = GUILayout.Toggle (
-				this.BuildAForgeNeuro,
-				"AForge.NET Neuro"
+			this.BuildAForgeNeuro = EditorGUILayout.Toggle (
+				"AForge.NET Neuro",
+				this.BuildAForgeNeuro
 			);
 
-			this.BuildAForgeMachineLearning = GUILayout.Toggle (
-				this.BuildAForgeMachineLearning,
-				"AForge.NET Machine Learning"
+			this.BuildAForgeMachineLearning = EditorGUILayout.Toggle (
+				"AForge.NET Machine Learning",
+				this.BuildAForgeMachineLearning
 			);
 
-			GUILayout.EndVertical ();
-			GUILayout.BeginVertical ();
+			EditorGUILayout.Space();
+			EditorGUILayout.Space();
 
-			this.BuildAccordCore = GUILayout.Toggle (
-				this.BuildAccordCore,
-				"Accord.NET Core"
+			this.BuildAccordExtensionsCore = EditorGUILayout.Toggle (
+				"Accord.NET Extensions Core",
+				this.BuildAccordExtensionsCore
 			);
 			
-			this.BuildAccordMath = GUILayout.Toggle (
-				this.BuildAccordMath,
-				"Accord.NET Math"
-			);
-
-			this.BuildAccordStatistics = GUILayout.Toggle (
-				this.BuildAccordStatistics,
-				"Accord.NET Statistics"
+			this.BuildAccordExtensionsMath = EditorGUILayout.Toggle (
+				"Accord.NET Extensions Math",
+				this.BuildAccordExtensionsMath
 			);
 			
-			this.BuildAccordNeuro = GUILayout.Toggle (
-				this.BuildAccordNeuro,
-				"Accord.NET Neuro"
-			);
-			
-			this.BuildAccordMachineLearning = GUILayout.Toggle (
-				this.BuildAccordMachineLearning,
-				"Accord.NET Machine Learning"
+			this.BuildAccordExtensionsCore = EditorGUILayout.Toggle (
+				"Accord.NET Extensions Statistics",
+				this.BuildAccordExtensionsStatistics
 			);
 
-			this.BuildAI4UnityFuzzy = GUILayout.Toggle(
-				this.BuildAI4UnityFuzzy,
-				"AI4Unity Fuzzy"
+			EditorGUILayout.EndVertical ();
+			EditorGUILayout.BeginVertical ();
+
+			this.BuildAccordCore = EditorGUILayout.Toggle (
+				"Accord.NET Core",
+				this.BuildAccordCore
 			);
-			GUILayout.EndVertical ();
-			GUILayout.EndHorizontal ();
-			GUILayout.Space (10);
+			
+			this.BuildAccordMath = EditorGUILayout.Toggle (
+				"Accord.NET Math",
+				this.BuildAccordMath
+			);
+
+			this.BuildAccordStatistics = EditorGUILayout.Toggle (
+				"Accord.NET Statistics",
+				this.BuildAccordStatistics
+			);
+			
+			this.BuildAccordNeuro = EditorGUILayout.Toggle (
+				"Accord.NET Neuro",
+				this.BuildAccordNeuro
+			);
+			
+			this.BuildAccordMachineLearning = EditorGUILayout.Toggle (
+				"Accord.NET Machine Learning",
+				this.BuildAccordMachineLearning
+			);
+
+			EditorGUILayout.Space();
+			EditorGUILayout.Space();
+			EditorGUILayout.Space();
+			EditorGUILayout.Space();
+
+			this.BuildAI4UnityFuzzy = EditorGUILayout.Toggle(
+				"AI4Unity Fuzzy",
+				this.BuildAI4UnityFuzzy
+			);
+
+			EditorGUILayout.EndVertical ();
+			EditorGUILayout.EndHorizontal ();
+			EditorGUILayout.Space();
+			EditorGUILayout.Space();
+			EditorGUIUtility.labelWidth = labelWidth;
 
 			if (GUILayout.Button ("Build DLLs")) {
 				if (string.IsNullOrEmpty(this.BuildPath)){
@@ -443,6 +535,24 @@ public class AI4UnityEditorWindow : EditorWindow {
 						this.BuildPath + 
 						Path.DirectorySeparatorChar + 
 						AI4UnityEditorWindow.AccordMachineLearningDll
+					).FullName;
+
+					string accordExtensionsCoreDll = new FileInfo( 
+	                    this.BuildPath + 
+	                    Path.DirectorySeparatorChar + 
+						AI4UnityEditorWindow.AccordExtensionsCoreDll
+					).FullName;
+					
+					string accordExtensionsMathDll = new FileInfo(
+						this.BuildPath + 
+						Path.DirectorySeparatorChar + 
+						AI4UnityEditorWindow.AccordExtensionsMathDll
+					).FullName;
+					
+					string accordExtensionsStatisticsDll = new FileInfo( 
+						this.BuildPath + 
+						Path.DirectorySeparatorChar + 
+						AI4UnityEditorWindow.AccordExtensionsStatisticsDll
 					).FullName;
 
 					string ai4unityFuzzyDll = new FileInfo(
@@ -695,6 +805,81 @@ public class AI4UnityEditorWindow : EditorWindow {
 							},
 							new string[0],
 							new FileInfo(accordMachineLearningDll).FullName
+						);
+						
+						foreach (string result in results){
+							if (result.Contains("warning")){
+								warnings.AppendLine(result);
+							}else if (result.Contains("error")){
+								errors.AppendLine(result);
+							}
+						}
+					}
+
+					if (this.BuildAccordExtensionsCore){
+						string[] results = EditorUtility.CompileCSharp(
+							this.GetSourceFiles(AI4UnityEditorWindow.AccordExtensionsCorePath),
+							new string[]{
+								"System.dll",
+								accordCoreDll,
+								aForgeCoreDll,
+								AI4UnityEditorWindow.MonoDll,
+							},
+							new string[0],
+							new FileInfo(accordExtensionsCoreDll).FullName
+						);
+						
+						foreach (string result in results){
+							if (result.Contains("warning")){
+								warnings.AppendLine(result);
+							}else if (result.Contains("error")){
+								errors.AppendLine(result);
+							}
+						}
+					}
+					
+					if (this.BuildAccordExtensionsMath){
+						string[] results = EditorUtility.CompileCSharp(
+							this.GetSourceFiles(AI4UnityEditorWindow.AccordExtensionsMathPath),
+								new string[]{
+								"System.dll",
+								accordExtensionsCoreDll,
+								accordCoreDll,
+								accordMathDll,
+								aForgeCoreDll,
+								aForgeMathDll,
+								AI4UnityEditorWindow.MonoDll,
+								unityEngineDll
+							},
+							new string[0],
+							new FileInfo(accordExtensionsMathDll).FullName
+						);
+						
+						foreach (string result in results){
+							if (result.Contains("warning")){
+								warnings.AppendLine(result);
+							}else if (result.Contains("error")){
+								errors.AppendLine(result);
+							}
+						}
+					}
+					
+					if (this.BuildAccordExtensionsStatistics){
+						string[] results = EditorUtility.CompileCSharp(
+							this.GetSourceFiles(AI4UnityEditorWindow.AccordExtensionsStatisticsPath),
+							new string[]{
+								"System.dll",
+								accordExtensionsCoreDll,
+								accordExtensionsMathDll,
+								accordCoreDll,
+								accordMathDll,
+								accordStatisticsDll,
+								aForgeCoreDll,
+								aForgeMathDll,
+								AI4UnityEditorWindow.MonoDll,
+							},
+							new string[0],
+							new FileInfo(accordExtensionsStatisticsDll).FullName
 						);
 						
 						foreach (string result in results){
