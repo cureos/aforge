@@ -2,6 +2,8 @@
 [Oo]bj
 [Bb]in
 [Pp]ackages
+[Pp]ublish
+[Bb]uild
 *.suo
 *.user
 *.DotSettings
