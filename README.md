@@ -82,9 +82,9 @@ Removed features:
 Building the libraries
 ----------------------
 
-1) Open the Unity Editor.
-2) Select the Window -> AI4Unity -> Build DLLs menu option.
-3) Select the DLLs that should be compiled and the path were the DLLs will be created.
+* Open the Unity Editor.
+* Select the Window -> AI4Unity -> Build DLLs menu option.
+* Select the DLLs that should be compiled and the path were the DLLs will be created.
 
 
 
