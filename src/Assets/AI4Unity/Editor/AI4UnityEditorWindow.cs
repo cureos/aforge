@@ -143,7 +143,7 @@ public class AI4UnityEditorWindow : EditorWindow {
 	"Accord.NET"			+ Path.DirectorySeparatorChar +
 	"Dependencies"			+ Path.DirectorySeparatorChar + 
 	"Mono4Unity"			+ Path.DirectorySeparatorChar +
-	"Mono4Unity-Runtime.dll";
+	"Mono4Unity.dll";
 	/*
 	protected static readonly string MonoEditorDll = 
 	Application.dataPath	+ Path.DirectorySeparatorChar + 
