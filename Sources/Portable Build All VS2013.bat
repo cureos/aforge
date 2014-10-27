@@ -28,12 +28,6 @@
 @xcopy /k /r /v /y /exclude:exclude.txt Vision\bin\Release\AForge.Vision.* "Publish\PCL\Any CPU"
 @xcopy /k /r /v /y /exclude:exclude.txt System.Drawing\bin\Release\Shim.Drawing.* "Publish\PCL\Any CPU"
 
-@md "Publish\Universal\Any CPU"
-@xcopy /k /r /v /y /exclude:exclude.txt System.Drawing\_Universal\bin\Release\Shim.Drawing.* "Publish\Universal\Any CPU"
-
-@md "Publish\Win8\Any CPU"
-@xcopy /k /r /v /y /exclude:exclude.txt System.Drawing\_Store\bin\Release\Shim.Drawing.* "Publish\Win8\Any CPU"
-
 @md "Publish\WP8\Any CPU"
 @xcopy /k /r /v /y /exclude:exclude.txt System.Drawing\_Phone\Bin\Release\Shim.Drawing.* "Publish\WP8\Any CPU"
 

@@ -13,12 +13,12 @@ The repository currently provides:
 
 * Portable Class Libraries for base and imaging functionality functionality (Core, Math, Genetic, Fuzzy, MachineLearning, Neuro, Imaging, Imaging.Formats, Vision), 
 * Portable Class Library *Shim.Drawing* to substitute .NET *System.Drawing* types not covered by PCL, and
-* Target specific *Shim.Drawing* libraries for .NET Framework, Windows Store and Windows Phone 8.
+* Target specific *Shim.Drawing* libraries for .NET Framework 4.5 and higher, and Windows Phone Silverlight 8 and higher.
 
-The portable class libraries reference the portable [Shim (on NuGet)](https://github.com/cureos/shim) and/or *Shim.Drawing* assemblies. In applications however, the target specific (Windows Store, Windows Phone or WPF)
+The portable class libraries reference the portable [Shim (on NuGet)](https://github.com/cureos/shim) and/or *Shim.Drawing* assemblies. In applications however, the target specific (Windows Phone Silverlight or WPF)
 *Shim* and *Shim.Drawing* assemblies should be referenced, to ensure that the target specific version of each type is used.
  
-`WriteableBitmap`:s provide input and output to the imaging functionality in the WPF, Windows Store and Windows Store libraries. The target specific *Shim.Drawing* assembly 
+`WriteableBitmap`:s provide input and output to the imaging functionality in the WPF and Windows Phone Silverlight libraries. The target specific *Shim.Drawing* assembly 
 incorporates explicit cast operators between `WriteableBitmap` and `System.Drawing.Bitmap`.
 
 All image processing is performed on the mock `System.Drawing.Bitmap` class, `WriteableBitmap` objects should only be used as initial input to and final output from the
@@ -29,13 +29,13 @@ the real *System.Drawing* assembly, you are recommended to use the original *AFo
 
 **IMPORTANT!**<br />
 * PCL projects cannot be built in Express versions of Visual Studio (prior to 2013 Update 2), but prebuilt PCL binaries can still be referenced. The latest prebuilt binaries for Portable AForge 
-can be downloaded [here](https://github.com/cureos/aforge/releases/tag/v2.2.5.4).
-* To be able to reference the target specific (Windows Store, WP8, .NET/WPF) *Shim* and *Shim.Drawing* assemblies, all underlying assemblies need to have a strong name, i.e. be signed. 
+can be downloaded [here](https://github.com/cureos/aforge/releases).
+* To be able to reference the target specific (WP8, .NET/WPF) *Shim* and *Shim.Drawing* assemblies, all underlying assemblies need to have a strong name, i.e. be signed. 
 
 Example usage
 -------------
 
-This same approach can be applied in WPF, Windows Store and Windows Phone applications.
+This same approach can be applied in WPF and Windows Phone Silverlight applications.
 
     // Use explicit operator to convert from WriteableBitmap to Bitmap
     Bitmap bitmap = (Bitmap)aWriteableBitmapObject;
@@ -57,8 +57,8 @@ Open the *Portable Build All.sln* solution file located in the *Sources* folder 
 Notes on commercial use
 -----------------------
 
-The *Shim* and *Shim.Drawing* assemblies that are required to build the Portable Class Library version of AForge.NET Framework are published under the General Public License, version 3.
-For those interested in using the PCL libraries without having to adhere to GPL, please contact the copyright holder of the *Shim* assemblies at
+The *Shim.Drawing* assemblies that are required to build the Portable Class Library version of AForge.NET Framework are published under the General Public License, version 3.
+For those interested in using the PCL libraries without having to adhere to GPL, please contact the copyright holder of the *Shim.Drawing* assemblies at
 
 [licenses@cureos.com](mailto:licenses@cureos.com)
 
@@ -69,11 +69,12 @@ Please also note that *AForge.NET Framework* itself is licensed under LGPL versi
 > Regarding collaboration, contribution, offers, partnering, custom work/consulting, none GPL/LGPL licensing, etc., please, contact using the next e-mail:
 aforge.net [at] gmail {dot} com
 
-Android and iOS support
------------------------
+Universal, Android and iOS support
+----------------------------------
 
 There are now *Shim* and *Shim.Drawing* assemblies available for *Xamarin.Android* and *Xamarin.iOS*, making it possible to 
-incorporate *Portable AForge* assemblies in *Android* and *iPhone* or *iPad* apps. See for example [this](http://cureos.blogspot.com/2014/10/smartphone-image-processing-development.html) blog post. For
-more information of how to enable *Portable AForge* on *Android* and *iOS*, please send an e-mail to
+incorporate *Portable AForge* assemblies in *Android* and *iPhone* or *iPad* apps. See for example [this](http://cureos.blogspot.com/2014/10/smartphone-image-processing-development.html) blog post. 
+
+For more information of how to enable *Portable AForge* on *Android* and *iOS*, as well as *Universal*/*Windows 8.1*/*Windows Phone (non-Silverlight) 8.1*, please send an e-mail to
 
 [licenses@cureos.com](mailto:licenses@cureos.com)

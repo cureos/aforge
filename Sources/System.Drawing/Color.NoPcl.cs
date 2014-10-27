@@ -19,25 +19,21 @@
  *  along with Shim.NET.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if NETFX_CORE
-using TrueColor = Windows.UI.Color;
-#else
-using TrueColor = System.Windows.Media.Color;
-#endif
-
 namespace System.Drawing
 {
-	public partial struct Color
-	{
+    using PlatformColor = System.Windows.Media.Color;
 
-		public static explicit operator TrueColor(Color color)
-		{
-			return TrueColor.FromArgb(color._a, color._r, color._g, color._b);
-		}
+    public partial struct Color
+    {
 
-		public static explicit operator Color(TrueColor trueColor)
-		{
-			return FromArgb(trueColor.A, trueColor.R, trueColor.G, trueColor.B);
-		}
-	}
+        public static explicit operator PlatformColor(Color color)
+        {
+            return PlatformColor.FromArgb(color._a, color._r, color._g, color._b);
+        }
+
+        public static explicit operator Color(PlatformColor trueColor)
+        {
+            return FromArgb(trueColor.A, trueColor.R, trueColor.G, trueColor.B);
+        }
+    }
 }
