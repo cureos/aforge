@@ -40,7 +40,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>AForge.System.Drawing.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\..\..\Shim.Drawing.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -54,14 +54,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\CPOL_PixelFormatConversion.htm">
-      <Link>CPOL_PixelFormatConversion.htm</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\gpl-3.0.txt">
-      <Link>gpl-3.0.txt</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -240,9 +232,6 @@
       <Link>SystemColors.cs</Link>
     </Compile>
     <Compile Include="Bitmap.Wpf.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="AForge.System.Drawing.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

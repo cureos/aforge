@@ -40,7 +40,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>AForge.System.Drawing.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\..\Shim.Drawing.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\Core\SystemTools.cs">
@@ -105,18 +105,7 @@
     <Compile Include="SystemColors.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="CPOL_PixelFormatConversion.htm">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="AForge.System.Drawing.snk" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="gpl-3.0.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Shim">

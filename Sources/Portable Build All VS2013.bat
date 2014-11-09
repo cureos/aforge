@@ -9,30 +9,35 @@
 
 @if EXIST Publish (rd /s /q Publish)
 
-@md Publish
-@xcopy /k /r /v /y ..\README.md Publish
-@xcopy /k /r /v /y ..\gpl-3.0.txt Publish
-@xcopy /k /r /v /y ..\lgpl-3.0.txt Publish
-@xcopy /k /r /v /y ..\gpl-3.0.txt Publish
-@xcopy /k /r /v /y System.Drawing\CPOL_PixelFormatConversion.htm Publish
+@md Publish\aforge
+@xcopy /k /r /v /y ..\README.md Publish\aforge
+@xcopy /k /r /v /y ..\gpl-3.0.txt Publish\aforge
+@xcopy /k /r /v /y ..\lgpl-3.0.txt Publish\aforge
 
-@md "Publish\PCL\Any CPU"
-@xcopy /k /r /v /y /exclude:exclude.txt Core\bin\Release\AForge.* "Publish\PCL\Any CPU"
-@xcopy /k /r /v /y /exclude:exclude.txt Fuzzy\bin\Release\AForge.Fuzzy.* "Publish\PCL\Any CPU"
-@xcopy /k /r /v /y /exclude:exclude.txt Genetic\bin\Release\AForge.Genetic.* "Publish\PCL\Any CPU"
-@xcopy /k /r /v /y /exclude:exclude.txt Imaging\bin\Release\AForge.Imaging.* "Publish\PCL\Any CPU"
-@xcopy /k /r /v /y /exclude:exclude.txt Imaging.Formats\bin\Release\AForge.Imaging.Formats.* "Publish\PCL\Any CPU"
-@xcopy /k /r /v /y /exclude:exclude.txt MachineLearning\bin\Release\AForge.MachineLearning.* "Publish\PCL\Any CPU"
-@xcopy /k /r /v /y /exclude:exclude.txt Math\bin\Release\AForge.Math.* "Publish\PCL\Any CPU"
-@xcopy /k /r /v /y /exclude:exclude.txt Neuro\bin\Release\AForge.Neuro.* "Publish\PCL\Any CPU"
-@xcopy /k /r /v /y /exclude:exclude.txt Vision\bin\Release\AForge.Vision.* "Publish\PCL\Any CPU"
-@xcopy /k /r /v /y /exclude:exclude.txt System.Drawing\bin\Release\Shim.Drawing.* "Publish\PCL\Any CPU"
+@md Publish\shim_drawing
+@xcopy /k /r /v /y ..\README.md Publish\shim_drawing
+@xcopy /k /r /v /y ..\gpl-3.0.txt Publish\shim_drawing
+@xcopy /k /r /v /y System.Drawing\CPOL_PixelFormatConversion.htm Publish\shim_drawing
 
-@md "Publish\WP8\Any CPU"
-@xcopy /k /r /v /y /exclude:exclude.txt System.Drawing\_Phone\Bin\Release\Shim.Drawing.* "Publish\WP8\Any CPU"
+@md "Publish\aforge\PCL\Any CPU"
+@xcopy /k /r /v /y /exclude:exclude.txt Core\bin\Release\AForge.* "Publish\aforge\PCL\Any CPU"
+@xcopy /k /r /v /y /exclude:exclude.txt Fuzzy\bin\Release\AForge.Fuzzy.* "Publish\aforge\PCL\Any CPU"
+@xcopy /k /r /v /y /exclude:exclude.txt Genetic\bin\Release\AForge.Genetic.* "Publish\aforge\PCL\Any CPU"
+@xcopy /k /r /v /y /exclude:exclude.txt Imaging\bin\Release\AForge.Imaging.* "Publish\aforge\PCL\Any CPU"
+@xcopy /k /r /v /y /exclude:exclude.txt Imaging.Formats\bin\Release\AForge.Imaging.Formats.* "Publish\aforge\PCL\Any CPU"
+@xcopy /k /r /v /y /exclude:exclude.txt MachineLearning\bin\Release\AForge.MachineLearning.* "Publish\aforge\PCL\Any CPU"
+@xcopy /k /r /v /y /exclude:exclude.txt Math\bin\Release\AForge.Math.* "Publish\aforge\PCL\Any CPU"
+@xcopy /k /r /v /y /exclude:exclude.txt Neuro\bin\Release\AForge.Neuro.* "Publish\aforge\PCL\Any CPU"
+@xcopy /k /r /v /y /exclude:exclude.txt Vision\bin\Release\AForge.Vision.* "Publish\aforge\PCL\Any CPU"
 
-@md "Publish\WPF\Any CPU"
-@xcopy /k /r /v /y /exclude:exclude.txt System.Drawing\_WPF\bin\Release\Shim.Drawing.* "Publish\WPF\Any CPU"
+@md "Publish\shim_drawing\PCL\Any CPU"
+@xcopy /k /r /v /y /exclude:exclude.txt System.Drawing\bin\Release\Shim.Drawing.* "Publish\shim_drawing\PCL\Any CPU"
+
+@md "Publish\shim_drawing\WP8\Any CPU"
+@xcopy /k /r /v /y /exclude:exclude.txt System.Drawing\_Phone\Bin\Release\Shim.Drawing.* "Publish\shim_drawing\WP8\Any CPU"
+
+@md "Publish\shim_drawing\WPF\Any CPU"
+@xcopy /k /r /v /y /exclude:exclude.txt System.Drawing\_WPF\bin\Release\Shim.Drawing.* "Publish\shim_drawing\WPF\Any CPU"
 
 @del /f exclude.txt
 

@@ -45,7 +45,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="AForge.System.Drawing.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -226,15 +225,6 @@
     <Compile Include="Bitmap.Phone.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\CPOL_PixelFormatConversion.htm">
-      <Link>CPOL_PixelFormatConversion.htm</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <Content Include="..\gpl-3.0.txt">
-      <Link>gpl-3.0.txt</Link>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="Shim, Version=0.9.3.0, Culture=neutral, PublicKeyToken=c55ec16d10c4b366, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\shim.0.9.3-pre1\lib\wp8\Shim.dll</HintPath>
@@ -244,7 +234,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>AForge.System.Drawing.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\..\..\Shim.Drawing.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
