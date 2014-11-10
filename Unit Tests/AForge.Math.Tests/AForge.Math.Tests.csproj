@@ -63,7 +63,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Shim">
-      <HintPath>..\..\Sources\packages\shim.0.9.3-pre1\lib\net45\Shim.dll</HintPath>
+      <HintPath>..\..\Sources\packages\shim.0.9.3-pre2\lib\net45\Shim.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">

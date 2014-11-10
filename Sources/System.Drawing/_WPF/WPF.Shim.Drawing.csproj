@@ -45,16 +45,12 @@
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="Shim, Version=0.9.3.0, Culture=neutral, PublicKeyToken=c55ec16d10c4b366, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\shim.0.9.3-pre1\lib\net45\Shim.dll</HintPath>
+      <HintPath>..\..\..\..\accord\Sources\packages\shim.0.9.3-pre2\lib\net45\Shim.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Core\SystemTools.cs">
@@ -232,6 +228,9 @@
       <Link>SystemColors.cs</Link>
     </Compile>
     <Compile Include="Bitmap.Wpf.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

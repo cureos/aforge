@@ -45,9 +45,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\..\Core\SystemTools.cs">
       <Link>Support\SystemTools.cs</Link>
     </Compile>
@@ -227,8 +224,11 @@
   <ItemGroup>
     <Reference Include="Shim, Version=0.9.3.0, Culture=neutral, PublicKeyToken=c55ec16d10c4b366, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\shim.0.9.3-pre1\lib\wp8\Shim.dll</HintPath>
+      <HintPath>..\..\packages\shim.0.9.3-pre2\lib\wp8\Shim.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
