@@ -146,6 +146,9 @@
     <Compile Include="..\Helpers\Pixels\NonIndexed\PixelDataPArgb8888.cs">
       <Link>Helpers\Pixels\NonIndexed\PixelDataPArgb8888.cs</Link>
     </Compile>
+    <Compile Include="..\Helpers\Pixels\NonIndexed\PixelDataPRgba8888.cs">
+      <Link>Helpers\Pixels\NonIndexed\PixelDataPRgba8888.cs</Link>
+    </Compile>
     <Compile Include="..\Helpers\Pixels\NonIndexed\PixelDataRgb48.cs">
       <Link>Helpers\Pixels\NonIndexed\PixelDataRgb48.cs</Link>
     </Compile>
@@ -160,6 +163,9 @@
     </Compile>
     <Compile Include="..\Helpers\Pixels\NonIndexed\PixelDataRgb8888.cs">
       <Link>Helpers\Pixels\NonIndexed\PixelDataRgb8888.cs</Link>
+    </Compile>
+    <Compile Include="..\Helpers\Pixels\NonIndexed\PixelDataRgba8888.cs">
+      <Link>Helpers\Pixels\NonIndexed\PixelDataRgba8888.cs</Link>
     </Compile>
     <Compile Include="..\Helpers\QuantizationHelper.cs">
       <Link>Helpers\QuantizationHelper.cs</Link>

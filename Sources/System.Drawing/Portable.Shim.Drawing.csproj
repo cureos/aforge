@@ -56,6 +56,8 @@
     <Compile Include="ColorCaches\Octree\OctreeCacheNode.cs" />
     <Compile Include="ColorCaches\Octree\OctreeColorCache.cs" />
     <Compile Include="CopyPixelOperation.cs" />
+    <Compile Include="Helpers\Pixels\NonIndexed\PixelDataRgba8888.cs" />
+    <Compile Include="Helpers\Pixels\NonIndexed\PixelDataPRgba8888.cs" />
     <Compile Include="Helpers\Pixels\NonIndexed\PixelDataPArgb8888.cs" />
     <Compile Include="Imaging\ImageFormat.cs" />
     <Compile Include="Pen.cs" />

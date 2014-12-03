@@ -42,6 +42,10 @@ namespace System.Drawing.Imaging
         Alpha = 262144,
         PAlpha = 524288,
         Indexed = 65536,
-        Undefined = 0
+        Undefined = 0,
+// ReSharper disable InconsistentNaming
+        ProprietaryFormat32bppRgba = 1,
+        ProprietaryFormat32bppPRgba = 2
+// ReSharper restore InconsistentNaming
     }
 }
