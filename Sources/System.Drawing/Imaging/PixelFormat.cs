@@ -21,6 +21,7 @@
 
 namespace System.Drawing.Imaging
 {
+    [Flags]
     public enum PixelFormat
     {
 // ReSharper disable InconsistentNaming
@@ -39,15 +40,15 @@ namespace System.Drawing.Imaging
         Format64bppArgb = 3424269,
         Format64bppPArgb = 1851406,
 // ReSharper restore InconsistentNaming
-		Indexed = 0x00010000,
-		Gdi = 0x00020000,
+        Indexed = 0x00010000,
+        Gdi = 0x00020000,
         Alpha = 0x00040000,
         PAlpha = 0x00080000,
-		Canonical = 0x00200000,
+        Canonical = 0x00200000,
         Undefined = 0,
 // ReSharper disable InconsistentNaming
-		ProprietaryFormat32bppRgba = 17 | (32 << 8) | (int) Alpha | (int) Gdi | (int) Canonical,
-		ProprietaryFormat32bppPRgba = 18 | (32 << 8) | (int) Alpha | (int) PAlpha | (int) Gdi
+        Format32bppRgbaProprietary = 17 | (32 << 8) | Alpha | Gdi | Canonical,
+        Format32bppPRgbaProprietary = 18 | (32 << 8) | Alpha | PAlpha | Gdi
 // ReSharper restore InconsistentNaming
     }
 }

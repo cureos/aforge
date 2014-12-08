@@ -233,8 +233,8 @@ namespace ImagePixelEnumerator.Helpers
                 case PixelFormat.Format64bppArgb: return typeof(PixelDataArgb64);
                 // case PixelFormat.Format64bppPArgb: return typeof (PixelDataPArgb64);
 
-                case PixelFormat.ProprietaryFormat32bppRgba: return typeof(PixelDataRgba8888);
-                case PixelFormat.ProprietaryFormat32bppPRgba: return typeof(PixelDataPRgba8888);
+                case PixelFormat.Format32bppRgbaProprietary: return typeof(PixelDataRgba8888);
+                case PixelFormat.Format32bppPRgbaProprietary: return typeof(PixelDataPRgba8888);
 
                 default:
                     String message = String.Format("This pixel format '{0}' is either indexed, or not supported.", pixelFormat);
