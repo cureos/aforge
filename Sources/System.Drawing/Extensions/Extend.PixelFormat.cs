@@ -46,6 +46,8 @@ namespace ImagePixelEnumerator.Extensions
                 case PixelFormat.Format32bppArgb:
                 case PixelFormat.Format32bppPArgb:
                 case PixelFormat.Format32bppRgb:
+				case PixelFormat.ProprietaryFormat32bppRgba:
+				case PixelFormat.ProprietaryFormat32bppPRgba:
                     return 32;
 
                 case PixelFormat.Format48bppRgb:
@@ -123,8 +125,10 @@ namespace ImagePixelEnumerator.Extensions
                 case PixelFormat.Format24bppRgb:
                     return "Truecolor (24-bit)";
 
-                case PixelFormat.Format32bppArgb:
-                case PixelFormat.Format32bppPArgb:
+				case PixelFormat.Format32bppArgb:
+				case PixelFormat.Format32bppPArgb:
+				case PixelFormat.ProprietaryFormat32bppRgba:
+				case PixelFormat.ProprietaryFormat32bppPRgba:
                     return "Truecolor + Alpha (32-bit)";
 
                 case PixelFormat.Format32bppRgb:
