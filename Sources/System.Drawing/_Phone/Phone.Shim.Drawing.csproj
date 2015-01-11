@@ -228,9 +228,9 @@
     <Compile Include="Bitmap.Phone.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Shim, Version=0.9.4.0, Culture=neutral, PublicKeyToken=c55ec16d10c4b366, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\shim.0.9.4-pre1\lib\wp8\Shim.dll</HintPath>
+    <Reference Include="Shim">
+      <HintPath>..\..\packages\shim.0.9.4-pre2\lib\wp8\Shim.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
