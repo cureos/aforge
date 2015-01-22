@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+    <metadata>
+        <id>portable.aforge.genetic</id>
+        <version>2.2.5.50122</version>
+        <title>Portable AForge Genetic</title>
+        <authors>Andrew Kirillow, Anders Gustafsson, Cureos AB</authors>
+        <licenseUrl>https://www.gnu.org/licenses/lgpl.html#content</licenseUrl>
+        <projectUrl>https://github.com/cureos/aforge</projectUrl>
+        <iconUrl>https://raw.githubusercontent.com/cureos/aforge/master/NuGet/portable-aforge.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <description>Portable AForge Genetic provides genetic programming functionality to the AForge.NET Framework on mobile and tablet devices.</description>
+        <summary>Genetic programming functionality for Portable AForge.NET Framework</summary>
+        <copyright>(c) 2006-2013 Andrew Kirillow, 2013-2015 Anders Gustafsson, Cureos AB</copyright>
+        <releaseNotes>v 2.2.5.50122
+----------------
+* Portable Class Library for Windows, iOS and Android phone and tablet devices.</releaseNotes>
+        <language>en-US</language>
+        <tags>aforge.net PCL .NET WPF WP8 WPA81 Windows8.1 Xamarin.iOS Xamarin.Android</tags>
+        <dependencies>
+            <dependency id="shim" version="1.0.0.50122" />
+            <dependency id="portable.aforge.core" version="2.2.5.50122" />
+            <dependency id="portable.aforge.math" version="2.2.5.50122" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\Sources\Genetic\bin\Release\AForge.Genetic.dll" target="lib\portable-net45+netcore45+wpa81+wp8" />
+        <file src="..\Sources\Genetic\bin\Release\AForge.Genetic.pdb" target="lib\portable-net45+netcore45+wpa81+wp8" />
+    </files>
+</package>
