@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+    <metadata>
+        <id>shim.drawing</id>
+        <version>2.2.5.50122</version>
+        <title>Shim Drawing</title>
+        <authors>Anders Gustafsson, Cureos AB</authors>
+        <licenseUrl>https://raw.githubusercontent.com/cureos/aforge/master/NuGet/LICENSE-shimdrawing.txt</licenseUrl>
+        <projectUrl>https://github.com/cureos/aforge</projectUrl>
+        <iconUrl>https://raw.githubusercontent.com/cureos/aforge/master/NuGet/shimdrawing.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <description>Shim.Drawing is a portability package providing a minimal subset of System.Drawing, that enables using the imaging processing functionality of AForge.NET and Accord.NET Frameworks in mobile applications.</description>
+        <summary>Shim.Drawing provides a minimal subset of System.Drawing for AForge.NET and Accord.NET.</summary>
+        <copyright>(c) 2013-2015 Anders Gustafsson, Cureos AB</copyright>
+        <releaseNotes>v 2.2.5.50122
+----------------
+* PCL library with Windows Phone Silverlight 8 and .NET/WPF specific implementations</releaseNotes>
+        <language>en-US</language>
+        <tags>PCL Shim System.Drawing .NET WPF WP8</tags>
+        <dependencies>
+            <dependency id="shim" version="1.0.0.50122" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\Sources\System.Drawing\_WPF\bin\Release\Shim.Drawing.dll" target="lib\net45" />
+        <file src="..\Sources\System.Drawing\_WPF\bin\Release\Shim.Drawing.pdb" target="lib\net45" />
+        <file src="..\Sources\System.Drawing\bin\Release\Shim.Drawing.dll" target="lib\portable-net45+netcore45+wpa81+wp8" />
+        <file src="..\Sources\System.Drawing\bin\Release\Shim.Drawing.pdb" target="lib\portable-net45+netcore45+wpa81+wp8" />
+        <file src="..\Sources\System.Drawing\_Phone\bin\Release\Shim.Drawing.dll" target="lib\wp8" />
+        <file src="..\Sources\System.Drawing\_Phone\bin\Release\Shim.Drawing.pdb" target="lib\wp8" />
+    </files>
+</package>
