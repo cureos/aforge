@@ -28,7 +28,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 
 [assembly: AssemblyTitle("Shim.Drawing")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Shim.Drawing provides a minimal subset of System.Drawing for AForge.NET and Accord.NET.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Cureos AB")]
 [assembly: AssemblyProduct("Shim.Drawing")]
@@ -47,8 +47,8 @@ using System.Runtime.CompilerServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.2.5.1")]
-[assembly: AssemblyFileVersion("2.2.5.1")]
+[assembly: AssemblyVersion("2.2.5.0")]
+[assembly: AssemblyFileVersion("2.2.5.0")]
 
 [assembly: InternalsVisibleTo("Accord.Imaging, PublicKey=0024000004800000940000000602000000240000525341310004000001000100039880a76dac76cddb9c85704c8a0e516773c28c0b202d9e0ae60b623b7bc554c7258bbf54ed6d98082964036109d4d970132b761f5b00a83079fbff2fbea283632a420ef5280dd2c5546e3f5da776191f7076a0966c06e7af21754fab55bdbdcddee5520632c3ebdc5908f6cdfb5b78d29123100f41faee0c29645e42455498")]
 [assembly: InternalsVisibleTo("Accord.Vision, PublicKey=0024000004800000940000000602000000240000525341310004000001000100039880a76dac76cddb9c85704c8a0e516773c28c0b202d9e0ae60b623b7bc554c7258bbf54ed6d98082964036109d4d970132b761f5b00a83079fbff2fbea283632a420ef5280dd2c5546e3f5da776191f7076a0966c06e7af21754fab55bdbdcddee5520632c3ebdc5908f6cdfb5b78d29123100f41faee0c29645e42455498")]

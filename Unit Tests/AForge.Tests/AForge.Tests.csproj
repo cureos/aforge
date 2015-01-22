@@ -61,9 +61,9 @@
     <Reference Include="nunit.framework">
       <HintPath>..\..\Sources\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="Shim, Version=0.9.4.0, Culture=neutral, PublicKeyToken=c55ec16d10c4b366, processorArchitecture=MSIL">
+    <Reference Include="Shim, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c55ec16d10c4b366, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Sources\packages\shim.0.9.4-pre2\lib\net45\Shim.dll</HintPath>
+      <HintPath>..\..\Sources\packages\shim.1.0.0.50122\lib\net45\Shim.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
