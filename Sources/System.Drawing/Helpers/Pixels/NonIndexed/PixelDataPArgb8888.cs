@@ -31,9 +31,9 @@ namespace ImagePixelEnumerator.Helpers.Pixels.NonIndexed
 
         // processed component values
         public Int32 Alpha { get { return alpha; } }
-        public Int32 Red { get { return (255 * alphaRed) / alpha; } }
-        public Int32 Green { get { return (255 * alphaGreen) / alpha; } }
-        public Int32 Blue { get { return (255 * alphaBlue) / alpha; } }
+        public Int32 Red { get { return alpha > 0 ? (255 * alphaRed) / alpha : alphaRed; } }
+        public Int32 Green { get { return alpha > 0 ? (255 * alphaGreen) / alpha : alphaGreen; } }
+        public Int32 Blue { get { return alpha > 0 ? (255 * alphaBlue) / alpha : alphaBlue; } }
 
         /// <summary>
         /// See <see cref="INonIndexedPixel.Argb"/> for more details.
