@@ -1,10 +1,10 @@
-![AForge.NET Framework](http://www.aforgenet.com/img/aforgenetf.jpg)
+<img src="NuGet/portable-aforge.png" alt="Portable AForge.NET logo" height="108" />
 
 Portable AForge.NET Framework
 =============================
 
 *AForge.NET Framework*: Copyright (c) 2006-2013 AForge.NET; licensed under Lesser General Public License (LGPL) version 3.<br/>
-*Shim.Drawing* class libraries: Copyright (c) 2013-2014 Anders Gustafsson, Cureos AB; licensed under General Public License (GPL) version 3.
+*Shim.Drawing* class libraries: Copyright (c) 2013-2015 Anders Gustafsson, Cureos AB; licensed under General Public License (GPL) version 3.
 
 This project is a fork of Andrew Kirillow's original [AForge.NET Framework](https://code.google.com/p/aforge/) project. 
 For general information and tutorials, see [here](http://www.aforgenet.com/aforge/framework/).
@@ -15,9 +15,18 @@ The repository currently provides:
 * Portable Class Library *Shim.Drawing* to substitute .NET *System.Drawing* types not covered by PCL, and
 * Target specific *Shim.Drawing* libraries for .NET Framework 4.5 and higher, and Windows Phone Silverlight 8 and higher.
 
-The portable class libraries reference the portable [Shim (on NuGet)](https://github.com/cureos/shim) and/or *Shim.Drawing* assemblies. In applications however, the target specific (Windows Phone Silverlight or WPF)
+The *Portable AForge.NET* class libraries depend on the PCL [Shim](https://github.com/cureos/shim) and/or *Shim.Drawing* assemblies. In applications however, the target specific (Windows Phone Silverlight or WPF)
 *Shim* and *Shim.Drawing* assemblies should be referenced, to ensure that the target specific version of each type is used.
- 
+
+Installation
+------------
+
+The preferred method for using *Portable AForge.NET* in your application is to download the required packages, including dependencies, from [NuGet](https://www.nuget.org/packages?q=portable.aforge). Open the NuGet Package Manager
+in Visual Studio and search for **portable.aforge** to obtain a list of the currently available packages on *NuGet*.
+
+Usage
+-----
+
 `WriteableBitmap`:s provide input and output to the imaging functionality in the WPF and Windows Phone Silverlight libraries. The target specific *Shim.Drawing* assembly 
 incorporates explicit cast operators between `WriteableBitmap` and `System.Drawing.Bitmap`.
 
@@ -26,14 +35,6 @@ image processing.
 
 When using the WPF *Shim.Drawing* assembly, the *System.Drawing* assembly from .NET Framework cannot be referenced since this would lead to type name collisions. If there is a need to reference 
 the real *System.Drawing* assembly, you are recommended to use the original *AForge.NET Framework* libraries and use WPF hosting controls to display image processing results instead.
-
-**IMPORTANT!**<br />
-* PCL projects cannot be built in Express versions of Visual Studio (prior to 2013 Update 2), but prebuilt PCL binaries can still be referenced. The latest prebuilt binaries for Portable AForge 
-can be downloaded [here](https://github.com/cureos/aforge/releases).
-* To be able to reference the target specific (WP8, .NET/WPF) *Shim* and *Shim.Drawing* assemblies, all underlying assemblies need to have a strong name, i.e. be signed. 
-
-Example usage
--------------
 
 This same approach can be applied in WPF and Windows Phone Silverlight applications.
 
@@ -52,7 +53,14 @@ This same approach can be applied in WPF and Windows Phone Silverlight applicati
 Building the libraries
 ----------------------
 
-Open the *Portable Build All.sln* solution file located in the *Sources* folder and build the entire solution or selected projects. Visual Studio 2012 Professional or higher is required.
+The preferred method for including *Portable AForge.NET* in your application is *NuGet*. However, if you prefer to build the libraries by yourself, follow these guidelines:
+
+* You will need to prepare a strong name key, (.snk) file *Shim.Drawing.snk* and place this file in the same folder as the main *Portable AForge* folder, for example the *Projects* folder.
+* Then, open the *Portable Build All.sln* solution file located in the *Sources* folder and build the entire solution or selected projects. Visual Studio 2012 Professional or higher is required.
+ 
+**IMPORTANT!**<br />
+* PCL projects cannot be built in Express versions of Visual Studio prior to 2013 Update 2. 
+* To be able to reference the target specific (WP8, .NET/WPF) *Shim.Drawing* assemblies, all underlying assemblies need to have a strong name, i.e. be signed. 
 
 Notes on commercial use
 -----------------------
