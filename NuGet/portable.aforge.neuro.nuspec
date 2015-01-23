@@ -18,9 +18,6 @@
         <language>en-US</language>
         <tags>aforge.net PCL .NET WPF WP8 WPA81 Windows8.1 Xamarin.iOS Xamarin.Android</tags>
         <dependencies>
-            <dependency id="shim" version="1.0.0.50122" />
-            <dependency id="portable.aforge.core" version="2.2.5.50122" />
-            <dependency id="portable.aforge.math" version="2.2.5.50122" />
             <dependency id="portable.aforge.genetic" version="2.2.5.50122" />
         </dependencies>
     </metadata>
