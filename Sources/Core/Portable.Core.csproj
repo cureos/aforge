@@ -61,7 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Shim">
-      <HintPath>..\packages\shim.1.0.0.50122\lib\portable-net45+netcore45+wpa81+wp8\Shim.dll</HintPath>
+      <HintPath>..\..\..\accord\Sources\packages\shim.1.0.0.50126\lib\portable-net45+netcore45+wpa81+wp8\Shim.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
