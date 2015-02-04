@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
     <metadata>
         <id>portable.aforge.neuro</id>
-        <version>2.2.5.50126</version>
+        <version>2.2.5.50204</version>
         <title>Portable AForge Neuro</title>
         <authors>Andrew Kirillow, Anders Gustafsson, Cureos AB</authors>
         <licenseUrl>https://www.gnu.org/licenses/lgpl.html#content</licenseUrl>
@@ -12,7 +12,11 @@
         <description>Portable AForge Neuro provides neural networks functionality to the AForge.NET Framework on mobile and tablet devices.</description>
         <summary>Neural networks functionality for Portable AForge.NET Framework</summary>
         <copyright>(c) 2006-2013 Andrew Kirillow, 2013-2015 Anders Gustafsson, Cureos AB</copyright>
-        <releaseNotes>v 2.2.5.50126
+        <releaseNotes>v 2.2.5.50204
+----------------
+* No functional change.
+
+v 2.2.5.50126
 ----------------
 * Synchronized with dependency updates.
 
@@ -22,7 +26,7 @@ v 2.2.5.50122
         <language>en-US</language>
         <tags>aforge.net PCL .NET WPF WP8 WPA81 Windows8.1 Xamarin.iOS Xamarin.Android</tags>
         <dependencies>
-            <dependency id="portable.aforge.genetic" version="2.2.5.50126" />
+            <dependency id="portable.aforge.genetic" version="2.2.5.50204" />
         </dependencies>
     </metadata>
     <files>
