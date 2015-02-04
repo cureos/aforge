@@ -45,9 +45,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\Core\SystemTools.cs">
-      <Link>Support\SystemTools.cs</Link>
-    </Compile>
     <Compile Include="..\Bitmap.cs">
       <Link>Bitmap.cs</Link>
     </Compile>

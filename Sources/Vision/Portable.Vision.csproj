@@ -62,6 +62,10 @@
     <Compile Include="Tools.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Core\Portable.Core.csproj">
+      <Project>{d4354d92-07cf-4f27-bd68-69347cf5aa3f}</Project>
+      <Name>Portable.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Imaging\Portable.Imaging.csproj">
       <Project>{0a22690c-9553-4b11-9835-8c0f0e2d44f1}</Project>
       <Name>Portable.Imaging</Name>
