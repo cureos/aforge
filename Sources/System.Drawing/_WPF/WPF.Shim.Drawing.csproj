@@ -44,9 +44,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
-    <Reference Include="Shim, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c55ec16d10c4b366, processorArchitecture=MSIL">
+    <Reference Include="Shim, Version=1.0.1.0, Culture=neutral, PublicKeyToken=c55ec16d10c4b366, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\accord\Sources\packages\shim.1.0.0.50126\lib\net45\Shim.dll</HintPath>
+      <HintPath>..\..\packages\shim.1.0.1.50204\lib\net45\Shim.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

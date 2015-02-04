@@ -30,6 +30,15 @@
 @xcopy /k /r /v /y /exclude:exclude.txt Neuro\bin\Release\AForge.Neuro.* "Publish\aforge\PCL\Any CPU"
 @xcopy /k /r /v /y /exclude:exclude.txt Vision\bin\Release\AForge.Vision.* "Publish\aforge\PCL\Any CPU"
 
+@md "Publish\aforge\Net\Any CPU"
+@xcopy /k /r /v /y /exclude:exclude.txt Core\_Net\bin\Release\AForge.* "Publish\aforge\Net\Any CPU"
+
+@md "Publish\aforge\WP8\Any CPU"
+@xcopy /k /r /v /y /exclude:exclude.txt Core\_Phone\bin\Release\AForge.* "Publish\aforge\WP8\Any CPU"
+
+@md "Publish\aforge\Universal\Any CPU"
+@xcopy /k /r /v /y /exclude:exclude.txt Core\_Universal\bin\Release\AForge.* "Publish\aforge\Universal\Any CPU"
+
 @md "Publish\shim_drawing\PCL\Any CPU"
 @xcopy /k /r /v /y /exclude:exclude.txt System.Drawing\bin\Release\Shim.Drawing.* "Publish\shim_drawing\PCL\Any CPU"
 
