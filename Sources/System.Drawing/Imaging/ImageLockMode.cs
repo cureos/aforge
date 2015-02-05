@@ -21,7 +21,7 @@
 
 namespace System.Drawing.Imaging
 {
-    internal enum ImageLockMode
+    public enum ImageLockMode
     {
         ReadOnly,
         ReadWrite,
