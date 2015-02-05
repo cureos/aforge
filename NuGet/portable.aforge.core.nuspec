@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
     <metadata>
         <id>portable.aforge.core</id>
-        <version>2.2.5.50204</version>
+        <version>2.2.5.50205</version>
         <title>Portable AForge Core</title>
         <authors>Andrew Kirillow, Anders Gustafsson, Cureos AB</authors>
         <licenseUrl>https://www.gnu.org/licenses/lgpl.html#content</licenseUrl>
@@ -12,19 +12,19 @@
         <description>Portable AForge Core contains the core types for the AForge.NET Framework on mobile and tablet devices.</description>
         <summary>Core types for Portable AForge.NET Framework</summary>
         <copyright>(c) 2006-2013 Andrew Kirillow, 2013-2015 Anders Gustafsson, Cureos AB</copyright>
-        <releaseNotes>v 2.2.5.50204
+        <releaseNotes>v 2.2.5.50205
+----------------
+* Windows Phone Silverlight 8 version is copied from 'portable-net45+netcore45+wpa81+wp8' to circumvent AForge.SystemTools error in WP8 build.
+
+v 2.2.5.50204
 ----------------
 * Restored AForge.SystemTools to Core library.
 * Separated into different builds for .NET, Windows Phone Silverlight and Universal.
-* IMPORTANT! SystemTools methods are not working for Windows Phone Silverlight. As a workaround, copy 'AForge.dll' and 'AForge.pdb' in the 'portable-net45+netcore45+wpa81+wp8' folder to the 'wp8' folder. 
+* IMPORTANT! SystemTools methods are not working for Windows Phone Silverlight. As a workaround, upgrade to v 2.2.5.50205. 
 
 v 2.2.5.50126
 ----------------
-* Synchronized with dependency updates.
-
-v 2.2.5.50122
-----------------
-* Portable Class Library for Windows, iOS and Android phone and tablet devices.</releaseNotes>
+* Synchronized with dependency updates.</releaseNotes>
         <language>en-US</language>
         <tags>aforge.net PCL .NET WPF WP8 WPA81 Windows8.1 Xamarin.iOS Xamarin.Android</tags>
         <dependencies>
@@ -36,8 +36,8 @@ v 2.2.5.50122
         <file src="..\Sources\Core\bin\Release\AForge.pdb" target="lib\portable-net45+netcore45+wpa81+wp8" />
         <file src="..\Sources\Core\_Universal\bin\Release\AForge.dll" target="lib\portable-win81+wpa81" />
         <file src="..\Sources\Core\_Universal\bin\Release\AForge.pdb" target="lib\portable-win81+wpa81" />
-        <file src="..\Sources\Core\_Phone\bin\Release\AForge.dll" target="lib\wp8" />
-        <file src="..\Sources\Core\_Phone\bin\Release\AForge.pdb" target="lib\wp8" />
+        <file src="..\Sources\Core\bin\Release\AForge.dll" target="lib\wp8" />
+        <file src="..\Sources\Core\bin\Release\AForge.pdb" target="lib\wp8" />
         <file src="..\Sources\Core\_Net\bin\Release\AForge.dll" target="lib\net45" />
         <file src="..\Sources\Core\_Net\bin\Release\AForge.pdb" target="lib\net45" />
     </files>
