@@ -16,6 +16,7 @@
 ----------------
 * Restored AForge.SystemTools to Core library.
 * Separated into different builds for .NET, Windows Phone Silverlight and Universal.
+* IMPORTANT! SystemTools methods are not working for Windows Phone Silverlight. As a workaround, copy 'AForge.dll' and 'AForge.pdb' in the 'portable-net45+netcore45+wpa81+wp8' folder to the 'wp8' folder. 
 
 v 2.2.5.50126
 ----------------
