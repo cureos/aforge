@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Bitmap.cs" />
     <Compile Include="Bitmap.Pcl.cs" />
+    <Compile Include="Brush.cs" />
     <Compile Include="Color.cs" />
     <Compile Include="ColorCaches\BaseColorCache.cs" />
     <Compile Include="ColorCaches\Common\ColorModel.cs" />
@@ -53,11 +54,17 @@
     <Compile Include="ColorCaches\Octree\OctreeCacheNode.cs" />
     <Compile Include="ColorCaches\Octree\OctreeColorCache.cs" />
     <Compile Include="CopyPixelOperation.cs" />
+    <Compile Include="Font.cs" />
+    <Compile Include="FontStyle.cs" />
+    <Compile Include="GraphicsUnit.cs" />
     <Compile Include="Helpers\Pixels\NonIndexed\PixelDataRgba8888.cs" />
     <Compile Include="Helpers\Pixels\NonIndexed\PixelDataPRgba8888.cs" />
     <Compile Include="Helpers\Pixels\NonIndexed\PixelDataPArgb8888.cs" />
+    <Compile Include="Imaging\ImageCodecFlags.cs" />
+    <Compile Include="Imaging\ImageCodecInfo.cs" />
     <Compile Include="Imaging\ImageFormat.cs" />
     <Compile Include="Pen.cs" />
+    <Compile Include="RectangleF.cs" />
     <Compile Include="SizeF.cs" />
     <Compile Include="PointF.cs" />
     <Compile Include="Ditherers\IColorDitherer.cs" />
@@ -101,6 +108,7 @@
     <Compile Include="Quantizers\IColorQuantizer.cs" />
     <Compile Include="Rectangle.cs" />
     <Compile Include="Size.cs" />
+    <Compile Include="SolidBrush.cs" />
     <Compile Include="SystemColors.cs" />
   </ItemGroup>
   <ItemGroup>

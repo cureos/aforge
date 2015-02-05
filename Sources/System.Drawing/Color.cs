@@ -98,6 +98,7 @@ namespace System.Drawing
         private static readonly Color _darkMagenta = new Color(0xff, 0x8b, 0x00, 0x8b);
         private static readonly Color _lightGray = new Color(0xff, 0xd3, 0xd3, 0xd3);
         private static readonly Color _transparent = new Color(0x00, 0xff, 0xff, 0xff);
+        private static readonly Color _yellowGreen = new Color(0xff, 0x9a, 0xcd, 0x32);
         
         private readonly byte _a;
         private readonly byte _r;
@@ -178,6 +179,7 @@ namespace System.Drawing
         internal static Color DarkMagenta { get { return _darkMagenta; } }
         internal static Color LightGray { get { return _lightGray; } }
         internal static Color Transparent { get { return _transparent; } }
+        internal static Color YellowGreen { get { return _yellowGreen; } }
 
         #endregion
 
