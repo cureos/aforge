@@ -48,7 +48,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Complex.cs" />
     <Compile Include="ContinuousHistogram.cs" />
     <Compile Include="FourierTransform.cs" />
     <Compile Include="Gaussian.cs" />
@@ -100,6 +99,9 @@
   <ItemGroup>
     <Reference Include="Shim">
       <HintPath>..\packages\shim.1.0.1.50207\lib\portable-net45+netcore45+wpa81+wp8\Shim.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Numerics">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.6\Profile\Profile32\System.Runtime.Numerics.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
