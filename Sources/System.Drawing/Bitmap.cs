@@ -29,6 +29,8 @@ using ImagePixelEnumerator.Quantizers.DistinctCompetition;
 
 namespace System.Drawing
 {
+    using System.IO;
+
     public sealed partial class Bitmap : Image, IDisposable
     {
         #region FIELDS
@@ -107,6 +109,14 @@ namespace System.Drawing
             get { return _height; }
         }
 
+        public override Size Size
+        {
+            get
+            {
+                return new Size(_width, _height);
+            }
+        }
+
         internal override ColorPalette Palette
         {
             get
@@ -164,6 +174,17 @@ namespace System.Drawing
                 });
 
             return (Bitmap)result;
+        }
+
+        // TODO Move definitions to target files
+        public override void Save(Stream stream, ImageFormat format)
+        {
+            WriteTo(stream, format);
+        }
+
+        public override void Save(string filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+        {
+            throw new NotImplementedException();
         }
 
         internal Color GetPixel(int x, int y)

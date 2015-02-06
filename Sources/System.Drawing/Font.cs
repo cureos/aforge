@@ -30,6 +30,12 @@ namespace System.Drawing
         }
 
         #endregion
+
+        #region PROPERTIES
+
+        public float SizeInPoints { get; private set; }
+
+        #endregion
     }
 
 }

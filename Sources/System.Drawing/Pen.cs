@@ -25,27 +25,43 @@ namespace System.Drawing
 	{
 		#region FIELDS
 
-		private readonly Color _color;
+		private readonly Color color;
 
-		#endregion
+	    private readonly float width;
+
+	    #endregion
 		
 		#region CONSTRUCTORS
 
 		public Pen(Color color)
 		{
-			_color = color;
+			this.color = color;
 		}
 
-		#endregion
+	    public Pen(Color color, float width)
+	    {
+	        this.color = color;
+	        this.width = width;
+	    }
+
+	    #endregion
 
 		#region PROPERTIES
 
 		public Color Color
 		{
-			get { return _color; }
+			get { return this.color; }
 		}
-		
-		#endregion		
+
+	    public float Width
+	    {
+	        get
+	        {
+	            return this.width;
+	        }
+	    }
+
+	    #endregion		
 
 		#region METHODS
 

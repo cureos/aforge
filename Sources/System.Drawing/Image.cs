@@ -35,6 +35,8 @@ namespace System.Drawing
 
         public abstract int Height { get; }
 
+        public abstract Size Size { get; }
+
         internal abstract ColorPalette Palette { get; set; }
 
         #endregion
@@ -46,13 +48,15 @@ namespace System.Drawing
             return Bitmap.Create(stream);
         }
 
-        public void Save(Stream stream, ImageFormat format)
-        {
+        public abstract void Save(Stream stream, ImageFormat format);
+/*        {
             var bitmap = this as Bitmap;
             if (bitmap == null) throw new InvalidOperationException("Image implementation must be of type bitmap");
 
             bitmap.WriteTo(stream, format);
-        }
+        }*/
+
+        public abstract void Save(string filename, ImageCodecInfo encoder, EncoderParameters encoderParams);
 
         internal static int GetPixelFormatSize(PixelFormat pixelFormat)
         {

@@ -37,9 +37,6 @@ namespace System.Drawing
     {
         #region FIELDS
 
-        internal const float systemDpiX = 96.0f;
-        internal const float systemDpiY = 96.0f;
-
         private static readonly int ParallelTaskCount;
 
         private bool _disposed = false;
@@ -129,6 +126,10 @@ namespace System.Drawing
                 });
         }
 
+        internal void DrawEllipse(Pen pen, float x, float y, float width, float height)
+        {
+        }
+
         internal void DrawLine(Pen pen, Point pt1, Point pt2)
         {
             var linePixels = DrawLine(_bitmap.Width, _bitmap.Height, pt1.X, pt1.Y, pt2.X, pt2.Y);
@@ -147,8 +148,58 @@ namespace System.Drawing
                 });
         }
 
+        internal void DrawLine(Pen pen, PointF pt1, PointF pt2)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void DrawLine(Pen pen, float x1, float y1, float x2, float y2)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void DrawCurve(Pen pen, Point[] points)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void DrawCurve(Pen pen, PointF[] points)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void DrawRectangle(Pen pen, float x, float y, float width, float height)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void DrawString(string s, Font font, Brush brush, RectangleF layoutRectangle)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void FillRectangle(Brush brush, RectangleF rect)
+        {
+            throw new NotImplementedException();
+        }
+
         internal void CopyFromScreen(int sourceX, int sourceY, int destinationX, int destinationY, Size blockRegionSize,
             CopyPixelOperation copyPixelOperation)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void ResetTransform()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void RotateTransform(float angle)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void TranslateTransform(float dx, float dy)
         {
             throw new NotImplementedException();
         }
