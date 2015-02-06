@@ -48,6 +48,9 @@
     <Compile Include="..\Bitmap.cs">
       <Link>Bitmap.cs</Link>
     </Compile>
+    <Compile Include="..\Brush.cs">
+      <Link>Brush.cs</Link>
+    </Compile>
     <Compile Include="..\Color.cs">
       <Link>Color.cs</Link>
     </Compile>
@@ -87,8 +90,17 @@
     <Compile Include="..\Extensions\Extend.PixelFormat.cs">
       <Link>Extensions\Extend.PixelFormat.cs</Link>
     </Compile>
+    <Compile Include="..\Font.cs">
+      <Link>Font.cs</Link>
+    </Compile>
+    <Compile Include="..\FontStyle.cs">
+      <Link>FontStyle.cs</Link>
+    </Compile>
     <Compile Include="..\Graphics.cs">
       <Link>Graphics.cs</Link>
+    </Compile>
+    <Compile Include="..\GraphicsUnit.cs">
+      <Link>GraphicsUnit.cs</Link>
     </Compile>
     <Compile Include="..\Helpers\ColorModelHelper.cs">
       <Link>Helpers\ColorModelHelper.cs</Link>
@@ -168,6 +180,24 @@
     <Compile Include="..\Imaging\ColorPalette.cs">
       <Link>Imaging\ColorPalette.cs</Link>
     </Compile>
+    <Compile Include="..\Imaging\Encoder.cs">
+      <Link>Imaging\Encoder.cs</Link>
+    </Compile>
+    <Compile Include="..\Imaging\EncoderParameter.cs">
+      <Link>Imaging\EncoderParameter.cs</Link>
+    </Compile>
+    <Compile Include="..\Imaging\EncoderParameters.cs">
+      <Link>Imaging\EncoderParameters.cs</Link>
+    </Compile>
+    <Compile Include="..\Imaging\EncoderParameterValueType.cs">
+      <Link>Imaging\EncoderParameterValueType.cs</Link>
+    </Compile>
+    <Compile Include="..\Imaging\ImageCodecFlags.cs">
+      <Link>Imaging\ImageCodecFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\Imaging\ImageCodecInfo.cs">
+      <Link>Imaging\ImageCodecInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Imaging\ImageFormat.cs">
       <Link>Imaging\ImageFormat.cs</Link>
     </Compile>
@@ -213,11 +243,17 @@
     <Compile Include="..\Rectangle.cs">
       <Link>Rectangle.cs</Link>
     </Compile>
+    <Compile Include="..\RectangleF.cs">
+      <Link>RectangleF.cs</Link>
+    </Compile>
     <Compile Include="..\Size.cs">
       <Link>Size.cs</Link>
     </Compile>
     <Compile Include="..\SizeF.cs">
       <Link>SizeF.cs</Link>
+    </Compile>
+    <Compile Include="..\SolidBrush.cs">
+      <Link>SolidBrush.cs</Link>
     </Compile>
     <Compile Include="..\SystemColors.cs">
       <Link>SystemColors.cs</Link>
@@ -225,9 +261,9 @@
     <Compile Include="Bitmap.Phone.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Shim, Version=1.0.1.0, Culture=neutral, PublicKeyToken=c55ec16d10c4b366, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\shim.1.0.1.50204\lib\wp8\Shim.dll</HintPath>
+    <Reference Include="Shim">
+      <HintPath>..\..\packages\shim.1.0.1.50207\lib\wp8\Shim.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>

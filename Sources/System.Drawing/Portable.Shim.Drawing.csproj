@@ -60,6 +60,10 @@
     <Compile Include="Helpers\Pixels\NonIndexed\PixelDataRgba8888.cs" />
     <Compile Include="Helpers\Pixels\NonIndexed\PixelDataPRgba8888.cs" />
     <Compile Include="Helpers\Pixels\NonIndexed\PixelDataPArgb8888.cs" />
+    <Compile Include="Imaging\Encoder.cs" />
+    <Compile Include="Imaging\EncoderParameter.cs" />
+    <Compile Include="Imaging\EncoderParameters.cs" />
+    <Compile Include="Imaging\EncoderParameterValueType.cs" />
     <Compile Include="Imaging\ImageCodecFlags.cs" />
     <Compile Include="Imaging\ImageCodecInfo.cs" />
     <Compile Include="Imaging\ImageFormat.cs" />
@@ -113,7 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Shim">
-      <HintPath>..\packages\shim.1.0.1.50204\lib\portable-net45+netcore45+wpa81+wp8\Shim.dll</HintPath>
+      <HintPath>..\packages\shim.1.0.1.50207\lib\portable-net45+netcore45+wpa81+wp8\Shim.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
