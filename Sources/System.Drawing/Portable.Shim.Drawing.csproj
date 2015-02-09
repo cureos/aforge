@@ -117,7 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Shim">
-      <HintPath>..\packages\shim.1.0.1.50207\lib\portable-net45+netcore45+wpa81+wp8\Shim.dll</HintPath>
+      <HintPath>..\packages\shim.1.0.1.50208\lib\portable-net45+netcore45+wpa81+wp8\Shim.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
