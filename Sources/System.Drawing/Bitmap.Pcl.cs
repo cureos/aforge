@@ -34,7 +34,12 @@ namespace System.Drawing
             throw new NotImplementedException("PCL");
         }
 
-        internal void WriteTo(Stream stream, ImageFormat format)
+        public override void Save(Stream stream, ImageFormat format)
+        {
+            throw new NotImplementedException("PCL");
+        }
+
+        public override void Save(string filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
         {
             throw new NotImplementedException("PCL");
         }

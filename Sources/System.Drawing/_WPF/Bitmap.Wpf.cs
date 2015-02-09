@@ -96,7 +96,7 @@ namespace System.Drawing
             return (Bitmap)bitmapImage;
         }
 
-        internal void WriteTo(Stream stream, ImageFormat format)
+        public override void Save(Stream stream, ImageFormat format)
         {
             BitmapEncoder encoder;
             if (format.Equals(ImageFormat.Bmp))
@@ -126,6 +126,11 @@ namespace System.Drawing
 
             encoder.Frames.Add(BitmapFrame.Create((BitmapSource)this));
             encoder.Save(stream);
+        }
+
+        public override void Save(string filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+        {
+            throw new NotImplementedException("PCL");
         }
 
         private static System.Windows.Media.PixelFormat GetBitmapSourcePixelFormat(System.Drawing.Imaging.PixelFormat bitmapPixelFormat)

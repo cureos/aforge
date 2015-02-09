@@ -43,11 +43,16 @@ namespace System.Drawing
             return (Bitmap)writeableBitmap;
         }
 
-        internal void WriteTo(Stream stream, ImageFormat format)
+        public override void Save(Stream stream, ImageFormat format)
         {
             if (!format.Equals(ImageFormat.Jpeg)) throw new ArgumentOutOfRangeException("format", format, "Only JPEG format supported");
             var wbm = (WriteableBitmap)this;
             wbm.SaveJpeg(stream, _width, _height, 0, 100);
+        }
+
+        public override void Save(string filename, ImageCodecInfo encoder, EncoderParameters encoderParams)
+        {
+            throw new NotImplementedException("PCL");
         }
 
         #endregion

@@ -49,12 +49,6 @@ namespace System.Drawing
         }
 
         public abstract void Save(Stream stream, ImageFormat format);
-/*        {
-            var bitmap = this as Bitmap;
-            if (bitmap == null) throw new InvalidOperationException("Image implementation must be of type bitmap");
-
-            bitmap.WriteTo(stream, format);
-        }*/
 
         public abstract void Save(string filename, ImageCodecInfo encoder, EncoderParameters encoderParams);
 
