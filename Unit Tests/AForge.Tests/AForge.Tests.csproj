@@ -103,13 +103,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Sources\Core\Portable.Core.csproj">
-      <Project>{d4354d92-07cf-4f27-bd68-69347cf5aa3f}</Project>
-      <Name>Portable.Core</Name>
-    </ProjectReference>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+    <ProjectReference Include="..\..\Sources\Core\_Net\Net.Core.csproj">
+      <Project>{a7cd452f-e850-4aa4-8f6b-fc313e8488b3}</Project>
+      <Name>Net.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

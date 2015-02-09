@@ -117,9 +117,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Sources\Core\Portable.Core.csproj">
-      <Project>{d4354d92-07cf-4f27-bd68-69347cf5aa3f}</Project>
-      <Name>Portable.Core</Name>
+    <ProjectReference Include="..\..\Sources\Core\_Net\Net.Core.csproj">
+      <Project>{a7cd452f-e850-4aa4-8f6b-fc313e8488b3}</Project>
+      <Name>Net.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Sources\Math\Portable.Math.csproj">
       <Project>{d99e9bd6-3db6-445b-bf5a-fd9830bfb4fa}</Project>

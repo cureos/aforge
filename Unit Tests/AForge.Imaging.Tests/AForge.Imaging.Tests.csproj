@@ -108,9 +108,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Sources\Core\Portable.Core.csproj">
-      <Project>{d4354d92-07cf-4f27-bd68-69347cf5aa3f}</Project>
-      <Name>Portable.Core</Name>
+    <ProjectReference Include="..\..\Sources\Core\_Net\Net.Core.csproj">
+      <Project>{a7cd452f-e850-4aa4-8f6b-fc313e8488b3}</Project>
+      <Name>Net.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Sources\Imaging\Portable.Imaging.csproj">
       <Project>{0a22690c-9553-4b11-9835-8c0f0e2d44f1}</Project>
