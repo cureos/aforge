@@ -40,6 +40,7 @@ namespace System.Drawing
         private static readonly int ParallelTaskCount;
 
         private bool _disposed = false;
+        private object _locker = new object();
 
         private Image _bitmap;
         private ImageBuffer _dummyImageBuffer;
@@ -109,68 +110,83 @@ namespace System.Drawing
 
         internal void DrawEllipse(Pen pen, int x, int y, int width, int height)
         {
-            var ellipsePixels = DrawEllipseCentered(_bitmap.Width, _bitmap.Height, x + width / 2, y + height / 2, width / 2,
-                height / 2);
-            var color = pen.Color;
-
-            if (_dummyImageBuffer == null)
-                _dummyImageBuffer = new ImageBuffer(new Bitmap(_bitmap.Width, _bitmap.Height, _bitmap.PixelFormat),
-                    ImageLockMode.ReadOnly);
-
-            _dummyImageBuffer.TransformPerPixel(null, ref _bitmap,
-                ellipsePixels.Select(idx => new Point(idx % _bitmap.Width, idx / _bitmap.Width)).ToList(), ParallelTaskCount,
-                (passIndex, sourcePixel, targetPixel) =>
-                {
-                    targetPixel.SetColor(color, _quantizer);
-                    return true;
-                });
+            var ellipseIndices = DrawEllipseCentered(_bitmap.Width, _bitmap.Height, x + width / 2, y + height / 2,
+                width / 2, height / 2);
+            ApplyColorToPixelIndices(ellipseIndices, pen.Color);
         }
 
         internal void DrawEllipse(Pen pen, float x, float y, float width, float height)
         {
+            DrawEllipse(pen, (int)x, (int)y, (int)width, (int)height);
+        }
+
+        internal void DrawLine(Pen pen, int x1, int y1, int x2, int y2)
+        {
+            var lineIndices = DrawLine(_bitmap.Width, _bitmap.Height, x1, y1, x2, y2);
+            ApplyColorToPixelIndices(lineIndices, pen.Color);
         }
 
         internal void DrawLine(Pen pen, Point pt1, Point pt2)
         {
-            var linePixels = DrawLine(_bitmap.Width, _bitmap.Height, pt1.X, pt1.Y, pt2.X, pt2.Y);
-            var color = pen.Color;
-
-            if (_dummyImageBuffer == null)
-                _dummyImageBuffer = new ImageBuffer(new Bitmap(_bitmap.Width, _bitmap.Height, _bitmap.PixelFormat),
-                    ImageLockMode.ReadOnly);
-
-            _dummyImageBuffer.TransformPerPixel(null, ref _bitmap,
-                linePixels.Select(idx => new Point(idx % _bitmap.Width, idx / _bitmap.Width)).ToList(), ParallelTaskCount,
-                (passIndex, sourcePixel, targetPixel) =>
-                {
-                    targetPixel.SetColor(color, _quantizer);
-                    return true;
-                });
-        }
-
-        internal void DrawLine(Pen pen, PointF pt1, PointF pt2)
-        {
-            throw new NotImplementedException();
+            DrawLine(pen, pt1.X, pt1.Y, pt2.X, pt2.Y);
         }
 
         internal void DrawLine(Pen pen, float x1, float y1, float x2, float y2)
         {
-            throw new NotImplementedException();
+            DrawLine(pen, (int)Math.Round(x1), (int)Math.Round(y1), (int)Math.Round(x2), (int)Math.Round(y2));
+        }
+
+        internal void DrawLine(Pen pen, PointF pt1, PointF pt2)
+        {
+            DrawLine(pen, (int)Math.Round(pt1.X), (int)Math.Round(pt1.Y), (int)Math.Round(pt2.X),
+                (int)Math.Round(pt2.Y));
         }
 
         internal void DrawCurve(Pen pen, Point[] points)
         {
-            throw new NotImplementedException();
+            var curveIndicies = new List<int>();
+
+            var x1 = points[0].X;
+            var y1 = points[0].Y;
+
+            for (var i = 1; i < points.Length; ++i)
+            {
+                var x2 = points[i].X;
+                var y2 = points[i].Y;
+
+                curveIndicies.AddRange(DrawLine(_bitmap.Width, _bitmap.Height, x1, y1, x2, y2));
+                x1 = x2;
+                y1 = y2;
+            }
+
+            ApplyColorToPixelIndices(curveIndicies, pen.Color);
         }
 
         internal void DrawCurve(Pen pen, PointF[] points)
         {
-            throw new NotImplementedException();
+            var curveIndicies = new List<int>();
+
+            var x1 = (int)Math.Round(points[0].X);
+            var y1 = (int)Math.Round(points[0].Y);
+
+            for (var i = 1; i < points.Length; ++i)
+            {
+                var x2 = (int)Math.Round(points[i].X);
+                var y2 = (int)Math.Round(points[i].Y);
+
+                curveIndicies.AddRange(DrawLine(_bitmap.Width, _bitmap.Height, x1, y1, x2, y2));
+                x1 = x2;
+                y1 = y2;
+            }
+
+            ApplyColorToPixelIndices(curveIndicies, pen.Color);
         }
 
         internal void DrawRectangle(Pen pen, float x, float y, float width, float height)
         {
-            throw new NotImplementedException();
+            var rectangleIndices = DrawRectangle(_bitmap.Width, _bitmap.Height, (int)Math.Round(x), (int)Math.Round(y),
+                (int)Math.Round(x + width) - 1, (int)Math.Round(y + height) - 1);
+            ApplyColorToPixelIndices(rectangleIndices, pen.Color);
         }
 
         internal void DrawString(string s, Font font, Brush brush, RectangleF layoutRectangle)
@@ -228,16 +244,15 @@ namespace System.Drawing
         /// <summary>
         /// Defines a line in 2D array by connecting two points using an optimized DDA. 
         /// </summary>
-        /// <param name="pixelWidth">The width of one scanline in the pixels array.</param>
-        /// <param name="pixelHeight">The height of the bitmap.</param>
+        /// <param name="width">The width of one scanline in the pixels array.</param>
+        /// <param name="height">The height of the bitmap.</param>
         /// <param name="x1">The x-coordinate of the start point.</param>
         /// <param name="y1">The y-coordinate of the start point.</param>
         /// <param name="x2">The x-coordinate of the end point.</param>
         /// <param name="y2">The y-coordinate of the end point.</param>
-        /// <param name="color">The color for the line.</param>
-        private static List<int> DrawLine(int pixelWidth, int pixelHeight, int x1, int y1, int x2, int y2)
+        private static List<int> DrawLine(int width, int height, int x1, int y1, int x2, int y2)
         {
-            var linePixels = new List<int>();
+            var lineIndices = new List<int>();
 
             // Distance start and end point
             int dx = x2 - x1;
@@ -282,19 +297,19 @@ namespace System.Drawing
 
                 int y1s = y1 << PRECISION_SHIFT;
                 int y2s = y2 << PRECISION_SHIFT;
-                int hs = pixelHeight << PRECISION_SHIFT;
+                int hs = height << PRECISION_SHIFT;
 
                 if (y1 < y2)
                 {
-                    if (y1 >= pixelHeight || y2 < 0)
+                    if (y1 >= height || y2 < 0)
                     {
-                        return linePixels;
+                        return lineIndices;
                     }
                     if (y1s < 0)
                     {
                         if (incy == 0)
                         {
-                            return linePixels;
+                            return lineIndices;
                         }
                         int oldy1s = y1s;
                         // Find lowest y1s that is greater or equal than 0.
@@ -314,15 +329,15 @@ namespace System.Drawing
                 }
                 else
                 {
-                    if (y2 >= pixelHeight || y1 < 0)
+                    if (y2 >= height || y1 < 0)
                     {
-                        return linePixels;
+                        return lineIndices;
                     }
                     if (y1s >= hs)
                     {
                         if (incy == 0)
                         {
-                            return linePixels;
+                            return lineIndices;
                         }
                         int oldy1s = y1s;
                         // Find highest y1s that is less or equal than ws - 1.
@@ -347,9 +362,9 @@ namespace System.Drawing
                     y1s -= incy * x1;
                     x1 = 0;
                 }
-                if (x2 >= pixelWidth)
+                if (x2 >= width)
                 {
-                    x2 = pixelWidth - 1;
+                    x2 = width - 1;
                 }
 
                 int ys = y1s;
@@ -357,11 +372,11 @@ namespace System.Drawing
                 // Walk the line!
                 int y = ys >> PRECISION_SHIFT;
                 int previousY = y;
-                int index = x1 + y * pixelWidth;
-                int k = incy < 0 ? 1 - pixelWidth : 1 + pixelWidth;
+                int index = x1 + y * width;
+                int k = incy < 0 ? 1 - width : 1 + width;
                 for (int x = x1; x <= x2; ++x)
                 {
-                    linePixels.Add(index);
+                    lineIndices.Add(index);
                     ys += incy;
                     y = ys >> PRECISION_SHIFT;
                     if (y != previousY)
@@ -380,7 +395,7 @@ namespace System.Drawing
                 // Prevent divison by zero
                 if (lenY == 0)
                 {
-                    return linePixels;
+                    return lineIndices;
                 }
                 if (dy < 0)
                 {
@@ -395,21 +410,21 @@ namespace System.Drawing
                 // Init steps and start
                 int x1s = x1 << PRECISION_SHIFT;
                 int x2s = x2 << PRECISION_SHIFT;
-                int ws = pixelWidth << PRECISION_SHIFT;
+                int ws = width << PRECISION_SHIFT;
 
                 int incx = (dx << PRECISION_SHIFT) / dy;
 
                 if (x1 < x2)
                 {
-                    if (x1 >= pixelWidth || x2 < 0)
+                    if (x1 >= width || x2 < 0)
                     {
-                        return linePixels;
+                        return lineIndices;
                     }
                     if (x1s < 0)
                     {
                         if (incx == 0)
                         {
-                            return linePixels;
+                            return lineIndices;
                         }
                         int oldx1s = x1s;
                         // Find lowest x1s that is greater or equal than 0.
@@ -429,15 +444,15 @@ namespace System.Drawing
                 }
                 else
                 {
-                    if (x2 >= pixelWidth || x1 < 0)
+                    if (x2 >= width || x1 < 0)
                     {
-                        return linePixels;
+                        return lineIndices;
                     }
                     if (x1s >= ws)
                     {
                         if (incx == 0)
                         {
-                            return linePixels;
+                            return lineIndices;
                         }
                         int oldx1s = x1s;
                         // Find highest x1s that is less or equal than ws - 1.
@@ -462,23 +477,83 @@ namespace System.Drawing
                     x1s -= incx * y1;
                     y1 = 0;
                 }
-                if (y2 >= pixelHeight)
+                if (y2 >= height)
                 {
-                    y2 = pixelHeight - 1;
+                    y2 = height - 1;
                 }
 
-                int index = x1s + ((y1 * pixelWidth) << PRECISION_SHIFT);
+                int index = x1s + ((y1 * width) << PRECISION_SHIFT);
 
                 // Walk the line!
-                var inc = (pixelWidth << PRECISION_SHIFT) + incx;
+                var inc = (width << PRECISION_SHIFT) + incx;
                 for (int y = y1; y <= y2; ++y)
                 {
-                    linePixels.Add(index >> PRECISION_SHIFT);
+                    lineIndices.Add(index >> PRECISION_SHIFT);
                     index += inc;
                 }
             }
 
-            return linePixels;
+            return lineIndices;
+        }
+
+        /// <summary>
+        /// Draws a rectangle.
+        /// x2 has to be greater than x1 and y2 has to be greater than y1.
+        /// </summary>
+        /// <param name="w">Width of the bitmap.</param>
+        /// <param name="h">Height of the bitmap.</param>
+        /// <param name="x1">The x-coordinate of the bounding rectangle's left side.</param>
+        /// <param name="y1">The y-coordinate of the bounding rectangle's top side.</param>
+        /// <param name="x2">The x-coordinate of the bounding rectangle's right side.</param>
+        /// <param name="y2">The y-coordinate of the bounding rectangle's bottom side.</param>
+        private static List<int> DrawRectangle(int w, int h, int x1, int y1, int x2, int y2)
+        {
+            var indices = new List<int>();
+
+            // Check boundaries
+            if ((x1 < 0 && x2 < 0) || (y1 < 0 && y2 < 0)
+                || (x1 >= w && x2 >= w) || (y1 >= h && y2 >= h))
+            {
+                return indices;
+            }
+
+            // Clamp boundaries
+            if (x1 < 0) { x1 = 0; }
+            if (y1 < 0) { y1 = 0; }
+            if (x2 < 0) { x2 = 0; }
+            if (y2 < 0) { y2 = 0; }
+            if (x1 >= w) { x1 = w - 1; }
+            if (y1 >= h) { y1 = h - 1; }
+            if (x2 >= w) { x2 = w - 1; }
+            if (y2 >= h) { y2 = h - 1; }
+
+            var startY = y1 * w;
+            var endY = y2 * w;
+
+            var offset2 = endY + x1;
+            var endOffset = startY + x2;
+            var startYPlusX1 = startY + x1;
+
+            // top and bottom horizontal scanlines
+            for (var x = startYPlusX1; x <= endOffset; x++)
+            {
+                indices.Add(x); // top horizontal line
+                indices.Add(offset2); // bottom horizontal line
+                offset2++;
+            }
+
+            // vertical scanlines
+            endOffset = startYPlusX1 + w;
+            offset2 -= w;
+
+            for (var y = startY + x2 + w; y <= offset2; y += w)
+            {
+                indices.Add(y); // right vertical line
+                indices.Add(endOffset); // left vertical line
+                endOffset += w;
+            }
+
+            return indices;
         }
 
         /// <summary>
@@ -605,6 +680,26 @@ namespace System.Drawing
             }
 
             return ellipsePixels;
+        }
+
+        private void ApplyColorToPixelIndices(IEnumerable<int> indices, Color color)
+        {
+            var pixels = indices.Select(idx => new Point(idx % _bitmap.Width, idx / _bitmap.Width)).ToList();
+
+            lock (_locker)
+            {
+                if (_dummyImageBuffer == null)
+                    _dummyImageBuffer = new ImageBuffer(new Bitmap(_bitmap.Width, _bitmap.Height, _bitmap.PixelFormat),
+                        ImageLockMode.ReadOnly);
+
+                _dummyImageBuffer.TransformPerPixel(null, ref _bitmap,
+                    pixels, ParallelTaskCount,
+                    (passIndex, sourcePixel, targetPixel) =>
+                    {
+                        targetPixel.SetColor(color, _quantizer);
+                        return true;
+                    });
+            }
         }
 
         #endregion
