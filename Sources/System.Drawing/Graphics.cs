@@ -19,7 +19,7 @@
  *  along with Shim.Drawing.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// DrawLine and DrawEllipseCentered methods are adapted from WriteableBitmapEx,
+// DrawLine, DrawRectangle and DrawEllipseCentered methods are adapted from WriteableBitmapEx,
 // Copyright © 2009-2012 Rene Schulte and WriteableBitmapEx Contributors
  
 
@@ -91,12 +91,14 @@ namespace System.Drawing
                 {
                     var color = pixel.GetColor();
                     _quantizer.AddColor(color, pixel.X, pixel.Y);
-                    return true;
+                    return false;
                 });
 
                 // determines palette
                 palette = _quantizer.GetPalette(targetFormat.GetColorCount());
             }
+
+            // TODO Handle scenario when source image should NOT be drawn one-on-one onto the target image
 
             // Pass: apply
             ImageBuffer.TransformImagePerPixel(source, palette, ref _bitmap, null, ParallelTaskCount,
@@ -144,7 +146,7 @@ namespace System.Drawing
 
         internal void DrawCurve(Pen pen, Point[] points)
         {
-            var curveIndicies = new List<int>();
+            var curveIndices = new List<int>();
 
             var x1 = points[0].X;
             var y1 = points[0].Y;
@@ -154,17 +156,17 @@ namespace System.Drawing
                 var x2 = points[i].X;
                 var y2 = points[i].Y;
 
-                curveIndicies.AddRange(DrawLine(_bitmap.Width, _bitmap.Height, x1, y1, x2, y2));
+                curveIndices.AddRange(DrawLine(_bitmap.Width, _bitmap.Height, x1, y1, x2, y2));
                 x1 = x2;
                 y1 = y2;
             }
 
-            ApplyColorToPixelIndices(curveIndicies, pen.Color);
+            ApplyColorToPixelIndices(curveIndices, pen.Color);
         }
 
         internal void DrawCurve(Pen pen, PointF[] points)
         {
-            var curveIndicies = new List<int>();
+            var curveIndices = new List<int>();
 
             var x1 = (int)Math.Round(points[0].X);
             var y1 = (int)Math.Round(points[0].Y);
@@ -174,12 +176,12 @@ namespace System.Drawing
                 var x2 = (int)Math.Round(points[i].X);
                 var y2 = (int)Math.Round(points[i].Y);
 
-                curveIndicies.AddRange(DrawLine(_bitmap.Width, _bitmap.Height, x1, y1, x2, y2));
+                curveIndices.AddRange(DrawLine(_bitmap.Width, _bitmap.Height, x1, y1, x2, y2));
                 x1 = x2;
                 y1 = y2;
             }
 
-            ApplyColorToPixelIndices(curveIndicies, pen.Color);
+            ApplyColorToPixelIndices(curveIndices, pen.Color);
         }
 
         internal void DrawRectangle(Pen pen, float x, float y, float width, float height)
@@ -196,7 +198,24 @@ namespace System.Drawing
 
         internal void FillRectangle(Brush brush, RectangleF rect)
         {
-            throw new NotImplementedException();
+            if (!(brush is SolidBrush))
+            {
+                throw new NotSupportedException("Only solid brushes are supported.");
+            }
+            var color = ((SolidBrush)brush).Color;
+
+            var x0 = (int)Math.Round(rect.X);
+            var y0 = (int)Math.Round(rect.Y);
+            var x1 = x0 + (int)Math.Round(rect.Width) - 1;
+            var y1 = y0 + (int)Math.Round(rect.Height) - 1;
+
+            ImageBuffer.ProcessPerPixel(_bitmap, null, ParallelTaskCount, (passIndex, pixel) =>
+            {
+                var x = pixel.X;
+                var y = pixel.Y;
+                if (x0 <= x && x <= x1 && y0 <= y && y <= y1) pixel.SetColor(color, _quantizer);
+                return true;
+            });
         }
 
         internal void CopyFromScreen(int sourceX, int sourceY, int destinationX, int destinationY, Size blockRegionSize,

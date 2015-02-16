@@ -156,7 +156,7 @@ namespace System.Drawing
                 {
                     var color = pixel.GetColor();
                     quantizer.AddColor(color, pixel.X, pixel.Y);
-                    return true;
+                    return false;
                 });
 
                 // determines palette
@@ -182,7 +182,7 @@ namespace System.Drawing
             ImageBuffer.ProcessPerPixel(this, new[] { new Point(x, y) }, 1, (passIndex, pixel) =>
             {
                 color = pixel.GetColor();
-                return true;
+                return false;
             });
             return color;
         }
@@ -253,7 +253,7 @@ namespace System.Drawing
             {
                 var color = pixel.GetColor();
                 _quantizer.AddColor(color, pixel.X, pixel.Y);
-                return true;
+                return false;
             });
         }
 
