@@ -66,23 +66,30 @@ Notes on commercial use
 -----------------------
 
 The *Shim.Drawing* assemblies that are required to build the Portable Class Library version of AForge.NET Framework are published under the General Public License, version 3.
-For those interested in using the PCL libraries without having to adhere to GPL, please contact the copyright holder of the *Shim.Drawing* assemblies at
 
-[licenses@cureos.com](mailto:licenses@cureos.com)
+There are *Shim* and *Shim.Drawing* assemblies available for *Xamarin.Android* and *Xamarin.iOS*, making it possible to 
+incorporate *Portable AForge* assemblies in *Android* and *iPhone* or *iPad* apps. See for example [this](http://cureos.blogspot.com/2014/10/smartphone-image-processing-development.html) blog post. 
 
-for commercial licensing alternatives.
+*Shim Drawing* is available for evaluation from *NuGet* for all supported platforms.
 
-Please also note that *AForge.NET Framework* itself is licensed under LGPL version 3, and the copyright holder states the following on the *AForge.NET Framework* web site:
+To purchase a commercial license of *Shim.Drawing* for *Android*, *iOS* or *Universal*/*Windows 8.1*/*Windows Phone (non-Silverlight) 8.1* for unlimited distribution of *Portable AForge* and *Accord* based applications on app stores, simply click on one of these buttons:
+
+<table>
+<tr>
+<th>Android</th>
+<th>iOS</th>
+<th>Windows</th>
+<th>All platforms</th>
+</tr>
+<tr>
+<td><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QF33BCWJXJU26"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_buynow_SM.gif"/></a></td>
+<td><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=KN9Q7U76ETCDS"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_buynow_SM.gif"/></a></td>
+<td><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=UU5XKDER4JFQ4"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_buynow_SM.gif"/></a></td><td><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LLK2ZYW4JV8GY"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_buynow_SM.gif"/></a></td>
+</tr>
+</table>
+
+Please note that *AForge.NET Framework* itself is licensed under LGPL version 3, and the copyright holder states the following on the *AForge.NET Framework* web site:
 
 > Regarding collaboration, contribution, offers, partnering, custom work/consulting, none GPL/LGPL licensing, etc., please, contact using the next e-mail:
 aforge.net [at] gmail {dot} com
 
-Universal, Android and iOS support
-----------------------------------
-
-There are now *Shim* and *Shim.Drawing* assemblies available for *Xamarin.Android* and *Xamarin.iOS*, making it possible to 
-incorporate *Portable AForge* assemblies in *Android* and *iPhone* or *iPad* apps. See for example [this](http://cureos.blogspot.com/2014/10/smartphone-image-processing-development.html) blog post. 
-
-For more information of how to enable *Portable AForge* on *Android* and *iOS*, as well as *Universal*/*Windows 8.1*/*Windows Phone (non-Silverlight) 8.1*, please send an e-mail to
-
-[licenses@cureos.com](mailto:licenses@cureos.com)
