@@ -40,12 +40,14 @@ namespace System.Drawing
         private static readonly int ParallelTaskCount;
 
         private bool _disposed = false;
-        private object _locker = new object();
+        private readonly object _locker = new object();
 
         private Image _bitmap;
         private ImageBuffer _dummyImageBuffer;
         private readonly IColorQuantizer _quantizer;
 
+        // TODO Matrix needs to be applied onto the image.
+        private readonly Matrix matrix;
 
         #endregion
 
@@ -60,6 +62,7 @@ namespace System.Drawing
         {
             _bitmap = bitmap;
             _quantizer = new DistinctSelectionQuantizer();
+            this.matrix = new Matrix();
         }
 
         ~Graphics()
@@ -226,17 +229,17 @@ namespace System.Drawing
 
         internal void ResetTransform()
         {
-            throw new NotImplementedException();
+            this.matrix.Reset();
         }
 
         internal void RotateTransform(float angle)
         {
-            throw new NotImplementedException();
+            this.matrix.Rotate(angle);
         }
 
         internal void TranslateTransform(float dx, float dy)
         {
-            throw new NotImplementedException();
+            this.matrix.Translate(dx, dy);
         }
 
         public void Dispose()
@@ -719,6 +722,81 @@ namespace System.Drawing
                         return true;
                     });
             }
+        }
+
+        #endregion
+
+        #region INNER TYPES
+
+        private class Matrix
+        {
+            #region FIELDS
+
+            private readonly float[,] values;
+
+            #endregion
+
+            #region CONSTRUCTORS
+
+            internal Matrix()
+            {
+                values = new float[3, 3];
+                values[0, 0] = values[1, 1] = values[2, 2] = 1.0f;
+            }
+
+            #endregion
+
+            #region METHODS
+
+            internal void Reset()
+            {
+                values.Initialize();
+                values[0, 0] = values[1, 1] = values[2, 2] = 1.0f;
+            }
+
+            internal void Rotate(float angle)
+            {
+                var radians = angle * Math.PI / 180.0;
+                var cos = (float)Math.Cos(radians);
+                var sin = (float)Math.Sin(radians);
+
+                var matrix = new float[3, 3];
+                matrix[0, 0] = matrix[1, 1] = cos;
+                matrix[0, 1] = sin;
+                matrix[1, 1] = -sin;
+                matrix[2, 2] = 1.0f;
+
+                Transform(matrix);
+            }
+
+            internal void Translate(float dx, float dy)
+            {
+                var matrix = new float[3, 3];
+                matrix[0, 0] = matrix[1, 1] = matrix[2, 2] = 1.0f;
+                matrix[2, 0] = dx;
+                matrix[2, 1] = dy;
+
+                Transform(matrix);
+            }
+
+            private void Transform(float[,] matrix)
+            {
+                var tmp = new float[3, 3];
+                for (var i = 0; i < 3; ++i)
+                {
+                    for (var j = 0; j < 3; ++j)
+                    {
+                        for (var k = 0; k < 3; ++k)
+                        {
+                            tmp[i, j] += matrix[i, k] * values[k, j];
+                        }
+                    }
+                }
+
+                Array.Copy(tmp, values, 9);
+            }
+
+            #endregion
         }
 
         #endregion
