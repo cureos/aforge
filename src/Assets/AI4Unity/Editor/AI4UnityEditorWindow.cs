@@ -350,7 +350,7 @@ public class AI4UnityEditorWindow : EditorWindow {
 		}else{
 			EditorGUILayout.BeginHorizontal ();
 			EditorGUILayout.LabelField ("Build Path:");
-			this.BuildPath = EditorGUILayout.TextField (this.BuildPath != null ? this.BuildPath : string.Empty);
+			this.BuildPath = EditorGUILayout.TextField (this.BuildPath ?? string.Empty);
 
 			if (GUILayout.Button ("+")) {
 				this.BuildPath = EditorUtility.SaveFolderPanel(

@@ -1,8 +1,13 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityTest.UnitTestRunner;
+
 namespace UnityTest
 {
-	public interface IUnitTestEngine
-	{
-		UnitTestResult[] GetTests ();
-		void RunTests(string[] tests, UnitTestRunner.ITestRunnerCallback testRunnerEventListener);
-	}
+    public interface IUnitTestEngine
+    {
+        UnitTestRendererLine GetTests(out UnitTestResult[] results, out string[] categories);
+        void RunTests(TestFilter filter, ITestRunnerCallback testRunnerEventListener);
+    }
 }

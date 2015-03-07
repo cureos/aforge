@@ -1,77 +1,83 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class TestResultRenderer 
+public class TestResultRenderer
 {
+    private static class Styles
+    {
+        public static readonly GUIStyle SucceedLabelStyle;
+        public static readonly GUIStyle FailedLabelStyle;
+        public static readonly GUIStyle FailedMessagesStyle;
 
-	private static class Styles
-	{
-		public static GUIStyle succeedLabelStyle;
-		public static GUIStyle failedLabelStyle;
-		public static GUIStyle failedMessagesStyle;
+        static Styles()
+        {
+            SucceedLabelStyle = new GUIStyle("label");
+            SucceedLabelStyle.normal.textColor = Color.green;
+            SucceedLabelStyle.fontSize = 48;
 
-		static Styles() 
-		{
-			succeedLabelStyle = new GUIStyle ("label");
-			succeedLabelStyle.normal.textColor = Color.green;
-			succeedLabelStyle.fontSize = 48;
+            FailedLabelStyle = new GUIStyle("label");
+            FailedLabelStyle.normal.textColor = Color.red;
+            FailedLabelStyle.fontSize = 32;
 
-			failedLabelStyle = new GUIStyle ("label");
-			failedLabelStyle.normal.textColor = Color.red;
-			failedLabelStyle.fontSize = 32;
+            FailedMessagesStyle = new GUIStyle("label");
+            FailedMessagesStyle.wordWrap = false;
+            FailedMessagesStyle.richText = true;
+        }
+    }
+    private readonly Dictionary<string, List<ITestResult>> m_TestCollection = new Dictionary<string, List<ITestResult>>();
 
-			failedMessagesStyle = new GUIStyle ("label");
-			failedMessagesStyle.wordWrap = false;
-			failedMessagesStyle.richText = true;
-		}
-	}
-	private Dictionary<string, List<ITestResult>> testCollection = new Dictionary<string, List<ITestResult>> ();
-		
-	private bool showResults;
-	Vector2 scrollPosition;
-		
-	public void ShowResults ()
-	{
-		showResults = true;
-	}
+    private bool m_ShowResults;
+    Vector2 m_ScrollPosition;
+    private int m_FailureCount;
 
-	public void AddResults ( string sceneName, ITestResult result )
-	{
-		if(!testCollection.ContainsKey (sceneName))
-			testCollection.Add (sceneName, new List<ITestResult> ());
-		testCollection[sceneName].Add (result);
-	}
+    public void ShowResults()
+    {
+        m_ShowResults = true;
+        Cursor.visible = true;
+    }
 
-	public void Draw ()
-	{
-		if (!showResults) return;
-		if (testCollection.Count==0)
-		{
-			GUILayout.Label ("All test succeeded", Styles.succeedLabelStyle);
-		}
-		else
-		{
+    public void AddResults(string sceneName, ITestResult result)
+    {
+        if (!m_TestCollection.ContainsKey(sceneName))
+            m_TestCollection.Add(sceneName, new List<ITestResult>());
+        m_TestCollection[sceneName].Add(result);
+        if (result.Executed && !result.IsSuccess)
+            m_FailureCount++;
+    }
 
-			int count = 0;
-			foreach (var testGroup in testCollection) count += testGroup.Value.Count;
-			GUILayout.Label (count + " tests failed!", Styles.failedLabelStyle);
+    public void Draw()
+    {
+        if (!m_ShowResults) return;
+        if (m_TestCollection.Count == 0)
+        {
+            GUILayout.Label("All test succeeded", Styles.SucceedLabelStyle, GUILayout.Width(600));
+        }
+        else
+        {
+            int count = m_TestCollection.Sum (testGroup => testGroup.Value.Count);
+            GUILayout.Label(count + " tests failed!", Styles.FailedLabelStyle);
 
-			scrollPosition = GUILayout.BeginScrollView (scrollPosition, GUILayout.ExpandWidth (true));
-			var text = ""; 
-			foreach (var testGroup in testCollection)
-			{
-				text += "<b><size=18>" + testGroup.Key + "</size></b>\n";
-				text += string.Join ("\n", testGroup.Value
-													.Where (result => !result.IsSuccess)
-													.Select (result => result.Name + " " + result.ResultState + "\n" + result.Message)
-													.ToArray ());
-			}
-			GUILayout.TextArea (text, Styles.failedMessagesStyle);
-			GUILayout.EndScrollView ();
-		}
-		if (GUILayout.Button ("Close"))
-			Application.Quit ();
+            m_ScrollPosition = GUILayout.BeginScrollView(m_ScrollPosition, GUILayout.ExpandWidth(true));
+            var text = "";
+            foreach (var testGroup in m_TestCollection)
+            {
+                text += "<b><size=18>" + testGroup.Key + "</size></b>\n";
+                text += string.Join("\n", testGroup.Value
+                                    .Where(result => !result.IsSuccess)
+                                    .Select(result => result.Name + " " + result.ResultState + "\n" + result.Message)
+                                    .ToArray());
+            }
+            GUILayout.TextArea(text, Styles.FailedMessagesStyle);
+            GUILayout.EndScrollView();
+        }
+        if (GUILayout.Button("Close"))
+            Application.Quit();
+    }
 
-	}
+    public int FailureCount()
+    {
+        return m_FailureCount;
+    }
 }

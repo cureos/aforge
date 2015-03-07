@@ -1,59 +1,61 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace UnityTest
 {
-	[Serializable]
-	public class UnitTestResult : ITestResult
-	{
-		public bool Executed { get; set; }
-		public string Name { get { return Test.MethodName; } }
-		public string FullName { get { return Test.FullName; } }
-		public TestResultState ResultState { get; set; }
+    [Serializable]
+    public class UnitTestResult : ITestResult
+    {
+        public bool Executed { get; set; }
+        public string Name { get { return Test.MethodName; } }
+        public string FullName { get { return Test.FullName; } }
+        public TestResultState ResultState { get; set; }
+        public UnitTestInfo Test { get; set; }
+        public string Id { get { return Test.Id; } }
+        public double Duration { get; set; }
+        public string Message { get; set; }
+        public string StackTrace { get; set; }
+        public bool IsIgnored { get; set; }
 
-		public UnitTestInfo Test { get; set; }
-		public double Duration { get; set; }
-		public string Message { get; set; }
+        public string Logs { get; set; }
 
-		public string StackTrace { get; set; }
-		public string AssemblyPath { get; set; }
-		
-		public void Update (ITestResult source)
-		{
-			this.ResultState = source.ResultState;
-			this.Duration = source.Duration;
-			this.Message = source.Message;
-			this.StackTrace = source.StackTrace;
-			this.Executed = source.Executed;
-		}
+        public bool Outdated { get; set; }
 
-		#region Helper methods
+        public void Update(ITestResult source, bool outdated)
+        {
+            ResultState = source.ResultState;
+            Duration = source.Duration;
+            Message = source.Message;
+            Logs = source.Logs;
+            StackTrace = source.StackTrace;
+            Executed = source.Executed;
+            IsIgnored = source.IsIgnored || (Test != null && Test.IsIgnored);
+            Outdated = outdated;
+        }
 
-		public bool IsFailure
-		{
-			get { return ResultState == TestResultState.Failure; }
-		}
+        #region Helper methods
 
-		public bool IsError
-		{
-			get { return ResultState == TestResultState.Error; }
-		}
+        public bool IsFailure
+        {
+            get { return ResultState == TestResultState.Failure; }
+        }
 
-		public bool IsSuccess
-		{
-			get { return ResultState == TestResultState.Success; }
-		}
+        public bool IsError
+        {
+            get { return ResultState == TestResultState.Error; }
+        }
 
-		public bool IsInconclusive
-		{
-			get { return ResultState == TestResultState.Inconclusive; }
-		}
+        public bool IsSuccess
+        {
+            get { return ResultState == TestResultState.Success; }
+        }
 
-		public bool IsIgnored
-		{
-			get { return ResultState == TestResultState.Ignored; }
-		}
+        public bool IsInconclusive
+        {
+            get { return ResultState == TestResultState.Inconclusive; }
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

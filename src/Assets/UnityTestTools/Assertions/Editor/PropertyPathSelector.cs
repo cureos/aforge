@@ -7,205 +7,201 @@ using UnityEngine;
 
 namespace UnityTest
 {
-	public class PropertyPathSelector
-	{
-		private readonly DropDownControl<string> thisDropDown = new DropDownControl<string>();
-		private readonly Func<string, string> replaceDotWithSlashAndAddGOGroup = s => s.Replace('.', '/');
-			
-		private readonly string name;
-		private bool focusBackToEdit;
-		private SelectedPathError error;
+    public class PropertyPathSelector
+    {
+        private readonly DropDownControl<string> m_ThisDropDown = new DropDownControl<string>();
+        private readonly Func<string, string> m_ReplaceDotWithSlashAndAddGoGroup = s => s.Replace('.', '/');
 
-		public PropertyPathSelector (string name)
-		{
-			this.name = name;
-			thisDropDown.convertForGUIContent = replaceDotWithSlashAndAddGOGroup;
-			thisDropDown.tooltip = "Select path the value you want to be used for comparisment.";
-		}
+        private readonly string m_Name;
+        private bool m_FocusBackToEdit;
+        private SelectedPathError m_Error;
 
-		public void Draw(GameObject go, ActionBase comparer, string propertPath, Type[] accepatbleTypes, Action<GameObject> onSelectedGO, Action<string> onSelectedPath)
-		{
-			var newGO = (GameObject)EditorGUILayout.ObjectField(name, go, typeof (GameObject), true);
-			if (newGO != go) 
-				onSelectedGO(newGO);
+        public PropertyPathSelector(string name)
+        {
+            m_Name = name;
+            m_ThisDropDown.convertForGUIContent = m_ReplaceDotWithSlashAndAddGoGroup;
+            m_ThisDropDown.tooltip = "Select the path to the value you want to use for comparison.";
+        }
 
-			if (go != null)
-			{
-				var newPath =  DrawListOfMethods (go, comparer, propertPath, accepatbleTypes, thisDropDown);
+        public void Draw(GameObject go, ActionBase comparer, string propertPath, Type[] accepatbleTypes, Action<GameObject> onSelectedGo, Action<string> onSelectedPath)
+        {
+            var newGo = (GameObject)EditorGUILayout.ObjectField(m_Name, go, typeof(GameObject), true);
+            if (newGo != go)
+                onSelectedGo(newGo);
 
-				if (newPath != propertPath)
-					onSelectedPath (newPath);
-			}
-		}
+            if (go != null)
+            {
+                var newPath =  DrawListOfMethods(go, comparer, propertPath, accepatbleTypes, m_ThisDropDown);
 
-		private string DrawListOfMethods(GameObject go, ActionBase comparer, string propertPath, Type[] accepatbleTypes, DropDownControl<string> dropDown)
-		{
-			string result = propertPath;
-			if (accepatbleTypes == null)
-			{
-				result = DrawManualPropertyEditField(go, propertPath, accepatbleTypes, dropDown);
-			}
-			else
-			{
-				bool isPropertyOrFieldFound = true;
-				if (string.IsNullOrEmpty(result))
-				{
-					var options = GetFieldsAndProperties (go, comparer, result, accepatbleTypes);
-					isPropertyOrFieldFound = options.Any ();
-					if (isPropertyOrFieldFound)
-					{
-						result = options.First();
-					}
-				} 
+                if (newPath != propertPath)
+                    onSelectedPath(newPath);
+            }
+        }
 
-				if (isPropertyOrFieldFound)
-				{
-					dropDown.Draw (go.name + '.', result,
-					() =>
-					{
-						try
-						{
-							var options = GetFieldsAndProperties (go, comparer, result, accepatbleTypes);
-							return options.ToArray ();
-						}
-						catch (Exception)
-						{
-							Debug.LogWarning ("An exception was thrown while resolving property list. Reseting property path.");
-							result = "";
-							return new string[0];
-						}
-					}, s => result = s);
-				}
-				else
-				{
-					result = DrawManualPropertyEditField(go, propertPath, accepatbleTypes, dropDown);
-				}
-			}
-			return result;
-		}
+        private string DrawListOfMethods(GameObject go, ActionBase comparer, string propertPath, Type[] accepatbleTypes, DropDownControl<string> dropDown)
+        {
+            string result = propertPath;
+            if (accepatbleTypes == null)
+            {
+                result = DrawManualPropertyEditField(go, propertPath, accepatbleTypes, dropDown);
+            }
+            else
+            {
+                bool isPropertyOrFieldFound = true;
+                if (string.IsNullOrEmpty(result))
+                {
+                    var options = GetFieldsAndProperties(go, comparer, result, accepatbleTypes);
+                    isPropertyOrFieldFound = options.Any();
+                    if (isPropertyOrFieldFound)
+                    {
+                        result = options.First();
+                    }
+                }
 
-		private static List<string> GetFieldsAndProperties ( GameObject go, ActionBase comparer, string extendPath, Type[] accepatbleTypes )
-		{
-			var propertyResolver = new PropertyResolver {AllowedTypes = accepatbleTypes, ExcludedFieldNames = comparer.GetExcludedFieldNames ()};
-			var options = propertyResolver.GetFieldsAndPropertiesFromGameObject (go, comparer.GetDepthOfSearch (), extendPath).ToList ();
-			options.Sort ((x, y) =>
-			{
-				if (char.IsLower (x[0]))
-					return -1;
-				if (char.IsLower (y[0]))
-					return 1;
-				return x.CompareTo (y);
-			});
-			return options;
-		}
+                if (isPropertyOrFieldFound)
+                {
+                    dropDown.Draw(go.name + '.', result,
+                                  () =>
+                                  {
+                                      try
+                                      {
+                                          var options = GetFieldsAndProperties(go, comparer, result, accepatbleTypes);
+                                          return options.ToArray();
+                                      }
+                                      catch (Exception)
+                                      {
+                                          Debug.LogWarning("An exception was thrown while resolving a property list. Resetting property path.");
+                                          result = "";
+                                          return new string[0];
+                                      }
+                                  }, s => result = s);
+                }
+                else
+                {
+                    result = DrawManualPropertyEditField(go, propertPath, accepatbleTypes, dropDown);
+                }
+            }
+            return result;
+        }
 
-		private string DrawManualPropertyEditField(GameObject go, string propertPath, Type[] acceptableTypes, DropDownControl<string> dropDown)
-		{
-			var propertyResolver = new PropertyResolver { AllowedTypes = acceptableTypes };
-			IList<string> list;
+        private static List<string> GetFieldsAndProperties(GameObject go, ActionBase comparer, string extendPath, Type[] accepatbleTypes)
+        {
+            var propertyResolver = new PropertyResolver {AllowedTypes = accepatbleTypes, ExcludedFieldNames = comparer.GetExcludedFieldNames()};
+            var options = propertyResolver.GetFieldsAndPropertiesFromGameObject(go, comparer.GetDepthOfSearch(), extendPath).ToList();
+            options.Sort((x, y) =>
+                         {
+                             if (char.IsLower(x[0]))
+                                 return -1;
+                             if (char.IsLower(y[0]))
+                                 return 1;
+                             return x.CompareTo(y);
+                         });
+            return options;
+        }
 
-			var loadProps = new Func<string[]> (() =>
-			{
-				try
-				{
-					list = propertyResolver.GetFieldsAndPropertiesUnderPath (go, propertPath);
-				}
-				catch (ArgumentException)
-				{
-					list = propertyResolver.GetFieldsAndPropertiesUnderPath (go, "");
-				}
-				return list.ToArray ();
-			});
+        private string DrawManualPropertyEditField(GameObject go, string propertPath, Type[] acceptableTypes, DropDownControl<string> dropDown)
+        {
+            var propertyResolver = new PropertyResolver { AllowedTypes = acceptableTypes };
+            IList<string> list;
 
-			EditorGUILayout.BeginHorizontal();
+            var loadProps = new Func<string[]>(() =>
+                                               {
+                                                   try
+                                                   {
+                                                       list = propertyResolver.GetFieldsAndPropertiesUnderPath(go, propertPath);
+                                                   }
+                                                   catch (ArgumentException)
+                                                   {
+                                                       list = propertyResolver.GetFieldsAndPropertiesUnderPath(go, "");
+                                                   }
+                                                   return list.ToArray();
+                                               });
 
-			var labelSize = EditorStyles.label.CalcSize(new GUIContent(go.name + '.'));
-			GUILayout.Label (go.name + (propertPath.Length > 0 ? "." : ""), EditorStyles.label, GUILayout.Width (labelSize.x));
+            EditorGUILayout.BeginHorizontal();
 
-			string btnName = "hintBtn";
-			if ( GUI.GetNameOfFocusedControl () == btnName
-				&& Event.current.type == EventType.KeyDown
-				&& Event.current.keyCode == KeyCode.DownArrow)
-			{
-				Event.current.Use ();
-				dropDown.PrintMenu (loadProps ());
-				GUI.FocusControl ("");
-				focusBackToEdit = true;
-			}
+            var labelSize = EditorStyles.label.CalcSize(new GUIContent(go.name + '.'));
+            GUILayout.Label(go.name + (propertPath.Length > 0 ? "." : ""), EditorStyles.label, GUILayout.Width(labelSize.x));
 
-			EditorGUI.BeginChangeCheck ();
-			GUI.SetNextControlName (btnName);
-			var result = GUILayout.TextField(propertPath, EditorStyles.textField);
-			if (EditorGUI.EndChangeCheck ())
-			{
-				error = DoesPropertyExist (go, result);
-			}
+            string btnName = "hintBtn";
+            if (GUI.GetNameOfFocusedControl() == btnName
+                && Event.current.type == EventType.KeyDown
+                && Event.current.keyCode == KeyCode.DownArrow)
+            {
+                Event.current.Use();
+                dropDown.PrintMenu(loadProps());
+                GUI.FocusControl("");
+                m_FocusBackToEdit = true;
+            }
 
-			if (focusBackToEdit)
-			{
-				focusBackToEdit = false;
-				GUI.FocusControl (btnName);
-			}
+            EditorGUI.BeginChangeCheck();
+            GUI.SetNextControlName(btnName);
+            var result = GUILayout.TextField(propertPath, EditorStyles.textField);
+            if (EditorGUI.EndChangeCheck())
+            {
+                m_Error = DoesPropertyExist(go, result);
+            }
 
-			if (GUILayout.Button ("clear", EditorStyles.miniButton, GUILayout.Width (38)))
-			{
-				result = "";
-				GUI.FocusControl (null);
-				focusBackToEdit = true;
-				error = DoesPropertyExist (go, result);
-			}
-			EditorGUILayout.EndHorizontal();
-			EditorGUILayout.BeginHorizontal ();
-			GUILayout.Label ("", GUILayout.Width (labelSize.x));
+            if (m_FocusBackToEdit)
+            {
+                m_FocusBackToEdit = false;
+                GUI.FocusControl(btnName);
+            }
 
-			dropDown.Draw("", result ?? "", loadProps, s =>
-			{
-				result = s;
-				GUI.FocusControl (null);
-				focusBackToEdit = true;
-				error = DoesPropertyExist (go, result);
-			});
-			EditorGUILayout.EndHorizontal();
+            if (GUILayout.Button("Clear", EditorStyles.miniButton, GUILayout.Width(38)))
+            {
+                result = "";
+                GUI.FocusControl(null);
+                m_FocusBackToEdit = true;
+                m_Error = DoesPropertyExist(go, result);
+            }
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("", GUILayout.Width(labelSize.x));
 
-			switch (error)
-			{
-				case SelectedPathError.InvalidPath:
-					EditorGUILayout.HelpBox ("This property does not exist", MessageType.Error);
-					break;
-				case SelectedPathError.MissingComponent:
-					EditorGUILayout.HelpBox ("This property or field is not attached or set. It will fail unless it will be attached before the check is perfomed.", MessageType.Warning);
-					break;
-			}
-				
-			return result;
-		}
+            dropDown.Draw("", result ?? "", loadProps, s =>
+                          {
+                              result = s;
+                              GUI.FocusControl(null);
+                              m_FocusBackToEdit = true;
+                              m_Error = DoesPropertyExist(go, result);
+                          });
+            EditorGUILayout.EndHorizontal();
 
-		private SelectedPathError DoesPropertyExist ( GameObject go, string propertPath )
-		{
-			try
-			{
-				object obj;
-				if(MemberResolver.TryGetValue (go, propertPath, out obj))
-					return SelectedPathError.None;
-				else
-					return SelectedPathError.InvalidPath;
-			}
-			catch (TargetInvocationException  e)
-			{
-				if(e.InnerException is MissingComponentException)
-					return SelectedPathError.MissingComponent;
-				else
-					throw;
-			}
-		}
+            switch (m_Error)
+            {
+                case SelectedPathError.InvalidPath:
+                    EditorGUILayout.HelpBox("This property does not exist", MessageType.Error);
+                    break;
+                case SelectedPathError.MissingComponent:
+                    EditorGUILayout.HelpBox("This property or field is not attached or set. It will fail unless it will be attached before the check is perfomed.", MessageType.Warning);
+                    break;
+            }
 
-		private enum SelectedPathError
-		{
-			None,
-			MissingComponent,
-			InvalidPath
-		}
-	}
+            return result;
+        }
 
+        private SelectedPathError DoesPropertyExist(GameObject go, string propertPath)
+        {
+            try
+            {
+                object obj;
+                if (MemberResolver.TryGetValue(go, propertPath, out obj))
+                    return SelectedPathError.None;
+                return SelectedPathError.InvalidPath;
+            }
+            catch (TargetInvocationException e)
+            {
+                if (e.InnerException is MissingComponentException)
+                    return SelectedPathError.MissingComponent;
+                throw;
+            }
+        }
 
+        private enum SelectedPathError
+        {
+            None,
+            MissingComponent,
+            InvalidPath
+        }
+    }
 }
