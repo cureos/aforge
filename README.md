@@ -1,4 +1,4 @@
-<img src="NuGet/portable-aforge.png" alt="Portable AForge.NET logo" height="108" />
+<img src="Setup/Portable/NuGet/portable-aforge.png" alt="Portable AForge.NET logo" height="108" />
 
 Portable AForge.NET Framework
 =============================
