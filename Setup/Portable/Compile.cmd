@@ -21,13 +21,11 @@ timeout /T 5
 @set PUBLISH=..\Setup\Portable\Publish\
 @set AFORGEDIR=%PUBLISH%\aforge\
 @set DRAWDIR=%PUBLISH%\shim_drawing\
-@set APCLDIR=%AFORGEDIR%lib\portable-net45+netcore45+wpa81+wp8\
+@set APCLDIR=%AFORGEDIR%lib\portable-net45+netcore45+wpa81\
 @set AWPFDIR=%AFORGEDIR%lib\net45\
-@set APHONEDIR=%AFORGEDIR%lib\wp8\
 @set AUNIDIR=%AFORGEDIR%lib\portable-win81+wpa81\
-@set DPCLDIR=%DRAWDIR%lib\portable-net45+netcore45+wpa81+wp8\
+@set DPCLDIR=%DRAWDIR%lib\portable-net45+netcore45+wpa81\
 @set DWPFDIR=%DRAWDIR%lib\net45\
-@set DPHONEDIR=%DRAWDIR%lib\wp8\
 
 @if EXIST "%PUBLISH%" (rd /s /q "%PUBLISH%")
 
@@ -55,17 +53,11 @@ timeout /T 5
 @md "%AWPFDIR%"
 @xcopy /k /r /v /y /exclude:exclude.txt Core\_Net\bin\Release\AForge.* "%AWPFDIR%"
 
-@md "%APHONEDIR%"
-@xcopy /k /r /v /y /exclude:exclude.txt Core\_Phone\bin\Release\AForge.* "%APHONEDIR%"
-
 @md "%AUNIDIR%"
 @xcopy /k /r /v /y /exclude:exclude.txt Core\_Universal\bin\Release\AForge.* "%AUNIDIR%"
 
 @md "%DPCLDIR%"
 @xcopy /k /r /v /y /exclude:exclude.txt System.Drawing\bin\Release\Shim.Drawing.* "%DPCLDIR%"
-
-@md "%DPHONEDIR%"
-@xcopy /k /r /v /y /exclude:exclude.txt System.Drawing\_Phone\Bin\Release\Shim.Drawing.* "%DPHONEDIR%"
 
 @md "%DWPFDIR%"
 @xcopy /k /r /v /y /exclude:exclude.txt System.Drawing\_WPF\bin\Release\Shim.Drawing.* "%DWPFDIR%"

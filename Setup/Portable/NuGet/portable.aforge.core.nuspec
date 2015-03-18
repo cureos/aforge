@@ -19,13 +19,11 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="..\Publish\aforge\lib\portable-net45+netcore45+wpa81+wp8\AForge.dll" target="lib\portable-net45+netcore45+wpa81+wp8" />
-        <file src="..\Publish\aforge\lib\portable-net45+netcore45+wpa81+wp8\AForge.pdb" target="lib\portable-net45+netcore45+wpa81+wp8" />
+        <file src="..\Publish\aforge\lib\portable-net45+netcore45+wpa81\AForge.dll" target="lib\portable-net45+netcore45+wpa81" />
+        <file src="..\Publish\aforge\lib\portable-net45+netcore45+wpa81\AForge.pdb" target="lib\portable-net45+netcore45+wpa81" />
         <file src="..\Publish\aforge\lib\portable-win81+wpa81\AForge.dll" target="lib\portable-win81+wpa81" />
         <file src="..\Publish\aforge\lib\portable-win81+wpa81\AForge.pdb" target="lib\portable-win81+wpa81" />
         <file src="..\Publish\aforge\lib\portable-win81+wpa81\AForge.pri" target="lib\portable-win81+wpa81" />
-        <file src="..\Publish\aforge\lib\portable-net45+netcore45+wpa81+wp8\AForge.dll" target="lib\wp8" />
-        <file src="..\Publish\aforge\lib\portable-net45+netcore45+wpa81+wp8\AForge.pdb" target="lib\wp8" />
         <file src="..\Publish\aforge\lib\net45\AForge.dll" target="lib\net45" />
         <file src="..\Publish\aforge\lib\net45\AForge.pdb" target="lib\net45" />
     </files>
