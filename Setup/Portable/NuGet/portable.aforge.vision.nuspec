@@ -2,35 +2,24 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
     <metadata>
         <id>portable.aforge.vision</id>
-        <version>2.2.5.50204</version>
+        <version>$version$</version>
         <title>Portable AForge Vision</title>
         <authors>Andrew Kirillow, Anders Gustafsson, Cureos AB</authors>
         <licenseUrl>https://www.gnu.org/licenses/lgpl.html#content</licenseUrl>
         <projectUrl>https://github.com/cureos/aforge</projectUrl>
-        <iconUrl>https://raw.githubusercontent.com/cureos/aforge/master/NuGet/portable-aforge.png</iconUrl>
+        <iconUrl>https://raw.githubusercontent.com/cureos/aforge/master/Setup/Portable/NuGet/portable-aforge.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <description>Portable AForge Vision provides computer vision functionality to the AForge.NET Framework on mobile and tablet devices.</description>
         <summary>Computer vision functionality for Portable AForge.NET Framework</summary>
         <copyright>(c) 2006-2013 Andrew Kirillow, 2013-2015 Anders Gustafsson, Cureos AB</copyright>
-        <releaseNotes>v 2.2.5.50204
-----------------
-* No functional change.
-
-v 2.2.5.50126
-----------------
-* Synchronized with dependency updates.
-
-v 2.2.5.50122
-----------------
-* Portable Class Library for Windows, iOS and Android phone and tablet devices.</releaseNotes>
         <language>en-US</language>
         <tags>aforge.net PCL .NET WPF WP8 WPA81 Windows8.1 Xamarin.iOS Xamarin.Android</tags>
         <dependencies>
-            <dependency id="portable.aforge.imaging" version="2.2.5.50204" />
+            <dependency id="portable.aforge.imaging" version="$version$" />
         </dependencies>
     </metadata>
     <files>
-        <file src="..\Sources\Vision\bin\Release\AForge.Vision.dll" target="lib\portable-net45+netcore45+wpa81+wp8" />
-        <file src="..\Sources\Vision\bin\Release\AForge.Vision.pdb" target="lib\portable-net45+netcore45+wpa81+wp8" />
+        <file src="..\Publish\aforge\lib\portable-net45+netcore45+wpa81+wp8\AForge.Vision.dll" target="lib\portable-net45+netcore45+wpa81+wp8" />
+        <file src="..\Publish\aforge\lib\portable-net45+netcore45+wpa81+wp8\AForge.Vision.pdb" target="lib\portable-net45+netcore45+wpa81+wp8" />
     </files>
 </package>

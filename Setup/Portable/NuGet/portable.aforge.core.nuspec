@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+    <metadata>
+        <id>portable.aforge.core</id>
+        <version>$version$</version>
+        <title>Portable AForge Core</title>
+        <authors>Andrew Kirillow, Anders Gustafsson, Cureos AB</authors>
+        <licenseUrl>https://www.gnu.org/licenses/lgpl.html#content</licenseUrl>
+        <projectUrl>https://github.com/cureos/aforge</projectUrl>
+        <iconUrl>https://raw.githubusercontent.com/cureos/aforge/master/Setup/Portable/NuGet/portable-aforge.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <description>Portable AForge Core contains the core types for the AForge.NET Framework on mobile and tablet devices.</description>
+        <summary>Core types for Portable AForge.NET Framework</summary>
+        <copyright>(c) 2006-2013 Andrew Kirillow, 2013-2015 Anders Gustafsson, Cureos AB</copyright>
+        <language>en-US</language>
+        <tags>aforge.net PCL .NET WPF WP8 WPA81 Windows8.1 Xamarin.iOS Xamarin.Android</tags>
+        <dependencies>
+            <dependency id="shim" version="$shimver$" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\Publish\aforge\lib\portable-net45+netcore45+wpa81+wp8\AForge.dll" target="lib\portable-net45+netcore45+wpa81+wp8" />
+        <file src="..\Publish\aforge\lib\portable-net45+netcore45+wpa81+wp8\AForge.pdb" target="lib\portable-net45+netcore45+wpa81+wp8" />
+        <file src="..\Publish\aforge\lib\portable-win81+wpa81\AForge.dll" target="lib\portable-win81+wpa81" />
+        <file src="..\Publish\aforge\lib\portable-win81+wpa81\AForge.pdb" target="lib\portable-win81+wpa81" />
+        <file src="..\Publish\aforge\lib\portable-win81+wpa81\AForge.pri" target="lib\portable-win81+wpa81" />
+        <file src="..\Publish\aforge\lib\wp8\AForge.dll" target="lib\wp8" />
+        <file src="..\Publish\aforge\lib\wp8\AForge.pdb" target="lib\wp8" />
+        <file src="..\Publish\aforge\lib\net45\AForge.dll" target="lib\net45" />
+        <file src="..\Publish\aforge\lib\net45\AForge.pdb" target="lib\net45" />
+    </files>
+</package>
