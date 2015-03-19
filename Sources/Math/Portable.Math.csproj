@@ -48,7 +48,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Complex.cs" />
     <Compile Include="ContinuousHistogram.cs" />
     <Compile Include="FourierTransform.cs" />
     <Compile Include="Gaussian.cs" />

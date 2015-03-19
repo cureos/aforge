@@ -11,7 +11,8 @@ namespace AForge.Imaging
     using System;
     using System.Drawing;
     using System.Drawing.Imaging;
-    using AForge;
+    using System.Numerics;
+
     using AForge.Math;
 
     /// <summary>
@@ -215,7 +216,7 @@ namespace AForge.Imaging
                     // for each pixel
                     for ( int x = 0; x < width; x++, src++ )
                     {
-                        data[y, x].Re = (float) *src / 255;
+                        data[y, x] = new Complex(*src / 255.0, data[y, x].Imaginary);
                     }
                     src += offset;
                 }
@@ -277,8 +278,7 @@ namespace AForge.Imaging
                     {
                         if ( ( ( x + y ) & 0x1 ) != 0 )
                         {
-                            data[y, x].Re *= -1;
-                            data[y, x].Im *= -1;
+                            data[y, x] *= -1.0;
                         }
                     }
                 }
@@ -305,8 +305,7 @@ namespace AForge.Imaging
                     {
                         if ( ( ( x + y ) & 0x1 ) != 0 )
                         {
-                            data[y, x].Re *= -1;
-                            data[y, x].Im *= -1;
+                            data[y, x] *= -1.0;
                         }
                     }
                 }

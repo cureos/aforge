@@ -9,8 +9,9 @@
 namespace AForge.Imaging.ComplexFilters
 {
     using System;
+    using System.Numerics;
+
     using AForge;
-    using AForge.Math;
 
     /// <summary>
     /// Filtering of frequencies outside of specified range in complex Fourier
@@ -121,8 +122,7 @@ namespace AForge.Imaging.ComplexFilters
                     // filter values outside the range
                     if ( ( d > max ) || ( d < min ) )
                     {
-                        data[i, j].Re = 0;
-                        data[i, j].Im = 0;
+                        data[i, j] = Complex.Zero;
                     }
                 }
             }
