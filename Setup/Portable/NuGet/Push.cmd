@@ -12,7 +12,7 @@ timeout /T 5
 
 :: Directory settings
 set output=..\bin\nupkg
-set current=%~dp0
+set current=..\..\NuGet
 
 echo.
 echo Current directory: %current%
