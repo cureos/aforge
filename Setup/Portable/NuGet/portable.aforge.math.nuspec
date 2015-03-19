@@ -14,7 +14,7 @@
         <copyright>(c) 2006-2013 Andrew Kirillow, 2013-2015 Anders Gustafsson, Cureos AB</copyright>
 		<releaseNotes>BREAKING CHANGE! Windows Phone 8/8.1 Silverlight no longer supported. Use Portable AForge packages 2.2.5.50204 or earlier for WP 8/8.1 Silverlight support.</releaseNotes>
         <language>en-US</language>
-        <tags>aforge.net PCL .NET WPF WP8 WPA81 Windows8.1 Xamarin.iOS Xamarin.Android</tags>
+        <tags>aforge.net PCL .NET WPF WPA81 Windows8.1 Xamarin.iOS Xamarin.Android</tags>
         <dependencies>
             <dependency id="portable.aforge.core" version="$version$" />
         </dependencies>
