@@ -52,15 +52,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Net.Core", "Core\_Net\Net.C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{44291D50-61FD-48DD-95A1-972BC88D6BDC}"
 	ProjectSection(SolutionItems) = preProject
-		..\NuGet\portable.aforge.core.nuspec = ..\NuGet\portable.aforge.core.nuspec
-		..\NuGet\portable.aforge.fuzzy.nuspec = ..\NuGet\portable.aforge.fuzzy.nuspec
-		..\NuGet\portable.aforge.genetic.nuspec = ..\NuGet\portable.aforge.genetic.nuspec
-		..\NuGet\portable.aforge.imaging.formats.nuspec = ..\NuGet\portable.aforge.imaging.formats.nuspec
-		..\NuGet\portable.aforge.imaging.nuspec = ..\NuGet\portable.aforge.imaging.nuspec
-		..\NuGet\portable.aforge.machinelearning.nuspec = ..\NuGet\portable.aforge.machinelearning.nuspec
-		..\NuGet\portable.aforge.math.nuspec = ..\NuGet\portable.aforge.math.nuspec
-		..\NuGet\portable.aforge.neuro.nuspec = ..\NuGet\portable.aforge.neuro.nuspec
-		..\NuGet\portable.aforge.vision.nuspec = ..\NuGet\portable.aforge.vision.nuspec
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject

@@ -49,7 +49,7 @@ namespace AForge.Math
         public static void DFT( Complex[] data, Direction direction )
         {
             int			n = data.Length;
-            double		arg, cos, sin;
+            double		arg;
             Complex[]	dst = new Complex[n];
 
             // for each destination element
@@ -95,7 +95,7 @@ namespace AForge.Math
         {
             int			n = data.GetLength( 0 );	// rows
             int			m = data.GetLength( 1 );	// columns
-            double		arg, cos, sin;
+            double		arg;
             Complex[]	dst = new Complex[System.Math.Max( n, m )];
 
             // process rows

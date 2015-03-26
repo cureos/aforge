@@ -25,5 +25,6 @@
     <files>
         <file src="..\Publish\aforge\lib\portable-net45+netcore45+wpa81\AForge.Math.dll" target="lib\portable-net45+netcore45+wpa81" />
         <file src="..\Publish\aforge\lib\portable-net45+netcore45+wpa81\AForge.Math.pdb" target="lib\portable-net45+netcore45+wpa81" />
+        <file src="..\Publish\aforge\lib\portable-net45+netcore45+wpa81\AForge.Math.xml" target="lib\portable-net45+netcore45+wpa81" />
     </files>
 </package>

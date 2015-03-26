@@ -25,5 +25,6 @@
     <files>
         <file src="..\Publish\aforge\lib\portable-net45+netcore45+wpa81\AForge.Fuzzy.dll" target="lib\portable-net45+netcore45+wpa81" />
         <file src="..\Publish\aforge\lib\portable-net45+netcore45+wpa81\AForge.Fuzzy.pdb" target="lib\portable-net45+netcore45+wpa81" />
+        <file src="..\Publish\aforge\lib\portable-net45+netcore45+wpa81\AForge.Fuzzy.xml" target="lib\portable-net45+netcore45+wpa81" />
     </files>
 </package>
