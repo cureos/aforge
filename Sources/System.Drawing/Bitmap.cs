@@ -176,6 +176,11 @@ namespace System.Drawing
             return (Bitmap)result;
         }
 
+        internal Bitmap Clone()
+        {
+            return this.Clone(this._pixelFormat);
+        }
+
         internal Color GetPixel(int x, int y)
         {
             var color = new Color();

@@ -55,6 +55,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{1E35AD38-36AC-4E4F-93B5-2F19C47D6416}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portable.IPPrototyper.Interfaces", "..\Tools\IPPrototyper\Interfaces\Portable.IPPrototyper.Interfaces.csproj", "{B68A60E2-24B5-4582-9182-CF5B542EEB77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -129,6 +133,10 @@ Global
 		{A7CD452F-E850-4AA4-8F6B-FC313E8488B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7CD452F-E850-4AA4-8F6B-FC313E8488B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7CD452F-E850-4AA4-8F6B-FC313E8488B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B68A60E2-24B5-4582-9182-CF5B542EEB77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B68A60E2-24B5-4582-9182-CF5B542EEB77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B68A60E2-24B5-4582-9182-CF5B542EEB77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B68A60E2-24B5-4582-9182-CF5B542EEB77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -142,5 +150,6 @@ Global
 		{539229BC-D68C-4FF0-84BC-904A90ECEBE0} = {2138CACD-C4F2-4AB7-A0A4-F7FF269270D9}
 		{F040C06B-0A02-4A06-B5E3-25C844E74B91} = {3EF8B5DA-35BB-4065-973B-999D5BE90B1F}
 		{A7CD452F-E850-4AA4-8F6B-FC313E8488B3} = {3EF8B5DA-35BB-4065-973B-999D5BE90B1F}
+		{B68A60E2-24B5-4582-9182-CF5B542EEB77} = {1E35AD38-36AC-4E4F-93B5-2F19C47D6416}
 	EndGlobalSection
 EndGlobal
