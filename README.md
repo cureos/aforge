@@ -76,10 +76,10 @@ To purchase a commercial license of *Shim.Drawing* for *Android*, *iOS* or *Univ
 
 <table>
 <tr>
-<th>Android, $100</th>
-<th>iOS, $100</th>
-<th>Windows, $100</th>
-<th>All platforms, $200</th>
+<th>Android, €50</th>
+<th>iOS, €50</th>
+<th>Windows, €50</th>
+<th>All platforms, €100</th>
 </tr>
 <tr>
 <td><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QF33BCWJXJU26"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_buynow_SM.gif"/></a></td>
