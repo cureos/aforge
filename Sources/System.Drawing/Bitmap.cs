@@ -85,6 +85,33 @@ namespace System.Drawing
             ResetPalette();
         }
 
+        private Bitmap(Bitmap source)
+        {
+            this._width = source._width;
+            this._height = source._height;
+            this._stride = source._stride;
+            this._pixelFormat = source._pixelFormat;
+
+            var size = source._height * source._stride;
+            var bytes = new byte[size];
+            Marshal.Copy(source._scan0, bytes, 0, size);
+
+            this._scan0 = Marshal.AllocHGlobal(size);
+            Marshal.Copy(bytes, 0, this._scan0, size);
+
+            this._freeScan0 = true;
+
+            if (this._pixelFormat.IsIndexed())
+            {
+                this.SetPalette(new ColorPalette(source._palette.Entries));
+            }
+            else
+            {
+                this._quantizer = null;
+                this._palette = null;
+            }
+        }
+
         ~Bitmap()
         {
             Dispose(false);
@@ -143,6 +170,11 @@ namespace System.Drawing
 
         public Bitmap Clone(PixelFormat pixelFormat)
         {
+            if (pixelFormat == this._pixelFormat)
+            {
+                return new Bitmap(this);
+            }
+
             List<Color> palette = null;
 
             // indexed formats require 2 passes - one more pass to determines colors for palette beforehand
@@ -178,7 +210,7 @@ namespace System.Drawing
 
         internal Bitmap Clone()
         {
-            return this.Clone(this._pixelFormat);
+            return new Bitmap(this);
         }
 
         internal Color GetPixel(int x, int y)
