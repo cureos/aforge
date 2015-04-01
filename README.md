@@ -13,9 +13,9 @@ The repository currently provides:
 
 * Portable Class Libraries for base and imaging functionality functionality (Core, Math, Genetic, Fuzzy, MachineLearning, Neuro, Imaging, Imaging.Formats, Vision), 
 * Portable Class Library *Shim.Drawing* to substitute .NET *System.Drawing* types not covered by PCL, and
-* Target specific *Shim.Drawing* libraries for .NET Framework 4.5 and higher, and Windows Phone Silverlight 8 and higher.
+* Target specific *Shim.Drawing* libraries for .NET Framework 4.5 and higher.
 
-The *Portable AForge.NET* class libraries depend on the PCL [Shim](https://github.com/cureos/shim) and/or *Shim.Drawing* assemblies. In applications however, the target specific (Windows Phone Silverlight or WPF)
+The *Portable AForge.NET* class libraries depend on the PCL [Shim](https://github.com/cureos/shim) and/or *Shim.Drawing* assemblies. In applications however, the target specific
 *Shim* and *Shim.Drawing* assemblies should be referenced, to ensure that the target specific version of each type is used.
 
 Installation
@@ -87,6 +87,8 @@ To purchase a commercial license of *Shim.Drawing* for *Android*, *iOS* or *Univ
 <td><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=UU5XKDER4JFQ4"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_buynow_SM.gif"/></a></td><td><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LLK2ZYW4JV8GY"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_buynow_SM.gif"/></a></td>
 </tr>
 </table>
+
+All prices include VAT. Upon purchase, you will receive a link from where you can download the corresponding versions of the *Shim.Drawing* assemblies that do not insert watermarks into the images.
 
 Please note that *AForge.NET Framework* itself is licensed under LGPL version 3, and the copyright holder states the following on the *AForge.NET Framework* web site:
 
