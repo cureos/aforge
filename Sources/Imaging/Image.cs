@@ -123,7 +123,7 @@ namespace AForge.Imaging
         /// 
         /// <returns>Returns clone of the source image with specified pixel format.</returns>
         ///
-        /// <remarks>The original <see cref="System.Drawing.Bitmap.Clone(System.Drawing.Rectangle, System.Drawing.Imaging.PixelFormat)">Bitmap.Clone()</see>
+        /// <remarks>The original <see cref="System.Drawing.Bitmap.Clone(System.Drawing.Imaging.PixelFormat)">Bitmap.Clone()</see>
         /// does not produce the desired result - it does not create a clone with specified pixel format.
         /// More of it, the original method does not create an actual clone - it does not create a copy
         /// of the image. That is why this method was implemented to provide the functionality.</remarks> 
@@ -156,7 +156,7 @@ namespace AForge.Imaging
         /// 
         /// <returns>Return clone of the source image.</returns>
         /// 
-        /// <remarks>The original <see cref="System.Drawing.Bitmap.Clone(System.Drawing.Rectangle, System.Drawing.Imaging.PixelFormat)">Bitmap.Clone()</see>
+        /// <remarks>The original <see cref="System.Drawing.Bitmap.Clone(System.Drawing.Imaging.PixelFormat)">Bitmap.Clone()</see>
         /// does not produce the desired result - it does not create an actual clone (it does not create a copy
         /// of the image). That is why this method was implemented to provide the functionality.</remarks> 
         /// 
@@ -279,7 +279,7 @@ namespace AForge.Imaging
         /// 
         /// <returns>Returns loaded bitmap.</returns>
         /// 
-        /// <remarks><para>The method is provided as an alternative of <see cref="System.Drawing.Image.FromFile(string)"/>
+        /// <remarks><para>The method is provided as an alternative of <see cref="System.Drawing.Image.FromStream(System.IO.Stream)"/>
         /// method to solve the issues of locked file. The standard .NET's method locks the source file until
         /// image's object is disposed, so the file can not be deleted or overwritten. This method workarounds the issue and
         /// does not lock the source file.</para>
