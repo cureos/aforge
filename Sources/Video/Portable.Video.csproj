@@ -47,6 +47,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Core\Properties\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="AsyncVideoSource.cs" />
     <Compile Include="ByteArrayUtils.cs" />
     <Compile Include="Exceptions.cs" />

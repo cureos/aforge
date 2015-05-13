@@ -46,6 +46,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Core\Properties\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="Exploration Policy\BoltzmannExploration.cs" />
     <Compile Include="Exploration Policy\EpsilonGreedyExploration.cs" />
     <Compile Include="Exploration Policy\IExplorationPolicy.cs" />

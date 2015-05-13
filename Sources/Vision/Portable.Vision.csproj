@@ -49,6 +49,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Core\Properties\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="Motion\BlobCountingObjectsProcessing.cs" />
     <Compile Include="Motion\CustomFrameDifferenceDetector.cs" />
     <Compile Include="Motion\GridMotionAreaProcessing.cs" />
