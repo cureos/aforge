@@ -24,7 +24,7 @@ timeout /T 5
 @set DRAWDIR=%PUBLISH%\shim_drawing\
 @set APCLDIR=%AFORGEDIR%lib\portable-net45+netcore45+wpa81\
 @set AWPFDIR=%AFORGEDIR%lib\net45\
-@set AUNIDIR=%AFORGEDIR%lib\portable-win81+wpa81\
+@set AW81DIR=%AFORGEDIR%lib\netcore451\
 @set DPCLDIR=%DRAWDIR%lib\portable-net45+netcore45+wpa81\
 @set DWPFDIR=%DRAWDIR%lib\net45\
 
@@ -54,8 +54,8 @@ timeout /T 5
 @md "%AWPFDIR%"
 @xcopy /k /r /v /y /exclude:exclude.txt Core\_Net\bin\Release\AForge.* "%AWPFDIR%"
 
-@md "%AUNIDIR%"
-@xcopy /k /r /v /y /exclude:exclude.txt Core\_Universal\bin\Release\AForge.* "%AUNIDIR%"
+@md "%AW81DIR%"
+@xcopy /k /r /v /y /exclude:exclude.txt Core\_Win81\bin\Release\AForge.* "%AW81DIR%"
 
 @md "%DPCLDIR%"
 @xcopy /k /r /v /y /exclude:exclude.txt System.Drawing\bin\Release\Shim.Drawing.* "%DPCLDIR%"
