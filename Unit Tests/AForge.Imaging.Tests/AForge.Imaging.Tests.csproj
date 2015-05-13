@@ -71,6 +71,10 @@
       <HintPath>..\..\Sources\packages\shim.1.0.1.50427\lib\net45\Shim.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Shim.Drawing, Version=2.2.5.0, Culture=neutral, PublicKeyToken=a7d03c0bc8d64dbc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Sources\packages\shim.drawing.2.2.5.50504\lib\net45\Shim.Drawing.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -115,10 +119,6 @@
     <ProjectReference Include="..\..\Sources\Imaging\Portable.Imaging.csproj">
       <Project>{0a22690c-9553-4b11-9835-8c0f0e2d44f1}</Project>
       <Name>Portable.Imaging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Sources\System.Drawing\_WPF\WPF.Shim.Drawing.csproj">
-      <Project>{d1963a68-8848-4b70-9141-3ebb4cb6af34}</Project>
-      <Name>WPF.Shim.Drawing</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -53,10 +53,6 @@
       <Project>{d99e9bd6-3db6-445b-bf5a-fd9830bfb4fa}</Project>
       <Name>Portable.Math</Name>
     </ProjectReference>
-    <ProjectReference Include="..\System.Drawing\Portable.Shim.Drawing.csproj">
-      <Project>{995cfa14-7f81-457d-beb4-52fb5712a3bb}</Project>
-      <Name>Portable.Shim.Drawing</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Core\Properties\VersionInfo.cs">
@@ -267,6 +263,9 @@
     <Reference Include="Shim, Version=1.0.1.0, Culture=neutral, PublicKeyToken=c55ec16d10c4b366, processorArchitecture=MSIL">
       <HintPath>..\packages\shim.1.0.1.50427\lib\portable-net45+netcore45+wpa81\Shim.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="Shim.Drawing">
+      <HintPath>..\packages\shim.drawing.2.2.5.50504\lib\portable-net45+netcore45+wpa81\Shim.Drawing.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
