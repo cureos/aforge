@@ -14,7 +14,8 @@ timeout /T 5
 @call "%VS120COMNTOOLS%VsDevCmd.bat"
 
 @cd "..\..\Sources"
-@msbuild "Portable Build All.sln" /t:Rebuild /p:Configuration=Release;Platform="Any CPU"
+@msbuild "Shim Drawing.sln" /t:Rebuild /p:Configuration=Release;Platform="Any CPU"
+@msbuild "Portable AForge.sln" /t:Rebuild /p:Configuration=Release;Platform="Any CPU"
 
 @echo .mdb >> exclude.txt
 
