@@ -162,10 +162,16 @@ namespace System.Drawing
 
         #region METHODS
 
-        public void Dispose()
+        public override void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public Bitmap Clone(Rectangle rect, PixelFormat format)
+        {
+            // TODO Account for rectangle
+            return this.Clone(format);
         }
 
         public Bitmap Clone(PixelFormat pixelFormat)

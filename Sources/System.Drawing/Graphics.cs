@@ -74,12 +74,12 @@ namespace System.Drawing
 
         #region METHODS
 
-        internal static Graphics FromImage(Bitmap bitmap)
+        internal static Graphics FromImage(Image bitmap)
         {
             return new Graphics(bitmap);
         }
 
-        internal void DrawImage(Bitmap source, int x, int y, int width, int height)
+        internal void DrawImage(Image source, int x, int y, int width, int height)
         {
             var targetFormat = _bitmap.PixelFormat;
             List<Color> palette = null;
@@ -111,6 +111,10 @@ namespace System.Drawing
                     targetPixel.SetColor(color, _quantizer);
                     return true;
                 });
+        }
+
+        internal void DrawImageUnscaled(Image image, int x, int y)
+        {
         }
 
         internal void DrawEllipse(Pen pen, int x, int y, int width, int height)

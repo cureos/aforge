@@ -72,6 +72,7 @@ namespace System.Drawing
         private static readonly Color _gold = new Color(0xff, 0xff, 0xd7, 0x00); 
         private static readonly Color _indigo = new Color(0xff, 0x4b, 0x00, 0x82); 
         private static readonly Color _ivory = new Color(0xff, 0xff, 0xff, 0xf0);
+        private static readonly Color _pink = new Color(0xff, 0xff, 0xc0, 0xcb);
         private static readonly Color _hotPink = new Color(0xff, 0xff, 0x69, 0xb4); 
         private static readonly Color _darkRed = new Color(0xff, 0x8b, 0x00, 0x00); 
         private static readonly Color _darkGreen = new Color(0xff, 0x00, 0x64, 0x00); 
@@ -153,6 +154,7 @@ namespace System.Drawing
         internal static Color Gold { get { return _gold; } }
         internal static Color Indigo { get { return _indigo; } }
         internal static Color Ivory { get { return _ivory; } }
+        internal static Color Pink { get { return _pink; } }
         internal static Color HotPink { get { return _hotPink; } }
         internal static Color DarkRed { get { return _darkRed; } }
         internal static Color DarkGreen { get { return _darkGreen; } }

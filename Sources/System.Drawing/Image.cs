@@ -25,7 +25,7 @@ namespace System.Drawing
 {
     using System.IO;
 
-    public abstract class Image
+    public abstract class Image : IDisposable
     {
         #region PROPERTIES
 
@@ -42,6 +42,11 @@ namespace System.Drawing
         #endregion
 
         #region METHODS
+
+        internal static Image FromFile(string filename)
+        {
+            return Bitmap.Create(File.OpenRead(filename));
+        }
 
         public static Image FromStream(Stream stream)
         {
@@ -79,6 +84,8 @@ namespace System.Drawing
                     throw new ArgumentOutOfRangeException("pixelFormat");
             }
         }
+
+        public abstract void Dispose();
         
         #endregion
     }
