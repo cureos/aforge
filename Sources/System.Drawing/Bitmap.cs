@@ -29,9 +29,7 @@ using ImagePixelEnumerator.Quantizers.DistinctCompetition;
 
 namespace System.Drawing
 {
-    using System.IO;
-
-    public sealed partial class Bitmap : Image, IDisposable
+    public sealed partial class Bitmap : Image
     {
         #region FIELDS
 
