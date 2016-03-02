@@ -465,17 +465,17 @@ namespace AForge.Video
                     // set proxy
                     if ( proxy != null )
                     {
-                        request.SetProxy(proxy);
+                        request.Proxy(proxy);
                     }
 
                     // set timeout value for the request
-                    request.SetTimeout(requestTimeout);
+                    request.Timeout(requestTimeout);
 					// set login and password
 					if ( ( login != null ) && ( password != null ) && ( login != string.Empty ) )
                         request.Credentials = new NetworkCredential( login, password );
 					// set connection group name
 				    if (useSeparateConnectionGroup)
-				        request.SetConnectionGroupName(GetHashCode().ToString());
+				        request.ConnectionGroupName(GetHashCode().ToString());
                     // force basic authentication through extra headers if required
                     if ( forceBasicAuthentication )
                     {
