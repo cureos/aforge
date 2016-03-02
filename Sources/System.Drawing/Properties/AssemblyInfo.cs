@@ -1,5 +1,5 @@
 ﻿/*
- *  Copyright (c) 2013-2015, Cureos AB.
+ *  Copyright (c) 2013-2016, Cureos AB.
  *  All rights reserved.
  *  http://www.cureos.com
  *
@@ -32,7 +32,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Cureos AB")]
 [assembly: AssemblyProduct("Shim.Drawing")]
-[assembly: AssemblyCopyright("Copyright ©  2013-2015 Cureos AB")]
+[assembly: AssemblyCopyright("Copyright ©  2013-2016 Cureos AB")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en")]

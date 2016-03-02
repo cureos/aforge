@@ -1,5 +1,5 @@
 ﻿/*
- *  Copyright (c) 2013-2015, Cureos AB.
+ *  Copyright (c) 2013-2016, Cureos AB.
  *  All rights reserved.
  *  http://www.cureos.com
  *
