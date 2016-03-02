@@ -4,7 +4,7 @@ Portable AForge.NET Framework
 =============================
 
 *AForge.NET Framework*: Copyright (c) 2006-2013 AForge.NET; licensed under Lesser General Public License (LGPL) version 3.<br/>
-*Shim.Drawing* class libraries: Copyright (c) 2013-2015 Anders Gustafsson, Cureos AB; licensed under General Public License (GPL) version 3.
+*Shim.Drawing* class libraries: Copyright (c) 2013-2016 Anders Gustafsson, Cureos AB; licensed under General Public License (GPL) version 3.
 
 This project is a fork of Andrew Kirillow's original [AForge.NET Framework](https://code.google.com/p/aforge/) project. 
 For general information and tutorials, see [here](http://www.aforgenet.com/aforge/framework/).
