@@ -81,8 +81,8 @@
       <HintPath>..\packages\shim.2.0.0\lib\portable-net45+netcore45+wpa81\Shim.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Shim.Drawing">
-      <HintPath>..\packages\shim.drawing.2.2.5.50504\lib\portable-net45+netcore45+wpa81\Shim.Drawing.dll</HintPath>
+    <Reference Include="Shim.Drawing, Version=3.0.0.0, Culture=neutral, PublicKeyToken=a7d03c0bc8d64dbc, processorArchitecture=MSIL">
+      <HintPath>..\packages\shim.drawing.3.0.0\lib\portable-net45+netcore45+wpa81\Shim.Drawing.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
